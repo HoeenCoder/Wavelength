@@ -1,6 +1,6 @@
 /**
  * Hashcolor file.
- * 
+ *
  * Credits go to:
  * - panpawn and jd
  */
@@ -64,10 +64,11 @@ function generateCSS(name, color) {
         let css = '';
         let rooms = [];
         Rooms.rooms.forEach(curRoom => {
-                if (curRoom.id === 'global' || curRoom.type !== 'chat' || curRoom.isPersonal) continue;
-                rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong em');
-                rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong');
-                rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' span');
+                if (curRoom.id !== 'global' && curRoom.type === 'chat' && !curRoom.isPersonal) {
+                  rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong em');
+                  rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong');
+                  rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' span');
+                }
         });
         css = rooms.join(', ');
         css += '{\ncolor: ' + color + ' !important;\n}\n';

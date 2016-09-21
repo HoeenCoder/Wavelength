@@ -1,7 +1,7 @@
 /**
  * Custom Avatar script.
  *
- * Credits: ~SilverTactic (Siiilver)*/
+ * Credits: ~SilverTactic (Siiilver)
  */
 
 'use strict';
@@ -10,7 +10,7 @@ let fs = require('fs');
 let path = require('path');
 
 function hasAvatar (user) {
-	if (Config.customavatars[toId(user)] && fs.existsSync('config/avatars/' + Config.customavatars[toId(user)])) 
+	if (Config.customavatars[toId(user)] && fs.existsSync('config/avatars/' + Config.customavatars[toId(user)]))
 		return Config.customavatars[toId(user)];
 	return false;
 }
@@ -54,7 +54,7 @@ let cmds = {
 		let targetUser = Users.getExact(target[0]) ? Users.getExact(target[0]).name : target[0];
 		let link = target[1].trim();
 		if (!link.match(/^https?:\/\//i)) link = 'http://' + link;
-		
+
 		let allowedFormats = ['png', 'jpg', 'jpeg', 'gif'];
 		new Promise ((resolve, reject) => {
 			require("request").get(link)
@@ -105,7 +105,7 @@ let cmds = {
 			Users.getExact(target).avatar = 1;
 		}
 	},
-	
+
 	shift: 'move',
 	move: function (target, room, user, connection, cmd) {
 		if (!this.can('roomowner')) return false;
