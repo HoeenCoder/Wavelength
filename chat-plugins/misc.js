@@ -151,6 +151,7 @@ exports.commands = {
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
 	},
+
 	contact:'whotocontact',
 	wtc: 'whotocontact',
 	whotocontact: function (target, room, user) {
@@ -167,6 +168,7 @@ exports.commands = {
 			'<b>Administrators (~)</b> - Administrators are to be contacted if there is a serious issue. This may include sexual harrassment and/or abuse of power from Room Owners as well as Global Staff. Its also important to contact Administrators if there are any bugs within the server system that need to be looked at.  <br />'
 		);
 	},
+
 	roomlist: function (target, room, user) {
 		if (!this.can('hotpatch')) return;
 
@@ -208,6 +210,7 @@ exports.commands = {
 		}
 		this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' ') + privateRoom.join(' ') + (groupChats.length > 1 ? groupChats.join(' ') : '') + (battleRooms.length > 1 ? battleRooms.join(' ') : ''));
 	},
+
 	hide: 'hideauth',
 	hideauth: function (target, room, user) {
 		if (!user.can('roomowner')) return this.sendReply("/hideauth - Access Denied.");
@@ -256,6 +259,7 @@ exports.commands = {
 		this.sendReply("Your symbol has been reset.");
 	},
 	showhelp: ["/show - Displays user's global rank. Requires: & ~"],
+
 	credits: function (target, room, user) {
 		function name (name, bold) {
 			if (bold) {
@@ -282,6 +286,7 @@ exports.commands = {
 			"- Our Regular Users<br />";
 		user.popup(popup);
 	},
+
 	/* Friendcode command in profile.js
 	friendcodehelp: function (target, room, user) {
 		if (!this.runBroadcast()) return;
