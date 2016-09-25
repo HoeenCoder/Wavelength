@@ -45,15 +45,15 @@ exports.commands = {
 		Rooms('staff').update();
 		return this.sendReply("Your report has been sent to SpacialGaze global authorities..");
 	},
- 
+
 	reports: function (target, room, user, connection, cmd) {
 		if (!user.can('lock')) return this.errorReply('/reports - Access denied.');
-		if (!target) let target = '';
+		if (!target) target = '';
 		target = target.trim();
 
 		let id;
 		let cmdParts = target.split(' ');
-		let cmd = cmdParts.shift().trim().toLowerCase();
+		cmd = cmdParts.shift().trim().toLowerCase();
 		let params = cmdParts.join(' ').split(',').map(function (param) { return param.trim(); });
 		switch (cmd) {
 			case '':
