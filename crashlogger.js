@@ -26,6 +26,10 @@ exports = module.exports = function (err, description, data) {
 			stack += `  ${k} = ${data[k]}\n`;
 		}
 	}
+	if (Rooms('development')) {
+		Rooms('development').addRaw('<div class="broadcast-red">SPACIALGAZE HAS CRASHED: ' + (stack.replace(/\n/g, "<br />")) + '</div>');
+		Rooms('development').update();
+	}
 
 	console.error(`\nCRASH: ${stack}\n`);
 	let out = require('fs').createWriteStream(logPath, {'flags': 'a'});
