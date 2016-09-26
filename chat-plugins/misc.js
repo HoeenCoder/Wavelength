@@ -1,6 +1,6 @@
 /**
  * Miscellaneous commands
- * 
+ *
  * Fixed/Improved upon by: The Run, HoeenHero, and Mystifi.
  */
 
@@ -19,11 +19,11 @@ function loadRegdateCache() {
 	} catch (e) {}
 }
 loadRegdateCache();
- 
+
 function saveRegdateCache() {
 	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
 }
- 
+
 
 function getLastSeen (userid) {
 	if (!global.LastSeen) return "(not available)";
@@ -455,7 +455,7 @@ exports.commands = {
 		}
 	},
 	regdatehelp: ["/regdate - Gets the regdate (register date) of a username."],
-	
+
 	uor: 'usersofrank',
 	usersofrank: function (target, room, user) {
 		if (!target || !Config.groups[target]) return false;
@@ -471,12 +471,14 @@ exports.commands = {
 		return this.sendReplyBox('There ' + (names.length === 1 ? 'is' : 'are') + ' <font color="#24678d"><b>' + names.length + '</b></font> ' + (names.length === 1 ? 'user' : 'users') + ' with the rank <font color="#24678d"><b>' + Config.groups[target].name + '</b></font> currently online.<br />' + names.join(', '));
 	},
 
-	sb: 'showdownboilerplate',
-	showdownboilerplate: function (target, room, user) {
+	sg: 'spacialgazerepo',
+	sgr: 'spacialgazerepo',
+	repo: 'spacialgazerepo',
+	spacialgazerepo: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		this.sendReply("|raw|This server uses <a href='https://github.com/CreaturePhil/Showdown-Boilerplate'>Showdown-Boilerplate</a>.");
+		this.sendReply("|raw|<a href='https://github.com/HoeenCoder/SpacialGaze'>SpacialGaze\'s repo.</a>.");
 	},
-	showdownboilerplatehelp: ["/showdownboilerplate - Links to the Showdown-Boilerplate repository on Github."],
+	showdownboilerplatehelp: ["/spacialgazerepo - Links to the SpacialGaze repository on Github."],
 
 	seen: function (target, room, user) {
 		if (!this.runBroadcast()) return;
