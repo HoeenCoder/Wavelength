@@ -770,7 +770,36 @@ let parse = exports.parse = function (message, room, user, connection, pmTarget,
 	// Output the message to the room
 
 	if (message && message !== true && typeof message.then !== 'function') {
-		room.add('|c|' + user.getIdentity(room.id) + '|' + message);
+		let emoticons = SG.parseEmoticons(message);
+		if(emoticons && !this.disableEmoticons) {
+			if (Users.ShadowBan.checkBanned(user)) {
+				Users.ShadowBan.addMessage(user, "To " + room.id, message);
+				if (!SG.ignoreEmotes[user.userid]) user.sendTo(room, (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + user.getIdentity(room.id) + '|/html ' + emoticons);
+				if (SG.ignoreEmotes[user.userid]) user.sendTo(room, (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + user.getIdentity(room.id) + '|' + message);
+				room.update();
+				return false;
+			}
+			for (let u in room.users) {
+				let curUser = Users(u);
+				if (!curUser || !curUser.connected) continue;
+				if (SG.ignoreEmotes[curUser.userid]) {
+					curUser.sendTo(room, (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + user.getIdentity(room.id) + '|' + message);
+					continue;
+				}
+				curUser.sendTo(room, (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + user.getIdentity(room.id) + '|/html ' + emoticons);
+			}
+			room.messageCount++;
+		} else {
+			if (Users.ShadowBan.checkBanned(user)) {
+				Users.ShadowBan.addMessage(user, "To " + room.id, message);
+				connection.sendTo(room, (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + user.getIdentity(room.id) + '|' + message);
+			} else {
+				room.add((room.type === 'chat' ? (room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') : '|c|') + user.getIdentity(room.id) + '|' + message);
+				room.messageCount++;
+			}
+		}
+
+		//room.add('|c|' + user.getIdentity(room.id) + '|' + message);
 	}
 
 	room.update();

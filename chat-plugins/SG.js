@@ -2,6 +2,7 @@
 
 let fs = require('fs');
 let http = require('http');
+const Autolinker = require('autolinker');
 
 let regdateCache = {};
 
@@ -84,6 +85,25 @@ SG.getTitle = function (userid, callback) {
 		callback(((rows[0] && rows[0].title) ? rows[0].title : ""));
 	});
 };
+
+SG.parseMessage = function (message) {
+	if (message.substr(0, 5) === "/html") {
+		message = message.substr(5);
+		message = message.replace(/\_\_([^< ](?:[^<]*?[^< ])?)\_\_(?![^<]*?<\/a)/g, '<i>$1</i>'); // italics
+		message = message.replace(/\*\*([^< ](?:[^<]*?[^< ])?)\*\*/g, '<b>$1</b>'); // bold
+		message = message.replace(/\~\~([^< ](?:[^<]*?[^< ])?)\~\~/g, '<strike>$1</strike>'); // strikethrough
+		message = message.replace(/&lt;&lt;([a-z0-9-]+)&gt;&gt;/g, '&laquo;<a href="/$1" target="_blank">$1</a>&raquo;'); // <<roomid>>
+		message = Autolinker.link(message.replace(/&#x2f;/g, '/'), {stripPrefix: false, phone: false, twitter: false});
+		return message;
+	}
+	message = Tools.escapeHTML(message).replace(/&#x2f;/g, '/');
+	message = message.replace(/\_\_([^< ](?:[^<]*?[^< ])?)\_\_(?![^<]*?<\/a)/g, '<i>$1</i>'); // italics
+	message = message.replace(/\*\*([^< ](?:[^<]*?[^< ])?)\*\*/g, '<b>$1</b>'); // bold
+	message = message.replace(/\~\~([^< ](?:[^<]*?[^< ])?)\~\~/g, '<strike>$1</strike>'); // strikethrough
+	message = message.replace(/&lt;&lt;([a-z0-9-]+)&gt;&gt;/g, '&laquo;<a href="/$1" target="_blank">$1</a>&raquo;'); // <<roomid>>
+	message = Autolinker.link(message, {stripPrefix: false, phone: false, twitter: false});
+	return message;
+}
 
 // last two functions needed to make sure SG.regdate() fully works
 function loadRegdateCache() {

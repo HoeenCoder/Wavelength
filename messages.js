@@ -112,9 +112,21 @@ Messages.send = function (target, context) {
 		}
 	}
 
-	if (!buf) buf = '|pm|' + user.getIdentity() + '|' + targetUser.getIdentity() + '|' + target;
+	let noEmotes = target;
+	if (!buf) {
+		let emoticons = SG.parseEmoticons(target);
+		if (emoticons) {
+			noEmotes = target;
+			target = "/html " + emoticons;
+		}
+		buf = '|pm|' + user.getIdentity() + '|' + targetUser.getIdentity() + '|' + target;
+	}
 	user.send(buf);
-	if (targetUser !== user) targetUser.send(buf);
+	if (Users.ShadowBan.checkBanned(user)) {
+		Users.ShadowBan.addMessage(user, "Private to " + targetUser.getIdentity(), noEmotes);
+	} else {
+		if (targetUser !== user) targetUser.send(buf);
+	}
 	targetUser.lastPM = user.userid;
 	user.lastPM = targetUser.userid;
 };
