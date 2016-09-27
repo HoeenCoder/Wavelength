@@ -6,8 +6,8 @@ SG.database = new sqlite3.Database('config/users.db', function () {
 });
 
 const fs = require('fs');
-const currencyName = 'Currency'; //DEFAULT
-const currenyPlural = 'Currencies'; //DEFAULT
+const currencyName = 'Stardust';
+const currenyPlural = 'Stardust';
 
 let Economy = global.Economy = {
 	readMoney: function (userid, callback) {
