@@ -79,7 +79,7 @@ function generateCSS(name, color) {
 
 exports.commands = {
         customcolor: function (target, room, user) {
-                if (!this.can('hotpatch')) return false;
+                if (!this.can('forcewin')) return false;
                 target = target.split(',').map(param => param.trim());
                 if (target.length !== 2) return this.parse('/help customcolor');
                 let targetUser = target[0];

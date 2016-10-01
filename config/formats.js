@@ -353,6 +353,307 @@ exports.Formats = [
 		// no restrictions, for serious (other than team preview)
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
+	
+	///////////////////////////////////////////////////////
+	// SpacialGaze Metagames
+	{
+        name: "Super Staff Bros",
+        section: "SpacialGaze Metagames",
+        column: 2,
+
+        mod: 'sgssb',
+        team: 'randomSeasonalRegStaff',
+        ruleset: ['HP Percentage Mod', 'Cancel Mod', 'Sleep Clause Mod'],
+        onBegin: function () {
+            this.add('message', 'GET READY FOR THE NEXT BATTLE!');
+
+            var allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
+            for (var i = 0, len = allPokemon.length; i < len; i++) {
+                var pokemon = allPokemon[i];
+                var last = pokemon.moves.length - 1;
+                if (pokemon.moves[last]) {
+                    pokemon.moves[last] = toId(pokemon.set.signatureMove);
+                    pokemon.moveset[last].move = pokemon.set.signatureMove;
+                    pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
+                }
+            }
+        },
+        onSwitchIn: function (pokemon) {
+            var name = toId(pokemon.illusion ? pokemon.illusion.name : pokemon.name);
+
+            // stat boosts.
+
+            if (name === 'therun') {
+                this.add('c', '+The Run', 'Are you fast enough?');
+            }
+            if (name === 'serperiorater') {
+                this.add('c', '%Serperiorater', 'The badossness has arrived.');
+            }
+            if (name === 'silverkill') {
+            	this.add('c', '@SilverKill', 'glhf');
+            }
+            if (name === 'umichbrendan') {
+                this.add('c', '+UmichBrendan', 'All right, time for a Umich sweep!');
+            }
+            if (name === 'ducktown') {
+                this.add('c', '%ducktown', 'Beware! You are entering a town of ducks!');
+            }
+            if (name === 'hurricaned') {
+            	this.add('c', '@Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
+            }
+            if (name === 'hoeenhero') {
+                this.add('c', '~HoeenHero', 'Time for hax! ``let p = p2.pokemon.find(function(p) {return p.speciesid === \'ludicolo\'}); battle.boost({spa: 12}, p);``');
+            }
+            if (name === 'hiroz') {
+                this.add('c', '&HiroZ', 'Your wing isn\'t able to fly anywhere!');
+            }
+            if (name === 'admewn') {
+                this.add('c', '+Admewn', 'This battle will be amewsing :]');
+            }
+            if (name === 'vulcaron') {
+                this.add('c', '%Vulcaron', 'I will scorch you with 628 blue flames!!! ...I\'m really bad at this.');
+            }
+            if (name === 'mystifi') {
+                this.add('c', '~Mystifi', '__I\'ll HM01 u faster then sanic m89__');
+            }
+            if (name === 'krakenmare') {
+                this.add('c', '@Kraken Mare', 'You can\'t touch the master of RAGE!');
+            }
+            if (name === 'almightybronzong') {
+                this.add('c', '@Almighty Bronzong', '``All hail.``');
+            }
+            if (name === 'opple') {
+                this.add('c', '&Opple', 'lol hi');
+            }
+            if (name === 'mimiroppu') {
+                this.add('c', '@Mimiroppu', 'Mimiroppu, charm up~');
+            }
+            if (name === 'bdh93') {
+                this.add('c', '@BDH93', 'Time for some trolling');
+            }
+            if (name === 'c733937123') {
+                this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
+            }
+            if (name === 'spacialbot') {
+                this.add('c', '%Spacial Bot', '``Bot rebooting...``');
+                this.add('c', '%Spacial Bot', '``Rebooting complete. Beginning to engage in battle.``');
+            }
+            if (name === 'hydrostatics') {
+                this.add('c', '+Hydrostatics', 'Dare to fight me??');
+            }
+            if (name === 'auction') {
+                this.add('c', '+Auction', 'I think its time for the man to take his throne.');
+            }
+            if (name === 'saberran') {
+                this.add('c', '+Saber Ran', 'Watch Out Ice mons!');
+            }
+            if (name === 'xavier1942') {
+                this.add('c', '+Xavier1942', 'Behold, THE GREAT WALL OF...um...HAAAAAAX!');
+            }
+        },
+        onSwitchOut: function (pokemon) {
+            if (!pokemon.hp) return;
+            var name = toId(pokemon.name);
+
+            if (name === 'therun') {
+                this.add('c', '+The Run', 'I\'ll be back faster than the speed of light');
+            }
+            if (name === 'hoeenhero') {
+                this.add('c', '~Hoeenhero', 'brb gotta figure out why i cant inflict curse status on you.');
+            }
+            if (name === 'hurricaned') {
+            	this.add('c', '@Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
+            }
+            if (name === 'ducktown') {
+                this.add('c', '%ducktown', 'My other ducks will come attack you!');
+            }
+            if (name === 'silverkill') {
+            	this.add('c', '@SilverKill', 'lmfao brb');
+            }
+            if (name === 'serperiorater') {
+                this.add('c', '%Serperiorater', 'Don\'t worry, I\'ll be back later, so be prepared.');
+            }
+            if (name === 'umichbrendan') {
+                this.add('c', '+UmichBrendan', 'I\'m gonna hand this over to a friend, you\'re not worth the effort');
+            }
+            if (name === 'hiroz') {
+                this.add('c', '&HiroZ', 'Crawl like the insect you are, I\'ll be back!');
+            }
+            if (name === 'vulcaron') {
+                this.add('c', '%Vulcaron', 'I\'ll be back, I have a lot of free time');
+            }
+            if (name === 'krakenmare') {
+                this.add('c', '@Kraken Mare', 'I shall spare you today, young one!');
+            }
+            if (name === 'almightybronzong') {
+                this.add('c', '@Almighty Bronzong', '``I\'m off, night``');
+            }
+            if (name === 'admewn') {
+                this.add('c', '+Admewn', 'Brb, I\'ll be mewting someone :]');
+            }
+            if (name === 'xavier1942') {
+                this.add('c', '+Xavier1942', 'I\'ll be back, i have business to take care of *Runs away shouting "WEE WOO WEE WOO WEE WOO*');
+            }
+            if (name === 'mimiroppu') {
+                this.add('c', '@Mimiroppu', 'I\'ll be back soon bitches');
+            }
+            if (name === 'bdh93') {
+                this.add('c', '@BDH93', 'I\'ll be back for more trolling');
+            }
+            if (name === 'spacialbot') {
+                this.add('c', '~The Run', '.battleswitchout');
+                this.add('c', '%Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
+            }
+            if (name === 'auction') {
+                this.add('c', '+Auction', 'I think I should take a bathroom break');
+            }
+            if (name === 'c733937123') {
+                this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
+            }
+            if (name === 'hydrostatics') {
+                this.add('c', '+Hydrostatics', '/me has studies');
+            }
+        },
+        onModifyPokemon: function (pokemon) {
+            var name = toId(pokemon.name);
+            // Enforce choice item locking on custom moves.
+            var moves = pokemon.moveset;
+            if (pokemon.getItem().isChoice && pokemon.lastMove === moves[3].id) {
+                for (var i = 0; i < 3; i++) {
+                    if (!moves[i].disabled) {
+                        pokemon.disableMove(moves[i].id, false);
+                        moves[i].disabled = true;
+                    }
+                }
+            }
+        },
+        onFaint: function (pokemon) {
+            var name = toId(pokemon.name);
+
+            // custom messages.
+
+            if (name === 'therun') {
+                this.add('c', '+The Run', 'So much for being faster...');
+            }
+            if (name === 'hoeenhero') {
+                this.add('c', '~HoeenHero', '``this.win("HoeenHero");``');
+                if (this.random(1000) === 420) {
+                    //Hehehe. Dosen't happen much though.
+                    this.add('c', '~HoeenHero', 'hmm you know what?');
+                    this.add('c', '~HoeenHero', '``this.win(pokemon.side);``');
+                    this.win(pokemon.side);
+                }
+            }
+            if (name === 'vulcaron') {
+                this.add('c', '%Vulcaron', 'The flames are dowsed.');
+            }
+            if (name === 'mystifi') {
+                this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
+            }
+            if (name === 'hurricaned') {
+            	this.add('c', '@Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
+            }
+            if (name === 'serperiorater') {
+                this.add('c', '%Serperiorater', 'Dammit Benny, why ya gotta be that guy?');
+            }
+            if (name === 'hiroz') {
+                this.add('c', '&HiroZ', 'Argh... scumbag...');
+            }
+            if (name === 'xavier1942') {
+                this.add('c', '+Xavier1942', 'Nuuuuu! MY BEAUTIFUL WALL! ');
+            }
+            if (name === 'ducktown') {
+                this.add('c', '%ducktown', 'Quack Quack Quaaaaaa...');
+            }
+            if (name === 'silverkill') {
+            	this.add('c', '@SilverKill', 'yeah so I\'mma go get some food see you later');
+            }
+            if (name === 'admewn') {
+                this.add('c', '+Admewn', 'Turn off the mewsic! I\'m out!');
+            }
+            if (name === 'krakenmare') {
+                this.add('c', '@Kraken Mare', 'The RAGE wasn\'t enough to overpower you!');
+            }
+            if (name === 'almightybronzong') {
+                this.add('c', '@Almighty Bronzong', '``Nice achievement.``');
+            }
+            if (name === 'hydrostatics') {
+                this.add('c', '+Hydrostatics', 'Ok! It was a nice warm up for me! Let\'s battle for real the next time! ;)');
+            }
+            if (name === 'umichbrendan') {
+                this.add('c', '+UmichBrendan', 'I lost? How is that possible?');
+            }
+            if (name === 'opple') {
+                this.add('c', '&Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
+            }
+            if (name === 'mimiroppu') {
+                this.add('c', '@Mimiroppu', 'Sorry \'bout it...');
+            }
+            if (name === 'c733937123') {
+                this.add('c', '@C733937 123', 'What, I...got defeated by some lousy fighter like you??? Well...Good luck next time we fight for both of us....but why did I lose?');
+            }
+            if (name === 'bdh93') {
+                this.add('c', '@BDH93', 'Aww man! No more trolling :(');
+            }
+            if (name === 'spacialbot') {
+                this.add('c', '%Spacial Bot', 'I blame my creator for my loss');
+            }
+            if (name === 'auction') {
+                this.add('c', '+Auction', 'Ya know, I think I should\'ve gotten __burn everything__ as my ability ;_;');
+            }
+            if (name === 'saberran') {
+                this.add('c', '+Saber Ran', 'No Fair flygon cant be beat D:');
+            }
+        },
+	},
+	{
+		name: "Pokemon Mystery Dungeon",
+		section: "SpacialGaze Metagames",
+
+		mod: 'pmd',
+		team: 'randomPmd',
+		ruleset: ['HP Percentage Mod', 'Cancel Mod'],
+		onBegin: function () {
+			this.add('raw', '<div class="broadcast-red"><b>Report all bugs to Development room Please!</b></div>');
+			this.add('raw', '<div class="broadcast-green"><b>Have a suggestion? Ask in Development!</b></div>');
+		}
+	},
+	{
+        name: "Retro Super Staff Bros",
+        desc: ["Happy B-Day Johto/Regional/SpacialGaze! Celebrate with this mashup of old staff!"],
+        section: "SpacialGaze Metagames",
+
+        mod: 'retrossb',
+        team: 'randomRetroStaff',
+        ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+        onBegin: function () {
+            this.add("raw|Retro Super Staff Bros. <b>Return of the old staff!!!!</b>");
+
+            let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
+            for (let i = 0, len = allPokemon.length; i < len; i++) {
+                let pokemon = allPokemon[i];
+                let last = pokemon.moves.length - 1;
+                if (pokemon.moves[last] && !pokemon.set.noCustom) {
+                    pokemon.moves[last] = toId(pokemon.set.signatureMove);
+                    pokemon.moveset[last].move = pokemon.set.signatureMove;
+                    pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
+                }
+            }
+        },
+        onSwitchInPriority: 1,
+        onSwitchIn: function (pokemon) {
+            let name = toId(pokemon.illusion ? pokemon.illusion.name : pokemon.name);
+            if (name === 'hoeenkid') this.add('c|&HoeenKid|One day I will be a Hero!');
+            //if (name === 'opple') this.add('c|@Opple|Default Message');
+            if (name === 'supersonicx') this.add('c|~supersonicx|I am the best pokemon here!');
+        },
+        onFaint: function (pokemon, source, effect) {
+            let name = toId(pokemon.name);
+            if (name === 'hoeenkid') this.add('c|&HoeenKid|But not today...');
+            //if (name === 'opple') this.add('c|@Opple|Default Message');
+            if (name === 'supersonicx') this.add('c|~supersonicx|I\'m reporting you for cheating!');
+        },
+    },
 
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
