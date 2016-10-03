@@ -8,11 +8,11 @@ exports.BattleMovedex = {
 		id: "oranberry",
 		isNonstandard: true,
 		name: "Oran Berry",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {heal: 1, snatch: 1},
 		secondary: false,
-		heal: [3, 4],
+		heal: [1, 4],
 		target: "self",
 		type: "Normal",
 		onPrepareHit: function (target, source) {
@@ -26,7 +26,7 @@ exports.BattleMovedex = {
 		id: "apple",
 		isNonstandard: true,
 		name: "Apple",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {snatch: 1},
 		boosts: {spe: 2},
@@ -37,17 +37,17 @@ exports.BattleMovedex = {
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 		},
-		
+
 	},
 	//Blast Seed
 	blastseed: {
 		accuracy: 100,
-		basePower: 100,
+		basePower: 250,
 		category: "Special",
 		id: "blastseed",
 		isNonstandard: true,
 		name: "Blast Seed",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {protect: 1, bullet: 1},
 		secondary: false,
@@ -63,11 +63,11 @@ exports.BattleMovedex = {
 	gravelrock: {
 		accuracy: 100,
 		category: "Special",
-		basePower: 15,
+		basePower: 20,
 		id: "gravelrock",
 		isNonstandard: true,
 		name: "Gravelrock",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {protect: 1, distance: 1, gravity: 1},
 		multihit: [4, 7],
@@ -86,7 +86,7 @@ exports.BattleMovedex = {
 		id: "healseed",
 		isNonstandard: true,
 		name: "Heal Seed",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {snatch: 1},
 		onPrepareHit: function (target, source) {
@@ -108,7 +108,7 @@ exports.BattleMovedex = {
 		id: "traporb",
 		isNonstandard: true,
 		name: "Trap Orb",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {reflectable: 1, nonsky: 1},
 		sideCondition: 'stealthrock',
@@ -128,7 +128,7 @@ exports.BattleMovedex = {
 		id: "trapbustorb",
 		isNonstandard: true,
 		name: "TrapBust Orb",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -293,25 +293,25 @@ exports.BattleMovedex = {
 		type: "Ice",
 	},
 	//One Shot Orb
-        oneshotorb: {
-                accuracy: 30,
-                category: "Physical",
+    oneshotorb: {
+    accuracy: 30,
+    category: "Physical",
 		basePower: 10000,
-                id: "oneshotorb",
-                isNonstandard: true,
-                name: "One Shot Orb",
-                pp: 0.625,
-                priority: 0,
-                flags: {protect: 1},
-                onPrepareHit: function (target, source) {
-                        this.attrLastMove('[still]');
-                        this.add('-anim', source, "Water Spout", target);
-                },
+    id: "oneshotorb",
+    isNonstandard: true,
+    name: "One Shot Orb",
+    pp: 0.625,
+    priority: 0,
+    flags: {protect: 1},
+    onPrepareHit: function (target, source) {
+      this.attrLastMove('[still]');
+      this.add('-anim', source, "Water Spout", target);
+    },
 		ignoreImmunity: true,
-                secondary: false,
-                target: "normal",
-                type: "Normal",
-        },
+    secondary: false,
+    target: "normal",
+    type: "Normal",
+  },
 	//Warp Orb
 	warporb: {
 		accuracy: true,
@@ -354,11 +354,11 @@ exports.BattleMovedex = {
 	stick: {
 		accuracy: 100,
 		category: "Special",
-		basePower: 10,
+		basePower: 15,
 		id: "stick",
 		isNonstandard: true,
 		name: "Stick",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {protect: 1, gravity: 1},
 		multihit: [5, 10],
@@ -374,11 +374,11 @@ exports.BattleMovedex = {
 	ironthorn: {
 		accuracy: 100,
 		category: "Special",
-		basePower: 20,
+		basePower: 25,
 		id: "ironthorn",
 		isNonstandard: true,
 		name: "Iron Thorn",
-		pp: 0.625, 
+		pp: 0.625,
 		priority: 0,
 		flags: {protect: 1, gravity: 1},
 		multihit: [4, 7],
@@ -478,16 +478,17 @@ exports.BattleMovedex = {
 		priority: 6,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
+			this.add('-anim', source, "Calm Mind", source);
 			this.add('-anim', source, "Geomancy", source);
 		},
-		onHit: function (target, source, move) {
+		/*onHit: function (target, source, move) {
 			this.add('message', source.name + '\'s full potential has awoken!');
 			if (source.maxhp / 3 < source.hp) {
 				this.directDamage(source.maxhp / 3, source, source);
 			} else if(source.hp !== 1) {
 				this.directDamage(source.hp - 1, source, source);
 			}
-		},
+		},*/
 		boosts: {
 			atk: 1,
 			def: 1,

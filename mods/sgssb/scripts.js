@@ -1,12 +1,12 @@
 // Custom SpacialGaze scripts.
- 
+
 'use strict';
- 
+
 exports.BattleScripts = {
     randomSeasonalRegStaffTeam: function (side) {
         var team = [];
         var variant = this.random(2);
- 
+
         var sets = {
             // Admins.
             '~HoeenHero': {
@@ -21,19 +21,13 @@ exports.BattleScripts = {
                 signatureMove: 'Cuteness Spell',
                 evs: {hp: 252, def: 252, spd: 4}, nature: 'Bold',
             },
- 
+
             // Leaders:
             '&HiroZ': {
                 species: 'Genesect', ability: 'Download', item: 'Choice Scarf',
                 moves: ['U-turn', 'Ice Beam', 'Explosion'],
                 signatureMove: 'Crystallized Ukaku',
                 evs: {atk: 252, spe: 252, spa: 4}, nature: 'Hasty',
-            },
-            '&Opple': {
-                species: 'Dragonite', ability: 'Multiscale', item: 'Weakness Policy', gender: 'M',
-                moves: [ 'Fire Punch', 'Dragon Claw', 'Waterfall'],
-                signatureMove: 'Ancient Orb',
-                evs: {atk: 252, spe: 252, hp: 4}, nature: 'Adamant',
             },
             // Moderators:
             '@Almighty Bronzong': {
@@ -72,13 +66,13 @@ exports.BattleScripts = {
                 signatureMove: 'Rainbust Orb',
                 evs: {spa: 252, spe: 252, hp: 4}, nature: 'Bold',
             },
-            '@SilverKill': {
+            '@Vacuo': {
                 species: 'Magnezone', ability: 'Levitate', item: 'Choice Specs',
                 moves: [['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere'],
                 signatureMove: 'Mechanical Dysfunction',
                 evs: {spa: 252, spe: 252, hp: 4}, nature: 'Modest',
             },
- 
+
             // Drivers:
             '%ducktown': {
                 species: 'Golduck', ability: 'Cloud Nine', item: 'Leftovers', gender: 'M',
@@ -125,7 +119,7 @@ exports.BattleScripts = {
                 signatureMove: 'Mewtation',
                 evs: {spa: 252, spe: 252, hp: 4}, nature: 'Timid',
             },
-            
+
             '+Auction': {
                 species: 'Aegislash', ability: 'Water Absorb', item: 'Leftovers', gender: 'M',
                 moves: ['Swords Dance', 'Sacred Sword', 'Shadow Sneak', 'Kings Shield'],
@@ -162,13 +156,19 @@ exports.BattleScripts = {
                 signatureMove: 'Xavier Hax',
                 evs: {hp: 252, def: 136, spa: 24, spd: 96}, nature: 'Bold',
             },
+            '+Opple': {
+                species: 'Dragonite', ability: 'Multiscale', item: 'Weakness Policy', gender: 'M',
+                moves: [ 'Fire Punch', 'Dragon Claw', 'Waterfall'],
+                signatureMove: 'Ancient Orb',
+                evs: {atk: 252, spe: 252, hp: 4}, nature: 'Adamant',
+            },
         };
         // convert moves to ids.
         for (var k in sets) {
             sets[k].moves = sets[k].moves.map(toId);
             sets[k].baseSignatureMove = toId(sets[k].baseSignatureMove);
         }
- 
+
         // Generate the team randomly.
         let pool = Object.keys(sets);
         for (let i = 0; i < 6; i++) {
@@ -188,7 +188,7 @@ exports.BattleScripts = {
             set.moves = [this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves)].concat(set.signatureMove);
             team.push(set);
         }
- 
+
         return team;
     },
 };

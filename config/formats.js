@@ -353,7 +353,7 @@ exports.Formats = [
 		// no restrictions, for serious (other than team preview)
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
-	
+
 	///////////////////////////////////////////////////////
 	// SpacialGaze Metagames
 	{
@@ -389,8 +389,8 @@ exports.Formats = [
             if (name === 'serperiorater') {
                 this.add('c', '%Serperiorater', 'The badossness has arrived.');
             }
-            if (name === 'silverkill') {
-            	this.add('c', '@SilverKill', 'glhf');
+            if (name === 'vacuo') {
+            	this.add('c', '@Vacuo', 'glhf');
             }
             if (name === 'umichbrendan') {
                 this.add('c', '+UmichBrendan', 'All right, time for a Umich sweep!');
@@ -423,7 +423,7 @@ exports.Formats = [
                 this.add('c', '@Almighty Bronzong', '``All hail.``');
             }
             if (name === 'opple') {
-                this.add('c', '&Opple', 'lol hi');
+                this.add('c', '+Opple', 'lol hi');
             }
             if (name === 'mimiroppu') {
                 this.add('c', '@Mimiroppu', 'Mimiroppu, charm up~');
@@ -467,8 +467,8 @@ exports.Formats = [
             if (name === 'ducktown') {
                 this.add('c', '%ducktown', 'My other ducks will come attack you!');
             }
-            if (name === 'silverkill') {
-            	this.add('c', '@SilverKill', 'lmfao brb');
+            if (name === 'vacuo') {
+            	this.add('c', '@Vacuo', 'lmfao brb');
             }
             if (name === 'serperiorater') {
                 this.add('c', '%Serperiorater', 'Don\'t worry, I\'ll be back later, so be prepared.');
@@ -501,7 +501,7 @@ exports.Formats = [
                 this.add('c', '@BDH93', 'I\'ll be back for more trolling');
             }
             if (name === 'spacialbot') {
-                this.add('c', '~The Run', '.battleswitchout');
+                this.add('c', '+The Run', '.battleswitchout');
                 this.add('c', '%Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
             }
             if (name === 'auction') {
@@ -537,7 +537,7 @@ exports.Formats = [
             }
             if (name === 'hoeenhero') {
                 this.add('c', '~HoeenHero', '``this.win("HoeenHero");``');
-                if (this.random(1000) === 420) {
+                if (Math.floor(Math.random()*1000) === 420) {
                     //Hehehe. Dosen't happen much though.
                     this.add('c', '~HoeenHero', 'hmm you know what?');
                     this.add('c', '~HoeenHero', '``this.win(pokemon.side);``');
@@ -565,8 +565,8 @@ exports.Formats = [
             if (name === 'ducktown') {
                 this.add('c', '%ducktown', 'Quack Quack Quaaaaaa...');
             }
-            if (name === 'silverkill') {
-            	this.add('c', '@SilverKill', 'yeah so I\'mma go get some food see you later');
+            if (name === 'vacuo') {
+            	this.add('c', '@Vacuo', 'yeah so I\'mma go get some food see you later');
             }
             if (name === 'admewn') {
                 this.add('c', '+Admewn', 'Turn off the mewsic! I\'m out!');
@@ -584,7 +584,7 @@ exports.Formats = [
                 this.add('c', '+UmichBrendan', 'I lost? How is that possible?');
             }
             if (name === 'opple') {
-                this.add('c', '&Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
+                this.add('c', '+Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
             }
             if (name === 'mimiroppu') {
                 this.add('c', '@Mimiroppu', 'Sorry \'bout it...');
@@ -614,8 +614,11 @@ exports.Formats = [
 		team: 'randomPmd',
 		ruleset: ['HP Percentage Mod', 'Cancel Mod'],
 		onBegin: function () {
-			this.add('raw', '<div class="broadcast-red"><b>Report all bugs to Development room Please!</b></div>');
-			this.add('raw', '<div class="broadcast-green"><b>Have a suggestion? Ask in Development!</b></div>');
+			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
+			for(let i = 0, len = allPokemon.length; i < len; i++) {
+				allPokemon[i].maxhp *= 5;
+				allPokemon[i].hp = allPokemon[i].maxhp;
+			}
 		}
 	},
 	{
