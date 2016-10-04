@@ -63,8 +63,8 @@ exports.commands = {
 				for (let u in Object.keys(Reports)) {
 					let currentReport = Reports[Object.keys(Reports)[u]];
 					let date = currentReport.reportTime;
-					output += '<tr><td>' + currentReport.id + '</td><td>' + Tools.escapeHTML(currentReport.reporter) + '</td><td>' +
-						Tools.escapeHTML(currentReport.message) + '</td><td>' + date + ' </td><td>' + (currentReport.status === 'Pending' ? '<font color=#ff9900>Pending</font>' : (~currentReport.status.indexOf('Accepted by') ? '<font color=green>' + Tools.escapeHTML(currentReport.status) + '</font>' : Tools.escapeHTML(currentReport.status))) + '</td></tr>';
+					output += '<tr><td>' + currentReport.id + '</td><td>' + Chat.escapeHTML(currentReport.reporter) + '</td><td>' +
+						Chat.escapeHTML(currentReport.message) + '</td><td>' + date + ' </td><td>' + (currentReport.status === 'Pending' ? '<font color=#ff9900>Pending</font>' : (~currentReport.status.indexOf('Accepted by') ? '<font color=green>' + Chat.escapeHTML(currentReport.status) + '</font>' : Chat.escapeHTML(currentReport.status))) + '</td></tr>';
 				}
 				this.sendReply(output);
 				break;

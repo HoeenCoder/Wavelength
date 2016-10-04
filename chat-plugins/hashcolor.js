@@ -95,7 +95,7 @@ exports.commands = {
                 }
 
                 if (option.charAt(0) !== '#') return this.errorReply("The color needs to be a hex starting with '#'.");
-                this.sendReply("|raw|You have given <b><font color=" + option + ">" + Tools.escapeHTML(targetUser) + "</font></b> a custom color.");
+                this.sendReply("|raw|You have given <b><font color=" + option + ">" + Chat.escapeHTML(targetUser) + "</font></b> a custom color.");
                 // logMoney(user.name + " le ha asignado un color personalizado a " + target[0] + ". (Color: " + target[1] + ").");
                 customColors[toId(targetUser)] = option;
                 updateColor();
@@ -109,7 +109,7 @@ exports.commands = {
                 if (!this.canBroadcast()) return;
                 target = target.split(',').map(param => param.trim());
                 if (target.length !== 2) return this.parse('/help colorpreview');
-                return this.sendReplyBox('<b><font size="2" color="' +  target[1] + '">' + Tools.escapeHTML(target[0]) + '</font></b>');
+                return this.sendReplyBox('<b><font size="2" color="' +  target[1] + '">' + Chat.escapeHTML(target[0]) + '</font></b>');
         },
         colorpreviewhelp: ["Usage: /colorpreview [user], [color] - Previews what that username looks like with [color] as the color."],
 };

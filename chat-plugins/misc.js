@@ -88,9 +88,9 @@ exports.commands = {
 		persons = persons.sort((a, b) => toId(a.name).localeCompare(toId(b.name))); // No need to return, arrow functions with single lines have an implicit return
 		function nameColor (name) {
 			if (Users.getExact(name) && Users(name).connected) {
-				return '<b><i><font color="' + hashColorWithCustoms(name) + '">' + Tools.escapeHTML(Users.getExact(name).name) + '</font></i></b>';
+				return '<b><i><font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(Users.getExact(name).name) + '</font></i></b>';
 			} else {
-				return '<font color="' + hashColorWithCustoms(name) + '">' + Tools.escapeHTML(name) + '</font>';
+				return '<font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(name) + '</font>';
 			}
 		}
 		for (let j = 0; j < persons.length; j++) {
@@ -190,7 +190,7 @@ exports.commands = {
 		for (let u in rooms) {
 			let curRoom = Rooms(rooms[u]);
 			if (curRoom.type === 'battle') {
-				battleRooms.push('<a href="/' + curRoom.id + '" class="ilink">' + Tools.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
+				battleRooms.push('<a href="/' + curRoom.id + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 			}
 			if (curRoom.type === 'chat') {
 				if (curRoom.isPersonal) {
@@ -198,11 +198,11 @@ exports.commands = {
 					continue;
 				}
 				if (curRoom.isOfficial) {
-					official.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + Tools.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
+					official.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 					continue;
 				}
 				if (curRoom.isPrivate) {
-					privateRoom.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + Tools.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
+					privateRoom.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 					continue;
 				}
 			}
@@ -263,9 +263,9 @@ exports.commands = {
 	credits: function (target, room, user) {
 		function name (name, bold) {
 			if (bold) {
-				return "<b><font color=" + hashColorWithCustoms(name) + ">" + Tools.escapeHTML(name) + "</font></b>";
+				return "<b><font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font></b>";
 			} else {
-				return "<font color=" + hashColorWithCustoms(name) + ">" + Tools.escapeHTML(name) + "</font>";
+				return "<font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font>";
 			}
 		}
 		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
@@ -447,9 +447,9 @@ exports.commands = {
 
 		function regdateReply(date) {
 			if (date === 0) {
-				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Tools.escapeHTML(target) + "</font> is not registered.";
+				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Chat.escapeHTML(target) + "</font> is not registered.";
 			} else {
-				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Tools.escapeHTML(target) + "</font></b> was registered on " + moment(date).format("dddd, MMMM DD, YYYY HH:mm A") + ".";
+				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Chat.escapeHTML(target) + "</font></b> was registered on " + moment(date).format("dddd, MMMM DD, YYYY HH:mm A") + ".";
 			}
 			room.update();
 		}
@@ -467,7 +467,7 @@ exports.commands = {
 			}
 		});
 		names = names.sort();
-		if (names.length < 1) return this.sendReplyBox('There are no users of the rank <font color="#24678d"><b>' + Tools.escapeHTML(Config.groups[target].name) + '</b></font> currently online.');
+		if (names.length < 1) return this.sendReplyBox('There are no users of the rank <font color="#24678d"><b>' + Chat.escapeHTML(Config.groups[target].name) + '</b></font> currently online.');
 		return this.sendReplyBox('There ' + (names.length === 1 ? 'is' : 'are') + ' <font color="#24678d"><b>' + names.length + '</b></font> ' + (names.length === 1 ? 'user' : 'users') + ' with the rank <font color="#24678d"><b>' + Config.groups[target].name + '</b></font> currently online.<br />' + names.join(', '));
 	},
 
@@ -485,7 +485,7 @@ exports.commands = {
 		if (!target) return this.parse('/help seen');
 		let targetUser = Users.get(target);
 		if (targetUser && targetUser.connected) return this.sendReplyBox(targetUser.name + " is <b><font color=#00cc00>currently online</b></font>.");
-		target = Tools.escapeHTML(target);
+		target = Chat.escapeHTML(target);
 		let seen = Db('seen').get(toId(target));
 		if (!seen) return this.sendReplyBox(target + " has <font color=#e60000>never been online</font> on this server.");
 		this.sendReplyBox(target + " <font color=#ff9900>was last seen</font><b> " + moment(seen).fromNow() + "</b>.");

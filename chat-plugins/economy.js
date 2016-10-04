@@ -129,7 +129,7 @@ exports.commands = {
 					Users.get(targetUser).popup('|html|' + SG.nameColor(user.userid, true) + ' has removed ' + amount + ' ' + (amount === 1 ? currencyName : currenyPlural) +
 					' from you.<br />');
 				}
-				this.sendReply("You removed " + amount + ((amount === 1) ? " " + currencyName + " " : " " + currenyPlural + " ") + " from " + Tools.escapeHTML(targetUser));
+				this.sendReply("You removed " + amount + ((amount === 1) ? " " + currencyName + " " : " " + currenyPlural + " ") + " from " + Chat.escapeHTML(targetUser));
 				Economy.logTransaction(user.name + " has taken " + amount + ((amount === 1) ? " " + currencyName + " " : " " + currenyPlural + " ") + " from " + targetUser + ". (Reason: " + reason + ") They now have " + newAmount + (newAmount === 1 ? " " + currencyName + "." : " " + currenyPlural + "."));
 			});
 		});
@@ -157,7 +157,7 @@ exports.commands = {
 				return this.popupReply('|html|<center>' +
 					'<button class = "card-td button" name = "send" value = "/confirmtransfercurrency ' + toId(targetUser) + ', ' + amount + '"' +
 					'style = "outline: none; width: 200px; font-size: 11pt; padding: 10px; border-radius: 14px ; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.4) inset; transition: all 0.2s;">' +
-					'Confirm transfer to <br><b style = "color:' + SG.hashColor(targetUser) + '; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8)">' + Tools.escapeHTML(targetUser) + '</b></button></center>'
+					'Confirm transfer to <br><b style = "color:' + SG.hashColor(targetUser) + '; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8)">' + Chat.escapeHTML(targetUser) + '</b></button></center>'
 				);
 			}
 			Economy.writeMoney(user.userid, -amount, () => {
