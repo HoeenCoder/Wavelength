@@ -24,7 +24,6 @@ class RoomSettings {
 		this.sameCommand = true;
 	}
 	updateSetting(command) {
-		CommandParser.parse('/' + command, this.room, this.user, this.connection);
 		this.sameCommand = false;
 		this.generateDisplay();
 	}
@@ -107,16 +106,16 @@ class RoomSettings {
 		return slowchatOutput.join(" ");
 	}
 	tourStatus() {
-		if (!this.user.can('tournamentsmanagement', null, this.room)) return "<button " + DISABLED + ">" + (this.room.toursEnabled ? 'enabled' : 'disabled') + "</button>";
+		if (!this.user.can('tournamentsmanagement', null, this.room)) return "<button " + DISABLED + ">" + (this.room.toursEnabled ? '@' : '#') + "</button>";
 
 		if (this.room.toursEnabled) {
-			return '<button name="send" value="/roomsetting tournament disable">disable</button> <button ' + DISABLED + '>enabled</button>';
+			return '<button class="button" name="send" value="/roomsetting tournament disable">#</button> <button ' + DISABLED + '>@</button>';
 		} else {
-			return '<button ' + DISABLED + '>disable</button> <button name="send" value="/roomsetting tournament enable">enable</button> ';
+			return '<button ' + DISABLED + '>#</button> <button class="button" name="send" value="/roomsetting tournament enable">@</button> ';
 		}
 	}
 	generateDisplay(user, room, connection) {
-		let output = '<div class="infobox">Room Settings for ' + Tools.escapeHTML(this.room.title) + '<br />';
+		let output = '<div class="infobox">Room Settings for ' + Chat.escapeHTML(this.room.title) + '<br />';
 		output += "<b>Modchat:</b> <br />" + this.modchat() + "<br />";
 		output += "<b>Modjoin:</b> <br />" + this.modjoin() + "<br />";
 		output += "<b>Stretch filter:</b> <br />" + this.stretching() + "<br />";
@@ -139,6 +138,7 @@ exports.commands = {
 			room.update();
 			settings.generateDisplay(user, room, connection);
 		} else {
+			this.parse(`/${target}`);
 			settings.updateSetting(target);
 		}
 	},
@@ -197,7 +197,7 @@ exports.commands = {
 		if (!room.modchat) {
 			this.add("|raw|<div class=\"broadcast-blue\"><b>Moderated chat was disabled!</b><br />Anyone may talk now.</div>");
 		} else {
-			const modchatSetting = Tools.escapeHTML(room.modchat);
+			const modchatSetting = Chat.escapeHTML(room.modchat);
 			this.add("|raw|<div class=\"broadcast-red\"><b>Moderated chat was set to " + modchatSetting + "!</b><br />Only users of rank " + modchatSetting + " and higher can talk.</div>");
 		}
 		if (room.battle && !room.modchat && !user.can('modchat')) room.requestModchat(null);

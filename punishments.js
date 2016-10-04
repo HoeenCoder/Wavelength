@@ -14,8 +14,9 @@
  */
 
 let Punishments = module.exports;
-let fs = require('fs');
-let path = require('path');
+
+const fs = require('fs');
+const path = require('path');
 
 const PUNISHMENT_FILE = path.resolve(__dirname, 'config/punishments.tsv');
 const ROOM_PUNISHMENT_FILE = path.resolve(__dirname, 'config/room-punishments.tsv');
@@ -348,7 +349,7 @@ Punishments.punish = function (user, punishment, noRecurse) {
 	}
 	if (!noRecurse) {
 		Users.users.forEach(curUser => {
-			if (user === curUser || curUser.confirmed) return;
+			if (user === curUser || curUser.trusted) return;
 			for (let myIp in curUser.ips) {
 				if (myIp in user.ips) {
 					this.punish(curUser, punishment, keys);
@@ -369,9 +370,9 @@ Punishments.punish = function (user, punishment, noRecurse) {
 		Punishments.userids.set(user.autoconfirmed, punishment);
 		keys.add(user.autoconfirmed);
 	}
-	if (user.confirmed) {
-		Punishments.userids.set(user.confirmed, punishment);
-		keys.add(user.confirmed);
+	if (user.trusted) {
+		Punishments.userids.set(user.trusted, punishment);
+		keys.add(user.trusted);
 	}
 	if (!noRecurse) {
 		const [punishType, id, ...rest] = punishment;
@@ -427,7 +428,7 @@ Punishments.roomPunish = function (room, user, punishment, noRecurse) {
 	}
 	if (!noRecurse) {
 		Users.users.forEach(curUser => {
-			if (user === curUser || curUser.confirmed) return;
+			if (user === curUser || curUser.trusted) return;
 			for (let myIp in curUser.ips) {
 				if (myIp in user.ips) {
 					this.roomPunish(room, curUser, punishment, keys);
@@ -448,9 +449,9 @@ Punishments.roomPunish = function (room, user, punishment, noRecurse) {
 		Punishments.roomUserids.nestedSet(room.id, user.autoconfirmed, punishment);
 		keys.add(user.autoconfirmed);
 	}
-	if (user.confirmed) {
+	if (user.trusted) {
 		Punishments.roomUserids.nestedSet(room.id, user.confirmed, punishment);
-		keys.add(user.confirmed);
+		keys.add(user.trusted);
 	}
 	if (!noRecurse) {
 		const [punishType, id, ...rest] = punishment;
@@ -713,7 +714,8 @@ Punishments.roomBlacklist = function (room, user, expireTime, id, ...rest) {
 Punishments.roomUnban = function (room, userid) {
 	const user = Users(userid);
 	if (user) {
-		userid = Punishments.isRoomBanned(user, room.id) || userid;
+		let punishment = Punishments.isRoomBanned(user, room.id);
+		if (punishment) userid = punishment[1];
 	}
 	return Punishments.roomUnpunish(room, userid, 'ROOMBAN');
 };
@@ -721,9 +723,27 @@ Punishments.roomUnban = function (room, userid) {
 Punishments.roomUnblacklist = function (room, userid) {
 	const user = Users(userid);
 	if (user) {
-		userid = Punishments.isRoomBanned(user, room.id) || userid;
+		let punishment = Punishments.isRoomBanned(user, room.id);
+		if (punishment) userid = punishment[1];
 	}
 	return Punishments.roomUnpunish(room, userid, 'BLACKLIST');
+};
+
+Punishments.roomUnblacklistAll = function (room) {
+	const roombans = Punishments.roomUserids.get(room.id);
+	if (!roombans) return false;
+
+	let unblacklisted = [];
+
+	roombans.forEach((punishment, userid) => {
+		if (punishment[0] === 'BLACKLIST') {
+			Punishments.roomUnblacklist(room, userid);
+			unblacklisted.push(userid);
+		}
+	});
+	if (unblacklisted.length === 0) return false;
+	Punishments.savePunishments();
+	return unblacklisted;
 };
 
 /*********************************************************
@@ -940,15 +960,15 @@ Punishments.isRoomBanned = function (user, roomid) {
 	if (!user) return;
 
 	let punishment = Punishments.roomUserids.nestedGet(roomid, user.userid);
-	if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment[1];
+	if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment;
 
 	if (user.autoconfirmed) {
 		punishment = Punishments.roomUserids.nestedGet(roomid, user.autoconfirmed);
-		if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment[1];
+		if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment;
 	}
 
 	for (let ip in user.ips) {
 		punishment = Punishments.roomIps.nestedGet(roomid, ip);
-		if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment[1];
+		if (punishment && (punishment[0] === 'ROOMBAN' || punishment[0] === 'BLACKLIST')) return punishment;
 	}
 };

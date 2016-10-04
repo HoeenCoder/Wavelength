@@ -286,6 +286,7 @@ exports.BattleAliases = {
 	"azu": "Azumarill",
 	"bliss": "Blissey",
 	"bee": "Beedrill",
+	"cathy": "Trevenant",
 	"chomp": "Garchomp",
 	"clef": "Clefable",
 	"coba": "Cobalion",
@@ -358,7 +359,8 @@ exports.BattleAliases = {
 	"whimsi": "Whimsicott",
 	"zam": "Alakazam",
 	"zard": "Charizard",
-	"ohmagod":"Plasmanta",
+	"ohmagod": "Plasmanta",
+	"zong": "Bronzong",
 
 	// moves
 	"bb": "Brave Bird",
