@@ -179,4 +179,87 @@ exports.commands = {
 			});
 		});
 	},
+	moneylog: function (target, room, user) {
+		//if (!this.can('bucks')) return false;
+		if (!target) return this.sendReply("Usage: /moneylog [number] to view the last x lines OR /moneylog [text] to search for text.");
+		let word = false;
+		if (isNaN(Number(target))) word = true;
+		let lines = fs.readFileSync('logs/transactions.log', 'utf8').split('\n').reverse();
+		let output = '';
+		let count = 0;
+		let regex = new RegExp(target.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "gi");
+
+		if (word) {
+			output += 'Displaying last 50 lines containing "' + target + '":\n';
+			for (let line in lines) {
+				if (count >= 50) break;
+				if (!~lines[line].search(regex)) continue;
+				output += lines[line] + '\n';
+				count++;
+			}
+		} else {
+			if (target > 100) target = 100;
+			output = lines.slice(0, (lines.length > target ? target : lines.length));
+			output.unshift("Displaying the last " + (lines.length > target ? target : lines.length) + " lines:");
+			output = output.join('\n');
+		}
+		user.popup("|wide|" + output);
+	},
+	'!richestuser': true,
+	richestusers: 'richestuser',
+	richestuser: function (target, room, user) {
+		if (!target) target = 10;
+		target = Number(target);
+		if (isNaN(target)) target = 10;
+		if (!this.runBroadcast()) return;
+		if (this.broadcasting && target > 10) target = 10; // limit to 10 while broadcasting
+		if (target > 500) target = 500;
+
+		let self = this;
+
+		function showResults(rows) {
+			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>Bucks</th></tr>';
+			let count = 1;
+			for (let u in rows) {
+				if (!rows[u].bucks || rows[u].bucks < 1) continue;
+				let username;
+				if (rows[u].name !== null) {
+					username = rows[u].name;
+				} else {
+					username = rows[u].userid;
+				}
+				output += '<tr><td>' + count + '</td><td>' + Wisp.nameColor(username, true) + '</td><td>' + rows[u].bucks + '</td></tr>';
+				count++;
+			}
+			self.sendReplyBox(output);
+			if (room) room.update();
+		}
+
+		Wisp.database.all("SELECT userid, bucks, name FROM users ORDER BY bucks DESC LIMIT $target;", {$target: target}, function (err, rows) {
+			if (err) return console.log("richestuser: " + err);
+			showResults(rows);
+		});
+	},
+
+	customsymbol: function (target, room, user) {
+		let bannedSymbols = ['!', '|', '‽', '\u2030', '\u534D', '\u5350', '\u223C'];
+		for (let u in Config.groups) if (Config.groups[u].symbol) bannedSymbols.push(Config.groups[u].symbol);
+		if (!user.canCustomSymbol && !user.can('vip')) return this.sendReply('You need to buy this item from the shop to use.');
+		if (!target || target.length > 1) return this.sendReply('/customsymbol [symbol] - changes your symbol (usergroup) to the specified symbol. The symbol can only be one character');
+		if (target.match(/([a-zA-Z ^0-9])/g) || bannedSymbols.indexOf(target) >= 0) {
+			return this.sendReply('This symbol is banned.');
+		}
+		user.customSymbol = target;
+		user.updateIdentity();
+		user.canCustomSymbol = false;
+		this.sendReply('Your symbol is now ' + target + '. It will be saved until you log off for more than an hour, or the server restarts. You can remove it with /resetsymbol');
+	},
+
+	removesymbol: 'resetsymbol',
+	resetsymbol: function (target, room, user) {
+		if (!user.customSymbol) return this.sendReply("You don't have a custom symbol!");
+		delete user.customSymbol;
+		user.updateIdentity();
+		this.sendReply('Your symbol has been removed.');
+	}
 }
