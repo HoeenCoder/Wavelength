@@ -153,7 +153,7 @@ exports.commands = {
 		let params = this.splitTarget(target).split(',');
 		let action = params[0].trim().toLowerCase();
 		let reason = params.slice(1).join(',').trim();
-		if (!(action in CommandParser.commands)) {
+		if (!(action in Chat.commands)) {
 			action = 'mute';
 			reason = params.join(',').trim();
 		}

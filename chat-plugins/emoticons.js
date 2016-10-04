@@ -76,10 +76,10 @@ exports.commands = {
 			if (emoticons[parts[1]]) return this.sendReply("\"" + parts[1] + "\" is already an emoticon.");
 			emoticons[parts[1]] = parts[2];
 			saveEmoticons();
-			this.sendReply('|raw|The emoticon "' + Tools.escapeHTML(parts[1]) + '" has been added: <img src="' + parts[2] + '">');
-			Rooms('upperstaff').add('|raw|' + SG.nameColor(user.name, true) + ' has added the emote "' + Tools.escapeHTML(parts[1]) +
+			this.sendReply('|raw|The emoticon "' + Chat.escapeHTML(parts[1]) + '" has been added: <img src="' + parts[2] + '">');
+			Rooms('upperstaff').add('|raw|' + SG.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
 				'": <img width="40" height="40" src="' + parts[2] + '">').update();
-			SG.messageSeniorStaff('/html ' + SG.nameColor(user.name, true) + ' has added the emote "' + Tools.escapeHTML(parts[1]) +
+			SG.messageSeniorStaff('/html ' + SG.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
 				'": <img width="40" height="40" src="' + parts[2] + '">');
 			break;
 

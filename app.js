@@ -130,8 +130,6 @@ Verifier.PM.spawn();
 
 global.SG = {};
 
-global.CommandParser = require('./command-parser');
-
 global.Simulator = require('./simulator');
 
 global.Tournaments = require('./tournaments');

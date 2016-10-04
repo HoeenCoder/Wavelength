@@ -7,7 +7,7 @@ const Autolinker = require('autolinker');
 let regdateCache = {};
 
 SG.nameColor = function (name, bold) {
-        return (bold ? "<b>" : "") + "<font color=" + hashColorWithCustoms(name) + ">" + (Users(name) && Users(name).connected && Users.getExact(name) ? Tools.escapeHTML(Users.getExact(name).name) : Tools.escapeHTML(name)) + "</font>" + (bold ? "</b>" : "");
+        return (bold ? "<b>" : "") + "<font color=" + hashColorWithCustoms(name) + ">" + (Users(name) && Users(name).connected && Users.getExact(name) ? Chat.escapeHTML(Users.getExact(name).name) : Chat.escapeHTML(name)) + "</font>" + (bold ? "</b>" : "");
 };
 // usage: SG.nameColor(user.name, true) for bold OR SG.nameColor(user.name, false) for non-bolded.
 
@@ -96,7 +96,7 @@ SG.parseMessage = function (message) {
 		message = Autolinker.link(message.replace(/&#x2f;/g, '/'), {stripPrefix: false, phone: false, twitter: false});
 		return message;
 	}
-	message = Tools.escapeHTML(message).replace(/&#x2f;/g, '/');
+	message = Chat.escapeHTML(message).replace(/&#x2f;/g, '/');
 	message = message.replace(/\_\_([^< ](?:[^<]*?[^< ])?)\_\_(?![^<]*?<\/a)/g, '<i>$1</i>'); // italics
 	message = message.replace(/\*\*([^< ](?:[^<]*?[^< ])?)\*\*/g, '<b>$1</b>'); // bold
 	message = message.replace(/\~\~([^< ](?:[^<]*?[^< ])?)\~\~/g, '<strike>$1</strike>'); // strikethrough
