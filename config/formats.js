@@ -394,7 +394,7 @@ exports.Formats = [
             	this.add('c', '@Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
             }
             if (name === 'hoeenhero') {
-                this.add('c', '~HoeenHero', 'Time for hax! ``let p = p2.pokemon.find(function(p) {return p.speciesid === \'ludicolo\'}); battle.boost({spa: 12}, p);``');
+                this.add('c', '~HoeenHero', 'Do I have to? I\'m in the middle of programming.');
             }
             if (name === 'hiroz') {
                 this.add('c', '&HiroZ', 'Your wing isn\'t able to fly anywhere!');
@@ -451,7 +451,7 @@ exports.Formats = [
                 this.add('c', '+The Run', 'I\'ll be back faster than the speed of light');
             }
             if (name === 'hoeenhero') {
-                this.add('c', '~Hoeenhero', 'brb gotta figure out why i cant inflict curse status on you.');
+                this.add('c', '~Hoeenhero', 'I can\'t battle now, i\'m too busy.');
             }
             if (name === 'hurricaned') {
             	this.add('c', '@Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
@@ -528,13 +528,7 @@ exports.Formats = [
                 this.add('c', '+The Run', 'So much for being faster...');
             }
             if (name === 'hoeenhero') {
-                this.add('c', '~HoeenHero', '``this.win("HoeenHero");``');
-                if (Math.floor(Math.random()*1000) === 420) {
-                    //Hehehe. Dosen't happen much though.
-                    this.add('c', '~HoeenHero', 'hmm you know what?');
-                    this.add('c', '~HoeenHero', '``this.win(pokemon.side);``');
-                    this.win(pokemon.side);
-                }
+                this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');
             }
             if (name === 'vulcaron') {
                 this.add('c', '%Vulcaron', 'The flames are dowsed.');
