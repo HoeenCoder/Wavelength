@@ -914,12 +914,12 @@ exports.commands = {
 	},
 
 	stafftopic: 'staffintro',
-	staffintro: function (target, room, user) {
+	staffintro: function (target, room, user, connection, cmd) {
 		if (!target) {
 			if (!this.can('mute', null, room)) return false;
 			if (!room.staffMessage) return this.sendReply("This room does not have a staff introduction set.");
 			this.sendReply('|raw|<div class="infobox">' + room.staffMessage.replace(/\n/g, '') + '</div>');
-			if (user.can('ban', null, room)) {
+			if (user.can('ban', null, room) && cmd !== 'stafftopic') {
 				this.sendReply('Source:');
 				this.sendReplyBox(
 					'<code>/staffintro ' + Chat.escapeHTML(room.staffMessage).split('\n').map(line => {
@@ -2212,7 +2212,6 @@ exports.commands = {
 		if (!room) return this.errorReply(`The room "${target}" was not found.`);
 		if (!this.can('mute', null, room)) return false;
 
-		if (!user.can('ban', null, room)) return;
 		if (!room.chatRoomData) return this.errorReply("This room does not support blacklists.");
 
 		const subMap = Punishments.roomUserids.get(room.id);
