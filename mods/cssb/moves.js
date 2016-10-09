@@ -162,7 +162,7 @@ exports.BattleMovedex = {
   //Poison
   nuclearwaste: {
     category: "Status",
-    accuracy: 80,
+    accuracy: 90,
     id: "nuclearwaste",
     name: "Nuclear Waste",
     isNonstandard: true,
@@ -229,11 +229,11 @@ exports.BattleMovedex = {
     type: "Flying",
   },
   //Psychic
-  psychicsheild: {
+  psychicshield: {
     category: "Status",
     accuracy: 100,
-    id: "psychicsheild",
-    name: "Psychic Sheild",
+    id: "psychicshield",
+    name: "Psychic Shield",
     isNonstandard: true,
     onPrepareHit: function (target, source, move) {
         this.attrLastMove('[still]');

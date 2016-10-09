@@ -37,7 +37,7 @@ exports.BattleScripts = {
         evs: {atk: 252, spd: 252, hp: 4}, nature: 'Adamant',
     },
     '*Spacial Bot': {
-        species: 'Regirock', ability: 'Wonder Guard', item: 'Leftovers',
+        species: 'Regirock', ability: 'Sturdy', item: 'Leftovers',
         moves: [['Stone Edge', 'Earthquake'][this.random(2)], 'Explosion', 'Iron Head'],
         signatureMove: 'Ancient Ritual',
         evs: {atk: 252, spd: 252, hp: 4}, nature: 'Adamant',
