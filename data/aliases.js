@@ -33,6 +33,13 @@ exports.BattleAliases = {
 	"monorandom": "Monotype Random Battle",
 	"bf": "Battle Factory",
 
+	//SpacialGaze
+	"sgssb": "Super Staff Bros",
+	"ssb": "Super Staff Bros",
+	"ssbffa": "Super Staff Bros Free For All",
+	"rssb": "Retro Super Staff Bros",
+	"pmd": "Pokemon Mystery Dungeon",
+
 	// mega evos
 	"maero": "Aerodactyl-Mega",
 	"megaaero": "Aerodactyl-Mega",

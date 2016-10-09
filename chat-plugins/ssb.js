@@ -156,7 +156,7 @@ class SSB {
     this.species = 'Unown';
     this.item = false; //false = no item
     this.cItem = false; //set this to the users cItem when its purchased and implemented.
-    this.bought = {}; //Did you buy something, but not recieve it yet? prevents duplicate purchases. 
+    this.bought = {}; //Did you buy something, but not recieve it yet? prevents duplicate purchases.
     this.ability = 'Levitate'; //Default to the first ability of the selected species
     this.cAbility = false; //set this to the users cAbility when its purchased and implemented.
     this.movepool = []; //Pool of normal moves, draw 3 from here (4 if no c move).
@@ -182,6 +182,7 @@ class SSB {
     }
     species = Tools.getTemplate(speciesId);
     if (!species.exists) return false;
+    if (!species.learnset) return false;
     this.species = species.species;
     this.ability = species.abilities['0']; //Force legal ability
     this.movepool = []; //force legal normal moves
