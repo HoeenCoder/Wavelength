@@ -60,12 +60,6 @@ exports.BattleScripts = {
                 signatureMove: 'Mega Rage',
                 evs: {hp: 248, spa: 252, def: 8}, nature: 'Modest',
             },
-            '@Hurricane\'d': {
-                species: 'Tomohawk', ability: 'Gale Wings', item: 'Rocky Helmet', gender: 'M',
-                moves: [ 'Aura Sphere', 'Taunt', 'Hurricane'],
-                signatureMove: 'Rainbust Orb',
-                evs: {spa: 252, spe: 252, hp: 4}, nature: 'Bold',
-            },
             '@Vacuo': {
                 species: 'Magnezone', ability: 'Levitate', item: 'Choice Specs',
                 moves: [['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere'],
@@ -92,21 +86,20 @@ exports.BattleScripts = {
                 signatureMove: 'Troll',
                 evs: {hp: 252, def: 252, spd: 4}, nature: 'Impish',
             },
-            // Lobby Room Driver:
-            '%SpaceGazer': {
+            // Former Bots
+            '*SpaceGazer': {
                 species: 'Registeel', ability: 'No Guard', item: 'Weakness Policy',
                 moves: ['Zap Cannon', 'Iron Head', 'Stone Edge'],
                 signatureMove: 'Spacial Blast',
                 evs: {atk: 252, spd: 252, hp: 4}, nature: 'Adamant',
             },
-            //Locked & Forgotten Bots
-            '%Spacial Bot': {
+            '*Spacial Bot': {
                 species: 'Regirock', ability: 'Wonder Guard', item: 'Leftovers',
                 moves: [['Stone Edge', 'Earthquake'][this.random(2)], 'Explosion', 'Iron Head'],
                 signatureMove: 'Ancient Ritual',
                 evs: {atk: 252, spd: 252, hp: 4}, nature: 'Adamant',
             },
-            '%SG Bot': {
+            '*SG Bot': {
                 species: 'Regice', ability: 'Flash Fire', item: 'Leftovers',
                 moves: ['Ice Beam', 'Ancient Power','Thunderbolt'],
                 signatureMove: 'Frostbite',
@@ -155,6 +148,12 @@ exports.BattleScripts = {
                 moves: ['Tri Attack', 'Recover', 'Ice Beam'],
                 signatureMove: 'Xavier Hax',
                 evs: {hp: 252, def: 136, spa: 24, spd: 96}, nature: 'Bold',
+            },
+            '+Hurricane\'d': {
+                species: 'Tomohawk', ability: 'Gale Wings', item: 'Rocky Helmet', gender: 'M',
+                moves: [ 'Aura Sphere', 'Taunt', 'Hurricane'],
+                signatureMove: 'Rainbust Orb',
+                evs: {spa: 252, spe: 252, hp: 4}, nature: 'Bold',
             },
             '+Opple': {
                 species: 'Dragonite', ability: 'Multiscale', item: 'Weakness Policy', gender: 'M',

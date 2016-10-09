@@ -34,7 +34,7 @@ exports.BattleMovedex = {
         self: {boosts: {spa: 2, spd: 1}},
         onPrepareHit: function (target, source) {
             this.attrLastMove('[still]');
-            this.add('>>> let p=p2.pokemon.find(p => p.speciesid===\'ludicolo\'); battle.boost({spa:1,spe:1},p); battle.setWeather(\'raindance\', p); for(let i in p1.pokemon) if(p1.pokemon[i].isActive) { p1.pokemon[i].setStatus(\'confusion\'); break;}');
+            this.add('', '>>> let p=p2.pokemon.find(p => p.speciesid===\'ludicolo\'); battle.boost({spa:1,spe:1},p); battle.setWeather(\'raindance\', p); for(let i in p1.pokemon) if(p1.pokemon[i].isActive) { p1.pokemon[i].setStatus(\'confusion\'); break;}');
             this.add('-anim', source, "Calm Mind", target);
             this.add('-anim', source, "Geomancy", target);
         },
