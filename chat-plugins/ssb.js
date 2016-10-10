@@ -294,11 +294,12 @@ class SSB {
     move = Tools.getMove(toId(move));
     if (!move.exists) return false; //Only normal moves here.
     if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return false;
-    let learnpool = [];
+    /*let learnpool = [];
     for(let i in Tools.getTemplate(this.species).learnset) {
       learnpool.push(i);
     }
-    if (learnpool.indexOf(move.id) === -1) return false;
+    if (learnpool.indexOf(move.id) === -1) return false;*/
+    if (TeamValidator('gen6ou').checkLearnset(move, this.species, {set:{}})) return false;
     if (this.movepool.indexOf(move.name) > -1) return false;
     this.movepool.push(move.name);
     return true;

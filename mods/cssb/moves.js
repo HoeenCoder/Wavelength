@@ -107,7 +107,7 @@ exports.BattleMovedex = {
 		},
     onPrepareHit: function (target, source, move) {
         this.attrLastMove('[still]');
-        this.add('-anim', source, "Electro Ball", source);
+        this.add('-anim', source, "Electro Ball", target);
     },
     flags: {bullet: 1, protect: 1, mirror: 1},
 		self: {boosts: {spe:1}},
