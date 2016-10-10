@@ -137,10 +137,11 @@ function detailMenu(userid) {
 }
 
 function customMenu() {
-  let output = '<h3><u>Custom Moves</u></h3>';
+  let output = '<div style="max-height: 300px; overflow-y: scroll"><h3><u>Custom Moves</u></h3>';
   for(let i = 0; i < customMovepool.length; i++) {
     output += '<div><b><u>' + customMovepool[i] + '</u></b>: Type: <i>' + typeList[i] + '</i>, Description: ' + customDescs[i] + ' <button class="button" name="send" value="/ssb edit move custom, ' + customMovepool[i] + '">Set as custom move</button></div><br/>';
   }
+  output += '</div>';
   return output;
 }
 
