@@ -16,8 +16,8 @@ exports.BattleScripts = {
   var team = [];
   var variant = this.random(2);
 
-  //Default sets that always appear.
-  var baseSets = {
+  //Save these incase we decide to readd base sets
+  /*var baseSets = {
     'Zarel': {
 			species: 'Meloetta', ability: 'Serene Grace', item: '', gender: 'F',
 			moves: ['lunardance', 'fierydance', 'perishsong', 'petaldance', 'quiverdance'],
@@ -54,7 +54,7 @@ exports.BattleScripts = {
       signatureMove: 'Ad Blitz',
       evs: {spa: 252, spd: 252, hp:4}, nature: 'Modest',
     }
-  };
+  };*/
   //Parse player objects into sets.
   var ssbSets = {};
   for(let key in SGSSB) {
@@ -75,7 +75,8 @@ exports.BattleScripts = {
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].happiness = SGSSB[key].happiness;
   }
 
-  var sets = extend(baseSets, ssbSets);
+  //var sets = extend(baseSets, ssbSets);
+  var sets = ssbSets;
 
   for (var k in sets) {
       sets[k].moves = sets[k].moves.map(toId);
@@ -84,7 +85,7 @@ exports.BattleScripts = {
 
   // Generate the team randomly.
   let pool = Object.keys(sets);
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < (Object.keys(sets).length < 6 ? Object.keys(sets).length : 6); i++) {
       let name = this.sampleNoReplace(pool);
       let set = sets[name];
       set.name = name;
