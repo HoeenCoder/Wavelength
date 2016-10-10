@@ -635,10 +635,12 @@ exports.commands = {
       if (targetUser.activate()) {
         if (targetUser.active) {
           writeSSB();
-          return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles once an administraor hotpatches formats, or restarts the server.');
+          user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
+          return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles once an administrator hotpatches formats, or restarts the server.');
         } else {
           writeSSB();
-          return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once an administraor hotpatches formats, or restarts the server.');
+          user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
+          return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once an administrator hotpatches formats, or restarts the server.');
         }
       } else return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
     },
