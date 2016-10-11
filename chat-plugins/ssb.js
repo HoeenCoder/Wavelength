@@ -243,7 +243,7 @@ class SSB {
       symbol = symbol.substring(0, 1);
     }
     if (symbol.length !== 1 && symbol !== 'none') return false;
-    let bannedSymbols = ['+', '%', '@', '\u2605', '*', '#', '&', '~'];
+    let bannedSymbols = ['+', '%', '@', '\u2605', '*', '#', '&', '~', '|', ',', "'", '"', '\u5350', '\u534D', '\u2030', '\u005C'];
     let rmt = bannedSymbols.indexOf(Users(this.userid).group);
     if (rmt > -1) {
       for (rmt; rmt > -1; rmt--) bannedSymbols.splice(rmt, 1); //G staff may use equal or lower ranked symbols
@@ -413,6 +413,7 @@ exports.commands = {
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
         }
         let targetUser = SG.ssb[user.userid];
+        targetUser.updateName(user.name);
         if (cmd === '') {
           return user.sendTo(room, '|uhtml|ssb' + user.userid + '|' + buildMenu(user.userid));
         } else return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
@@ -505,7 +506,7 @@ exports.commands = {
               writeSSB();
               if (cmd !== 'statsq') this.sendReply(target[1] + ' EV was set to ' + target[2] + '.');
               return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
-            } else return this.errorReply('Unable to set ' + target[1] + ' EV to ' + target[2] + '. Check to make sure your EVs are exceding 510 total.');
+            } else return this.errorReply('Unable to set ' + target[1] + ' EV to ' + target[2] + '. Check to make sure your EVs dont exceed 510 total.');
             break;
           case 'iv':
           case 'ivs':
