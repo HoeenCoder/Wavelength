@@ -70,7 +70,7 @@ exports.BattleScripts = {
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].evs = SGSSB[key].evs;
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].ivs = SGSSB[key].ivs;
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].nature = SGSSB[key].nature;
-    ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].level = SGSSB[key].level;
+    ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].level = parseInt(SGSSB[key].level);
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].shiny = SGSSB[key].shiny;
     ssbSets[(SGSSB[key].symbol + SGSSB[key].name)].happiness = SGSSB[key].happiness;
   }

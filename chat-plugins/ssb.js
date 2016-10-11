@@ -243,7 +243,7 @@ class SSB {
       symbol = symbol.substring(0, 1);
     }
     if (symbol.length !== 1 && symbol !== 'none') return false;
-    let bannedSymbols = ['+', '%', '@', '\u2605', '*', '#', '&', '~', '|', ',', "'", '"', '\u5350', '\u534D', '\u2030', '\u005C'];
+    let bannedSymbols = ['+', '%', '@', '*', '\u2605', '#', '&', '~', '|', ',', "'", '"', '\u5350', '\u534D', '\u2030', '\u005C'];
     let rmt = bannedSymbols.indexOf(Users(this.userid).group);
     if (rmt > -1) {
       for (rmt; rmt > -1; rmt--) bannedSymbols.splice(rmt, 1); //G staff may use equal or lower ranked symbols
