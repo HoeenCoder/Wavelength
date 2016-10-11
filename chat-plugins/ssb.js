@@ -186,6 +186,10 @@ class SSB {
     species = Tools.getTemplate(speciesId);
     if (!species.exists) return false;
     if (!species.learnset) return false;
+    if (species.tier === 'Uber') {
+      //Most are banned a few arent
+      if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
+    }
     this.species = species.species;
     this.ability = species.abilities['0']; //Force legal ability
     this.movepool = []; //force legal normal moves
@@ -272,7 +276,10 @@ class SSB {
         this.item = this.cItem;
         return true;
       } else return false;
-    } else this.item = item.name;
+    } else {
+      if (item.id === 'mawilite' || item.id === 'salamencite' || item.id === 'gengarite' || item.id === 'kangaskhanite' || item.id === 'lucarionite' || item.id === 'blazikenite') return false;
+      this.item = item.name;
+    }
     return true;
   }
   setAbility(ability) {
@@ -422,7 +429,7 @@ exports.commands = {
         if (toId(target) === '') return this.sendReply('/ssb edit species [species] - change the species of your SSB pokemon.');
         let active = targetUser.active;
         if (!targetUser.setSpecies(target)) {
-          return this.errorReply('The pokemon ' + target + ' does not exist. Check your spelling?');
+          return this.errorReply('The pokemon ' + target + ' does not exist or is banned from SSBFFA. Check your spelling?');
         } else {
           writeSSB();
           if(active) this.sendReply('Your pokemon was deactivated becuase it now has 0 moves.');
@@ -555,7 +562,7 @@ exports.commands = {
           return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
         }
         if (!targetUser.setItem(target)) {
-          return this.errorReply('The item ' + target + ' does not exist.');
+          return this.errorReply('The item ' + target + ' does not exist or is banned from SSBFFA.');
         } else {
           writeSSB();
           if (cmd !== 'itemq') return this.sendReply('Your pokemon\'s item was set to ' + target + '.');
