@@ -498,7 +498,27 @@ exports.commands = {
         if (toId(target) === 'naturehelp') return this.sendReply('/ssb edit stats nature, [nature] - Set your pokemon\'s nature.');
         target = target.split(',');
         if (!target[1]) if (!target[2]) return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
-        switch(toId(target[0])) {
+        switch (toId(target[1])) {
+          case 'healthpoints':
+            target[1] = 'hp';
+            break;
+          case 'attack':
+            target[1] = 'atk';
+            break;
+          case 'defense':
+            target[1] = 'def';
+            break;
+          case 'specialattack':
+            target[1] = 'spa';
+            break;
+          case 'specialdefense':
+            target[1] = 'spd';
+            break;
+          case 'speed':
+            target[1] = 'spe';
+            break;
+        }
+        switch (toId(target[0])) {
           case 'ev':
           case 'evs':
             if (!target[2]) return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
