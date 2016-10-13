@@ -409,7 +409,7 @@ class User {
 			if (room.isMuted(this)) {
 				return '!' + this.name;
 			}
-			if ((!room.auth || !room.auth[this.userid]) && this.customSymbol) return this.customSymbol + this.name; 
+			if ((!room.auth || !room.auth[this.userid]) && this.customSymbol) return this.customSymbol + this.name;
 			return room.getAuth(this) + this.name;
 		}
 		if (this.customSymbol) return this.customSymbol + this.name;
@@ -1008,6 +1008,7 @@ class User {
 		}
 	}
 	onDisconnect(connection) {
+		if (this.named) Db('seen').set(this.userid, Date.now());
 		for (let i = 0; i < this.connections.length; i++) {
 			if (this.connections[i] === connection) {
 				// console.log('DISCONNECT: ' + this.userid);
