@@ -124,6 +124,8 @@ global.Chat = require('./chat');
 
 global.Rooms = require('./rooms');
 
+global.Tells = require('./tells.js');
+
 delete process.send; // in case we're a child process
 global.Verifier = require('./verifier');
 Verifier.PM.spawn();
