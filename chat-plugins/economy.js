@@ -180,7 +180,7 @@ exports.commands = {
 		});
 	},
 	moneylog: function (target, room, user) {
-		//if (!this.can('bucks')) return false;
+		if (!this.can('givecurrency')) return false;
 		if (!target) return this.sendReply("Usage: /moneylog [number] to view the last x lines OR /moneylog [text] to search for text.");
 		let word = false;
 		if (isNaN(Number(target))) word = true;
@@ -221,21 +221,21 @@ exports.commands = {
 			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>Bucks</th></tr>';
 			let count = 1;
 			for (let u in rows) {
-				if (!rows[u].bucks || rows[u].bucks < 1) continue;
+				if (!rows[u].currency || rows[u].currency < 1) continue;
 				let username;
 				if (rows[u].name !== null) {
 					username = rows[u].name;
 				} else {
 					username = rows[u].userid;
 				}
-				output += '<tr><td>' + count + '</td><td>' + Wisp.nameColor(username, true) + '</td><td>' + rows[u].bucks + '</td></tr>';
+				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(username, true) + '</td><td>' + rows[u].currency + '</td></tr>';
 				count++;
 			}
 			self.sendReplyBox(output);
 			if (room) room.update();
 		}
 
-		Wisp.database.all("SELECT userid, bucks, name FROM users ORDER BY bucks DESC LIMIT $target;", {$target: target}, function (err, rows) {
+		SG.database.all("SELECT userid, currency, name FROM users ORDER BY currency DESC LIMIT $target;", {$target: target}, function (err, rows) {
 			if (err) return console.log("richestuser: " + err);
 			showResults(rows);
 		});
