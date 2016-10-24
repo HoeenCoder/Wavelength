@@ -883,9 +883,10 @@ Chat.loadCommands = function () {
 
 	// info always goes first so other plugins can shadow it
 	Object.assign(commands, require('./chat-plugins/info').commands);
+	Object.assign(commands, require('./chat-plugins/SG').commands);
 
 	for (let file of fs.readdirSync(path.resolve(__dirname, 'chat-plugins'))) {
-		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
+		if (file.substr(-3) !== '.js' || file === 'info.js' || file === 'SG.js') continue;
 		Object.assign(commands, require('./chat-plugins/' + file).commands);
 	}
 };
