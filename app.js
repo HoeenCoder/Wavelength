@@ -128,8 +128,6 @@ Verifier.PM.spawn();
 
 global.SG = {};
 
-global.Simulator = require('./simulator');
-
 global.Tournaments = require('./tournaments');
 
 global.Dnsbl = require('./dnsbl');
