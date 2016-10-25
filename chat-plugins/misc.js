@@ -532,4 +532,103 @@ exports.commands = {
 	},
 	tellhelp: ["/tell [username], [message] - Send a message to an offline user that will be received when they log in."],
 
+	reddeclare: 'declare',
+	greendeclare: 'declare',
+	declare: function (target, room, user, connection, cmd, message) {
+		if (!target) return this.parse('/help declare');
+		if (!this.can('declare', null, room)) return false;
+		if (!this.canTalk()) return;
+
+		let color = 'blue';
+		switch (cmd) {
+			case 'reddeclare':
+				color = 'red';
+				break;
+			case 'greendeclare':
+				color = 'green';
+				break;
+		}
+		this.add('|raw|<div class="broadcast-' + color + '"><b>' + Chat.escapeHTML(target) + '</b></div>');
+		this.logModCommand(user.name + " declared " + target);
+	},
+	declarehelp: ["/declare [message] - Anonymously announces a message. Requires: # * & ~"],
+
+	redhtmldeclare: 'htmldeclare',
+	greenhtmldeclare: 'htmldeclare',
+	htmldeclare: function (target, room, user, connection, cmd, message) {
+		if (!target) return this.parse('/help htmldeclare');
+		if (!this.can('gdeclare', null, room)) return false;
+		if (!this.canTalk()) return;
+		target = this.canHTML(target);
+		if (!target) return;
+
+		let color = 'blue';
+		switch (cmd) {
+			case 'redhtmldeclare':
+				color = 'red';
+				break;
+			case 'greenhtmldeclare':
+				color = 'green';
+				break;
+		}
+		this.add('|raw|<div class="broadcast-' + color + '">' + target + '</div>');
+		this.logModCommand(user.name + " declared " + target);
+	},
+	htmldeclarehelp: ["/htmldeclare [message] - Anonymously announces a message using safe HTML. Requires: ~"],
+
+	redglobaldeclare: 'globaldeclare',
+	greenglobaldeclare: 'globaldeclare',
+	redgdeclare: 'globaldeclare',
+	greengdeclare: 'globaldeclare',
+	gdeclare: 'globaldeclare',
+	globaldeclare: function (target, room, user, connection, cmd, message) {
+		if (!target) return this.parse('/help globaldeclare');
+		if (!this.can('gdeclare')) return false;
+		target = this.canHTML(target);
+		if (!target) return;
+
+		let color = 'blue';
+		switch (cmd) {
+			case 'redglobaldeclare':
+			case 'redgdeclare':
+				color = 'red';
+				break;
+			case 'greenglobaldeclare':
+			case 'greengdeclare':
+				color = 'green';
+				break;
+		}
+		Rooms.rooms.forEach((curRoom, id) => {
+			if (id !== 'global') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+		});
+		this.logModCommand(user.name + " globally declared " + target);
+	},
+	globaldeclarehelp: ["/globaldeclare [message] - Anonymously announces a message to every room on the server. Requires: ~"],
+
+	redchatdeclare: 'chatdeclare',
+	greenchatdeclare: 'chatdeclare',
+	redcdeclare: 'chatdeclare',
+	greencdeclare: 'chatdeclare',
+	cdeclare: 'chatdeclare',
+	chatdeclare: function (target, room, user, connection, cmd, message) {
+		if (!target) return this.parse('/help chatdeclare');
+		if (!this.can('gdeclare')) return false;
+		target = this.canHTML(target);
+		if (!target) return;
+
+		let color = 'blue';
+		switch (cmd) {
+			case 'reddeclare':
+				color = 'red';
+				break;
+			case 'greendeclare':
+				color = 'green';
+				break;
+		}
+		Rooms.rooms.forEach((curRoom, id) => {
+			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+		});
+		this.logModCommand(user.name + " globally declared (chat level) " + target);
+	},
+	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
 };
