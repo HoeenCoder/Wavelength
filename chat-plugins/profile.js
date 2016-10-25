@@ -36,7 +36,7 @@ global.isDev = function (user) {
 
 function formatTitle(user) {
 	if (Db('customtitles').has(toId(user)) && Db('titlecolors').has(toId(user))) {
-		return '<font color="' + Db('titlecolors').get(toId(user)) + 
+		return '<font color="' + Db('titlecolors').get(toId(user)) +
 		'">(<b>' + Db('customtitles').get(toId(user)) + '</b>)</font>';
 	}
 	return '';
@@ -147,6 +147,7 @@ exports.commands = {
 			);
 		},
 	},
+	title: 'customtitle',
 	customtitle: {
 		set: 'give',
 		give: function (target, room, user) {
@@ -165,7 +166,7 @@ exports.commands = {
 			Db('customtitles').set(userid, title);
 			if (Users.get(targetUser)) Users(targetUser).popup(
 				'|html|You have recieved a custom title from ' + SG.nameColor(user.name, true) + '.' +
-				'<br />Title: ' + formatTitle(toId(targetUser)) + 
+				'<br />Title: ' + formatTitle(toId(targetUser)) +
 				'<br />Title Hex Color: ' + Db('titlecolors').get(toId(targetUser))
 			);
 			this.logModCommand(user.name + " set a custom title to " + userid + "'s profile.");
@@ -276,33 +277,36 @@ exports.commands = {
 			let geo = geoip.lookupCountry(Users(flagee).latestIp);
 			return (Users(flagee) && geo ? '<img src="https://github.com/kevogod/cachechu/blob/master/flags/' + geo.toLowerCase() + '.png?raw=true" height=10 title="' + geo + '">' : false);
 		}
-		function lastActive(user) {
-			if (!Users(user)) return false;
-			user = Users(user);
-			return (user && user.lastActive ? moment(user.lastActive).fromNow() : "hasn't talked yet");
+		function getLastSeen(useid) {
+			if (Users(userid) && Users(userid).connected) return '<font color = green><strong>Currently Online</strong>';
+			let seen = Db('seen').get(userid);
+			if (!seen) return false;
+			return moment(seen).fromNow();
 		}
 		function showProfile() {
-			let profile = '';
-			profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
-			if (!getFlag(toId(username))) {
-				profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
-			} else {
-				profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
-			}
-			profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
-			profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
-			profile += '&nbsp;<font color="#24678d"><b>Bucks:</b></font> ' + Db('money').get(toId(username), 0) + '<br />';
-			if (online && lastActive(toId(username))) {
-				profile += '&nbsp;<font color="#24678d"><b>Last Active:</b></font> ' + lastActive(toId(username)) + '<br />';
-			} else {
-				profile += '&nbsp;<font color="#24678d"><b>Last Active:</b></font> <font color = red><strong>OFFLINE</strong></font><br />';
-			}
-			if (Db('friendcodes').has(toId(username))) {
-				profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db('friendcodes').get(toId(username));
-			}
-			profile += '<br clear="all">';
-			self.sendReplyBox(profile);
-			room.update();
+			Economy.readMoney(toId(username), currency => {
+				let profile = '';
+				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
+				if (!getFlag(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
+				} else {
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
+				}
+				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>Stardust:</b></font> ' + currency + '<br />';
+				if (online && getLastSeen(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '<br />';
+				} else {
+					profile += '&nbsp;<font color="#24678d"><b>Last Active:</b></font> <font color = red><strong>OFFLINE</strong></font><br />';
+				}
+				if (Db('friendcodes').has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db('friendcodes').get(toId(username));
+				}
+				profile += '<br clear="all">';
+				self.sendReplyBox(profile);
+				room.update();
+			});
 		}
 	},
 };
