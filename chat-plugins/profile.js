@@ -14,7 +14,7 @@ let moment = require('moment');
 let geoip = require('geoip-ultralight');
 
 // fill in '' with the server IP
-let serverIp = '';
+let serverIp = Config.serverIp;
 let regdateCache = {};
 geoip.startWatchingDataUpdate();
 
@@ -294,7 +294,7 @@ exports.commands = {
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
-				profile += '&nbsp;<font color="#24678d"><b>Stardust:</b></font> ' + currency + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>' + global.currenyPlural + ':</b></font> ' + currency + '<br />';
 				if (online && getLastSeen(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '<br />';
 				} else {

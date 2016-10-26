@@ -280,6 +280,7 @@ class Game {
 		if (this.started) return false;
 		if (this.list.length < 2) return user.sendTo(this.room, "There aren't enough players!");
 		this.started = true;
+		this.originalPlayerCount = this.list.length;
 		this.room.add("The game has started!");
 		//hide the start message
 		this.room.add("|uhtmlchange|new" + this.room.unoGameId + "|<div class=\"infobox\">The game has started.</div>");
@@ -446,7 +447,7 @@ class Game {
 
 		//apply the effects of the current card to the next player in queue.
 		this.applyEffects();
-		if (this.data[user.userid].length === 1) {
+		/*if (this.data[user.userid].length === 1) {
 			//do a uno thing
 			this.uno = user.userid;
 			let userButton = "<center><button style=\"height: 75px ; width: 200px ;\" name=\"send\" value=\"/uno uno\">UNO!</button></center>";
@@ -458,7 +459,7 @@ class Game {
 				Users(u).sendTo(this.room.id, "|uhtml|" + this.room.unoGameId + "uno" + this.id + "|" + opponentButton);
 			}
 			return;
-		} else if (this.data[user.userid].length === 0) {
+		} else*/ if (this.data[user.userid].length === 0) {
 			return this.end(user.name);
 		}
 		//start next turn
@@ -580,6 +581,17 @@ class Game {
 			this.room.add("The game of UNO was forcibly ended.");
 		} else {
 			this.room.add("Congratulations to " + getUserName(winner) + " for winning the game of UNO!");
+			let prize = 2;
+			let targetUser = toId(getUserName(winner));
+			prize += Math.floor(this.list.length / 5);
+			Economy.writeMoney(targetUser, prize, () => {
+				Economy.readMoney(targetUser, newAmount => {
+					if (Users(targetUser) && Users(targetUser).connected) {
+						Users.get(targetUser).popup('|html|You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from winning the game of uno.');
+					}
+					Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from a game of uno.');
+				});
+			});
 		}
 		this.room.update();
 		delete this.room.game;

@@ -142,6 +142,8 @@ exports.commands = {
 		if (room.battle) return this.sendReply("You cannot clearall in battle rooms.");
 
 		clearRoom(room);
+
+		this.privateModCommand(`(${user.name} used /clearall.)`);
 	},
 
 	gclearall: 'globalclearall',
