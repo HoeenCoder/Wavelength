@@ -459,7 +459,13 @@ class Game {
 				Users(u).sendTo(this.room.id, "|uhtml|" + this.room.unoGameId + "uno" + this.id + "|" + opponentButton);
 			}
 			return;
-		} else*/ if (this.data[user.userid].length === 0) {
+		}*/
+		if (this.data[user.userid].length === 1) {
+			for (let u in this.data) {
+				if (!Users(u)) continue;
+				Users(u).sendTo(this.room.id, "|uhtml|" + this.room.unoGameId + "uno" + this.id + "|<h1>UNO</h1>");
+			}
+		} else if (this.data[user.userid].length === 0) {
 			return this.end(user.name);
 		}
 		//start next turn
