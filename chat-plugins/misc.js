@@ -11,7 +11,7 @@ let moment = require('moment');
 let request = require('request');
 let regdateCache = {};
 
-let badges = fs.createWriteStream('badges.txt', {'flags': 'a'});
+//let badges = fs.createWriteStream('badges.txt', {'flags': 'a'});
 
 function loadRegdateCache() {
 	try {

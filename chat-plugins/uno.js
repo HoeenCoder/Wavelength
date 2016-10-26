@@ -280,7 +280,6 @@ class Game {
 		if (this.started) return false;
 		if (this.list.length < 2) return user.sendTo(this.room, "There aren't enough players!");
 		this.started = true;
-		this.originalPlayerCount = this.list.length;
 		this.room.add("The game has started!");
 		//hide the start message
 		this.room.add("|uhtmlchange|new" + this.room.unoGameId + "|<div class=\"infobox\">The game has started.</div>");
@@ -590,14 +589,16 @@ class Game {
 			let prize = 2;
 			let targetUser = toId(getUserName(winner));
 			prize += Math.floor(this.list.length / 5);
-			Economy.writeMoney(targetUser, prize, () => {
-				Economy.readMoney(targetUser, newAmount => {
-					if (Users(targetUser) && Users(targetUser).connected) {
-						Users.get(targetUser).popup('|html|You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from winning the game of uno.');
-					}
-					Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from a game of uno.');
+			if (this.room.isOffical) {
+				Economy.writeMoney(targetUser, prize, () => {
+					Economy.readMoney(targetUser, newAmount => {
+						if (Users(targetUser) && Users(targetUser).connected) {
+							Users.get(targetUser).popup('|html|You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from winning the game of uno.');
+						}
+						Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from a game of uno.');
+					});
 				});
-			});
+			}
 		}
 		this.room.update();
 		delete this.room.game;

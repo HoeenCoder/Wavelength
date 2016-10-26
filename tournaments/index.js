@@ -897,10 +897,12 @@ class Tournament {
 		let rid = toId(runnerUp);
 		let tourSize = this.generator.users.size;
 
-		if (tourSize >= sizeRequiredToEarn) {
+		if (tourSize >= sizeRequiredToEarn && this.room.isOffical) {
 			let firstMoney = Math.round(tourSize / 4);
 			if (firstMoney < 2) firstMoney = 2;
+			if (Db('userBadges').has(wid) && Db('userBadges').get(wid).indexOf('Tournament Champion') > -1) firstMoney = Math.ceil(firstMoney * 1.5);
 			let secondMoney = Math.round(firstMoney / 2);
+			if (Db('userBadges').has(rid) && Db('userBadges').get(rid).indexOf('Tournament Champion') > -1) secondMoney = Math.ceil(firstMoney * 1.5);
 
 			Economy.writeMoney(wid, firstMoney, () => {
 				Economy.readMoney(wid, newAmount => {
@@ -910,7 +912,7 @@ class Tournament {
 					Economy.logTransaction(Chat.escapeHTML(winner) + ' has won ' + firstMoney + ' ' + (firstMoney === 1 ? global.currencyName : global.currenyPlural) + ' from a tournament.');
 				});
 			});
-			this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(winner) + "</font> has won " + "<font color='" + color + "'>" + firstMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currenyPlural) + " for winning the tournament!</b>");
+			this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(winner) + "</font> has won " + "<font color='" + color + "'>" + firstMoney + " </font>" + (firstMoney === 1 ? global.currencyName : global.currenyPlural) + " for winning the tournament!</b>");
 
 			if (runnerUp) {
 				Economy.writeMoney(rid, secondMoney, () => {

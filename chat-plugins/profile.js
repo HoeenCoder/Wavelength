@@ -60,9 +60,9 @@ function vipCheck(user) {
 }
 
 function showBadges(user) {
-	if (Db('badgesDB').has(toId(user))) {
+	if (Db('userBadges').has(toId(user))) {
 		return '<button style="border-radius: 5px; background-color: transparent; color: #24678d;' +
-		' font-size: 11px;" name="send" value="/showbadges ' + toId(user) + '">Badges</button>';
+		' font-size: 11px;" name="send" value="/badges user, ' + toId(user) + '">Badges</button>';
 	}
 	return '';
 }
