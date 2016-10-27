@@ -105,6 +105,10 @@ SG.parseMessage = function (message) {
 	return message;
 }
 
+SG.randomString = function (length) {
+  return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+}
+
 // last two functions needed to make sure SG.regdate() fully works
 function loadRegdateCache() {
 	try {

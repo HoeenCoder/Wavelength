@@ -67,6 +67,10 @@ function showBadges(user) {
 	return '';
 }
 
+function getLeague(userid) {
+	return SG.getLeague(userid);
+}
+
 function loadRegdateCache() {
 	try {
 		regdateCache = JSON.parse(fs.readFileSync('config/regdate.json', 'utf8'));
@@ -295,10 +299,11 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currenyPlural + ':</b></font> ' + currency + '<br />';
-				if (online && getLastSeen(toId(username))) {
+				profile += '&nbsp;<font color="#24678d"><b>League:</b></font> ' + (getLeague(toId(username)) ? (getLeague(toId(username)) + ' (' + SG.getLeagueRank(toId(username)) + ')') : 'N/A') + '<br />';
+				if (getLastSeen(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '<br />';
 				} else {
-					profile += '&nbsp;<font color="#24678d"><b>Last Active:</b></font> <font color = red><strong>OFFLINE</strong></font><br />';
+					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> <font color = red><strong>Never</strong></font><br />';
 				}
 				if (Db('friendcodes').has(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db('friendcodes').get(toId(username));
