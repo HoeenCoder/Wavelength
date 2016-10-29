@@ -2,6 +2,9 @@
  * Miscellaneous commands
  *
  * Fixed/Improved upon by: The Run, HoeenHero, and Mystifi.
+ *
+ * Some of this code was borrowed from panpawn/jd/other contributors; as
+ * such, credits go to them as well.
  */
 
 'use strict';
