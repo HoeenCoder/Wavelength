@@ -590,6 +590,8 @@ class Game {
 			let targetUser = toId(getUserName(winner));
 			prize += Math.floor(this.list.length / 5);
 			if (Db('userBadges').has(targetUser) && Db('userBadges').get(targetUser).indexOf('Uno Champion') > -1) prize = Math.ceil(prize * 1.5);
+			if (Users(targetUser).unoBoost) prize *= 2;
+			if (Users(targetUser).gameBoost) prize *= 2;
 			if (this.room.isOfficial) {
 				Economy.writeMoney(targetUser, prize, () => {
 					Economy.readMoney(targetUser, newAmount => {

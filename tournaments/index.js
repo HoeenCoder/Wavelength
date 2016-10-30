@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const BRACKET_MINIMUM_UPDATE_INTERVAL = 2 * 1000;
 const AUTO_DISQUALIFY_WARNING_TIMEOUT = 30 * 1000;
@@ -901,7 +901,11 @@ class Tournament {
 			let firstMoney = Math.round(tourSize / 4);
 			if (firstMoney < 2) firstMoney = 2;
 			if (Db('userBadges').has(wid) && Db('userBadges').get(wid).indexOf('Tournament Champion') > -1) firstMoney = Math.ceil(firstMoney * 1.5);
+			if (Users(wid).tourBoost) firstMoney *= 2;
+			if (Users(wid).gameBoost) firstMoney *= 2;
 			let secondMoney = Math.round(firstMoney / 2);
+			if (Users(rid).tourBoost) secondMoney *= 2;
+			if (Users(rid).gameBoost) secondMoney *= 2;
 			if (Db('userBadges').has(rid) && Db('userBadges').get(rid).indexOf('Tournament Champion') > -1) secondMoney = Math.ceil(firstMoney * 1.5);
 
 			Economy.writeMoney(wid, firstMoney, () => {
