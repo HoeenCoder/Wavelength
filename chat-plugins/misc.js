@@ -155,6 +155,7 @@ exports.commands = {
 
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
+		this.privateModCommand(`(${user.name} used /globalclearall.)`);
 	},
 
 	contact:'whotocontact',
@@ -175,7 +176,7 @@ exports.commands = {
 	},
 
 	roomlist: function (target, room, user) {
-		if (!this.can('hotpatch')) return;
+		if (!this.can('roomowner')) return;
 
 		let header = ['<b><font color="#1aff1a" size="2">Total users connected: ' + Rooms.global.userCount + '</font></b><br />'],
 			official = ['<b><font color="#ff9900" size="2"><u>Official Rooms:</u></font></b><br />'],
