@@ -112,6 +112,8 @@ exports.chatmodchat = false;
 exports.battlemodchat = false;
 // pm modchat - minimum group for PMing other users, challenging other users, and laddering
 exports.pmmodchat = false;
+// tell rank - minimum group for offline messageing, set to false to disable this.
+exports.tellrank = ' ';
 
 // forced timer - force the timer on for all battles
 //   Players will be unable to turn it off.
