@@ -453,6 +453,7 @@ exports.commands = {
 				return this.errorReply(`You do not have permission to invite people into this room.`);
 			}
 		}
+		if (targetUser in targetRoom.users) return this.errorReply(`This user is already in "${targetRoom.title}".`);
 
 		return '/invite ' + targetRoom.id;
 	},
@@ -1971,6 +1972,7 @@ exports.commands = {
 	},
 	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
 
+	'!announce': true,
 	wall: 'announce',
 	announce: function (target, room, user) {
 		if (!target) return this.parse('/help announce');
@@ -2248,7 +2250,7 @@ exports.commands = {
 			}
 		}
 
-		let buf = `Blacklist for room ${room.id}:<br />`;
+		let buf = Chat.html`Blacklist for ${room.title}:<br />`;
 
 		blMap.forEach((data, userid) => {
 			const [expireTime, ...alts] = data;
