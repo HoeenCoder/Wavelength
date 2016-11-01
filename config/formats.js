@@ -639,22 +639,6 @@ exports.Formats = [
 					this.add("raw|<h1>BATTLE!</h1>");
 			}
 		},
-		{
-			name: "Mariokart",
-			section: "SpacialGaze Metagames",
-			desc: ['Used for mariokart tournaments (in the actual games).'],
-
-			mod: 'mariokart',
-			searchShow: false,
-			team: 'randomMariokart',
-			ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-			onBegin: function () {
-					this.add("raw|<h3>3</h3>");
-					this.add("raw|<h3>2</h3>");
-					this.add("raw|<h3>1</h3>");
-					this.add("raw|<h2>GO!</h2>");
-			}
-		},
 
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
