@@ -384,6 +384,21 @@ class SSB {
   }
 }
 
+//Load JSON
+try {
+  fs.accessSync('config/ssb.json', fs.F_OK);
+} catch(e) {
+  fs.writeFile('config/ssb.json', "{}", function(err) {
+      if(err) {
+          console.error('Error while loading SSBFFA: ' + err);
+          SG.ssb = global.ssb = {};
+          ssbWrite = false;
+      } else {
+        console.log("config/ssb.json not found, creating a new one...");
+      }
+  });
+}
+
 //We need to load data after the SSB class is declared.
 try {
   let raw = JSON.parse(fs.readFileSync('config/ssb.json', 'utf8'));
@@ -396,7 +411,7 @@ try {
     }
   }
 } catch(e) {
-  console.error('Error loading SSB: ' + e.stack);
+  console.error('Error loading SSBFFA: ' + e.stack);
   SG.ssb = global.ssb = {};
   ssbWrite = false;
 }

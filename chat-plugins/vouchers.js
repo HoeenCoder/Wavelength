@@ -92,6 +92,21 @@ function writeFile() {
   fs.writeFile('config/vouchers.json', JSON.stringify(SG.vouchers));
 }
 
+//load JSON
+try {
+  fs.accessSync('config/vouchers.json', fs.F_OK);
+} catch (e) {
+  fs.writeFile('config/vocuhers.json', "{}", function(err) {
+      if(err) {
+          console.error('Error while loading vouchers: ' + err);
+          SG.vouchers = {storageForVocuherIds: -1};
+          writeJSON = false;
+      } else {
+        console.log("config/vocuhers.json not found, creating a new one...");
+      }
+  });
+}
+
 //Load vouchers on server start / hotpatch chat
 try {
   let raw = JSON.parse(fs.readFileSync('config/vouchers.json', 'utf8'));
