@@ -484,7 +484,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		this.sendReply("|raw|<a href='https://github.com/HoeenCoder/SpacialGaze'>SpacialGaze\'s repo</a>");
 	},
-	showdownboilerplatehelp: ["/spacialgazerepo - Links to the SpacialGaze repository on Github."],
+	spacialgazerepohelp: ["/spacialgazerepo - Links to the SpacialGaze repository on Github."],
 
 	seen: function (target, room, user) {
 		if (!this.runBroadcast()) return;

@@ -31,11 +31,13 @@ load();
        fs.appendFile(file, date + msg);
 }*/
 
+let cssPath = 'spacialgaze'; //Set this to your server id ex: 'prime'
+
 function getCSS() {
         let options = {
                 host: 'play.pokemonshowdown.com',
-                port: 80,
-                path: '/customcss.php?server=spacialgaze',
+                port: Config.port,
+                path: '/customcss.php?server=' + cssPath,
                 method: 'GET',
         };
         https.get(options);
@@ -44,18 +46,14 @@ SG.loadCSS = getCSS;
 
 function updateColor() {
         fs.writeFileSync(FILE_PATH, JSON.stringify(customColors));
-
         let newCss = '/* COLORS START */\n';
-
         for (let name in customColors) {
                 newCss += generateCSS(toId(name), customColors[name]);
         }
         newCss += '/* COLORS END */\n';
-
         let file = fs.readFileSync('config/custom.css', 'utf8').split('\n');
         if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
         fs.writeFileSync('config/custom.css', file.join('\n') + newCss);
-
         getCSS();
 }
 SG.updateColor = updateColor;
