@@ -526,6 +526,8 @@ class Game {
 
 	disqualify(userid) {
 		//if there are still players in the game.
+		Users(userid).boostUno = false;
+		Users(userid).boostGame = false;
 		if (this.list.length > 2) {
 			//if current player is the one being disqualify move on to next player.
 			if (!this.removePlayer(userid)) return true;
@@ -602,6 +604,10 @@ class Game {
 						Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from a game of uno.');
 					});
 				});
+				for (let i = 0; i < this.list.length; i++) {
+					Users(this.list[i]).boostUno = false;
+					Users(this.list[i]).boostGame = false;
+				}
 			}
 		}
 		this.room.update();

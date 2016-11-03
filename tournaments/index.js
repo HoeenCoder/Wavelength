@@ -513,6 +513,9 @@ class Tournament {
 			return false;
 		}
 
+		user.tourBoost = false;
+		user.gameBoost = false;
+
 		this.disqualifiedUsers.set(player, true);
 		this.generator.setUserBusy(player, false);
 
@@ -936,6 +939,8 @@ class Tournament {
 		delete exports.tournaments[this.room.id];
 		delete this.room.game;
 		for (let i in this.players) {
+			Users(this.players[i].userid).tourBoost = false;
+			Users(this.players[i].userid).gameBoost = false;
 			this.players[i].destroy();
 		}
 	}

@@ -96,13 +96,13 @@ function writeFile() {
 try {
   fs.accessSync('config/vouchers.json', fs.F_OK);
 } catch (e) {
-  fs.writeFile('config/vocuhers.json', "{}", function(err) {
+  fs.writeFile('config/vouchers.json', "{}", function(err) {
       if(err) {
           console.error('Error while loading vouchers: ' + err);
           SG.vouchers = {storageForVocuherIds: -1};
           writeJSON = false;
       } else {
-        console.log("config/vocuhers.json not found, creating a new one...");
+        console.log("config/vouchers.json not found, creating a new one...");
       }
   });
 }
