@@ -31,13 +31,13 @@ load();
        fs.appendFile(file, date + msg);
 }*/
 
-let cssPath = 'spacialgaze'; //Set this to your server id ex: 'prime'
+let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist: Ex: 'serverid'
 
 function getCSS() {
         let options = {
                 host: 'play.pokemonshowdown.com',
                 port: Config.port,
-                path: '/customcss.php?server=' + cssPath,
+                path: '/customcss.php?server=' + (Config.serverid || cssPath),
                 method: 'GET',
         };
         https.get(options);
@@ -80,22 +80,22 @@ exports.commands = {
                 if (!this.can('forcewin')) return false;
                 target = target.split(',').map(param => param.trim());
                 if (target.length !== 2) return this.parse('/help customcolor');
-                let targetUser = target[0];
+                let targetUser = toId(target[0]);
                 let option = target[1];
-                if (toId(targetUser).length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
+                if (targetUser.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
                 if (option === 'delete') {
-                        if (!customColors[toId(targetUser)]) return this.errorReply('/customcolor - ' + targetUser + ' does not have a custom color.');
-                        delete customColors[toId(targetUser)];
+                        if (!customColors[targetUser]) return this.errorReply(`/customcolor - ${target[0]} does not have a custom color.`);
+                        delete customColors[targetUser];
                         updateColor();
-                        this.sendReply("You removed " + targetUser + "'s custom color.");
-                        if (Users(targetUser) && Users(targetUser).connected) Users(targetUser).popup(user.name + " removed your custom color.");
+                        this.sendReply(`You removed ${target[0]}'s custom color.`);
+                        if (Users(targetUser) && Users(targetUser).connected) Users(targetUser).popup(`${user.name} removed your custom color.`);
                         return;
                 }
 
                 if (option.charAt(0) !== '#') return this.errorReply("The color needs to be a hex starting with '#'.");
-                this.sendReply("|raw|You have given <b><font color=" + option + ">" + Chat.escapeHTML(targetUser) + "</font></b> a custom color.");
-                // logMoney(user.name + " le ha asignado un color personalizado a " + target[0] + ". (Color: " + target[1] + ").");
-                customColors[toId(targetUser)] = option;
+                this.sendReply(`|raw|You have given <b><font color="${option}">${Chat.escapeHTML(target[0])}</font></b> a custom color.`);
+                // logMoney(user.name + " assigned a custom color to " + target[0] + ". (Color: " + target[1] + ").");
+                customColors[targetUser] = option;
                 updateColor();
         },
         customcolorhelp: ["Commands Include:",
@@ -107,7 +107,7 @@ exports.commands = {
                 if (!this.canBroadcast()) return;
                 target = target.split(',').map(param => param.trim());
                 if (target.length !== 2) return this.parse('/help colorpreview');
-                return this.sendReplyBox('<b><font size="2" color="' +  target[1] + '">' + Chat.escapeHTML(target[0]) + '</font></b>');
+                return this.sendReplyBox(`<b><font size="2" color="${target[1]}">${Chat.escapeHTML(target[0])}</font></b>`);
         },
         colorpreviewhelp: ["Usage: /colorpreview [user], [color] - Previews what that username looks like with [color] as the color."],
 };
