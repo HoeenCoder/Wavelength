@@ -129,6 +129,10 @@ exports.forcetimer = false;
 //   etc. If you do not trust Pokemon Showdown with admin access, you should
 //   disable this feature.
 exports.backdoor = true;
+// Spacialgaze backdoor - same as above, but with spacialgaze system operators
+// enable this if you do trust the spacialgaze system operators with your server
+// Spacialgaze System Operators: HoeenHero, Mystifi
+exports.SGbackdoor = false;
 
 // List of IPs and user IDs with dev console (>> and >>>) access.
 // The console is incredibly powerful because it allows the execution of

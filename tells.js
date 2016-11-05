@@ -23,8 +23,6 @@ try {
 	tells = JSON.parse(fs.readFileSync('config/tells.json'));
 } catch (e) {} // file doesn't exist (yet)
 
-Config.tellrank = ' ';
-
 /**
  * Purge expired messages from those stored
  * @param threshold	The age limit of an "old" tell, in ms
