@@ -87,6 +87,8 @@ exports.commands = {
 			this.logModCommand(user.name + " removed the badge '" + selectedBadge + ".");
 			break;
 		case 'user':
+			if (!target) return this.errorReply('No target user was specified.'); 
+
 			if (!this.runBroadcast()) return;
 			userid = toId(parts[1].trim());
 			if (!Db('userBadges').has(userid)) return this.errorReply("This user doesn't have any badges.");
@@ -102,6 +104,7 @@ exports.commands = {
 			});*/
 			output += '<table>';
 			this.sendReply('|html|<div class = "infobox' + (this.broadcasting ? '-limited' : '') + '">' + output + '</div>');
+				
 			break;
 		default:
 			return this.errorReply("Invalid command. Valid commands are `/badges list`, `/badges info, badgeName`, `/badges set, user, badgeName` and `/badges take, user, badgeName`" +
