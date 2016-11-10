@@ -65,7 +65,7 @@ exports.commands = {
 
 		Economy.readMoney(userid, money => {
 			this.sendReplyBox(SG.nameColor(target, true) + " has " + money + ((money === 1) ? " " + currencyName + "." : " " + currenyPlural + "."));
-			if (this.broadcasting) room.update();
+			//if (this.broadcasting) room.update();
 		});
 	},
 
