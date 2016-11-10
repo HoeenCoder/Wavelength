@@ -110,7 +110,7 @@ function abilityMenu(userid) {
   for (let i in pokemon.abilities) {
     output += '<button name="send" value="/ssb edit abilityq ' + pokemon.abilities[i] + '" class="button">Set to ' + pokemon.abilities[i] + '</button> | ';
   }
-  if (SG.ssb[userid].cAbility) output += '<button name="send" value="/ssb edit abilityq ' + SG.ssb[userid].cAbility + '" class="button">Set to ' + SG.ssb[userid].cMove + '</button> | ';
+  if (SG.ssb[userid].cAbility) output += '<button name="send" value="/ssb edit abilityq ' + SG.ssb[userid].cAbility + '" class="button">Set to ' + SG.ssb[userid].cAbility + '</button> | ';
   output += '<button name="send" value="/ssb edit main" class="button">Main Menu</button></div>';
   return output;
 }
