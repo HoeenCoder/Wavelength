@@ -158,7 +158,7 @@ if (Config.crashguard) {
 			8: 'Unused Error Code. Formerly used by nodejs. Sometimes indicate a uncaught exception',
 			9: 'Invalid Argument',
 			10: 'Internal JavaScript Run-Time Failure',
-			11: 'Server Exit Code: Exiting via /eval process.exit(11);',
+			11: 'A sysadmin forced an emergency exit',
 			12: 'Invalid Debug Argument',
 			130: 'Control-C via Terminal or Command Prompt'
 		};

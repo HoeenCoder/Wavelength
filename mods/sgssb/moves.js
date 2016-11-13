@@ -19,7 +19,7 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Ice",
     },
-     // HoeenHero
+    // HoeenHero
     scripting: {
         category: "Status",
         id: "scripting",
@@ -450,7 +450,7 @@ exports.BattleMovedex = {
         secondary: {
             chance: 35, volatileStatus: 'flinch',
         },
-        pp: 12,
+        pp: 5,
         priority: 0,
         onPrepareHit: function (target, source, move) {
             this.attrLastMove('[still]');
@@ -460,20 +460,20 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Water",
     },
-        //CelestialTater
-         shellbreak: {
-         category: "Status",
-         id: "shellbreak",
-         isNonstandard: true,
-         name: "Shell Break",
-         boosts: {spa: 2, atk: 2, spe: 2, def: -1, spd: -1, accuracy: 1},
-         pp: 5,
-         priority: 1,  
-         onPrepareHit: function (target, source) {
-         this.add('-anim', source, "Brick Break", source);
-         this.add('-anim', source, "Shell Smash", source);
+    //CelestialTater
+    shellbreak: {
+        category: "Status",
+        id: "shellbreak",
+        isNonstandard: true,
+        name: "Shell Break",
+        boosts: {spa: 2, atk: 2, spe: 2, def: -1, spd: -1, accuracy: 1},
+        pp: 5,
+        priority: 1,
+        onPrepareHit: function (target, source) {
+            this.add('-anim', source, "Brick Break", source);
+            this.add('-anim', source, "Shell Smash", source);
         },
-         target: "self",
-         type: "Water",
-        },
+        target: "self",
+        type: "Water",
+    },
 };
