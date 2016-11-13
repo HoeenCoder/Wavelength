@@ -102,7 +102,7 @@ exports.BattleMovedex = {
         }
     },
     // Kraken Mare
-        megarage: {
+    megarage: {
         category: "Special",
         basePower: 150,
         id: "megarage",
@@ -118,8 +118,8 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Fairy",
     },
-        // C733937 123
-        lightshotgigalance: {
+    // C733937 123
+    lightshotgigalance: {
         category: "Physical",
         basePower: 150,
         id: "lightshotgigalance",
@@ -141,7 +141,7 @@ exports.BattleMovedex = {
         type: "Rock",
     },
     // Serperiorater
-        saberstrike: {
+    saberstrike: {
         category: "Special",
         basePower: 140,
         id: "saberstrike",
@@ -160,7 +160,7 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Grass",
     },
-        // Hydrostatics
+    // Hydrostatics
     naturesfury: {
         category: "Status",
         id: "naturesfury",
@@ -178,7 +178,7 @@ exports.BattleMovedex = {
         type: "Fire",
     },
     // BDH93
-        gettingtrolled: {
+    gettingtrolled: {
         category: "Physical",
         id: "gettingtrolled",
         isNonstandard: true,
@@ -199,12 +199,12 @@ exports.BattleMovedex = {
         type: "Normal",
     },
     // Mystifi
-        cutenessspell: {
+    mysticmirage: {
         category: "Status",
-        id: "cutenessspell",
+        id: "mysticmirage",
         isNonstandard: true,
-        name: "Cuteness Spell",
-        self: {boosts: {evasion: 1}},
+        name: "Mystic Mirage",
+        self: {boosts: {def: 8, spa: 8, spd: 8}},
         pp: 10,
         priority: 0,
         onHit: function (target, source) {
@@ -233,8 +233,8 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Normal",
     },
-        // Auction
-        zeobash: {
+    // Auction
+    zeobash: {
         category: "Physical",
         basePower: 90,
         id: "zeobash",
@@ -249,7 +249,7 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Steel",
     },
-        // Opple
+    // Opple
     ancientorb: {
         category: "Status",
         id: "ancientorb",
@@ -282,7 +282,6 @@ exports.BattleMovedex = {
         type: "Rock",
     },
     // ducktown
-
     duckpower: {
         category: "Status",
         id: "duckpower",
@@ -300,7 +299,6 @@ exports.BattleMovedex = {
         type: "Water",
     },
     // Hurricane'd
-
     rainbustorb: {
         category: "Status",
         id: "rainbustorb",
@@ -318,7 +316,6 @@ exports.BattleMovedex = {
         type: "Water",
     },
     // UmichBrendan
-
     vacationtime: {
         category: "Status",
         id: "vacationtime",
@@ -336,7 +333,7 @@ exports.BattleMovedex = {
         type: "Normal",
     },
     // Admewn
-        mewtation: {
+    mewtation: {
         category: "Status",
         id: "mewtation",
         isNonstandard: true,
@@ -350,9 +347,8 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Dark",
     },
-
     // Saber Ran
-        outripper: {
+    outripper: {
         category: "Physical",
         id: "outripper",
         basePower: 100,
@@ -369,7 +365,6 @@ exports.BattleMovedex = {
         type: "Dragon",
     },
     // Xavier1942
-
     xavierhax: {
         category: "Status",
         id: "xavierhax",
@@ -386,7 +381,7 @@ exports.BattleMovedex = {
         type: "Normal",
     },
     // SpaceGazer
-        spacialblast: {
+    spacialblast: {
         category: "Physical",
         basePower: 150,
         id: "spacialblast",
@@ -406,7 +401,7 @@ exports.BattleMovedex = {
         type: "Fairy",
     },
     // SG Bot
-        frostbite: {
+    frostbite: {
         category: "Special",
         basePower: 100,
         id: "frostbite",
@@ -425,8 +420,8 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Ice",
     },
-     // SilverKill
-        mechanicaldysfunction: {
+    // SilverKill
+    mechanicaldysfunction: {
         category: "Special",
         basePower: 110,
         accuracy: 90,
@@ -445,5 +440,24 @@ exports.BattleMovedex = {
         target: "Normal",
         type: "Electric",
     },
-
+    //Desokoro
+    tsunamicrash: {
+        category: "Physical",
+        basePower: 150,
+        id: "tsunamicrash",
+        isNonstandard: true,
+        name: "Tsunami Crash",
+        secondary: {
+            chance: 35, volatileStatus: 'flinch',
+        },
+        pp: 12,
+        priority: 0,
+        onPrepareHit: function (target, source, move) {
+            this.attrLastMove('[still]');
+            this.add('-anim', source, "Water Pledge", source);
+            this.add('-anim', source, "Waterfall", target);
+        },
+        target: "Normal",
+        type: "Water",
+    },
 };
