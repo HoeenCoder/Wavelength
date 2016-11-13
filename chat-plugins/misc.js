@@ -176,22 +176,12 @@ exports.commands = {
 	},
 
 	roomlist: function (target, room, user) {
-		//if (!this.can('roomowner')) return;
-
-		/*if (!this.can('roomowner')) {
-		
-		let header = ['<b><font color="#1aff1a" size="2">Total users connected: ' + Rooms.global.userCount + '</font></b><br />'],
-			official = ['<b><font color="#ff9900" size="2"><u>Official Rooms:</u></font></b><br />'],
-			nonOfficial = ['<hr><b><u><font color="#005ce6" size="2">Public Rooms:</font></u></b><br />'],
-		}
-		else {*/
 		let header = ['<b><font color="#1aff1a" size="2">Total users connected: ' + Rooms.global.userCount + '</font></b><br />'],
 			official = ['<b><font color="#ff9900" size="2"><u>Official Rooms:</u></font></b><br />'],
 			nonOfficial = ['<hr><b><u><font color="#005ce6" size="2">Public Rooms:</font></u></b><br />'],
 			privateRoom = ['<hr><b><u><font color="#ff0066" size="2">Private Rooms:</font></u></b><br />'],
 			groupChats = ['<hr><b><u><font color="#00b386" size="2">Group Chats:</font></u></b><br />'],
 			battleRooms = ['<hr><b><u><font color="#cc0000" size="2">Battle Rooms:</font></u></b><br />']
-		//}
 
 		let rooms = [];
 
@@ -222,11 +212,9 @@ exports.commands = {
 			}
 			if (curRoom.type !== 'battle') nonOfficial.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + curRoom.title + '</a> (' + curRoom.userCount + ')');
 		}
-		if (!this.can('roomowner')) { 
-			this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' '));
-	       } else {
+
+		if (!user.can('roomowner')) return this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' '));
 		this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' ') + privateRoom.join(' ') + (groupChats.length > 1 ? groupChats.join(' ') : '') + (battleRooms.length > 1 ? battleRooms.join(' ') : ''));
-	}
 	},
 
 	hide: 'hideauth',
