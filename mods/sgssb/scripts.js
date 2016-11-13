@@ -4,21 +4,21 @@
 
 exports.BattleScripts = {
     randomSeasonalRegStaffTeam: function (side) {
-        var team = [];
-        var variant = this.random(2);
+        let team = [];
+        let variant = this.random(2);
 
-        var sets = {
+        let sets = {
             // Admins.
             '~HoeenHero': {
                 species: 'Ludicolo', ability: 'Swift Swim', item: 'Leftovers', gender: 'M',
-                moves: [['Hydro Pump', 'Scald'][this.random(2)], 'Ice Beam', 'Giga Drain'],
+                moves: [['Hydro Pump', 'Scald'][variant], 'Ice Beam', 'Giga Drain'],
                 signatureMove: 'Scripting',
                 evs: {spa: 252, spe: 252, hp: 4}, nature: 'Modest',
             },
             '~Mystifi': {
                 species: 'Clefairy', ability: 'Analytic', item: 'Eviolite', gender: 'F',
-                moves: ['Calm Mind', 'Softboiled', 'Stored Power'],
-                signatureMove: 'Cuteness Spell',
+                moves: [['Calm Mind', 'Cosmic Power'][variant], 'Soft-Boiled', 'Stored Power'],
+                signatureMove: 'Mystic Mirage',
                 evs: {hp: 252, def: 252, spd: 4}, nature: 'Bold',
             },
 
@@ -44,7 +44,7 @@ exports.BattleScripts = {
             },
             '@BDH93': {
                 species: 'Dunsparce', ability: 'Serene Grace', item: 'Kings Rock', gender: 'M',
-                moves: ['Roost', 'Coil', 'Rock Slide', ['Glare', 'Body Slam'][this.random(2)]],
+                moves: ['Roost', 'Coil', 'Rock Slide', ['Glare', 'Body Slam'][variant]],
                 signatureMove: 'Getting Trolled',
                 evs: {hp: 252, atk: 252, def: 4}, nature: 'Naughty',
             },
@@ -95,7 +95,7 @@ exports.BattleScripts = {
             },
             '*Spacial Bot': {
                 species: 'Regirock', ability: 'Wonder Guard', item: 'Leftovers',
-                moves: [['Stone Edge', 'Earthquake'][this.random(2)], 'Explosion', 'Iron Head'],
+                moves: [['Stone Edge', 'Earthquake'][variant], 'Explosion', 'Iron Head'],
                 signatureMove: 'Ancient Ritual',
                 evs: {atk: 252, spd: 252, hp: 4}, nature: 'Adamant',
             },
@@ -161,6 +161,12 @@ exports.BattleScripts = {
                 signatureMove: 'Ancient Orb',
                 evs: {atk: 252, spe: 252, hp: 4}, nature: 'Adamant',
             },
+            '%Desokoro': {
+                species: 'Gyarados', ability: 'Guts', item: 'Leftovers', gender: 'M',
+                moves: [ 'Substitute', 'Dragon Dance', 'Bounce'],
+                signatureMove: 'Tsunami Crash',
+                evs: {atk: 252, spe: 252, hp: 4}, nature: 'Adamant',
+            },
         };
         // convert moves to ids.
         for (var k in sets) {
@@ -187,7 +193,6 @@ exports.BattleScripts = {
             set.moves = [this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves)].concat(set.signatureMove);
             team.push(set);
         }
-
         return team;
     },
 };
