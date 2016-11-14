@@ -85,9 +85,9 @@ exports.commands =  {
       if (SG.eShop.closed) return this.sendReply('An error closed the shop.');
       if (!target) return this.parse('/eshop help');
       if (!SG.eShop[toId(target)]) return this.errorReply(target + ' is not in the shop.');
-      delete SG.eShop[toId(target[0])];
+      delete SG.eShop[toId(target)];
       writeShop();
-      return this.sendReply('The item ' + target[0] + ' was removed.');
+      return this.sendReply('The item ' + target + ' was removed.');
     },
     buy: function (target, room, user, connection, cmd, message) {
       if (!allowThisShop) return this.errorReply('This shop is closed');
