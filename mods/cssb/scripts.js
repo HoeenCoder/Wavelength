@@ -9,10 +9,11 @@ function extend(obj, src) {
   return obj;
 }
 
-var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
+//var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
 
 exports.BattleScripts = {
   randomCustomSSBTeam: function (side) {
+  var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));  
   var team = [];
   var variant = this.random(2);
 
