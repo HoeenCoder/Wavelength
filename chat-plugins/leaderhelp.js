@@ -30,7 +30,7 @@ exports.commands = {
 			'<b>/makechatroom [name]</b> - creates a public chat room for the server <br />' +
 			'<b>/makeprivatechatroom [name]</b> - creates a secret chat room for the server <br/>' +
 			'<b>/deleteroom [name]</b> - automatically deletes a chat room <br />' +
-			'<b>/icon [user], [image URL]</b> - gives the user a set icon in the userlist</font> <br />' +
+			'<b>/icon [user], [image URL]</b> - gives the user a set icon in the userlist <br />' +
 			'<b>/viewlogs</b> - makes you have access to any log from any room from any date <br />' +
 			'<b>/setavatar [username], [URL]</b> - Sets the avatar for the user <br />' +
 			'<b>/deleteavatar [username]</b> - Deletes the user\'s avatar <br />' +
@@ -56,7 +56,7 @@ exports.commands = {
 			'<b>/pmall [message]</b> - sends a pm to all users connected to SG <br />' +
 			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to SG <br />' +
 			'<b>/greendeclare [message] or /reddeclare [message]</b> - Anonymously announces a message in a room <br />' +
-			'& all lower commands.'
+			'& all lower commands. </font>'
 		);
 	},
 };
