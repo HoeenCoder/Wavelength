@@ -272,7 +272,7 @@ class SSB {
     item = Tools.getItem(toId(item));
     if (!item.exists) {
       //check custom
-      if (this.cItem && toId(this.cItem) === item.id) {
+      if (this.cItem && toId(this.cItem) === item.id && this.bought.citem) {
         this.item = this.cItem;
         return true;
       } else return false;
@@ -286,7 +286,7 @@ class SSB {
     ability = Tools.getAbility(toId(ability));
     if (!ability.exists) {
       //check custom
-      if (this.cAbility && toId(this.cAbility) === ability.id) {
+      if (this.cAbility && toId(this.cAbility) === ability.id && this.bought.cAbility) {
         this.ability = this.cAbility;
         return true;
       } else return false;
@@ -336,7 +336,7 @@ class SSB {
     }
     if (customIds.indexOf(move) < 0) {
       //check for self-made custom move
-      if (this.selfCustomMove && toId(this.selfCustomMove) === move) {
+      if (this.selfCustomMove && toId(this.selfCustomMove) === move && this.bought.cMove) {
         this.cMove = this.selfCustomMove;
         return true;
       } else return false;
@@ -680,11 +680,11 @@ exports.commands = {
         if (targetUser.active) {
           writeSSB();
           user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-          return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles once an administrator hotpatches formats, or restarts the server.');
+          return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles now.');
         } else {
           writeSSB();
           user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-          return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once an administrator hotpatches formats, or restarts the server.');
+          return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles.');
         }
       } else return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
     },
@@ -774,6 +774,43 @@ exports.commands = {
     loghelp: ['/ssb log - Accepts the following commands:',
               '/ssb log view, [all|user] - View the purchases of a user or all users. Requires &, ~ unless viewing your own.',
               '/ssb log mark, [user], [cItem|cAbility|cMove], [complete|pending|remove] - Update the status for a users SSBFFA purchase.'],
+    forceupdate: 'validate',
+    validate: function (target, room, user, connection, cmd, message) {
+      if (!this.can('roomowner')) return;
+      if (!target) return this.parse('/help ssb validate');
+      let targetUser = SG.ssb[toId(target)];
+      if (!targetUser) return this.errorReply(target + ' does not have a SSBFFA pokemon yet.');
+      //Start validation.
+      this.sendReply('Validating ' + targetUser.name + '\'s SSBFFA pokemon...');
+      let valid = true;
+      if (targetUser.item !== false && !targetUser.setItem(targetUser.item)) {
+        valid = false;
+        this.errorReply(targetUser.name + '\'s item was invalid.');
+        targetUser.item = false;
+      }
+      if (!targetUser.setAbility(targetUser.ability)) {
+        valid = false;
+        this.errorReply(targetUser.name + '\'s ability was invalid.');
+        targetUser.ability = Tools.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
+      }
+      for (let i in targetUser.movepool) {
+        if (!Tools.getMove(targetUser.movepool[i]).exists) {
+          //Check custom first!
+          if (!targetUser.selfCustomMove || toId(targetUser.selfCustomMove) !== targetUser.movepool[i] || !targetUser.bought.cMove) {
+            valid = false;
+            this.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" was invalid.');
+            targetUser.removeMove(targetUser.movepool[i]);
+          }
+        }
+      }
+      if (!valid) {
+        targetUser.active = false;
+        if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+        writeSSB();
+        return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
+      } else return this.sendReply('Done! This pokemon is valid');
+    },
+    validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set ti to its default value. Requires: &, ~'],
     '': function (target, room, user, connection, cmd, message) {
       return this.parse('/help ssb');
     }
@@ -789,5 +826,6 @@ exports.commands = {
     '/ssb toggle - Attempts to active or deactive your pokemon. Acitve pokemon can be seen in the tier. If your pokemon cannot be activated, you will see a popup explaining why.',
     '/ssb custom - Shows all the default custom moves, with details.',
     '/ssb log - Shows purchase details for SSBFFA.',
+    '/ssb validate [user] - validate a users SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
     'Programed by HoeenHero.']
 }
