@@ -38,14 +38,6 @@ exports.Formats = [
 		banlist: ['Uber', 'Shadow Tag', 'Soul Dew'],
 	},
 	{
-		name: "OU (suspect test)",
-		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3585600/\">np: OU Stage 7</a>"],
-		section: "ORAS Singles",
-
-		ruleset: ['OU'],
-		banlist: ['Sablenite'],
-	},
-	{
 		name: "Ubers",
 		desc: [
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3522911/\">Ubers Metagame Discussion</a>",
@@ -66,7 +58,7 @@ exports.Formats = [
 		section: "ORAS Singles",
 
 		ruleset: ['OU'],
-		banlist: ['OU', 'BL', 'Drizzle', 'Drought'],
+		banlist: ['OU', 'BL', 'Drizzle', 'Drought', 'Baton Pass'],
 	},
 	{
 		name: "RU",
@@ -77,8 +69,8 @@ exports.Formats = [
 		],
 		section: "ORAS Singles",
 
-		ruleset: ['UU'],
-		banlist: ['UU', 'BL2'],
+		ruleset: ['OU'],
+		banlist: ['OU', 'BL', 'UU', 'BL2', 'Drizzle', 'Drought'],
 	},
 	{
 		name: "NU",
@@ -200,11 +192,11 @@ exports.Formats = [
 
 		gameType: 'doubles',
 		ruleset: ['Doubles OU'],
-		banlist: ['Aegislash', 'Amoonguss', 'Azumarill', 'Bisharp', 'Breloom', 'Charizard-Mega-Y', 'Charizardite Y', 'Conkeldurr',
-			'Cresselia', 'Diancie-Mega', 'Diancite', 'Dragonite', 'Ferrothorn', 'Garchomp', 'Gardevoir-Mega', 'Gardevoirite',
-			'Gengar', 'Greninja', 'Gyarados', 'Heatran', 'Hoopa-Unbound', 'Hydreigon', 'Jirachi', 'Kangaskhan-Mega', 'Kangaskhanite',
-			'Keldeo', 'Kyurem-Black', 'Landorus', 'Landorus-Therian', 'Latios', 'Ludicolo', 'Mawile-Mega', 'Mawilite',
-			'Milotic', 'Politoed', 'Rotom-Wash', 'Scizor', 'Scrafty', 'Shaymin-Sky', 'Suicune', 'Sylveon', 'Talonflame',
+		banlist: ['Aegislash', 'Amoonguss', 'Arcanine', 'Azumarill', 'Bisharp', 'Breloom', 'Charizard-Mega-Y', 'Charizardite Y',
+			'Conkeldurr', 'Cresselia', 'Diancie-Mega', 'Diancite', 'Ferrothorn', 'Garchomp', 'Gardevoir-Mega', 'Gardevoirite',
+			'Gastrodon', 'Gengar', 'Greninja', 'Heatran', 'Hitmontop', 'Hoopa-Unbound', 'Hydreigon', 'Jirachi',
+			'Kangaskhan-Mega', 'Kangaskhanite', 'Keldeo', 'Kyurem-Black', 'Landorus-Therian', 'Latios', 'Ludicolo', 'Milotic',
+			'Politoed', 'Raichu', 'Rotom-Wash', 'Scizor', 'Scrafty', 'Shaymin-Sky', 'Suicune', 'Sylveon', 'Talonflame',
 			'Terrakion', 'Thundurus', 'Togekiss', 'Tyranitar', 'Venusaur', 'Volcanion', 'Weavile', 'Whimsicott', 'Zapdos',
 		],
 	},
@@ -831,23 +823,6 @@ exports.Formats = [
 			if (move && !this.getImmunity(move, type)) return 1;
 			return -typeMod;
 		},
-	},
-	{
-		name: "LC UU",
-		desc: [
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3562639/\">LC UU</a>",
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3562640/\">LC UU Viability Ranking</a>",
-		],
-		section: "Other Metagames",
-
-		maxLevel: 5,
-		ruleset: ['LC'],
-		banlist: ['Abra', 'Aipom', 'Anorith', 'Archen', 'Bunnelby', 'Carvanha', 'Chinchou', 'Cottonee', 'Croagunk', 'Diglett',
-			'Drifloon', 'Drilbur', 'Dwebble', 'Elekid', 'Ferroseed', 'Fletchling', 'Foongus', 'Gastly', 'Gothita', 'Honedge',
-			'Larvesta', 'Magnemite', 'Mienfoo', 'Munchlax', 'Omanyte', 'Onix', 'Pawniard', 'Ponyta', 'Porygon', 'Scraggy',
-			'Shellder', 'Snivy', 'Snubbull', 'Spritzee', 'Staryu', 'Stunky', 'Surskit', 'Timburr', 'Tirtouga', 'Vullaby',
-			'Corphish', 'Houndour', 'Pancham', 'Skrelp', 'Vulpix', 'Zigzagoon', 'Shell Smash', 'Sticky Web',
-		],
 	},
 	{
 		name: "2v2 Doubles",
