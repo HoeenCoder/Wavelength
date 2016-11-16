@@ -134,18 +134,23 @@ exports.commands =  {
                 break;
               case 'shiny':
                 SG.ssb[user.userid].canShiny = true;
+                writeSSB();
                 break;
               case 'ffacustomsymbol':
                 SG.ssb[user.userid].cSymbol = true;
+                writeSSB();
                 break;
               case 'customitem':
                 SG.ssb[user.userid].bought.cItem = true;
+                writeSSB();
                 break;
               case 'customability':
                 SG.ssb[user.userid].bought.cAbility = true;
+                writeSSB();
                 break;
               case 'custommove':
                 SG.ssb[user.userid].bought.cMove = true;
+                writeSSB();
                 break;
               default:
                 SG.messageSeniorStaff(user.name + ' has purchased a ' + item.name + '.');
