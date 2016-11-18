@@ -9,7 +9,7 @@
 
 let fs = require('fs');
 let path = require('path');
-let https = require('https');
+let http = require('http');
 let request = require('request');
 
 let customColors = {};
@@ -31,16 +31,16 @@ load();
        fs.appendFile(file, date + msg);
 }*/
 
-let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist: Ex: 'serverid'
+let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
 
 function getCSS() {
         let options = {
                 host: 'play.pokemonshowdown.com',
-                port: Config.port,
+                port: 80,
                 path: '/customcss.php?server=' + (Config.serverid || cssPath),
                 method: 'GET',
         };
-        https.get(options);
+        http.get(options);
 }
 SG.loadCSS = getCSS;
 
