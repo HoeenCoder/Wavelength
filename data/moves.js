@@ -125,7 +125,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"aciddownpour": {
@@ -318,7 +318,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cool",
 	},
 	"aircutter": {
@@ -427,7 +427,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"anchorshot": {
@@ -794,7 +794,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"aurasphere": {
@@ -847,7 +847,6 @@ exports.BattleMovedex = {
 		desc: "For 5 turns, the user and its party members take 0.5x damage from physical and special attacks, or 0.66x damage if in a Double Battle. Critical hits ignore this protection. It is removed from the user's side if the user or an ally is successfully hit by Brick Break, Psychic Fangs, or Defog. Lasts for 8 turns if the user is holding Light Clay. Fails unless the weather is Hail.",
 		shortDesc: "For 5 turns, damage to allies is halved. Hail only.",
 		id: "auroraveil",
-		isViable: true,
 		name: "Aurora Veil",
 		pp: 20,
 		priority: 0,
@@ -937,7 +936,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"avalanche": {
@@ -1073,7 +1072,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cool",
 	},
 	"batonpass": {
@@ -1093,7 +1092,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"beakblast": {
@@ -1988,7 +1987,6 @@ exports.BattleMovedex = {
 		desc: "Until the user is no longer active, Fire-type users lose their Fire type and pure Fire-type users become Normal type.",
 		shortDesc: "User's Fire-type is removed until it switches out.",
 		id: "burnup",
-		isViable: true,
 		name: "Burn Up",
 		pp: 5,
 		priority: 0,
@@ -2026,7 +2024,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"camouflage": {
@@ -2097,7 +2095,6 @@ exports.BattleMovedex = {
 		desc: "No additional effect.",
 		shortDesc: "No additional effect.",
 		id: "catastropika",
-		isViable: true,
 		name: "Catastropika",
 		pp: 1,
 		priority: 0,
@@ -2388,7 +2385,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"cometpunch": {
@@ -2608,6 +2605,7 @@ exports.BattleMovedex = {
 		desc: "If the user moves after the target, the target's Ability is rendered ineffective as long as it remains active. If the target uses Baton Pass, the replacement will remain under this effect. If the target's Ability is Multitype or Stance Change, this effect does not happen.",
 		shortDesc: "Nullifies the foe(s) Ability if the target moves first.",
 		id: "coreenforcer",
+		isViable: true,
 		name: "Core Enforcer",
 		pp: 10,
 		priority: 0,
@@ -2682,7 +2680,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"cottonspore": {
@@ -2703,7 +2701,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Grass",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"counter": {
@@ -3062,7 +3060,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Dark",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"darkestlariat": {
@@ -3206,7 +3204,7 @@ exports.BattleMovedex = {
 			return this.runEvent('StallMove', pokemon);
 		},
 		onHit: function (pokemon) {
-			pokemon.addVolatile('stall');
+			pokemon.addVolatile('retaliationstall');
 		},
 		effect: {
 			onStart: function (pokemon) {
@@ -3270,7 +3268,6 @@ exports.BattleMovedex = {
 		desc: "No additional effect.",
 		shortDesc: "No additional effect.",
 		id: "devastatingdrake",
-		isViable: true,
 		name: "Devastating Drake",
 		pp: 1,
 		priority: 0,
@@ -3426,7 +3423,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"disarmingvoice": {
@@ -3679,7 +3676,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cool",
 	},
 	"dracometeor": {
@@ -3790,7 +3787,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dragon",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cool",
 	},
 	"dragonhammer": {
@@ -3801,6 +3798,7 @@ exports.BattleMovedex = {
 		desc: "No additional effect.",
 		shortDesc: "No additional effect.",
 		id: "dragonhammer",
+		isViable: true,
 		name: "Dragon Hammer",
 		pp: 15,
 		priority: 0,
@@ -4481,7 +4479,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"energyball": {
@@ -4614,6 +4612,7 @@ exports.BattleMovedex = {
 		desc: "Raises the user's Attack, Defense, Special Attack, Special Defense, and Speed by 2 stages.",
 		shortDesc: "Raises user's Atk, Def, SpA, SpD, and Spe by 2.",
 		id: "extremeevoboost",
+		isViable: true,
 		name: "Extreme Evoboost",
 		pp: 1,
 		priority: 0,
@@ -5479,6 +5478,7 @@ exports.BattleMovedex = {
 		desc: "The target restores 1/2 of its maximum HP, rounded half up. If the terrain is Grassy Terrain, the target instead restores 2/3 of its maximum HP, rounded half down.",
 		shortDesc: "Heals the target by 50% of its max HP.",
 		id: "floralhealing",
+		isViable: true,
 		name: "Floral Healing",
 		pp: 10,
 		priority: 0,
@@ -5493,7 +5493,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"flowershield": {
@@ -5723,7 +5723,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"forcepalm": {
@@ -7170,7 +7170,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"healpulse": {
@@ -7195,7 +7195,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"healingwish": {
@@ -7431,7 +7431,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAlly",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"hex": {
@@ -8644,7 +8644,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"ironhead": {
@@ -8832,7 +8832,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cool",
 	},
 	"knockoff": {
@@ -9113,7 +9113,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"leer": {
@@ -10151,7 +10151,7 @@ exports.BattleMovedex = {
 			for (let i in exports.BattleMovedex) {
 				let move = exports.BattleMovedex[i];
 				if (i !== move.id) continue;
-				if (move.isNonstandard) continue;
+				if (move.isZ || move.isNonstandard) continue;
 				let noMetronome = {
 					afteryou:1, assist:1, belch:1, bestow:1, celebrate:1, chatter:1, copycat:1, counter:1, covet:1, craftyshield:1, destinybond:1, detect:1, diamondstorm:1, dragonascent:1, endure:1, feint:1, focuspunch:1, followme:1, freezeshock:1, happyhour:1, helpinghand:1, holdhands:1, hyperspacefury:1, hyperspacehole:1, iceburn:1, kingsshield:1, lightofruin:1, matblock:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, originpulse:1, precipiceblades:1, protect:1, quash:1, quickguard:1, ragepowder:1, relicsong:1, secretsword:1, sketch:1, sleeptalk:1, snarl:1, snatch:1, snore:1, spikyshield:1, steameruption:1, struggle:1, switcheroo:1, technoblast:1, thief:1, thousandarrows:1, thousandwaves:1, transform:1, trick:1, vcreate:1, wideguard:1,
 				};
@@ -10191,7 +10191,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"mimic": {
@@ -10289,7 +10289,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"miracleeye": {
@@ -10619,7 +10619,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fairy",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"morningsun": {
@@ -10647,7 +10647,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"mudslap": {
@@ -10848,7 +10848,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dark",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"naturalgift": {
@@ -11496,7 +11496,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"petalblizzard": {
@@ -12200,7 +12200,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"psybeam": {
@@ -12601,6 +12601,7 @@ exports.BattleMovedex = {
 						for (let j = 0; j < this.queue.length; j++) {
 							if (this.queue[j].pokemon === sources[i] && this.queue[j].choice === 'megaEvo') {
 								this.runMegaEvo(sources[i]);
+								this.queue.splice(j, 1);
 								break;
 							}
 						}
@@ -12738,7 +12739,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"rage": {
@@ -12809,7 +12810,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"raindance": {
@@ -12963,7 +12964,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"recycle": {
@@ -13141,7 +13142,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"retaliate": {
@@ -13376,7 +13377,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Rock",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"rockslide": {
@@ -13612,7 +13613,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Flying",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"rototiller": {
@@ -13849,7 +13850,6 @@ exports.BattleMovedex = {
 		desc: "No additional effect.",
 		shortDesc: "No additional effect.",
 		id: "savagespinout",
-		isViable: true,
 		name: "Savage Spin-Out",
 		pp: 1,
 		priority: 0,
@@ -14349,7 +14349,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"shelltrap": {
@@ -14410,7 +14410,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"shockwave": {
@@ -14454,7 +14454,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Ground",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"signalbeam": {
@@ -14880,7 +14880,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"slam": {
@@ -15418,7 +15418,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"solarbeam": {
@@ -15767,7 +15767,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"spotlight": {
@@ -15791,8 +15791,8 @@ exports.BattleMovedex = {
 			onStart: function (pokemon) {
 				this.add('-singleturn', pokemon, 'move: Spotlight');
 			},
-			onAllyRedirectTargetPriority: 1,
-			onAllyRedirectTarget: function (target, source, source2, move) {
+			onFoeRedirectTargetPriority: 2,
+			onFoeRedirectTarget: function (target, source, source2, move) {
 				if (this.validTarget(this.effectData.target, source, move.target)) {
 					this.debug("Spotlight redirected target of move");
 					return this.effectData.target;
@@ -16320,7 +16320,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"subzeroslammer": {
@@ -16531,7 +16531,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Cute",
 	},
 	"swallow": {
@@ -16557,7 +16557,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Tough",
 	},
 	"sweetkiss": {
@@ -16681,7 +16681,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"synchronoise": {
@@ -16730,7 +16730,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Clever",
 	},
 	"tackle": {
@@ -16770,7 +16770,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'clearboost',
+		zMoveEffect: 'restoreboost',
 		contestType: "Beautiful",
 	},
 	"tailslap": {
@@ -17501,6 +17501,7 @@ exports.BattleMovedex = {
 		desc: "Lowers the target's Speed by 1 stage and poisons it.",
 		shortDesc: "Lowers the target's Speed by 1 and poisons it.",
 		id: "toxicthread",
+		isViable: true,
 		name: "Toxic Thread",
 		pp: 20,
 		priority: 0,
@@ -17736,7 +17737,6 @@ exports.BattleMovedex = {
 		desc: "Has a 100% chance to lower the target's Attack by 1 stage.",
 		shortDesc: "100% chance to lower the target's Attack by 1.",
 		id: "tropkick",
-		isViable: true,
 		name: "Trop Kick",
 		pp: 15,
 		priority: 0,

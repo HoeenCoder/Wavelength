@@ -4,6 +4,7 @@ exports.BattleItems = {
 	"abomasite": {
 		id: "abomasite",
 		name: "Abomasite",
+		isUnreleased: true,
 		spritenum: 575,
 		megaStone: "Abomasnow-Mega",
 		megaEvolves: "Abomasnow",
@@ -95,6 +96,7 @@ exports.BattleItems = {
 	"aggronite": {
 		id: "aggronite",
 		name: "Aggronite",
+		isUnreleased: true,
 		spritenum: 578,
 		megaStone: "Aggron-Mega",
 		megaEvolves: "Aggron",
@@ -195,6 +197,7 @@ exports.BattleItems = {
 	"altarianite": {
 		id: "altarianite",
 		name: "Altarianite",
+		isUnreleased: true,
 		spritenum: 615,
 		megaStone: "Altaria-Mega",
 		megaEvolves: "Altaria",
@@ -209,6 +212,7 @@ exports.BattleItems = {
 	"ampharosite": {
 		id: "ampharosite",
 		name: "Ampharosite",
+		isUnreleased: true,
 		spritenum: 580,
 		megaStone: "Ampharos-Mega",
 		megaEvolves: "Ampharos",
@@ -301,6 +305,7 @@ exports.BattleItems = {
 	"audinite": {
 		id: "audinite",
 		name: "Audinite",
+		isUnreleased: true,
 		spritenum: 617,
 		megaStone: "Audino-Mega",
 		megaEvolves: "Audino",
@@ -338,6 +343,7 @@ exports.BattleItems = {
 	"banettite": {
 		id: "banettite",
 		name: "Banettite",
+		isUnreleased: true,
 		spritenum: 582,
 		megaStone: "Banette-Mega",
 		megaEvolves: "Banette",
@@ -360,6 +366,7 @@ exports.BattleItems = {
 	"beedrillite": {
 		id: "beedrillite",
 		name: "Beedrillite",
+		isUnreleased: true,
 		spritenum: 628,
 		megaStone: "Beedrill-Mega",
 		megaEvolves: "Beedrill",
@@ -504,6 +511,7 @@ exports.BattleItems = {
 	"blazikenite": {
 		id: "blazikenite",
 		name: "Blazikenite",
+		isUnreleased: true,
 		spritenum: 584,
 		megaStone: "Blaziken-Mega",
 		megaEvolves: "Blaziken",
@@ -620,6 +628,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Bug",
+		forcedForme: "Arceus-Bug",
 		num: 787,
 		gen: 7,
 		desc: "If holder has a Bug move, this item allows it to use a Bug Z-Move.",
@@ -643,6 +652,7 @@ exports.BattleItems = {
 	"cameruptite": {
 		id: "cameruptite",
 		name: "Cameruptite",
+		isUnreleased: true,
 		spritenum: 625,
 		megaStone: "Camerupt-Mega",
 		megaEvolves: "Camerupt",
@@ -1088,6 +1098,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Dark",
+		forcedForme: "Arceus-Dark",
 		num: 791,
 		gen: 7,
 		desc: "If holder has a Dark move, this item allows it to use a Dark Z-Move.",
@@ -1158,6 +1169,7 @@ exports.BattleItems = {
 	"diancite": {
 		id: "diancite",
 		name: "Diancite",
+		isUnreleased: true,
 		spritenum: 624,
 		megaStone: "Diancie-Mega",
 		megaEvolves: "Diancie",
@@ -1286,6 +1298,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Dragon",
+		forcedForme: "Arceus-Dragon",
 		num: 790,
 		gen: 7,
 		desc: "If holder has a Dragon move, this item allows it to use a Dragon Z-Move.",
@@ -1467,6 +1480,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Electric",
+		forcedForme: "Arceus-Electric",
 		num: 779,
 		gen: 7,
 		desc: "If holder has an Electric move, this item allows it to use an Electric Z-Move.",
@@ -1553,6 +1567,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Fairy",
+		forcedForme: "Arceus-Fairy",
 		num: 793,
 		gen: 7,
 		desc: "If holder has a Fairy move, this item allows it to use a Fairy Z-Move.",
@@ -1643,6 +1658,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Fighting",
+		forcedForme: "Arceus-Fighting",
 		num: 782,
 		gen: 7,
 		desc: "If holder has a Fighting move, this item allows it to use a Fighting Z-Move.",
@@ -1717,6 +1733,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Fire",
+		forcedForme: "Arceus-Fire",
 		num: 777,
 		gen: 7,
 		desc: "If holder has a Fire move, this item allows it to use a Fire Z-Move.",
@@ -1839,6 +1856,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Flying",
+		forcedForme: "Arceus-Flying",
 		num: 785,
 		gen: 7,
 		desc: "If holder has a Flying move, this item allows it to use a Flying Z-Move.",
@@ -1903,6 +1921,7 @@ exports.BattleItems = {
 	"galladite": {
 		id: "galladite",
 		name: "Galladite",
+		isUnreleased: true,
 		spritenum: 616,
 		megaStone: "Gallade-Mega",
 		megaEvolves: "Gallade",
@@ -1952,6 +1971,7 @@ exports.BattleItems = {
 	"gardevoirite": {
 		id: "gardevoirite",
 		name: "Gardevoirite",
+		isUnreleased: true,
 		spritenum: 587,
 		megaStone: "Gardevoir-Mega",
 		megaEvolves: "Gardevoir",
@@ -2020,6 +2040,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Ghost",
+		forcedForme: "Arceus-Ghost",
 		num: 789,
 		gen: 7,
 		desc: "If holder has a Ghost move, this item allows it to use a Ghost Z-Move.",
@@ -2081,6 +2102,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Grass",
+		forcedForme: "Arceus-Grass",
 		num: 780,
 		gen: 7,
 		desc: "If holder has a Grass move, this item allows it to use a Grass Z-Move.",
@@ -2202,6 +2224,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Ground",
+		forcedForme: "Arceus-Ground",
 		num: 784,
 		gen: 7,
 		desc: "If holder has a Ground move, this item allows it to use a Ground Z-Move.",
@@ -2301,6 +2324,7 @@ exports.BattleItems = {
 	"heracronite": {
 		id: "heracronite",
 		name: "Heracronite",
+		isUnreleased: true,
 		spritenum: 590,
 		megaStone: "Heracross-Mega",
 		megaEvolves: "Heracross",
@@ -2329,6 +2353,7 @@ exports.BattleItems = {
 	"houndoominite": {
 		id: "houndoominite",
 		name: "Houndoominite",
+		isUnreleased: true,
 		spritenum: 591,
 		megaStone: "Houndoom-Mega",
 		megaEvolves: "Houndoom",
@@ -2432,6 +2457,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Ice",
+		forcedForme: "Arceus-Ice",
 		num: 781,
 		gen: 7,
 		desc: "If holder has an Ice move, this item allows it to use an Ice Z-Move.",
@@ -2701,6 +2727,7 @@ exports.BattleItems = {
 	"latiasite": {
 		id: "latiasite",
 		name: "Latiasite",
+		isUnreleased: true,
 		spritenum: 629,
 		megaStone: "Latias-Mega",
 		megaEvolves: "Latias",
@@ -2715,6 +2742,7 @@ exports.BattleItems = {
 	"latiosite": {
 		id: "latiosite",
 		name: "Latiosite",
+		isUnreleased: true,
 		spritenum: 630,
 		megaStone: "Latios-Mega",
 		megaEvolves: "Latios",
@@ -2897,6 +2925,7 @@ exports.BattleItems = {
 	"lopunnite": {
 		id: "lopunnite",
 		name: "Lopunnite",
+		isUnreleased: true,
 		spritenum: 626,
 		megaStone: "Lopunny-Mega",
 		megaEvolves: "Lopunny",
@@ -3104,6 +3133,7 @@ exports.BattleItems = {
 	"manectite": {
 		id: "manectite",
 		name: "Manectite",
+		isUnreleased: true,
 		spritenum: 596,
 		megaStone: "Manectric-Mega",
 		megaEvolves: "Manectric",
@@ -3159,6 +3189,7 @@ exports.BattleItems = {
 	"mawilite": {
 		id: "mawilite",
 		name: "Mawilite",
+		isUnreleased: true,
 		spritenum: 598,
 		megaStone: "Mawile-Mega",
 		megaEvolves: "Mawile",
@@ -3195,6 +3226,7 @@ exports.BattleItems = {
 	"medichamite": {
 		id: "medichamite",
 		name: "Medichamite",
+		isUnreleased: true,
 		spritenum: 599,
 		megaStone: "Medicham-Mega",
 		megaEvolves: "Medicham",
@@ -3346,6 +3378,7 @@ exports.BattleItems = {
 	"mewtwonitex": {
 		id: "mewtwonitex",
 		name: "Mewtwonite X",
+		isUnreleased: true,
 		spritenum: 600,
 		megaStone: "Mewtwo-Mega-X",
 		megaEvolves: "Mewtwo",
@@ -3360,6 +3393,7 @@ exports.BattleItems = {
 	"mewtwonitey": {
 		id: "mewtwonitey",
 		name: "Mewtwonite Y",
+		isUnreleased: true,
 		spritenum: 601,
 		megaStone: "Mewtwo-Mega-Y",
 		megaEvolves: "Mewtwo",
@@ -3800,6 +3834,7 @@ exports.BattleItems = {
 	"pidgeotite": {
 		id: "pidgeotite",
 		name: "Pidgeotite",
+		isUnreleased: true,
 		spritenum: 622,
 		megaStone: "Pidgeot-Mega",
 		megaEvolves: "Pidgeot",
@@ -3957,6 +3992,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Poison",
+		forcedForme: "Arceus-Poison",
 		num: 783,
 		gen: 7,
 		desc: "If holder has a Poison move, this item allows it to use a Poison Z-Move.",
@@ -4093,6 +4129,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Psychic",
+		forcedForme: "Arceus-Psychic",
 		num: 786,
 		gen: 7,
 		desc: "If holder has a Psychic move, this item allows it to use a Psychic Z-Move.",
@@ -4410,6 +4447,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Rock",
+		forcedForme: "Arceus-Rock",
 		num: 788,
 		gen: 7,
 		desc: "If holder has a Rock move, this item allows it to use a Rock Z-Move.",
@@ -4583,6 +4621,7 @@ exports.BattleItems = {
 	"sceptilite": {
 		id: "sceptilite",
 		name: "Sceptilite",
+		isUnreleased: true,
 		spritenum: 613,
 		megaStone: "Sceptile-Mega",
 		megaEvolves: "Sceptile",
@@ -5037,6 +5076,7 @@ exports.BattleItems = {
 	"steelixite": {
 		id: "steelixite",
 		name: "Steelixite",
+		isUnreleased: true,
 		spritenum: 621,
 		megaStone: "Steelix-Mega",
 		megaEvolves: "Steelix",
@@ -5091,6 +5131,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Steel",
+		forcedForme: "Arceus-Steel",
 		num: 792,
 		gen: 7,
 		desc: "If holder has a Steel move, this item allows it to use a Steel Z-Move.",
@@ -5159,6 +5200,7 @@ exports.BattleItems = {
 	"swampertite": {
 		id: "swampertite",
 		name: "Swampertite",
+		isUnreleased: true,
 		spritenum: 612,
 		megaStone: "Swampert-Mega",
 		megaEvolves: "Swampert",
@@ -5314,6 +5356,7 @@ exports.BattleItems = {
 	"tyranitarite": {
 		id: "tyranitarite",
 		name: "Tyranitarite",
+		isUnreleased: true,
 		spritenum: 607,
 		megaStone: "Tyranitar-Mega",
 		megaEvolves: "Tyranitar",
@@ -5413,6 +5456,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Water",
+		forcedForme: "Arceus-Water",
 		num: 778,
 		gen: 7,
 		desc: "If holder has a Water move, this item allows it to use a Water Z-Move.",
