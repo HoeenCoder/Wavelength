@@ -125,7 +125,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"aciddownpour": {
@@ -318,7 +318,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cool",
 	},
 	"aircutter": {
@@ -427,7 +427,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"anchorshot": {
@@ -639,7 +639,7 @@ exports.BattleMovedex = {
 					let noAssist = {
 						assist:1, belch:1, bestow:1, bounce:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dig:1, dive:1, dragontail:1, endure:1, feint:1, fly:1, focuspunch:1, followme:1, helpinghand:1, kingsshield:1, matblock:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, phantomforce:1, protect:1, ragepowder:1, roar:1, shadowforce:1, sketch:1, skydrop:1, sleeptalk:1, snatch:1, spikyshield:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1, whirlwind:1,
 					};
-					if (!noAssist[move]) {
+					if (!noAssist[move] && !move.isZ) {
 						moves.push(move);
 					}
 				}
@@ -794,7 +794,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"aurasphere": {
@@ -936,7 +936,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"avalanche": {
@@ -1072,7 +1072,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cool",
 	},
 	"batonpass": {
@@ -1092,7 +1092,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"beakblast": {
@@ -1991,12 +1991,13 @@ exports.BattleMovedex = {
 		pp: 5,
 		priority: 0,
 		flags: {protect: 1, mirror: 1, defrost: 1},
-		self: {
-			volatileStatus: 'burnup',
+		onTryHit: function (pokemon) {
+			if (!pokemon.hasType("Fire")) return false;
 		},
-		effect: {
-			noCopy: true,
-			// implemented in BattlePokemon#getTypes
+		self: {
+			onHit: function (pokemon) {
+				pokemon.setType(pokemon.getTypes(true).map(type => type === "Fire" ? "???" : type));
+			},
 		},
 		secondary: false,
 		target: "normal",
@@ -2024,7 +2025,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"camouflage": {
@@ -2385,7 +2386,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"cometpunch": {
@@ -2680,7 +2681,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"cottonspore": {
@@ -2701,7 +2702,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Grass",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"counter": {
@@ -3060,7 +3061,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Dark",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"darkestlariat": {
@@ -3423,7 +3424,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"disarmingvoice": {
@@ -3676,7 +3677,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cool",
 	},
 	"dracometeor": {
@@ -3787,7 +3788,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dragon",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cool",
 	},
 	"dragonhammer": {
@@ -4479,7 +4480,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"energyball": {
@@ -5493,7 +5494,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"flowershield": {
@@ -5723,7 +5724,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"forcepalm": {
@@ -7170,7 +7171,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"healpulse": {
@@ -7195,7 +7196,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"healingwish": {
@@ -7431,7 +7432,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAlly",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"hex": {
@@ -8644,7 +8645,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"ironhead": {
@@ -8832,7 +8833,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cool",
 	},
 	"knockoff": {
@@ -9113,7 +9114,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"leer": {
@@ -10191,7 +10192,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"mimic": {
@@ -10289,7 +10290,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"miracleeye": {
@@ -10619,7 +10620,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fairy",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"morningsun": {
@@ -10647,7 +10648,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"mudslap": {
@@ -10848,7 +10849,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dark",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"naturalgift": {
@@ -11496,7 +11497,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"petalblizzard": {
@@ -12200,7 +12201,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"psybeam": {
@@ -12739,7 +12740,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"rage": {
@@ -12810,7 +12811,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"raindance": {
@@ -12964,7 +12965,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"recycle": {
@@ -13142,7 +13143,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"retaliate": {
@@ -13377,7 +13378,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Rock",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"rockslide": {
@@ -13613,7 +13614,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Flying",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"rototiller": {
@@ -14349,7 +14350,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"shelltrap": {
@@ -14410,7 +14411,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"shockwave": {
@@ -14454,7 +14455,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Ground",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"signalbeam": {
@@ -14880,7 +14881,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"slam": {
@@ -15418,7 +15419,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"solarbeam": {
@@ -15767,7 +15768,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"spotlight": {
@@ -16320,7 +16321,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"subzeroslammer": {
@@ -16531,7 +16532,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Cute",
 	},
 	"swallow": {
@@ -16557,7 +16558,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
 	},
 	"sweetkiss": {
@@ -16681,7 +16682,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"synchronoise": {
@@ -16730,7 +16731,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Clever",
 	},
 	"tackle": {
@@ -16770,7 +16771,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
-		zMoveEffect: 'restoreboost',
+		zMoveEffect: 'clearnegativeboost',
 		contestType: "Beautiful",
 	},
 	"tailslap": {
@@ -17104,7 +17105,6 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
-		isUnreleased: true,
 		onEffectiveness: function (typeMod, type, move) {
 			if (move.type !== 'Ground') return;
 			let target = this.activeTarget;
@@ -17134,7 +17134,6 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
-		isUnreleased: true,
 		onHit: function (target, source, move) {
 			if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
 		},
@@ -17186,18 +17185,18 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 2,
 			onStart: function (target) {
-				this.add('-start', target, 'move: Throat Chop');
+				this.add('-start', target, 'Throat Chop', '[silent]');
 			},
 			onBeforeMovePriority: 6,
 			onBeforeMove: function (pokemon, target, move) {
 				if (move.flags['sound']) {
-					this.add('cant', pokemon, 'move: Throat Chop', move); // TODO: client-side
+					this.add('cant', pokemon, 'move: Throat Chop');
 					return false;
 				}
 			},
 			onResidualOrder: 22,
 			onEnd: function (target) {
-				this.add('-end', target, 'move: Throat Chop');
+				this.add('-end', target, 'Throat Chop', '[silent]');
 			},
 		},
 		secondary: false,

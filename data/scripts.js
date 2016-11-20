@@ -56,6 +56,7 @@ exports.BattleScripts = {
 			sourceEffect = this.getEffect('lockedmove');
 		}
 		pokemon.moveUsed(move);
+		if (zMove) pokemon.side.zMoveUsed = true;
 		this.useMove(move, pokemon, target, sourceEffect, zMove);
 		this.singleEvent('AfterMove', move, null, pokemon, target, move);
 		this.runEvent('AfterMove', pokemon, target, move);
@@ -126,7 +127,7 @@ exports.BattleScripts = {
 			this.heal(pokemon.maxhp, pokemon, pokemon, move);
 		} else if (zMove && move.zMoveEffect === 'healreplacement') {
 			pokemon.side.addSideCondition('healingwish', pokemon, move);
-		} else if (zMove && move.zMoveEffect === 'restoreboost') {
+		} else if (zMove && move.zMoveEffect === 'clearnegativeboost') {
 			let boosts = {};
 			for (let i in pokemon.boosts) {
 				if (pokemon.boosts[i] < 0) {
@@ -134,7 +135,7 @@ exports.BattleScripts = {
 				}
 			}
 			pokemon.setBoost(boosts);
-			this.add('-restoreboost', pokemon, '[zeffect]');
+			this.add('-clearnegativeboost', pokemon, '[zeffect]');
 		} else if (zMove && move.zMoveEffect === 'redirect') {
 			pokemon.addVolatile('followme', pokemon, move);
 		} else if (zMove && move.zMoveEffect === 'crit1') {
@@ -369,14 +370,15 @@ exports.BattleScripts = {
 			let boosts = {};
 			for (let statName in target.boosts) {
 				let stage = target.boosts[statName];
-				if (stage > 0) boosts[statName] = -stage;
-			}
-			this.boost(boosts, target);
-
-			for (let statName in boosts) {
-				boosts[statName] = -boosts[statName];
+				if (stage > 0) boosts[statName] = stage;
 			}
 			this.boost(boosts, pokemon);
+
+			for (let statName in boosts) {
+				boosts[statName] = 0;
+			}
+			target.setBoost(boosts);
+			this.add('-clearpositiveboost', target, pokemon, 'move: ' + move.name);
 		}
 
 		move.totalDamage = 0;
@@ -750,9 +752,6 @@ exports.BattleScripts = {
 	runZMove: function (move, pokemon, target, sourceEffect) {
 		// Limit one Z move per side
 		let zMove = this.getZMove(move, pokemon);
-		if (zMove) {
-			pokemon.side.zMoveUsed = true;
-		}
 		this.runMove(move, pokemon, target, sourceEffect, zMove);
 	},
 
@@ -879,68 +878,43 @@ exports.BattleScripts = {
 		let natures = Object.keys(this.data.Natures);
 		let items = Object.keys(this.data.Items);
 
-		let hasDexNumber = {};
-		let formes = [[], [], [], [], [], []];
-
-		// Pick six random pokemon--no repeats, even among formes
-		// Also need to either normalize for formes or select formes at random
-		// Unreleased are okay but no CAP
-
-		let num;
-		for (let i = 0; i < 6; i++) {
-			do {
-				num = this.random(802) + 1;
-			} while (num in hasDexNumber);
-			hasDexNumber[num] = i;
-		}
-
-		for (let id in this.data.Pokedex) {
-			if (!(this.data.Pokedex[id].num in hasDexNumber)) continue;
-			let template = this.getTemplate(id);
-			if (template.gen <= this.gen && template.species !== 'Pichu-Spiky-eared' && template.species.substr(0, 8) !== 'Pikachu-') {
-				formes[hasDexNumber[template.num]].push(template.species);
-			}
-		}
+		let random6 = this.random6Pokemon();
 
 		for (let i = 0; i < 6; i++) {
-			let poke = formes[i][this.random(formes[i].length)];
-			let template = this.getTemplate(poke);
+			let species = random6[i];
+			let template = this.getTemplate(species);
 
 			// Random legal item
 			let item = '';
-			do {
-				item = items[this.random(items.length)];
-			} while (this.data.Items[item].gen > this.gen || this.data.Items[item].isNonstandard);
-
-			// Make sure forme is legal
-			if (template.battleOnly || template.requiredItem && item !== toId(template.requiredItem)) {
-				template = this.getTemplate(template.baseSpecies);
-				poke = template.name;
+			if (this.gen >= 2) {
+				do {
+					item = items[this.random(items.length)];
+				} while (this.getItem(item).gen > this.gen || this.data.Items[item].isNonstandard);
 			}
 
-			// Make sure forme/item combo is correct
-			switch (poke) {
-			case 'Giratina':
-				while (item === 'griseousorb') item = items[this.random(items.length)];
-				break;
-			case 'Arceus':
-				while (item.substr(-5) === 'plate') item = items[this.random(items.length)];
-				break;
-			case 'Genesect':
-				while (item.substr(-5) === 'drive') item = items[this.random(items.length)];
-				break;
-			case 'Silvally':
-				while (item.substr(-6) === 'memory') item = items[this.random(items.length)];
+			// Make sure forme is legal
+			if (template.battleOnly || template.requiredItems && !template.requiredItems.some(req => toId(req) === item)) {
+				template = this.getTemplate(template.baseSpecies);
+				species = template.name;
+			}
+
+			// Make sure that a base forme does not hold any forme-modifier items.
+			let itemData = this.getItem(item);
+			if (itemData.forcedForme && species === this.getTemplate(itemData.forcedForme).baseSpecies) {
+				do {
+					item = items[this.random(items.length)];
+					itemData = this.getItem(item);
+				} while (itemData.gen > this.gen || itemData.isNonstandard || itemData.forcedForme && species === this.getTemplate(itemData.forcedForme).baseSpecies);
 			}
 
 			// Random ability
 			let abilities = Object.values(template.abilities);
-			let ability = abilities[this.random(abilities.length)];
+			let ability = this.gen <= 2 ? 'None' : abilities[this.random(abilities.length)];
 
 			// Four random unique moves from the movepool
 			let moves;
 			let pool = ['struggle'];
-			if (poke === 'Smeargle') {
+			if (species === 'Smeargle') {
 				pool = Object.keys(this.data.Movedex).filter(moveid => !(moveid in {'chatter':1, 'struggle':1, 'paleowave':1, 'shadowstrike':1, 'magikarpsrevenge':1}));
 			} else if (template.learnset) {
 				pool = Object.keys(template.learnset);
@@ -948,7 +922,8 @@ exports.BattleScripts = {
 					pool = Array.from(new Set(pool.concat(Object.keys(this.getTemplate(template.baseSpecies).learnset))));
 				}
 			} else {
-				pool = Object.keys(this.getTemplate(template.baseSpecies).learnset);
+				const learnset = this.getTemplate(template.baseSpecies).learnset;
+				pool = Object.keys(learnset);
 			}
 			if (pool.length <= 4) {
 				moves = pool;
@@ -1025,29 +1000,21 @@ exports.BattleScripts = {
 
 		return team;
 	},
-	randomHCTeam: function (side) {
-		let team = [];
-
-		let itemPool = Object.keys(this.data.Items);
-		let abilityPool = Object.keys(this.data.Abilities);
-		let movePool = Object.keys(this.data.Movedex);
-		let naturePool = Object.keys(this.data.Natures);
-
-		let hasDexNumber = {};
-		let formes = [[], [], [], [], [], []];
-
+	random6Pokemon: function () {
 		// Pick six random pokemon--no repeats, even among formes
 		// Also need to either normalize for formes or select formes at random
 		// Unreleased are okay but no CAP
-
-		let num;
+		let last = [0, 151, 251, 386, 493, 649, 721, 802][this.gen];
+		let hasDexNumber = {};
 		for (let i = 0; i < 6; i++) {
+			let num;
 			do {
-				num = this.random(802) + 1;
+				num = this.random(last) + 1;
 			} while (num in hasDexNumber);
 			hasDexNumber[num] = i;
 		}
 
+		let formes = [[], [], [], [], [], []];
 		for (let id in this.data.Pokedex) {
 			if (!(this.data.Pokedex[id].num in hasDexNumber)) continue;
 			let template = this.getTemplate(id);
@@ -1056,25 +1023,51 @@ exports.BattleScripts = {
 			}
 		}
 
+		let sixPokemon = [];
+		for (let i = 0; i < 6; i++) {
+			if (!formes[i].length) {
+				// console.log("Could not find pokemon " + i);
+				// for (var k in hasDexNumber) {
+				// 	if (hasDexNumber[k] === i) {
+				// 		console.log("dexNumber was " + k);
+				// 		console.log("dex found: " + JSON.stringify(Object.values(this.data.Pokedex).filter(t => t.num == Number(k)).map(t => t.species)));
+				// 	}
+				// }
+				throw new Error("Invalid pokemon gen " + this.gen + ": " + JSON.stringify(formes) + " numbers " + JSON.stringify(hasDexNumber));
+			}
+			sixPokemon.push(formes[i][this.random(formes[i].length)]);
+		}
+		return sixPokemon;
+	},
+	randomHCTeam: function (side) {
+		let team = [];
+
+		let itemPool = Object.keys(this.data.Items);
+		let abilityPool = Object.keys(this.data.Abilities);
+		let movePool = Object.keys(this.data.Movedex);
+		let naturePool = Object.keys(this.data.Natures);
+
+		let random6 = this.random6Pokemon();
+
 		for (let i = 0; i < 6; i++) {
 			// Choose forme
-			let pokemon = formes[i][this.random(formes[i].length)];
-			let template = this.getTemplate(pokemon);
+			let template = this.getTemplate(random6[i]);
 
 			// Random unique item
 			let item = '';
-			do {
-				item = this.sampleNoReplace(itemPool);
-			} while (this.data.Items[item].gen > this.gen || this.data.Items[item].isNonstandard);
-
-			// Genesect forms are a sprite difference based on its Drives
-			if (template.species.substr(0, 9) === 'Genesect-' && item !== toId(template.requiredItem)) pokemon = 'Genesect';
+			if (this.gen >= 2) {
+				do {
+					item = this.sampleNoReplace(itemPool);
+				} while (this.getItem(item).gen > this.gen || this.data.Items[item].isNonstandard);
+			}
 
 			// Random unique ability
-			let ability = '';
-			do {
-				ability = this.sampleNoReplace(abilityPool);
-			} while (this.getAbility(ability).gen > this.gen || this.data.Abilities[ability].isNonstandard);
+			let ability = 'None';
+			if (this.gen >= 3) {
+				do {
+					ability = this.sampleNoReplace(abilityPool);
+				} while (this.getAbility(ability).gen > this.gen || this.data.Abilities[ability].isNonstandard);
+			}
 
 			// Random unique moves
 			let m = [];
@@ -2013,8 +2006,14 @@ exports.BattleScripts = {
 		}
 
 		item = 'Leftovers';
-		if (template.requiredItem) {
-			item = template.requiredItem;
+		if (template.requiredItems) {
+			if (template.baseSpecies === 'Arceus' && hasMove['judgment']) {
+				// Judgment doesn't change type with Z-Crystals
+				let items = template.requiredItems.filter(item => item.endsWith('Plate'));
+				item = items[this.random(items.length)];
+			} else {
+				item = template.requiredItems[this.random(template.requiredItems.length)];
+			}
 		} else if (hasMove['magikarpsrevenge']) {
 			// PoTD Magikarp
 			item = 'Choice Band';
@@ -2317,7 +2316,7 @@ exports.BattleScripts = {
 
 			// Adjust rate for species with multiple formes
 			switch (template.baseSpecies) {
-			case 'Arceus':
+			case 'Arceus': case 'Silvally':
 				if (this.random(18) >= 1) continue;
 				break;
 			case 'Pikachu':
@@ -3075,8 +3074,8 @@ exports.BattleScripts = {
 		}
 
 		item = 'Sitrus Berry';
-		if (template.requiredItem) {
-			item = template.requiredItem;
+		if (template.requiredItems) {
+			item = template.requiredItems[this.random(template.requiredItems.length)];
 		// First, the extra high-priority items
 		} else if (ability === 'Imposter') {
 			item = 'Choice Scarf';
