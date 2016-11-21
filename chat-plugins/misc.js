@@ -233,24 +233,7 @@ exports.commands = {
 				this.sendReply('You have tried to use an invalid character as your auth symbol. Defaulting to \' \' instead.');
 			}
 		}
-		user.getIdentity = function (roomid) {
-			if (this.locked) {
-				return '‽' + this.name;
-			}
-			if (roomid) {
-				let room = Rooms.rooms.get(roomid);
-				if (room.isMuted(this)) {
-					return '!' + this.name;
-				}
-				if (room && room.auth) {
-					if (room.auth[this.userid]) {
-						return room.auth[this.userid] + this.name;
-					}
-					if (room.isPrivate === true) return ' ' + this.name;
-				}
-			}
-			return tar + this.name;
-		}
+		user.customSymbol = tar;
 		user.updateIdentity();
 		this.sendReply('You are now hiding your auth symbol as \'' + tar + '\'.');
 	},
@@ -259,7 +242,7 @@ exports.commands = {
 	show: 'showauth',
 	showauth: function (target, room, user) {
 		if (!user.can('roomowner')) return this.sendReply("/showauth - Access Denied.");
-		delete user.getIdentity;
+		user.customSymbol = false;
 		user.updateIdentity();
 		this.sendReply("You have now revealed your auth symbol.");
 		this.sendReply("Your symbol has been reset.");
