@@ -635,7 +635,7 @@ exports.BattlePokedex = {
 		weightkg: 55,
 		color: "Blue",
 		prevo: "sandshrewalola",
-		evoLevel: 22,
+		evoLevel: 1,
 		eggGroups: ["Field"],
 	},
 	nidoranf: {
@@ -1070,7 +1070,7 @@ exports.BattlePokedex = {
 		weightkg: 33,
 		color: "Blue",
 		prevo: "meowthalola",
-		evoLevel: 28,
+		evoLevel: 2,
 		eggGroups: ["Field"],
 	},
 	psyduck: {
@@ -11866,7 +11866,7 @@ exports.BattlePokedex = {
 		color: "Brown",
 		prevo: "mudbray",
 		evoLevel: 30,
-		eggGroups: ["Water 1"],
+		eggGroups: ["Field"],
 	},
 	dewpider: {
 		num: 751,
@@ -12156,7 +12156,7 @@ exports.BattlePokedex = {
 		weightkg: 100.5,
 		color: "Gray",
 		prevo: "typenull",
-		evoLevel: 2,
+		evoLevel: 41,
 		eggGroups: ["Undiscovered"],
 		otherFormes: ["silvallybug", "silvallydark", "silvallydragon", "silvallyelectric", "silvallyfairy", "silvallyfighting", "silvallyfire", "silvallyflying", "silvallyghost", "silvallygrass", "silvallyground", "silvallyice", "silvallypoison", "silvallypsychic", "silvallyrock", "silvallysteel", "silvallywater"],
 	},
