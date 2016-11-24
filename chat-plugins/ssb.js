@@ -56,6 +56,55 @@ function getStat (stat, set, evOverride, natureOverride) {
 	return Math.floor(val);
 }
 
+function validate(me, targetUser, quiet) {
+  let valid = true;
+  //species
+  let species = Tools.getTemplate(targetUser.species);
+  if (!species.exists || !species.learnset || species.gen > 6) {
+    valid = false;
+    if (!quiet) me.errorReply(targetUser.name + '\'s species was invalid.');
+    species = Tools.getTemplate('unown');
+    targetUser.species = species.species;
+    targetUser.ability = species.abilities['0']; //Force legal ability
+    targetUser.movepool = []; //force legal normal moves
+  }
+  if (species.tier === 'Uber') {
+    //Most are banned a few arent
+    if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
+      if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');
+      valid = false;
+      species = Tools.getTemplate('unown');
+      targetUser.species = species.species;
+      targetUser.ability = species.abilities['0']; //Force legal ability
+      targetUser.movepool = []; //force legal normal moves
+    }
+  }
+  //item
+  if (targetUser.item !== false && !targetUser.setItem(targetUser.item)) {
+    valid = false;
+    if (!quiet) me.errorReply(targetUser.name + '\'s item was invalid.');
+    targetUser.item = false;
+  }
+  //ability
+  if (!targetUser.setAbility(targetUser.ability)) {
+    valid = false;
+    if (!quiet) me.errorReply(targetUser.name + '\'s ability was invalid.');
+    targetUser.ability = Tools.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
+  }
+  //moves
+  for (let i in targetUser.movepool) {
+    if (!Tools.getMove(targetUser.movepool[i]).exists) {
+      //Check custom first!
+      if (!targetUser.selfCustomMove || toId(targetUser.selfCustomMove) !== targetUser.movepool[i] || !targetUser.bought.cMove) {
+        valid = false;
+        if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" was invalid.');
+        targetUser.removeMove(targetUser.movepool[i]);
+      }
+    }
+  }
+  return valid;
+}
+
 function buildMenu(userid) {
   if (!SG.ssb[userid]) return '<span style="color:red"><b>Error: </b>User \"' + userid + '\" not found in ssb.</span>';
   let output = '';
@@ -186,6 +235,7 @@ class SSB {
     species = Tools.getTemplate(speciesId);
     if (!species.exists) return false;
     if (!species.learnset) return false;
+    if (species.gen > 6) return false; //We cannot use gen 7 pokemon until gen 7 becomes the default tier because we cannot have more than 1 mod active at one time.
     if (species.tier === 'Uber') {
       //Most are banned a few arent
       if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
@@ -775,40 +825,34 @@ exports.commands = {
               '/ssb log view, [all|user] - View the purchases of a user or all users. Requires &, ~ unless viewing your own.',
               '/ssb log mark, [user], [cItem|cAbility|cMove], [complete|pending|remove] - Update the status for a users SSBFFA purchase.'],
     forceupdate: 'validate',
+    validateall: 'validate',
     validate: function (target, room, user, connection, cmd, message) {
       if (!this.can('roomowner')) return;
-      if (!target) return this.parse('/help ssb validate');
+      if (!target  && toId(cmd) !== 'validateall') return this.parse('/help ssb validate');
       let targetUser = SG.ssb[toId(target)];
-      if (!targetUser) return this.errorReply(target + ' does not have a SSBFFA pokemon yet.');
+      if (!targetUser && toId(cmd) !== 'validateall') return this.errorReply(target + ' does not have a SSBFFA pokemon yet.');
       //Start validation.
-      this.sendReply('Validating ' + targetUser.name + '\'s SSBFFA pokemon...');
-      let valid = true;
-      if (targetUser.item !== false && !targetUser.setItem(targetUser.item)) {
-        valid = false;
-        this.errorReply(targetUser.name + '\'s item was invalid.');
-        targetUser.item = false;
-      }
-      if (!targetUser.setAbility(targetUser.ability)) {
-        valid = false;
-        this.errorReply(targetUser.name + '\'s ability was invalid.');
-        targetUser.ability = Tools.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
-      }
-      for (let i in targetUser.movepool) {
-        if (!Tools.getMove(targetUser.movepool[i]).exists) {
-          //Check custom first!
-          if (!targetUser.selfCustomMove || toId(targetUser.selfCustomMove) !== targetUser.movepool[i] || !targetUser.bought.cMove) {
-            valid = false;
-            this.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" was invalid.');
-            targetUser.removeMove(targetUser.movepool[i]);
+      if (toId(cmd) !== 'validateall') {
+        this.sendReply('Validating ' + targetUser.name + '\'s SSBFFA pokemon...');
+        let valid = validate(this, targetUser, false);
+        if (!valid) {
+          targetUser.active = false;
+          if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+          writeSSB();
+          return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
+        } else return this.sendReply('Done! This pokemon is valid');
+      } else {
+        for (let key in SG.ssb) {
+          let valid = validate(this, SG.ssb[key], true);
+          if (!valid) {
+            SG.ssb[key].active = false;
+            if (Users(toId(SG.ssb[key].name))) Users(toId(SG.ssb[key].name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+            writeSSB();
+            this.errorReply(SG.ssb[key].name + '\'s pokemon was invalid. Invalid parts have been reset and this pokemon was deactivated.');
           }
         }
+        return this.sendReply('All SSBFFA pokemon have been validated.');
       }
-      if (!valid) {
-        targetUser.active = false;
-        if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
-        writeSSB();
-        return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
-      } else return this.sendReply('Done! This pokemon is valid');
     },
     validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set ti to its default value. Requires: &, ~'],
     '': function (target, room, user, connection, cmd, message) {
@@ -826,6 +870,6 @@ exports.commands = {
     '/ssb toggle - Attempts to active or deactive your pokemon. Acitve pokemon can be seen in the tier. If your pokemon cannot be activated, you will see a popup explaining why.',
     '/ssb custom - Shows all the default custom moves, with details.',
     '/ssb log - Shows purchase details for SSBFFA.',
-    '/ssb validate [user] - validate a users SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
+    '/ssb [validate|validateall] (user) - validate a users SSBFFA pokemon, or validate all SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
     'Programed by HoeenHero.']
 }
