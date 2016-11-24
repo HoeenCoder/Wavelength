@@ -403,6 +403,8 @@ exports.BattleMovedex = {
     target: "normal",
     type: "Fairy",
   },
+  //CUSTOM MADE CUSTOM MOVES
+
   //DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
   // SpaceGazer
   /*spacialblast: {
@@ -558,6 +560,4 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Electric",
 	},*/
-  //CUSTOM MADE CUSTOM MOVES
-  
 };
