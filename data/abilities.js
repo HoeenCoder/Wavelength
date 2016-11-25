@@ -249,7 +249,7 @@ exports.BattleAbilities = {
 		desc: "If this Pokemon is a Greninja, it transforms into Ash-Greninja after knocking out a Pokemon. As Ash-Greninja, its Water Shuriken does 1.5x damage.",
 		shortDesc: "After knocking out a Pokemon: Becomes Ash-Greninja and Water Shuriken does 1.5x.",
 		onSourceFaint: function (target, source, effect) {
-			if (effect && effect.effectType === 'Move' && source.template.speciesid === 'greninja' && !source.transformed) {
+			if (effect && effect.effectType === 'Move' && source.template.speciesid === 'greninja' && !source.transformed && source.side.foe.pokemonLeft) {
 				this.add('-activate', source, 'ability: Battle Bond');
 				let template = this.getTemplate('Greninja-Ash');
 				source.formeChange(template);
@@ -709,6 +709,7 @@ exports.BattleAbilities = {
 	"disguise": {
 		desc: "If this Pokemon is a Mimikyu, it will take 0 damage the first time it is attacked in battle. It then changes to Busted Form.",
 		shortDesc: "If this Pokemon is a Mimikyu, it takes 0 damage the first time it is attacked in battle.",
+		onDamagePriority: 1,
 		onDamage: function (damage, target, source, effect) {
 			if (effect && effect.effectType === 'Move' && target.template.speciesid === 'mimikyu' && !target.transformed) {
 				this.add('-activate', target, 'ability: Disguise');
