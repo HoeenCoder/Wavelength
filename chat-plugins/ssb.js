@@ -642,8 +642,8 @@ exports.commands = {
         if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + itemMenu(user.userid));
         if (toId(target) === 'help') return this.sendReply('/ssb edit item [item] - Set your pokemon\'s item.');
         if (toId(target) === 'reset') {
-          writeSSB();
           targetUser.item = false;
+          writeSSB();
           if (cmd !== 'itemq') this.sendReply('Your item was reset.');
           return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
         }

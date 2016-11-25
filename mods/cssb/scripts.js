@@ -13,7 +13,7 @@ function extend(obj, src) {
 
 exports.BattleScripts = {
   randomCustomSSBTeam: function (side) {
-  var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));  
+  var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
   var team = [];
   var variant = this.random(2);
 
@@ -87,7 +87,13 @@ exports.BattleScripts = {
   // Generate the team randomly.
   let pool = Object.keys(sets);
   for (let i = 0; i < (Object.keys(sets).length < 6 ? Object.keys(sets).length : 6); i++) {
+    console.log(pool);
       let name = this.sampleNoReplace(pool);
+      if (i === 1 && SGSSB[toId(side.name)] && ssbSets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf(toId(side.name)) !== -1) {
+        pool.push(name); //re-add
+        name = (SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name);
+        pool = pool.splice(pool.indexOf(name), 1);
+      }
       let set = sets[name];
       set.name = name;
       if (!set.level) set.level = 100;
