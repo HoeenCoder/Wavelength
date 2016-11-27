@@ -118,7 +118,7 @@ exports.BattleItems = {
 			type: "Dragon",
 		},
 		onUpdate: function (pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 2) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
 				pokemon.eatItem();
 			}
 		},
@@ -126,14 +126,14 @@ exports.BattleItems = {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
-			this.heal(pokemon.maxhp / 8);
+			this.heal(pokemon.maxhp / 2);
 			if (pokemon.getNature().minus === 'spd') {
 				pokemon.addVolatile('confusion');
 			}
 		},
 		num: 162,
 		gen: 3,
-		desc: "Restores 1/8 max HP when at 1/2 max HP or less. May confuse. Single use.",
+		desc: "Restores 1/2 max HP at 1/4 max HP or less; confuses if -SpD Nature. Single use.",
 	},
 	"airballoon": {
 		id: "airballoon",
@@ -1673,7 +1673,7 @@ exports.BattleItems = {
 			type: "Bug",
 		},
 		onUpdate: function (pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 2) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
 				pokemon.eatItem();
 			}
 		},
@@ -1681,14 +1681,14 @@ exports.BattleItems = {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
-			this.heal(pokemon.maxhp / 8);
+			this.heal(pokemon.maxhp / 2);
 			if (pokemon.getNature().minus === 'atk') {
 				pokemon.addVolatile('confusion');
 			}
 		},
 		num: 159,
 		gen: 3,
-		desc: "Restores 1/8 max HP when at 1/2 max HP or less. May confuse. Single use.",
+		desc: "Restores 1/2 max HP at 1/4 max HP or less; confuses if -Atk Nature. Single use.",
 	},
 	"firegem": {
 		id: "firegem",
@@ -2375,7 +2375,7 @@ exports.BattleItems = {
 			type: "Dark",
 		},
 		onUpdate: function (pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 2) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
 				pokemon.eatItem();
 			}
 		},
@@ -2383,14 +2383,14 @@ exports.BattleItems = {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
-			this.heal(pokemon.maxhp / 8);
+			this.heal(pokemon.maxhp / 2);
 			if (pokemon.getNature().minus === 'def') {
 				pokemon.addVolatile('confusion');
 			}
 		},
 		num: 163,
 		gen: 3,
-		desc: "Restores 1/8 max HP when at 1/2 max HP or less. May confuse. Single use.",
+		desc: "Restores 1/2 max HP at 1/4 max HP or less; confuses if -Def Nature. Single use.",
 	},
 	"icegem": {
 		id: "icegem",
@@ -3087,7 +3087,7 @@ exports.BattleItems = {
 			type: "Ghost",
 		},
 		onUpdate: function (pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 2) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
 				pokemon.eatItem();
 			}
 		},
@@ -3095,14 +3095,14 @@ exports.BattleItems = {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
-			this.heal(pokemon.maxhp / 8);
+			this.heal(pokemon.maxhp / 2);
 			if (pokemon.getNature().minus === 'spe') {
 				pokemon.addVolatile('confusion');
 			}
 		},
 		num: 161,
 		gen: 3,
-		desc: "Restores 1/8 max HP when at 1/2 max HP or less. May confuse. Single use.",
+		desc: "Restores 1/2 max HP at 1/4 max HP or less; confuses if -Spe Nature. Single use.",
 	},
 	"magostberry": {
 		id: "magostberry",
@@ -5589,7 +5589,7 @@ exports.BattleItems = {
 			type: "Rock",
 		},
 		onUpdate: function (pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 2) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
 				pokemon.eatItem();
 			}
 		},
@@ -5597,14 +5597,14 @@ exports.BattleItems = {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
-			this.heal(pokemon.maxhp / 8);
+			this.heal(pokemon.maxhp / 2);
 			if (pokemon.getNature().minus === 'spa') {
 				pokemon.addVolatile('confusion');
 			}
 		},
 		num: 160,
 		gen: 3,
-		desc: "Restores 1/8 max HP when at 1/2 max HP or less. May confuse. Single use.",
+		desc: "Restores 1/2 max HP at 1/4 max HP or less; confuses if -SpA Nature. Single use.",
 	},
 	"wiseglasses": {
 		id: "wiseglasses",

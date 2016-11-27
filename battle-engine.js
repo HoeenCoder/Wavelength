@@ -1477,7 +1477,7 @@ class BattleSide {
 		return this.choiceData.choices.length >= this.active.length;
 	}
 	chooseMove(data, targetLoc, megaOrZ, dontPlay) {
-		if (megaOrZ === true) megaOrZ = ' mega';
+		if (megaOrZ === true) megaOrZ = 'mega';
 		if (!targetLoc) targetLoc = 0;
 		const activePokemon = this.active[this.choiceData.choices.length];
 
@@ -1516,6 +1516,24 @@ class BattleSide {
 			}
 		}
 
+		let move = this.battle.getMove(moveid);
+		let zMove = megaOrZ === 'zmove' ? this.battle.getZMove(move, activePokemon) : '';
+		if (megaOrZ === 'zmove') {
+			if (!zMove || this.choiceData.zmove) {
+				this.emitCallback('cantz', activePokemon); // TODO: The client shouldn't have sent this request in the first place.
+				this.battle.debug(`Can't use an unexpected z-move`);
+				return false;
+			}
+			targetType = this.battle.getMove(zMove).target;
+
+			if (!targetLoc && this.active.length >= 2) {
+				// Compatibility fix:
+				// Clients failed to select a target for Z-Moves based on spread moves
+				// in the early stages of Gen 7 implementation.
+				targetLoc = 1;
+			}
+		}
+
 		/**
 		 * Validate targetting
 		 */
@@ -1540,17 +1558,19 @@ class BattleSide {
 		/**
 		 *  Check whether the chosen move is really valid, accounting for
 		 *  effects active in battle which could be unknown for the client.
+		 *  Note that a Z-Move cannot be disabled.
+		 *
 		 *  Upon reaching this stage, if a new decision is required, a server
 		 *  reply is mandatory.
 		 */
 
 		const moves = activePokemon.getMoves();
-		if (!moves.length) {
+		if (!moves.length && !zMove) {
 			// Override decision and use Struggle if there are no enabled moves with PP
 			// Gen 4 and earlier announce a Pokemon has no moves left before the turn begins, and only to that player's side.
 			if (this.gen <= 4) this.send('-activate', activePokemon, 'move: Struggle');
 			moveid = 'struggle';
-		} else {
+		} else if (!zMove) {
 			// At least a move is valid. Check if the chosen one is.
 			// This may include Struggle in Hackmons.
 			let isEnabled = false;
@@ -1574,7 +1594,7 @@ class BattleSide {
 
 		const decision = [];
 
-		if (megaOrZ === ' mega') {
+		if (megaOrZ === 'mega') {
 			if (!activePokemon.canMegaEvo || this.choiceData.mega) {
 				this.emitCallback('cantmega', activePokemon); // TODO: The client shouldn't have sent this request in the first place.
 				this.battle.debug(`Can't issue more than one Mega-Evolution command`);
@@ -1587,12 +1607,6 @@ class BattleSide {
 				choice: 'megaEvo',
 				pokemon: activePokemon,
 			});
-		} else if (megaOrZ === ' zmove') {
-			if (this.zMoveUsed || this.choiceData.zmove) {
-				this.emitCallback('cantz', activePokemon); // TODO: The client shouldn't have sent this request in the first place.
-				this.battle.debug(`Can't issue more than one Z-Move command`);
-				return false;
-			}
 		}
 
 		decision.push({
@@ -1600,11 +1614,11 @@ class BattleSide {
 			pokemon: activePokemon,
 			targetLoc: targetLoc,
 			move: moveid,
-			mega: megaOrZ === ' mega',
-			zmove: megaOrZ === ' zmove',
+			mega: megaOrZ === 'mega',
+			zmove: megaOrZ === 'zmove',
 		});
 
-		this.choiceData.choices.push('move ' + moveid + (targetLoc ? ' ' + targetLoc : '') + (megaOrZ || ''));
+		this.choiceData.choices.push('move ' + moveid + (targetLoc ? ' ' + targetLoc : '') + (megaOrZ ? ' ' + megaOrZ : ''));
 		this.choiceData.decisions.push(decision);
 
 		if (activePokemon.maybeDisabled) {
@@ -1612,8 +1626,8 @@ class BattleSide {
 		}
 
 		if (megaOrZ) {
-			if (megaOrZ === ' mega') this.choiceData.mega = (this.choiceData.mega || 0) + 1;
-			if (megaOrZ === ' zmove') this.choiceData.zmove = (this.choiceData.zmove || 0) + 1;
+			if (megaOrZ === 'mega') this.choiceData.mega = (this.choiceData.mega || 0) + 1;
+			if (megaOrZ === 'zmove') this.choiceData.zmove = (this.choiceData.zmove || 0) + 1;
 		}
 
 		if (!dontPlay && !this.battle.checkDecisions()) return this; // allow chaining
@@ -3531,6 +3545,9 @@ class Battle extends Tools.BattleDex {
 				case 'intimidate': case 'gooey': case 'tanglinghair':
 					this.add(msg, target, i, boostBy);
 					break;
+				case 'zpower':
+					this.add(msg, target, i, boostBy, '[zeffect]');
+					break;
 				default:
 					if (effect.effectType === 'Move') {
 						this.add(msg, target, i, boostBy);
@@ -3670,6 +3687,9 @@ class Battle extends Tools.BattleDex {
 			this.add('-heal', target, target.getHealth, '[from] drain', '[of] ' + source);
 			break;
 		case 'wish':
+			break;
+		case 'zpower':
+			this.add('-heal', target, target.getHealth, '[zeffect]');
 			break;
 		default:
 			if (effect.effectType === 'Move') {
@@ -4638,9 +4658,9 @@ class Battle extends Tools.BattleDex {
 					targetLoc = parseInt(data.slice(-2));
 					data = data.slice(0, data.lastIndexOf(' '));
 				}
-				let willMega = data.endsWith(' mega') ? ' mega' : '';
+				let willMega = data.endsWith(' mega') ? 'mega' : '';
 				if (willMega) data = data.slice(0, -5);
-				let willZ = data.endsWith(' zmove') ? ' zmove' : '';
+				let willZ = data.endsWith(' zmove') ? 'zmove' : '';
 				if (willZ) data = data.slice(0, -6);
 				let move = data; // `move` is expected to be either a one-based index or a move id
 				if (!side.chooseMove(move.trim(), targetLoc, willMega || willZ, true)) return side.undoChoices(i, choiceIndex);
