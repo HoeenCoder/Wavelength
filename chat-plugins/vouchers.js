@@ -163,6 +163,7 @@ exports.commands = {
                     targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
                     writeFile();
                     Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.');
+                    this.sendReply('You gave ' + targetUser.name + ' a voucher for ' + target[2] + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.');
                     return true;
                 } else {
                     let shopIndex = -1;
@@ -178,6 +179,7 @@ exports.commands = {
                     targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for a ' + shopItems[shopIndex] + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
                     writeFile();
                     Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for a ' + shopItems[shopIndex] + '.');
+                    this.sendReply('You gave ' + targetUser.name + ' a voucher for a ' + shopItems[shopIndex] + '.');
                     return true;
                 }
             } else {
@@ -186,6 +188,7 @@ exports.commands = {
                 targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for a ' + vouchers[index] + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
                 writeFile();
                 Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for a ' + vouchers[index] + '.');
+                this.sendReply('You gave ' + targetUser.name + ' a voucher for a ' + vouchers[index] + '.');
                 return true;
             }
         },
