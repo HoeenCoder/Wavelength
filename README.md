@@ -86,7 +86,7 @@ This boilerplate is brought to you and maintained by the following people:
 
 Owners
 
-[HoeenCoder](http://creaturephil.github.io) | [Mystifi](https://github.com/Mystifi) 
+[HoeenCoder](https://github.com/HoeenCoder) | [Mystifi](https://github.com/Mystifi) 
 
 
 Special thanks
