@@ -360,7 +360,7 @@ class SSB {
       learnpool.push(i);
     }
     if (learnpool.indexOf(move.id) === -1) return false;*/
-    if (TeamValidator('gen6ou').checkLearnset(move, this.species, {set:{}})) return false;
+    if (TeamValidator('gen7ou').checkLearnset(move, this.species, {set:{}})) return false;
     if (this.movepool.indexOf(move.name) > -1) return false;
     this.movepool.push(move.name);
     return true;
