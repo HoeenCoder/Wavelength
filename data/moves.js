@@ -133,8 +133,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "aciddownpour",
 		isViable: true,
 		name: "Acid Downpour",
@@ -367,8 +366,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "alloutpummeling",
 		isViable: true,
 		name: "All-Out Pummeling",
@@ -1024,7 +1022,7 @@ exports.BattleMovedex = {
 					}
 				}
 				if (move.flags['contact']) {
-					source.trySetStatus('psn');
+					source.trySetStatus('psn', target);
 				}
 				return null;
 			},
@@ -1121,6 +1119,9 @@ exports.BattleMovedex = {
 					source.trySetStatus('brn', pokemon);
 				}
 			},
+		},
+		onAfterMove: function (pokemon) {
+			pokemon.removeVolatile('beakblast');
 		},
 		secondary: false,
 		target: "normal",
@@ -1366,8 +1367,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "blackholeeclipse",
 		isViable: true,
 		name: "Black Hole Eclipse",
@@ -1477,8 +1477,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "bloomdoom",
 		isViable: true,
 		name: "Bloom Doom",
@@ -1715,8 +1714,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "breakneckblitz",
 		isViable: true,
 		name: "Breakneck Blitz",
@@ -2499,8 +2497,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "continentalcrush",
 		isViable: true,
 		name: "Continental Crush",
@@ -2628,8 +2625,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "corkscrewcrash",
 		isViable: true,
 		name: "Corkscrew Crash",
@@ -3169,7 +3165,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1, authentic: 1},
 		onHit: function (target, source, move) {
 			if (!target.volatiles['substitute'] || move.infiltrates) this.boost({evasion:-1});
-			let removeTarget = {reflect:1, lightscreen:1, safeguard:1, mist:1, spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
+			let removeTarget = {reflect:1, lightscreen:1, auroraveil: 1, safeguard:1, mist:1, spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
 			let removeAll = {spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
 			for (let targetCondition in removeTarget) {
 				if (target.side.removeSideCondition(targetCondition)) {
@@ -3269,8 +3265,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "devastatingdrake",
 		name: "Devastating Drake",
 		pp: 1,
@@ -6320,8 +6315,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "gigavolthavoc",
 		isViable: true,
 		name: "Gigavolt Havoc",
@@ -6813,6 +6807,10 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 0,
 		damageCallback: function (pokemon, target) {
+			if (target.volatiles['banefulbunker'] || target.volatiles['kingsshield'] || target.side.sideConditions['matblock'] || target.volatiles['protect'] || target.volatiles['spikyshield']) {
+				this.add('-message', target.name + " couldn't fully protect itself and got hurt! (placeholder)");
+				return this.clampIntRange(Math.ceil(Math.floor(target.hp * 3 / 4) / 4 - 0.5), 1);
+			}
 			return this.clampIntRange(Math.floor(target.hp * 3 / 4), 1);
 		},
 		category: "Special",
@@ -8005,8 +8003,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "hydrovortex",
 		isViable: true,
 		name: "Hydro Vortex",
@@ -8507,8 +8504,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "infernooverdrive",
 		isViable: true,
 		name: "Inferno Overdrive",
@@ -8796,7 +8792,7 @@ exports.BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		desc: "The user is protected from most attacks made by other Pokemon during this turn, and Pokemon trying to make contact with the user have their Attack lowered by 2 stages. Non-damaging moves go through this protection. This move has a 1/X chance of being successful, where X starts at 1 and triples each time this move is successfully used. X resets to 1 if this move fails or if the user's last move used is not Detect, Endure, King's Shield, Protect, Quick Guard, Spiky Shield, or Wide Guard. Fails if the user moves last this turn.",
-		shortDesc: "Protects from attacks. Contact try: lowers Atk by 2.",
+		shortDesc: "Protects from attacks. Contact: lowers Atk by 2.",
 		id: "kingsshield",
 		isViable: true,
 		name: "King's Shield",
@@ -10985,8 +10981,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "neverendingnightmare",
 		isViable: true,
 		name: "Never-Ending Nightmare",
@@ -13857,8 +13852,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "savagespinout",
 		name: "Savage Spin-Out",
 		pp: 1,
@@ -14303,8 +14297,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "shatteredpsyche",
 		isViable: true,
 		name: "Shattered Psyche",
@@ -14323,7 +14316,7 @@ exports.BattleMovedex = {
 		basePower: 0,
 		category: "Special",
 		desc: "Deals damage to the target equal to the target's maximum HP. Ignores accuracy and evasiveness modifiers. This attack's accuracy is equal to (user's level - target's level + 30)%, and fails if the target is at a higher level. Pokemon with Ice typing or with the Ability Sturdy are immune.",
-		shortDesc: "OHKOs a non-Ice target. Fails if user is a lower level.",
+		shortDesc: "OHKOs non-Ice targets. Fails if user's lower level.",
 		id: "sheercold",
 		name: "Sheer Cold",
 		pp: 5,
@@ -16338,8 +16331,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "subzeroslammer",
 		isViable: true,
 		name: "Subzero Slammer",
@@ -16489,8 +16481,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "supersonicskystrike",
 		isViable: true,
 		name: "Supersonic Skystrike",
@@ -16984,8 +16975,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "tectonicrage",
 		isViable: true,
 		name: "Tectonic Rage",
@@ -17829,8 +17819,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 1,
 		category: "Physical",
-		desc: "No additional effect.",
-		shortDesc: "No additional effect.",
+		shortDesc: "Power is equal to the base move's Z-Power.",
 		id: "twinkletackle",
 		isViable: true,
 		name: "Twinkle Tackle",

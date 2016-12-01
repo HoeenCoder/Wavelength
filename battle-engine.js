@@ -192,7 +192,7 @@ class BattlePokemon {
 			// In Gen 6, Hidden Power is always 60 base power
 			this.hpPower = (this.battle.gen && this.battle.gen < 6) ? Math.floor(hpPowerX * 40 / 63) + 30 : 60;
 		}
-		if (this.battle.gen >= 7 && desiredHPType) {
+		if (this.battle.gen >= 7 && desiredHPType && (this.level === 100 || set.forcedLevel || this.battle.getFormat().team)) {
 			this.hpType = desiredHPType;
 		}
 
@@ -1517,16 +1517,17 @@ class BattleSide {
 		}
 
 		let move = this.battle.getMove(moveid);
-		let zMove = megaOrZ === 'zmove' ? this.battle.getZMove(move, activePokemon) : '';
+		let zMove = megaOrZ === 'zmove' ? this.battle.getZMove(move, activePokemon, false, true) : undefined;
 		if (megaOrZ === 'zmove') {
 			if (!zMove || this.choiceData.zmove) {
 				this.emitCallback('cantz', activePokemon); // TODO: The client shouldn't have sent this request in the first place.
 				this.battle.debug(`Can't use an unexpected z-move`);
 				return false;
 			}
+
 			targetType = this.battle.getMove(zMove).target;
 
-			if (!targetLoc && this.active.length >= 2) {
+			if (!targetLoc && this.active.length >= 2 && this.battle.targetTypeChoices(targetType)) {
 				// Compatibility fix:
 				// Clients failed to select a target for Z-Moves based on spread moves
 				// in the early stages of Gen 7 implementation.
@@ -1615,7 +1616,7 @@ class BattleSide {
 			targetLoc: targetLoc,
 			move: moveid,
 			mega: megaOrZ === 'mega',
-			zmove: megaOrZ === 'zmove',
+			zmove: zMove,
 		});
 
 		this.choiceData.choices.push('move ' + moveid + (targetLoc ? ' ' + targetLoc : '') + (megaOrZ ? ' ' + megaOrZ : ''));
@@ -3943,7 +3944,7 @@ class Battle extends Tools.BattleDex {
 		baseDamage = this.runEvent('ModifyDamage', pokemon, target, move, baseDamage);
 
 		// TODO: Find out where this actually goes in the damage calculation
-		if (move.isZ && (target.volatiles['banefulbunker'] || target.volatiles['kingsshield'] || target.volatiles['protect'] || target.volatiles['spikyshield'])) {
+		if (move.isZ && (target.volatiles['banefulbunker'] || target.volatiles['kingsshield'] || target.side.sideConditions['matblock'] || target.volatiles['protect'] || target.volatiles['spikyshield'])) {
 			baseDamage = this.modify(baseDamage, 0.25);
 			this.add('-message', target.name + " couldn't fully protect itself and got hurt! (placeholder)");
 		}
@@ -3995,7 +3996,7 @@ class Battle extends Tools.BattleDex {
 		return this.validTargetLoc(this.getTargetLoc(target, source), source, targetType);
 	}
 	getTarget(decision) {
-		let move = this.getMove(decision.move);
+		let move = this.getMove(decision.zmove || decision.move);
 		let target;
 		if ((move.target !== 'randomNormal') &&
 				this.validTargetLoc(decision.targetLoc, decision.pokemon, move.target)) {
@@ -4016,7 +4017,7 @@ class Battle extends Tools.BattleDex {
 			// chosen target not valid, retarget randomly with resolveTarget
 		}
 		if (!decision.targetPosition || !decision.targetSide) {
-			target = this.resolveTarget(decision.pokemon, decision.move);
+			target = this.resolveTarget(decision.pokemon, decision.zmove || decision.move);
 			decision.targetSide = target.side;
 			decision.targetPosition = target.position;
 		}
