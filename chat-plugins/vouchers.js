@@ -267,8 +267,8 @@ exports.commands = {
                 return this.errorReply('An error occured while redeeming. Contact a Upper Staff member.');
                 break;
               case 'expired':
-                delete SG.vouchers[targetUser.userid][key];
-                SG.vouchers[targetUser.userid].splice(key, 1);
+                delete SG.vouchers[user.userid][key];
+                SG.vouchers[user.userid].splice(key, 1);
                 writeFile();
                 return this.errorReply('This voucher is expired.');
                 break;
