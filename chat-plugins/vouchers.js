@@ -264,7 +264,7 @@ exports.commands = {
                 break;
               case false:
                 console.error('Voucher ID ' + target + '\'s goodFor value was Unrecoginzed.');
-                return this.errorReply('An error occured while redeeming. Contact a Upper Staff member.');
+                return this.errorReply('An error occured while redeeming. Contact an Upper Staff member.');
                 break;
               case 'expired':
                 delete SG.vouchers[user.userid][key];
@@ -273,8 +273,8 @@ exports.commands = {
                 return this.errorReply('This voucher is expired.');
                 break;
               case 'active':
-		return this.sendReply('You already have an active ' + toId(SG.vouchers[user.userid][index].goodFor) + '.');
-		break;
+		            return this.sendReply('You already have an active ' + toId(SG.vouchers[user.userid][index].goodFor) + '.');
+		            break;
               default:
                 return this.errorReply('Error.');
             }

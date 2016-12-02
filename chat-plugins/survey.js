@@ -142,8 +142,19 @@ class Survey {
 	}
 };
 
-function validateAnswer(answer) {
-	//gotta make this :/
+function validateAnswer(room, message) {
+	if (!room) return true;
+	if (!room.banwordRegex) {
+		if (room.banwords && room.banwords.length) {
+			room.banwordRegex = new RegExp('(?:\\b|(?!\\w))(?:' + room.banwords.join('|') + ')(?:\\b|\\B(?!\\w))', 'i');
+		} else {
+			room.banwordRegex = true;
+		}
+	}
+	if (!message) return true;
+	if (room.banwordRegex !== true && room.banwordRegex.test(message)) {
+		return false;
+	}
 	return true;
 }
 
@@ -173,7 +184,7 @@ exports.commands = {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
 			if (!target) return this.parse('/help survey answer');
 			if(target.length > 600) return this.errorReply('Your answer is too long.');
-			if(!validateAnswer(target)) return this.errorReply('Your answer contained a banned phrase');
+			if(!validateAnswer(room, target)) return this.errorReply('Your answer contained a banned phrase');
 			target = Chat.escapeHTML(target);
 			room.survey.answer(user, target);
 		},
