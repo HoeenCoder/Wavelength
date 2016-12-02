@@ -230,7 +230,7 @@ exports.Formats = [
 		column: 2,
 	},
 	{
-				name: "Super Staff Bros",
+				name: "[Gen 7] Super Staff Bros",
 
 				mod: 'sgssb',
 				team: 'randomSeasonalRegStaff',
@@ -476,7 +476,7 @@ exports.Formats = [
 		column: 2,
 	},
 	{
-		name: "Pokemon Mystery Dungeon",
+		name: "[Gen 7] Pokemon Mystery Dungeon",
 
 		mod: 'pmd',
 		team: 'randomPmd',
@@ -494,7 +494,7 @@ exports.Formats = [
 		column: 2,
 	},
 	{
-				name: "Retro Super Staff Bros",
+				name: "[Gen 1] Retro Super Staff Bros",
 				desc: ["Happy B-Day Johto/Regional/SpacialGaze! Celebrate with this mashup of old staff!"],
 
 				mod: 'retrossb',
@@ -533,7 +533,7 @@ exports.Formats = [
 			column: 2,
 		},
 		{
-			name: "Super Staff Bros Free For All",
+			name: "[Gen 7] Super Staff Bros Free For All",
 			desc: ['Duke it out with other users custom made pokemon.',
 							'Make your own as well! Get started with <button class="button" name="send" value="/ssb edit">/ssb edit</button>.',
 							'Use <button class="button" name="send" value="/ssb">/ssb</button> for the commands you can use.'],
