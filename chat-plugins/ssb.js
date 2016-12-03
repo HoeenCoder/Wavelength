@@ -482,9 +482,9 @@ exports.commands = {
       '': function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         targetUser.updateName(user.name);
@@ -496,9 +496,9 @@ exports.commands = {
       species: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         if (toId(target) === '') return this.sendReply('/ssb edit species [species] - change the species of your SSB pokemon.');
@@ -516,9 +516,9 @@ exports.commands = {
       move: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         target = target.split(',');
@@ -561,9 +561,9 @@ exports.commands = {
       stats: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         //temp
@@ -626,9 +626,9 @@ exports.commands = {
       ability: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + abilityMenu(user.userid));
@@ -643,9 +643,9 @@ exports.commands = {
       item: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + itemMenu(user.userid));
@@ -668,9 +668,9 @@ exports.commands = {
       details: function (target, room, user, connection, cmd, message) {
         if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
         if (!SG.ssb[user.userid]) {
-          writeSSB();
           this.sendReply('Could not find your SSB pokemon, creating a new one...');
           SG.ssb[user.userid] = new SSB(user.userid, user.name);
+          writeSSB();
         }
         let targetUser = SG.ssb[user.userid];
         if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
@@ -729,9 +729,9 @@ exports.commands = {
     toggle: function (target, room, user, connection, cmd, message) {
       if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
       if (!SG.ssb[user.userid]) {
-        writeSSB();
         this.sendReply('Could not find your SSB pokemon, creating a new one...');
         SG.ssb[user.userid] = new SSB(user.userid, user.name);
+        writeSSB();
         return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
       }
       let targetUser = SG.ssb[user.userid];
@@ -752,9 +752,9 @@ exports.commands = {
     custom: function (target, room, user, connection, cmd, message) {
       if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
       if (!SG.ssb[user.userid]) {
-        writeSSB();
         this.sendReply('Could not find your SSB pokemon, creating a new one...');
         SG.ssb[user.userid] = new SSB(user.userid, user.name);
+        writeSSB();
         return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
       }
       let targetUser = SG.ssb[user.userid];
