@@ -3,7 +3,7 @@
 exports.BattleAbilities = {
   waggish: {
     id: "waggish",
-		name: "Waggish",
+    name: "Waggish",
     onModifyPriority: function (priority, pokemon, target, move) {
       if (move && move.category === 'Status') {
         return priority + 1;
@@ -14,6 +14,41 @@ exports.BattleAbilities = {
         move.accuracy *= 1.1;
       }
     }
+  },
+  poseidon: {
+          id: "poseidon",
+          name: "Poseidon",
+          onStart: function (source) {
+                  this.setWeather('primordialsea');
+          },
+          onAnySetWeather: function (target, source, weather) {
+                  if (this.getWeather().id === 'primordialsea' && !(weather.id in {desolateland:1, primordialsea:1, deltastream:1})) return false;
+          },
+          onEnd: function (pokemon) {
+                  if (this.weatherData.source !== pokemon) return;
+                  for (let i = 0; i < this.sides.length; i++) {
+                          for (let j = 0; j < this.sides[i].active.length; j++) {
+                                  let target = this.sides[i].active[j];
+                                  if (target === pokemon) continue;
+                                  if (target && target.hp && target.hasAbility('primordialsea')) {
+                                          this.weatherData.source = target;
+                                          return;
+                                  }
+                          }
+                  }
+                  this.clearWeather();
+        },
+        onModifyMove: function (move) {
+		if (!move || !move.flags['contact']) return;
+		if (!move.secondaries) {
+			move.secondaries = [];
+		}
+		move.secondaries.push({
+			chance: 30,
+			status: 'par',
+			ability: this.getAbility('poseidon'),
+		});
+	},
   },
   server: {
     id: "server",
