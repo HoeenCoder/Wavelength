@@ -60,7 +60,7 @@ function validate(me, targetUser, quiet) {
 	let valid = true;
 	//species
 	let species = Tools.getTemplate(targetUser.species);
-	if (!species.exists || !species.learnset || species.gen < 1 || species.tier === 'Uber' || species.tier === 'Bank-Uber' || species.battleOnly) {
+	if (!species.exists || (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') || species.gen < 1 || species.tier === 'Uber' || species.tier === 'Bank-Uber' || species.battleOnly) {
 		valid = false;
 		if (!quiet) me.errorReply(targetUser.name + '\'s species was invalid.');
 		species = Tools.getTemplate('unown');
