@@ -138,7 +138,7 @@ exports.BattleScripts = {
 		let pool = Object.keys(sets);
 		for (let i = 0; i < (Object.keys(sets).length < 6 ? Object.keys(sets).length : 6); i++) {
 			let name = this.sampleNoReplace(pool);
-			if (i === 1 && SGSSB[toId(side.name)] && sets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)) !== -1) {
+			if (i === 1 && SGSSB[toId(side.name)] && SGSSB[toId(side.name)].active && sets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)) !== -1) {
                                 pool.push(name); //re-add
 				name = pool[pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name))];
 				pool.splice(pool.indexOf(name), 1);
