@@ -312,10 +312,8 @@ exports.BattleMovedex = {
 		onHit: function (target, pokemon, move) {
 			this.useMove('Light Screen', pokemon);
 			this.useMove('Reflect', pokemon);
-			this.useMove('Quick Guard', pokemon);
 		},
 		pp: 10,
-		priority: 1,
 		target: "Self",
 		type: "Psychic",
 	},
