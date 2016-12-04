@@ -127,11 +127,29 @@ exports.BattleScripts = {
 		}
 
 		//var sets = extend(baseSets, ssbSets);
-		var sets = ssbSets;
+		var backupSet = {
+			'Unown': {
+				species: 'Unown',
+				ability: 'Levitate',
+				item: 'Choice Specs',
+				moves: ['Hidden Power'],
+				evs: {
+					spa: 252,
+					spd: 252,
+					hp: 4
+				},
+				nature: 'Modest',
+			}
+		}
+		if (Object.keys(ssbSets).length === 0) {
+			var sets = extend(ssbSets, backupSet);
+		} else {
+			var sets = ssbSets;
+		}
 
 		for (var k in sets) {
 			sets[k].moves = sets[k].moves.map(toId);
-			sets[k].baseSignatureMove = toId(sets[k].baseSignatureMove);
+			if (sets[k].baseSignatureMove) sets[k].baseSignatureMove = toId(sets[k].baseSignatureMove);
 		}
 
 		// Generate the team randomly.
