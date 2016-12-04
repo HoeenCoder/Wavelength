@@ -204,7 +204,7 @@ exports.BattleMovedex = {
         id: "mysticmirage",
         isNonstandard: true,
         name: "Mystic Mirage",
-        self: {boosts: {def: 8, spa: 8, spd: 8}},
+        self: {boosts: {def: 1, spa: 1, spd: 1}},
         pp: 10,
         priority: 0,
         onHit: function (target, source) {
