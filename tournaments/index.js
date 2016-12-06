@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 const BRACKET_MINIMUM_UPDATE_INTERVAL = 2 * 1000;
 const AUTO_DISQUALIFY_WARNING_TIMEOUT = 30 * 1000;
@@ -96,7 +96,9 @@ class Tournament {
 		if (isErrored) return;
 
 		this.generator = generator;
-		this.room.send('|tournament|update|' + JSON.stringify({generator: generator.name}));
+		this.room.send('|tournament|update|' + JSON.stringify({
+			generator: generator.name,
+		}));
 		this.isBracketInvalidated = true;
 		this.update();
 		return true;
@@ -192,9 +194,13 @@ class Tournament {
 			let pendingChallenge = this.pendingChallenges.get(this.players[targetUser.userid]);
 			if (pendingChallenge) {
 				if (pendingChallenge.to) {
-					connection.sendTo(this.room, '|tournament|update|' + JSON.stringify({challenging: pendingChallenge.to.name}));
+					connection.sendTo(this.room, '|tournament|update|' + JSON.stringify({
+						challenging: pendingChallenge.to.name,
+					}));
 				} else if (pendingChallenge.from) {
-					connection.sendTo(this.room, '|tournament|update|' + JSON.stringify({challenged: pendingChallenge.from.name}));
+					connection.sendTo(this.room, '|tournament|update|' + JSON.stringify({
+						challenged: pendingChallenge.from.name,
+					}));
 				}
 			}
 		}
@@ -216,7 +222,9 @@ class Tournament {
 
 				this.bracketCache = this.getBracketData();
 				this.isBracketInvalidated = false;
-				this.room.send('|tournament|update|' + JSON.stringify({bracketData: this.bracketCache}));
+				this.room.send('|tournament|update|' + JSON.stringify({
+					bracketData: this.bracketCache,
+				}));
 			}
 		}
 
@@ -225,10 +233,14 @@ class Tournament {
 			this.isAvailableMatchesInvalidated = false;
 
 			this.availableMatchesCache.challenges.forEach((opponents, player) => {
-				player.sendRoom('|tournament|update|' + JSON.stringify({challenges: usersToNames(opponents)}));
+				player.sendRoom('|tournament|update|' + JSON.stringify({
+					challenges: usersToNames(opponents),
+				}));
 			});
 			this.availableMatchesCache.challengeBys.forEach((opponents, player) => {
-				player.sendRoom('|tournament|update|' + JSON.stringify({challengeBys: usersToNames(opponents)}));
+				player.sendRoom('|tournament|update|' + JSON.stringify({
+					challengeBys: usersToNames(opponents),
+				}));
 			});
 		}
 		this.room.send('|tournament|updateEnd');
@@ -717,10 +729,20 @@ class Tournament {
 		}
 
 		this.lastActionTimes.set(to, Date.now());
-		this.pendingChallenges.set(from, {to: to, team: user.team});
-		this.pendingChallenges.set(to, {from: from, team: user.team});
-		from.sendRoom('|tournament|update|' + JSON.stringify({challenging: to.name}));
-		to.sendRoom('|tournament|update|' + JSON.stringify({challenged: from.name}));
+		this.pendingChallenges.set(from, {
+			to: to,
+			team: user.team,
+		});
+		this.pendingChallenges.set(to, {
+			from: from,
+			team: user.team,
+		});
+		from.sendRoom('|tournament|update|' + JSON.stringify({
+			challenging: to.name,
+		}));
+		to.sendRoom('|tournament|update|' + JSON.stringify({
+			challenged: from.name,
+		}));
 
 		this.isBracketInvalidated = true;
 		this.update();
@@ -780,7 +802,10 @@ class Tournament {
 		let player = this.players[user.userid];
 		if (!this.pendingChallenges.get(player)) return;
 
-		let room = Rooms.global.startBattle(from, user, this.format, challenge.team, user.team, {rated: this.isRated, tour: this});
+		let room = Rooms.global.startBattle(from, user, this.format, challenge.team, user.team, {
+			rated: this.isRated,
+			tour: this,
+		});
 		if (!room) return;
 
 		this.pendingChallenges.set(challenge.from, null);
@@ -788,7 +813,10 @@ class Tournament {
 		from.sendTo(this.room, '|tournament|update|{"challenging":null}');
 		user.sendTo(this.room, '|tournament|update|{"challenged":null}');
 
-		this.inProgressMatches.set(challenge.from, {to: player, room: room});
+		this.inProgressMatches.set(challenge.from, {
+			to: player,
+			room: room,
+		});
 		this.room.add('|tournament|battlestart|' + from.name + '|' + user.name + '|' + room.id).update();
 
 		this.isBracketInvalidated = true;
@@ -896,9 +924,6 @@ class Tournament {
 
 		let color = '#088cc7';
 		let sizeRequiredToEarn = 4;
-		let currencyName = function (amount) {
-			return amount === 1 ? (" " + global.currencyName) : (" " + global.currenyPlural);
-		};
 		let data = this.generator.getResults().map(usersToNames).toString();
 		let winner, runnerUp;
 
@@ -940,13 +965,13 @@ class Tournament {
 			if (runnerUp) {
 				Economy.writeMoney(rid, secondMoney, () => {
 					Economy.readMoney(rid, newAmount => {
-						if (Users(rid) && Users(targetUser).connected) {
+						if (Users(rid) && Users(rid).connected) {
 							Users.get(rid).popup('|html|You have received ' + secondMoney + ' ' + (secondMoney === 1 ? global.currencyName : global.currenyPlural) + ' from winning the tournament.');
 						}
 						Economy.logTransaction(Chat.escapeHTML(runnerUp) + ' has won ' + secondMoney + ' ' + (secondMoney === 1 ? global.currencyName : global.currenyPlural) + ' from a tournament.');
 					});
 				});
-				this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(runnerUp) + "</font> has won " +  "<font color='" + color + "'>" + secondMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currenyPlural) + " for winning the tournament!</b>");
+				this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(runnerUp) + "</font> has won " + "<font color='" + color + "'>" + secondMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currenyPlural) + " for winning the tournament!</b>");
 			}
 		}
 
@@ -970,6 +995,7 @@ function createTournamentGenerator(generator, args, output) {
 	args.unshift(null);
 	return new (Generator.bind.apply(Generator, args))();
 }
+
 function createTournament(room, format, generator, playerCap, isRated, args, output) {
 	if (room.type !== 'chat') {
 		output.errorReply("Tournaments can only be created in chat rooms.");
@@ -1001,6 +1027,7 @@ function createTournament(room, format, generator, playerCap, isRated, args, out
 	room.game = exports.tournaments[room.id] = new Tournament(room, format, createTournamentGenerator(generator, args, output), playerCap, isRated);
 	return room.game;
 }
+
 function deleteTournament(id, output) {
 	let tournament = exports.tournaments[id];
 	if (!tournament) {
@@ -1013,6 +1040,7 @@ function deleteTournament(id, output) {
 	if (room) delete room.game;
 	return true;
 }
+
 function getTournament(id, output) {
 	if (exports.tournaments[id]) {
 		return exports.tournaments[id];
@@ -1300,7 +1328,13 @@ Chat.commands.tournament = function (paramString, room, user) {
 			return !tournament.room.isPrivate && !tournament.room.isPersonal && !tournament.room.staffRoom;
 		}).map(tournament => {
 			tournament = exports.tournaments[tournament];
-			return {room: tournament.room.id, title: tournament.room.title, format: tournament.format, generator: tournament.generator.name, isStarted: tournament.isTournamentStarted};
+			return {
+				room: tournament.room.id,
+				title: tournament.room.title,
+				format: tournament.format,
+				generator: tournament.generator.name,
+				isStarted: tournament.isTournamentStarted,
+			};
 		})));
 	} else if (cmd === 'help') {
 		return this.parse('/help tournament');

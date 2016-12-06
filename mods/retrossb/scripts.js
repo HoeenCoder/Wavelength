@@ -13,8 +13,8 @@ exports.BattleScripts = {
 	// This is used for the move Counter.
 	lastDamage: 0,
 	// BattleSide scripts.
-	// In gen 1, last move information is stored on the side rather than on the active Pokémon.
-	// This is because there was actually no side, just Battle and active Pokémon effects.
+	// In gen 1, last move information is stored on the side rather than on the active PokÃ©mon.
+	// This is because there was actually no side, just Battle and active PokÃ©mon effects.
 	// Side's lastMove is used for Counter and Mirror Move.
 	side: {
 		lastMove: '',
@@ -213,8 +213,28 @@ exports.BattleScripts = {
 
 		// Store 0 damage for last damage if move failed or dealt 0 damage.
 		// This only happens on moves that don't deal damage but call GetDamageVarsForPlayerAttack (disassembly).
-		if (!damage && (move.category !== 'Status' || (move.category === 'Status' && !(move.status in {'psn':1, 'tox':1, 'par':1}))) &&
-		!(move.id in {'conversion':1, 'haze':1, 'mist':1, 'focusenergy':1, 'confuseray':1, 'transform':1, 'lightscreen':1, 'reflect':1, 'substitute':1, 'mimic':1, 'leechseed':1, 'splash':1, 'softboiled':1, 'recover':1, 'rest':1})) {
+		if (!damage && (move.category !== 'Status' || (move.category === 'Status' && !(move.status in {
+			'psn': 1,
+			'tox': 1,
+			'par': 1,
+		}))) &&
+			!(move.id in {
+				'conversion': 1,
+				'haze': 1,
+				'mist': 1,
+				'focusenergy': 1,
+				'confuseray': 1,
+				'transform': 1,
+				'lightscreen': 1,
+				'reflect': 1,
+				'substitute': 1,
+				'mimic': 1,
+				'leechseed': 1,
+				'splash': 1,
+				'softboiled': 1,
+				'recover': 1,
+				'rest': 1,
+			})) {
 			pokemon.battle.lastDamage = 0;
 		}
 
@@ -238,7 +258,7 @@ exports.BattleScripts = {
 		let doSelfDestruct = true;
 		let damage = 0;
 
-		// First, check if the Pokémon is immune to this move.
+		// First, check if the PokÃ©mon is immune to this move.
 		if (move.ignoreImmunity !== true && !move.ignoreImmunity[move.type] && !target.runImmunity(move.type, true)) {
 			if (move.selfdestruct) {
 				this.faint(pokemon, pokemon, move);
@@ -386,7 +406,7 @@ exports.BattleScripts = {
 		if (target) {
 			hitResult = this.singleEvent('TryHit', moveData, {}, target, pokemon, move);
 
-			// Handle here the applying of partial trapping moves to Pokémon with Substitute
+			// Handle here the applying of partial trapping moves to PokÃ©mon with Substitute
 			if (targetSub && moveData.volatileStatus && moveData.volatileStatus === 'partiallytrapped') {
 				target.addVolatile(moveData.volatileStatus, pokemon, move);
 			}
@@ -458,9 +478,9 @@ exports.BattleScripts = {
 			if (moveData.boosts && !target.fainted) {
 				this.boost(moveData.boosts, target, pokemon, move);
 
-				// Check the status of the Pokémon whose turn is not.
-				// When a move that affects stat levels is used, if the Pokémon whose turn it is not right now is paralyzed or
-				// burned, the correspoding stat penalties will be applied again to that Pokémon.
+				// Check the status of the PokÃ©mon whose turn is not.
+				// When a move that affects stat levels is used, if the PokÃ©mon whose turn it is not right now is paralyzed or
+				// burned, the correspoding stat penalties will be applied again to that PokÃ©mon.
 				if (pokemon.side.foe.active[0] && pokemon.side.foe.active[0].status) {
 					// If it's paralysed, quarter its speed.
 					if (pokemon.side.foe.active[0].status === 'par') {
@@ -556,8 +576,12 @@ exports.BattleScripts = {
 				// We check here whether to negate the probable secondary status if it's para, burn, or freeze.
 				// In the game, this is checked and if true, the random number generator is not called.
 				// That means that a move that does not share the type of the target can status it.
-				// If a move that was not fire-type would exist on Gen 1, it could burn a Pokémon.
-				if (!(moveData.secondaries[i].status && moveData.secondaries[i].status in {'par':1, 'brn':1, 'frz':1} && target && target.hasType(move.type))) {
+				// If a move that was not fire-type would exist on Gen 1, it could burn a PokÃ©mon.
+				if (!(moveData.secondaries[i].status && moveData.secondaries[i].status in {
+					'par': 1,
+					'brn': 1,
+					'frz': 1,
+				} && target && target.hasType(move.type))) {
 					let effectChance = Math.floor(moveData.secondaries[i].chance * 255 / 100);
 					if (typeof moveData.secondaries[i].chance === 'undefined' || this.random(256) < effectChance) {
 						this.moveHit(target, pokemon, move, moveData.secondaries[i], true, isSelf);
@@ -572,7 +596,7 @@ exports.BattleScripts = {
 		return damage;
 	},
 	// boost can be found on battle-engine.js on Battle object.
-	// It deals with Pokémon stat boosting, including Gen 1 buggy behaviour with burn and paralyse.
+	// It deals with PokÃ©mon stat boosting, including Gen 1 buggy behaviour with burn and paralyse.
 	boost: function (boost, target, source, effect) {
 		if (this.event) {
 			if (!target) target = this.event.target;
@@ -638,7 +662,10 @@ exports.BattleScripts = {
 			}
 		}
 		if (damage !== 0) damage = this.clampIntRange(damage, 1);
-		if (!(effect.id in {'recoil':1, 'drain':1}) && effect.effectType !== 'Status') target.battle.lastDamage = damage;
+		if (!(effect.id in {
+			'recoil': 1,
+			'drain': 1,
+		}) && effect.effectType !== 'Status') target.battle.lastDamage = damage;
 		damage = target.damage(damage, source, effect);
 		if (source) source.lastDamage = damage;
 		let name = effect.fullname;
@@ -688,7 +715,10 @@ exports.BattleScripts = {
 		damage = this.clampIntRange(damage, 1);
 		// Check here for Substitute on confusion since it's not exactly a move that causes the damage and thus it can't TryMoveHit.
 		// The hi jump kick recoil also hits the sub.
-		if (effect.id in {'confusion': 1, 'highjumpkick': 1} && target.volatiles['substitute']) {
+		if (effect.id in {
+			'confusion': 1,
+			'highjumpkick': 1,
+		} && target.volatiles['substitute']) {
 			target.volatiles['substitute'].hp -= damage;
 			if (target.volatiles['substitute'].hp <= 0) {
 				target.removeVolatile('substitute');
@@ -934,34 +964,75 @@ exports.BattleScripts = {
 		return Math.floor(damage);
 	},
 	randomRetroStaffTeam: function (side) {
-		var team = [];
+		let team = [];
 		//var variant = this.random(2);
-		
-		var sets = {
+
+		let sets = {
 			//Admins
 			'~Legit Button': {
-				species: 'Haunter', ability: 'None', item: '', gender: false,
+				species: 'Haunter',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Psychic', 'Thunderbolt', 'Hypnosis', 'Mega Drain'],
-				signatureMove: '', noCustom: true,
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				signatureMove: '',
+				noCustom: true,
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'~Aston Rasen': {
-				species: 'Gengar', ability: 'None', item: '', gender: false,
+				species: 'Gengar',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Psychic', 'Thunderbolt', 'Hypnosis'],
 				signatureMove: 'Crisis',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'~codelegend': {
-				species: 'Arcanine', ability: 'None', item: '', gender: false,
+				species: 'Arcanine',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Hyper Beam', 'Body Slam', 'Fire Blast'],
 				signatureMove: 'Code Hax',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'~supersonicx': {
-				species: 'Metapod', ability: 'None', item: '', gender: false,
+				species: 'Metapod',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Tackle', 'String Shot', 'Harden'],
 				signatureMove: 'Abuse Power',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			/*'~Keckleon Market': {
 				species: 'Blastoise', ability: 'None', item: '', gender: false,
@@ -970,17 +1041,37 @@ exports.BattleScripts = {
 				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
 			},*/
 			'~Klaymore': {
-				species: 'Golem', ability: 'None', item: '', gender: false,
+				species: 'Golem',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Earthquake', 'Explosion', 'Seismic Toss'],
 				signatureMove: 'Rapid Roll',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			//Leaders
 			'&HoeenKid': {
-				species: 'Exeggutor', ability: 'None', item: '', gender: false,
+				species: 'Exeggutor',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Sleep Powder', 'Psychic', 'Substitute'],
 				signatureMove: 'Super Giga Drain',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			/*'&BDH93': {
 				species: 'Snorlax', ability: 'None', item: '', gender: false,
@@ -995,23 +1086,53 @@ exports.BattleScripts = {
 				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
 			},*/
 			'&X ADN Y DUDEET': {
-				species: 'Slowbro', ability: 'None', item: '', gender: false,
+				species: 'Slowbro',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Reflect', 'Surf', 'Thunder Wave'],
 				signatureMove: 'Psyburst',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'&FernBoy': {
-				species: 'Raichu', ability: 'None', item: '', gender: false,
+				species: 'Raichu',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Agility', 'Body Slam', 'Thunderbolt'],
 				signatureMove: 'Minimum Power',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			//Mods
 			'@Opple': {
-				species: 'Hitmonlee', ability: 'None', item: '', gender: false,
+				species: 'Hitmonlee',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['High Jump Kick', 'Body Slam', 'Substitute'],
 				signatureMove: 'Boostmonlee',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			/*'@Almighty Bronzong': {
 				species: 'Blastoise', ability: 'None', item: '', gender: false,
@@ -1020,53 +1141,133 @@ exports.BattleScripts = {
 				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
 			},*/
 			'@Hydrostatics': {
-				species: 'Charizard', ability: 'None', item: '', gender: false,
+				species: 'Charizard',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Fire Blast', 'Body Slam', 'Earthquake'],
 				signatureMove: 'Natures Fury',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'@Mimiroppu': {
-				species: 'Starmie', ability: 'None', item: '', gender: false,
+				species: 'Starmie',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Surf', 'Psychic', 'Blizzard'],
 				signatureMove: 'Starlight',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'@NoNickHere': {
-				species: 'Vaporeon', ability: 'None', item: '', gender: false,
+				species: 'Vaporeon',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Ice Beam', 'Substitute', 'Acid Armor'],
 				signatureMove: 'Ice Spirit',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'@yungSensory': {
-				species: 'Venomoth', ability: 'None', item: '', gender: false,
+				species: 'Venomoth',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Psychic', 'Stun Spore', 'Whirlwind'],
 				signatureMove: 'Poison Shock',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'@Revinton': {
-				species: 'Doduo', ability: 'None', item: '', gender: false,
+				species: 'Doduo',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Tri Attack', 'Drill Peck', 'Agility'],
 				signatureMove: 'Double Assist',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'@Frontier B. Kathey': {
-				species: 'Cloyster', ability: 'None', item: '', gender: false,
+				species: 'Cloyster',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Withdraw', 'Clamp', 'Ice Beam'],
 				signatureMove: 'Spike Release',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			//Drivers
 			'%Sonarflare': {
-				species: 'Blastoise', ability: 'None', item: '', gender: false,
+				species: 'Blastoise',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Rapid Spin', 'Hydro Cannon', 'Skull Bash'],
 				signatureMove: 'Turtle Boost',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'%BattleDragon': {
-				species: 'Dragonite', ability: 'None', item: '', gender: false,
+				species: 'Dragonite',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Wrap', 'Agility', 'Hyper Beam'],
 				signatureMove: 'Dragons Strike',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			/*'%Mystifi': {
 				species: 'Blastoise', ability: 'None', item: '', gender: false,
@@ -1081,40 +1282,96 @@ exports.BattleScripts = {
 				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
 			},*/
 			'%Pokemon Trainer Jaier': {
-				species: 'Rattata', ability: 'None', item: '', gender: false,
+				species: 'Rattata',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Quick Attack', 'Swift', 'Hyper Fang'],
 				signatureMove: 'Nibble',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			//Voices
 			'+Umich Brendan': {
-				species: 'Magmar', ability: 'None', item: '', gender: false,
+				species: 'Magmar',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Fire Punch', 'Body Slam', 'Toxic'],
 				signatureMove: 'Building Rage',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'+Regional Bot': {
-				species: 'Magneton', ability: 'None', item: '', gender: false,
+				species: 'Magneton',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Thunderbolt', 'Reflect', 'Hyper Beam'],
 				signatureMove: 'Metal Bomb',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 			'+coldgenisis': {
-				species: 'Clefable', ability: 'None', item: '', gender: false,
+				species: 'Clefable',
+				ability: 'None',
+				item: '',
+				gender: false,
 				moves: ['Psychic', 'Ice Beam', 'Thunderbolt'],
 				signatureMove: 'Cold Revenge',
-				evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
+				evs: {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				},
 			},
 		};
-		
+
 		let pool = Object.keys(sets);
-		for(let i = 0; i < 6; i++) {
+		for (let i = 0; i < 6; i++) {
 			let name = this.sampleNoReplace(pool);
 			let set = sets[name];
 			set.level = 100;
 			set.name = name;
-			set.ivs = {hp:30, atk:30, def:30, spa:30, spd:30, spe:30};
-			if(!set.evs) set.evs = {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255};
+			set.ivs = {
+				hp: 30,
+				atk: 30,
+				def: 30,
+				spa: 30,
+				spd: 30,
+				spe: 30,
+			};
+			if (!set.evs) {
+				set.evs = {
+					hp: 255,
+					atk: 255,
+					def: 255,
+					spa: 255,
+					spd: 255,
+					spe: 255,
+				};
+			}
 			set.moves = set.moves.concat(set.signatureMove);
 			team.push(set);
 		}

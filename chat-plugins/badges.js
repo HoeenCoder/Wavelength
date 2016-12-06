@@ -94,7 +94,7 @@ exports.commands = {
 			if (!Db('userBadges').has(userid)) return this.errorReply("This user doesn't have any badges.");
 			output = '<table border="1">';
 			let usersBadges = Db('userBadges').get(userid);
-			for(let i in usersBadges) {
+			for (let i in usersBadges) {
 				let badgeData = Db('badgeData').get(usersBadges[i]);
 				output += '<tr><td>' + badgeImg(badgeData[1], usersBadges[i]) + '</td> <td>' + usersBadges[i] + '</td> <td>' + badgeData[0] + '</td><tr>';
 			}
@@ -108,7 +108,7 @@ exports.commands = {
 			break;
 		default:
 			return this.errorReply("Invalid command. Valid commands are `/badges list`, `/badges info, badgeName`, `/badges set, user, badgeName` and `/badges take, user, badgeName`" +
-			 "`/badges create, name, description, img`.");
+				"`/badges create, name, description, img`.");
 		}
 	},
 	badgeshelp: ["Valid commands are `/badges list`, `/badges info, badgeName`, `/badges set, user, badgeName` and `/badges take, user, badgeName`."],

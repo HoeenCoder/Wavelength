@@ -39,7 +39,6 @@
  *
  * @license MIT license
  */
-
 'use strict';
 
 const fs = require('fs');
@@ -59,7 +58,9 @@ try {
 
 	let command = 'npm install --production';
 	console.log('Installing dependencies: `' + command + '`...');
-	require('child_process').spawnSync('sh', ['-c', command], {stdio: 'inherit'});
+	require('child_process').spawnSync('sh', ['-c', command], {
+		stdio: 'inherit',
+	});
 }
 
 /*********************************************************
@@ -117,7 +118,6 @@ global.Users = require('./users');
 global.Punishments = require('./punishments');
 
 global.Chat = require('./chat');
-
 global.Rooms = require('./rooms');
 
 global.Tells = require('./tells.js');
@@ -129,6 +129,7 @@ Verifier.PM.spawn();
 global.SG = {};
 
 global.Tournaments = require('./tournaments');
+
 
 global.Dnsbl = require('./dnsbl');
 Dnsbl.loadDatacenters();
@@ -160,17 +161,19 @@ if (Config.crashguard) {
 			10: 'Internal JavaScript Run-Time Failure',
 			11: 'A sysadmin forced an emergency exit',
 			12: 'Invalid Debug Argument',
-			130: 'Control-C via Terminal or Command Prompt'
+			130: 'Control-C via Terminal or Command Prompt',
 		};
 		if (code !== 0) {
 			let exitInfo = 'Unused Error Code';
 			if (exitCodes[code]) {
 				exitInfo = exitCodes[code];
-			} else if (code > 128) exitInfo = 'Signal Exit';
-			console.log('');
-			console.error('WARNING: Process exiting with code ' + code);
-			console.error('Exit code details: ' + exitInfo + '.');
-			console.error('Refer to https://github.com/nodejs/node-v0.x-archive/blob/master/doc/api/process.markdown#exit-codes for more details. The process will now exit.');
+			} else if (code > 128) {
+				exitInfo = 'Signal Exit';
+				console.log('');
+				console.error('WARNING: Process exiting with code ' + code);
+				console.error('Exit code details: ' + exitInfo + '.');
+				console.error('Refer to https://github.com/nodejs/node-v0.x-archive/blob/master/doc/api/process.markdown#exit-codes for more details. The process will now exit.');
+			}
 		}
 	});
 }

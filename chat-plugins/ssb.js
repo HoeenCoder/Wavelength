@@ -1,43 +1,45 @@
 'use strict';
 
-var fs = require('fs');
-var ssbWrite = true; //if false, do not write to json
+let fs = require('fs');
+let ssbWrite = true; //if false, do not write to json
 const MAX_MOVEPOOL_SIZE = 4;
-var customMovepool = ['Stretch', 'Flame Tower', 'Rain Spear', 'Healing Herbs', 'Electro Drive', 'Hailstorm', 'Beat Down', 'Nuclear Waste', 'Terratremor', 'Ventilation', 'Psychic Shield', 'Swarm Charge', 'Rock Cannon', 'Spook', 'Imperial Rampage', 'Shadow Run', 'Magnorang', 'Majestic Dust']; //Add defual custom move names here.
-var customDescs = ['+1 Atk, +1 SpA, +1 Spe', '75 power Special attack, traps opponent for 4-5 turns and damages, 50% chance of burn', '50 power special move, 100 accuracy, summons rain, 20% chance to flinch', 'Heal your whole team of status conditions and heal 25% of your HP.', 'More power the faster the user is than the target, rasies speed by 1 after use.', 'Hail + Blizzard', '200 Base Power, has a 50% chance to paralyze target, must recharge after use', 'Inflict toxic on foe, and lower foes attack by 1. Lower accuracy.', '150BP Physical move, 15% chance to flinch', 'Remove entry hazards and set the weather to clear.', 'Sets Light Screen, Reflect, and Quick Guard.', '100 power physical attack, 90 accuracy, 30% chance to raise speed and attack.', 'Special attack, 95 power, 100 accuracy, 30% chance to Flinch', '70BP, 10% flinch chance, Always crits', '175BP outrage, also lowers your atk by 2 after it ends.', '100BP knock off', '100BP Physical move, if the foe is a steel type they will be trapped.', '120BP Special move. 10% par chance, power based move.'];
-var typeList = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'];
+let customMovepool = ['Stretch', 'Flame Tower', 'Rain Spear', 'Healing Herbs', 'Electro Drive', 'Hailstorm', 'Beat Down', 'Nuclear Waste', 'Terratremor', 'Ventilation', 'Psychic Shield', 'Swarm Charge', 'Rock Cannon', 'Spook', 'Imperial Rampage', 'Shadow Run', 'Magnorang', 'Majestic Dust']; //Add defual custom move names here.
+let customDescs = ['+1 Atk, +1 SpA, +1 Spe', '75 power Special attack, traps opponent for 4-5 turns and damages, 50% chance of burn', '50 power special move, 100 accuracy, summons rain, 20% chance to flinch', 'Heal your whole team of status conditions and heal 25% of your HP.', 'More power the faster the user is than the target, rasies speed by 1 after use.', 'Hail + Blizzard', '200 Base Power, has a 50% chance to paralyze target, must recharge after use', 'Inflict toxic on foe, and lower foes attack by 1. Lower accuracy.', '150BP Physical move, 15% chance to flinch', 'Remove entry hazards and set the weather to clear.', 'Sets Light Screen, Reflect, and Quick Guard.', '100 power physical attack, 90 accuracy, 30% chance to raise speed and attack.', 'Special attack, 95 power, 100 accuracy, 30% chance to Flinch', '70BP, 10% flinch chance, Always crits', '175BP outrage, also lowers your atk by 2 after it ends.', '100BP knock off', '100BP Physical move, if the foe is a steel type they will be trapped.', '120BP Special move. 10% par chance, power based move.'];
+let typeList = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'];
 
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
 	fs.writeFile('config/ssb.json', JSON.stringify(SG.ssb));
-}
+};
 
 //Shamlessly ripped from teambuilder client.
 function getStat(stat, set, evOverride, natureOverride) {
 	if (!set) set = this.curSet;
 	if (!set) return 0;
 
-	if (!set.ivs) set.ivs = {
-		hp: 31,
-		atk: 31,
-		def: 31,
-		spa: 31,
-		spd: 31,
-		spe: 31
-	};
+	if (!set.ivs) {
+		set.ivs = {
+			hp: 31,
+			atk: 31,
+			def: 31,
+			spa: 31,
+			spd: 31,
+			spe: 31,
+		};
+	}
 	if (!set.evs) set.evs = {};
 
 	// do this after setting set.evs because it's assumed to exist
 	// after getStat is run
-	var template = Tools.getTemplate(set.species);
+	let template = Tools.getTemplate(set.species);
 	if (!template.exists) return 0;
 
 	if (!set.level) set.level = 100;
 	if (typeof set.ivs[stat] === 'undefined') set.ivs[stat] = 31;
 
-	var baseStat = Tools.getTemplate(set.species).baseStats[stat];
-	var iv = (set.ivs[stat] || 0);
-	var ev = set.evs[stat];
+	let baseStat = Tools.getTemplate(set.species).baseStats[stat];
+	let iv = (set.ivs[stat] || 0);
+	let ev = set.evs[stat];
 	if (evOverride !== undefined) ev = evOverride;
 	if (ev === undefined) ev = (this.curTeam.gen > 2 ? 0 : 252);
 
@@ -45,7 +47,7 @@ function getStat(stat, set, evOverride, natureOverride) {
 		if (baseStat === 1) return 1;
 		return Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4) + 100) * set.level / 100 + 10);
 	}
-	var val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
+	let val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
 	if (natureOverride) {
 		val *= natureOverride;
 	} else if (Tools.getNature(set.nature) && Tools.getNature(set.nature).plus === stat) {
@@ -129,18 +131,18 @@ function buildMenu(userid) {
 			evs: SG.ssb[userid].evs,
 			ivs: SG.ssb[userid].ivs,
 			nature: SG.ssb[userid].nature,
-			level: SG.ssb[userid].level
+			level: SG.ssb[userid].level,
 		});
-		var evBuf = '<em>' + (SG.ssb[userid].evs[toId(statNames[i])] === 0 ? '' : SG.ssb[userid].evs[toId(statNames[i])]) + '</em>';
+		let evBuf = '<em>' + (SG.ssb[userid].evs[toId(statNames[i])] === 0 ? '' : SG.ssb[userid].evs[toId(statNames[i])]) + '</em>';
 		if (Tools.getNature(SG.ssb[userid].nature).plus === toId(statNames[i])) {
 			evBuf += '<small>+</small>';
 		} else if (Tools.getNature(SG.ssb[userid].nature).minus === toId(statNames[i])) {
 			evBuf += '<small>&minus;</small>';
 		}
-		var width = stats[toId(statNames[i])] * 75 / 504;
-		if (statNames[i] == 'HP') width = stats[toId(statNames[i])] * 75 / 704;
+		let width = stats[toId(statNames[i])] * 75 / 504;
+		if (statNames[i] === 'HP') width = stats[toId(statNames[i])] * 75 / 704;
 		if (width > 75) width = 75;
-		var color = Math.floor(SG.ssb[userid].evs[toId(statNames[i])] * 180 / 714);
+		let color = Math.floor(SG.ssb[userid].evs[toId(statNames[i])] * 180 / 714);
 		if (color > 360) color = 360;
 		output += '<span class="statrow"><label>' + statNames[i] + '</label> <span class="statgraph"><span style="width:' + width + 'px;background:hsl(' + color + ',40%,75%);"></span></span> ' + evBuf + '</span>';
 	}
@@ -234,7 +236,7 @@ class SSB {
 			def: 0,
 			spa: 0,
 			spd: 0,
-			spe: 0
+			spe: 0,
 		};
 		this.ivs = {
 			hp: 31,
@@ -242,7 +244,7 @@ class SSB {
 			def: 31,
 			spa: 31,
 			spd: 31,
-			spe: 31
+			spe: 31,
 		};
 		this.nature = 'Serious';
 		this.active = false; //If true, this pokemon can appear in the tier.
@@ -264,7 +266,7 @@ class SSB {
 		if (!species.exists) return false;
 		if (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') return false;
 		if (species.gen < 1) return false;
-                if (species.battleOnly) return false;
+		if (species.battleOnly) return false;
 		if (species.tier === 'Uber' || species.teir === 'Bank-Uber') {
 			//Most are banned a few arent
 			if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
@@ -291,28 +293,26 @@ class SSB {
 		case 'boy':
 		case 'male':
 			this.gender = 'M';
-			return true;
 			break;
 		case 'f':
 		case 'girl':
 		case 'female':
 			this.gender = 'F';
-			return true;
 			break;
 		case 'n':
 		case 'genderless':
 		case 'none':
 			this.gender = 'N';
-			return true;
 			break;
 		case 'random':
 		case 'rand':
 		case 'r':
 			this.gender = 'random';
-			return true;
 			break;
+		default:
+			return false;
 		}
-		return false;
+		return true;
 	}
 	setSymbol(symbol) {
 		if (!this.cSymbol) return false;
@@ -355,7 +355,9 @@ class SSB {
 			if (this.cItem && toId(this.cItem) === item.id && this.bought.citem) {
 				this.item = this.cItem;
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		} else {
 			if (item.id === 'mawilite' || item.id === 'salamencite' || item.id === 'gengarite' || item.id === 'kangaskhanite' || item.id === 'lucarionite' || item.id === 'blazikenite') return false;
 			this.item = item.name;
@@ -369,7 +371,9 @@ class SSB {
 			if (this.cAbility && toId(this.cAbility) === ability.id && this.bought.cAbility) {
 				this.ability = this.cAbility;
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		} else {
 			for (let i in Tools.getTemplate(this.species).abilities) {
 				if (toId(Tools.getTemplate(this.species).abilities[i]) === ability.id) {
@@ -390,8 +394,8 @@ class SSB {
 		}
 		if (learnpool.indexOf(move.id) === -1) return false;*/
 		if (TeamValidator('gen7ou').checkLearnset(move, this.species, {
-				set: {}
-			})) return false;
+			set: {},
+		})) return false;
 		if (this.movepool.indexOf(move.name) > -1) return false;
 		this.movepool.push(move.name);
 		return true;
@@ -421,7 +425,9 @@ class SSB {
 			if (this.selfCustomMove && toId(this.selfCustomMove) === move && this.bought.cMove) {
 				this.cMove = this.selfCustomMove;
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		}
 		this.cMove = customMovepool[customIds.indexOf(move)];
 		return true;
@@ -513,7 +519,9 @@ exports.commands = {
 				targetUser.updateName(user.name);
 				if (cmd === '') {
 					return user.sendTo(room, '|uhtml|ssb' + user.userid + '|' + buildMenu(user.userid));
-				} else return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
+				} else {
+					return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
+				}
 			},
 			speciesq: 'species',
 			species: function (target, room, user, connection, cmd, message) {
@@ -554,8 +562,10 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'moveq') this.sendReply('Added the move ' + target[1] + ' to your movepool.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					} else return this.errorReply('Unable to add the move ' + target[1] + '.');
-					break;
+					} else {
+						return this.errorReply('Unable to add the move ' + target[1] + '.');
+					}
+					//break;
 				case 'remove':
 					//remove a move
 					if (targetUser.removeMove(target[1])) {
@@ -566,16 +576,20 @@ exports.commands = {
 							this.sendReply('Your pokemon was deactivated becuase it now has 0 moves.');
 						}
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					} else return this.errorReply('You do not have the move ' + target[1] + ' in your movepool, or set as your custom move.');
-					break;
+					} else {
+						return this.errorReply('You do not have the move ' + target[1] + ' in your movepool, or set as your custom move.');
+					}
+					//break;
 				case 'custom':
 					//set the custom move
 					if (targetUser.setCustomMove(target[1])) {
 						writeSSB();
 						if (cmd !== 'moveq') this.sendReply('Your custom move has been set to ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					} else return this.errorReply(target[1] + ' is either not a custom move, or not a custom move you can use.');
-					break;
+					} else {
+						return this.errorReply(target[1] + ' is either not a custom move, or not a custom move you can use.');
+					}
+					//break;
 				default:
 					return this.sendReply('/ssb edit move [set|custom], movename. Or use /ssb edit move to access the move menu.');
 				}
@@ -594,8 +608,7 @@ exports.commands = {
 				if (toId(target) === 'help') return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
 				if (toId(target) === 'naturehelp') return this.sendReply('/ssb edit stats nature, [nature] - Set your pokemon\'s nature.');
 				target = target.split(',');
-				if (!target[1])
-					if (!target[2]) return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
+				if (!target[1] && !target[2]) return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
 				switch (toId(target[1])) {
 				case 'healthpoints':
 					target[1] = 'hp';
@@ -624,8 +637,10 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'statsq') this.sendReply(target[1] + ' EV was set to ' + target[2] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
-					} else return this.errorReply('Unable to set ' + target[1] + ' EV to ' + target[2] + '. Check to make sure your EVs dont exceed 510 total.');
-					break;
+					} else {
+						return this.errorReply('Unable to set ' + target[1] + ' EV to ' + target[2] + '. Check to make sure your EVs dont exceed 510 total.');
+					}
+					//break;
 				case 'iv':
 				case 'ivs':
 					if (!target[2]) return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
@@ -633,15 +648,19 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'statsq') this.sendReply(target[1] + ' IV was set to ' + target[2] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
-					} else return this.errorReply('Ivs can only be between 0 and 31.');
-					break;
+					} else {
+						return this.errorReply('Ivs can only be between 0 and 31.');
+					}
+					//break;
 				case 'nature':
 					if (targetUser.setNature(target[1])) {
 						writeSSB();
 						if (cmd !== 'statsq') this.sendReply('Your pokemon\'s nature was set to ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
-					} else return this.errorReply(target[1] + ' is not a valid nature.');
-					break;
+					} else {
+						return this.errorReply(target[1] + ' is not a valid nature.');
+					}
+					//break;
 				default:
 					return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
 				}
@@ -661,7 +680,9 @@ exports.commands = {
 					writeSSB();
 					if (cmd !== 'abilityq') this.sendReply('Your pokemon\'s ability is now ' + target + '.');
 					return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-				} else this.errorReply(target + ' could not be set as your pokemon\'s ability because it is not a legal ability for ' + targetUser.species + ', and it is not your custom ability.');
+				} else {
+					this.errorReply(target + ' could not be set as your pokemon\'s ability because it is not a legal ability for ' + targetUser.species + ', and it is not your custom ability.');
+				}
 			},
 			itemq: 'item',
 			item: function (target, room, user, connection, cmd, message) {
@@ -708,16 +729,20 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'detailsq') this.sendReply('Your pokemon\'s level was set to ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
-					} else return this.errorReply('Levels must be greater than or equal to 1, and less than or equal to 100.');
-					break;
+					} else {
+						return this.errorReply('Levels must be greater than or equal to 1, and less than or equal to 100.');
+					}
+					//break;
 				case 'gender':
 					if (!target[1]) return this.parse('/ssb edit details help');
 					if (targetUser.setGender(target[1])) {
 						writeSSB();
 						if (cmd !== 'detailsq') this.sendReply('Your pokemon\'s gender was set to ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
-					} else return this.errorReply('Valid pokemon genders are: Male, Female, random, and genderless.');
-					break;
+					} else {
+						return this.errorReply('Valid pokemon genders are: Male, Female, random, and genderless.');
+					}
+					//break;
 				case 'happiness':
 				case 'happy':
 					if (!target[1]) return this.parse('/ssb edit details help');
@@ -725,16 +750,20 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'detailsq') this.sendReply('Your pokemon\'s happiness level was set to ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
-					} else return this.errorReply('Happiness levels must be greater than or equal to 0, and less than or equal to 255.');
-					break;
+					} else {
+						return this.errorReply('Happiness levels must be greater than or equal to 0, and less than or equal to 255.');
+					}
+					//break;
 				case 'shinyness':
 				case 'shiny':
 					if (targetUser.setShiny()) {
 						writeSSB();
 						if (cmd !== 'detailsq') this.sendReply('Your pokemon\'s shinyness was toggled.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					} else return this.errorReply('You must purchase this from the shop first!');
-					break;
+					} else {
+						return this.errorReply('You must purchase this from the shop first!');
+					}
+					//break;
 				case 'symbol':
 				case 'csymbol':
 				case 'customsymbol':
@@ -743,12 +772,14 @@ exports.commands = {
 						writeSSB();
 						if (cmd !== 'detailsq') this.sendReply('Your symbol is now ' + target[1] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
-					} else return this.errorReply('Unable to set your custom symbol. Be sure your not using an illegal staff symbol.');
-					break;
+					} else {
+						return this.errorReply('Unable to set your custom symbol. Be sure your not using an illegal staff symbol.');
+					}
+					//break;
 				default:
 					return this.sendReply('/ssb edit details [level|gender|happiness|shiny], (argument) - edit your pokemon\'s details.');
 				}
-			}
+			},
 		},
 		toggle: function (target, room, user, connection, cmd, message) {
 			if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
@@ -769,7 +800,9 @@ exports.commands = {
 					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
 					return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles.');
 				}
-			} else return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
+			} else {
+				return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
+			}
 		},
 		custommoves: 'custom',
 		cmoves: 'custom',
@@ -781,7 +814,6 @@ exports.commands = {
 				writeSSB();
 				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
-			let targetUser = SG.ssb[user.userid];
 			return this.sendReplyBox(customMenu());
 		},
 		log: function (target, room, user, connection, cmd, message) {
@@ -793,7 +825,7 @@ exports.commands = {
 				if (toId(target[1]) !== user.userid && !user.can('roomowner')) return this.errorReply('You can only view your own SSBFFA purchases.');
 				let output = '<div style="max-height: 300px; overflow: scroll; width: 100%"><table><tr><th style="border: 1px solid black">Name</th><th style="border: 1px solid black">Item</th><th style="border: 1px solid black">Status</th>';
 				if (toId(target[1]) === 'all') {
-					output += '<th style="border: 1px solid black">Options</th><tr/>'
+					output += '<th style="border: 1px solid black">Options</th><tr/>';
 					for (let i in SG.ssb) {
 						for (let j in SG.ssb[i].bought) {
 							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
@@ -817,7 +849,7 @@ exports.commands = {
 					}
 				}
 				return this.sendReplyBox(output);
-				break;
+				//break;
 			case 'mark':
 				if (!user.can('roomowner')) return this.errorReply('/sbb mark - Access Denied.');
 				if (!target[3]) return this.parse('/help ssb log');
@@ -832,31 +864,31 @@ exports.commands = {
 					SG.ssb[target[1]].bought[target[2]] = 'complete';
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was marked as complete.');
-					break;
+					//break;
 				case 'pending':
 					if (SG.ssb[target[1]].bought[target[2]] === true) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already ' + target[3] + '.');
 					SG.ssb[target[1]].bought[target[2]] = true;
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was marked as pending.');
-					break;
+					//break;
 				case 'remove':
 					if (SG.ssb[target[1]].bought[target[2]] === false) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already removed.');
 					if (!target[4] || toId(target[4]) !== 'force') return this.sendReply('WARNING. If you remove this purchase the user will not be able to use their ' + target[2] + ' and the user will not be refunded (unless you provide it). If you are sure you want to do this, run: /ssb log mark, ' + target[1] + ', ' + target[2] + ', ' + target[3] + ', force');
 					SG.ssb[target[1]].bought[target[2]] = false;
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was removed.');
-					break;
+					//break;
 				default:
 					return this.parse('/help ssb log');
 				}
-				break;
+				//break;
 			default:
 				return this.parse('/help ssb log');
 			}
 		},
 		loghelp: ['/ssb log - Accepts the following commands:',
 			'/ssb log view, [all|user] - View the purchases of a user or all users. Requires &, ~ unless viewing your own.',
-			'/ssb log mark, [user], [cItem|cAbility|cMove], [complete|pending|remove] - Update the status for a users SSBFFA purchase.'
+			'/ssb log mark, [user], [cItem|cAbility|cMove], [complete|pending|remove] - Update the status for a users SSBFFA purchase.',
 		],
 		forceupdate: 'validate',
 		validateall: 'validate',
@@ -874,7 +906,9 @@ exports.commands = {
 					if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
 					writeSSB();
 					return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
-				} else return this.sendReply('Done! This pokemon is valid');
+				} else {
+					return this.sendReply('Done! This pokemon is valid');
+				}
 			} else {
 				for (let key in SG.ssb) {
 					let valid = validate(this, SG.ssb[key], true);
@@ -891,7 +925,7 @@ exports.commands = {
 		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set ti to its default value. Requires: &, ~'],
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help ssb');
-		}
+		},
 	},
 	ssbhelp: ['/ssb - Commands for editing your custom super staff bros pokemon. Includes the following commands: ',
 		'/ssb edit - pulls up the general menu, allowing you to edit species and contains buttons to access other menus.',
@@ -905,6 +939,6 @@ exports.commands = {
 		'/ssb custom - Shows all the default custom moves, with details.',
 		'/ssb log - Shows purchase details for SSBFFA.',
 		'/ssb [validate|validateall] (user) - validate a users SSBFFA pokemon, or validate all SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
-		'Programed by HoeenHero.'
-	]
-}
+		'Programed by HoeenHero.',
+	],
+};

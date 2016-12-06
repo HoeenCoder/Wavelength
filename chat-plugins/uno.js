@@ -3,7 +3,6 @@
 
 	by sparkychild
 */
-
 'use strict';
 
 const deck = ["R1",
@@ -154,7 +153,6 @@ function buildHand(array, notClickable) {
 	return hand.join("&nbsp;");
 }
 
-
 function initDeck(playerCount) {
 	playerCount = Math.ceil(playerCount / 7);
 	let tDeck = [];
@@ -203,7 +201,6 @@ function getCardName(id, colour) {
 	if (colour) return "<font color=\"" + type[id.charAt(0)].toLowerCase().replace("yellow", "orange") + "\">" + type[id.charAt(0)] + value[id.slice(1)] + "</font>";
 	return type[id.charAt(0)] + value[id.slice(1)];
 }
-
 
 function buildGameScreen(uhtmlid, top, roomid, hand, message, change, pass) {
 	let html = (message ? "|uhtmlchange|" + uhtmlid : "|uhtml|" + uhtmlid) + "|";
@@ -620,7 +617,7 @@ exports.commands = {
 		new: function (target, room, user) {
 			if (!this.can("announce", null, room)) return false;
 			if (room.unoDisabled) return this.errorReply("UNO is currently disabled in this room.");
-			let cap = target ? parseInt(target, 10) : null;
+			let cap = target ? Math.floor(parseInt(target)) : null;
 			if (room.game) return this.errorReply("There is already a game in progress in this room.");
 			if (cap && cap < 2) return this.errorReply("The player cap has to be at least 2.");
 

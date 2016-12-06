@@ -15,7 +15,7 @@
 		"Config": false, "Monitor": false, "toId": false, "Tools": false, "LoginServer": false,
 		"Users": false, "Punishments": false, "Rooms": false, "Verifier": false, "Chat": false,
 		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false, "Ladders": false,
-                "SG": false, "Tells": false, "Db": false, "Economy": false, "sqlite3": false, "currencyName": false, "currencyPlural": false, "writeSSB": false, "hashColorWithCustoms": false
+                "SG": false, "Tells": false, "Db": false, "Economy": false, "sqlite3": false, "currencyName": false, "currencyPlural": false, "writeSSB": false, "hashColorWithCustoms": false, "isDev": false, "isVIP": false
 	},
 	"extends": "eslint:recommended",
 	"rules": {
@@ -99,7 +99,7 @@
 		"no-path-concat": "off",
 		"no-process-env": "off",
 		"no-process-exit": "off",
-		"no-restricted-modules": ["error", "moment", "request", "sugar"],
+		"no-restricted-modules": ["error", "sugar"],
 		"no-sync": "off",
 
 		"array-bracket-spacing": ["error", "never"],

@@ -13,7 +13,7 @@ exports.BattleAbilities = {
 			if (typeof move.accuracy === 'number') {
 				move.accuracy *= 1.1;
 			}
-		}
+		},
 	},
 	poseidon: {
 		id: "poseidon",
@@ -23,10 +23,10 @@ exports.BattleAbilities = {
 		},
 		onAnySetWeather: function (target, source, weather) {
 			if (this.getWeather().id === 'primordialsea' && !(weather.id in {
-					desolateland: 1,
-					primordialsea: 1,
-					deltastream: 1
-				})) return false;
+				desolateland: 1,
+				primordialsea: 1,
+				deltastream: 1,
+			})) return false;
 		},
 		onEnd: function (pokemon) {
 			if (this.weatherData.source !== pokemon) return;
@@ -67,5 +67,5 @@ exports.BattleAbilities = {
 			this.add('-start', target, 'ability: Server');
 			this.add('raw', '<span style="font-family: monospace;">./spacialgaze>node app.js<br/>NEW GLOBAL: global<br/>NEW CHATROOM: lobby<br/>NEW CHATROOM: staff<br/>Worker 1 now listening on 0.0.0.0:8000<br/>Test your server at http://localhost:8000<br/>_</span>');
 		},
-	}
-}
+	},
+};

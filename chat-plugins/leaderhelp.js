@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 
 exports.commands = {
 	helpleader: 'leaderhelp',
@@ -51,7 +51,7 @@ exports.commands = {
 			'<b>/show</b> - Displays your global rank <br />' +
 			'<b>/givecurrency [user], [amount]</b> - gives a special amount of Stardust to a user (needs a reason) <br />' +
 			'<b>/takecurrency [user], [amount]</b> - removes a special amount of Stardust from a user (needs a reason) <br />' +
-			'<b>/moneylog [number]</b> - to view the last x lines <br />' +  
+			'<b>/moneylog [number]</b> - to view the last x lines <br />' +
 			'<b>/moneylog [text]</b> - to search for text <br />' +
 			'<b>/pmall [message]</b> - sends a pm to all users connected to SG <br />' +
 			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to SG <br />' +

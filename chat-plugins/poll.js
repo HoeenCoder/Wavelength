@@ -1,8 +1,7 @@
 /*
-* Poll chat plugin
-* By bumbadadabum and Zarel.
-*/
-
+ * Poll chat plugin
+ * By bumbadadabum and Zarel.
+ */
 'use strict';
 
 class Poll {
@@ -23,7 +22,10 @@ class Poll {
 
 		this.options = new Map();
 		for (let i = 0; i < options.length; i++) {
-			this.options.set(i + 1, {name: options[i], votes: 0});
+			this.options.set(i + 1, {
+				name: options[i],
+				votes: 0,
+			});
 		}
 	}
 
@@ -215,7 +217,10 @@ exports.commands = {
 				return this.errorReply("Too many options for poll (maximum is 8).");
 			}
 
-			room.poll = new Poll(room, {source: params[0], supportHTML: supportHTML}, options);
+			room.poll = new Poll(room, {
+				source: params[0],
+				supportHTML: supportHTML,
+			}, options);
 			room.poll.display();
 
 			this.logEntry("" + user.name + " used " + message);
@@ -272,7 +277,6 @@ exports.commands = {
 					return this.sendReply("The poll timer is off.");
 				}
 			}
-
 		},
 		timerhelp: ["/poll timer [minutes] - Sets the poll to automatically end after [minutes] minutes. Requires: % @ * # & ~", "/poll timer clear - Clears the poll's timer. Requires: % @ * # & ~"],
 
@@ -332,21 +336,24 @@ exports.commands = {
 		if (room.poll) return this.errorReply("There is already a poll in progress in this room.");
 		let options = [];
 		for (let key in Tools.data.Formats) {
-				if (!Tools.data.Formats[key].mod) continue;
-				if (!Tools.data.Formats[key].searchShow) continue;
-				if (toId(target) !== 'all') {
-					let commonMods = ['gen7', 'gen6', 'sgssb', 'pmd', 'cssb'];
-					if (commonMods.indexOf(Tools.data.Formats[key].mod) === -1) continue;
-				}
-				options.push(Tools.data.Formats[key].name);
+			if (!Tools.data.Formats[key].mod) continue;
+			if (!Tools.data.Formats[key].searchShow) continue;
+			if (toId(target) !== 'all') {
+				let commonMods = ['gen7', 'gen6', 'sgssb', 'pmd', 'cssb'];
+				if (commonMods.indexOf(Tools.data.Formats[key].mod) === -1) continue;
+			}
+			options.push(Tools.data.Formats[key].name);
 		}
-		room.poll = new Poll(room, {source: 'What should the next tournament tier be?', supportHTML: false}, options);
+		room.poll = new Poll(room, {
+			source: 'What should the next tournament tier be?',
+			supportHTML: false,
+		}, options);
 		room.poll.display();
 		this.logEntry("" + user.name + " used " + message);
 		return this.privateModCommand("(A tier poll was started by " + user.name + ".)");
-		},
-		tierpollhelp: ["/tierpoll - (all) Creates a poll with all the common formats as options. All all to use all formats Requires: % @ * # & ~"],
-},
+	},
+	tierpollhelp: ["/tierpoll - (all) Creates a poll with all the common formats as options. All all to use all formats Requires: % @ * # & ~"],
+};
 
 process.nextTick(() => {
 	Chat.multiLinePattern.register('/poll (new|create|htmlcreate) ');

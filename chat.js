@@ -14,7 +14,6 @@
  *
  * @license MIT license
  */
-
 /*
 
 To reload chat commands:
@@ -22,7 +21,6 @@ To reload chat commands:
 /hotpatch chat
 
 */
-
 'use strict';
 
 let Chat = module.exports;
@@ -170,7 +168,7 @@ class CommandContext {
 			if (this.pmTarget) {
 				let noEmotes = message;
 				let emoticons = SG.parseEmoticons(message);
-				if(emoticons) {
+				if (emoticons) {
 					noEmotes = message;
 					message = "/html " + emoticons;
 				}
@@ -185,7 +183,7 @@ class CommandContext {
 				this.user.lastPM = this.pmTarget.userid;
 			} else {
 				let emoticons = SG.parseEmoticons(message);
-				if(emoticons && !this.room.disableEmoticons) {
+				if (emoticons && !this.room.disableEmoticons) {
 					if (Users.ShadowBan.checkBanned(this.user)) {
 						Users.ShadowBan.addMessage(this.user, "To " + this.room.id, message);
 						if (!SG.ignoreEmotes[this.user.userid]) this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
@@ -242,7 +240,8 @@ class CommandContext {
 		if (cmdToken === message.charAt(1)) return;
 		if (cmdToken === BROADCAST_TOKEN && /[^A-Za-z0-9]/.test(message.charAt(1))) return;
 
-		let cmd = '', target = '';
+		let cmd = '',
+			target = '';
 
 		let spaceIndex = message.indexOf(' ');
 		if (spaceIndex > 0) {
@@ -514,7 +513,7 @@ class CommandContext {
 			let broadcastMessage = message.toLowerCase().replace(/[^a-z0-9\s!,]/g, '');
 
 			if (this.room && this.room.lastBroadcast === this.broadcastMessage &&
-					this.room.lastBroadcastTime >= Date.now() - BROADCAST_COOLDOWN) {
+				this.room.lastBroadcastTime >= Date.now() - BROADCAST_COOLDOWN) {
 				this.errorReply("You can't broadcast this because it was just broadcasted.");
 				return false;
 			}
@@ -653,7 +652,7 @@ class CommandContext {
 			if (room) {
 				let normalized = message.trim();
 				if (room.id === 'lobby' && (normalized === user.lastMessage) &&
-						((Date.now() - user.lastMessageTime) < MESSAGE_COOLDOWN)) {
+					((Date.now() - user.lastMessageTime) < MESSAGE_COOLDOWN)) {
 					this.errorReply("You can't send the same message again so soon.");
 					return false;
 				}
@@ -843,7 +842,12 @@ Chat.CommandContext = CommandContext;
  */
 Chat.parse = function (message, room, user, connection) {
 	Chat.loadCommands();
-	let context = new CommandContext({message, room, user, connection});
+	let context = new CommandContext({
+		message,
+		room,
+		user,
+		connection,
+	});
 
 	return context.parse();
 };
@@ -858,8 +862,8 @@ Chat.uncacheTree = function (root) {
 			if (require.cache[uncache[i]]) {
 				newuncache.push.apply(newuncache,
 					require.cache[uncache[i]].children
-						.filter(cachedModule => !cachedModule.id.endsWith('.node'))
-						.map(cachedModule => cachedModule.id)
+					.filter(cachedModule => !cachedModule.id.endsWith('.node'))
+					.map(cachedModule => cachedModule.id)
 				);
 				delete require.cache[uncache[i]];
 			}

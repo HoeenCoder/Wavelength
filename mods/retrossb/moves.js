@@ -2,7 +2,6 @@
  * A lot of Gen 1 moves have to be updated due to different mechanics.
  * Some moves have had major changes, such as Bite's typing.
  */
-
 'use strict';
 
 exports.BattleMovedex = {
@@ -86,7 +85,9 @@ exports.BattleMovedex = {
 					}
 					this.add('-end', pokemon, 'Bide');
 					let target = this.effectData.sourceSide.active[this.effectData.sourcePosition];
-					this.moveHit(target, pokemon, 'bide', {damage: this.effectData.totalDamage * 2});
+					this.moveHit(target, pokemon, 'bide', {
+						damage: this.effectData.totalDamage * 2,
+					});
 					return false;
 				}
 				this.add('-activate', pokemon, 'Bide');
@@ -194,7 +195,10 @@ exports.BattleMovedex = {
 			// If both are true, counter will deal twice the last damage dealt in battle, no matter what was the move.
 			// That means that, if opponent switches, counter will use last counter damage * 2.
 			let lastUsedMove = this.getMove(target.side.lastMove);
-			if (lastUsedMove && lastUsedMove.basePower > 0 && lastUsedMove.type in {'Normal': 1, 'Fighting': 1} && target.battle.lastDamage > 0 && !this.willMove(target)) {
+			if (lastUsedMove && lastUsedMove.basePower > 0 && lastUsedMove.type in {
+				'Normal': 1,
+				'Fighting': 1,
+			} && target.battle.lastDamage > 0 && !this.willMove(target)) {
 				return 2 * target.battle.lastDamage;
 			}
 			this.add('-fail', pokemon);
@@ -445,7 +449,7 @@ exports.BattleMovedex = {
 					this.debug('Nothing to leech into');
 					return;
 				}
-				// We check if leeched Pokémon has Toxic to increase leeched damage.
+				// We check if leeched PokÃ©mon has Toxic to increase leeched damage.
 				let toxicCounter = 1;
 				if (pokemon.volatiles['residualdmg']) {
 					pokemon.volatiles['residualdmg'].counter++;
@@ -493,7 +497,8 @@ exports.BattleMovedex = {
 				if (i !== move.id) continue;
 				if (move.isNonstandard) continue;
 				let noMetronome = {
-					metronome:1, struggle:1,
+					metronome: 1,
+					struggle: 1,
 				};
 				if (!noMetronome[move.id] && move.num <= 165) {
 					moves.push(move.id);
@@ -585,12 +590,16 @@ exports.BattleMovedex = {
 			onLockMove: 'rage',
 			onTryHit: function (target, source, move) {
 				if (target.boosts.atk < 6 && move.id === 'disable') {
-					this.boost({atk:1});
+					this.boost({
+						atk: 1,
+					});
 				}
 			},
 			onHit: function (target, source, move) {
 				if (target.boosts.atk < 6 && move.category !== 'Status') {
-					this.boost({atk:1});
+					this.boost({
+						atk: 1,
+					});
 				}
 			},
 		},
@@ -650,8 +659,8 @@ exports.BattleMovedex = {
 			// Fails if the difference between
 			// max HP and current HP is 0, 255, or 511
 			if (target.hp >= target.maxhp ||
-			target.hp === (target.maxhp - 255) ||
-			target.hp === (target.maxhp - 511)) return false;
+				target.hp === (target.maxhp - 255) ||
+				target.hp === (target.maxhp - 511)) return false;
 			if (!target.setStatus('slp')) return false;
 			target.statusData.time = 2;
 			target.statusData.startTime = 2;
@@ -773,7 +782,10 @@ exports.BattleMovedex = {
 					// In gen 1 it only blocks:
 					// poison, confusion, secondary effect confusion, stat reducing moves and Leech Seed.
 					let SubBlocked = {
-						lockon:1, meanlook:1, mindreader:1, nightmare:1,
+						lockon: 1,
+						meanlook: 1,
+						mindreader: 1,
+						nightmare: 1,
 					};
 					if (move.status === 'psn' || move.status === 'tox' || (move.boosts && target !== source) || move.volatileStatus === 'confusion' || SubBlocked[move.id]) {
 						return false;
@@ -804,7 +816,12 @@ exports.BattleMovedex = {
 				}
 				this.runEvent('AfterSubDamage', target, source, move, damage);
 				// Add here counter damage
-				if (!target.lastAttackedBy) target.lastAttackedBy = {pokemon: source, thisTurn: true};
+				if (!target.lastAttackedBy) {
+					target.lastAttackedBy = {
+						pokemon: source,
+						thisTurn: true,
+					};
+				}
 				target.lastAttackedBy.move = move.id;
 				target.lastAttackedBy.damage = damage;
 				return 0;
@@ -895,7 +912,11 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, heal: 1, mirror: 1},
+		flags: {
+			protect: 1,
+			heal: 1,
+			mirror: 1,
+		},
 		volatileStatus: 'leechseed',
 		effect: {
 			onStart: function (target) {
@@ -932,12 +953,24 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {snatch: 1, mirror: 1},
-		self: {boosts: {spe: 1, atk: 1, def: -1, spd: -1, spa: -1}, heal: [1, 5]},
+		flags: {
+			snatch: 1,
+			mirror: 1,
+		},
+		self: {
+			boosts: {
+				spe: 1,
+				atk: 1,
+				def: -1,
+				spd: -1,
+				spa: -1,
+			},
+			heal: [1, 5],
+		},
 		onPrepareHit: function (target, source) {
-            		this.attrLastMove('[still]');
-            		this.add('-anim', source, "Bulk Up", target);
-        	},
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Bulk Up", target);
+		},
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
@@ -950,8 +983,15 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {snatch: 1, mirror: 1},
-		boosts: {atk: 1, spa: 1, spd: 1},
+		flags: {
+			snatch: 1,
+			mirror: 1,
+		},
+		boosts: {
+			atk: 1,
+			spa: 1,
+			spd: 1,
+		},
 		secondary: false,
 		target: "self",
 		type: "Fire",
@@ -964,7 +1004,13 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		boosts: {atk: 6, def: 6, spa: 6, spd: 6, spe: 6},
+		boosts: {
+			atk: 6,
+			def: 6,
+			spa: 6,
+			spd: 6,
+			spe: 6,
+		},
 		heal: [1, 10],
 		secondary: false,
 		target: "self",
@@ -979,7 +1025,11 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		flags: {},
-		boosts: {atk: 1, spa: 1, spe: 1},
+		boosts: {
+			atk: 1,
+			spa: 1,
+			spe: 1,
+		},
 		heal: [1, 10],
 		secondary: false,
 		target: "self",
@@ -994,8 +1044,15 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		self: {boosts: {atk: 1}},
-		flags: {protect: 1, mirror: 1},
+		self: {
+			boosts: {
+				atk: 1,
+			},
+		},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
@@ -1009,8 +1066,19 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		self: {boosts: {atk: 1, spe: 1, spa: -1, spd: -1, def: -1}},
-		flags: {protect: 1, mirror: 1},
+		self: {
+			boosts: {
+				atk: 1,
+				spe: 1,
+				spa: -1,
+				spd: -1,
+				def: -1,
+			},
+		},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
@@ -1024,7 +1092,10 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		flags: {},
-		boosts: {atk: 1, def: 1},
+		boosts: {
+			atk: 1,
+			def: 1,
+		},
 		secondary: false,
 		target: "self",
 		type: "Fire",
@@ -1038,8 +1109,14 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
-		secondary: {chance: 30, volatileStatus: 'flinch'},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		secondary: {
+			chance: 30,
+			volatileStatus: 'flinch',
+		},
 		target: "normal",
 		type: "Psychic",
 	},
@@ -1052,9 +1129,16 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: false,
-		self: {boosts: {spe: 1}},
+		self: {
+			boosts: {
+				spe: 1,
+			},
+		},
 		target: "normal",
 		type: "Ice",
 	},
@@ -1066,7 +1150,9 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 1,
-		boosts: {atk: 2},
+		boosts: {
+			atk: 2,
+		},
 		target: "self",
 		type: "Normal",
 	},
@@ -1079,8 +1165,14 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
-		secondary: {chance: 20, status: 'psn'},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		secondary: {
+			chance: 20,
+			status: 'psn',
+		},
 		target: "normal",
 		type: "Poison",
 	},
@@ -1093,8 +1185,14 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 10,
 		priority: -1,
-		flags: {protect: 1, mirror: 1},
-		secondary: {chance: 50, status: 'par'},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		secondary: {
+			chance: 50,
+			status: 'par',
+		},
 		target: "normal",
 		type: "Normal",
 	},
@@ -1107,7 +1205,10 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		secondary: false,
-		boosts: {spa: 1, spd: 1},
+		boosts: {
+			spa: 1,
+			spd: 1,
+		},
 		target: "self",
 		type: "Water",
 	},
@@ -1118,8 +1219,14 @@ exports.BattleMovedex = {
 		name: "Nibble",
 		pp: 10,
 		priority: 3,
-		flags: {protect: 1, mirror: 1},
-		secondary: {chance: 100, status: 'par'},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		secondary: {
+			chance: 100,
+			status: 'par',
+		},
 		target: "normal",
 		type: "Normal",
 	},
@@ -1131,7 +1238,10 @@ exports.BattleMovedex = {
 		name: 'Rapid Roll',
 		pp: 10,
 		priority: 1,
-		flags: {protect: 1, mirror: 1},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: false,
 		target: "normal",
 		type: "Rock",
@@ -1144,10 +1254,19 @@ exports.BattleMovedex = {
 		name: 'Cold Revenge',
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: {
 			chance: 20,
-			self: {boosts: {def: 1, spa: 1, spd: 1}},
+			self: {
+				boosts: {
+					def: 1,
+					spa: 1,
+					spd: 1,
+				},
+			},
 		},
 		target: "normal",
 		type: "Ice",
@@ -1160,7 +1279,10 @@ exports.BattleMovedex = {
 		name: 'Minimum Power',
 		pp: 10,
 		priority: 1,
-		flags: {protect: 1, mirror: 1},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		secondary: false,
 		target: "normal",
 		type: "Electric",
@@ -1173,8 +1295,16 @@ exports.BattleMovedex = {
 		name: 'Spike Relase',
 		pp: 10,
 		priority: 1,
-		flags: {protect: 1, mirror: 1},
-		self: {boosts: {spa: 1, spd: 1}},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		self: {
+			boosts: {
+				spa: 1,
+				spd: 1,
+			},
+		},
 		secondary: false,
 		target: "normal",
 		type: "Ground",
@@ -1187,8 +1317,14 @@ exports.BattleMovedex = {
 		name: "Crisis",
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
-		secondary: {chance: 70, status: 'par'},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		secondary: {
+			chance: 70,
+			status: 'par',
+		},
 		target: "normal",
 		type: "Ghost",
 	},
@@ -1199,7 +1335,12 @@ exports.BattleMovedex = {
 		name: "Starlight",
 		pp: 10,
 		priority: 0,
-		boosts: {def: 1, spa: 1, spd: 1, spe: 1},
+		boosts: {
+			def: 1,
+			spa: 1,
+			spd: 1,
+			spe: 1,
+		},
 		secondary: false,
 		target: "self",
 		type: "Psychic",

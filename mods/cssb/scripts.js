@@ -3,7 +3,7 @@
 const fs = require('fs');
 
 function extend(obj, src) {
-	for (var key in src) {
+	for (let key in src) {
 		if (src.hasOwnProperty(key)) obj[key] = src[key];
 	}
 	return obj;
@@ -13,9 +13,9 @@ function extend(obj, src) {
 
 exports.BattleScripts = {
 	randomCustomSSBTeam: function (side) {
-		var SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
-		var team = [];
-		var variant = this.random(2);
+		let SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
+		let team = [];
+		let variant = this.random(2);
 
 		//Save these incase we decide to readd base sets
 		/*var baseSets = {
@@ -107,7 +107,7 @@ exports.BattleScripts = {
 			}
 		};*/
 		//Parse player objects into sets.
-		var ssbSets = {};
+		let ssbSets = {};
 		for (let key in SGSSB) {
 			if (!SGSSB[key].active) continue; //This pokemon is not to be used yet.
 			ssbSets[(SGSSB[key].symbol + SGSSB[key].name)] = {};
@@ -127,7 +127,7 @@ exports.BattleScripts = {
 		}
 
 		//var sets = extend(baseSets, ssbSets);
-		var backupSet = {
+		let backupSet = {
 			'Unown': {
 				species: 'Unown',
 				ability: 'Levitate',
@@ -136,18 +136,19 @@ exports.BattleScripts = {
 				evs: {
 					spa: 252,
 					spd: 252,
-					hp: 4
+					hp: 4,
 				},
 				nature: 'Modest',
-			}
-		}
+			},
+		};
+		let sets;
 		if (Object.keys(ssbSets).length === 0) {
-			var sets = extend(ssbSets, backupSet);
+			sets = extend(ssbSets, backupSet);
 		} else {
-			var sets = ssbSets;
+			sets = ssbSets;
 		}
 
-		for (var k in sets) {
+		for (let k in sets) {
 			sets[k].moves = sets[k].moves.map(toId);
 			if (sets[k].baseSignatureMove) sets[k].baseSignatureMove = toId(sets[k].baseSignatureMove);
 		}
@@ -157,7 +158,7 @@ exports.BattleScripts = {
 		for (let i = 0; i < (Object.keys(sets).length < 6 ? Object.keys(sets).length : 6); i++) {
 			let name = this.sampleNoReplace(pool);
 			if (i === 1 && SGSSB[toId(side.name)] && SGSSB[toId(side.name)].active && sets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)) !== -1) {
-                                pool.push(name); //re-add
+				pool.push(name); //re-add
 				name = pool[pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name))];
 				pool.splice(pool.indexOf(name), 1);
 			}
@@ -171,35 +172,36 @@ exports.BattleScripts = {
 					def: 31,
 					spa: 31,
 					spd: 31,
-					spe: 31
+					spe: 31,
 				};
 			} else {
 				for (let iv in {
-						hp: 31,
-						atk: 31,
-						def: 31,
-						spa: 31,
-						spd: 31,
-						spe: 31
-					}) {
+					hp: 31,
+					atk: 31,
+					def: 31,
+					spa: 31,
+					spd: 31,
+					spe: 31,
+				}) {
 					set.ivs[iv] = iv in set.ivs ? set.ivs[iv] : 31;
 				}
 			}
 			// Assuming the hardcoded set evs are all legal.
-			if (!set.evs) set.evs = {
-				hp: 84,
-				atk: 84,
-				def: 84,
-				spa: 84,
-				spd: 84,
-				spe: 84
-			};
+			if (!set.evs) {
+				set.evs = {
+					hp: 84,
+					atk: 84,
+					def: 84,
+					spa: 84,
+					spd: 84,
+					spe: 84,
+				};
+			}
 			if (set.signatureMove) {
 				set.moves = [this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves)].concat(set.signatureMove);
 			}
 			team.push(set);
 		}
-
 		return team;
-	}
+	},
 };

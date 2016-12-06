@@ -15,7 +15,7 @@ exports.BattleScripts = {
 				evs: {
 					atk: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
 				nature: 'Hasty',
 			},
@@ -30,7 +30,7 @@ exports.BattleScripts = {
 				evs: {
 					atk: 200,
 					spa: 56,
-					spe: 252
+					spe: 252,
 				},
 				nature: 'Hardy',
 			},
@@ -45,7 +45,7 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 156,
-					spe: 252
+					spe: 252,
 				},
 				nature: 'Hardy',
 			},
@@ -60,7 +60,7 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
 				nature: 'Sassy',
 			},
@@ -75,7 +75,7 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 156,
-					spe: 252
+					spe: 252,
 				},
 				nature: 'Hasty',
 			},
@@ -90,9 +90,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Relaxed'
+				nature: 'Relaxed',
 			},
 
 			'Munchlax': {
@@ -105,9 +105,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 252,
 					atk: 200,
-					spa: 56
+					spa: 56,
 				},
-				nature: 'Brave'
+				nature: 'Brave',
 			},
 
 			'Cubone': {
@@ -120,9 +120,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Jolly'
+				nature: 'Jolly',
 			},
 
 			'Eevee': {
@@ -135,9 +135,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Jolly'
+				nature: 'Jolly',
 			},
 
 			'Skitty': {
@@ -150,9 +150,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Naive'
+				nature: 'Naive',
 			},
 
 			'Machop': {
@@ -165,11 +165,10 @@ exports.BattleScripts = {
 				evs: {
 					atk: 252,
 					spa: 100,
-					spe: 156
+					spe: 156,
 				},
-				nature: 'Adamant'
+				nature: 'Adamant',
 			},
-
 
 			'Vulpix': {
 				species: 'Vulpix',
@@ -181,9 +180,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 252,
-					spe: 156
+					spe: 156,
 				},
-				nature: 'Relaxed'
+				nature: 'Relaxed',
 			},
 
 			'Axew': {
@@ -196,9 +195,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Hasty'
+				nature: 'Hasty',
 			},
 
 			'Bulbasaur': {
@@ -211,9 +210,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 252,
 					spa: 4,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Lonely'
+				nature: 'Lonely',
 			},
 
 			'Charmander': {
@@ -226,9 +225,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Docile'
+				nature: 'Docile',
 			},
 
 			'Squirtle': {
@@ -241,9 +240,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 156,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Quirky'
+				nature: 'Quirky',
 			},
 
 			'Chikorita': {
@@ -256,9 +255,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 252,
 					def: 100,
-					spd: 156
+					spd: 156,
 				},
-				nature: 'Calm'
+				nature: 'Calm',
 			},
 
 			'Cyndaquil': {
@@ -271,11 +270,10 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 156,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Timid'
+				nature: 'Timid',
 			},
-
 
 			'Totodile': {
 				species: 'Totodile',
@@ -287,9 +285,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Jolly'
+				nature: 'Jolly',
 			},
 
 			'Treecko': {
@@ -302,9 +300,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 100,
 					spa: 156,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Quiet'
+				nature: 'Quiet',
 			},
 
 			'Torchic': {
@@ -317,9 +315,9 @@ exports.BattleScripts = {
 				evs: {
 					atk: 200,
 					spa: 56,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Hardy'
+				nature: 'Hardy',
 			},
 
 			'Mudkip': {
@@ -333,9 +331,9 @@ exports.BattleScripts = {
 					hp: 252,
 					def: 180,
 					spa: 4,
-					spd: 72
+					spd: 72,
 				},
-				nature: 'Rash'
+				nature: 'Rash',
 			},
 
 			'Turtwig': {
@@ -349,9 +347,9 @@ exports.BattleScripts = {
 					hp: 56,
 					atk: 100,
 					spa: 100,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Bold'
+				nature: 'Bold',
 			},
 
 			'Chimchar': {
@@ -364,9 +362,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Naive'
+				nature: 'Naive',
 			},
 
 			'Piplup': {
@@ -380,9 +378,9 @@ exports.BattleScripts = {
 					hp: 252,
 					atk: 56,
 					def: 100,
-					spd: 100
+					spd: 100,
 				},
-				nature: 'Impish'
+				nature: 'Impish',
 			},
 
 			'Snivy': {
@@ -394,9 +392,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Modest'
+				nature: 'Modest',
 			},
 
 			'Tepig': {
@@ -409,9 +407,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Naive'
+				nature: 'Naive',
 			},
 
 			'Oshawott': {
@@ -424,9 +422,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Bashful'
+				nature: 'Bashful',
 			},
 
 			'Chespin': {
@@ -439,9 +437,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					atk: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Bold'
+				nature: 'Bold',
 			},
 
 			'Fenneken': {
@@ -454,9 +452,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Gentle'
+				nature: 'Gentle',
 			},
 
 			'Froakie': {
@@ -469,9 +467,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 4,
 					spa: 252,
-					spe: 252
+					spe: 252,
 				},
-				nature: 'Modest'
+				nature: 'Modest',
 			},
 			'Snorunt': {
 				species: 'Snorunt',
@@ -483,9 +481,9 @@ exports.BattleScripts = {
 				evs: {
 					hp: 248,
 					atk: 8,
-					spa: 252
+					spa: 252,
 				},
-				nature: 'Mild'
+				nature: 'Mild',
 			},
 			'Snover': {
 				species: 'Snover',
@@ -497,17 +495,17 @@ exports.BattleScripts = {
 				evs: {
 					hp: 248,
 					atk: 8,
-					spa: 252
+					spa: 252,
 				},
-				nature: 'Mild'
-			}
+				nature: 'Mild',
+			},
 		};
 
 		//Generate the team randomly.
 		let pool = Object.keys(sets);
 		for (let i = 0; i < 4; i++) {
 			let name = this.sampleNoReplace(pool);
-			var set = sets[name];
+			let set = sets[name];
 			set.level = 25;
 			set.name = name;
 			if (!set.ivs) {
@@ -517,30 +515,31 @@ exports.BattleScripts = {
 					def: 31,
 					spa: 31,
 					spd: 31,
-					spe: 31
+					spe: 31,
 				};
 			} else {
 				for (let iv in {
-						hp: 31,
-						atk: 31,
-						def: 31,
-						spa: 31,
-						spd: 31,
-						spe: 31
-					}) {
+					hp: 31,
+					atk: 31,
+					def: 31,
+					spa: 31,
+					spd: 31,
+					spe: 31,
+				}) {
 					set.ivs[iv] = iv in set.ivs ? set.ivs[iv] : 31;
 				}
 			}
 			//Assume the hardcoded set evs are all legal.
-			if (!set.evs) set.evs = {
-				hp: 31,
-				atk: 31,
-				def: 31,
-				spa: 31,
-				spd: 31,
-				spe: 31
+			if (!set.evs) {
+				set.evs = {
+					hp: 31,
+					atk: 31,
+					def: 31,
+					spa: 31,
+					spd: 31,
+					spe: 31,
+				};
 			}
-
 
 			let sigItems = ['Oran Berry', 'Apple', 'Blast Seed', 'Gravelrock', 'Heal Seed', 'Trap Orb', 'TrapBust Orb', 'Stun Seed', 'Totter Seed', 'Vile Seed', 'Violent Seed', 'Rainy Orb', 'Sunny Orb', 'Sandy Orb', 'Hail Orb', 'One Shot Orb', 'Warp Orb', 'Escape Orb', 'Stick', 'Iron Thorn', 'Evasion Orb', 'Mug Orb', 'Awakening', 'Wonder Orb'];
 			let choosenItems = [];
@@ -557,7 +556,7 @@ exports.BattleScripts = {
 					if (set.moves[j] === 'Defog' && itemChoosen === 'TrapBust Orb') rejected = true;
 					if (set.moves[j] === 'Thunder Wave' && itemChoosen === 'Stun Seed') rejected = true;
 					if (set.moves[j] === 'Roar' && itemChoosen === 'Warp Orb') rejected = true;
-					if (set.moves[j] === 'Snatch' && itemChosen === 'Mug Orb') rejected = true;
+					if (set.moves[j] === 'Snatch' && itemChoosen === 'Mug Orb') rejected = true;
 				}
 				if (choosenItems.length !== 0) {
 					for (let k = 0; k < choosenItems.length; k++) {
@@ -567,7 +566,9 @@ exports.BattleScripts = {
 				if (itemChoosen === 'Awakening') {
 					if (awakened) {
 						rejected = true;
-					} else awakened = true;
+					} else {
+						awakened = true;
+					}
 				}
 				if (!rejected) {
 					choosenItems.push(itemChoosen);
@@ -576,7 +577,6 @@ exports.BattleScripts = {
 				}
 				if (h === 3 && choosenItems.length !== 4) h--;
 			}
-
 
 			set.moves = set.moves.concat(choosenItems);
 			team.push(set);

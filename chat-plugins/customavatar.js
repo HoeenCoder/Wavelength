@@ -3,25 +3,24 @@
  *
  * Credits: ~SilverTactic (Siiilver)
  */
-
 'use strict';
 
 let fs = require('fs');
 let path = require('path');
 
-function hasAvatar (user) {
-	if (Config.customavatars[toId(user)] && fs.existsSync('config/avatars/' + Config.customavatars[toId(user)]))
+function hasAvatar(user) {
+	if (Config.customavatars[toId(user)] && fs.existsSync('config/avatars/' + Config.customavatars[toId(user)])) {
 		return Config.customavatars[toId(user)];
-	return false;
+	}
 }
 
 function loadAvatars() {
 	let formatList = ['.png', '.gif', '.jpeg', '.jpg'];
 	fs.readdirSync('config/avatars')
-	.filter(avatar => formatList.includes(path.extname(avatar)))
-	.forEach(avatar => {
-		Config.customavatars[path.basename(avatar, path.extname(avatar))] = avatar;
-	});
+		.filter(avatar => formatList.includes(path.extname(avatar)))
+		.forEach(avatar => {
+			Config.customavatars[path.basename(avatar, path.extname(avatar))] = avatar;
+		});
 }
 loadAvatars();
 
@@ -49,44 +48,44 @@ let cmds = {
 		if (!this.can('roomowner')) return false;
 		if (!target) return this.sendReply('|html|/ca set <em>User</em>, <em>URL</em> - Sets a user\'s custom avatar to the specified image.');
 		target = target.split(',');
-		if (target.length < 2)  return this.sendReply('|html|/ca set <em>User</em>, <em>URL</em> - Sets a user\'s custom avatar to the specified image.');
+		if (target.length < 2) return this.sendReply('|html|/ca set <em>User</em>, <em>URL</em> - Sets a user\'s custom avatar to the specified image.');
 
 		let targetUser = Users.getExact(target[0]) ? Users.getExact(target[0]).name : target[0];
 		let link = target[1].trim();
 		if (!link.match(/^https?:\/\//i)) link = 'http://' + link;
 
 		let allowedFormats = ['png', 'jpg', 'jpeg', 'gif'];
-		new Promise ((resolve, reject) => {
+		new Promise((resolve, reject) => {
 			require("request").get(link)
-				.on('error', err => {
-					console.log(err);
-					reject("Avatar unavailable. Try choosing a different one.");
-				})
-				.on('response', response => {
-					if (response.statusCode !== 200) reject('Avatar unavailable. Try choosing a different one.');
-					let type = response.headers['content-type'].split('/');
-					if (type[0] !== 'image') reject('Link is not an image link.');
-					if (!~allowedFormats.indexOf(type[1])) reject('Format not supported. The supported formats are ' + allowedFormats.join(', '));
+					.on('error', err => {
+						console.log(err);
+						reject("Avatar unavailable. Try choosing a different one.");
+					})
+					.on('response', response => {
+						if (response.statusCode !== 200) reject('Avatar unavailable. Try choosing a different one.');
+						let type = response.headers['content-type'].split('/');
+						if (type[0] !== 'image') reject('Link is not an image link.');
+						if (!~allowedFormats.indexOf(type[1])) reject('Format not supported. The supported formats are ' + allowedFormats.join(', '));
 
-					if (hasAvatar(targetUser)) fs.unlinkSync('config/avatars/' + Config.customavatars[toId(targetUser)]);
-					let file = toId(targetUser) + '.' + type[1];
-					response.pipe(fs.createWriteStream('config/avatars/' + file));
-					resolve(file);
-				});
+						if (hasAvatar(targetUser)) fs.unlinkSync('config/avatars/' + Config.customavatars[toId(targetUser)]);
+						let file = toId(targetUser) + '.' + type[1];
+						response.pipe(fs.createWriteStream('config/avatars/' + file));
+						resolve(file);
+					});
 		})
-		.then(file => {
-			Config.customavatars[toId(targetUser)] = file;
-			let getUser = Users.getExact(targetUser);
-			if (getUser) getUser.avatar = file;
+			.then(file => {
+				Config.customavatars[toId(targetUser)] = file;
+				let getUser = Users.getExact(targetUser);
+				if (getUser) getUser.avatar = file;
 
-			let desc = 'custom avatar has been set to <br><div style = "width: 80px; height: 80px; display: block"><img src = "' + link + '" style = "max-height: 100%; max-width: 100%"></div>';
-			this.sendReply('|html|' + targetUser + '\'s ' + desc);
-			if (getUser) {
-				getUser.send('|html|' + user.name + ' set your custom avatar. Refresh your page if you don\'t see it.');
-				getUser.popup('|html|<center>Your ' + desc + '<br>Refresh your page if you don\'t see it under your username.</center>');
-			}
-		})
-		.catch(err => this.errorReply('Error setting ' + targetUser + '\'s avatar: ' + err));
+				let desc = 'custom avatar has been set to <br><div style = "width: 80px; height: 80px; display: block"><img src = "' + link + '" style = "max-height: 100%; max-width: 100%"></div>';
+				this.sendReply('|html|' + targetUser + '\'s ' + desc);
+				if (getUser) {
+					getUser.send('|html|' + user.name + ' set your custom avatar. Refresh your page if you don\'t see it.');
+					getUser.popup('|html|<center>Your ' + desc + '<br>Refresh your page if you don\'t see it under your username.</center>');
+				}
+			})
+			.catch(err => this.errorReply('Error setting ' + targetUser + '\'s avatar: ' + err));
 	},
 
 	remove: 'delete',
@@ -132,7 +131,7 @@ let cmds = {
 			Users.getExact(user2).send(user.name + ' has moved ' + user1 + '\'s custom avatar to you. Refresh your page if you don\'t see it under your username.');
 		}
 		return this.sendReply('Successfully moved ' + user1 + '\'s custom avatar to ' + user2 + '.');
-	}
+	},
 };
 
 exports.commands = {
@@ -141,5 +140,5 @@ exports.commands = {
 	moveavatar: cmds.move,
 	deleteavatar: 'removeavatar',
 	removeavatar: cmds.delete,
-	setavatar: cmds.set
+	setavatar: cmds.set,
 };
