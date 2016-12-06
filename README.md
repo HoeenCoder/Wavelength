@@ -8,8 +8,6 @@ Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repositor
   [3]: https://github.com/Zarel/Pokemon-Showdown-Dex
   [10]: https://github.com/Zarel/Pokemon-Showdown
 
-[![Build Status](https://travis-ci.org/HoeenCoder/SpacialGaze.svg)](https://travis-ci.org/HoeenCoder/SpacialGaze)
-
 Introduction
 ------------------------------------------------------------------------
 
