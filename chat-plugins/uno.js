@@ -596,9 +596,9 @@ class Game {
 				Economy.writeMoney(targetUser, prize, () => {
 					Economy.readMoney(targetUser, newAmount => {
 						if (Users(targetUser) && Users(targetUser).connected) {
-							Users.get(targetUser).popup('|html|You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from winning the game of uno.');
+							Users.get(targetUser).popup('|html|You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from winning the game of uno.');
 						}
-						Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currenyPlural) + ' from a game of uno.');
+						Economy.logTransaction(Chat.escapeHTML(getUserName(winner)) + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from a game of uno.');
 					});
 				});
 				for (let i = 0; i < this.list.length; i++) {
