@@ -794,11 +794,11 @@ exports.commands = {
 				if (targetUser.active) {
 					writeSSB();
 					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles now.');
+					return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles once the server restarts.');
 				} else {
 					writeSSB();
 					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles.');
+					return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once the server restarts.');
 				}
 			} else {
 				return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
@@ -812,7 +812,6 @@ exports.commands = {
 				this.sendReply('Could not find your SSB pokemon, creating a new one...');
 				SG.ssb[user.userid] = new SSB(user.userid, user.name);
 				writeSSB();
-				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
 			return this.sendReplyBox(customMenu());
 		},
