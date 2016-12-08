@@ -512,7 +512,7 @@ class Game {
 
 	initNextTurn() {
 		this.room.add(getUserName(this.player) + "'s turn.");
-		Users(toId(this.player)).sendTo(this.room, '|chat|~UnoManager|' + this.player + ' it\'s your turn.');
+		Users(toId(this.player)).sendTo(this.room, '|chat|~UnoManager|' + Users(toId(this.player)).name + ' it\'s your turn.');
 		this.room.update();
 		this.id++;
 		let user = Users.get(this.player);
