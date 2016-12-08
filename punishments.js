@@ -464,7 +464,7 @@ Punishments.roomPunish = function (room, user, punishment, noRecurse) {
 			rest: rest,
 		}, room.id + ':' + id, ROOM_PUNISHMENT_FILE);
 
-		Punishments.monitorRoomPunishments(user);
+		if (!(room.isPrivate === true || room.isPersonal || room.battle)) Punishments.monitorRoomPunishments(user);
 	}
 };
 
@@ -477,7 +477,7 @@ Punishments.roomPunishName = function (room, userid, punishment) {
 		rest: rest,
 	}, room.id + ':' + id, ROOM_PUNISHMENT_FILE);
 
-	Punishments.monitorRoomPunishments(userid);
+	if (!(room.isPrivate === true || room.isPersonal || room.battle)) Punishments.monitorRoomPunishments(userid);
 };
 /**
  * @param {string} id
@@ -995,9 +995,10 @@ Punishments.isRoomBanned = function (user, roomid) {
  * Returns an array of all room punishments associated with a user.
  *
  * @param {User} user
+ * @param {?boolean} publicOnly
  * @return {Array}
  */
-Punishments.getRoomPunishments = function (user) {
+Punishments.getRoomPunishments = function (user, publicOnly) {
 	if (!user) return;
 	let userid = toId(user);
 	let checkMutes = typeof user !== 'string';
@@ -1006,7 +1007,7 @@ Punishments.getRoomPunishments = function (user) {
 
 	for (let i = 0; i < Rooms.global.chatRooms.length; i++) {
 		const curRoom = Rooms.global.chatRooms[i];
-		if (!curRoom || curRoom.isPrivate === true) continue;
+		if (!curRoom || curRoom.isPrivate === true || (publicOnly && (curRoom.isPersonal || curRoom.battle))) continue;
 		let punishment = Punishments.roomUserids.nestedGet(curRoom.id, userid);
 		if (punishment) {
 			punishments.push([curRoom, punishment]);
@@ -1031,11 +1032,12 @@ Punishments.getRoomPunishments = function (user) {
  * @param {User} user
  */
 Punishments.monitorRoomPunishments = function (user) {
-	if (!Config.monitorminpunishments) return;
+	const minPunishments = (typeof Config.monitorminpunishments === 'number' ? Config.monitorminpunishments : 3); // Default to 3 if the Config option is not defined or valid
+	if (!minPunishments) return;
 
-	let punishments = Punishments.getRoomPunishments(user);
+	let punishments = Punishments.getRoomPunishments(user, true);
 
-	if (punishments.length >= Config.monitorminpunishments) {
+	if (punishments.length >= minPunishments) {
 		let punishmentText = punishments.map(([room, punishment]) => {
 			const [punishType, punishUserid, , reason] = punishment;
 			let punishDesc = Punishments.roomPunishmentTypes.get(punishType);
@@ -1043,7 +1045,7 @@ Punishments.monitorRoomPunishments = function (user) {
 			if (punishUserid !== user.userid) punishDesc += ` as ${punishUserid}`;
 
 			if (reason) punishDesc += `: ${reason}`;
-			return `${room} (${punishDesc})`;
+			return `<<${room}>> (${punishDesc})`;
 		}).join(', ');
 
 		Monitor.log(`[PunishmentMonitor] ${user.name} currently has punishments in ${punishments.length} rooms: ${punishmentText}`);
