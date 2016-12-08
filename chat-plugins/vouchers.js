@@ -32,7 +32,7 @@ class Voucher {
 					if (Users(self.userid).connected) Users(self.userid).popup('|html|You have redemed a voucher for ' + self.item + ' ' + (self.item > 1 ? global.currencyPlural : global.currencyName) + '.');
 				});
 			});
-			Economy.logTransaction(Chat.escapeHTML(Users(self.userid).name) + ' has redemed a voucher for ' + self.item + ' ' + (self.item === 1 ? global.currencyName : global.currenyPlural) + '.');
+			Economy.logTransaction(Chat.escapeHTML(Users(self.userid).name) + ' has redemed a voucher for ' + self.item + ' ' + (self.item === 1 ? global.currencyName : global.currencyPlural) + '.');
 			break;
 		case 'item':
 			let valid = false;
@@ -163,10 +163,10 @@ exports.commands = {
 					if (Number(target[2]) < 1 || Number(target[2]) > 50) return this.errorReply('You cannot create a voucher for less than 1 ' + global.currencyName + ' or more than 50 ' + global.currencyPlural + '.');
 					let voucher = new Voucher(targetUser.userid, vouchers[index], Number(target[2]));
 					SG.vouchers[targetUser.userid].push(voucher);
-					targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
+					targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currencyPlural) + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
 					writeFile();
-					Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.');
-					this.sendReply('You gave ' + targetUser.name + ' a voucher for ' + target[2] + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currenyPlural) + '.');
+					Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currencyPlural) + '.');
+					this.sendReply('You gave ' + targetUser.name + ' a voucher for ' + target[2] + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currencyPlural) + '.');
 					return true;
 				} else {
 					let shopIndex = -1;
