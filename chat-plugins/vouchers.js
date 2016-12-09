@@ -5,7 +5,6 @@
 'use strict';
 
 const fs = require('fs');
-const moment = require('moment');
 let writeJSON = true;
 let shopItems = ['Custom Symbol', 'Custom Avatar', 'Custom Color', 'Custom Title', 'Custom Icon'];
 const eventLeaders = ['krakenmare', 'celestialtater'];
@@ -238,7 +237,7 @@ exports.commands = {
 			output += '<tr><th style="border: 1px solid black">ID</th><th style="border: 1px solid black">Good For</th><th style="border: 1px solid black">Item/Amount</th><th style="border: 1px solid black">Expires</th><th style="border: 1px solid black">Redeem</th></tr>';
 			for (let i = 0; i < list.length; i++) {
 				if (list === undefined) continue; //In case we leave an empty slot in the array.
-				output += '<tr><td style="border: 1px solid black">' + list[i].id + '</td><td style="border: 1px solid black">' + list[i].goodFor + '</td><td style="border: 1px solid black">' + (list[i].item ? list[i].item : 'N/A') + '</td><td style="border: 1px solid black">' + (list[i].expires === null ? 'Never' : moment(list[i].expires).fromNow()) + '</td><td style="border: 1px solid black"><button name="send" value="/voucher redeem ' + list[i].id + '">Redeem this Voucher</button></td></tr>';
+				output += '<tr><td style="border: 1px solid black">' + list[i].id + '</td><td style="border: 1px solid black">' + list[i].goodFor + '</td><td style="border: 1px solid black">' + (list[i].item ? list[i].item : 'N/A') + '</td><td style="border: 1px solid black">' + (list[i].expires === null ? 'Never' : (list[i].expires < Date.now() ? 'Expired' : Chat.toDurationString(list[i].expires - Date.now()))) + '</td><td style="border: 1px solid black"><button name="send" value="/voucher redeem ' + list[i].id + '">Redeem this Voucher</button></td></tr>';
 			}
 			output += '</table>';
 			return this.sendReplyBox(output);
