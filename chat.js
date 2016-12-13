@@ -484,7 +484,7 @@ class CommandContext {
 		this.room.logEntry(data);
 	}
 	addModCommand(text, logOnlyText) {
-		this.add('|c|' + this.user.getIdentity(this.room) + '|/log ' + text);
+		this.room.addLogMessage(this.user, text);
 		this.room.modlog(text + (logOnlyText || ""));
 	}
 	logModCommand(text) {
@@ -747,7 +747,7 @@ class CommandContext {
 		}
 
 		// check for mismatched tags
-		let tags = html.toLowerCase().match(/<\/?(div|a|button|b|i|u|center|font)\b/g);
+		let tags = html.toLowerCase().match(/<\/?(div|a|button|b|strong|em|i|u|center|font|marquee|blink|details|summary|code)\b/g);
 		if (tags) {
 			let stack = [];
 			for (let i = 0; i < tags.length; i++) {
@@ -979,12 +979,19 @@ Chat.toDurationString = function (number, options) {
 	// https://github.com/tc39/ecma402/issues/47
 	const date = new Date(+number);
 	const parts = [date.getUTCFullYear() - 1970, date.getUTCMonth(), date.getUTCDate() - 1, date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()];
+	const roundingBoundaries = [6, 15, 12, 30, 30];
 	const unitNames = ["second", "minute", "hour", "day", "month", "year"];
 	const positiveIndex = parts.findIndex(elem => elem > 0);
 	const precision = (options && options.precision ? options.precision : parts.length);
 	if (options && options.hhmmss) {
 		let string = parts.slice(positiveIndex).map(value => value < 10 ? "0" + value : "" + value).join(":");
 		return string.length === 2 ? "00:" + string : string;
+	}
+	// round least significant displayed unit
+	if (positiveIndex + precision < parts.length && precision > 0 && positiveIndex >= 0) {
+		if (parts[positiveIndex + precision] >= roundingBoundaries[positiveIndex + precision - 1]) {
+			parts[positiveIndex + precision - 1]++;
+		}
 	}
 	return parts.slice(positiveIndex).reverse().map((value, index) => value ? value + " " + unitNames[index] + (value > 1 ? "s" : "") : "").reverse().slice(0, precision).join(" ").trim();
 };
