@@ -241,16 +241,19 @@ exports.commands = {
 		}
 		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
 			"<br />" +
-			"<u><b>Staff:</u></b><br />" +
+			"<u><b>Server Maintainers:</u></b><br />" +
 			"- " + (name)('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
 			"- " + (name)('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
+		    	"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
-			//"<u><b>Contributors:</b></u><br />" +
-			//"<br />" +
+			"<u><b>Major Contributors:</b></u><br />" +
+			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
+		    	"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
+		    	"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
+			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +
 			"- " + (name)('Vulcaron', true) + " (Former Policy Leader)<br />" +
-			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Staff Members<br />" +
