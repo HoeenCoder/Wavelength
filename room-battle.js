@@ -29,6 +29,9 @@ class SimulatorManager extends ProcessManager {
 			process.send('|eval|' + code);
 		}
 	}
+	//Add event listeners here, call with (process object for the battle ex: room.battle).send('event', 'data');
+	//TODO figure out points where we can call to other process.
+	//TODO figure out the proper point to call to a room-battle process.
 }
 
 const SimulatorProcess = new SimulatorManager({
