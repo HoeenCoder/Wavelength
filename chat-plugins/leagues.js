@@ -1760,55 +1760,62 @@ exports.commands = {
 		'': 'help',
 		help: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			return this.sendReply(
-				"|raw|<div class=\"infobox\">" +
-				"Managed League System:<br />" +
-				"Admin Commands:<br />" +
-				"/league create [league name], [league owner] - Creates a league.<br />" +
-				"/league delete [league name] - Deletes a league.<br /><br />" +
-				"League Commands:<br />" +
-				"/league invite [user] - Invites a user to join a league.<br />" +
-				"/league kick [user] - Kicks a user from a league.<br />" +
-				"/league desc [description] - Sets a description for your league, visible on /league list.<br />" +
-				"/league pm [message] - Mass PM's a message to all online league members<br />" +
-				"/league accept [league name] - Accepts an invitation to join a league.<br />" +
-				"/league decline [league name] - Declines an invitation to join a league.<br />" +
-				"/league leave - Leaves your current league.<br />" +
-				"/league list - Displays a list of leagues.<br />" +
-				"/league members [league name] - Displays the memberlist for a league.<br /><br />" +
-				"League Challenging:<br />" +
-				"/league registerteam [league name], [pastebin of team] - Registers your team so you can challenge the league.<br />" +
-				"/league challenge [league name], [user] - Challenges a user with the team you registered.<br />" +
-				"/league resetteam [user] - Resets a users registered team so they can register again. Requires permission level 4 or higher. (Default: Elite Four)<br /><br />" +
-				"League Rank Commands:<br />" +
-				"/league rank give [user], [rank] - Gives a user a rank.<br />" +
-				"/league rank take [user], [rank] - Removes a rank from a user.<br />" +
-				"/league rank create [rank name], [sortby (a number for sorting this rank on /league members)], [permissions seperated by comma] - Creates a new league rank. See '/league rank permissions' to learn about valid permissions.<br />" +
-				"/league rank delete [rank name] - Deletes a league rank. Note: you can't delete a rank if any users currently have the rank.<br /><br />" +
-				"League Badge Commands: <br />" +
-				"/league badge give [badge name], [user] - Gives a user a league badge.<br />" +
-				"/league badge take [badge name], [user] - Takes a league badge from a user.<br />" +
-				"/league badge add [badge name], [badge image], [badge description] - Creates a league badge.<br />" +
-				"/league badge edit [badge name], [badge image], [badge description] - Edits a league badge.<br />" +
-				"/league badge delete [badge name] - Deletes a league badge.<br />" +
-				"/league badge list [league name] - Lists a leagues badges.<br />" +
-				"/league badge view [user] - Views a users league badges<br /><br />" +
-				"League vs League Commands:<br />" +
-				"/lvl challenge [league], [mode (normal or quick)], [size (must be odd number)] - Challenges a league to a League vs League in the current room.<br />" +
-				"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
-				"/lvl accept - Accepts a challenge from a league.<br />" +
-				"/lvl deny - Denies a challenge from a league.<br />" +
-				"/lvl invite [user] - Invites a league member to join the League vs League.<br />" +
-				"/lvl join - Joins a League vs League. Must be invited with /lvl invite first.<br />" +
-				"/lvl leave - Leaves a League vs League after you join. May not be used once the League vs League starts.<br />" +
-				"/lvl end - Forcibly ends a League vs League.<br /><br />" +
-				"League Points:<br />" +
-				"/league points give [league], [amount] - Gives a league points.<br />" +
-				"/league points take [league], [amount] - Takes points from a league.<br />" +
-				"/league points log [league] - Displays the last 500 entries in the points log for a league.<br />" +
-				"/league points userlog [user] - Displays the last 500 points a user has earned." +
-				"</div>"
-			);
+			let msg = "<b><u><font size='3'>Managed League System:</font></u></b><br /><br />";
+			if(user.can('roomowner')) {
+				msg += "<details><summary><b>Admin Commands:</b></summary><br />" +
+				"<code>/league create [league name], [league owner]</code> - Creates a league.<br />" +
+				"<code>/league delete [league name]</code> - Deletes a league.</details>";
+			}
+				
+			msg += "<details>" +
+			"<summary><b>League Commands:</summary><br />" +
+			"<code>/league invite [user]</code> - Invites a user to join a league.<br />" +
+			"<code>/league kick [user]</code> - Kicks a user from a league.<br />" +
+			"<code>/league desc [description]</code> - Sets a description for your league, visible on /league list.<br />" +
+			"<code>/league pm [message]</code> - Mass PM's a message to all online league members<br />" +
+			"<code>/league accept [league name]</code> - Accepts an invitation to join a league.<br />" +
+			"<code>/league decline [league name]</code> - Declines an invitation to join a league.<br />" +
+			"<code>/league leave</code> - Leaves your current league.<br />" +
+		    "<code>/league list</code> - Displays a list of leagues.<br />" +
+			"<code>/league members [league name]</code> - Displays the memberlist for a league.<br /><br />" +
+			"</details><details>" +
+			"<summary><b>League Challenging:</b></summary><br />" +
+		    "<code>/league registerteam [league name], [pastebin of team]</code> - Registers your team so you can challenge the league.<br />" +
+		    "<code>/league challenge [league name], [user]</code> - Challenges a user with the team you registered.<br />" +
+			"<code>/league resetteam [user]</code> - Resets a users registered team so they can register again. Requires permission level 4 or higher. (Default: Elite Four)<br />" +
+			"</details><details>" +
+			"<summary><b>League Rank Commands:</b></summary><br />" +
+			"<code>/league rank give [user], [rank]</code> - Gives a user a rank.<br />" +
+			"<code>/league rank take [user], [rank]</code> - Removes a rank from a user.<br />" +
+			"<code>/league rank create [rank name], [sortby (a number for sorting this rank on /league members)], [permissions seperated by comma]</code> - Creates a new league rank. See '/league rank permissions' to learn about valid permissions.<br />" +
+			"<code>/league rank delete [rank name]</code> - Deletes a league rank. Note: you can't delete a rank if any users currently have the rank.<br /><br />" +
+			"</details><details>" +
+			"<summary><b>League Badge Commands:</b></summary> <br />" +
+			"<code>/league badge give [badge name], [user]</code> - Gives a user a league badge.<br />" +
+			"<code>/league badge take [badge name], [user]</code> - Takes a league badge from a user.<br />" +
+			"<code>/league badge add [badge name], [badge image], [badge description]</code> - Creates a league badge.<br />" +
+			"<code>/league badge edit [badge name], [badge image], [badge description]</code> - Edits a league badge.<br />" +
+			"<code>/league badge delete [badge name]</code> - Deletes a league badge.<br />" +
+			"<code>/league badge list [league name]<code> - Lists a leagues badges.<br />" +
+			"<code>/league badge view [user]</code> - Views a users league badges<br /><br />" +
+			"</details><details>" +
+			"<summary><b>League vs League Commands:</b></summary><br />" +
+			"<code>/lvl challenge [league], [mode (normal or quick)], [size (must be odd number)]</code> - Challenges a league to a League vs League in the current room.<br />" +
+			"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
+			"<code>/lvl accept</code> - Accepts a challenge from a league.<br />" +
+			"<code>/lvl deny</code> - Denies a challenge from a league.<br />" +
+			"<code>/lvl invite [user]</code> - Invites a league member to join the League vs League.<br />" +
+			"<code>/lvl join</code> - Joins a League vs League. Must be invited with /lvl invite first.<br />" +
+			"<code>/lvl leave</code> - Leaves a League vs League after you join. May not be used once the League vs League starts.<br />" +
+			"<code>/lvl end</code> - Forcibly ends a League vs League.<br /><br />" +
+			"</details><details>" +
+			"<summary><b>League Points:</b></summary><br />" +
+			"<code>/league points give [league], [amount]</code> - Gives a league points.<br />" +
+			"<code>/league points take [league], [amount]</code> - Takes points from a league.<br />" +
+			"<code>/league points log [league]</code> - Displays the last 500 entries in the points log for a league.<br />" +
+			"<code>/league points userlog [user]</code> - Displays the last 500 points a user has earned." +
+			"</details>";
+			this.sendReplyBox(msg);
 		},
 	},
 	lvl: function (target, room, user) {
