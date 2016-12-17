@@ -258,6 +258,7 @@ exports.commands = {
 		},
 	},
 	profile: function (target, room, user) {
+		target = toId(target);
 		if (!target) target = user.name;
 		if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 		if (!this.runBroadcast()) return;
