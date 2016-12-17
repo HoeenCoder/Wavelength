@@ -244,12 +244,12 @@ exports.commands = {
 			"<u><b>Server Maintainers:</u></b><br />" +
 			"- " + (name)('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
 			"- " + (name)('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
-		    	"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
+			"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
-		    	"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
-		    	"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
+			"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
+			"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +

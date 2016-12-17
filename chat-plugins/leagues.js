@@ -1761,12 +1761,12 @@ exports.commands = {
 		help: function (target, room, user) {
 			if (!this.runBroadcast()) return;
 			let msg = "<b><u><font size='3'>Managed League System:</font></u></b><br /><br />";
-			if(user.can('roomowner')) {
+			if (user.can('roomowner')) {
 				msg += "<details><summary><b>Admin Commands:</b></summary><br />" +
 				"<code>/league create [league name], [league owner]</code> - Creates a league.<br />" +
 				"<code>/league delete [league name]</code> - Deletes a league.</details>";
 			}
-				
+
 			msg += "<details>" +
 			"<summary><b>League Commands:</summary><br />" +
 			"<code>/league invite [user]</code> - Invites a user to join a league.<br />" +
@@ -1776,12 +1776,12 @@ exports.commands = {
 			"<code>/league accept [league name]</code> - Accepts an invitation to join a league.<br />" +
 			"<code>/league decline [league name]</code> - Declines an invitation to join a league.<br />" +
 			"<code>/league leave</code> - Leaves your current league.<br />" +
-		    "<code>/league list</code> - Displays a list of leagues.<br />" +
+			"<code>/league list</code> - Displays a list of leagues.<br />" +
 			"<code>/league members [league name]</code> - Displays the memberlist for a league.<br /><br />" +
 			"</details><details>" +
 			"<summary><b>League Challenging:</b></summary><br />" +
-		    "<code>/league registerteam [league name], [pastebin of team]</code> - Registers your team so you can challenge the league.<br />" +
-		    "<code>/league challenge [league name], [user]</code> - Challenges a user with the team you registered.<br />" +
+			"<code>/league registerteam [league name], [pastebin of team]</code> - Registers your team so you can challenge the league.<br />" +
+			"<code>/league challenge [league name], [user]</code> - Challenges a user with the team you registered.<br />" +
 			"<code>/league resetteam [user]</code> - Resets a users registered team so they can register again. Requires permission level 4 or higher. (Default: Elite Four)<br />" +
 			"</details><details>" +
 			"<summary><b>League Rank Commands:</b></summary><br />" +

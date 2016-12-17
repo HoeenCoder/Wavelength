@@ -69,10 +69,10 @@ exports.commands = {
 		});
 	},
 
-	gs: 'givecurrency', //You can change "gs" and "givestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ga" and "giveawesomebucks" 
+	gs: 'givecurrency', //You can change "gs" and "givestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ga" and "giveawesomebucks"
 	givestardust: 'givecurrency',
 	gc:'givecurrency',
-	givecurrency: function (target, room, user, connection,cmd) {
+	givecurrency: function (target, room, user, connection, cmd) {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
@@ -107,7 +107,7 @@ exports.commands = {
 	ts: 'takecurrency', //You can change "ts" and "takestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ta" and "takeawesomebucks"
 	takestardust: 'takecurrency',
 	tc:'takecurrency',
-	takecurrency: function (target, room, user, connection,cmd) {
+	takecurrency: function (target, room, user, connection, cmd) {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
@@ -156,11 +156,9 @@ exports.commands = {
 		if (isNaN(amount)) return this.sendReply("/" + cmd + " - [amount] must be a number.");
 		if (amount > 1000) return this.sendReply("/" + cmd + " - You can't transfer more than 1000 " + currencyName + " at a time.");
 		if (amount < 1) return this.sendReply("/" + cmd + " - You can't transfer less than one " + currencyName + ".");
-
-		
 		Economy.readMoney(user.userid, money => {
 			if (money < amount) return this.sendReply("/" + cmd + " - You can't transfer more " + currencyName + " than you have.");
-			if (cmd !== 'confirmtransfercurrency' && cmd !== 'confirmtransferstardust') { 
+			if (cmd !== 'confirmtransfercurrency' && cmd !== 'confirmtransferstardust') {
 				return this.popupReply('|html|<center>' +
 					'<button class = "card-td button" name = "send" value = "/confirmtransfercurrency ' + toId(targetUser) + ', ' + amount + '"' +
 					'style = "outline: none; width: 200px; font-size: 11pt; padding: 10px; border-radius: 14px ; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.4) inset; transition: all 0.2s;">' +
@@ -225,7 +223,7 @@ exports.commands = {
 		let self = this;
 
 		function showResults(rows) {
-			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>'+ currencyPlural +'</th></tr>';
+			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>' + currencyPlural + '</th></tr>';
 			let count = 1;
 			for (let u in rows) {
 				if (!rows[u].currency || rows[u].currency < 1) continue;
