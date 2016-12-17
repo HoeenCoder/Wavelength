@@ -190,7 +190,7 @@ exports.BattleScripts = {
 				ability: 'Rivalry',
 				item: '',
 				gender: (variant === 1) ? 'M' : 'F',
-				moves: ['Dragon Claw', 'Hone Claws', 'Rock Tomb', 'Slash'],
+				moves: ['Dragon Rage', 'Hone Claws', 'Rock Tomb', 'Slash'],
 				weather: null,
 				evs: {
 					hp: 4,
