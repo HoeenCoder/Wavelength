@@ -1,18 +1,19 @@
 'use strict';
 
-//SQLITE3 DEPRECIATED
-SG.database = new sqlite3.Database('config/users.db', function () {
-	SG.database.run("CREATE TABLE if not exists users (userid TEXT, name TEXT, currency INTEGER, lastSeen INTEGER, onlineTime INTEGER, credits INTEGER, title TEXT, notifystatus INTEGER, background TEXT)");
-	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
-});
-
 const fs = require('fs');
 
 // This should be the default amount of money users have.
 // Ideally, this should be zero.
 const DEFAULT_AMOUNT = 0;
+
 global.currencyName = 'Stardust';
 global.currencyPlural = 'Stardust';
+
+// SQLITE3 DEPRECIATED
+SG.database = new sqlite3.Database('config/users.db', function () {
+	SG.database.run("CREATE TABLE if not exists users (userid TEXT, name TEXT, currency INTEGER, lastSeen INTEGER, onlineTime INTEGER, credits INTEGER, title TEXT, notifystatus INTEGER, background TEXT)");
+	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
+});
 
 let Economy = global.Economy = {
 	/**
@@ -24,9 +25,13 @@ let Economy = global.Economy = {
  	* @return {Function} callback
  	*/
 	readMoney: function (userid, callback) {
-		if (typeof callback !== 'function') throw new Error("Economy.readMoney: Expected callback parameter to be a function, instead received " + typeof callback);
+		if (typeof callback !== 'function') {
+			throw new Error("Economy.readMoney: Expected callback parameter to be a function, instead received " + typeof callback);
+		}
+
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
+
 		let amount = Db('currency').get(userid, DEFAULT_AMOUNT);
 		return callback(amount);
 	},
@@ -42,22 +47,32 @@ let Economy = global.Economy = {
 	writeMoney: function (userid, amount, callback) {
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
+
 		// In case someone forgot to make sure `amount` was a Number...
 		amount = Number(amount);
-		if (isNaN(amount)) throw new Error("Economy.writeMoney: Expected amount parameter to be a Number, instead received " + typeof amount);
+		if (isNaN(amount)) {
+			throw new Error("Economy.writeMoney: Expected amount parameter to be a Number, instead received " + typeof amount);
+		}
+
 		let curTotal = Db('currency').get(userid, DEFAULT_AMOUNT);
 		let newTotal = Db('currency')
 			.set(userid, curTotal + amount)
 			.get(userid);
-		// If a callback is specified, return `newTotal` through the callback.
-		if (callback && typeof callback === 'function') return callback(newTotal);
+
+		if (callback && typeof callback === 'function') {
+			// If a callback is specified, return `newTotal` through the callback.
+			return callback(newTotal);
+		}
 	},
+	/*
+	I'm not sure how well this functions yet with the callback, so I'm commenting it out for now.
 	writeMoneyArr: function (users, amount) {
 		this.writeMoney(users[0], amount, () => {
 			users.splice(0, 1);
 			if (users.length > 0) this.writeMoneyArr(users, amount);
 		});
 	},
+	*/
 	logTransaction: function (message) {
 		if (!message) return false;
 		fs.appendFile('logs/transactions.log', '[' + new Date().toUTCString() + '] ' + message + '\n');
