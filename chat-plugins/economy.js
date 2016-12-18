@@ -1,40 +1,83 @@
 'use strict';
 
+const fs = require('fs');
+
+// This should be the default amount of money users have.
+// Ideally, this should be zero.
+const DEFAULT_AMOUNT = 0;
+
+global.currencyName = 'Stardust';
+global.currencyPlural = 'Stardust';
+
+// SQLITE3 DEPRECIATED
 SG.database = new sqlite3.Database('config/users.db', function () {
 	SG.database.run("CREATE TABLE if not exists users (userid TEXT, name TEXT, currency INTEGER, lastSeen INTEGER, onlineTime INTEGER, credits INTEGER, title TEXT, notifystatus INTEGER, background TEXT)");
 	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
 });
 
-const fs = require('fs');
-global.currencyName = 'Stardust';
-global.currencyPlural = 'Stardust';
+function transferToDb() {
+	SG.database.each("SELECT * FROM users", {}, function (err, rows) {
+		if (err) return console.log("SQlite3 -> Db transfer error: " + err);
+		/*transfer currency to Db*/
+		if (rows.currency > 0) {
+			Db('currency').set(rows.userid, Db('currency').get(rows.userid, DEFAULT_AMOUNT) + rows.currency);
+			SG.database.run("UPDATE users SET currency=$amount WHERE userid=$userid", {$amount: 0, $userid: rows.userid}, function (err) {
+				if (err) return console.log("SQlite3 -> Db transfer error 2: " + err);
+			});
+		}
+	});
+	console.log('[SQlite3 -> Db] Transfered Currency');
+}
+transferToDb();
 
 let Economy = global.Economy = {
+	/**
+ 	* Reads the specified user's money.
+ 	* If they have no money, DEFAULT_AMOUNT is returned.
+ 	*
+ 	* @param {String} userid
+ 	* @param {Function} callback
+ 	* @return {Function} callback
+ 	*/
 	readMoney: function (userid, callback) {
-		if (!callback) return false;
+		if (typeof callback !== 'function') {
+			throw new Error("Economy.readMoney: Expected callback parameter to be a function, instead received " + typeof callback);
+		}
+
+		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
-		SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (err) return console.log("readMoney: " + err);
-			callback(((rows[0] && rows[0].currency) ? rows[0].currency : 0));
-		});
+
+		let amount = Db('currency').get(userid, DEFAULT_AMOUNT);
+		return callback(amount);
 	},
+	/**
+ 	* Writes the specified amount of money to the user's "bank."
+ 	* If a callback is specified, the amount is returned through the callback.
+ 	*
+ 	* @param {String} userid
+ 	* @param {Number} amount
+ 	* @param {Function} callback (optional)
+ 	* @return {Function} callback (optional)
+ 	*/
 	writeMoney: function (userid, amount, callback) {
+		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
-		SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (err) return console.log("writeMoney 1: " + err);
-			if (rows.length < 1) {
-				SG.database.run("INSERT INTO users(userid, currency) VALUES ($userid, $amount)", {$userid: userid, $amount: amount}, function (err) {
-					if (err) return console.log("writeMoney 2: " + err);
-					if (callback) return callback();
-				});
-			} else {
-				amount += rows[0].currency;
-				SG.database.run("UPDATE users SET currency=$amount WHERE userid=$userid", {$amount: amount, $userid: userid}, function (err) {
-					if (err) return console.log("writeMoney 3: " + err);
-					if (callback) return callback();
-				});
-			}
-		});
+
+		// In case someone forgot to make sure `amount` was a Number...
+		amount = Number(amount);
+		if (isNaN(amount)) {
+			throw new Error("Economy.writeMoney: Expected amount parameter to be a Number, instead received " + typeof amount);
+		}
+
+		let curTotal = Db('currency').get(userid, DEFAULT_AMOUNT);
+		let newTotal = Db('currency')
+			.set(userid, curTotal + amount)
+			.get(userid);
+
+		if (callback && typeof callback === 'function') {
+			// If a callback is specified, return `newTotal` through the callback.
+			return callback(newTotal);
+		}
 	},
 	writeMoneyArr: function (users, amount) {
 		this.writeMoney(users[0], amount, () => {

@@ -5,6 +5,7 @@
 /chat-plugins/private.js
 /chat-plugins/filter.js
 /chat-plugins/shop.js
+/chat-plugins/leagues.js
 npm-debug.log
 .eslintcache
 
