@@ -19,7 +19,12 @@ global.transferToDb = function () {
 	SG.database.each("SELECT * FROM users", {}, function (err, rows) {
 		if (err) return console.log("SQlite3 -> Db transfer error: " + err);
 		/*transfer currency to Db*/
-		Db('currency').set(rows.userid, Db('currency').get(rows.userid, DEFAULT_AMOUNT) + rows.currency);
+		if (rows.currency > 0) {
+			Db('currency').set(rows.userid, Db('currency').get(rows.userid, DEFAULT_AMOUNT) + rows.currency);
+			SG.database.run("UPDATE users SET currency=$amount WHERE userid=$userid", {$amount: 0, $userid: rows.userid}, function (err) {
+				if (err) return console.log("SQlite3 -> Db transfer error 2: " + err);
+			});
+		}
 	});
 	console.log('[SQlite3 -> Db] Transfered Currency');
 }
