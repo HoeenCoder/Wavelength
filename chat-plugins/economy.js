@@ -9,27 +9,6 @@ const DEFAULT_AMOUNT = 0;
 global.currencyName = 'Stardust';
 global.currencyPlural = 'Stardust';
 
-// SQLITE3 DEPRECIATED
-SG.database = new sqlite3.Database('config/users.db', function () {
-	SG.database.run("CREATE TABLE if not exists users (userid TEXT, name TEXT, currency INTEGER, lastSeen INTEGER, onlineTime INTEGER, credits INTEGER, title TEXT, notifystatus INTEGER, background TEXT)");
-	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
-});
-
-function transferToDb() {
-	SG.database.each("SELECT * FROM users", {}, function (err, rows) {
-		if (err) return console.log("SQlite3 -> Db transfer error: " + err);
-		/*transfer currency to Db*/
-		if (rows.currency > 0) {
-			Db('currency').set(rows.userid, Db('currency').get(rows.userid, DEFAULT_AMOUNT) + rows.currency);
-			SG.database.run("UPDATE users SET currency=$amount WHERE userid=$userid", {$amount: 0, $userid: rows.userid}, function (err) {
-				if (err) return console.log("SQlite3 -> Db transfer error 2: " + err);
-			});
-		}
-	});
-	console.log('[SQlite3 -> Db] Transfered Currency');
-}
-transferToDb();
-
 let Economy = global.Economy = {
 	/**
  	* Reads the specified user's money.

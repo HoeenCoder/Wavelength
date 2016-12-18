@@ -100,8 +100,6 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
-global.sqlite3 = require('sqlite3');
-
 global.Db = require('origindb')('config/db');
 
 global.Monitor = require('./monitor');
