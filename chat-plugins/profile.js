@@ -69,6 +69,10 @@ function getLeague(userid) {
 	//return SG.getLeague(userid);
 }
 
+function getLeagueRank(userid) {
+	return 'N/A';
+}
+
 /*function loadRegdateCache() {
 	try {
 		regdateCache = JSON.parse(fs.readFileSync('config/regdate.json', 'utf8'));
