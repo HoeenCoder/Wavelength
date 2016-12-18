@@ -15,7 +15,7 @@ SG.database = new sqlite3.Database('config/users.db', function () {
 	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
 });
 
-global.transferToDb = function () {
+function transferToDb () {
 	SG.database.each("SELECT * FROM users", {}, function (err, rows) {
 		if (err) return console.log("SQlite3 -> Db transfer error: " + err);
 		/*transfer currency to Db*/
@@ -28,6 +28,7 @@ global.transferToDb = function () {
 	});
 	console.log('[SQlite3 -> Db] Transfered Currency');
 }
+transferToDb();
 
 let Economy = global.Economy = {
 	/**
