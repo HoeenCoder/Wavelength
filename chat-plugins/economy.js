@@ -64,15 +64,12 @@ let Economy = global.Economy = {
 			return callback(newTotal);
 		}
 	},
-	/*
-	I'm not sure how well this functions yet with the callback, so I'm commenting it out for now.
 	writeMoneyArr: function (users, amount) {
 		this.writeMoney(users[0], amount, () => {
 			users.splice(0, 1);
 			if (users.length > 0) this.writeMoneyArr(users, amount);
 		});
 	},
-	*/
 	logTransaction: function (message) {
 		if (!message) return false;
 		fs.appendFile('logs/transactions.log', '[' + new Date().toUTCString() + '] ' + message + '\n');
