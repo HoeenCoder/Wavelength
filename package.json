@@ -10,7 +10,7 @@
     "autolinker": "*",
     "request": "*",
     "md5": "*",
-    "moment": "*",
+    "moment": "2.11.2",
     "geoip-ultralight": "*"
   },
   "optionalDependencies": {
