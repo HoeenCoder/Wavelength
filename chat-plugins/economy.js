@@ -248,24 +248,19 @@ exports.commands = {
 			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>' + currencyPlural + '</th></tr>';
 			let count = 1;
 			for (let u in rows) {
-				if (!rows[u].currency || rows[u].currency < 1) continue;
-				let username;
-				if (rows[u].name !== null) {
-					username = rows[u].name;
-				} else {
-					username = rows[u].userid;
-				}
-				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(username, true) + '</td><td>' + rows[u].currency + '</td></tr>';
+				if (Db('currency').get(rows[u], DEFAULT_AMOUNT) < 1) continue;
+				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(rows[u], true) + '</td><td>' + Db('currency').get(rows[u], DEFAULT_AMOUNT) + '</td></tr>';
 				count++;
 			}
 			self.sendReplyBox(output);
 			if (room) room.update();
 		}
-
-		SG.database.all("SELECT userid, currency, name FROM users ORDER BY currency DESC LIMIT $target;", {$target: target}, function (err, rows) {
-			if (err) return console.log("richestuser: " + err);
-			showResults(rows);
+		
+		let obj = Db('currency').object();
+		let results = Object.keys(obj).sort(function (a, b) {
+			return obj[b] - obj[a];
 		});
+		showResults(results.slice(0, 10));
 	},
 
 	customsymbol: function (target, room, user) {
