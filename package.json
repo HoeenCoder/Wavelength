@@ -5,11 +5,11 @@
   "version": "0.11.0",
   "dependencies": {
     "sockjs": "0.3.18",
-    "origindb": "*",
+    "origindb": "2.5.2",
     "autolinker": "*",
-    "request": "*",
+    "request": "2.74.0",
     "md5": "*",
-    "moment": "*",
+    "moment": "2.11.2",
     "geoip-ultralight": "*"
   },
   "optionalDependencies": {
