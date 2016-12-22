@@ -71,7 +71,7 @@ function validate(me, targetUser, quiet) {
 		targetUser.ability = species.abilities['0']; //Force legal ability
 		targetUser.movepool = []; //force legal normal moves
 	}
-	if (species.tier === 'Uber') {
+	if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
 		//Most are banned a few arent
 		if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
 			if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');
@@ -268,7 +268,7 @@ class SSB {
 		if (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') return false;
 		if (species.gen < 1) return false;
 		if (species.battleOnly) return false;
-		if (species.tier === 'Uber' || species.teir === 'Bank-Uber') {
+		if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
 			//Most are banned a few arent
 			if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
 		}

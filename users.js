@@ -411,8 +411,8 @@ class User {
 			}
 			if ((!room.auth || !room.auth[this.userid]) && this.customSymbol) return this.customSymbol + this.name;
 			if (Config.xmas) {
-				let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2603', '\u26F7'];
-				let normalGroups = ['+', '%', '@', '&', '~'];
+				let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2615', '\u26F8', '\u2603', '\u26F7'];
+				let normalGroups = ['+', '%', '@', '*', '#', '&', '~'];
 				let idx = normalGroups.indexOf(room.getAuth(this));
 				if (idx === -1) return room.getAuth(this) + this.name;
 				return xmasGroups[idx] + this.name;
@@ -421,8 +421,8 @@ class User {
 		}
 		if (this.customSymbol) return this.customSymbol + this.name;
 		if (Config.xmas) {
-			let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2603', '\u26F7'];
-			let normalGroups = ['+', '%', '@', '&', '~'];
+			let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2615', '\u2603', '\u26F7'];
+			let normalGroups = ['+', '%', '@', '*', '&', '~'];
 			let idx = normalGroups.indexOf(this.group);
 			if (idx === -1) return this.group + this.name;
 			return xmasGroups[idx] + this.name;
