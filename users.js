@@ -413,7 +413,7 @@ class User {
 			if (Config.xmas) {
 				let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2603', '\u26F7'];
 				let normalGroups = ['+', '%', '@', '&', '~'];
-				let idx = normalGroups.indexOf(this.group);
+				let idx = normalGroups.indexOf(room.getAuth(this));
 				if (idx === -1) return room.getAuth(this) + this.name;
 				return xmasGroups[idx] + this.name;
 			}
