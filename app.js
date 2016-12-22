@@ -100,10 +100,6 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
-global.sqlite3 = require('sqlite3');
-console.log('WARNING: SQlite3 is depreciated and will be replaced soon. You should update your server as soon as possible so that data stored on SQlite3 can be auotmatically transfered to originDB');
-console.log('Data transfer code coming soon, check https://github.com/HoeenCoder/SpacialGaze/projects/1 for more information or to help out.');
-
 global.Db = require('origindb')('config/db');
 
 global.Monitor = require('./monitor');

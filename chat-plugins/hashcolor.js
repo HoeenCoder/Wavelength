@@ -115,7 +115,7 @@ exports.commands = {
  * based on the userid.
  */
 
-let MD5 = require('MD5');
+let MD5 = require('md5');
 let colorCache = {};
 
 // hashColor function
