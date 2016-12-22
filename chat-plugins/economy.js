@@ -255,7 +255,6 @@ exports.commands = {
 			self.sendReplyBox(output);
 			if (room) room.update();
 		}
-		
 		let obj = Db('currency').object();
 		let results = Object.keys(obj).sort(function (a, b) {
 			return obj[b] - obj[a];

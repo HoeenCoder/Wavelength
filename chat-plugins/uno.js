@@ -240,6 +240,7 @@ class Game {
 		this.data = {};
 		this.joinedIps = {};
 		this.player = null;
+		this.title = "Uno";
 		this.gameid = "uno";
 		this.started = false;
 		this.timer = null;
