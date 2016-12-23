@@ -201,7 +201,7 @@ exports.commands = {
 
 	hide: 'hideauth',
 	hideauth: function (target, room, user) {
-		if (!user.can('roomowner')) return this.sendReply("/hideauth - Access Denied.");
+		if (!user.can('lock')) return this.sendReply("/hideauth - Access Denied.");
 		let tar = ' ';
 		if (target) {
 			target = target.trim();
@@ -223,7 +223,7 @@ exports.commands = {
 
 	show: 'showauth',
 	showauth: function (target, room, user) {
-		if (!user.can('roomowner')) return this.sendReply("/showauth - Access Denied.");
+		if (!user.can('lock')) return this.sendReply("/showauth - Access Denied.");
 		user.customSymbol = false;
 		user.updateIdentity();
 		this.sendReply("You have now revealed your auth symbol.");
