@@ -491,7 +491,9 @@ class User {
 	 */
 	hasSysopAccess() {
 		const sysops = [];
-		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) || sysops.includes(this.userid)) {
+		//Your IP must be on the whitelist as well as your name.
+		let sysopIp = Config.consoleips.includes(this.latestIp);
+		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) && sysopIp || sysops.includes(this.userid) && sysopIp) {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
