@@ -59,8 +59,19 @@ function vipCheck(user) {
 
 function showBadges(user) {
 	if (Db('userBadges').has(toId(user))) {
-		return '<button style="border-radius: 5px; background-color: transparent; color: #24678d;' +
-			' font-size: 11px;" name="send" value="/badges user, ' + toId(user) + '">Badges</button>';
+		let badges = Db('userBadges').get(toId(user));
+		let css = 'border:none;background:none;padding:0;';
+		if (typeof badges !== 'undefined' && badges !== null) {
+			let output = '<td><div style="float: right; background: rgba(69, 76, 80, 0.4); text-align: center; border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset; margin: 0px 3px;">';
+			output += ' <table style="' + css + '"> <tr>';
+			for (let i = 0; i < badges.length; i++) {
+				if (i !== 0 && i % 4 === 0) output += '</tr> <tr>';
+				output += '<td><button style="' + css + '" name="send" value="/badges info, ' + badges[i] + '">' +
+				'<img src="' + Db('badgeData').get(badges[i])[1] + '" height="16" width="16" alt="' + badges[i] + '" title="' + badges[i] + '" >' + '</button></td>';
+			}
+			output += '</tr> </table></div></td>';
+			return output;
+		}
 	}
 	return '';
 }
@@ -301,13 +312,14 @@ exports.commands = {
 		function showProfile() {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
+				profile += showBadges(toId(username));
 				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
 				if (!getFlag(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
 				} else {
 					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
 				}
-				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>League:</b></font> ' + (getLeague(toId(username)) ? (getLeague(toId(username)) + ' (' + getLeagueRank(toId(username)) + ')') : 'N/A') + '<br />';

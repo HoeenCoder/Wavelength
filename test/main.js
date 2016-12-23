@@ -95,6 +95,7 @@ before('initialization', function (done) {
 	const fsSandbox = {
 		'config': {},
 		'chat-plugins': getDirTypedContentsSync('chat-plugins', 'file'),
+		'spacialgaze-plugins': getDirTypedContentsSync('spacialgaze-plugins', 'file'),
 		'mods': getDirTypedContentsSync('mods', 'dir'),
 		'logs': {
 			'chat': {}, 'ladderip': {}, 'modlog': {}, 'repl': {},
