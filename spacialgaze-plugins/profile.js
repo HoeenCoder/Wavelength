@@ -16,21 +16,21 @@ let moment = require('moment');
 let serverIp = Config.serverIp;
 //geoip.startWatchingDataUpdate();
 
-global.isVIP = function (user) {
+function isVIP(user) {
 	if (!user) return;
 	if (typeof user === 'object') user = user.userid;
 	let vip = Db('vips').get(toId(user));
 	if (vip === 1) return true;
 	return false;
-};
+}
 
-global.isDev = function (user) {
+function isDev(user) {
 	if (!user) return;
 	if (typeof user === 'object') user = user.userid;
 	let dev = Db('devs').get(toId(user));
 	if (dev === 1) return true;
 	return false;
-};
+}
 
 function formatTitle(user) {
 	if (Db('customtitles').has(toId(user)) && Db('titlecolors').has(toId(user))) {
