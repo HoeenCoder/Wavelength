@@ -128,6 +128,7 @@ exports.commands = {
 		}
 		if ((user.can('ip', targetUser) || user === targetUser)) {
 			let ips = Object.keys(targetUser.ips);
+			ips = ips.map(ip => ip + (Punishments.sharedIps.has(ip) ? ' (shared)' : ''));
 			buf += `<br /> IP${Chat.plural(ips)}: ${ips.join(", ")}`;
 			if (user.group !== ' ' && targetUser.latestHost) {
 				buf += Chat.html`<br />Host: ${targetUser.latestHost}`;
@@ -408,7 +409,7 @@ exports.commands = {
 				} else if (move.zMoveEffect) {
 					details["Z-Effect"] = {
 						'clearnegativeboost': "Restores negative stat stages to 0",
-						'crit1': "Crit ratio +1",
+						'crit2': "Crit ratio +2",
 						'heal': "Restores HP 100%",
 						'curse': "Restores HP 100% if user is Ghost type, otherwise Attack +1",
 						'redirect': "Redirects opposing attacks to user",
@@ -1037,6 +1038,13 @@ exports.commands = {
 		this.sendReplyBox("Uptime: <b>" + uptimeText + "</b>");
 	},
 
+	'!servertime': true,
+	servertime: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		let servertime = new Date();
+		this.sendReplyBox(`Server time: <b>${servertime.toLocaleString()}</b>`);
+	},
+
 	'!groups': true,
 	groups: function (target, room, user) {
 		if (!this.runBroadcast()) return;
@@ -1210,8 +1218,8 @@ exports.commands = {
 		}
 
 		if (!target || target === 'all') {
-			buffer += "- <a href=\"https://www.smogon.com/forums/forums/other-metagames.206/\">Other Metagames Forum</a><br />";
-			buffer += "- <a href=\"https://www.smogon.com/forums/forums/other-metagames-analyses.310/\">Other Metagames Analyses</a><br />";
+			buffer += "- <a href=\"https://www.smogon.com/forums/forums/other-metagames.394/\">Other Metagames Forum</a><br />";
+			buffer += "- <a href=\"https://www.smogon.com/forums/forums/om-analyses.416/\">Other Metagames Analyses</a><br />";
 			if (!target) return this.sendReplyBox(buffer);
 		}
 		let showMonthly = (target === 'all' || target === 'omofthemonth' || target === 'omotm' || target === 'month');
