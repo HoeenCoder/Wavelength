@@ -201,7 +201,7 @@ exports.commands = {
 
 	hide: 'hideauth',
 	hideauth: function (target, room, user) {
-		if (!user.can('roomowner')) return this.sendReply("/hideauth - Access Denied.");
+		if (!user.can('lock')) return this.sendReply("/hideauth - Access Denied.");
 		let tar = ' ';
 		if (target) {
 			target = target.trim();
@@ -223,7 +223,7 @@ exports.commands = {
 
 	show: 'showauth',
 	showauth: function (target, room, user) {
-		if (!user.can('roomowner')) return this.sendReply("/showauth - Access Denied.");
+		if (!user.can('lock')) return this.sendReply("/showauth - Access Denied.");
 		user.customSymbol = false;
 		user.updateIdentity();
 		this.sendReply("You have now revealed your auth symbol.");
@@ -244,12 +244,12 @@ exports.commands = {
 			"<u><b>Server Maintainers:</u></b><br />" +
 			"- " + (name)('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
 			"- " + (name)('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
-		    	"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
+			"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
-		    	"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
-		    	"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
+			"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
+			"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +

@@ -8,6 +8,12 @@ Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repositor
   [3]: https://github.com/Zarel/Pokemon-Showdown-Dex
   [10]: https://github.com/Zarel/Pokemon-Showdown
 
+[![Build Status](https://travis-ci.org/HoeenCoder/SpacialGaze.svg)](https://travis-ci.org/HoeenCoder/SpacialGaze)
+[![dependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze)
+[![devDependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/dev-status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze?type=dev)
+[![optionalDependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/optional-status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze?type=optional)
+
+
 Introduction
 ------------------------------------------------------------------------
 

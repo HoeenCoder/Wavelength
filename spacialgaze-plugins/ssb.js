@@ -2,6 +2,7 @@
 
 let fs = require('fs');
 let ssbWrite = true; //if false, do not write to json
+let noRead = false; //if true, do not read from json
 const MAX_MOVEPOOL_SIZE = 4;
 let customMovepool = ['Stretch', 'Flame Tower', 'Rain Spear', 'Healing Herbs', 'Electro Drive', 'Hailstorm', 'Beat Down', 'Nuclear Waste', 'Terratremor', 'Ventilation', 'Psychic Shield', 'Swarm Charge', 'Rock Cannon', 'Spook', 'Imperial Rampage', 'Shadow Run', 'Magnorang', 'Majestic Dust']; //Add defual custom move names here.
 let customDescs = ['+1 Atk, +1 SpA, +1 Spe', '75 power Special attack, traps opponent for 4-5 turns and damages, 50% chance of burn', '50 power special move, 100 accuracy, summons rain, 20% chance to flinch', 'Heal your whole team of status conditions and heal 25% of your HP.', 'More power the faster the user is than the target, rasies speed by 1 after use.', 'Hail + Blizzard', '200 Base Power, has a 50% chance to paralyze target, must recharge after use', 'Inflict toxic on foe, and lower foes attack by 1. Lower accuracy.', '150BP Physical move, 15% chance to flinch', 'Remove entry hazards and set the weather to clear.', 'Sets Light Screen, Reflect, and Quick Guard.', '100 power physical attack, 90 accuracy, 30% chance to raise speed and attack.', 'Special attack, 95 power, 100 accuracy, 30% chance to Flinch', '70BP, 10% flinch chance, Always crits', '175BP outrage, also lowers your atk by 2 after it ends.', '100BP knock off', '100BP Physical move, if the foe is a steel type they will be trapped.', '120BP Special move. 10% par chance, power based move.'];
@@ -70,7 +71,7 @@ function validate(me, targetUser, quiet) {
 		targetUser.ability = species.abilities['0']; //Force legal ability
 		targetUser.movepool = []; //force legal normal moves
 	}
-	if (species.tier === 'Uber') {
+	if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
 		//Most are banned a few arent
 		if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
 			if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');
@@ -267,7 +268,7 @@ class SSB {
 		if (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') return false;
 		if (species.gen < 1) return false;
 		if (species.battleOnly) return false;
-		if (species.tier === 'Uber' || species.teir === 'Bank-Uber') {
+		if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
 			//Most are banned a few arent
 			if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
 		}
@@ -479,24 +480,28 @@ try {
 	fs.writeFile('config/ssb.json', "{}", function (err) {
 		if (err) {
 			console.error('Error while loading SSBFFA: ' + err);
-			SG.ssb = global.ssb = {};
 			ssbWrite = false;
 		} else {
 			console.log("config/ssb.json not found, creating a new one...");
 		}
 	});
+	noRead = true;
 }
 
 //We need to load data after the SSB class is declared.
 try {
-	let raw = JSON.parse(fs.readFileSync('config/ssb.json', 'utf8'));
-	SG.ssb = global.ssb = {};
-	//parse JSON back into the SSB class.
-	for (let key in raw) {
-		SG.ssb[key] = new SSB(raw[key].userid, raw[key].name);
-		for (let key2 in SG.ssb[key]) {
-			SG.ssb[key][key2] = raw[key][key2];
+	if (!noRead) {
+		let raw = JSON.parse(fs.readFileSync('config/ssb.json', 'utf8'));
+		SG.ssb = global.ssb = {};
+		//parse JSON back into the SSB class.
+		for (let key in raw) {
+			SG.ssb[key] = new SSB(raw[key].userid, raw[key].name);
+			for (let key2 in SG.ssb[key]) {
+				SG.ssb[key][key2] = raw[key][key2];
+			}
 		}
+	} else {
+		SG.ssb = global.ssb = {};
 	}
 } catch (e) {
 	console.error('Error loading SSBFFA: ' + e.stack);

@@ -3,8 +3,9 @@
 /node_modules
 /eslint-cache
 /chat-plugins/private.js
-/chat-plugins/filter.js
-/chat-plugins/shop.js
+/spacialgaze-plugins/filter.js
+/spacialgaze-plugins/shop.js
+/spacialgaze-plugins/leagues.js
 npm-debug.log
 .eslintcache
 

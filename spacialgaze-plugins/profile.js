@@ -6,30 +6,31 @@
  * Updated and restyled by Mystifi; main profile restyle goes out to panpawn/jd/other contributors.
  **/
 'use strict';
+//TODO reimplement geoip-ultralight
 
 //let fs = require('fs');
 let moment = require('moment');
-let geoip = require('geoip-ultralight');
+//let geoip = require('geoip-ultralight');
 
 // fill in '' with the server IP
 let serverIp = Config.serverIp;
-geoip.startWatchingDataUpdate();
+//geoip.startWatchingDataUpdate();
 
-global.isVIP = function (user) {
+function isVIP(user) {
 	if (!user) return;
 	if (typeof user === 'object') user = user.userid;
 	let vip = Db('vips').get(toId(user));
 	if (vip === 1) return true;
 	return false;
-};
+}
 
-global.isDev = function (user) {
+function isDev(user) {
 	if (!user) return;
 	if (typeof user === 'object') user = user.userid;
 	let dev = Db('devs').get(toId(user));
 	if (dev === 1) return true;
 	return false;
-};
+}
 
 function formatTitle(user) {
 	if (Db('customtitles').has(toId(user)) && Db('titlecolors').has(toId(user))) {
@@ -58,14 +59,30 @@ function vipCheck(user) {
 
 function showBadges(user) {
 	if (Db('userBadges').has(toId(user))) {
-		return '<button style="border-radius: 5px; background-color: transparent; color: #24678d;' +
-			' font-size: 11px;" name="send" value="/badges user, ' + toId(user) + '">Badges</button>';
+		let badges = Db('userBadges').get(toId(user));
+		let css = 'border:none;background:none;padding:0;';
+		if (typeof badges !== 'undefined' && badges !== null) {
+			let output = '<td><div style="float: right; background: rgba(69, 76, 80, 0.4); text-align: center; border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset; margin: 0px 3px;">';
+			output += ' <table style="' + css + '"> <tr>';
+			for (let i = 0; i < badges.length; i++) {
+				if (i !== 0 && i % 4 === 0) output += '</tr> <tr>';
+				output += '<td><button style="' + css + '" name="send" value="/badges info, ' + badges[i] + '">' +
+				'<img src="' + Db('badgeData').get(badges[i])[1] + '" height="16" width="16" alt="' + badges[i] + '" title="' + badges[i] + '" >' + '</button></td>';
+			}
+			output += '</tr> </table></div></td>';
+			return output;
+		}
 	}
 	return '';
 }
 
 function getLeague(userid) {
-	return SG.getLeague(userid);
+	return false; //TEMPORARY
+	//return SG.getLeague(userid);
+}
+
+function getLeagueRank(userid) {
+	return 'N/A';
 }
 
 /*function loadRegdateCache() {
@@ -74,7 +91,6 @@ function getLeague(userid) {
 	} catch (e) {}
 }
 loadRegdateCache();
-
 function saveRegdateCache() {
 	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
 }*/
@@ -258,6 +274,7 @@ exports.commands = {
 		},
 	},
 	profile: function (target, room, user) {
+		target = toId(target);
 		if (!target) target = user.name;
 		if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 		if (!this.runBroadcast()) return;
@@ -278,9 +295,11 @@ exports.commands = {
 		});
 
 		function getFlag(flagee) {
-			if (!Users(flagee)) return false;
+			return false;
+			/*if (!Users(flagee)) return false;
 			let geo = geoip.lookupCountry(Users(flagee).latestIp);
 			return (Users(flagee) && geo ? '<img src="https://github.com/kevogod/cachechu/blob/master/flags/' + geo.toLowerCase() + '.png?raw=true" height=10 title="' + geo + '">' : false);
+			*/
 		}
 
 		function getLastSeen(useid) {
@@ -293,16 +312,17 @@ exports.commands = {
 		function showProfile() {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
+				profile += showBadges(toId(username));
 				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
 				if (!getFlag(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
 				} else {
 					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
 				}
-				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + ' ' + showBadges(toId(username)) + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
-				profile += '&nbsp;<font color="#24678d"><b>League:</b></font> ' + (getLeague(toId(username)) ? (getLeague(toId(username)) + ' (' + SG.getLeagueRank(toId(username)) + ')') : 'N/A') + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>League:</b></font> ' + (getLeague(toId(username)) ? (getLeague(toId(username)) + ' (' + getLeagueRank(toId(username)) + ')') : 'N/A') + '<br />';
 				if (getLastSeen(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				} else {

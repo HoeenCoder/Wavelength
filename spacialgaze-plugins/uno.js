@@ -5,7 +5,8 @@
 */
 'use strict';
 
-const deck = ["R1",
+const deck = [
+	"R1",
 	"R2",
 	"R3",
 	"R4",
@@ -239,6 +240,7 @@ class Game {
 		this.data = {};
 		this.joinedIps = {};
 		this.player = null;
+		this.title = "Uno";
 		this.gameid = "uno";
 		this.started = false;
 		this.timer = null;
@@ -270,7 +272,7 @@ class Game {
 		this.data[userid] = [];
 		this.joinedIps[ip] = 1;
 		//make join messages clear away after game starts
-		this.room.add("|uhtml|init" + this.room.unoGameId + "|" + user.name + " has joined the game.");
+		this.room.add("|uhtml|init" + this.room.unoGameId + "|" + SG.nameColor(user.name, true) + " has joined the game.");
 	}
 
 	start(user) {
@@ -282,7 +284,7 @@ class Game {
 		this.room.add("|uhtmlchange|new" + this.room.unoGameId + "|<div class=\"infobox\">The game has started.</div>");
 		//get first player
 		this.player = this.list[~~(Math.random() * this.list.length)];
-		this.room.add("The first player is: " + getUserName(this.player) + ".");
+		this.room.add("|html|The first player is: " + SG.nameColor(getUserName(this.player)) + ".");
 
 		//create the deck
 		this.deck = shuffleDeck(initDeck(this.list.length));
@@ -363,14 +365,14 @@ class Game {
 			this.getNextPlayer();
 			break;
 		case "+2":
-			this.room.add(getUserName(this.player) + " has turn has been skipped, and is forced to draw 2 cards!");
+			this.room.add("|html|" + SG.nameColor(getUserName(this.player), true) + " has turn has been skipped, and is forced to draw 2 cards!");
 			//give 2 cards
 			this.giveCard(this.player, 2, true);
 			//skip the player
 			this.getNextPlayer();
 			break;
 		case "+4":
-			this.room.add(getUserName(this.player) + " has turn has been skipped, and is forced to draw 4 cards!");
+			this.room.add("|html|" + SG.nameColor(getUserName(this.player), true) + " has turn has been skipped, and is forced to draw 4 cards!");
 			//give 4 cards
 			this.giveCard(this.player, 4, true);
 			//skip the player

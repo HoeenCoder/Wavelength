@@ -5,12 +5,11 @@
   "version": "0.11.0",
   "dependencies": {
     "sockjs": "0.3.18",
-    "sqlite3": "*",
-    "origindb": "*",
+    "origindb": "2.5.2",
     "autolinker": "*",
-    "request": "*",
+    "request": "2.74.0",
     "md5": "*",
-    "moment": "*",
+    "moment": "2.11.2",
     "geoip-ultralight": "*"
   },
   "optionalDependencies": {
@@ -28,7 +27,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ config/ data/ dev-tools/ mods/ tournaments/ test/ && mocha"
+    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ spacialgaze-plugins/ config/ data/ dev-tools/ mods/ tournaments/ test/ && mocha"
   },
   "bin": "./pokemon-showdown",
   "homepage": "http://pokemonshowdown.com",

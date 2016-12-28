@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 let writeJSON = true;
+let noRead = false;
 let shopItems = ['Custom Symbol', 'Custom Avatar', 'Custom Color', 'Custom Title', 'Custom Icon'];
 const eventLeaders = ['krakenmare', 'celestialtater'];
 const expiresIn = 5; //false = never, otherwise specify a number of days. Vouchers will expire this number of days from creation.
@@ -105,24 +106,31 @@ try {
 			console.log("config/vouchers.json not found, creating a new one...");
 		}
 	});
+	noRead = true;
 }
 
 //Load vouchers on server start / hotpatch chat
 try {
-	let raw = JSON.parse(fs.readFileSync('config/vouchers.json', 'utf8'));
-	SG.vouchers = {};
-	for (let key in raw) {
-		if (key === 'storageForVocuherIds') {
-			SG.vouchers.storageForVocuherIds = raw[key];
-			continue;
+	if (!noRead) {
+		let raw = JSON.parse(fs.readFileSync('config/vouchers.json', 'utf8'));
+		SG.vouchers = {};
+		for (let key in raw) {
+			if (key === 'storageForVocuherIds') {
+				SG.vouchers.storageForVocuherIds = raw[key];
+				continue;
+			}
+			SG.vouchers[key] = [];
+			for (let i = 0; i < raw[key].length; i++) {
+				let reVouch = new Voucher(raw[key][i].userid, raw[key][i].goodFor, raw[key][i].item, raw[key][i].expires, Number(raw[key][i].id));
+				SG.vouchers[key].push(reVouch);
+			}
 		}
-		SG.vouchers[key] = [];
-		for (let i = 0; i < raw[key].length; i++) {
-			let reVouch = new Voucher(raw[key][i].userid, raw[key][i].goodFor, raw[key][i].item, raw[key][i].expires, Number(raw[key][i].id));
-			SG.vouchers[key].push(reVouch);
-		}
+		if (!SG.vouchers.storageForVocuherIds) SG.vouchers.storageForVocuherIds = 1;
+	} else {
+		SG.vouchers = {
+			storageForVocuherIds: 1,
+		};
 	}
-	if (!SG.vouchers.storageForVocuherIds) SG.vouchers.storageForVocuherIds = 1;
 } catch (e) {
 	console.error('Error loading Vouchers: ' + e.stack);
 	SG.vouchers = {

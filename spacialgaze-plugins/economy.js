@@ -1,40 +1,62 @@
 'use strict';
 
-SG.database = new sqlite3.Database('config/users.db', function () {
-	SG.database.run("CREATE TABLE if not exists users (userid TEXT, name TEXT, currency INTEGER, lastSeen INTEGER, onlineTime INTEGER, credits INTEGER, title TEXT, notifystatus INTEGER, background TEXT)");
-	SG.database.run("CREATE TABLE if not exists friends (id integer primary key, userid TEXT, friend TEXT)");
-});
-
 const fs = require('fs');
+
+// This should be the default amount of money users have.
+// Ideally, this should be zero.
+const DEFAULT_AMOUNT = 0;
+
 global.currencyName = 'Stardust';
 global.currencyPlural = 'Stardust';
 
 let Economy = global.Economy = {
+	/**
+ 	* Reads the specified user's money.
+ 	* If they have no money, DEFAULT_AMOUNT is returned.
+ 	*
+ 	* @param {String} userid
+ 	* @param {Function} callback
+ 	* @return {Function} callback
+ 	*/
 	readMoney: function (userid, callback) {
-		if (!callback) return false;
+		if (typeof callback !== 'function') {
+			throw new Error("Economy.readMoney: Expected callback parameter to be a function, instead received " + typeof callback);
+		}
+
+		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
-		SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (err) return console.log("readMoney: " + err);
-			callback(((rows[0] && rows[0].currency) ? rows[0].currency : 0));
-		});
+
+		let amount = Db('currency').get(userid, DEFAULT_AMOUNT);
+		return callback(amount);
 	},
+	/**
+ 	* Writes the specified amount of money to the user's "bank."
+ 	* If a callback is specified, the amount is returned through the callback.
+ 	*
+ 	* @param {String} userid
+ 	* @param {Number} amount
+ 	* @param {Function} callback (optional)
+ 	* @return {Function} callback (optional)
+ 	*/
 	writeMoney: function (userid, amount, callback) {
+		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
-		SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (err) return console.log("writeMoney 1: " + err);
-			if (rows.length < 1) {
-				SG.database.run("INSERT INTO users(userid, currency) VALUES ($userid, $amount)", {$userid: userid, $amount: amount}, function (err) {
-					if (err) return console.log("writeMoney 2: " + err);
-					if (callback) return callback();
-				});
-			} else {
-				amount += rows[0].currency;
-				SG.database.run("UPDATE users SET currency=$amount WHERE userid=$userid", {$amount: amount, $userid: userid}, function (err) {
-					if (err) return console.log("writeMoney 3: " + err);
-					if (callback) return callback();
-				});
-			}
-		});
+
+		// In case someone forgot to make sure `amount` was a Number...
+		amount = Number(amount);
+		if (isNaN(amount)) {
+			throw new Error("Economy.writeMoney: Expected amount parameter to be a Number, instead received " + typeof amount);
+		}
+
+		let curTotal = Db('currency').get(userid, DEFAULT_AMOUNT);
+		let newTotal = Db('currency')
+			.set(userid, curTotal + amount)
+			.get(userid);
+
+		if (callback && typeof callback === 'function') {
+			// If a callback is specified, return `newTotal` through the callback.
+			return callback(newTotal);
+		}
 	},
 	writeMoneyArr: function (users, amount) {
 		this.writeMoney(users[0], amount, () => {
@@ -69,10 +91,10 @@ exports.commands = {
 		});
 	},
 
-	gs: 'givecurrency', //You can change "gs" and "givestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ga" and "giveawesomebucks" 
+	gs: 'givecurrency', //You can change "gs" and "givestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ga" and "giveawesomebucks"
 	givestardust: 'givecurrency',
 	gc:'givecurrency',
-	givecurrency: function (target, room, user, connection,cmd) {
+	givecurrency: function (target, room, user, connection, cmd) {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
@@ -107,7 +129,7 @@ exports.commands = {
 	ts: 'takecurrency', //You can change "ts" and "takestardust" to your currency name for an alias that applies to your currency Example: AwesomeBucks could be "ta" and "takeawesomebucks"
 	takestardust: 'takecurrency',
 	tc:'takecurrency',
-	takecurrency: function (target, room, user, connection,cmd) {
+	takecurrency: function (target, room, user, connection, cmd) {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
@@ -156,11 +178,9 @@ exports.commands = {
 		if (isNaN(amount)) return this.sendReply("/" + cmd + " - [amount] must be a number.");
 		if (amount > 1000) return this.sendReply("/" + cmd + " - You can't transfer more than 1000 " + currencyName + " at a time.");
 		if (amount < 1) return this.sendReply("/" + cmd + " - You can't transfer less than one " + currencyName + ".");
-
-		
 		Economy.readMoney(user.userid, money => {
 			if (money < amount) return this.sendReply("/" + cmd + " - You can't transfer more " + currencyName + " than you have.");
-			if (cmd !== 'confirmtransfercurrency' && cmd !== 'confirmtransferstardust') { 
+			if (cmd !== 'confirmtransfercurrency' && cmd !== 'confirmtransferstardust') {
 				return this.popupReply('|html|<center>' +
 					'<button class = "card-td button" name = "send" value = "/confirmtransfercurrency ' + toId(targetUser) + ', ' + amount + '"' +
 					'style = "outline: none; width: 200px; font-size: 11pt; padding: 10px; border-radius: 14px ; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.4) inset; transition: all 0.2s;">' +
@@ -225,27 +245,21 @@ exports.commands = {
 		let self = this;
 
 		function showResults(rows) {
-			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>'+ currencyPlural +'</th></tr>';
+			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>' + currencyPlural + '</th></tr>';
 			let count = 1;
 			for (let u in rows) {
-				if (!rows[u].currency || rows[u].currency < 1) continue;
-				let username;
-				if (rows[u].name !== null) {
-					username = rows[u].name;
-				} else {
-					username = rows[u].userid;
-				}
-				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(username, true) + '</td><td>' + rows[u].currency + '</td></tr>';
+				if (Db('currency').get(rows[u], DEFAULT_AMOUNT) < 1) continue;
+				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(rows[u], true) + '</td><td>' + Db('currency').get(rows[u], DEFAULT_AMOUNT) + '</td></tr>';
 				count++;
 			}
 			self.sendReplyBox(output);
 			if (room) room.update();
 		}
-
-		SG.database.all("SELECT userid, currency, name FROM users ORDER BY currency DESC LIMIT $target;", {$target: target}, function (err, rows) {
-			if (err) return console.log("richestuser: " + err);
-			showResults(rows);
+		let obj = Db('currency').object();
+		let results = Object.keys(obj).sort(function (a, b) {
+			return obj[b] - obj[a];
 		});
+		showResults(results.slice(0, 10));
 	},
 
 	customsymbol: function (target, room, user) {

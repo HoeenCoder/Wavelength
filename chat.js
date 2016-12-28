@@ -200,7 +200,8 @@ class CommandContext {
 						}
 						curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
 					}
-					this.room.logEntry((this.room.type === 'chat' ? (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
+					this.room.log.push((this.room.type === 'chat' ? (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
+					this.room.lastUpdate = this.room.log.length;
 					this.room.messageCount++;
 				} else {
 					if (Users.ShadowBan.checkBanned(this.user)) {
@@ -782,34 +783,26 @@ class CommandContext {
 		this.splitTarget(target, exactName);
 		return this.targetUser;
 	}
-	splitTarget(target, exactName) {
+	splitOne(target) {
 		let commaIndex = target.indexOf(',');
 		if (commaIndex < 0) {
-			let targetUser = Users.get(target, exactName);
-			this.targetUser = targetUser;
-			this.inputUsername = target.trim();
-			this.targetUsername = targetUser ? targetUser.name : target;
-			return '';
+			return [target, ''];
 		}
-		this.inputUsername = target.substr(0, commaIndex);
-		let targetUser = Users.get(this.inputUsername, exactName);
-		if (targetUser) {
-			this.targetUser = targetUser;
-			this.targetUsername = targetUser.name;
-		} else {
-			this.targetUser = null;
-			this.targetUsername = this.inputUsername;
-		}
-		return target.substr(commaIndex + 1).trim();
+		return [target.substr(0, commaIndex), target.substr(commaIndex + 1).trim()];
+	}
+	splitTarget(target, exactName) {
+		let [name, rest] = this.splitOne(target);
+
+		this.targetUser = Users.get(name, exactName);
+		this.inputUsername = name.trim();
+		this.targetUsername = this.targetUser ? this.targetUser.name : this.inputUsername;
+		return rest;
 	}
 	splitTargetText(target) {
-		let commaIndex = target.indexOf(',');
-		if (commaIndex < 0) {
-			this.targetUsername = target;
-			return '';
-		}
-		this.targetUsername = target.substr(0, commaIndex);
-		return target.substr(commaIndex + 1).trim();
+		let [first, rest] = this.splitOne(target);
+
+		this.targetUsername = first.trim();
+		return rest.trim();
 	}
 }
 Chat.CommandContext = CommandContext;
@@ -888,11 +881,15 @@ Chat.loadCommands = function () {
 
 	// info always goes first so other plugins can shadow it
 	Object.assign(commands, require('./chat-plugins/info').commands);
-	Object.assign(commands, require('./chat-plugins/SG').commands);
+	Object.assign(commands, require('./spacialgaze-plugins/SG.js').commands);
 
 	for (let file of fs.readdirSync(path.resolve(__dirname, 'chat-plugins'))) {
-		if (file.substr(-3) !== '.js' || file === 'info.js' || file === 'SG.js') continue;
+		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
 		Object.assign(commands, require('./chat-plugins/' + file).commands);
+	}
+	for (let file of fs.readdirSync(path.resolve(__dirname, 'spacialgaze-plugins'))) {
+		if (file.substr(-3) !== '.js' || file === 'SG.js') continue;
+		Object.assign(commands, require('./spacialgaze-plugins/' + file).commands);
 	}
 };
 

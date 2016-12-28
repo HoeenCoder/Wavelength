@@ -1,3 +1,4 @@
 tournaments/lib/
 logs/
-config/color.js
+chat-plugins/shop.js
+chat-plugins/private.js

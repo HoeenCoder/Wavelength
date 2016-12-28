@@ -965,13 +965,13 @@ class Tournament {
 			if (runnerUp) {
 				Economy.writeMoney(rid, secondMoney, () => {
 					Economy.readMoney(rid, newAmount => {
-						if (Users(rid) && Users(targetUser).connected) {
+						if (Users(rid) && Users(rid).connected) {
 							Users.get(rid).popup('|html|You have received ' + secondMoney + ' ' + (secondMoney === 1 ? global.currencyName : global.currencyPlural) + ' from winning the tournament.');
 						}
 						Economy.logTransaction(Chat.escapeHTML(runnerUp) + ' has won ' + secondMoney + ' ' + (secondMoney === 1 ? global.currencyName : global.currencyPlural) + ' from a tournament.');
 					});
 				});
-				this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(runnerUp) + "</font> has won " +  "<font color='" + color + "'>" + secondMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currencyPlural) + " for winning the tournament!</b>");
+				this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(runnerUp) + "</font> has won " + "<font color='" + color + "'>" + secondMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currencyPlural) + " for winning the tournament!</b>");
 			}
 		}
 
@@ -1221,6 +1221,23 @@ let commands = {
 			if (tournament.autoDisqualifyTimeout === Infinity) return this.errorReply("The automatic tournament disqualify timer is not set.");
 			tournament.runAutoDisqualify(this);
 			this.logEntry(user.name + " used /tour runautodq");
+		},
+		remind: function (tournament, user) {
+			let offlineUsers = [];
+			tournament.generator.getAvailableMatches().toString().split(",").forEach(u => {
+				let targetUser = Users.get(u);
+				if (!targetUser) {
+					offlineUsers.push(u);
+				} else if (!targetUser.connected) {
+					offlineUsers.push(targetUser.userid);
+				} else {
+					let pmName = ' Tour Remind [Do not reply]';
+					let message = '|pm|' + pmName + '|' + user.getIdentity() + '|' + 'You have a tournament battle in the room "' + tournament.room.title + '". If you do not start soon you may be disqualified.';
+					targetUser.send(message);
+				}
+			});
+			tournament.room.addRaw('<b>Players have been reminded of their tournament battles by ' + user.name + '.</b>');
+			if (offlineUsers.length > 0 && offlineUsers !== '') tournament.room.addRaw('<b>The following users are currently offline: ' + offlineUsers + '.</b>');
 		},
 		scout: 'setscouting',
 		scouting: 'setscouting',

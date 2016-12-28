@@ -410,9 +410,23 @@ class User {
 				return '!' + this.name;
 			}
 			if ((!room.auth || !room.auth[this.userid]) && this.customSymbol) return this.customSymbol + this.name;
+			if (Config.xmas) {
+				let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2615', '\u26F8', '\u2603', '\u26F7'];
+				let normalGroups = ['+', '%', '@', '*', '#', '&', '~'];
+				let idx = normalGroups.indexOf(room.getAuth(this));
+				if (idx === -1) return room.getAuth(this) + this.name;
+				return xmasGroups[idx] + this.name;
+			}
 			return room.getAuth(this) + this.name;
 		}
 		if (this.customSymbol) return this.customSymbol + this.name;
+		if (Config.xmas) {
+			let xmasGroups = ['\u272F', '\u2744', '\u2746', '\u2615', '\u2603', '\u26F7'];
+			let normalGroups = ['+', '%', '@', '*', '&', '~'];
+			let idx = normalGroups.indexOf(this.group);
+			if (idx === -1) return this.group + this.name;
+			return xmasGroups[idx] + this.name;
+		}
 		return this.group + this.name;
 	}
 	authAtLeast(minAuth, room) {
@@ -477,7 +491,9 @@ class User {
 	 */
 	hasSysopAccess() {
 		const sysops = [];
-		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) || sysops.includes(this.userid)) {
+		//Your IP must be on the whitelist as well as your name.
+		let sysopIp = Config.consoleips.includes(this.latestIp);
+		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) && sysopIp || sysops.includes(this.userid) && sysopIp) {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
@@ -941,7 +957,9 @@ class User {
 			this.namelocked = false;
 		}
 		if (this.autoconfirmed && this.semilocked) {
-			if (this.semilocked === '#dnsbl') {
+			if (this.semilocked.startsWith('#sharedip')) {
+				this.semilocked = false;
+			} else if (this.semilocked === '#dnsbl') {
 				this.popup(`You are locked because someone using your IP has spammed/hacked other websites. This usually means you're using a proxy, in a country where other people commonly hack, or have a virus on your computer that's spamming websites.`);
 				this.semilocked = '#dnsbl.';
 			}
