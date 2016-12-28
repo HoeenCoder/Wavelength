@@ -339,7 +339,7 @@ exports.commands = {
 			if (!Tools.data.Formats[key].mod) continue;
 			if (!Tools.data.Formats[key].searchShow) continue;
 			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'gen6', 'sgssb', 'pmd', 'cssb'];
+				let commonMods = ['gen7', 'sgssb', 'pmd', 'cssb'];
 				if (commonMods.indexOf(Tools.data.Formats[key].mod) === -1) continue;
 			}
 			options.push(Tools.data.Formats[key].name);
