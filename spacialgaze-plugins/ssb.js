@@ -162,7 +162,7 @@ function moveMenu(userid) {
 	}
 	if (SG.ssb[userid].cMove) output += SG.ssb[userid].cMove;
 	output += '</div><div style="padding-bottom: 2px"><i>Custom-made Custom Move:</i> ' + (SG.ssb[userid].selfCustomMove ? SG.ssb[userid].selfCustomMove : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
-	output += '<button name="send" class="button" value="/ssb edit move help">Set Moves</button> | <button name="send" class="button" value="/ssb edit moveq custom, ' + (SG.ssb[userid].selfCustomMove ? SG.ssb[userid].selfCustomMove : '') + '">Set Custom-made Custom Move</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
+	output += '<button name="send" class="button" value="/ssb edit move help">Set Moves</button> | <button class="button" name="send" value="/ssb custom">Set a Custom Move</button> | <button name="send" class="button" value="/ssb edit moveq custom, ' + (SG.ssb[userid].selfCustomMove ? SG.ssb[userid].selfCustomMove : '') + '">Set Custom-made Custom Move</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
 	return output;
 }
 
@@ -203,11 +203,11 @@ function detailMenu(userid) {
 }
 
 function customMenu() {
-	let output = '<div style="max-height: 300px; overflow-y: scroll"><h3><u>Custom Moves</u></h3>';
+	let output = '<div class="setchart" style="text-align:center; height:140px"><div style="max-height: 135px; overflow-y: scroll"><h3><u>Custom Moves</u></h3><button class="button" name="send" value="/ssb edit main">Main Menu</button>';
 	for (let i = 0; i < customMovepool.length; i++) {
 		output += '<div><b><u>' + customMovepool[i] + '</u></b>: Type: <i>' + typeList[i] + '</i>, Description: ' + customDescs[i] + ' <button class="button" name="send" value="/ssb edit move custom, ' + customMovepool[i] + '">Set as custom move</button></div><br/>';
 	}
-	output += '</div>';
+	output += '<button class="button" name="send" value="/ssb edit main">Main Menu</button></div></div>';
 	return output;
 }
 
@@ -818,7 +818,7 @@ exports.commands = {
 				SG.ssb[user.userid] = new SSB(user.userid, user.name);
 				writeSSB();
 			}
-			return this.sendReplyBox(customMenu());
+			return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + customMenu());
 		},
 		log: function (target, room, user, connection, cmd, message) {
 			if (!target) target = (user.can('roomowner') ? 'view, all' : 'view, ' + user.userid);
