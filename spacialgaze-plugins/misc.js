@@ -172,7 +172,7 @@ exports.commands = {
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
 			"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
-			"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
+			"- " + (name)('CelestialTater', true) + " (Server Events Leader)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +
