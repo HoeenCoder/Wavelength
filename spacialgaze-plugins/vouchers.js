@@ -59,7 +59,7 @@ class Voucher {
 				break;
 			case 'customicon':
 				Users(this.userid).popup('|html|You have purchased a Userlist Icon. Upper staff has been notified of your purchase and will contact you shortly.<br/>Inappropriate images may be denied; must be a 32x32 image.<br/>');
-				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlit Icon. Please contact this user to setup their Userlist Icon.");
+				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlist Icon. Please contact this user to setup their Userlist Icon.");
 				break;
 			}
 			break;
