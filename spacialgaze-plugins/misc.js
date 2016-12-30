@@ -176,7 +176,7 @@ exports.commands = {
 		if (!room.auth) room.auth = room.chatRoomData.auth = {};
 
 		room.auth[userid] = '#';
-		room.founder = targetUser.userid;
+		room.founder = userid;
 		this.addModCommand(`${name} was appointed Room Founder by ${user.name}.`);
 		if (targetUser) {
 			targetUser.popup(`You were appointed Room Founder by ${user.name} in ${room.id}.`);
