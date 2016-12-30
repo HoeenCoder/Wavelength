@@ -155,31 +155,24 @@ exports.commands = {
 	showhelp: ["/show - Displays user's global rank. Requires: & ~"],
 
 	credits: function (target, room, user) {
-		function name(name, bold) {
-			if (bold) {
-				return "<b><font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font></b>";
-			} else {
-				return "<font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font>";
-			}
-		}
 		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
 			"<br />" +
 			"<u><b>Server Maintainers:</u></b><br />" +
-			"- " + (name)('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + (name)('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
+			"- " + SG.nameColor('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
-			"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
-			"- " + (name)('CelestialTater', true) + " (Server Events Leader)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Social Media Lead)<br />" +
+			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +
-			"- " + (name)('Vulcaron', true) + " (Former Policy Leader)<br />" +
+			"- " + SG.nameColor('The Run', true) + " (Former Server Owner)<br />" +
+			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
-			"- Staff Members<br />" +
+			"- Our Staff Members<br />" +
+		    	"- Our Server Event Leaders (" + SG.nameColor('Kraken Mare', true) + ", " + SG.nameColor('CelestialTater', true) + ")<br />" +
 			"- Our Regular Users<br />";
 		user.popup(popup);
 	},
