@@ -172,7 +172,7 @@ exports.commands = {
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
-		    	"- Our Server Event Leaders (" + SG.nameColor('Kraken Mare', true) + ", " + SG.nameColor('CelestialTater', true) + ")<br />" +
+			"- Our Server Event Leaders (" + SG.nameColor('Kraken Mare', true) + ", " + SG.nameColor('CelestialTater', true) + ")<br />" +
 			"- Our Regular Users<br />";
 		user.popup(popup);
 	},
