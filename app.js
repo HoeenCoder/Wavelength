@@ -124,7 +124,8 @@ delete process.send; // in case we're a child process
 global.Verifier = require('./verifier');
 Verifier.PM.spawn();
 
-global.SG = {};
+global.SG = require('./SG.js').SG;
+SG.readGameData();
 
 global.Tournaments = require('./tournaments');
 
