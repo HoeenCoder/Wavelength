@@ -45,83 +45,6 @@ function clearRoom(room) {
 }
 
 exports.commands = {
-	globalauth: 'gal',
-	stafflist: 'gal',
-	authlist: 'gal',
-	auth: 'gal',
-	gal: function (target, room, user, connection) {
-		let ranks = Object.keys(Config.groups);
-		let persons = [];
-		for (let u in Users.usergroups) {
-			let rank = Users.usergroups[u].charAt(0);
-			if (ranks.indexOf(rank) >= 0) {
-				let name = Users.usergroups[u].substr(1);
-				persons.push({
-					name: name,
-					rank: rank,
-				});
-			}
-		}
-		let staff = {
-			"admins": [],
-			"leaders": [],
-			"bots": [],
-			"mods": [],
-			"drivers": [],
-			"voices": [],
-		};
-		persons = persons.sort((a, b) => toId(a.name).localeCompare(toId(b.name))); // No need to return, arrow functions with single lines have an implicit return
-		function nameColor(name) {
-			if (Users.getExact(name) && Users(name).connected) {
-				return '<b><i><font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(Users.getExact(name).name) + '</font></i></b>';
-			} else {
-				return '<font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(name) + '</font>';
-			}
-		}
-		for (let j = 0; j < persons.length; j++) {
-			let rank = persons[j].rank;
-			let person = persons[j].name;
-			switch (rank) {
-			case '~':
-				staff['admins'].push(nameColor(person));
-				break;
-			case '&':
-				staff['leaders'].push(nameColor(person));
-				break;
-			case '*':
-				staff['bots'].push(nameColor(person));
-				break;
-			case '@':
-				staff['mods'].push(nameColor(person));
-				break;
-			case '%':
-				staff['drivers'].push(nameColor(person));
-				break;
-			case '+':
-				staff['voices'].push(nameColor(person));
-				break;
-			default:
-				continue;
-
-			}
-		}
-		connection.popup('|html|' +
-			'<h3>SpacialGaze Authority List</h3>' +
-			'<b><u>~Administrators (' + staff['admins'].length + ')</u></b>:<br />' + staff['admins'].join(', ') +
-			'<br />' +
-			'<br /><b><u>&Leaders (' + staff['leaders'].length + ')</u></b>:<br />' + staff['leaders'].join(', ') +
-			'<br />' +
-			'<br /><b><u>*Bots (' + staff['bots'].length + ')</u></b><br />' + staff['bots'].join(', ') +
-			'<br />' +
-			'<br /><b><u>@Moderators (' + staff['mods'].length + ')</u></b>:<br />' + staff['mods'].join(', ') +
-			'<br />' +
-			'<br /><b><u>%Drivers (' + staff['drivers'].length + ')</u></b>:<br />' + staff['drivers'].join(', ') +
-			'<br />' +
-			'<br /><b><u>+Voices (' + staff['voices'].length + ')</u></b>:<br />' + staff['voices'].join(', ') +
-			'<br /><br /><blink>(<b>Bold</b> / <i>Italic</i> = Currently Online)</blink>'
-		);
-	},
-
 	clearall: function (target, room, user) {
 		if (!this.can('declare')) return false;
 		if (room.battle) return this.sendReply("You cannot clearall in battle rooms.");
@@ -232,31 +155,24 @@ exports.commands = {
 	showhelp: ["/show - Displays user's global rank. Requires: & ~"],
 
 	credits: function (target, room, user) {
-		function name(name, bold) {
-			if (bold) {
-				return "<b><font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font></b>";
-			} else {
-				return "<font color=" + hashColorWithCustoms(name) + ">" + Chat.escapeHTML(name) + "</font>";
-			}
-		}
 		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
 			"<br />" +
 			"<u><b>Server Maintainers:</u></b><br />" +
-			"- " + (name)('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + (name)('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + (name)('Desokoro', true) + " (Server Host)<br />" +
+			"- " + SG.nameColor('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + (name)('Opple', true) + " (Social Media Lead)<br />" +
-			"- " + (name)('Kraken Mare', true) + " (Development, Server Events Leader)<br />" +
-			"- " + (name)('Celestial Tater', true) + " (Server Events Leader)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Social Media Lead)<br />" +
+			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + (name)('The Run', true) + " (Former Server Owner)<br />" +
-			"- " + (name)('Vulcaron', true) + " (Former Policy Leader)<br />" +
+			"- " + SG.nameColor('The Run', true) + " (Former Server Owner)<br />" +
+			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
-			"- Staff Members<br />" +
+			"- Our Staff Members<br />" +
+			"- Our Server Event Leaders (" + SG.nameColor('Kraken Mare', true) + ", " + SG.nameColor('CelestialTater', true) + ")<br />" +
 			"- Our Regular Users<br />";
 		user.popup(popup);
 	},
@@ -505,104 +421,4 @@ exports.commands = {
 			"|/text This user is currently offline. Your message will be delivered when they are next online.");
 	},
 	tellhelp: ["/tell [username], [message] - Send a message to an offline user that will be received when they log in."],
-
-	reddeclare: 'declare',
-	greendeclare: 'declare',
-	declare: function (target, room, user, connection, cmd, message) {
-		if (!target) return this.parse('/help declare');
-		if (!this.can('declare', null, room)) return false;
-		if (!this.canTalk()) return;
-
-		let color = 'blue';
-		switch (cmd) {
-		case 'reddeclare':
-			color = 'red';
-			break;
-		case 'greendeclare':
-			color = 'green';
-			break;
-		}
-		this.add('|raw|<div class="broadcast-' + color + '"><b>' + Chat.escapeHTML(target) + '</b></div>');
-		this.logModCommand(user.name + " declared " + target);
-	},
-	declarehelp: ["/declare [message] - Anonymously announces a message. Requires: # * & ~"],
-
-	redhtmldeclare: 'htmldeclare',
-	greenhtmldeclare: 'htmldeclare',
-	htmldeclare: function (target, room, user, connection, cmd, message) {
-		if (!target) return this.parse('/help htmldeclare');
-		if (!this.can('gdeclare', null, room)) return false;
-		if (!this.canTalk()) return;
-		target = this.canHTML(target);
-		if (!target) return;
-
-		let color = 'blue';
-		switch (cmd) {
-		case 'redhtmldeclare':
-			color = 'red';
-			break;
-		case 'greenhtmldeclare':
-			color = 'green';
-			break;
-		}
-		this.add('|raw|<div class="broadcast-' + color + '">' + target + '</div>');
-		this.logModCommand(user.name + " declared " + target);
-	},
-	htmldeclarehelp: ["/htmldeclare [message] - Anonymously announces a message using safe HTML. Requires: ~"],
-
-	redglobaldeclare: 'globaldeclare',
-	greenglobaldeclare: 'globaldeclare',
-	redgdeclare: 'globaldeclare',
-	greengdeclare: 'globaldeclare',
-	gdeclare: 'globaldeclare',
-	globaldeclare: function (target, room, user, connection, cmd, message) {
-		if (!target) return this.parse('/help globaldeclare');
-		if (!this.can('gdeclare')) return false;
-		target = this.canHTML(target);
-		if (!target) return;
-
-		let color = 'blue';
-		switch (cmd) {
-		case 'redglobaldeclare':
-		case 'redgdeclare':
-			color = 'red';
-			break;
-		case 'greenglobaldeclare':
-		case 'greengdeclare':
-			color = 'green';
-			break;
-		}
-		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
-		});
-		this.logModCommand(user.name + " globally declared " + target);
-	},
-	globaldeclarehelp: ["/globaldeclare [message] - Anonymously announces a message to every room on the server. Requires: ~"],
-
-	redchatdeclare: 'chatdeclare',
-	greenchatdeclare: 'chatdeclare',
-	redcdeclare: 'chatdeclare',
-	greencdeclare: 'chatdeclare',
-	cdeclare: 'chatdeclare',
-	chatdeclare: function (target, room, user, connection, cmd, message) {
-		if (!target) return this.parse('/help chatdeclare');
-		if (!this.can('gdeclare')) return false;
-		target = this.canHTML(target);
-		if (!target) return;
-
-		let color = 'blue';
-		switch (cmd) {
-		case 'reddeclare':
-			color = 'red';
-			break;
-		case 'greendeclare':
-			color = 'green';
-			break;
-		}
-		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
-		});
-		this.logModCommand(user.name + " globally declared (chat level) " + target);
-	},
-	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
 };
