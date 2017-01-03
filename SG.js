@@ -174,6 +174,7 @@ exports.SG = {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
 		user.connected = false; // Technically isnt connected
+		user.avatar = 167;
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
