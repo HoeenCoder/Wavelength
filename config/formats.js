@@ -540,6 +540,25 @@ exports.Formats = [
 		},
 	},
 
+	// SGgame Formats
+	////////////////////////////////////////////////////////////////////
+
+	{
+		section: "SG Game Formats",
+		column: 2,
+	},
+	{
+		name: "[Gen 7] Wild Pokemon (Alpha)",
+		desc: ["Wild Pok&eacute;mon battles for the SG game project (WIP)"],
+		rated: false,
+		useSGGame: true,
+		isWildEncounter: true,
+
+		mod: 'gen7',
+		ruleset: ['Pokemon', 'Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['Illegal', 'Unreleased']
+	},
+
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
 

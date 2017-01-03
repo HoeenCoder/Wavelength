@@ -497,6 +497,10 @@ class GlobalRoom {
 		if (!user.connected) return;
 
 		formatid = Tools.getFormat(formatid).id;
+		if (Tools.getFormat(formatid).useSGGame) {
+			//if (userHasNotGottenPokemonYet) return;
+			user.team = "|popplio|berryjuice||pound,growl,watergun|Modest|||||5|255"; //TODO pull the users team
+		}
 
 		user.prepBattle(formatid, 'search', null).then(result => this.finishSearchBattle(user, formatid, result));
 	}
@@ -552,6 +556,15 @@ class GlobalRoom {
 
 		if (!this.searches[formatid]) this.searches[formatid] = [];
 		let formatSearches = this.searches[formatid];
+
+		if (Tools.getFormat(formatid).isWildEncounter) {
+			delete user.searching[formatid];
+			if (!Users('sgserver')) {
+				SG.makeCOM();
+			}
+			this.startBattle(user, Users('sgserver'), formatid, newSearch.team, SG.makeWildPokemon(), {rated: false});
+			return;
+		}
 
 		// Prioritize players who have been searching for a match the longest.
 		for (let i = 0; i < formatSearches.length; i++) {

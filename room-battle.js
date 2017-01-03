@@ -15,6 +15,8 @@
 
 global.Config = require('./config/config');
 
+global.Db = require('origindb')('config/db');
+
 const ProcessManager = require('./process-manager');
 
 class SimulatorManager extends ProcessManager {

@@ -170,6 +170,17 @@ exports.SG = {
 			}
 		}
 	},
+	makeCOM: function () {
+		if (Users('sgserver')) return false; // Already exists!
+		let user = new Users.User({user: false, send: function() {}, inRooms: new Set(), worker: {send: function() {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
+		user.connected = false; // Technically isnt connected
+		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
+		return user;
+	},
+	makeWildPokemon: function (location) {
+		//TODO
+		return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
+	}
 };
 
 // last two functions needed to make sure SG.regdate() fully works
