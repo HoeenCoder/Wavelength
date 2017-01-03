@@ -172,14 +172,14 @@ exports.SG = {
 	},
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
-		let user = new Users.User({user: false, send: function() {}, inRooms: new Set(), worker: {send: function() {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
+		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
 		user.connected = false; // Technically isnt connected
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
 	makeWildPokemon: function (location) {
 		//TODO: locations
-		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'cubchoo'][Math.floor(Math.random() * 3)]; //TODO pull from location
+		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'cubchoo'][Math.floor(Math.random() * 6)]; //TODO pull from location
 		if (!pokemon) return "ERROR!|unown|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
 		pokemon = Tools.getTemplate(pokemon);
 		let data = "|" + pokemon.id + "||";
@@ -196,7 +196,7 @@ exports.SG = {
 				}
 			}
 		}
-		raw = raw.sort(function(a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
+		raw = raw.sort(function (a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
 		for (let i = 0; i < 4; i++) {
 			if (raw.length === 0) break;
 			let target = raw.pop();
@@ -219,18 +219,22 @@ exports.SG = {
 			gender = "M";
 		} else if (pokemon.genderRatio.M !== 0 && pokemon.genderRatio.F !== 0) {
 			gender = "F";
-		} else gender = "";
+		} else {
+			gender = "";
+		}
 		data += gender + "|";
 		for (let i = 0; i < 6; i++) {
 			data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
 		}
 		if (Math.ceil(Math.random() * 4096) === 1) {
 			data += "S|";
-		} else data += "|";
+		} else {
+			data += "|";
+		}
 		data += lvl + "|0";
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
-	}
+	},
 };
 
 // last two functions needed to make sure SG.regdate() fully works

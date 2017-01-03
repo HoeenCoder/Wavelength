@@ -556,7 +556,7 @@ exports.Formats = [
 
 		mod: 'gen7',
 		ruleset: ['Pokemon', 'Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
-		banlist: ['Illegal', 'Unreleased']
+		banlist: ['Illegal', 'Unreleased'],
 	},
 
 	// Other Metagames
