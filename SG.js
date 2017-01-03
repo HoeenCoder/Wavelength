@@ -178,8 +178,58 @@ exports.SG = {
 		return user;
 	},
 	makeWildPokemon: function (location) {
-		//TODO
-		return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
+		//TODO: locations
+		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'cubchoo'][Math.floor(Math.random() * 3)]; //TODO pull from location
+		if (!pokemon) return "ERROR!|unown|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		pokemon = Tools.getTemplate(pokemon);
+		let data = "|" + pokemon.id + "||";
+		let ability = Math.round(Math.random());
+		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
+		data += (ability ? "1|" : "|");
+		let lvl = Math.round(Math.random() * 5) + 2; //2 -> 7 for test. TODO base on location
+		let moves = "";
+		let raw = [];
+		for (let move in pokemon.learnset) {
+			for (let learned in pokemon.learnset[move]) {
+				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl) {
+					raw.push({move: move, lvl: pokemon.learnset[move][learned]});
+				}
+			}
+		}
+		raw = raw.sort(function(a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
+		for (let i = 0; i < 4; i++) {
+			if (raw.length === 0) break;
+			let target = raw.pop();
+			moves += target.move + (raw.length === 0 ? "" : ",");
+		}
+		data += moves + "|";
+		let plus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)], minus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)];
+		if (Math.ceil(Math.random() * 10) > 3) {
+			for (let key in Tools.data.Natures) {
+				if (Tools.data.Natures[key].plus === plus && Tools.data.Natures[key].minus === minus) {
+					data += Tools.data.Natures[key].name + "||";
+					break;
+				}
+			}
+		} else {
+			data += ['Bashful', 'Docile', 'Hardy', 'Quirky', 'Serious'][Math.floor(Math.random() * 5)] + "||";
+		}
+		let gender = Math.random();
+		if (pokemon.genderRatio.M < gender) {
+			gender = "M";
+		} else if (pokemon.genderRatio.M !== 0 && pokemon.genderRatio.F !== 0) {
+			gender = "F";
+		} else gender = "";
+		data += gender + "|";
+		for (let i = 0; i < 6; i++) {
+			data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
+		}
+		if (Math.ceil(Math.random() * 4096) === 1) {
+			data += "S|";
+		} else data += "|";
+		data += lvl + "|0";
+		return data;
+		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	}
 };
 
