@@ -242,6 +242,11 @@ exports.SG = {
 		}
 		data += moves + "|";
 		let plus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)], minus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)];
+		if (plus === minus) {
+			while (plus === minus) {
+				minus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)];
+			}
+		}
 		if (Math.ceil(Math.random() * 10) > 3) {
 			for (let key in Tools.data.Natures) {
 				if (Tools.data.Natures[key].plus === plus && Tools.data.Natures[key].minus === minus) {
@@ -270,6 +275,7 @@ exports.SG = {
 			data += "|";
 		}
 		data += lvl + "|0";
+		if (data.split('|').length !== 12) return "ERROR!|unown|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
