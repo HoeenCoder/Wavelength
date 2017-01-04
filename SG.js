@@ -112,7 +112,7 @@ exports.SG = {
 	},
 
 	//This code is a WIP
-	masterGameObj: {},
+	/*masterGameObj: {},
 	writingGame: false, // TODO: To prevent a restart while writeSteam is running
 	writeGameData: function () {
 		// TODO: use fs.writeStream so we dont overload anything with the massive object.
@@ -169,7 +169,7 @@ exports.SG = {
 				Object.assign(SG.masterGameObj, obj); // do something with the data here!
 			}
 		}
-	},
+	},*/
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
@@ -196,7 +196,7 @@ exports.SG = {
 				for (let i = 0; i < choices.length; i++) {
 					if (choices[i].fainted) continue;
 					let idx = battle[side].pokemon.indexOf(choices[i]);
-					let data = [battle.id, 'choose', 'p1'];
+					let data = [battle.id, 'choose', side];
 					data.push('switch ' + (idx + 1));
 					data.push(battle.turn);
 					battle.receive(data);
@@ -206,7 +206,7 @@ exports.SG = {
 				return false;
 			} else {
 				let choice = Math.floor(Math.random() * battle[side].active[0].moves.length);
-				let data = [battle.id, 'choose', 'p1'];
+				let data = [battle.id, 'choose', side];
 				data.push('move ' + (choice + 1));
 				data.push(battle.turn);
 				battle.receive(data);
