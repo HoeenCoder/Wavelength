@@ -178,6 +178,43 @@ exports.SG = {
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
+	/**
+	* @param {Object} battle The battle object.
+	* @param {String} side The side that the COM is playing on. ("p1" or "p2")
+	* @param {String} type The type of action to take. (Currently supporting: "random")
+	* @return {Boolean}
+	*/
+	decideCOM: function (battle, side, type) {
+		// Only works within a battle process
+		if (!battle || !side) return false;
+		if (!type) type = 'random';
+		if (battle.ended) return false;
+		switch (type) {
+		case 'random':
+			if (battle[side].active[0].fainted) {
+				let choices = Tools.shuffle(battle[side].pokemon.slice(0));
+				for (let i = 0; i < choices.length; i++) {
+					if (choices[i].fainted) continue;
+					let idx = battle[side].pokemon.indexOf(choices[i]);
+					let data = [battle.id, 'choose', 'p1'];
+					data.push('switch ' + (idx + 1));
+					data.push(battle.turn);
+					battle.receive(data);
+					return true;
+				}
+				//If it reaches here, it means were out of pokemon
+				return false;
+			} else {
+				let choice = Math.floor(Math.random() * battle[side].active[0].moves.length);
+				let data = [battle.id, 'choose', 'p1'];
+				data.push('move ' + (choice + 1));
+				data.push(battle.turn);
+				battle.receive(data);
+				return true;
+			}
+			//break;
+		}
+	},
 	makeWildPokemon: function (location) {
 		//TODO: locations
 		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'cubchoo'][Math.floor(Math.random() * 6)]; //TODO pull from location

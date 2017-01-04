@@ -562,7 +562,7 @@ class GlobalRoom {
 			if (!Users('sgserver')) {
 				SG.makeCOM();
 			}
-			this.startBattle(user, Users('sgserver'), formatid, newSearch.team, SG.makeWildPokemon(), {rated: false});
+			this.startBattle(Users('sgserver'), user, formatid, SG.makeWildPokemon(), newSearch.team, {rated: false});
 			return;
 		}
 

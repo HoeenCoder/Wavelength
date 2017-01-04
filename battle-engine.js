@@ -14,6 +14,8 @@
 
 const Tools = require('./tools');
 
+global.SG = require('./SG.js').SG;
+
 class BattlePokemon {
 	constructor(set, side) {
 		this.side = side;
@@ -3463,6 +3465,10 @@ class Battle extends Tools.BattleDex {
 		this.add('turn', this.turn);
 
 		this.makeRequest('move');
+
+		if (this.p1.name === 'SG Server' && Tools.getFormat(this.format).isWildEncounter) {
+			SG.decideCOM(this, "p1", "random");
+		}
 	}
 	start() {
 		if (this.active) return;
