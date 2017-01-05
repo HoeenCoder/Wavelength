@@ -215,22 +215,43 @@ exports.SG = {
 			//break;
 		}
 	},
-	makeWildPokemon: function (location) {
+	makeWildPokemon: function (location, exact) {
 		//TODO: locations
-		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'cubchoo'][Math.floor(Math.random() * 6)]; //TODO pull from location
-		if (!pokemon) return "ERROR!|unown|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
+		if (exact && Tools.getTemplate(exact.species).exists) pokemon = exact.species;
 		pokemon = Tools.getTemplate(pokemon);
+		if (!pokemon || !pokemon.exists) {
+			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		}
 		let data = "|" + pokemon.id + "||";
 		let ability = Math.round(Math.random());
 		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
-		data += (ability ? "1|" : "|");
-		let lvl = Math.round(Math.random() * 5) + 2; //2 -> 7 for test. TODO base on location
+		if (exact && exact.ability) {
+			if (isNaN(parseInt(exact.ability))) {
+				for (let ab in pokemon.abilities) {
+					if (toId(pokemon.abilties[ab]) === toId(exact.ability)) {
+						ability = ab;
+						break;
+					}
+				}
+				if (toId(exact.ability) === 'h' && pokemon.abilites.H) ability = 'H';
+			} else {
+				if (pokemon.abilities[parseInt(exact.ability)]) ability = parseInt(exact.ability);
+			}
+		}
+		data += ability + "|";
+		let lvl = Math.round(Math.random() * 5) + 8; //8 -> 12 for test. TODO base on location
+		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
+		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
 		let moves = "";
 		let raw = [];
+		let used = [];
 		for (let move in pokemon.learnset) {
 			for (let learned in pokemon.learnset[move]) {
-				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl) {
+				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
 					raw.push({move: move, lvl: pokemon.learnset[move][learned]});
+					used.push(move);
 				}
 			}
 		}
@@ -238,7 +259,7 @@ exports.SG = {
 		for (let i = 0; i < 4; i++) {
 			if (raw.length === 0) break;
 			let target = raw.pop();
-			moves += target.move + (raw.length === 0 ? "" : ",");
+			moves += target.move + ((raw.length === 0 || i === 3) ? "" : ",");
 		}
 		data += moves + "|";
 		let plus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)], minus = ['atk', 'def', 'spa', 'spd', 'spe'][Math.floor(Math.random() * 5)];
@@ -275,10 +296,179 @@ exports.SG = {
 			data += "|";
 		}
 		data += lvl + "|0";
-		if (data.split('|').length !== 12) return "ERROR!|unown|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		if (data.split('|').length !== 12) {
+			console.log('Error on pokemon generation: Corrupted data: ' + data);
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		}
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
+	packTeam: function(team) {
+		let buf = '';
+		if (!team) return '';
+
+		for (let i = 0; i < team.length; i++) {
+			let set = team[i];
+			if (buf) buf += ']';
+
+			// name
+			if (set.name) buf += set.name;
+
+			// species
+			let id = toId(set.species);
+			buf += '|' + (toId(set.name) === id ? '' : id);
+
+			// item
+			buf += '|' + toId(set.item);
+
+			// ability
+			let template = Tools.getTemplate(set.species || set.name);
+			let abilities = template.abilities;
+			id = toId(set.ability);
+			if (abilities) {
+				if (id === toId(abilities['0']) || id === 0) {
+					buf += '|';
+				} else if (id === toId(abilities['1']) || id === 1) {
+					buf += '|1';
+				} else if (id === toId(abilities['H']) || id === 'h') {
+					buf += '|H';
+				} else {
+					buf += '|' + id;
+				}
+			} else {
+				buf += '|' + id;
+			}
+
+			// moves
+			if (set.moves) {
+				buf += '|' + set.moves.map(toId).join(',');
+			} else {
+				buf += '|';
+			}
+
+			// nature
+			buf += '|' + (set.nature || '');
+
+			// evs
+			let evs = '|';
+			if (set.evs) {
+				evs = '|' + (set.evs['hp'] || '') + ',' + (set.evs['atk'] || '') + ',' + (set.evs['def'] || '') + ',' + (set.evs['spa'] || '') + ',' + (set.evs['spd'] || '') + ',' + (set.evs['spe'] || '');
+			}
+			if (evs === '|,,,,,') {
+				buf += '|';
+				// doing it this way means packTeam doesn't need to be past-gen aware
+				if (set.evs['hp'] === 0) buf += '0';
+			} else {
+				buf += evs;
+			}
+
+			// gender
+			if (set.gender && set.gender !== template.gender) {
+				buf += '|' + set.gender;
+			} else {
+				buf += '|';
+			}
+
+			// ivs
+			let ivs = '|';
+			if (set.ivs) {
+				ivs = '|' + (set.ivs['hp'] === 31 || set.ivs['hp'] === undefined ? '' : set.ivs['hp']) + ',' + (set.ivs['atk'] === 31 || set.ivs['atk'] === undefined ? '' : set.ivs['atk']) + ',' + (set.ivs['def'] === 31 || set.ivs['def'] === undefined ? '' : set.ivs['def']) + ',' + (set.ivs['spa'] === 31 || set.ivs['spa'] === undefined ? '' : set.ivs['spa']) + ',' + (set.ivs['spd'] === 31 || set.ivs['spd'] === undefined ? '' : set.ivs['spd']) + ',' + (set.ivs['spe'] === 31 || set.ivs['spe'] === undefined ? '' : set.ivs['spe']);
+			}
+			if (ivs === '|,,,,,') {
+				buf += '|';
+			} else {
+				buf += ivs;
+			}
+
+			// shiny
+			if (set.shiny) {
+				buf += '|S';
+			} else {
+				buf += '|';
+			}
+
+			// level
+			if (set.level && set.level !== 100) {
+				buf += '|' + set.level;
+			} else {
+				buf += '|';
+			}
+
+			// happiness
+			if (set.happiness !== undefined && set.happiness !== 255) {
+				buf += '|' + set.happiness;
+			} else {
+				buf += '|';
+			}
+		}
+		return buf;
+	},
+	unpackTeam: function(team) {
+		if (!team) return [];
+		team = team.split(']');
+		let buf = [];
+
+		for (let i = 0; i < team.length; i++) {
+			let set = team[i];
+			let parts = set.split('|');
+			let obj = {};
+
+			if (parts[0]) obj.name = parts[0];
+			let pokemon = Tools.getTemplate(parts[1]);
+			if (!pokemon.exists) continue; // Invalid species
+			obj.species = pokemon.species;
+
+			if (parts[2]) obj.item = Tools.getItem(parts[2]).name;
+
+			let ability = parts[3];
+			if (parseInt(ability) === 1) {
+				obj.ability = pokemon.abilities[1];
+			} else if (toId(ability) === 'h') {
+				obj.ability = pokemon.abilities['H'];
+			} else {
+				obj.ability = pokemon.abilities[0];
+			}
+
+			let moves = parts[4].split(',');
+			obj.moves = [];
+			for (let j = 0; j < moves.length; j++) {
+				obj.moves.push(Tools.getMove(moves[j]).name);
+			}
+
+			obj.nature = parts[5];
+
+			obj.evs = {};
+			if (parts[6]) {
+				parts[6] = parts[6].split(',');
+				let evs = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
+				for (let j = 0; j < parts[6].length; j++) {
+					obj.evs[evs[j]] = (parts[6][j] ? parts[6][j] : 0);
+				}
+			}
+
+			if (parts[7]) obj.gender = parts[7];
+
+			obj.ivs = {};
+			if (parts[8]) {
+				parts[8] = parts[8].split(',');
+				let ivs = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
+				for (let j = 0; j < parts[8].length; j++) {
+					obj.ivs[ivs[j]] = (parts[8][j] ? parts[8][j] : undefined);
+				}
+			}
+
+			obj.shiny = false;
+			if (parts[9] === 'S') obj.shiny = true;
+			obj.level = 100;
+			if (parts[10]) obj.level = parseInt(parts[10]);
+			obj.happiness = 255;
+			if (parts[11]) obj.happiness = parseInt(parts[11]);
+
+			buf.push(obj);
+		}
+
+		return buf;
+	}
 };
 
 // last two functions needed to make sure SG.regdate() fully works
