@@ -14,7 +14,7 @@
 
 const Tools = require('./tools');
 
-global.SG = require('./SG.js').SG;
+const SG = require('./SG.js').SG;
 
 class BattlePokemon {
 	constructor(set, side) {
@@ -3466,6 +3466,8 @@ class Battle extends Tools.BattleDex {
 
 		this.makeRequest('move');
 
+		if (Tools.getFormat(this.format).isWildEncounter) this.add('raw', '<button name="send" value="/throwpokeball pokeball" class="button">Throw a pokeball</button>');
+
 		if (this.p1.name === 'SG Server' && Tools.getFormat(this.format).isWildEncounter) {
 			SG.decideCOM(this, "p1", "random");
 		}
@@ -5075,6 +5077,47 @@ class Battle extends Tools.BattleDex {
 				this.add('', '<<< error: ' + e.message);
 			}
 			/* eslint-enable no-eval, no-unused-vars */
+			break;
+		}
+
+		case 'pokeball': {
+			let raw = data.slice(2).join('|').replace(/\f/g, '\n');
+			///evalbattle battle.receive([battle.id, 'pokeball', "p2", "pokeball|HoeenHero", battle.turn]);
+			let target = raw.split('|')[0];
+			let user = raw.split('|')[1];
+			if (toId(this.format) !== 'gen7wildpokemonalpha') {
+				this.add('raw', '<span style="color:red">You can\'t throw a pokeball here!</span>');
+				break;
+			}
+			target = toId(target);
+			if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) {
+				this.add('raw', '<span style="color:red">Thats not a pokeball, or at least not one we support.</span>');
+				break;
+			}
+			let side = (toId(this.p1.name) === toId(user) ? "p1" : "p2");
+			let opp = (side === "p1" ? "p2" : "p1");
+			if (this[side].pokemon[0].volatiles['mustrecharge']) {
+				this.add('raw', '<span style="color:red">You can\'t throw another pokeball this turn.');
+				break;
+			}
+			this.add('message', user + ' threw a ' + (target.charAt(0).toUpperCase() + target.slice(1)) + '!');
+			let result = SG.throwPokeball(target, this[opp].pokemon[0]);
+			let count = result;
+			if (count === true) count = 3;
+			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appered to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + this[opp].pokemon[0].species + ' was caught!'];
+			for (count; count > 0; count--) {
+				this.add('message', '...');
+			}
+			if (result === true) {
+				this.add('message', msgs[msgs.length - 1]);
+				// Giving the newly caught pokemon handled in the main process.
+				this.send('caught', toId(user));
+				this.win(side);
+			} else {
+				this.add('message', msgs[result]);
+				this[side].pokemon[0].addVolatile('mustrecharge');
+				this.add('');
+			}
 			break;
 		}
 

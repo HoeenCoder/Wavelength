@@ -175,6 +175,18 @@ exports.SG = {
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
 		user.connected = false; // Technically isnt connected
 		user.avatar = 167;
+		user.wildTeams = {}; //Object to store data from wild pokemon battles.
+		user.onPokemonCaught = function (user) { // Handles pokemon catching
+			if (!user || !this.wildTeams[toId(user)]) return false;
+			user = toId(user);
+			let curTeam = Db('players').get(user, []);
+			if (curTeam.length === 6) return false; // TODO PC boxes / release a pokemon
+			let newSet = SG.unpackTeam(this.wildTeams[user]);
+			if (!newSet) return false;
+			curTeam.push(newSet);
+			Db('players').set(user, curTeam);
+			return true;
+		};
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
@@ -303,7 +315,42 @@ exports.SG = {
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
-	packTeam: function(team) {
+	throwPokeball: function (ball, pokemon) {
+		if (!pokemon || !pokemon.species) return 0;
+		ball = toId(ball);
+		let ballRates = {pokeball: 1, greatball: 1.5, ultraball: 2};
+		let catchRates = {};
+		if (ball === 'masterball') return true;
+		if (!ball || !(ball in ballRates)) ball = 'pokeball';
+		let statusBonus = 1;
+		switch (pokemon.status) {
+		case 'slp':
+		case 'frz':
+			statusBonus = 2;
+			break;
+		case 'par':
+		case 'brn':
+		case 'psn':
+		case 'tox':
+			statusBonus = 1.5;
+			break;
+		default:
+			statusBonus = 1;
+		}
+		let rate = catchRates[toId(pokemon.species)]; // TODO catch rates
+		if (!rate) {
+			console.log('Catch rate not found for ' + pokemon.species);
+			rate = 150;
+		}
+		let a = (((3 * pokemon.maxhp - 2 * pokemon.hp) * rate * ballRates[ball]) / (3 * pokemon.maxhp)) * statusBonus;
+		if (a >= 255) return true;
+		let b = 65536 / Math.pow(255 / a, 0.1875);
+		for (let i = 0; i < 4; i++) {
+			if (Math.ceil(Math.random() * 65535) >= b) return i;
+		}
+		return true;
+	},
+	packTeam: function (team) {
 		let buf = '';
 		if (!team) return '';
 
@@ -403,7 +450,7 @@ exports.SG = {
 		}
 		return buf;
 	},
-	unpackTeam: function(team) {
+	unpackTeam: function (team) {
 		if (!team) return [];
 		team = team.split(']');
 		let buf = [];
@@ -468,7 +515,7 @@ exports.SG = {
 		}
 
 		return buf;
-	}
+	},
 };
 
 // last two functions needed to make sure SG.regdate() fully works

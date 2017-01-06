@@ -562,7 +562,9 @@ class GlobalRoom {
 			if (!Users('sgserver')) {
 				SG.makeCOM();
 			}
-			this.startBattle(Users('sgserver'), user, formatid, SG.makeWildPokemon(), newSearch.team, {rated: false});
+			let wildTeam = SG.makeWildPokemon();
+			Users('sgserver').wildTeams[user.userid] = wildTeam;
+			this.startBattle(Users('sgserver'), user, formatid, wildTeam, newSearch.team, {rated: false});
 			return;
 		}
 
@@ -936,6 +938,10 @@ class BattleRoom extends Room {
 		// Declare variables here in case we need them for non-rated battles logging.
 		let p1score = 0.5;
 		let winnerid = toId(winner);
+
+		if (this.formatid === 'gen7wildpokemonalpha' && winnerid !== 'sgserver') {
+			//console.log(this);
+		}
 
 		// Check if the battle was rated to update the ladder, return its response, and log the battle.
 		if (this.rated) {

@@ -1478,6 +1478,7 @@ Users.pruneInactive = function (threshold) {
 	let now = Date.now();
 	users.forEach(user => {
 		if (user.connected) return;
+		if (user.userid === 'sgserver') return; // Dont delete the COM!
 		if ((now - user.lastConnected) > threshold) {
 			user.destroy();
 		}

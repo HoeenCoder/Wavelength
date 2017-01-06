@@ -277,6 +277,16 @@ class Battle {
 		case 'score':
 			this.score = [parseInt(lines[2]), parseInt(lines[3])];
 			break;
+		case 'caught':
+			let curTeam = Db('players').get(lines[2], []);
+			if (curTeam.length !== 6) {
+				//let newSet = SG.unpackTeam(lines[2]);
+				let newSet = Users.get('sgserver').wildTeams[lines[2]];
+				newSet = SG.unpackTeam(newSet)[0];
+				curTeam.push(newSet);
+				Db('players').set(lines[2][0], curTeam);
+			}
+			break;
 		}
 		Monitor.activeIp = null;
 	}
