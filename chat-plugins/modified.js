@@ -380,4 +380,20 @@ exports.commands = {
 		this.logModCommand(user.name + " globally declared (chat level) " + target);
 	},
 	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
+	
+	'!ignorepms': true,
+	blockpm: 'ignorepms',
+	blockpms: 'ignorepms',
+	ignorepm: 'ignorepms',
+	ignorepms: function (target, room, user) {
+		if (user.ignorePMs === (target || true)) return this.errorReply("You are already blocking private messages! To unblock, use /unblockpms");
+		if (user.can('lock') && !user.can('roomowner')) return this.errorReply("You are not allowed to block private messages.");
+		user.ignorePMs = true;
+		if (target in Config.groups) {
+			user.ignorePMs = target;
+			return this.sendReply("You are now blocking private messages, except from staff and " + target + ".");
+		}
+		return this.sendReply("You are now blocking private messages, except from staff.");
+	},
+	ignorepmshelp: ["/blockpms - Blocks private messages. Unblock them with /unignorepms."],
 };
