@@ -939,10 +939,6 @@ class BattleRoom extends Room {
 		let p1score = 0.5;
 		let winnerid = toId(winner);
 
-		if (this.formatid === 'gen7wildpokemonalpha' && winnerid !== 'sgserver') {
-			//console.log(this);
-		}
-
 		// Check if the battle was rated to update the ladder, return its response, and log the battle.
 		if (this.rated) {
 			this.rated = false;
