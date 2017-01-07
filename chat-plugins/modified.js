@@ -380,7 +380,7 @@ exports.commands = {
 		this.logModCommand(user.name + " globally declared (chat level) " + target);
 	},
 	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
-	
+
 	'!ignorepms': true,
 	blockpm: 'ignorepms',
 	blockpms: 'ignorepms',
