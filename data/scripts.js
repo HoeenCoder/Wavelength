@@ -14,8 +14,11 @@ exports.BattleScripts = {
 			}
 		}
 		let baseMove = this.getMove(move);
-		move = this.getMove(zMove || move);
+		move = zMove ? this.getZMoveCopy(move, pokemon) : baseMove;
 		if (!target && target !== false) target = this.resolveTarget(pokemon, move);
+
+		// copy the priority for Quick Guard
+		if (zMove) move.priority = baseMove.priority;
 
 		this.setActiveMove(move, pokemon, target);
 
@@ -291,6 +294,7 @@ exports.BattleScripts = {
 		}
 		if (this.gen >= 7 && move.pranksterBoosted && target.side !== pokemon.side && !this.getImmunity('prankster', target)) {
 			this.debug('natural prankster immunity');
+			this.add('-hint', "In gen 7, Dark is immune to Prankster moves.");
 			this.add('-immune', target, '[msg]');
 			return false;
 		}
@@ -375,6 +379,7 @@ exports.BattleScripts = {
 				}
 			}
 			if (stolen) {
+				this.attrLastMove('[still]');
 				this.add('-clearpositiveboost', target, pokemon, 'move: ' + move.name);
 				this.boost(boosts, pokemon);
 
@@ -382,6 +387,7 @@ exports.BattleScripts = {
 					boosts[statName] = 0;
 				}
 				target.setBoost(boosts);
+				this.add('-anim', pokemon, "Spectral Thief", target);
 			}
 		}
 
@@ -1204,7 +1210,7 @@ exports.BattleScripts = {
 		};
 		// Moves which boost Attack AND Special Attack:
 		let MixedSetup = {
-			growth:1, shellsmash:1, workup:1,
+			conversion: 1, growth:1, shellsmash:1, workup:1,
 		};
 		// Moves which boost Defense and/or Special Defense:
 		let DefenseSetup = {
@@ -1250,7 +1256,7 @@ exports.BattleScripts = {
 					// Certain moves aren't acceptable as a Pokemon's only STAB attack
 					if (!(moveid in NoStab) && (moveid !== 'hiddenpower' || Object.keys(hasType).length === 1)) counter['stab']++;
 				}
-				if (move.priority === 0 && hasAbility['Protean'] && !(moveid in NoStab)) counter['stab']++;
+				if (move.priority === 0 && (hasAbility['Protean'] || moves.includes('conversion')) && !(moveid in NoStab)) counter['stab']++;
 				if (move.category === 'Physical') counter['hustle']++;
 				if (movetype === 'Normal' && !(moveid in NoStab)) {
 					if (hasAbility['Aerilate'] || hasAbility['Pixilate'] || hasAbility['Refrigerate']) counter['stab']++;
@@ -1476,6 +1482,9 @@ exports.BattleScripts = {
 					if (counter.damagingMoves.length < 3 && !counter.setupType && !hasMove['batonpass']) rejected = true;
 					if (hasMove['dracometeor'] || hasMove['overheat']) rejected = true;
 					break;
+				case 'conversion':
+					if (teamDetails.zMove || hasMove['triattack']) rejected = true;
+					break;
 
 				// Bad after setup
 				case 'circlethrow': case 'dragontail':
@@ -1540,6 +1549,9 @@ exports.BattleScripts = {
 				// Attacks:
 				case 'bugbite': case 'bugbuzz': case 'signalbeam':
 					if (hasMove['uturn'] && !counter.setupType) rejected = true;
+					break;
+				case 'lunge':
+					if (hasMove['leechlife']) rejected = true;
 					break;
 				case 'darkpulse':
 					if (hasMove['shadowball']) rejected = true;
@@ -1681,6 +1693,7 @@ exports.BattleScripts = {
 					break;
 				case 'hypervoice':
 					if (hasMove['naturepower'] || hasMove['return']) rejected = true;
+					if (hasAbility['Liquid Voice'] && hasMove['scald']) rejected = true;
 					break;
 				case 'judgment':
 					if (counter.setupType !== 'Special' && counter.stab > 1) rejected = true;
@@ -1734,7 +1747,7 @@ exports.BattleScripts = {
 					if (hasMove['hydropump'] || hasMove['scald']) rejected = true;
 					break;
 				case 'scald':
-					if (hasMove['waterfall'] || hasMove['waterpulse']) rejected = true;
+					if (hasMove['liquidation'] || hasMove['waterfall'] || hasMove['waterpulse']) rejected = true;
 					break;
 
 				// Status:
@@ -1759,7 +1772,7 @@ exports.BattleScripts = {
 					if (hasMove['discharge'] || hasMove['gyroball'] || hasMove['spore'] || hasMove['toxic'] || hasMove['trickroom'] || hasMove['yawn']) rejected = true;
 					break;
 				case 'toxic':
-					if (hasMove['flamecharge'] || (hasMove['rest'] && hasMove['sleeptalk'])) rejected = true;
+					if (counter.setupType || hasMove['flamecharge'] || (hasMove['rest'] && hasMove['sleeptalk'])) rejected = true;
 					if (hasMove['hypnosis'] || hasMove['sleeppowder'] || hasMove['willowisp'] || hasMove['yawn']) rejected = true;
 					break;
 				case 'willowisp':
@@ -1819,10 +1832,14 @@ exports.BattleScripts = {
 					((hasAbility['Aerilate'] || hasAbility['Pixilate'] || hasAbility['Refrigerate']) && !counter['Normal']) ||
 					(hasAbility['Contrary'] && !counter['contrary'] && template.species !== 'Shuckle') ||
 					(hasAbility['Dark Aura'] && !counter['Dark']) ||
+					(hasAbility['Electric Surge'] && !counter['Electric']) ||
 					(hasAbility['Gale Wings'] && !counter['Flying']) ||
+					(hasAbility['Grassy Surge'] && !counter['Grass']) ||
 					(hasAbility['Guts'] && hasType['Normal'] && movePool.includes('facade')) ||
+					(hasAbility['Psychic Surge'] && !counter['Psychic']) ||
 					(hasAbility['Slow Start'] && movePool.includes('substitute')) ||
 					(hasAbility['Stance Change'] && !counter.setupType && movePool.includes('kingsshield')) ||
+					(hasAbility['Water Bubble'] && !counter['Water']) ||
 					(counter['defensesetup'] && !counter.recovery && !hasMove['rest']) ||
 					(movePool.includes('technoblast') || template.requiredMove && movePool.includes(toId(template.requiredMove)))) &&
 					(counter['physicalsetup'] + counter['specialsetup'] < 2 && (!counter.setupType || counter.setupType === 'Mixed' || (move.category !== counter.setupType && move.category !== 'Status') || counter[counter.setupType] + counter.Status > 3))) {
@@ -1891,6 +1908,10 @@ exports.BattleScripts = {
 		// Moveset modifications
 		if (hasMove['autotomize'] && hasMove['heavyslam']) {
 			moves[moves.indexOf('autotomize')] = 'rockpolish';
+		}
+		if (moves[0] === 'conversion') {
+			moves[0] = moves[3];
+			moves[3] = 'conversion';
 		}
 
 		let abilities = Object.values(baseTemplate.abilities);
@@ -1993,6 +2014,9 @@ exports.BattleScripts = {
 			if (abilities.includes('Unburden') && hasMove['acrobatics']) {
 				ability = 'Unburden';
 			}
+			if (abilities.includes('Water Bubble') && counter['Water']) {
+				ability = 'Water Bubble';
+			}
 			if (template.id === 'ambipom' && !counter['technician']) {
 				// If it doesn't qualify for Technician, Skill Link is useless on it
 				ability = 'Pickup';
@@ -2073,6 +2097,8 @@ exports.BattleScripts = {
 		} else if (ability === 'Klutz' && hasMove['switcheroo']) {
 			// To perma-taunt a Pokemon by giving it Assault Vest
 			item = 'Assault Vest';
+		} else if (hasMove['conversion']) {
+			item = 'Normalium Z';
 		} else if (hasMove['geomancy']) {
 			item = 'Power Herb';
 		} else if (hasMove['switcheroo'] || hasMove['trick']) {
@@ -2196,10 +2222,10 @@ exports.BattleScripts = {
 			RU: 79,
 			BL2: 78,
 			UU: 77,
+			New: 77,
+			Bank: 77,
 			BL: 76,
 			OU: 75,
-			Unreleased: 75,
-			CAP: 75,
 			Uber: 73,
 			'Bank-Uber': 73,
 			AG: 71,
@@ -2215,6 +2241,9 @@ exports.BattleScripts = {
 			Unown: 100,
 		};
 		let tier = template.tier;
+		if (tier.includes('Unreleased') && template.battleOnly) {
+			tier = baseTemplate.tier;
+		}
 		if (tier.charAt(0) === '(') {
 			tier = tier.slice(1, -1);
 		}
@@ -2323,7 +2352,7 @@ exports.BattleScripts = {
 
 			let tier = template.tier;
 			switch (tier) {
-			case 'Uber':
+			case 'Uber': case 'Bank-Uber':
 				// Ubers are limited to 2 but have a 20% chance of being added anyway.
 				if (uberCount > 1 && this.random(5) >= 1) continue;
 				break;

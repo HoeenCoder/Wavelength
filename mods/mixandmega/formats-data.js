@@ -9,10 +9,6 @@ exports.BattleFormatsData = {
 		inherit: true,
 		tier: "OU",
 	},
-	cresselia: {
-		inherit: true,
-		tier: "Uber",
-	},
 	darkrai: {
 		inherit: true,
 		tier: "OU",
@@ -28,6 +24,10 @@ exports.BattleFormatsData = {
 	landorus: {
 		inherit: true,
 		tier: "OU",
+	},
+	regigigas: {
+		inherit: true,
+		tier: "Uber",
 	},
 	slaking: {
 		inherit: true,
