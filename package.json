@@ -9,7 +9,6 @@
     "autolinker": "*",
     "request": "2.74.0",
     "md5": "*",
-    "moment": "2.11.2",
     "geoip-ultralight": "*",
     "githubhook": "1.7.1"
   },

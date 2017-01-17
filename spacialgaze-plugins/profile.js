@@ -8,8 +8,6 @@
 'use strict';
 //TODO reimplement geoip-ultralight
 
-//let fs = require('fs');
-let moment = require('moment');
 //let geoip = require('geoip-ultralight');
 
 // fill in '' with the server IP
@@ -84,16 +82,6 @@ function getLeague(userid) {
 function getLeagueRank(userid) {
 	return 'N/A';
 }
-
-/*function loadRegdateCache() {
-	try {
-		regdateCache = JSON.parse(fs.readFileSync('config/regdate.json', 'utf8'));
-	} catch (e) {}
-}
-loadRegdateCache();
-function saveRegdateCache() {
-	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
-}*/
 
 exports.commands = {
 	vip: {
@@ -289,7 +277,11 @@ exports.commands = {
 		let regdate = '(Unregistered)';
 		SG.regdate(userid, date => {
 			if (date) {
-				regdate = moment(date).format("MMMM DD, YYYY");
+				let d = new Date(date);
+				let MonthNames = ["January", "February", "March", "April", "May", "June",
+					"July", "August", "September", "October", "November", "December",
+				];
+				regdate = MonthNames[d.getUTCMonth()] + ' ' + d.getUTCDate() + ", " + d.getUTCFullYear();
 			}
 			showProfile();
 		});
@@ -303,10 +295,10 @@ exports.commands = {
 		}
 
 		function getLastSeen(useid) {
-			if (Users(userid) && Users(userid).connected) return '<font color = green><strong>Currently Online</strong>';
+			if (Users(userid) && Users(userid).connected) return '<font color = "limegreen"><strong>Currently Online</strong></font>';
 			let seen = Db('seen').get(userid);
-			if (!seen) return false;
-			return moment(seen).fromNow();
+			if (!seen) return '<font color = "red"><strong>Never</strong></font>';
+			return Chat.toDurationString(Date.now() - seen, {precision: true}) + " ago.";
 		}
 
 		function showProfile() {
@@ -323,11 +315,7 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>League:</b></font> ' + (getLeague(toId(username)) ? (getLeague(toId(username)) + ' (' + getLeagueRank(toId(username)) + ')') : 'N/A') + '<br />';
-				if (getLastSeen(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
-				} else {
-					profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> <font color = red><strong>Never</strong></font><br />';
-				}
+				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db('friendcodes').has(toId(username))) {
 					profile += '&nbsp;<div style="display:inline-block;height:5px;width:80px;"></div><font color="#24678d"><b>Friend Code:</b></font> ' + Db('friendcodes').get(toId(username));
 				}
