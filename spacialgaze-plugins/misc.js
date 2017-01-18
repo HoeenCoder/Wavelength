@@ -183,7 +183,7 @@ exports.commands = {
 		if (!this.can('pmall')) return false;
 		if (!target) return this.parse('/help pmall');
 
-		let pmName = ' Server Info [Do Not Respond!]';
+		let pmName = ' SG Server';
 		Users.users.forEach(curUser => {
 			let message = '|pm|' + pmName + '|' + curUser.getIdentity() + '|' + target;
 			curUser.send(message);
@@ -197,7 +197,7 @@ exports.commands = {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.parse('/help pmallstaff');
 
-		let pmName = ' InFo.Staff';
+		let pmName = ' SG Server';
 
 		Users.users.forEach(curUser => {
 			if (!curUser.isStaff) return;
