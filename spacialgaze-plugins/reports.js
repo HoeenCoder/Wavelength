@@ -124,7 +124,7 @@ exports.commands = {
 			);
 			break;
 		default:
-			this.sendReply("/reports " + target + " - Command not found.");
+			this.parse('/reports help');
 		}
 	},
 };
