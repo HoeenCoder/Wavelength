@@ -280,7 +280,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		if (!target) return this.parse('/help seen');
 		let targetUser = Users.get(target);
-		if (targetUser && targetUser.connected) return this.sendReplyBox(targetUser.name + " is <b><font color=#00cc00>currently online</b></font>.");
+		if (targetUser && targetUser.connected) return this.sendReplyBox(SG.nameColor(targetUser.name, true) + " is <b><font color='limegreen'>Currently Online</b></font>.");
 		target = Chat.escapeHTML(target);
 		let seen = Db('seen').get(toId(target));
 		if (!seen) return this.sendReplyBox(SG.nameColor(target, true) + " has <b><font color='red'>never been online</font></b> on this server.");
