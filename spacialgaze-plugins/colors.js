@@ -14,13 +14,13 @@ let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid 
 
 
 function reloadCSS() {
-		let options = {
-			host: 'play.pokemonshowdown.com',
-			port: 80, //Config.port, // I belive this is correct, was 80 before
-			path: '/customcss.php?server=' + (Config.serverid || cssPath),
-			method: 'GET',
-		};
-		http.get(options);
+	let options = {
+		host: 'play.pokemonshowdown.com',
+		port: 80, //Config.port, // I belive this is correct, was 80 before
+		path: '/customcss.php?server=' + (Config.serverid || cssPath),
+		method: 'GET',
+	};
+	http.get(options);
 }
 
 function load() {
@@ -59,23 +59,6 @@ function generateCSS(name, color) {
 		rooms.push('#' + id + '-userlist-user-' + name + ' strong em');
 		rooms.push('#' + id + '-userlist-user-' + name + ' strong');
 		rooms.push('#' + id + '-userlist-user-' + name + ' span');
-	});
-	css = rooms.join(', ');
-	css += '{\ncolor: ' + color + ' !important;\n}\n';
-	css += '.chat.chatmessage-' + name + ' strong {\n';
-	css += 'color: ' + color + ' !important;\n}\n';
-	return css;
-}
-
-function generateCSS(name, color) {
-	let css = '';
-	let rooms = [];
-	Rooms.rooms.forEach(curRoom => {
-		if (curRoom.id !== 'global' && curRoom.type === 'chat' && !curRoom.isPersonal) {
-			rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong em');
-			rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' strong');
-			rooms.push('#' + curRoom.id + '-userlist-user-' + name + ' span');
-		}
 	});
 	css = rooms.join(', ');
 	css += '{\ncolor: ' + color + ' !important;\n}\n';
