@@ -16,7 +16,7 @@ let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid 
 function reloadCSS() {
 		let options = {
 			host: 'play.pokemonshowdown.com',
-			port: Config.port, // I belive this is correct, was 80 before
+			port: 80, //Config.port, // I belive this is correct, was 80 before
 			path: '/customcss.php?server=' + (Config.serverid || cssPath),
 			method: 'GET',
 		};
