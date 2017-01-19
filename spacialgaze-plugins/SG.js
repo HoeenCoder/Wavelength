@@ -56,7 +56,7 @@ SG.regdate = function (target, callback) {
 	});
 };
 
-SG.setTitle = function (userid, title, callback) {
+/*SG.setTitle = function (userid, title, callback) {
 	userid = toId(userid);
 	SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
 		if (rows.length < 1) {
@@ -80,7 +80,7 @@ SG.getTitle = function (userid, callback) {
 		if (err) return console.log(err);
 		callback(((rows[0] && rows[0].title) ? rows[0].title : ""));
 	});
-};
+};*/
 
 SG.parseMessage = function (message) {
 	if (message.substr(0, 5) === "/html") {
