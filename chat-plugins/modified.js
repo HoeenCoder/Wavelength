@@ -32,81 +32,39 @@ function parseStatus(text, encoding) {
 }
 
 exports.commands = {
-	globalauth: 'gal',
-	stafflist: 'gal',
-	authlist: 'gal',
-	auth: 'gal',
-	gal: function (target, room, user, connection) {
+	'!authority': true,
+	auth: 'authority',
+	stafflist: 'authority',
+	globalauth: 'authority',
+	authlist: 'authority',
+	authority: function (target, room, user, connection) {
+		if (target) {
+			let targetRoom = Rooms.search(target);
+			let unavailableRoom = targetRoom && targetRoom.checkModjoin(user);
+			if (targetRoom && !unavailableRoom) return this.parse('/roomauth1 ' + target);
+			return this.parse('/userauth ' + target);
+		}
+		let rankLists = {};
 		let ranks = Object.keys(Config.groups);
-		let persons = [];
 		for (let u in Users.usergroups) {
 			let rank = Users.usergroups[u].charAt(0);
-			if (ranks.indexOf(rank) >= 0) {
+			if (rank === ' ') continue;
+			// In case the usergroups.csv file is not proper, we check for the server ranks.
+			if (ranks.includes(rank)) {
 				let name = Users.usergroups[u].substr(1);
-				persons.push({
-					name: name,
-					rank: rank,
-				});
+				if (!rankLists[rank]) rankLists[rank] = [];
+				if (name) rankLists[rank].push(SG.nameColor(name, (Users(name) && Users(name).connected)));
 			}
 		}
-		let staff = {
-			"admins": [],
-			"leaders": [],
-			"bots": [],
-			"mods": [],
-			"drivers": [],
-			"voices": [],
-		};
-		persons = persons.sort((a, b) => toId(a.name).localeCompare(toId(b.name))); // No need to return, arrow functions with single lines have an implicit return
-		function nameColor(name) {
-			if (Users.getExact(name) && Users(name).connected) {
-				return '<b><i><font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(Users.getExact(name).name) + '</font></i></b>';
-			} else {
-				return '<font color="' + hashColorWithCustoms(name) + '">' + Chat.escapeHTML(name) + '</font>';
-			}
-		}
-		for (let j = 0; j < persons.length; j++) {
-			let rank = persons[j].rank;
-			let person = persons[j].name;
-			switch (rank) {
-			case '~':
-				staff['admins'].push(nameColor(person));
-				break;
-			case '&':
-				staff['leaders'].push(nameColor(person));
-				break;
-			case '*':
-				staff['bots'].push(nameColor(person));
-				break;
-			case '@':
-				staff['mods'].push(nameColor(person));
-				break;
-			case '%':
-				staff['drivers'].push(nameColor(person));
-				break;
-			case '+':
-				staff['voices'].push(nameColor(person));
-				break;
-			default:
-				continue;
 
-			}
-		}
-		connection.popup('|html|' +
-			'<h3>SpacialGaze Authority List</h3>' +
-			'<b><u>~Administrators (' + staff['admins'].length + ')</u></b>:<br />' + staff['admins'].join(', ') +
-			'<br />' +
-			'<br /><b><u>&Leaders (' + staff['leaders'].length + ')</u></b>:<br />' + staff['leaders'].join(', ') +
-			'<br />' +
-			'<br /><b><u>*Bots (' + staff['bots'].length + ')</u></b><br />' + staff['bots'].join(', ') +
-			'<br />' +
-			'<br /><b><u>@Moderators (' + staff['mods'].length + ')</u></b>:<br />' + staff['mods'].join(', ') +
-			'<br />' +
-			'<br /><b><u>%Drivers (' + staff['drivers'].length + ')</u></b>:<br />' + staff['drivers'].join(', ') +
-			'<br />' +
-			'<br /><b><u>+Voices (' + staff['voices'].length + ')</u></b>:<br />' + staff['voices'].join(', ') +
-			'<br /><br /><blink>(<b>Bold</b> / <i>Italic</i> = Currently Online)</blink>'
+		let buffer = Object.keys(rankLists).sort((a, b) =>
+			(Config.groups[b] || {rank: 0}).rank - (Config.groups[a] || {rank: 0}).rank
+		).map(r =>
+			(Config.groups[r] ? "<b>" + Config.groups[r].name + "s</b> (" + r + ")" : r) + ":\n" + rankLists[r].sort((a, b) => toId(a).localeCompare(toId(b))).join(", ")
 		);
+
+		if (!buffer.length) return connection.popup("This server has no global authority.");
+		connection.send("|popup||html|" + buffer.join("\n\n"));
 	},
 
 	'!roomauth': true,
@@ -130,18 +88,19 @@ exports.commands = {
 			(Config.groups[b] || {rank:0}).rank - (Config.groups[a] || {rank:0}).rank
 		).map(r => {
 			let roomRankList = rankLists[r].sort();
-			roomRankList = roomRankList.map(s => s in targetRoom.users ? "**" + s + "**" : s);
-			return (Config.groups[r] ? Config.groups[r].name + "s (" + r + ")" : r) + ":\n" + roomRankList.join(", ");
+			roomRankList = roomRankList.map(s => ((Users(s) && Users(s).connected) ? SG.nameColor(s, true) : SG.nameColor(s)));
+			return (Config.groups[r] ? Chat.escapeHTML(Config.groups[r].name) + "s (" + Chat.escapeHTML(r) + ")" : r) + ":\n" + roomRankList.join(", ");
 		});
 
-		if (targetRoom.founder) buffer = ['Room Founder (#): \n' + targetRoom.founder].concat(buffer);
-
 		if (!buffer.length) {
-			connection.popup("The room '" + targetRoom.title + "' has no auth." + userLookup);
+			connection.popup("The room '" + targetRoom.title + "' has no auth.");
 			return;
 		}
+		if (targetRoom.founder) {
+			buffer.unshift((targetRoom.founder ? "Room Founder:\n" + ((Users(targetRoom.founder) && Users(targetRoom.founder).connected) ? SG.nameColor(targetRoom.founder, true) : SG.nameColor(targetRoom.founder)) : ''));
+		}
 		if (targetRoom !== room) buffer.unshift("" + targetRoom.title + " room auth:");
-		connection.popup(buffer.join("\n\n") + userLookup);
+		connection.send("|popup||html|" + buffer.join("\n\n") + userLookup);
 	},
 
 	roomfounder: function (target, room, user) {
@@ -166,13 +125,14 @@ exports.commands = {
 		room.founder = userid;
 		this.addModCommand(`${name} was appointed Room Founder by ${user.name}.`);
 		if (targetUser) {
-			targetUser.popup(`You were appointed Room Founder by ${user.name} in ${room.id}.`);
+			targetUser.popup(`|html|You were appointed Room Founder by ${SG.nameColor(user.name, true)} in ${room.title}.`);
 			room.onUpdateIdentity(targetUser);
 		}
 		Rooms.global.writeChatRoomData();
 	},
 	roomfounderhelp: ["/roomfounder [username] - Appoints [username] as a room founder. Requires: & ~"],
 
+	deroomfounder: 'roomdefounder',
 	roomdefounder: function (target, room, user) {
 		if (!room.chatRoomData) {
 			return this.sendReply("/roomdefounder - This room isn't designed for per-room moderation.");
@@ -180,7 +140,7 @@ exports.commands = {
 		if (!target) return this.parse('/help roomdefounder');
 		if (!this.can('makeroom')) return false;
 		let targetUser = toId(target);
-		if (room.founder !== targetUser) return this.errorReply(targetUser + ' is not the room founder of ' + room.name + '.');
+		if (room.founder !== targetUser) return this.errorReply(targetUser + ' is not the room founder of ' + room.title + '.');
 		room.founder = false;
 		return this.parse('/roomdeauth ' + target);
 	},
@@ -209,7 +169,7 @@ exports.commands = {
 		room.auth[userid] = '#';
 		this.addModCommand(`${name} was appointed Room Owner by ${user.name}.`);
 		if (targetUser) {
-			targetUser.popup(`You were appointed Room Owner by ${user.name} in ${room.id}.`);
+			targetUser.popup(`|html|You were appointed Room Owner by ${SG.nameColor(user.name, true)} in ${room.title}.`);
 			room.onUpdateIdentity(targetUser);
 		}
 		Rooms.global.writeChatRoomData();
@@ -294,13 +254,13 @@ exports.commands = {
 				targetUser.send(">" + room.id + "\n(You were demoted to Room " + groupName + " by " + user.name + ".)");
 			}
 			this.privateModCommand(`(${name} was demoted to Room ${groupName} by ${user.name}.)`);
-			if (needsPopup) targetUser.popup(`You were demoted to Room ${groupName} by ${user.name} in ${room.id}.`);
+			if (needsPopup) targetUser.popup(`|html|You were demoted to Room ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
 		} else if (nextGroup === '#') {
 			this.addModCommand(`${'' + name} was promoted to ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`You were promoted to ${groupName} by ${user.name} in ${room.id}.`);
+			if (needsPopup) targetUser.popup(`|html|You were promoted to ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
 		} else {
 			this.addModCommand(`${'' + name} was promoted to Room ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`You were promoted to Room ${groupName} by ${user.name} in ${room.id}.`);
+			if (needsPopup) targetUser.popup(`|html|You were promoted to Room ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
 		}
 
 		if (targetUser) targetUser.updateIdentity(room.id);

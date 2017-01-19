@@ -127,7 +127,7 @@ let MD5 = require('md5');
 let colorCache = {};
 
 // hashColor function
-function hashColor(name) {
+SG.hashColor = function (name) {
 	name = toId(name);
 	if (customColors[name]) return customColors[name];
 	if (colorCache[name]) return colorCache[name];
@@ -191,8 +191,7 @@ function hashColor(name) {
 	let rgb = hslToRgb(H, S, L);
 	colorCache[name] = "#" + rgbToHex(rgb.r, rgb.g, rgb.b);
 	return colorCache[name];
-}
-global.hashColorWithCustoms = hashColor;
+};
 
 function hslToRgb(h, s, l) {
 	let r, g, b, m, c, x;
