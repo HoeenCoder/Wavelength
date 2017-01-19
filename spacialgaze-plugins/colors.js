@@ -68,7 +68,7 @@ function generateCSS(name, color) {
 }
 
 function updateColor() {
-	fs.writeFileSync(FILE_PATH, JSON.stringify(customColors));
+	fs.writeFileSync('config/customcolors.json', JSON.stringify(customColors));
 	let newCss = '/* COLORS START */\n';
 	for (let name in customColors) {
 		newCss += generateCSS(toId(name), customColors[name]);
