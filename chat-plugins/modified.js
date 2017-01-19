@@ -122,6 +122,7 @@ exports.commands = {
 		if (!room.auth) room.auth = room.chatRoomData.auth = {};
 
 		room.auth[userid] = '#';
+		room.chatRoomData.founder = userid;
 		room.founder = userid;
 		this.addModCommand(`${name} was appointed Room Founder by ${user.name}.`);
 		if (targetUser) {
@@ -142,6 +143,7 @@ exports.commands = {
 		let targetUser = toId(target);
 		if (room.founder !== targetUser) return this.errorReply(targetUser + ' is not the room founder of ' + room.title + '.');
 		room.founder = false;
+		room.chatRoomData.founder = false;
 		return this.parse('/roomdeauth ' + target);
 	},
 	roomdefounderhelp: ["/roomdefounder [username] - Revoke [username]'s room founder position. Requires: &, ~"],
