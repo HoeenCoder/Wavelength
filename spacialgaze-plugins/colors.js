@@ -7,21 +7,8 @@
 'use strict';
 
 const fs = require('fs');
-const http = require('http');
 
 let customColors = {};
-let cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
-
-
-function reloadCSS() {
-	let options = {
-		host: 'play.pokemonshowdown.com',
-		port: 80, //Config.port, // I belive this is correct, was 80 before
-		path: '/customcss.php?server=' + (Config.serverid || cssPath),
-		method: 'GET',
-	};
-	http.get(options);
-}
 
 function load() {
 	fs.readFile('config/customcolors.json', 'utf8', function (err, file) {
@@ -46,7 +33,7 @@ function updateColor() {
 	let file = fs.readFileSync('config/custom.css', 'utf8').split('\n');
 	if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
 	fs.writeFileSync('config/custom.css', file.join('\n') + newCss);
-	reloadCSS();
+	SG.reloadCSS();
 }
 
 function generateCSS(name, color) {

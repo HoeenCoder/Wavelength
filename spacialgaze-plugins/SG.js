@@ -105,6 +105,17 @@ SG.randomString = function (length) {
 	return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
 };
 
+SG.reloadCSS = function () {
+	const cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
+	let options = {
+		host: 'play.pokemonshowdown.com',
+		port: 80,
+		path: '/customcss.php?server=' + (Config.serverid || cssPath),
+		method: 'GET',
+	};
+	http.get(options);
+};
+
 // last two functions needed to make sure SG.regdate() fully works
 function loadRegdateCache() {
 	try {
