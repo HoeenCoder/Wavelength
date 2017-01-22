@@ -36,6 +36,41 @@ function shopDisplay() {
 	return output;
 }
 
+function toToken(item) {
+	switch (item) {
+	case 'customavatar':
+	case 'avatar':
+		return 'avatar';
+
+	case 'globaldeclare':
+	case 'declare':
+		return 'declare';
+
+	case 'customcolor':
+	case 'color':
+		return 'color';
+
+	case 'customicon':
+	case 'userlisticon':
+	case 'icon':
+		return 'icon';
+
+	case 'customtitle':
+	case 'profiletitle':
+	case 'title':
+		return 'title';
+
+	case 'emoticon':
+	case 'customemoticon':
+	case 'customemote':
+	case 'emote':
+		return 'emote';
+
+	default:
+		return false;
+	}
+}
+
 try {
 	fs.accessSync('config/eShop.json', fs.F_OK);
 	let raw = JSON.parse(fs.readFileSync('config/eShop.json', 'utf8'));
@@ -156,40 +191,6 @@ exports.commands = {
 							break;
 						default:
 							if (!user.tokens) user.tokens = {};
-							function toToken(item) {
-								switch (item) {
-									case 'customavatar':
-									case 'avatar':
-										return 'avatar';
-										//break;
-									case 'globaldeclare':
-									case 'declare':
-										return 'declare';
-										//break;
-									case 'customcolor':
-									case 'color':
-										return 'color';
-										//break;
-									case 'customicon':
-									case 'userlisticon':
-									case 'icon':
-										return 'icon';
-										//break;
-									case 'customtitle':
-									case 'profiletitle':
-									case 'title':
-										return 'title';
-										//break;
-									case 'emoticon':
-									case 'customemoticon':
-									case 'customemote':
-									case 'emote':
-										return 'emote';
-										//break;
-									default:
-										return false;
-								}
-							}
 							let tok = toToken(item.id);
 							if (tok) {
 								user.tokens[tok] = true;
