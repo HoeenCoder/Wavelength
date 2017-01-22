@@ -156,8 +156,46 @@ exports.commands = {
 							break;
 						default:
 							if (!user.tokens) user.tokens = {};
-							user.tokens[item.id] = true;
-							SG.messageSeniorStaff(user.name + ' has purchased a ' + item.name + '.');
+							function toToken(item) {
+								switch (item) {
+									case 'customavatar':
+									case 'avatar':
+										return 'avatar';
+										//break;
+									case 'globaldeclare':
+									case 'declare':
+										return 'declare';
+										//break;
+									case 'customcolor':
+									case 'color':
+										return 'color';
+										//break;
+									case 'customicon':
+									case 'userlisticon':
+									case 'icon':
+										return 'icon';
+										//break;
+									case 'customtitle':
+									case 'profiletitle':
+									case 'title':
+										return 'title';
+										//break;
+									case 'emoticon':
+									case 'customemoticon':
+									case 'customemote':
+									case 'emote':
+										return 'emote';
+										//break;
+									default:
+										return false;
+								}
+							}
+							let tok = toToken(item.id);
+							if (tok) {
+								user.tokens[tok] = true;
+							} else {
+								SG.messageSeniorStaff(user.name + ' has purchased a ' + item.name + '.');
+							}
 						}
 						user.sendTo(room, "|uhtmlchange|eshop" + user.userid + "|<div style='max-height:300px'><table style='border:2px solid #101ad1; border-radius: 5px'><tr><th colspan='3' style='border: 2px solid #070e96; border-radius: 5px'>Server Shop</th></tr><tr><td style='colspan: 3; border: 2px solid #070e96; border-radius: 5px'><center>You have purchased a " + item.name + ". " + (item.id === 'customsymbol' ? "You may now use /customsymbol [symbol] to change your symbol." : "Upper staff have been notified of your purchase and will contact you shortly.") + "</center></td></tr><tr><td colspan='3' style='text-align:center'><button name='send' value='/eshop reopen'>Return to Shop</button></td></tr></table>");
 					});
