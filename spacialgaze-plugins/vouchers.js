@@ -35,6 +35,7 @@ class Voucher {
 			Economy.logTransaction(Chat.escapeHTML(Users(self.userid).name) + ' has redemed a voucher for ' + self.item + ' ' + (self.item === 1 ? global.currencyName : global.currencyPlural) + '.');
 			break;
 		case 'item':
+			let user = Users(this.userid);
 			let valid = false;
 			for (let i = 0; i < shopItems.length; i++) {
 				if (toId(shopItems[i]) === toId(this.item)) valid = i;
@@ -50,25 +51,25 @@ class Voucher {
 				if (user.tokens.avatar) return 'token';
 				user.tokens.avatar = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Avatar. Upper staff has been notified of your purchase and will contact you shortly.<br/>Inappropriate images may be denied; 80x80 is the optimal image resolution.<br/>');
-				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Avatar. Please contact this user to setup their Custom Avatar.");
+				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Avatar. Please contact this user to setup their Custom Avatar.");
 				break;
 			case 'customcolor':
 				if (user.tokens.color) return 'token';
 				user.tokens.color = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Name Color. Upper staff has been notified of your purchase and will contact you shortly.<br/>Colors must be easily visible on the website.<br/>');
-				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Color. Please contact this user to setup their Custom Color.");
+				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Color. Please contact this user to setup their Custom Color.");
 				break;
 			case 'customtitle':
 				if (user.tokens.title) return 'token';
 				user.tokens.title = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Title. Upper staff has been notified of your purchase and will contact you shortly.');
-				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Title. Please contact this user to setup their Custom Color.");
+				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Title. Please contact this user to setup their Custom Color.");
 				break;
 			case 'customicon':
 				if (user.tokens.icon) return 'token';
 				user.tokens.icon = true;
 				Users(this.userid).popup('|html|You have purchased a Userlist Icon. Upper staff has been notified of your purchase and will contact you shortly.<br/>Inappropriate images may be denied; must be a 32x32 image.<br/>');
-				SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlist Icon. Please contact this user to setup their Userlist Icon.");
+				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlist Icon. Please contact this user to setup their Userlist Icon.");
 				break;
 			}
 			break;
