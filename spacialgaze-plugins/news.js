@@ -64,7 +64,15 @@ exports.commands = {
 			if (!this.can('ban')) return false;
 			if (!target) return this.parse('/help serverannouncements');
 			let parts = target.split(',');
-			if (parts.length !== 2) return this.errorReply("Usage: /news add [title], [desc]");
+			if (parts.length < 2) return this.errorReply("Usage: /news add [title], [desc]");
+			let descArray = [];
+			if (parts.length - 2 > 0) {
+				for (let j = 0; j < parts.length; j++) {
+					if (j < 1) continue;
+					descArray.push(parts[j]);
+				}
+				parts[1] = descArray.join();
+			}
 			let title = parts[0], desc = parts[1], postedBy = user.name;
 			let d = new Date();
 			const MonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
