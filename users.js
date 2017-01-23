@@ -436,7 +436,6 @@ class User {
 	}
 	can(permission, target, room) {
 		if (this.hasSysopAccess()) return true;
-		
 		if (SG.auth2Active && !this.auth2Valid) return false;
 		
 		let groupData = Config.groups[this.group];
