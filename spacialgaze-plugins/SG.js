@@ -56,32 +56,6 @@ SG.regdate = function (target, callback) {
 	});
 };
 
-/*SG.setTitle = function (userid, title, callback) {
-	userid = toId(userid);
-	SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-		if (rows.length < 1) {
-			SG.database.run("INSERT INTO users(userid, title) VALUES ($userid, $title)", {$userid: userid, $title: title}, function (err) {
-				if (err) return console.log(err);
-				if (callback) return callback();
-			});
-		} else {
-			SG.database.run("UPDATE users SET title=$title WHERE userid=$userid", {$title: title, $userid: userid}, function (err) {
-				if (err) return console.log(err);
-				if (callback) return callback();
-			});
-		}
-	});
-};
-
-SG.getTitle = function (userid, callback) {
-	if (!callback) return false;
-	userid = toId(userid);
-	SG.database.all("SELECT title FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-		if (err) return console.log(err);
-		callback(((rows[0] && rows[0].title) ? rows[0].title : ""));
-	});
-};*/
-
 SG.parseMessage = function (message) {
 	if (message.substr(0, 5) === "/html") {
 		message = message.substr(5);
