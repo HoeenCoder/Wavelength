@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Users
  * Pokemon Showdown - http://pokemonshowdown.com/
  *
@@ -437,7 +437,6 @@ class User {
 	can(permission, target, room) {
 		if (this.hasSysopAccess()) return true;
 		if (SG.auth2Active && !this.auth2Valid) return false;
-		
 		let groupData = Config.groups[this.group];
 		if (groupData && groupData['root']) {
 			return true;
@@ -665,7 +664,6 @@ class User {
 		} else {
 			this.send(`|nametaken|${name}|Your authentication token was invalid.`);
 		}
-		
 		// Two Factor Authentication (private file). Shouldnt effect side servers with the first check in place.
 		if (SG.auth2Active) {
 			if (!SG.checkLogin(userid, this.latestIp)) {
