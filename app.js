@@ -100,6 +100,7 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
+global.SG = {};
 global.Db = require('origindb')('config/db');
 
 global.Monitor = require('./monitor');
@@ -123,8 +124,6 @@ global.Tells = require('./tells.js');
 delete process.send; // in case we're a child process
 global.Verifier = require('./verifier');
 Verifier.PM.spawn();
-
-global.SG = {};
 
 global.Tournaments = require('./tournaments');
 
