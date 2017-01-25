@@ -516,6 +516,37 @@ exports.SG = {
 
 		return buf;
 	},
+	calcEXP: function (pokemon, level) {
+		let n = level;
+		pokemon = toId(pokemon);
+		let type = getEXPType(pokemon);
+		let EXP;
+		switch (type) {
+		case 'erratic':
+			if (n <= 50) EXP = ((Math.pow(n, 3) * (100 - n))) / 50;
+			if (n >= 50 && n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
+			if (n >= 68 && n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
+			if (n >= 98 && n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
+			break;
+		case 'fast':
+			EXP = (4 * Math.pow(n, 3)) / 5;
+			break;
+		case 'mediumfast':
+			EXP = Math.pow(n, 3);
+			break;
+		case 'mediumslow':
+			EXP = ((6 / 5) * Math.pow(n, 3)) - (15 * Math.pow(n, 2)) + (100 * n) - 140;
+			break;
+		case 'slow':
+			EXP = (5 * Math.pow(n, 3)) / 4;
+			break;
+		case 'fluctuating':
+			if (n <= 15) EXP = Math.pow(n, 3) * ((((n + 1) / 3) + 24) / 50);
+			if (n >= 15 && n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
+			if (n >= 36 && n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
+		}
+		return EXP;
+	},
 };
 
 // last two functions needed to make sure SG.regdate() fully works
@@ -528,4 +559,9 @@ loadRegdateCache();
 
 function saveRegdateCache() {
 	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
+}
+
+function getEXPType(pokemon) {
+	let data = JSON.parse(fs.readFileSync('config/SGGame-Data/EXP.json', 'utf8'));
+	return data[pokemon].expType;
 }
