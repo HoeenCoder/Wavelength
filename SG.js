@@ -5,6 +5,7 @@ let http = require('http');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
+let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
 
 exports.SG = {
 	nameColor: function (name, bold) {
@@ -170,7 +171,7 @@ exports.SG = {
 			}
 		}
 	},*/
-	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
+	gameData: gameData,
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
