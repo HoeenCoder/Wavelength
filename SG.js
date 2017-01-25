@@ -5,7 +5,9 @@ let http = require('http');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
-let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
+try {
+	let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
+} catch(e) {}
 
 exports.SG = {
 	nameColor: function (name, bold) {
@@ -550,6 +552,21 @@ exports.SG = {
 		}
 		if (EXP < 0) return 0; // Experience underflow glitch
 		return EXP;
+	},
+	getGain: function (userid, pokemon, foe, particpated) {
+		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), f = 1, L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1);
+		/* TODO
+		v is equal to...
+		Generation VI+ only: 1.2 if the winning Pokémon is at or past the level where it would be able to evolve, but it has not
+		* * * * *
+		b is the base experience yield of the fainted Pokémon's species; values for the current Generation are listed here ( http://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_effort_value_yield )
+		TODO base experience yeild => JSON
+		* * * * *
+		using defaults atm...
+		Why 57 for b as default? The test mons are low formes.
+		*/
+		let b = 57, v = 1; 
+		return (((a * b * L) / (5 * s)) * (Math.pow((2 * L + 10), 2.5) / Math.pow((L + Lp + 10), 2.5)) + 1) * t * e * p;
 	},
 };
 
