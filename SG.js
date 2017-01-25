@@ -170,6 +170,7 @@ exports.SG = {
 			}
 		}
 	},*/
+	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
@@ -516,7 +517,7 @@ exports.SG = {
 
 		return buf;
 	},
-	calcEXP: function (pokemon, level) {
+	calcExp: function (pokemon, level) {
 		let n = level;
 		pokemon = toId(pokemon);
 		let type = getEXPType(pokemon);
@@ -524,9 +525,9 @@ exports.SG = {
 		switch (type) {
 		case 'erratic':
 			if (n <= 50) EXP = ((Math.pow(n, 3) * (100 - n))) / 50;
-			if (n >= 50 && n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
-			if (n >= 68 && n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
-			if (n >= 98 && n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
+			if (50 <= n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
+			if (68 <= n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
+			if (98 <= n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
 			break;
 		case 'fast':
 			EXP = (4 * Math.pow(n, 3)) / 5;
@@ -542,9 +543,11 @@ exports.SG = {
 			break;
 		case 'fluctuating':
 			if (n <= 15) EXP = Math.pow(n, 3) * ((((n + 1) / 3) + 24) / 50);
-			if (n >= 15 && n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
-			if (n >= 36 && n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
+			if (15 <= n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
+			if (36 <= n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
+			break;
 		}
+		if (EXP < 0) return 0; // Experience underflow glitch
 		return EXP;
 	},
 };
@@ -562,6 +565,5 @@ function saveRegdateCache() {
 }
 
 function getEXPType(pokemon) {
-	let data = JSON.parse(fs.readFileSync('config/SGGame-Data/EXP.json', 'utf8'));
-	return data[pokemon].expType;
+	return SG.gameData[pokemon].expType;
 }
