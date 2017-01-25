@@ -25,6 +25,7 @@ exports.commands = {
 	},
 	throwpokeball: function (target, room, user) {
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
+		if (room.battle.ended) return this.errorReply('The battle is already over, you can\'t throw a pokeball.');
 		target = toId(target);
 		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('Thats not a pokeball, or at least not one we support.');
 		let side = (toId(room.battle.p1.name) === toId(user) ? "p1" : "p2");
