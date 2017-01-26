@@ -525,8 +525,8 @@ class Game {
 
 	disqualify(userid) {
 		//if there are still players in the game.
-		Users(userid).boostUno = false;
-		Users(userid).boostGame = false;
+		Users(userid).unoBoost = false;
+		Users(userid).gameBoost = false;
 		if (this.list.length > 2) {
 			//if current player is the one being disqualify move on to next player.
 			if (!this.removePlayer(userid)) return true;
@@ -604,8 +604,8 @@ class Game {
 					});
 				});
 				for (let i = 0; i < this.list.length; i++) {
-					Users(this.list[i]).boostUno = false;
-					Users(this.list[i]).boostGame = false;
+					Users(this.list[i]).unoBoost = false;
+					Users(this.list[i]).gameBoost = false;
 				}
 			}
 		}

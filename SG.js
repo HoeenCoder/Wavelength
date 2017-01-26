@@ -66,33 +66,6 @@ exports.SG = {
 		});
 	},
 
-	// We missed this when removing SQlite3, this should be cleaned up on the master branch
-	/*setTitle: function (userid, title, callback) {
-		userid = toId(userid);
-		SG.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (rows.length < 1) {
-				SG.database.run("INSERT INTO users(userid, title) VALUES ($userid, $title)", {$userid: userid, $title: title}, function (err) {
-					if (err) return console.log(err);
-					if (callback) return callback();
-				});
-			} else {
-				SG.database.run("UPDATE users SET title=$title WHERE userid=$userid", {$title: title, $userid: userid}, function (err) {
-					if (err) return console.log(err);
-					if (callback) return callback();
-				});
-			}
-		});
-	};
-
-	getTitle: function (userid, callback) {
-		if (!callback) return false;
-		userid = toId(userid);
-		SG.database.all("SELECT title FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
-			if (err) return console.log(err);
-			callback(((rows[0] && rows[0].title) ? rows[0].title : ""));
-		});
-	};*/
-
 	parseMessage: function (message) {
 		if (message.substr(0, 5) === "/html") {
 			message = message.substr(5);
@@ -114,6 +87,17 @@ exports.SG = {
 
 	randomString: function (length) {
 		return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+	},
+
+	reloadCSS: function () {
+		const cssPath = 'spacialgaze'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
+		let options = {
+			host: 'play.pokemonshowdown.com',
+			port: 80,
+			path: '/customcss.php?server=' + (Config.serverid || cssPath),
+			method: 'GET',
+		};
+		http.get(options);
 	},
 
 	//This code is a WIP

@@ -1,30 +1,12 @@
 /**
  * Miscellaneous commands
  *
- * Fixed/Improved upon by: The Run, HoeenHero, and Mystifi.
+ * Fixed/Improved upon by: The Run, HoeenHero, Mystifi and Lord Haji.
  *
  * Some of this code was borrowed from panpawn/jd/other contributors; as
  * such, credits go to them as well.
  */
 'use strict';
-
-let fs = require('fs');
-let moment = require('moment');
-let request = require('request');
-let regdateCache = {};
-
-//let badges = fs.createWriteStream('badges.txt', {'flags': 'a'});
-
-function loadRegdateCache() {
-	try {
-		regdateCache = JSON.parse(fs.readFileSync('config/regdate.json', 'utf8'));
-	} catch (e) {}
-}
-loadRegdateCache();
-
-function saveRegdateCache() {
-	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
-}
 
 function clearRoom(room) {
 	let len = (room.log && room.log.length) || 0;
@@ -177,74 +159,6 @@ exports.commands = {
 		user.popup(popup);
 	},
 
-	/* Friendcode command in profile.js
-	friendcodehelp: function (target, room, user) {
-		if (!this.runBroadcast()) return;
-		this.sendReplyBox('<b>Friend Code Help:</b> <br><br />' +
-			'/friendcode (/fc) [friendcode] - Sets your Friend Code.<br />' +
-			'/getcode (gc) - Sends you a popup of all of the registered user\'s friend codes.<br />' +
-			'/deletecode [user] - Deletes this user\'s friend code from the server (Requires %, @, &, ~)<br>' +
-			'<i>--Any questions, PM The Run, HoeenHero, or Mystifi!</i>');
-	},
-	friendcode: 'fc',
-	fc: function (target, room, user, connection) {
-		if (!target) {
-			return this.sendReply("Enter in your friend code. Make sure it's in the format: xxxx-xxxx-xxxx or xxxx xxxx xxxx or xxxxxxxxxxxx.");
-		}
-		let fc = target;
-		fc = fc.replace(/-/g, '');
-		fc = fc.replace(/ /g, '');
-		if (isNaN(fc)) return this.sendReply("The friend code you submitted contains non-numerical characters. Make sure it's in the format: xxxx-xxxx-xxxx or xxxx xxxx xxxx or xxxxxxxxxxxx.");
-		if (fc.length < 12) return this.sendReply("The friend code you have entered is not long enough! Make sure it's in the format: xxxx-xxxx-xxxx or xxxx xxxx xxxx or xxxxxxxxxxxx.");
-		fc = fc.slice(0, 4) + '-' + fc.slice(4, 8) + '-' + fc.slice(8, 12);
-		let codes = fs.readFileSync('config/friendcodes.txt', 'utf8');
-		if (codes.toLowerCase().indexOf(user.name) > -1) {
-			return this.sendReply("Your friend code is already here.");
-		}
-		fs.writeFileSync('config/friendcodes.txt', codes + '\n' + user.name + ': ' + fc);
-		return this.sendReply("Your friend code: " + fc + " has been set.");
-	},
-	viewcode: 'gc',
-	getcodes: 'gc',
-	viewcodes: 'gc',
-	vc: 'gc',
-	getcode: 'gc',
-	gc: function (target, room, user, connection) {
-		let codes = fs.readFileSync('config/friendcodes.txt', 'utf8');
-		return user.send('|popup|' + codes);
-	},
-	deletecode: function (target, room, user) {
-		if (!target) {
-			return this.sendReply('/deletecode [user] - Deletes the Friend Code of the User.');
-		}
-		if (!this.can('lock')) return false;
-		fs.readFile('config/friendcodes.txt', 'utf8', (err, data) => {
-			if (err) console.log(err);
-			let row = ('' + data).split('\n');
-			let match = false;
-			let line = '';
-			for (let i = row.length; i > -1; i--) {
-				if (!row[i]) continue;
-				let line = row[i].split(':');
-				if (target === line[0]) {
-					match = true;
-					line = row[i];
-				}
-				break;
-			}
-			if (match === true) {
-				let re = new RegExp(line, 'g');
-				let result = data.replace(re, '');
-				fs.writeFile('config/friendcodes.txt', result, 'utf8', err => {
-					if (err) return this.sendReply(err);
-					this.sendReply('The Friendcode ' + line + ' has been deleted.');
-				});
-			} else {
-				this.sendReply('There is no match.');
-			}
-		});
-	},
-	*/
 	rk: 'kick',
 	roomkick: 'kick',
 	kick: function (target, room, user) {
@@ -269,7 +183,7 @@ exports.commands = {
 		if (!this.can('pmall')) return false;
 		if (!target) return this.parse('/help pmall');
 
-		let pmName = ' Server Info [Do Not Respond!]';
+		let pmName = ' SG Server';
 		Users.users.forEach(curUser => {
 			let message = '|pm|' + pmName + '|' + curUser.getIdentity() + '|' + target;
 			curUser.send(message);
@@ -283,7 +197,7 @@ exports.commands = {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.parse('/help pmallstaff');
 
-		let pmName = ' InFo.Staff';
+		let pmName = ' SG Server';
 
 		Users.users.forEach(curUser => {
 			if (!curUser.isStaff) return;
@@ -311,35 +225,27 @@ exports.commands = {
 
 	regdate: function (target, room, user, connection) {
 		if (!target) target = user.name;
-		let targetUser = toId(target);
-		if (targetUser.length < 1 || targetUser.length > 19) {
-			return this.sendReply("Usernames can not be less than one character or longer than 19 characters. (Current length: " + targetUser.length + ".)");
+		target = toId(target);
+		if (target.length < 1 || target.length > 19) {
+			return this.sendReply("Usernames can not be less than one character or longer than 19 characters. (Current length: " + target.length + ".)");
 		}
 		if (!this.runBroadcast()) return;
-		if (regdateCache[targetUser]) {
-			this.sendReplyBox(regdateReply(regdateCache[targetUser]));
-		} else {
-			request('http://pokemonshowdown.com/users/' + targetUser + '.json', (error, response, body) => {
-				let data = JSON.parse(body);
-				let date = data['registertime'];
-				if (date !== 0 && date.toString().length < 13) {
-					while (date.toString().length < 13) {
-						date = Number(date.toString() + '0');
-					}
-				}
+		SG.regdate(target, date => {
+			if (date) {
 				this.sendReplyBox(regdateReply(date));
-				if (date !== 0) {
-					regdateCache[targetUser] = date;
-					saveRegdateCache();
-				}
-			});
-		}
+			}
+		});
 
 		function regdateReply(date) {
 			if (date === 0) {
-				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Chat.escapeHTML(target) + "</font> is not registered.";
+				return SG.nameColor(target, true) + " <b><font color='red'>is not registered.</font></b>";
 			} else {
-				return "<b><font color=\"" + hashColorWithCustoms(targetUser) + "\">" + Chat.escapeHTML(target) + "</font></b> was registered on " + moment(date).format("dddd, MMMM DD, YYYY HH:mm A") + ".";
+				let d = new Date(date);
+				let MonthNames = ["January", "February", "March", "April", "May", "June",
+					"July", "August", "September", "October", "November", "December",
+				];
+				let DayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+				return SG.nameColor(target, true) + " was registered on <b>" + DayNames[d.getUTCDay()] + ", " + MonthNames[d.getUTCMonth()] + ' ' + d.getUTCDate() + ", " + d.getUTCFullYear() + "</b> at <b>" + d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds() + " UTC.</b>";
 			}
 			//room.update();
 		}
@@ -374,11 +280,11 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		if (!target) return this.parse('/help seen');
 		let targetUser = Users.get(target);
-		if (targetUser && targetUser.connected) return this.sendReplyBox(targetUser.name + " is <b><font color=#00cc00>currently online</b></font>.");
+		if (targetUser && targetUser.connected) return this.sendReplyBox(SG.nameColor(targetUser.name, true) + " is <b><font color='limegreen'>Currently Online</b></font>.");
 		target = Chat.escapeHTML(target);
 		let seen = Db('seen').get(toId(target));
-		if (!seen) return this.sendReplyBox(target + " has <font color=#e60000>never been online</font> on this server.");
-		this.sendReplyBox(target + " <font color=#ff9900>was last seen</font><b> " + moment(seen).fromNow() + "</b>.");
+		if (!seen) return this.sendReplyBox(SG.nameColor(target, true) + " has <b><font color='red'>never been online</font></b> on this server.");
+		this.sendReplyBox(SG.nameColor(target, true) + " was last seen <b>" + Chat.toDurationString(Date.now() - seen, {precision: true}) + "</b> ago.");
 	},
 	seenhelp: ["/seen - Shows when the user last connected on the server."],
 

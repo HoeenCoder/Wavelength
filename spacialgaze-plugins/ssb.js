@@ -514,6 +514,7 @@ exports.commands = {
 		edit: {
 			main: '',
 			'': function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -530,6 +531,7 @@ exports.commands = {
 			},
 			speciesq: 'species',
 			species: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -550,6 +552,7 @@ exports.commands = {
 			},
 			moveq: 'move',
 			move: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -601,6 +604,7 @@ exports.commands = {
 			},
 			statsq: 'stats',
 			stats: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -672,6 +676,7 @@ exports.commands = {
 			},
 			abilityq: 'ability',
 			ability: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -691,6 +696,7 @@ exports.commands = {
 			},
 			itemq: 'item',
 			item: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -716,6 +722,7 @@ exports.commands = {
 			},
 			detailsq: 'details',
 			details: function (target, room, user, connection, cmd, message) {
+				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 				if (!SG.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -787,6 +794,7 @@ exports.commands = {
 			},
 		},
 		toggle: function (target, room, user, connection, cmd, message) {
+			if (!user.named) return this.errorReply('You must choose a name first.');
 			if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 			if (!SG.ssb[user.userid]) {
 				this.sendReply('Could not find your SSB pokemon, creating a new one...');
@@ -812,6 +820,7 @@ exports.commands = {
 		custommoves: 'custom',
 		cmoves: 'custom',
 		custom: function (target, room, user, connection, cmd, message) {
+			if (!user.named) return this.errorReply('You must choose a name first.');
 			if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
 			if (!SG.ssb[user.userid]) {
 				this.sendReply('Could not find your SSB pokemon, creating a new one...');

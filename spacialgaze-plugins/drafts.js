@@ -102,7 +102,7 @@ class Draft {
 			} else {
 				dex = Tools.data.Pokedex[team[i]].num;
 			}
-			let url = 'http://pldh.net/media/pokexycons/' + dex + '.png';
+			let url = 'http://www.serebii.net/pokedex-sm/icon/' + dex + '.png';
 			display += '<img src="' + url + '" title="' + team[i] + '">';
 		}
 		return display;

@@ -259,7 +259,7 @@ exports.commands = {
 		let results = Object.keys(obj).sort(function (a, b) {
 			return obj[b] - obj[a];
 		});
-		showResults(results.slice(0, 10));
+		showResults(results.slice(0, target));
 	},
 
 	customsymbol: function (target, room, user) {

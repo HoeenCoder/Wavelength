@@ -100,6 +100,7 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
+global.SG = {};
 global.Db = require('origindb')('config/db');
 
 global.Monitor = require('./monitor');
@@ -208,7 +209,10 @@ global.TeamValidator = require('./team-validator');
 TeamValidator.PM.spawn();
 
 /*********************************************************
+ * Start up the githubhook server
+ ********************************************************/
+require('./github');
+/*********************************************************
  * Start up the REPL server
  *********************************************************/
-
 require('./repl').start('app', cmd => eval(cmd));

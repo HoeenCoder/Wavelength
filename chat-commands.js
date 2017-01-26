@@ -1871,7 +1871,7 @@ exports.commands = {
 		if (!cmd.startsWith('global')) {
 			let groupid = Config.groups[nextGroup].id;
 			if (!groupid && nextGroup === Config.groupsranking[0]) groupid = 'deauth';
-			if (Config.groups[nextGroup].globalonly) return this.errorReply('Did you mean /global' + groupid + '"?');
+			if (Config.groups[nextGroup].globalonly) return this.errorReply('Did you mean "/global' + groupid + '"?');
 			return this.errorReply('Did you mean "/room' + groupid + '" or "/global' + groupid + '"?');
 		}
 		if (Config.groups[nextGroup].roomonly || Config.groups[nextGroup].battleonly) {
@@ -2324,7 +2324,7 @@ exports.commands = {
 		let [ip, note] = this.splitOne(target);
 		if (!/^[0-9.*]+$/.test(ip)) return this.errorReply("Please enter a valid IP address.");
 
-		if (Punishments.sharedIps.get(ip)) return this.errorReply("This IP is already marked as shared.");
+		if (Punishments.sharedIps.has(ip)) return this.errorReply("This IP is already marked as shared.");
 
 		Punishments.addSharedIp(ip, note);
 		if (note) note = ` (${note})`;
@@ -2337,7 +2337,7 @@ exports.commands = {
 		if (!target) return this.errorReply("No IP entered.");
 		if (!/^[0-9.*]+$/.test(target)) return this.errorReply("Please enter a valid IP address.");
 
-		if (!Punishments.sharedIps.get(target)) return this.errorReply("This IP isn't marked as shared.");
+		if (!Punishments.sharedIps.has(target)) return this.errorReply("This IP isn't marked as shared.");
 
 		Punishments.removeSharedIp(target);
 		return this.addModCommand(`The IP '${target}' was unmarked as shared by ${user.name}.`);

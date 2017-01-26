@@ -292,9 +292,9 @@ exports.BattleAbilities = {
 	"berserk": {
 		desc: "This Pokemon's Special Attack is raised by 1 stage when it reaches 1/2 or less of its maximum HP.",
 		shortDesc: "This Pokemon's Sp. Atk is raised by 1 when it reaches 1/2 or less of its max HP.",
-		onAfterDamage: function (damage, target, source, move) {
-			if (!target.hp || !damage || move.effectType !== 'Move') return;
-			if (target.hp <= target.maxhp / 2 && target.hp + damage > target.maxhp / 2) {
+		onAfterMoveSecondary: function (target, source, move) {
+			if (!source || source === target || !target.hp || !move.totalDamage) return;
+			if (target.hp <= target.maxhp / 2 && target.hp + move.totalDamage > target.maxhp / 2) {
 				this.boost({spa: 1});
 			}
 		},
@@ -587,7 +587,7 @@ exports.BattleAbilities = {
 		desc: "While this Pokemon is active, priority moves from opposing Pokemon targeted at allies are prevented from having an effect.",
 		shortDesc: "While this Pokemon is active, allies are protected from opposing priority moves.",
 		onFoeTryMove: function (target, source, effect) {
-			if (source.side === this.effectData.target.side && effect.priority > 0.1 && effect.target !== 'self') {
+			if ((source.side === this.effectData.target.side || effect.id === 'perishsong') && effect.priority > 0.1 && effect.target !== 'foeSide') {
 				this.attrLastMove('[still]');
 				this.add('cant', this.effectData.target, 'ability: Dazzling', effect, '[of] ' + target);
 				return false;
@@ -848,6 +848,14 @@ exports.BattleAbilities = {
 				if (!this.canSwitch(target.side) || target.forceSwitchFlag || target.switchFlag) return;
 				target.switchFlag = true;
 				source.switchFlag = false;
+				this.add('-activate', target, 'ability: Emergency Exit');
+			}
+		},
+		onAfterDamage: function (damage, target, source, effect) {
+			if (!target.hp || effect.effectType === 'Move') return;
+			if (target.hp <= target.maxhp / 2 && target.hp + damage > target.maxhp / 2) {
+				if (!this.canSwitch(target.side) || target.forceSwitchFlag || target.switchFlag) return;
+				target.switchFlag = true;
 				this.add('-activate', target, 'ability: Emergency Exit');
 			}
 		},
@@ -1705,7 +1713,7 @@ exports.BattleAbilities = {
 		id: "liquidooze",
 		onSourceTryHeal: function (damage, target, source, effect) {
 			this.debug("Heal is occurring: " + target + " <- " + source + " :: " + effect.id);
-			let canOoze = {drain: 1, leechseed: 1};
+			let canOoze = {drain: 1, leechseed: 1, strengthsap: 1};
 			if (canOoze[effect.id]) {
 				this.damage(damage);
 				return 0;
@@ -1751,6 +1759,7 @@ exports.BattleAbilities = {
 			}
 			let newMove = this.getMoveCopy(move.id);
 			newMove.hasBounced = true;
+			newMove.pranksterBoosted = false;
 			this.useMove(newMove, target, source);
 			return null;
 		},
@@ -1760,6 +1769,7 @@ exports.BattleAbilities = {
 			}
 			let newMove = this.getMoveCopy(move.id);
 			newMove.hasBounced = true;
+			newMove.pranksterBoosted = false;
 			this.useMove(newMove, this.effectData.target, source);
 			return null;
 		},
@@ -2555,7 +2565,7 @@ exports.BattleAbilities = {
 		desc: "While this Pokemon is active, priority moves from opposing Pokemon targeted at allies are prevented from having an effect.",
 		shortDesc: "While this Pokemon is active, allies are protected from opposing priority moves.",
 		onFoeTryMove: function (target, source, effect) {
-			if (source.side === this.effectData.target.side && effect.priority > 0.1 && effect.target !== 'self') {
+			if ((source.side === this.effectData.target.side || effect.id === 'perishsong') && effect.priority > 0.1 && effect.target !== 'foeSide') {
 				this.attrLastMove('[still]');
 				this.add('cant', this.effectData.target, 'ability: Queenly Majesty', effect, '[of] ' + target);
 				return false;
@@ -2982,12 +2992,12 @@ exports.BattleAbilities = {
 			if (pokemon.hp > pokemon.maxhp / 2) {
 				if (pokemon.template.speciesid === 'minior') {
 					pokemon.formeChange('Minior-Meteor');
-					this.add('-formechange', pokemon, 'Minior-Meteor', '[msg]', '[from] ability: Shields Down');
+					this.add('-formechange', pokemon, 'Minior-Meteor', '[from] ability: Shields Down');
 				}
 			} else {
 				if (pokemon.template.speciesid !== 'minior') {
 					pokemon.formeChange(pokemon.set.species);
-					this.add('-formechange', pokemon, pokemon.set.species, '[msg]', '[from] ability: Shields Down');
+					this.add('-formechange', pokemon, pokemon.set.species, '[from] ability: Shields Down');
 				}
 			}
 		},
@@ -3075,15 +3085,11 @@ exports.BattleAbilities = {
 		num: 112,
 	},
 	"slushrush": {
-		desc: "If Hail is active, this Pokemon's Speed is doubled. This Pokemon takes no damage from Hail.",
-		shortDesc: "If Hail is active, this Pokemon's Speed is doubled; immunity to Hail.",
+		shortDesc: "If Hail is active, this Pokemon's Speed is doubled.",
 		onModifySpe: function (spe, pokemon) {
 			if (this.isWeather('hail')) {
 				return this.chainModify(2);
 			}
-		},
-		onImmunity: function (type, pokemon) {
-			if (type === 'hail') return false;
 		},
 		id: "slushrush",
 		name: "Slush Rush",
@@ -3958,6 +3964,14 @@ exports.BattleAbilities = {
 				if (!this.canSwitch(target.side) || target.forceSwitchFlag || target.switchFlag) return;
 				target.switchFlag = true;
 				source.switchFlag = false;
+				this.add('-activate', target, 'ability: Wimp Out');
+			}
+		},
+		onAfterDamage: function (damage, target, source, effect) {
+			if (!target.hp || effect.effectType === 'Move') return;
+			if (target.hp <= target.maxhp / 2 && target.hp + damage > target.maxhp / 2) {
+				if (!this.canSwitch(target.side) || target.forceSwitchFlag || target.switchFlag) return;
+				target.switchFlag = true;
 				this.add('-activate', target, 'ability: Wimp Out');
 			}
 		},

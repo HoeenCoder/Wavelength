@@ -36,6 +36,41 @@ function shopDisplay() {
 	return output;
 }
 
+function toToken(item) {
+	switch (item) {
+	case 'customavatar':
+	case 'avatar':
+		return 'avatar';
+
+	case 'globaldeclare':
+	case 'declare':
+		return 'declare';
+
+	case 'customcolor':
+	case 'color':
+		return 'color';
+
+	case 'customicon':
+	case 'userlisticon':
+	case 'icon':
+		return 'icon';
+
+	case 'customtitle':
+	case 'profiletitle':
+	case 'title':
+		return 'title';
+
+	case 'emoticon':
+	case 'customemoticon':
+	case 'customemote':
+	case 'emote':
+		return 'emote';
+
+	default:
+		return false;
+	}
+}
+
 try {
 	fs.accessSync('config/eShop.json', fs.F_OK);
 	let raw = JSON.parse(fs.readFileSync('config/eShop.json', 'utf8'));
@@ -155,7 +190,13 @@ exports.commands = {
 							writeSSB();
 							break;
 						default:
-							SG.messageSeniorStaff(user.name + ' has purchased a ' + item.name + '.');
+							if (!user.tokens) user.tokens = {};
+							let tok = toToken(item.id);
+							if (tok) {
+								user.tokens[tok] = true;
+							} else {
+								SG.messageSeniorStaff(user.name + ' has purchased a ' + item.name + '.');
+							}
 						}
 						user.sendTo(room, "|uhtmlchange|eshop" + user.userid + "|<div style='max-height:300px'><table style='border:2px solid #101ad1; border-radius: 5px'><tr><th colspan='3' style='border: 2px solid #070e96; border-radius: 5px'>Server Shop</th></tr><tr><td style='colspan: 3; border: 2px solid #070e96; border-radius: 5px'><center>You have purchased a " + item.name + ". " + (item.id === 'customsymbol' ? "You may now use /customsymbol [symbol] to change your symbol." : "Upper staff have been notified of your purchase and will contact you shortly.") + "</center></td></tr><tr><td colspan='3' style='text-align:center'><button name='send' value='/eshop reopen'>Return to Shop</button></td></tr></table>");
 					});
