@@ -1,9 +1,8 @@
 'use strict';
 
 /* For later...
-const Console = require('./console.js').Console;
 
-class SGgame extends Console {
+class SGgame extends Console.Console {
 	constructor(user, room) {
 		super(user, room);
 	}
