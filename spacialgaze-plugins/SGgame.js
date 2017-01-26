@@ -1,5 +1,15 @@
 'use strict';
 
+/* For later...
+const Console = require('./console.js').Console;
+
+class SGgame extends Console {
+	constructor(user, room) {
+		super(user, room);
+	}
+}
+*/
+
 exports.commands = {
 	resetalpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
