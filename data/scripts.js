@@ -171,6 +171,10 @@ exports.BattleScripts = {
 			}
 		}
 
+		if (!this.singleEvent('TryMove', move, null, pokemon, target, move)) {
+			return true;
+		}
+
 		if (!this.runEvent('TryMove', pokemon, target, move)) {
 			return true;
 		}
@@ -1500,7 +1504,7 @@ exports.BattleScripts = {
 				case 'foulplay':
 					if (counter.setupType || !!counter['speedsetup'] || counter['Dark'] > 2 || (hasMove['rest'] && hasMove['sleeptalk'])) rejected = true;
 					break;
-				case 'haze': case 'pursuit': case 'spikes': case 'waterspout':
+				case 'haze': case 'spikes': case 'waterspout':
 					if (counter.setupType || !!counter['speedsetup'] || (hasMove['rest'] && hasMove['sleeptalk'])) rejected = true;
 					break;
 				case 'healbell':
@@ -1515,6 +1519,9 @@ exports.BattleScripts = {
 				case 'protect':
 					if (counter.setupType && (hasAbility['Guts'] || hasAbility['Speed Boost']) && !hasMove['batonpass']) rejected = true;
 					if ((hasMove['lightscreen'] && hasMove['reflect']) || (hasMove['rest'] && hasMove['sleeptalk'])) rejected = true;
+					break;
+				case 'pursuit':
+					if (counter.setupType || (hasMove['rest'] && hasMove['sleeptalk']) || (hasMove['knockoff'] && !hasType['Dark'])) rejected = true;
 					break;
 				case 'rapidspin':
 					if (counter.setupType || teamDetails.hazardClear) rejected = true;
@@ -1622,7 +1629,8 @@ exports.BattleScripts = {
 					if ((hasMove['fireblast'] && counter.setupType !== 'Physical') || hasMove['overheat']) rejected = true;
 					break;
 				case 'fireblast':
-					if ((hasMove['flareblitz'] || hasMove['lavaplume']) && !counter.setupType && !counter['speedsetup']) rejected = true;
+					if (hasMove['lavaplume'] && !counter.setupType && !counter['speedsetup']) rejected = true;
+					if (hasMove['flareblitz'] && counter.setupType !== 'Special') rejected = true;
 					break;
 				case 'firepunch': case 'sacredfire':
 					if (hasMove['fireblast'] || hasMove['flareblitz']) rejected = true;
@@ -1638,6 +1646,9 @@ exports.BattleScripts = {
 					break;
 				case 'airslash': case 'oblivionwing':
 					if (hasMove['acrobatics'] || hasMove['bravebird'] || hasMove['hurricane']) rejected = true;
+					break;
+				case 'hex':
+					if (!hasMove['willowisp']) rejected = true;
 					break;
 				case 'shadowball':
 					if (hasMove['hex'] && hasMove['willowisp']) rejected = true;
@@ -1719,14 +1730,14 @@ exports.BattleScripts = {
 				case 'psychic':
 					if (hasMove['psyshock'] || hasMove['storedpower']) rejected = true;
 					break;
+				case 'psychocut': case 'zenheadbutt':
+					if ((hasMove['psychic'] || hasMove['psyshock']) && counter.setupType !== 'Physical') rejected = true;
+					break;
 				case 'psyshock':
 					if (movePool.length > 1) {
 						let psychic = movePool.indexOf('psychic');
 						if (psychic >= 0) this.fastPop(movePool, psychic);
 					}
-					break;
-				case 'zenheadbutt':
-					if ((hasMove['psychic'] || hasMove['psyshock']) && counter.setupType !== 'Physical') rejected = true;
 					break;
 				case 'headsmash':
 					if (hasMove['stoneedge']) rejected = true;
@@ -1944,6 +1955,8 @@ exports.BattleScripts = {
 				rejectAbility = !counter['inaccurate'];
 			} else if (ability === 'Defiant' || ability === 'Moxie') {
 				rejectAbility = !counter['Physical'] && !hasMove['batonpass'];
+			} else if (ability === 'Flare Boost' || ability === 'Moody') {
+				rejectAbility = true;
 			} else if (ability === 'Gluttony') {
 				rejectAbility = !hasMove['bellydrum'];
 			} else if (ability === 'Lightning Rod') {
@@ -1952,8 +1965,6 @@ exports.BattleScripts = {
 				rejectAbility = template.types.includes('Electric');
 			} else if (ability === 'Liquid Voice') {
 				rejectAbility = !hasMove['hypervoice'];
-			} else if (ability === 'Moody') {
-				rejectAbility = true;
 			} else if (ability === 'Overgrow') {
 				rejectAbility = !counter['Grass'];
 			} else if (ability === 'Poison Heal') {
@@ -2223,11 +2234,9 @@ exports.BattleScripts = {
 			BL2: 78,
 			UU: 77,
 			New: 77,
-			Bank: 77,
 			BL: 76,
 			OU: 75,
 			Uber: 73,
-			'Bank-Uber': 73,
 			AG: 71,
 		};
 		let customScale = {
@@ -2256,7 +2265,7 @@ exports.BattleScripts = {
 		// Prepare optimal HP
 		let hp = Math.floor(Math.floor(2 * template.baseStats.hp + ivs.hp + Math.floor(evs.hp / 4) + 100) * level / 100 + 10);
 		if (hasMove['substitute'] && item === 'Sitrus Berry') {
-			// Two substitutes should activate Sitrus Berry
+			// Two Substitutes should activate Sitrus Berry
 			while (hp % 4 > 0) {
 				evs.hp -= 4;
 				hp = Math.floor(Math.floor(2 * template.baseStats.hp + ivs.hp + Math.floor(evs.hp / 4) + 100) * level / 100 + 10);
@@ -2283,7 +2292,7 @@ exports.BattleScripts = {
 		// Minimize confusion damage
 		if (!counter['Physical'] && !hasMove['copycat'] && !hasMove['transform']) {
 			evs.atk = 0;
-			ivs.atk = hasMove['hiddenpower'] ? ivs.atk - 30 : 0;
+			ivs.atk = 0;
 		}
 
 		if (hasMove['gyroball'] || hasMove['trickroom']) {
@@ -2352,7 +2361,7 @@ exports.BattleScripts = {
 
 			let tier = template.tier;
 			switch (tier) {
-			case 'Uber': case 'Bank-Uber':
+			case 'Uber':
 				// Ubers are limited to 2 but have a 20% chance of being added anyway.
 				if (uberCount > 1 && this.random(5) >= 1) continue;
 				break;
@@ -2452,7 +2461,7 @@ exports.BattleScripts = {
 				typeComboCount[typeCombo] = 1;
 			}
 
-			// Increment Uber/NU counters
+			// Increment Uber/PU counters
 			if (tier === 'Uber') {
 				uberCount++;
 			} else if (tier === 'PU') {
