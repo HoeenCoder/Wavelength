@@ -111,6 +111,10 @@
     "expType": "mediumfast",
     "num": 28
   },
+  "nidoranf": {
+  	"expType": "mediumslow",
+  	"num": 29
+  },
   "nidorina": {
     "expType": "mediumslow",
     "num": 30
@@ -118,6 +122,10 @@
   "nidoqueen": {
     "expType": "mediumslow",
     "num": 31
+  },
+  "nidoranm": {
+  	"expType": "mediumslow",
+  	"num": 32
   },
   "nidorino": {
     "expType": "mediumslow",
