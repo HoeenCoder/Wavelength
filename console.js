@@ -8,8 +8,6 @@ function loadGames() {
 	if (gameList) return;
 	gameList = {};
 
-	// Install plug-in commands
-
 	for (let file of fs.readdirSync(path.resolve(__dirname, 'game-cards'))) {
 		if (file.substr(-3) !== '.js') continue;
 		Object.assign(gameList, require('./game-cards/' + file).box);
