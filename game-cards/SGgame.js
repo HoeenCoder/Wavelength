@@ -9,6 +9,11 @@ class SGgame extends Console.Console {
 }
 */
 
+exports.box = {
+	startCommand: null,
+	name: 'SGgame - Alpha',
+};
+
 exports.commands = {
 	resetalpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
