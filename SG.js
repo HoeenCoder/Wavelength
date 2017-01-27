@@ -323,7 +323,7 @@ exports.SG = {
 		default:
 			statusBonus = 1;
 		}
-		let rate = catchRates[toId(pokemon.species)]; // TODO catch rates
+		let rate = gameData[toId(pokemon.species)].rate;
 		if (!rate) {
 			console.log('Catch rate not found for ' + pokemon.species);
 			rate = 150;
