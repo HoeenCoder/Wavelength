@@ -10,7 +10,7 @@ class SGgame extends Console.Console {
 */
 
 exports.box = {
-	startCommand: null,
+	startCommand: '/playalpha',
 	name: 'SGgame - Alpha',
 };
 
