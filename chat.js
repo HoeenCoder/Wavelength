@@ -897,7 +897,7 @@ Chat.loadCommands = function () {
 	}
 	for (let file of fs.readdirSync(path.resolve(__dirname, 'game-cards'))) {
 		if (file.substr(-3) !== '.js') continue;
-		Object.assign(commands, require('./spacialgaze-plugins/' + file).commands);
+		Object.assign(commands, require('./game-cards/' + file).commands);
 	}
 };
 
