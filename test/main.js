@@ -96,6 +96,7 @@ before('initialization', function (done) {
 		'config': {},
 		'chat-plugins': getDirTypedContentsSync('chat-plugins', 'file'),
 		'spacialgaze-plugins': getDirTypedContentsSync('spacialgaze-plugins', 'file'),
+		'game-cards': getDirTypedContentsSync('game-cards', 'file'),
 		'mods': getDirTypedContentsSync('mods', 'dir'),
 		'logs': {
 			'chat': {}, 'ladderip': {}, 'modlog': {}, 'repl': {},
