@@ -678,6 +678,7 @@ class User {
 		}
 		if (Tells.inbox[userid]) Tells.sendTell(userid, this);
 		SG.showNews(userid, this);
+		SG.giveDailyReward(userid, this);
 		return false;
 	}
 	validateRename(name, tokenData, newlyRegistered, challenge) {
