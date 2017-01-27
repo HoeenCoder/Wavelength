@@ -26,7 +26,7 @@ let Economy = global.Economy = {
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
 
-		let amount = Db('currency').get(userid, DEFAULT_AMOUNT);
+		let amount = Db.currency.get(userid, DEFAULT_AMOUNT);
 		return callback(amount);
 	},
 	/**
@@ -48,10 +48,9 @@ let Economy = global.Economy = {
 			throw new Error("Economy.writeMoney: Expected amount parameter to be a Number, instead received " + typeof amount);
 		}
 
-		let curTotal = Db('currency').get(userid, DEFAULT_AMOUNT);
-		let newTotal = Db('currency')
-			.set(userid, curTotal + amount)
-			.get(userid);
+		let curTotal = Db.currency.get(userid, DEFAULT_AMOUNT);
+		Db.currency.set(userid, curTotal + amount);
+		let newTotal = Db.currency.get(userid);
 
 		if (callback && typeof callback === 'function') {
 			// If a callback is specified, return `newTotal` through the callback.
@@ -256,8 +255,8 @@ exports.commands = {
 			if (room) room.update();
 		}
 		let obj = Db.currency.keys().map(function (name) {return {name: name, amount: Db.currency.get(name)};});
-		let results = obj.sort(function(a, b) {
-			return b.amount - a.amount
+		let results = obj.sort(function (a, b) {
+			return b.amount - a.amount;
 		});
 		showResults(results.slice(0, target));
 	},
