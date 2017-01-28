@@ -196,7 +196,7 @@ exports.SG = {
 					let idx = battle[side].pokemon.indexOf(choices[i]);
 					let data = [battle.id, 'choose', side];
 					data.push('switch ' + (idx + 1));
-					data.push(battle.turn);
+					//data.push(battle.turn);
 					battle.receive(data);
 					return true;
 				}
@@ -206,7 +206,7 @@ exports.SG = {
 				let choice = Math.floor(Math.random() * battle[side].active[0].moves.length);
 				let data = [battle.id, 'choose', side];
 				data.push('move ' + (choice + 1));
-				data.push(battle.turn);
+				//data.push(battle.turn);
 				battle.receive(data);
 				return true;
 			}
