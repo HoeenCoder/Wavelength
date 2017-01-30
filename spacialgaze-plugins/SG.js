@@ -122,7 +122,7 @@ function saveRegdateCache() {
 
 function showDailyRewardAni(userid) {
 	userid = toId(userid);
-	let streak = Db('DailyBonus').get(userid)[0];
+	let streak = Db.DailyBonus.get(userid)[0];
 	let output = '';
 	for (let i = 1; i <= streak; i++) {
 		output += "<img src='http://i.imgur.com/ZItWCLB.png' width='16' height='16'> ";
