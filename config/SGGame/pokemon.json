@@ -2,1184 +2,572 @@
 	"bulbasaur": {
 		"expType": "mediumslow",
 		"num": 1,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "ivysaur"
-		}
+		"rate": "45"
 	},
 	"ivysaur": {
 		"expType": "mediumslow",
 		"num": 2,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 16,
-		    "evolvesTo": "venusaur"
-		}
+		"rate": "45"
 	},
 	"venusaur": {
 		"expType": "mediumslow",
 		"num": 3,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 32,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"charmander": {
 		"expType": "mediumslow",
 		"num": 4,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "charmeleon"
-		}
+		"rate": "45"
 	},
 	"charmeleon": {
 		"expType": "mediumslow",
 		"num": 5,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 16,
-		    "evolvesTo": "charizard"
-		}
+		"rate": "45"
 	},
 	"charizard": {
 		"expType": "mediumslow",
 		"num": 6,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 36,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"squirtle": {
 		"expType": "mediumslow",
 		"num": 7,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "wartortle"
-		}
+		"rate": "45"
 	},
 	"wartortle": {
 		"expType": "mediumslow",
 		"num": 8,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": "16",
-		    "evolvesTo": "blastoise"
-		}
+		"rate": "45"
 	},
 	"blastoise": {
 		"expType": "mediumslow",
 		"num": 9,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 36,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"caterpie": {
 		"expType": "mediumfast",
 		"num": 10,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null ,
-		    "evolvesTo": "metapod"
-		}
+		"rate": "255"
 	},
 	"metapod": {
 		"expType": "mediumfast",
 		"num": 11,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 7,
-		    "evolvesTo": "butterfree"
-		}
+		"rate": "120"
 	},
 	"butterfree": {
 		"expType": "mediumfast",
 		"num": 12,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 10,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"weedle": {
 		"expType": "mediumfast",
 		"num": 13,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "kakuna"
-		}
+		"rate": "255"
 	},
 	"kakuna": {
 		"expType": "mediumfast",
 		"num": 14,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 7,
-		    "evolvesTo": "beedrill"
-		}
+		"rate": "120"
 	},
 	"beedrill": {
 		"expType": "mediumfast",
 		"num": 15,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 10,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"pidgey": {
 		"expType": "mediumslow",
 		"num": 16,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "pidgeotto"
-		}
+		"rate": "255"
 	},
 	"pidgeotto": {
 		"expType": "mediumslow",
 		"num": 17,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 18,
-		    "evolvesTo": "pidgeot"
-		}
+		"rate": "120"
 	},
 	"pidgeot": {
 		"expType": "mediumslow",
 		"num": 18,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 36,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"rattata": {
 		"expType": "mediumfast",
 		"num": 19,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "raticate"
-		}
+		"rate": "255"
 	},
 	"raticate": {
 		"expType": "mediumfast",
 		"num": 20,
-		"rate": "127*",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 20,
-		    "evolvesTo": null
-		}
+		"rate": "127*"
 	},
 	"spearow": {
 		"expType": "mediumfast",
 		"num": 21,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "fearow"
-		}
+		"rate": "255"
 	},
 	"fearow": {
 		"expType": "mediumfast",
 		"num": 22,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 20,
-		    "evolvesTo": null
-		}
+		"rate": "90"
 	},
 	"ekans": {
 		"expType": "mediumfast",
 		"num": 23,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "arbok"
-		}
+		"rate": "255"
 	},
 	"arbok": {
 		"expType": "mediumfast",
 		"num": 24,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 22,
-		    "evolvesTo": null
-		}
+		"rate": "90"
 	},
 	"pikachu": {
 		"expType": "mediumfast",
 		"num": 25,
-		"rate": "190*",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "friendship",
-		    "exact": null,
-		    "evolvesTo": "raichu"
-		}
+		"rate": "190*"
 	},
 	"raichu": {
 		"expType": "mediumfast",
 		"num": 26,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "thunderstone",
-		    "evolvesTo": null
-		}
+		"rate": "75"
 	},
 	"sandshrew": {
 		"expType": "mediumfast",
 		"num": 27,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "sandslash"
-		}
+		"rate": "255"
 	},
 	"sandslash": {
 		"expType": "mediumfast",
 		"num": 28,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 22,
-		    "evolvesTo": null
-		}
+		"rate": "90"
 	},
 	"nidoranf": {
 		"expType": "mediumslow",
 		"num": 29,
-		"rate": "235",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "nidorina"
-		}
+		"rate": "235"
 	},
 	"nidorina": {
 		"expType": "mediumslow",
 		"num": 30,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 16,
-		    "evolvesTo": "nidoqueen"
-		}
+		"rate": "120"
 	},
 	"nidoqueen": {
 		"expType": "mediumslow",
 		"num": 31,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "moonstone",
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"nidoranm": {
 		"expType": "mediumslow",
 		"num": 32,
-		"rate": "235",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "nidorino"
-		}
+		"rate": "235"
 	},	
 	"nidorino": {
 		"expType": "mediumslow",
 		"num": 33,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 16,
-		    "evolvesTo": "nidoking"
-		}
+		"rate": "120"
 	},
 	"nidoking": {
 		"expType": "mediumslow",
 		"num": 34,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "moonstone",
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"clefairy": {
 		"expType": "fast",
 		"num": 35,
-		"rate": "150",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "friendship",
-		    "exact": null,
-		    "evolvesTo": "clefable"
-		}
+		"rate": "150"
 	},
 	"clefable": {
 		"expType": "fast",
 		"num": 36,
-		"rate": "25",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "moonstone",
-		    "evolvesTo": null
-		}
+		"rate": "25"
 	},
 	"vulpix": {
 		"expType": "mediumfast",
 		"num": 37,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "ninetales"
-		}		
+		"rate": "190"
 	},
 	"ninetales": {
 		"expType": "mediumfast",
 		"num": 38,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "firestone",
-		    "evolvesTo": null
-		}
+		"rate": "75"
 	},
 	"jigglypuff": {
 		"expType": "fast",
 		"num": 39,
-		"rate": "170",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "friendship",
-		    "exact": null,
-		    "evolvesTo": "clefable"
-		}
+		"rate": "170"
 	},
 	"wigglytuff": {
 		"expType": "fast",
 		"num": 40,
-		"rate": "50",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "moonstone",
-		    "evolvesTo": null
-		}
+		"rate": "50"
 	},
 	"zubat": {
 		"expType": "mediumfast",
 		"num": 41,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "golbat"
-		}
+		"rate": "255"
 	},
 	"golbat": {
 		"expType": "mediumfast",
 		"num": 42,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 22,
-		    "evolvesTo": "crobat"
+		"rate": "90"
 	},
 	"oddish": {
 		"expType": "mediumslow",
 		"num": 43,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "gloom"
+		"rate": "255"
 	},
 	"gloom": {
 		"expType": "mediumslow",
 		"num": 44,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 21,
-		    "evolvesTo": "vileplume|bellossom"
+		"rate": "120"
 	},
 	"vileplume": {
 		"expType": "mediumslow",
 		"num": 45,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "leafstone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"paras": {
 		"expType": "mediumfast",
 		"num": 46,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "parasect"
+		"rate": "190"
 	},
 	"parasect": {
 		"expType": "mediumfast",
 		"num": 47,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 24,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"venonat": {
 		"expType": "mediumfast",
 		"num": 48,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "venomoth"
+		"rate": "190"
 	},
 	"venomoth": {
 		"expType": "mediumfast",
 		"num": 49,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 31,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"diglett": {
 		"expType": "mediumfast",
 		"num": 50,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "dugtrio"
+		"rate": "255"
 	},
 	"dugtrio": {
 		"expType": "mediumfast",
 		"num": 51,
-		"rate": "50",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 26,
-		    "evolvesTo": null
+		"rate": "50"
 	},
 	"meowth": {
 		"expType": "mediumfast",
 		"num": 52,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "persian"
+		"rate": "255"
 	},
 	"persian": {
 		"expType": "mediumfast",
 		"num": 53,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 28,
-		    "evolvesTo": null
+		"rate": "90"
 	},
 	"psyduck": {
 		"expType": "mediumfast",
 		"num": 54,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "golduck"
+		"rate": "190"
 	},
 	"golduck": {
 		"expType": "mediumfast",
 		"num": 55,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 33,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"mankey": {
 		"expType": "mediumfast",
 		"num": 56,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "primeape"
+		"rate": "190"
 	},
 	"primeape": {
 		"expType": "mediumfast",
 		"num": 57,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 28,
-		    "evolvesTo": ""
+		"rate": "75"
 	},
 	"growlithe": {
 		"expType": "slow",
 		"num": 58,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "arcanine"
+		"rate": "190"
 	},
 	"arcanine": {
 		"expType": "slow",
 		"num": 59,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "firestone",
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"poliwag": {
 		"expType": "mediumslow",
 		"num": 60,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "poliwhirl"
+		"rate": "255"
 	},
 	"poliwhirl": {
 		"expType": "mediumslow",
 		"num": 61,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 25,
-		    "evolvesTo": "poliwrath|politoed"
+		"rate": "120"
 	},
 	"poliwrath": {
 		"expType": "mediumslow",
 		"num": 62,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "waterstone",
-		    "evolvesTo": "politoed"
+		"rate": "45"
 	},
 	"abra": {
 		"expType": "mediumslow",
 		"num": 63,
-		"rate": "200",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "kadabra"
+		"rate": "200"
 	},
 	"kadabra": {
 		"expType": "mediumslow",
 		"num": 64,
-		"rate": "100",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 16,
-		    "evolvesTo": "alakazam"
+		"rate": "100*"
 	},
 	"alakazam": {
 		"expType": "mediumslow",
 		"num": 65,
-		"rate": "50",
-		"evolution": {
-		    "trigger": "trade",
-		    "type": "trade",
-		    "exact": null,
-		    "evolvesTo": null
+		"rate": "50"
 	},
 	"machop": {
 		"expType": "mediumslow",
 		"num": 66,
-		"rate": "180",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": 28,
-		    "evolvesTo": "machoke"
+		"rate": "180"
 	},
 	"machoke": {
 		"expType": "mediumslow",
 		"num": 67,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": "28",
-		    "evolvesTo": "machamp"
+		"rate": "90"
 	},
 	"machamp": {
 		"expType": "mediumslow",
 		"num": 68,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "trade",
-		    "type": "trade",
-		    "exact": null,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"bellsprout": {
 		"expType": "mediumslow",
 		"num": 69,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "weepinbell"
+		"rate": "255"
 	},
 	"weepinbell": {
 		"expType": "mediumslow",
 		"num": 70,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 21,
-		    "evolvesTo": "victreebel"
+		"rate": "120"
 	},
 	"victreebel": {
 		"expType": "mediumslow",
 		"num": 71,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "leafstone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"tentacool": {
 		"expType": "slow",
 		"num": 72,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "tentacruel"
+		"rate": "190"
 	},
 	"tentacruel": {
 		"expType": "slow",
 		"num": 73,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"geodude": {
 		"expType": "mediumslow",
 		"num": 74,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "graveler"
+		"rate": "255"
 	},
 	"graveler": {
 		"expType": "mediumslow",
 		"num": 75,
-		"rate": "120",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 25,
-		    "evolvesTo": "golem"
+		"rate": "120"
 	},
 	"golem": {
 		"expType": "mediumslow",
 		"num": 76,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "trade",
-		    "type": "trade",
-		    "exact": null,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"ponyta": {
 		"expType": "mediumfast",
 		"num": 77,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "rapidash"
+		"rate": "190"
 	},
 	"rapidash": {
 		"expType": "mediumfast",
 		"num": 78,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 40,
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"slowpoke": {
 		"expType": "mediumfast",
 		"num": 79,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "slowbro|slowking"
+		"rate": "190"
 	},
 	"slowbro": {
 		"expType": "mediumfast",
 		"num": 80,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 37,
-		    "evolvesTo": ""
+		"rate": "75"
 	},
 	"magnemite": {
 		"expType": "mediumfast",
 		"num": 81,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "magneton"
+		"rate": "190"
 	},
 	"magneton": {
 		"expType": "mediumfast",
 		"num": 82,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": "magnezone"
+		"rate": "60"
 	},
 	"farfetchd": {
 		"expType": "mediumfast",
 		"num": 83,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": null
-		}
+		"rate": "45"
 	},
 	"doduo": {
 		"expType": "mediumfast",
 		"num": 84,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "dodrio"
+		"rate": "190"
 	},
 	"dodrio": {
 		"expType": "mediumfast",
 		"num": 85,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 31,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"seel": {
 		"expType": "mediumfast",
 		"num": 86,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "dewgong"
+		"rate": "190"
 	},
 	"dewgong": {
 		"expType": "mediumfast",
 		"num": 87,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 34,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"grimer": {
 		"expType": "mediumfast",
 		"num": 88,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "muk"
+		"rate": "190"
 	},
 	"muk": {
 		"expType": "mediumfast",
 		"num": 89,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 38,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"shellder": {
 		"expType": "slow",
 		"num": 90,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "cloyster"
+		"rate": "190"
 	},
 	"cloyster": {
 		"expType": "slow",
 		"num": 91,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "waterstone",
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"gastly": {
 		"expType": "mediumslow",
 		"num": 92,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "haunter"
+		"rate": "190"
 	},
 	"haunter": {
 		"expType": "mediumslow",
 		"num": 93,
-		"rate": "90",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 25,
-		    "evolvesTo": "gengar"
+		"rate": "90"
 	},
 	"gengar": {
 		"expType": "mediumslow",
 		"num": 94,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "trade",
-		    "type": "trade",
-		    "exact": null,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"onix": {
 		"expType": "mediumfast",
 		"num": 95,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "steelix"
+		"rate": "45"
 	},
 	"drowzee": {
 		"expType": "mediumfast",
 		"num": 96,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "hypno"
+		"rate": "190"
 	},
 	"hypno": {
 		"expType": "mediumfast",
 		"num": 97,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 26,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"krabby": {
 		"expType": "mediumfast",
 		"num": 98,
-		"rate": "225",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "kingler"
+		"rate": "225"
 	},
 	"kingler": {
 		"expType": "mediumfast",
 		"num": 99,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 28,
-		    "evolvesTo": "kingler"
+		"rate": "60"
 	},
 	"voltorb": {
 		"expType": "mediumfast",
 		"num": 100,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "electrode"
+		"rate": "190"
 	},
 	"electrode": {
 		"expType": "mediumfast",
 		"num": 101,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"exeggcute": {
 		"expType": "slow",
 		"num": 102,
-		"rate": "90",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "exeggutor"
+		"rate": "90"
 	},
 	"exeggutor": {
 		"expType": "slow",
 		"num": 103,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "leafstone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"cubone": {
 		"expType": "mediumfast",
 		"num": 104,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "marowak"
+		"rate": "190"
 	},
 	"marowak": {
 		"expType": "mediumfast",
 		"num": 105,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 28,
-		    "evolvesTo": null
+		"rate": "75"
 	},
 	"hitmonlee": {
 		"expType": "mediumfast",
 		"num": 106,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": null,
-		    "exact": 20,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"hitmonchan": {
 		"expType": "mediumfast",
 		"num": 107,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": null,
-		    "exact": 20,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"lickitung": {
 		"expType": "mediumfast",
 		"num": 108,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "lickilicky"
+		"rate": "45"
 	},
 	"koffing": {
 		"expType": "mediumfast",
 		"num": 109,
-		"rate": "190",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "weezing"
+		"rate": "190"
 	},
 	"weezing": {
 		"expType": "mediumfast",
 		"num": 110,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 35,
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"rhyhorn": {
 		"expType": "slow",
 		"num": 111,
-		"rate": "120",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "rhydon"
+		"rate": "120"
 	},
 	"rhydon": {
 		"expType": "slow",
 		"num": 112,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 42,
-		    "evolvesTo": "rhyperior"
+		"rate": "60"
 	},
 	"chansey": {
 		"expType": "fast",
 		"num": 113,
-		"rate": "30",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "friendship",
-		    "exact": "ovalstone",
-		    "evolvesTo": "blissey"
+		"rate": "30"
 	},
 	"tangela": {
 		"expType": "mediumfast",
 		"num": 114,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "tangrowth"
+		"rate": "45"
 	},
 	"kangaskhan": {
 		"expType": "mediumfast",
@@ -1195,112 +583,57 @@
 	"horsea": {
 		"expType": "mediumfast",
 		"num": 116,
-		"rate": "225",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "seadra"
+		"rate": "225"
 	},
 	"seadra": {
 		"expType": "mediumfast",
 		"num": 117,
-		"rate": "75",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 32,
-		    "evolvesTo": "kingdra"
+		"rate": "75"
 	},
 	"goldeen": {
 		"expType": "mediumfast",
 		"num": 118,
-		"rate": "225",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "seaking"
+		"rate": "225"
 	},
 	"seaking": {
 		"expType": "mediumfast",
 		"num": 119,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 33,
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"staryu": {
 		"expType": "slow",
 		"num": 120,
-		"rate": "225",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "starmie"
+		"rate": "225"
 	},
 	"starmie": {
 		"expType": "slow",
 		"num": 121,
-		"rate": "60",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "waterstone",
-		    "evolvesTo": null
+		"rate": "60"
 	},
 	"mrmime": {
 		"expType": "mediumfast",
 		"num": 122,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "move",
-		    "exact": "mimic",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"scyther": {
 		"expType": "mediumfast",
 		"num": 123,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "scizor"
+		"rate": "45"
 	},
 	"jynx": {
 		"expType": "mediumfast",
 		"num": 124,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"electabuzz": {
 		"expType": "mediumfast",
 		"num": 125,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": "electivire"
+		"rate": "45"
 	},
 	"magmar": {
 		"expType": "mediumfast",
 		"num": 126,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": "magmortar"
+		"rate": "45"
 	},
 	"pinsir": {
 		"expType": "slow",
@@ -1327,22 +660,12 @@
 	"magikarp": {
 		"expType": "slow",
 		"num": 129,
-		"rate": "255",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "gyarados"
+		"rate": "255"
 	},
 	"gyarados": {
 		"expType": "slow",
 		"num": 130,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 20,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"lapras": {
 		"expType": "slow",
@@ -1369,92 +692,47 @@
 	"eevee": {
 		"expType": "mediumfast",
 		"num": 133,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "vaporeon|jolteon|flareon|umbreon|espion|leafeon|glaceon|sylveon"
+		"rate": "45"
 	},
 	"vaporeon": {
 		"expType": "mediumfast",
 		"num": 134,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "waterstone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"jolteon": {
 		"expType": "mediumfast",
 		"num": 135,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "thunderstone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"flareon": {
 		"expType": "mediumfast",
 		"num": 136,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "item",
-		    "type": "stone",
-		    "exact": "firestone",
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"porygon": {
 		"expType": "mediumfast",
 		"num": 137,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "porygon2"
+		"rate": "45"
 	},
 	"omanyte": {
 		"expType": "mediumfast",
 		"num": 138,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "omastar"
+		"rate": "45"
 	},
 	"omastar": {
 		"expType": "mediumfast",
 		"num": 139,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 40,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"kabuto": {
 		"expType": "mediumfast",
 		"num": 140,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "kabutops"
+		"rate": "45"
 	},
 	"kabutops": {
 		"expType": "mediumfast",
 		"num": 141,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 40,
-		    "evolvesTo": null
+		"rate": "45"
 	},
 	"aerodactyl": {
 		"expType": "slow",
@@ -1470,14 +748,9 @@
 	"snorlax": {
 		"expType": "slow",
 		"num": 143,
-		"rate": "25",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "friendship",
-		    "exact": null,
-		    "evolvesTo": null
+		"rate": "25"
 	},
-	"articuno": {
+		"articuno": {
 		"expType": "slow",
 		"num": 144,
 		"rate": "3",
@@ -1513,35 +786,17 @@
 	"dratini": {
 		"expType": "slow",
 		"num": 147,
-		"rate": "45",
-		"evolution": {
-		    "trigger": null,
-		    "type": null,
-		    "exact": null,
-		    "evolvesTo": "dragonair"
-		}
+		"rate": "45"
 	},
 	"dragonair": {
 		"expType": "slow",
 		"num": 148,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 30,
-		    "evolvesTo": "dragonite"
-		}
+		"rate": "45*"
 	},
 	"dragonite": {
 		"expType": "slow",
 		"num": 149,
-		"rate": "45",
-		"evolution": {
-		    "trigger": "level",
-		    "type": "number",
-		    "exact": 55,
-		    "evolvesTo": null
-		}
+		"rate": "45*"
 	},
 	"mewtwo": {
 		"expType": "slow",
