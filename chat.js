@@ -899,6 +899,14 @@ Chat.loadCommands = function () {
 		if (file.substr(-3) !== '.js') continue;
 		Object.assign(commands, require('./game-cards/' + file).commands);
 	}
+	// Load games for Console
+	SG.gameList = {};
+	for (let file of fs.readdirSync(path.resolve(__dirname, 'game-cards'))) {
+		if (file.substr(-3) !== '.js') continue;
+		let obj = require('./game-cards/' + file).box;
+		if (obj && obj.name) obj.id = toId(obj.name);
+		SG.gameList[obj.id] = obj;
+	}
 };
 
 /**

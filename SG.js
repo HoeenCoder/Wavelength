@@ -277,7 +277,7 @@ exports.SG = {
 			data += ['Bashful', 'Docile', 'Hardy', 'Quirky', 'Serious'][Math.floor(Math.random() * 5)] + "||";
 		}
 		let gender = Math.random();
-		if (pokemon.genderRatio.M < gender) {
+		if (pokemon.genderRatio.M > gender) {
 			gender = "M";
 		} else if (pokemon.genderRatio.M !== 0 && pokemon.genderRatio.F !== 0) {
 			gender = "F";
@@ -305,7 +305,6 @@ exports.SG = {
 		if (!pokemon || !pokemon.species) return 0;
 		ball = toId(ball);
 		let ballRates = {pokeball: 1, greatball: 1.5, ultraball: 2};
-		let catchRates = {};
 		if (ball === 'masterball') return true;
 		if (!ball || !(ball in ballRates)) ball = 'pokeball';
 		let statusBonus = 1;

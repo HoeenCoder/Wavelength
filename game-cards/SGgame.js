@@ -1,13 +1,36 @@
 'use strict';
 
-/* For later...
-
 class SGgame extends Console.Console {
-	constructor(user, room) {
-		super(user, room);
+	constructor(user, room, muted) {
+		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button> <button class="button disabled" name="send" value="">TBA</button> <button class="button disabled" name="send" value="">TBA</button></center>', muted);
+		// Lines of text to be displayed
+		this.curText = [];
+		this.location = null;
+		this.nextSymbol = '\u2605';
+	}
+	buildMap(location) {
+		// TODO locations, and actual map, ect
+		return this.defaultHTML;
+	}
+	next(type, hideButton) {
+		switch (type) {
+			case 'text':
+			let base = this.buildMap();
+			if (!this.curText.length) return base;
+			let msg = this.curText.shift();
+			if (msg.split('|')[1] === 'hide') {
+				hideButton = true;
+				msg = msg.split('|')[0];
+			}
+			let parts = base.split('<!--split-->');
+			return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + msg + (hideButton ? '' : '<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button>') + '</div>' + parts.join('');
+			//break;
+		}
+	}
+	bag(menu) {
+		if (!menu) menu = 'items';
 	}
 }
-*/
 
 exports.box = {
 	startCommand: '/playalpha',
@@ -17,25 +40,47 @@ exports.box = {
 exports.commands = {
 	resetalpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
-		let screen = '<div class="infobox" style="background-color: black; color: white; font-family: monospace; height: 400px">~/spacialgaze/sggame>node game.js<br/>##################################<br/>## SG Game (Developers version) ##<br/>##################################<br/>' +
-			'<b>Choose a Starter:</b><br/>';
+		if (user.console) this.parse('/console kill');
+		user.console = new SGgame(user, room, (toId(target) === 'mute' ? true : false));
+		user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
+			'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
+			'Lets get you setup.<br/>Pick a starter:']
+		let msg = '';
 		let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio']];
 		for (let i = 0; i < starters.length; i++) {
 			let color = (i === 0 ? 'green' : (i === 1 ? 'red' : 'blue'));
 			for (let j = 0; j < starters[i].length; j++) {
-				screen += '<button name="send" value="/pickstarter ' + starters[i][j] + '" style="border: none; background: none; color: ' + color + '"><u>' + starters[i][j] + '</u></button> ';
+				msg += '<button name="send" value="/pickstarter ' + starters[i][j] + '" style="border: none; background: none; color: ' + color + '"><u>' + starters[i][j] + '</u></button> ';
 			}
-			screen += '<br/>';
+			msg += (i + 1 < starters.length ? '<br/>' : '');
 		}
-		screen += '_</div>';
-		let type = (toId(cmd) === 'playalpha' ? 'uhtml' : 'uhtmlchange');
-		return user.sendTo(room, '|' + type + '|sgame' + user.userid + '|' + screen);
+		user.console.curText.push(msg + '|hide');
+		user.console.curText.push('Great choice! I\'ll leave you to your fun now.<br/><center><button name="send" value="/search gen7wildpokemonalpha" style="border: none; background: none; color: purple"><u>Try a battle!</u></button> <button name="send" value="/resetalpha" style="border: none; background: none; color: purple"><u>Reset the alpha</u></button></center>|hide')
+		user.console.init();
+		this.parse('/sggame next');
+	},
+	sggame: {
+		next: function (target, room, user, connection, cmd) {
+			return user.console.update(null, user.console.next('text'), null);
+		},
+		bag: function (target, room, user, connection, cmd) {
+			return this.sendReply('Not Avaliable');
+		},
+		pokemon: function (target, room, user, connection, cmd) {
+			return this.sendReply('Not Avaliable');
+		},
+		pokedex: function (target, room, user, connection, cmd) {
+			return this.sendReply('Not Avaliable');
+		},
+		pc: function (target, room, user, connection, cmd) {
+			return this.sendReply('Not Avaliable');
+		},
 	},
 	pickstarter: function (target, room, user) {
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
-		if (!target || starters.indexOf(target) === -1) return this.parse('/playalpha');
+		if (!target || starters.indexOf(target) === -1) return false;
 		Db('players').set(user.userid, SG.unpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));
-		return user.sendTo(room, '|uhtmlchange|sgame' + user.userid + '|<div class="infobox" style="background-color: black; color: white; font-family: monospace; height: 400px">~/spacialgaze/sggame>node game.js<br/>##################################<br/>## SG Game (Developers version) ##<br/>##################################<br/><br/><b>Ready for testing</b><br/><button name="send" value="/search gen7wildpokemonalpha" style="border: none; background: none; color: cyan"><u>Start the test</u></button> <button name="send" value="/resetalpha" style="border: none; background: none; color: cyan"><u>Reset the test</u></button><br/>_</div>');
+		this.parse('/sggame next');
 	},
 	throwpokeball: function (target, room, user) {
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
