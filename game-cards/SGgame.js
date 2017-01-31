@@ -14,7 +14,7 @@ class SGgame extends Console.Console {
 	}
 	next(type, hideButton) {
 		switch (type) {
-			case 'text':
+		case 'text':
 			let base = this.buildMap();
 			if (!this.curText.length) return base;
 			let msg = this.curText.shift();
@@ -41,10 +41,10 @@ exports.commands = {
 	resetalpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
 		if (user.console) this.parse('/console kill');
-		user.console = new SGgame(user, room, (toId(target) === 'mute' ? true : false));
+		user.console = new SGgame(user, room, (!!target || false));
 		user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
 			'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
-			'Lets get you setup.<br/>Pick a starter:']
+			'Lets get you setup.<br/>Pick a starter:'];
 		let msg = '';
 		let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio']];
 		for (let i = 0; i < starters.length; i++) {
@@ -55,7 +55,7 @@ exports.commands = {
 			msg += (i + 1 < starters.length ? '<br/>' : '');
 		}
 		user.console.curText.push(msg + '|hide');
-		user.console.curText.push('Great choice! I\'ll leave you to your fun now.<br/><center><button name="send" value="/search gen7wildpokemonalpha" style="border: none; background: none; color: purple"><u>Try a battle!</u></button> <button name="send" value="/resetalpha" style="border: none; background: none; color: purple"><u>Reset the alpha</u></button></center>|hide')
+		user.console.curText.push('Great choice! I\'ll leave you to your fun now.<br/><center><button name="send" value="/search gen7wildpokemonalpha" style="border: none; background: none; color: purple"><u>Try a battle!</u></button> <button name="send" value="/resetalpha" style="border: none; background: none; color: purple"><u>Reset the alpha</u></button></center>|hide');
 		user.console.init();
 		this.parse('/sggame next');
 	},
