@@ -2,7 +2,7 @@
 
 class SGgame extends Console.Console {
 	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button> <button class="button disabled" name="send" value="">TBA</button> <button class="button disabled" name="send" value="">TBA</button></center>', muted);
+		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button> <button class="button disabled" name="send" value="">TBA</button> <button class="button disabled" name="send" value="">TBA</button></center>', muted);
 		// Lines of text to be displayed
 		this.curText = [];
 		this.location = null;
@@ -61,22 +61,28 @@ exports.commands = {
 	},
 	sggame: {
 		next: function (target, room, user, connection, cmd) {
+			if (!user.console) return;
 			return user.console.update(null, user.console.next('text'), null);
 		},
 		bag: function (target, room, user, connection, cmd) {
+			if (!user.console) return;
 			return this.sendReply('Not Avaliable');
 		},
 		pokemon: function (target, room, user, connection, cmd) {
+			if (!user.console) return;
 			return this.sendReply('Not Avaliable');
 		},
 		pokedex: function (target, room, user, connection, cmd) {
+			if (!user.console) return;
 			return this.sendReply('Not Avaliable');
 		},
 		pc: function (target, room, user, connection, cmd) {
+			if (!user.console) return;
 			return this.sendReply('Not Avaliable');
 		},
 	},
 	pickstarter: function (target, room, user) {
+		if (!user.console) return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
 		if (!target || starters.indexOf(target) === -1) return false;
 		Db('players').set(user.userid, SG.unpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));

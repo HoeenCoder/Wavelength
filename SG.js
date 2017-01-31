@@ -301,6 +301,15 @@ exports.SG = {
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
+	teamAverage: function (team) {
+		if (typeof team === "string") team = SG.unpackTeam(team);
+		let avrg = 0;
+		for (let i = 0; i < team.length; i++) {
+			avrg += team[i].level;
+		}
+		avrg = avrg / team.length;
+		return Math.round(avrg);
+	},
 	throwPokeball: function (ball, pokemon) {
 		if (!pokemon || !pokemon.species) return 0;
 		ball = toId(ball);
