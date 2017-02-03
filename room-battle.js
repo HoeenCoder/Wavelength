@@ -278,13 +278,21 @@ class Battle {
 			this.score = [parseInt(lines[2]), parseInt(lines[3])];
 			break;
 		case 'caught':
-			let curTeam = Db('players').get(lines[2], []);
-			if (curTeam.length !== 6) {
-				//let newSet = SG.unpackTeam(lines[2]);
+			let curTeam = Db('players').get(lines[2]);
+			if (curTeam.party.length < 6) {
 				let newSet = Users.get('sgserver').wildTeams[lines[2]];
 				newSet = SG.unpackTeam(newSet)[0];
-				curTeam.push(newSet);
+				curTeam.party.push(newSet);
 				Db('players').set(lines[2][0], curTeam);
+			} else {
+				let newSet = Users.get('sgserver').wildTeams[lines[2]];
+				let response = curTeam.boxPoke(newSet, 1);
+				if (response) {
+					this.room.push(newSet.split('|')[1] + ' was sent to box ' + response + '.');
+				} else {
+					this.room.push(newSet.split('|')[1] + ' was released because your PC is full...');
+				}
+				this.room.update();
 			}
 			break;
 		}
