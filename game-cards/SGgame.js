@@ -297,6 +297,7 @@ exports.commands = {
 				orders.release = true;
 				orders.back = true;
 			}
+			if (target[2] === 'release') orders.back = true;
 			if ((slot || Number(slot) === 0) && !target[2]) orders.back = true;
 			let base = (target[2] === 'close' ? user.console.buildBase() : user.console.buildBase('pc', orders));
 			return user.console.update(null, user.console.pc(target[0], slot, target[2]), base);
