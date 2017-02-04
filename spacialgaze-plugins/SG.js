@@ -94,7 +94,6 @@ SG.reloadCSS = function () {
 SG.giveDailyReward = function (userid, user) {
 	if (!user || !userid) return false;
 	userid = toId(userid);
-	if (!user.autoconfirmed) return false;
 	if (!Db.DailyBonus.has(userid)) {
 		Db.DailyBonus.set(userid, [1, Date.now()]);
 		return false;
