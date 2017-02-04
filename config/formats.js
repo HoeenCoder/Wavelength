@@ -281,7 +281,7 @@ exports.Formats = [
 				this.add('c', '%ducktown', 'Beware! You are entering a town of ducks!');
 			}
 			if (name === 'hurricaned') {
-				this.add('c', '@Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
+				this.add('c', '+Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
 			}
 			if (name === 'hoeenhero') {
 				this.add('c', '~HoeenHero', 'Do I have to? I\'m in the middle of programming.');
@@ -299,13 +299,13 @@ exports.Formats = [
 				this.add('c', '~Mystifi', '__I\'ll HM01 u faster then sanic m89__');
 			}
 			if (name === 'krakenmare') {
-				this.add('c', '@Kraken Mare', 'You can\'t touch the master of RAGE!');
+				this.add('c', '&Kraken Mare', 'You can\'t touch the master of RAGE!');
 			}
 			if (name === 'almightybronzong') {
-				this.add('c', '@Almighty Bronzong', '``All hail.``');
+				this.add('c', '+Almighty Bronzong', '``All hail.``');
 			}
 			if (name === 'opple') {
-				this.add('c', '+Opple', 'lol hi');
+				this.add('c', '&Opple', 'lol hi');
 			}
 			if (name === 'mimiroppu') {
 				this.add('c', '@Mimiroppu', 'Mimiroppu, charm up~');
@@ -326,8 +326,8 @@ exports.Formats = [
 			if (name === 'auction') {
 				this.add('c', '+Auction', 'I think its time for the man to take his throne.');
 			}
-			if (name === 'saberran') {
-				this.add('c', '+Saber Ran', 'Watch Out Ice mons!');
+			if (name === 'ranfen') {
+				this.add('c', '+Ranfen', 'Watch Out Ice mons!');
 			}
 			if (name === 'xavier1942') {
 				this.add('c', '+Xavier1942', 'Behold, THE GREAT WALL OF...um...HAAAAAAX!');
@@ -344,7 +344,7 @@ exports.Formats = [
 				this.add('c', '~Hoeenhero', 'I can\'t battle now, i\'m too busy.');
 			}
 			if (name === 'hurricaned') {
-				this.add('c', '@Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
+				this.add('c', '+Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
 			}
 			if (name === 'ducktown') {
 				this.add('c', '%ducktown', 'My other ducks will come attack you!');
@@ -365,10 +365,10 @@ exports.Formats = [
 				this.add('c', '%Vulcaron', 'I\'ll be back, I have a lot of free time');
 			}
 			if (name === 'krakenmare') {
-				this.add('c', '@Kraken Mare', 'I shall spare you today, young one!');
+				this.add('c', '&Kraken Mare', 'I shall spare you today, young one!');
 			}
 			if (name === 'almightybronzong') {
-				this.add('c', '@Almighty Bronzong', '``I\'m off, night``');
+				this.add('c', '+Almighty Bronzong', '``I\'m off, night``');
 			}
 			if (name === 'admewn') {
 				this.add('c', '+Admewn', 'Brb, I\'ll be mewting someone :]');
@@ -427,7 +427,7 @@ exports.Formats = [
 				this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
 			}
 			if (name === 'hurricaned') {
-				this.add('c', '@Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
+				this.add('c', '+Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
 			}
 			if (name === 'serperiorater') {
 				this.add('c', '%Serperiorater', 'Dammit Benny, why ya gotta be that guy?');
@@ -448,10 +448,10 @@ exports.Formats = [
 				this.add('c', '+Admewn', 'Turn off the mewsic! I\'m out!');
 			}
 			if (name === 'krakenmare') {
-				this.add('c', '@Kraken Mare', 'The RAGE wasn\'t enough to overpower you!');
+				this.add('c', '&Kraken Mare', 'The RAGE wasn\'t enough to overpower you!');
 			}
 			if (name === 'almightybronzong') {
-				this.add('c', '@Almighty Bronzong', '``Nice achievement.``');
+				this.add('c', '+Almighty Bronzong', '``Nice achievement.``');
 			}
 			if (name === 'hydrostatics') {
 				this.add('c', '+Hydrostatics', 'Ok! It was a nice warm up for me! Let\'s battle for real the next time! ;)');
@@ -460,7 +460,7 @@ exports.Formats = [
 				this.add('c', '+UmichBrendan', 'I lost? How is that possible?');
 			}
 			if (name === 'opple') {
-				this.add('c', '+Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
+				this.add('c', '&Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
 			}
 			if (name === 'mimiroppu') {
 				this.add('c', '@Mimiroppu', 'Sorry \'bout it...');
@@ -477,8 +477,8 @@ exports.Formats = [
 			if (name === 'auction') {
 				this.add('c', '+Auction', 'Ya know, I think I should\'ve gotten __burn everything__ as my ability ;_;');
 			}
-			if (name === 'saberran') {
-				this.add('c', '+Saber Ran', 'No Fair flygon cant be beat D:');
+			if (name === 'ranfen') {
+				this.add('c', '+Ranfen', 'No Fair flygon cant be beat D:');
 			}
 		},
 	}, {
