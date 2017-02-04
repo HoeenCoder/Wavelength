@@ -234,29 +234,46 @@ exports.box = {
 
 exports.commands = {
 	resetalpha: 'playalpha',
+	continuealpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
 		if (user.console) this.parse('/console kill');
-		user.console = new SGgame(user, room, (!!target || false));
-		user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
-			'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
-			'Lets get you setup.<br/>Pick a starter:'];
-		let msg = '';
-		let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio']];
-		for (let i = 0; i < starters.length; i++) {
-			let color = (i === 0 ? 'green' : (i === 1 ? 'red' : 'blue'));
-			for (let j = 0; j < starters[i].length; j++) {
-				msg += '<button name="send" value="/pickstarter ' + starters[i][j] + '" style="border: none; background: none; color: ' + color + '"><u>' + starters[i][j] + '</u></button> ';
+		user.console = new SGgame(user, room, !!target);
+		if (cmd === 'playalpha') {
+			let htm = '<center>';
+			if (Db('players').has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + Math.floor(Math.abs(Date.now() - Db('players').get(user.userid).startedOn) / 86400000) + '<br/><br/>POKEDEX ' + Object.keys(Db('players').get(user.userid).pokedex).length + '</span></button>';
+			htm += '<button name="send" value="/resetalpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>NEW GAME</b></button></center>';
+			user.console.init();
+			user.console.update('background-color: #6688AA;', htm, null);
+		} else if (cmd === 'resetalpha') {
+			// New Game
+			user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
+				'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
+				'Lets get you setup.<br/>Pick a starter:'];
+			let msg = '';
+			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio']];
+			for (let i = 0; i < starters.length; i++) {
+				let color = (i === 0 ? 'green' : (i === 1 ? 'red' : 'blue'));
+				for (let j = 0; j < starters[i].length; j++) {
+					msg += '<button name="send" value="/pickstarter ' + starters[i][j] + '" style="border: none; background: none; color: ' + color + '"><u>' + starters[i][j] + '</u></button> ';
+				}
+				msg += (i + 1 < starters.length ? '<br/>' : '');
 			}
-			msg += (i + 1 < starters.length ? '<br/>' : '');
-		}
-		user.console.curText.push(msg + '|hide');
-		user.console.callback = function () {
+			user.console.curText.push(msg + '|hide');
+			user.console.callback = function () {
+				user.console.defaultBottomHTML = '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+				user.console.callback = null;
+			};
+			user.console.curText.push('Great choice! I\'ll leave you to your game now.|callback');
+			user.console.init();
+			this.parse('/sggame next');
+		} else {
+			// Continue
+			if (!Db('players').has(user.userid)) return this.parse('/resetalpha');
+			user.console.curText = ['Welcome back to the alpha, tell me if you like the game or find any bugs!'];
 			user.console.defaultBottomHTML = '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
-			user.console.callback = null;
-		};
-		user.console.curText.push('Great choice! I\'ll leave you to your fun now.|callback');
-		user.console.init();
-		this.parse('/sggame next');
+			user.console.init();
+			this.parse('/sggame next');
+		}
 	},
 	sggame: {
 		next: function (target, room, user, connection, cmd) {
@@ -283,7 +300,7 @@ exports.commands = {
 				return data.trim();
 			});
 			for (let key of user.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling 
+				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling
 			}
 			let slot = target[1];
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
