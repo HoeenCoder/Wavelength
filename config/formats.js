@@ -566,11 +566,20 @@ exports.Formats = [
 		name: "[Gen 7] Wild Pokemon (Alpha)",
 		desc: ["Wild Pok&eacute;mon battles for the SG game project (WIP)"],
 		rated: false,
-		useSGGame: true,
+		useSGgame: true,
 		isWildEncounter: true,
 
 		mod: 'gen7',
 		ruleset: ['Pokemon', 'Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['Illegal', 'Unreleased'],
+	},
+	{
+		name: "[Gen 7] [SGgame] Anything Goes",
+		desc: ["Anything Goes rules with the teams you build in SGgame."],
+		useSGgame: true,
+
+		mod: 'gen7',
+		ruleset: ['Pokemon', 'Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['Illegal', 'Unreleased'],
 	},
 

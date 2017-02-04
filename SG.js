@@ -246,6 +246,11 @@ exports.SG = {
 		for (let i = 0; i < 4; i++) {
 			if (raw.length === 0) break;
 			let target = raw.pop();
+			if (moves.split(',').indexOf(target.move) > -1) {
+				// Duplicate move
+				i--;
+				continue;
+			}
 			moves += target.move + ((raw.length === 0 || i === 3) ? "" : ",");
 		}
 		data += moves + "|";

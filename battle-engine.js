@@ -5096,8 +5096,8 @@ class Battle extends Tools.BattleDex {
 			}
 			let side = (toId(this.p1.name) === toId(user) ? "p1" : "p2");
 			let opp = (side === "p1" ? "p2" : "p1");
-			if (this[side].pokemon[0].volatiles['mustrecharge']) {
-				this.add('raw', '<span style="color:red">You can\'t throw another pokeball this turn.');
+			if (this[side].pokemon[0].volatiles['mustrecharge'] || this[side].pokemon[0].volatiles['lockedmove'] || this[side].pokemon[0].volatiles['rollout']) {
+				this.add('raw', '<span style="color:red">You can\'t throw a(nother) pokeball this turn.');
 				break;
 			}
 			this.add('message', user + ' threw a ' + (target.charAt(0).toUpperCase() + target.slice(1)) + '!');

@@ -497,10 +497,6 @@ class GlobalRoom {
 		if (!user.connected) return;
 
 		formatid = Tools.getFormat(formatid).id;
-		if (Tools.getFormat(formatid).useSGGame) {
-			if (!Db('players').get(user.userid)) return;
-			user.team = SG.packTeam(Db('players').get(user.userid).party);
-		}
 
 		user.prepBattle(formatid, 'search', null).then(result => this.finishSearchBattle(user, formatid, result));
 	}

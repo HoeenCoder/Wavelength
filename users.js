@@ -1229,9 +1229,12 @@ class User {
 			connection.popup(message);
 			return Promise.resolve(false);
 		}
-		if (type === 'challenge' && Tools.getFormat(formatid).isWildEncounter) {
-			connection.popup('You cannot challenge users to this format.');
-			return Promise.resolve(false);
+		if (Tools.getFormat(formatid).useSGgame) {
+			if (type === 'challenge' && Tools.getFormat(formatid).isWildEncounter) {
+				connection.popup('You cannot challenge users to this format.');
+				return Promise.resolve(false);
+			}
+			this.team = SG.packTeam(Db('players').get(this.userid).party);
 		}
 		let gameCount = this.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {

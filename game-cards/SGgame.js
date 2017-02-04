@@ -282,6 +282,9 @@ exports.commands = {
 			target = target.map(data => {
 				return data.trim();
 			});
+			for (let key of user.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling 
+			}
 			let slot = target[1];
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
 			let orders = {box: target[0], slot: slot};
