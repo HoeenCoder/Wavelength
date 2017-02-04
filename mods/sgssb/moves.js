@@ -424,7 +424,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Dark",
 	},
-	// Saber Ran
+	// Ranfen
 	outripper: {
 		category: "Physical",
 		id: "outripper",
@@ -503,7 +503,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Ice",
 	},
-	// SilverKill
+	// Vacuo
 	mechanicaldysfunction: {
 		category: "Special",
 		basePower: 110,
@@ -524,7 +524,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Electric",
 	},
-	//Desokoro
+	// Desokoro
 	tsunamicrash: {
 		category: "Physical",
 		basePower: 150,
