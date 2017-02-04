@@ -41,7 +41,7 @@ exports.BattleScripts = {
 				nature: 'Bold',
 			},
 
-			// Leaders:
+			// Global Leaders:
 			'&HiroZ': {
 				species: 'Genesect',
 				ability: 'Download',
@@ -87,22 +87,7 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
-			// Moderators:
-			'@Almighty Bronzong': {
-				species: 'Bronzong',
-				ability: 'Levitate',
-				item: 'Leftovers',
-				gender: (variant === 1) ? 'M' : 'F',
-				moves: ['Gyro Ball', 'Confuse Ray', 'Toxic', 'Earthquake',
-				],
-				signatureMove: 'Blast Furnace',
-				evs: {
-					hp: 252,
-					def: 168,
-					spd: 88,
-				},
-				nature: 'Sassy',
-			},
+			// Global Moderators:
 			'@C733937 123': {
 				species: 'Tyranitar',
 				ability: 'Bulletproof',
@@ -114,6 +99,21 @@ exports.BattleScripts = {
 				evs: {
 					hp: 252,
 					atk: 252,
+				},
+				nature: 'Adamant',
+			},
+			'@Desokoro': {
+				species: 'Gyarados',
+				ability: 'Guts',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['Substitute', 'Dragon Dance', 'Bounce',
+				],
+				signatureMove: 'Tsunami Crash',
+				evs: {
+					atk: 252,
+					spe: 252,
+					hp: 4,
 				},
 				nature: 'Adamant',
 			},
@@ -163,7 +163,7 @@ exports.BattleScripts = {
 				nature: 'Modest',
 			},
 
-			// Drivers:
+			// Global Drivers:
 			'%ducktown': {
 				species: 'Golduck',
 				ability: 'Cloud Nine',
@@ -253,7 +253,7 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
-			// Voices:
+			// Global Voices:
 			'+Admewn': {
 				species: 'Mew',
 				ability: 'Protean',
@@ -267,6 +267,21 @@ exports.BattleScripts = {
 					hp: 4,
 				},
 				nature: 'Timid',
+			},
+			'+Almighty Bronzong': {
+				species: 'Bronzong',
+				ability: 'Levitate',
+				item: 'Leftovers',
+				gender: (variant === 1) ? 'M' : 'F',
+				moves: ['Gyro Ball', 'Confuse Ray', 'Toxic', 'Earthquake',
+				],
+				signatureMove: 'Blast Furnace',
+				evs: {
+					hp: 252,
+					def: 168,
+					spd: 88,
+				},
+				nature: 'Sassy',
 			},
 
 			'+Auction': {
@@ -371,21 +386,6 @@ exports.BattleScripts = {
 					hp: 4,
 				},
 				nature: 'Bold',
-			},
-			'%Desokoro': {
-				species: 'Gyarados',
-				ability: 'Guts',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Substitute', 'Dragon Dance', 'Bounce',
-				],
-				signatureMove: 'Tsunami Crash',
-				evs: {
-					atk: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
 			},
 			'+CelestialTater': {
 				species: 'Armaldo',
