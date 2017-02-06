@@ -91,7 +91,7 @@ class SGgame extends Console.Console {
 			for (let j = 0; j < 6; j++) {
 				let bg = user.pc[(box - 1)][count];
 				bg = (bg ? SG.getPokemonIcon(user.pc[(box - 1)][count].split('|')[1]) : 'background: none');
-				output += '<td style="width: 15%;"><button style="' + bg + '; width: 100%; height: 100%; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '"></button></td>';
+				output += '<td style="width: 15%; height: 20%;"><button style="' + bg + '; width: 100%; height: 100%; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '"></button></td>';
 				count++;
 			}
 			output += "</tr>";

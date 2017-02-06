@@ -204,7 +204,15 @@ exports.SG = {
 	},
 	makeWildPokemon: function (location, exact) {
 		//TODO: locations
-		let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
+		let mons = Object.keys(Tools.data.Pokedex);
+		let pokemon = [];
+		for (let i = 0; i < mons.length; i++) {
+			let poke = Tools.getTemplate(mons[i]);
+			if (poke.tier !== 'LC' && poke.tier !== 'LC-Uber') continue;
+			pokemon.push(poke.id);
+		}
+		//let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
+		pokemon = pokemon[Math.floor(Math.random() * pokemon.length)];
 		if (exact && Tools.getTemplate(exact.species).exists) pokemon = exact.species;
 		pokemon = Tools.getTemplate(pokemon);
 		if (!pokemon || !pokemon.exists) {
