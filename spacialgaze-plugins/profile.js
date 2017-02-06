@@ -30,17 +30,11 @@ function isDev(user) {
 	return false;
 }
 
-function formatTitle(user) {
-	if (Db.customtitles.has(toId(user)) && Db.titlecolors.has(toId(user))) {
-		return '<font color="' + Db.titlecolors.get(toId(user)) +
-			'">(<b>' + Db.customtitles.get(toId(user)) + '</b>)</font>';
-	}
-	return '';
-}
-
-function titleCheck(user) {
-	if (Db.customtitles.has(toId(user)) && Db.titlecolors.has(toId(user))) {
-		return formatTitle(user);
+function showTitle(userid) {
+	userid = toId(userid);
+	if (Db.customtitles.has(userid)) {
+		return '<font color="' + Db.customtitles.get(userid)[1] +
+			'">(<b>' + Db.customtitles.get(userid)[0] + '</b>)</font>';
 	}
 	return '';
 }
@@ -167,13 +161,12 @@ exports.commands = {
 			}
 			let color = target[2].trim();
 			if (color.charAt(0) !== '#') return this.errorReply("The color needs to be a hex starting with '#'.");
-			Db.titlecolors.set(userid, color);
-			Db.customtitles.set(userid, title);
+			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(
 					'|html|You have recieved a custom title from ' + SG.nameColor(user.name, true) + '.' +
-					'<br />Title: ' + formatTitle(toId(targetUser)) +
-					'<br />Title Hex Color: ' + Db.titlecolors.get(toId(targetUser))
+					'<br />Title: ' + showTitle(toId(targetUser)) +
+					'<br />Title Hex Color: ' + color
 				);
 			}
 			this.logModCommand(user.name + " set a custom title to " + userid + "'s profile.");
@@ -307,9 +300,9 @@ exports.commands = {
 				profile += showBadges(toId(username));
 				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
 				if (!getFlag(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + showTitle(username) + '<br />';
 				} else {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
