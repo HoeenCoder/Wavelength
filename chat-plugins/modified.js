@@ -402,7 +402,7 @@ exports.commands = {
 	nerding: 'away',
 	mimis: 'away',
 	away: function (target, room, user, connection, cmd) {
-		if (!user.isAway && user.name.length > 19) return this.sendReply("Your username is too long for any kind of use of this command.");
+		if (!user.isAway && user.name.length > 19 && !user.can('lock')) return this.sendReply("Your username is too long for any kind of use of this command.");
 		if (!this.canTalk()) return false;
 
 		target = target ? target.replace(/[^a-zA-Z0-9]/g, '') : 'AWAY';
@@ -419,7 +419,7 @@ exports.commands = {
 		}
 
 		newName += ' - ' + status;
-		if (newName.length > 18) return this.sendReply("\"" + target + "\" is too long to use as your away status.");
+		if (newName.length > 18 && !user.can('lock')) return this.sendReply("\"" + target + "\" is too long to use as your away status.");
 
 		// forcerename any possible impersonators
 		let targetUser = Users.getExact(user.userid + target);
