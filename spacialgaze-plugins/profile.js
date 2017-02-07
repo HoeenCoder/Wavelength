@@ -99,6 +99,14 @@ exports.commands = {
 			this.sendReply(vipUsername + " has been demoted from VIP status.");
 			if (Users.get(vipUsername)) Users(vipUsername).popup("You have been demoted from VIP status by " + user.name + ".");
 		},
+		list: function (target, room, user) {
+			if (!Db.vips.keys().length) return this.errorReply('There seems to be no user with VIP status.');
+			let display = [];
+			Db.vips.keys().forEach(vipUser => {
+				display.push(SG.nameColor(vipUser, (Users(vipUser) && Users(vipUser).connected)));
+			});
+			this.popupReply('|html|<b><u><font size="3"><center>VIP Users:</center></font></u></b>' + display.join(','));
+		},
 		'': 'help',
 		help: function (target, room, user) {
 			this.sendReplyBox(
@@ -108,6 +116,8 @@ exports.commands = {
 				'<code>give [username]</code>: Gives <code>username</code> VIP status. Requires: & ~' +
 				'<br />' +
 				'<code>take [username]</code>: Takes <code>username</code>\'s VIP status. Requires: & ~' +
+				'<br />' +
+				'<code>list</code>: Shows list of users with VIP Status' +
 				'</div>'
 			);
 		},
@@ -133,6 +143,14 @@ exports.commands = {
 			this.sendReply(devUsername + " has been demoted from DEV status.");
 			if (Users.get(devUsername)) Users(devUsername).popup("You have been demoted from DEV status by " + user.name + ".");
 		},
+		list: function (target, room, user) {
+			if (!Db.devs.keys().length) return this.errorReply('There seems to be no user with DEV status.');
+			let display = [];
+			Db.devs.keys().forEach(devUser => {
+				display.push(SG.nameColor(devUser, (Users(devUser) && Users(devUser).connected)));
+			});
+			this.popupReply('|html|<b><u><font size="3"><center>DEV Users:</center></font></u></b>' + display.join(','));
+		},
 		'': 'help',
 		help: function (target, room, user) {
 			this.sendReplyBox(
@@ -142,6 +160,8 @@ exports.commands = {
 				'<code>give [username]</code>: Gives <code>username</code> DEV status. Requires: & ~' +
 				'<br />' +
 				'<code>take [username]</code>: Takes <code>username</code>\'s DEV status. Requires: & ~' +
+				'<br />' +
+				'<code>list</code>: Shows list of users with DEV Status' +
 				'</div>'
 			);
 		},
