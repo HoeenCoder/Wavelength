@@ -380,7 +380,7 @@ exports.commands = {
 		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]'],
 	
 	bonus: 'dailybonus',
-	checkbonus, 'dailybonus',
+	checkbonus: 'dailybonus',
 	dailybonus: function (target, room, user) {
 		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
 		if (nextBonus <= 0) return SG.giveDailyReward(user.userid, user);
