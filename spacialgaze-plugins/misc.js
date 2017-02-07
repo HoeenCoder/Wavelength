@@ -378,7 +378,7 @@ exports.commands = {
 	usetokenhelp: ['/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
 		      '/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
 		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]'],
-	
+
 	bonus: 'dailybonus',
 	checkbonus: 'dailybonus',
 	dailybonus: function (target, room, user) {
