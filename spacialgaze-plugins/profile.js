@@ -30,17 +30,11 @@ function isDev(user) {
 	return false;
 }
 
-function formatTitle(user) {
-	if (Db.customtitles.has(toId(user)) && Db.titlecolors.has(toId(user))) {
-		return '<font color="' + Db.titlecolors.get(toId(user)) +
-			'">(<b>' + Db.customtitles.get(toId(user)) + '</b>)</font>';
-	}
-	return '';
-}
-
-function titleCheck(user) {
-	if (Db.customtitles.has(toId(user)) && Db.titlecolors.has(toId(user))) {
-		return formatTitle(user);
+function showTitle(userid) {
+	userid = toId(userid);
+	if (Db.customtitles.has(userid)) {
+		return '<font color="' + Db.customtitles.get(userid)[1] +
+			'">(<b>' + Db.customtitles.get(userid)[0] + '</b>)</font>';
 	}
 	return '';
 }
@@ -92,8 +86,8 @@ exports.commands = {
 			if (vipUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (isVIP(vipUsername)) return this.errorReply(vipUsername + " is already a VIP user.");
 			Db.vips.set(vipUsername, 1);
-			this.sendReply(vipUsername + " has been given VIP status.");
-			if (Users.get(vipUsername)) Users(vipUsername).popup("You have been given VIP status by " + user.name + ".");
+			this.sendReply("|html|" + SG.nameColor(vipUsername, true) + " has been given VIP status.");
+			if (Users.get(vipUsername)) Users(vipUsername).popup("|html|You have been given VIP status by " + SG.nameColor(user.name, true) + ".");
 		},
 		take: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -102,8 +96,17 @@ exports.commands = {
 			if (vipUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (!isVIP(vipUsername)) return this.errorReply(vipUsername + " isn't a VIP user.");
 			Db.vips.remove(vipUsername);
-			this.sendReply(vipUsername + " has been demoted from VIP status.");
-			if (Users.get(vipUsername)) Users(vipUsername).popup("You have been demoted from VIP status by " + user.name + ".");
+			this.sendReply("|html|" + SG.nameColor(vipUsername, true) + " has been demoted from VIP status.");
+			if (Users.get(vipUsername)) Users(vipUsername).popup("|html|You have been demoted from VIP status by " + SG.nameColor(user.name, true) + ".");
+		},
+		users: 'list',
+		list: function (target, room, user) {
+			if (!Db.vips.keys().length) return this.errorReply('There seems to be no user with VIP status.');
+			let display = [];
+			Db.vips.keys().forEach(vipUser => {
+				display.push(SG.nameColor(vipUser, (Users(vipUser) && Users(vipUser).connected)));
+			});
+			this.popupReply('|html|<b><u><font size="3"><center>VIP Users:</center></font></u></b>' + display.join(','));
 		},
 		'': 'help',
 		help: function (target, room, user) {
@@ -114,6 +117,8 @@ exports.commands = {
 				'<code>give [username]</code>: Gives <code>username</code> VIP status. Requires: & ~' +
 				'<br />' +
 				'<code>take [username]</code>: Takes <code>username</code>\'s VIP status. Requires: & ~' +
+				'<br />' +
+				'<code>list</code>: Shows list of users with VIP Status' +
 				'</div>'
 			);
 		},
@@ -126,8 +131,8 @@ exports.commands = {
 			if (devUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (isDev(devUsername)) return this.errorReply(devUsername + " is already a DEV user.");
 			Db.devs.set(devUsername, 1);
-			this.sendReply(devUsername + " has been given DEV status.");
-			if (Users.get(devUsername)) Users(devUsername).popup("You have been given DEV status by " + user.name + ".");
+			this.sendReply('|html|' + SG.nameColor(devUsername, true) + " has been given DEV status.");
+			if (Users.get(devUsername)) Users(devUsername).popup("|html|You have been given DEV status by " + SG.nameColor(user.name, true) + ".");
 		},
 		take: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -136,8 +141,17 @@ exports.commands = {
 			if (devUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (!isDev(devUsername)) return this.errorReply(devUsername + " isn't a DEV user.");
 			Db.devs.remove(devUsername);
-			this.sendReply(devUsername + " has been demoted from DEV status.");
-			if (Users.get(devUsername)) Users(devUsername).popup("You have been demoted from DEV status by " + user.name + ".");
+			this.sendReply("|html|" + SG.nameColor(devUsername, true) + " has been demoted from DEV status.");
+			if (Users.get(devUsername)) Users(devUsername).popup("|html|You have been demoted from DEV status by " + SG.nameColor(user.name, true) + ".");
+		},
+		users: 'list',
+		list: function (target, room, user) {
+			if (!Db.devs.keys().length) return this.errorReply('There seems to be no user with DEV status.');
+			let display = [];
+			Db.devs.keys().forEach(devUser => {
+				display.push(SG.nameColor(devUser, (Users(devUser) && Users(devUser).connected)));
+			});
+			this.popupReply('|html|<b><u><font size="3"><center>DEV Users:</center></font></u></b>' + display.join(','));
 		},
 		'': 'help',
 		help: function (target, room, user) {
@@ -148,6 +162,8 @@ exports.commands = {
 				'<code>give [username]</code>: Gives <code>username</code> DEV status. Requires: & ~' +
 				'<br />' +
 				'<code>take [username]</code>: Takes <code>username</code>\'s DEV status. Requires: & ~' +
+				'<br />' +
+				'<code>list</code>: Shows list of users with DEV Status' +
 				'</div>'
 			);
 		},
@@ -167,13 +183,12 @@ exports.commands = {
 			}
 			let color = target[2].trim();
 			if (color.charAt(0) !== '#') return this.errorReply("The color needs to be a hex starting with '#'.");
-			Db.titlecolors.set(userid, color);
-			Db.customtitles.set(userid, title);
+			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(
 					'|html|You have recieved a custom title from ' + SG.nameColor(user.name, true) + '.' +
-					'<br />Title: ' + formatTitle(toId(targetUser)) +
-					'<br />Title Hex Color: ' + Db.titlecolors.get(toId(targetUser))
+					'<br />Title: ' + showTitle(toId(targetUser)) +
+					'<br />Title Hex Color: ' + color
 				);
 			}
 			this.logModCommand(user.name + " set a custom title to " + userid + "'s profile.");
@@ -307,9 +322,9 @@ exports.commands = {
 				profile += showBadges(toId(username));
 				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
 				if (!getFlag(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + titleCheck(username) + '<br />';
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + showTitle(username) + '<br />';
 				} else {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + titleCheck(username) + '<br />';
+					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
