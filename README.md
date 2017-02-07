@@ -84,7 +84,7 @@ Spacialgaze's and Pokémon Showdown's server is distributed under the terms of t
 Maintainers
 ------------------------------------------------------------------------
 
-This boilerplate is brought to you and maintained by the following people:
+This server is brought to you and maintained by the following people:
 
 Owners
 
