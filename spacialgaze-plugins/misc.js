@@ -384,6 +384,6 @@ exports.commands = {
 	dailybonus: function (target, room, user) {
 		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
 		if (nextBonus <= 0) return SG.giveDailyReward(user.userid, user);
-		return this.sendReply('Your next bonus is ' + Db.DailyBonus.get(user.userid, [1, Date.now()])[0] + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(nextBonus));
+		return this.sendReply('Your next bonus is ' + Db.DailyBonus.get(user.userid, [1, Date.now()])[0] + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
 	},
 };
