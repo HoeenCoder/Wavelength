@@ -378,4 +378,12 @@ exports.commands = {
 	usetokenhelp: ['/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
 		      '/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
 		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]'],
+	
+	bonus: 'dailybonus',
+	checkbonus, 'dailybonus',
+	dailybonus: function (target, room, user) {
+		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
+		if (nextBonus <= 0) return SG.giveDailyReward(user.userid, user);
+		return this.sendReply('Your next bonus is ' + Db.DailyBonus.get(user.userid, [1, Date.now()])[0] + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Db.DailyBonus.get(user.userid, [1, Date.now()])[1]));
+	},
 };
