@@ -117,7 +117,7 @@ class SGgame extends Console.Console {
 					} else {
 						species = species[0];
 					}
-					bg = 'background: url(//play.pokemonshowdown.com/sprites/bw' + (user.party[slot].shiny ? '-shiny' : '') + '/' + species + '.png) no-repeat top center;';
+					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (user.party[slot].shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + (user.party[slot].name ? user.party[slot].name + '<br/>(' + user.party[slot].species + ')' : user.party[slot].species) + '</b> Lvl ' + (user.party[slot].level) + '<br/>';
 				if (action === 'release') {
@@ -135,16 +135,8 @@ class SGgame extends Console.Console {
 				if (!data) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (data) {
-					let species = data.species;
-					species = species.split('-').map(part => {
-						return toId(part);
-					});
-					if (species[1]) {
-						species = species.shift() + '-' + species.shift() + species.join('');
-					} else {
-						species = species[0];
-					}
-					bg = 'background: url(//play.pokemonshowdown.com/sprites/bw' + (data.shiny ? '-shiny' : '') + '/' + species + '.png) no-repeat top center;';
+					let species = Tools.getTemplate(data.species).spriteid;
+					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (data.shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + (data.name ? data.name + '<br/>(' + data.species + ')' : data.species) + '</b> Lvl ' + (data.level) + '<br/>';
 				if (action === 'release') {
@@ -193,6 +185,9 @@ class Player {
 		this.party = starter;
 		this.pokedex = {};
 		// More to come...
+	}
+	test() {
+		return true;
 	}
 	boxPoke(pokemon, box) {
 		if (typeof pokemon !== 'string') {
@@ -269,6 +264,13 @@ exports.commands = {
 		} else {
 			// Continue
 			if (!Db('players').has(user.userid)) return this.parse('/resetalpha');
+			try {
+				Db('players').get(user.userid).test();
+			} catch (e) {
+				let newObj = new Player(user.userid, SG.unpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				Object.assign(newObj, Db('players').get(user.userid));
+				Db('players').set(user.userid, newObj);
+			}
 			user.console.curText = ['Welcome back to the alpha, tell me if you like the game or find any bugs!'];
 			user.console.defaultBottomHTML = '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 			user.console.init();
@@ -305,13 +307,11 @@ exports.commands = {
 			let slot = target[1];
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
 			let orders = {box: target[0], slot: slot};
-			//if (slot && target[0].split('|')[0] === 'party' && Db('players').get(user.userid).party.length > 1 && Number(slot) > -1 && Number(slot) < 6) {
 			if (target[0].split('|')[0] === 'party' && slot && Db('players').get(user.userid).party.length > 1 && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 6 && !target[2]) {
 				orders.deposit = true;
 				orders.release = true;
 				orders.back = true;
 			}
-			//if (slot && !isNaN(Number(slot)) && Db('players').get(user.userid).pc[Number(box) - 1][Number(slot)]) {
 			if (slot && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 30 && Db('players').get(user.userid).pc[Number(box) - 1][Number(slot)] && !target[2] && target[0].split('|')[0] !== 'party') {
 				if (Db('players').get(user.userid).party.length < 6) orders.withdraw = true;
 				orders.release = true;

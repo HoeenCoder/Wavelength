@@ -208,18 +208,34 @@ exports.SG = {
 		let pokemon = [];
 		for (let i = 0; i < mons.length; i++) {
 			let poke = Tools.getTemplate(mons[i]);
-			if (poke.tier !== 'LC' && poke.tier !== 'LC-Uber') continue;
+			if (!poke.exists || poke.illegal) continue;
+			if (poke.forme) {
+				let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
+			}
 			pokemon.push(poke.id);
 		}
 		//let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
 		pokemon = pokemon[Math.floor(Math.random() * pokemon.length)];
 		if (exact && Tools.getTemplate(exact.species).exists) pokemon = exact.species;
 		pokemon = Tools.getTemplate(pokemon);
+		let baseSpecies = pokemon;
+		let forme = null;
+		if (pokemon.otherForms && (!exact || !exact.species)) {
+				let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x)});
+				forme = formes[Math.floor(Math.random() * formes.length)];
+				pokemon = Tools.getTemplate(forme);
+		} else if (pokemon.otherForms && exact.species && exact.allowOtherFormes) {
+			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x)});
+			forme = formes[Math.floor(Math.random() * formes.length)];
+			pokemon = Tools.getTemplate(forme);
+		}
+		if (pokemon.baseSpecies) baseSpecies = Tools.getTemplate(pokemon.baseSpecies);
 		if (!pokemon || !pokemon.exists) {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
 		}
-		let data = "|" + pokemon.id + "||";
+		let data = "|" + (forme ? toId(forme) : pokemon.id) + "||";
 		let ability = Math.round(Math.random());
 		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
 		if (exact && exact.ability) {
@@ -242,6 +258,12 @@ exports.SG = {
 		let moves = "";
 		let raw = [];
 		let used = [];
+		if (!pokemon.learnset && baseSpecies.learnset) {
+			pokemon.learnset = baseSpecies.learnset;
+		} else if (!pokemon.learnset) {
+			console.log('Error on pokemon generation: No learn set found for: ' + pokemon.id + ' or for its base species: ' + baseSpecies.id);
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+		}
 		for (let move in pokemon.learnset) {
 			for (let learned in pokemon.learnset[move]) {
 				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
@@ -287,14 +309,28 @@ exports.SG = {
 			gender = "";
 		}
 		data += gender + "|";
-		for (let i = 0; i < 6; i++) {
-			data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
+		if ((pokemon.eggGroups[0] === 'Undiscovered' || pokemon.species === 'Manaphy') && !pokemon.prevo && !pokemon.nfe && pokemon.species !== 'Unown' && pokemon.baseSpecies !== 'Pikachu' && (pokemon.baseSpecies !== 'Diancie' || !set.shiny)) {
+			// 3 Perfect Ivs required
+			let left = 3;
+			for (let i = 0; i < 6; i++) {
+				let iv = Math.round(Math.random() * 31);
+				if (iv !== 31 && left) {
+					iv = (Math.random() > 0.5 ? 31 : iv);
+					if (i + iv >= 6) iv = 31;
+				}
+				data += iv + (i === 5 ? "|" : ",");
+			}
+		} else {
+			for (let i = 0; i < 6; i++) {
+				data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
+			}
 		}
 		if (Math.ceil(Math.random() * 4096) === 1) {
 			data += "S|";
 		} else {
 			data += "|";
 		}
+		if (lvl < pokemon.evoLevel) lvl = pokemon.evoLevel;
 		data += lvl + "|0";
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
@@ -459,7 +495,11 @@ exports.SG = {
 			if (parts[0]) obj.name = parts[0];
 			let pokemon = Tools.getTemplate(parts[1]);
 			if (!pokemon.exists) continue; // Invalid species
-			obj.species = pokemon.species;
+			obj.species =  pokemon.species;
+			if (pokemon.otherForms.indexOf(parts[1]) > -1) {
+				let forme = parts[1].substr(pokemon.species.length);
+				obj.species = pokemon.species + "-" + forme.substr(0, 1).toUpperCase() + forme.substr(1);
+			}
 
 			if (parts[2]) obj.item = Tools.getItem(parts[2]).name;
 
@@ -571,7 +611,7 @@ exports.SG = {
 			return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-pokeball-sheet.png) no-repeat scroll -80px 4px';
 		}
 		let id = toId(base);
-		if (pokemon && pokemon.species) id = toId(pokemon.species);
+		//if (pokemon && pokemon.species) id = toId(pokemon.species);
 		if (pokemon && pokemon.volatiles && pokemon.volatiles.formechange && !pokemon.volatiles.transform) id = toId(pokemon.volatiles.formechange[2]);
 		if (pokemon && pokemon.num !== undefined) num = pokemon.num;
 		if (num < 0) num = 0;
