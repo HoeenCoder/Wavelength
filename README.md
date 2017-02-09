@@ -17,7 +17,7 @@ Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repositor
 Introduction
 ------------------------------------------------------------------------
 
-This is the source code for the Pokémon Showdown server [Spacialgaze][4], a website for Pokémon battling. Pokémon Showdown simulates singles, doubles and triples battles in all the games out so far (Generations 1 through 6).
+This is the source code for the Pokémon Showdown server [Spacialgaze][4], a website for Pokémon battling. Pokémon Showdown simulates singles, doubles and triples battles in all the games out so far (Generations 1 through 7).
 
 This repository contains the files needed to set up your own Pokémon Showdown server. The Spacialgaze server also comes with some custom additions not found on the main repo. This repo will still have all the features from the main server. Note that to set up a server, you'll also need a server computer.
 
@@ -84,11 +84,11 @@ Spacialgaze's and Pokémon Showdown's server is distributed under the terms of t
 Maintainers
 ------------------------------------------------------------------------
 
-This boilerplate is brought to you and maintained by the following people:
+This server is brought to you and maintained by the following people:
 
 Owners
 
-[HoeenCoder](https://github.com/HoeenCoder) | [Mystifi](https://github.com/Mystifi) 
+[HoeenCoder](https://github.com/HoeenCoder) | [Mystifi](https://github.com/Mystifi)
 
 
 Special thanks

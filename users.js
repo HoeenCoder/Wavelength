@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Users
  * Pokemon Showdown - http://pokemonshowdown.com/
  *
@@ -408,7 +408,7 @@ class User {
 		if (this.namelocked) {
 			return '‽' + this.name;
 		}
-		if (SG.auth2Active && !this.auth2Valid) {
+		if (SG.auth2Active && !SG.auth2Status[this.userid]) {
 			return '✖' + this.name;
 		}
 		if (roomid && roomid !== 'global') {
@@ -436,7 +436,7 @@ class User {
 	}
 	can(permission, target, room) {
 		if (this.hasSysopAccess()) return true;
-		if (SG.auth2Active && !this.auth2Valid) return false;
+		if (SG.auth2Active && !SG.auth2Status[this.userid]) return false;
 		let groupData = Config.groups[this.group];
 		if (groupData && groupData['root']) {
 			return true;
@@ -668,16 +668,15 @@ class User {
 		if (SG.auth2Active) {
 			if (!SG.checkLogin(userid, this.latestIp)) {
 				SG.auth2Status[userid] = false;
-				this.auth2Valid = false;
 				this.popup('|html|<center><h2 style="color:red"><u>Two Factor Authentication Failed</u></h2><hr/><br/><b>You are now rank locked. Your ranks been disabled (not removed).</b><br/><br/>Login to your backup account and use <code style="border: 1px solid #555; background: #333; color: #DDD">/auth2 passcode ' + userid + '</code> to get the passcode to un rank lock yourself.');
 				return false;
 			} else {
 				SG.auth2Status[userid] = true;
-				this.auth2Valid = true;
 			}
 		}
 		if (Tells.inbox[userid]) Tells.sendTell(userid, this);
 		SG.showNews(userid, this);
+		SG.giveDailyReward(userid, this);
 		return false;
 	}
 	validateRename(name, tokenData, newlyRegistered, challenge) {
@@ -1035,7 +1034,7 @@ class User {
 		}
 	}
 	onDisconnect(connection) {
-		if (this.named) Db('seen').set(this.userid, Date.now());
+		if (this.named) Db.seen.set(this.userid, Date.now());
 		for (let i = 0; i < this.connections.length; i++) {
 			if (this.connections[i] === connection) {
 				// console.log('DISCONNECT: ' + this.userid);

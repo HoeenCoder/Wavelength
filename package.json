@@ -5,7 +5,8 @@
   "version": "0.11.0",
   "dependencies": {
     "sockjs": "0.3.18",
-    "origindb": "2.5.2",
+    "nef": "^1.1.0",
+    "nef-fs": "^1.0.0",
     "autolinker": "*",
     "request": "2.74.0",
     "md5": "*",

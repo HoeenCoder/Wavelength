@@ -2,7 +2,7 @@
  *Draft Management by Execute.
  */
 'use strict';
-let Db = require('origindb')('config/db');
+
 let fs = require('fs');
 let path = require('path');
 let greencss = 'background:#ccffcc;padding:10px;color:#006600;border:1px solid #006600; border-radius:6px;text-align:center;';
@@ -21,7 +21,6 @@ class Draft {
 		this.maxMons = 12;
 		this.random = true;
 		this.snake = true;
-		this.file = Db(this.room + 'draft');
 	}
 	addTeam(teamname, manager, self) {
 		if (this.teams[teamname]) return self.errorReply('There is already a team with this Team Name.');
@@ -30,7 +29,8 @@ class Draft {
 			'draftpicks': [],
 		};
 		this.originalOrder.push(teamname);
-		this.file.set('teams', this.teams);
+		let fileName = this.room + 'draft';
+		Db[fileName].set('teams', this.teams);
 		this.room.add('|html|<div style="' + greencss + '">The <b>' + teamname + '</b> are now apart of the draft and is managed by <b>' + manager + '</b></div>');
 		this.log(teamname + ' is now apart of the draft and is managed by ' + manager);
 	}
@@ -43,7 +43,8 @@ class Draft {
 			if (this.order[i] === teamname) this.order.splice(i, 1);
 			continue;
 		}
-		this.file.set('teams', this.teams);
+		let fileName = this.room + 'draft';
+		Db[fileName].set('teams', this.teams);
 		this.log(teamname + ' has been removed from this league.');
 	}
 	start(self) {
@@ -61,7 +62,8 @@ class Draft {
 		if (this.teams[this.turn].manager !== user) return self.errorReply('It is not your turn to draft.');
 		if (this.draftedMons.includes(pk)) return self.errorReply('This mon has already been drafted by someone else.');
 		this.teams[this.turn].draftpicks.push(pk);
-		this.file.set('teams', this.teams);
+		let fileName = this.room + 'draft';
+		Db[fileName].set('teams', this.teams);
 		this.draftedMons.push(pk);
 		if (this.order.length === this.order.indexOf(this.turn) + 1) {
 			if (this.teams[this.turn].draftpicks.length === this.maxMons) {
@@ -131,7 +133,8 @@ class Draft {
 		let oldpickDraftSpot = this.draftedMons.indexOf(oldpick);
 		this.draftedMons[oldpickDraftSpot] = mon;
 		this.teams[team].draftpicks[pick - 1] = mon;
-		this.file.set('teams', this.teams);
+		let fileName = this.room + 'draft';
+		Db[fileName].set('teams', this.teams);
 		this.room.add('|html|<div style="' + greencss + '">Change : <b>' + team + '</b> has changed their pick : <b>' + oldpick + '</b> changed to : <b>' + this.teams[team].draftpicks[pick - 1] + '</b>.<br><b>' + team + '\'s</b> Line up now looks like: ' + this.iconize(this.teams[team].draftpicks) + '</div>');
 		this.log(team + ' has changed their draft pick : ' + oldpick + ' to : ' + mon);
 	}
@@ -272,14 +275,14 @@ exports.commands = {
 		}
 	},
 	draftmon: function (target, room, user) {
-	 if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
-	 if (drafts[room].state !== 'drafting') return this.errorReply('The draft has not started.');
-	 if (!target) return this.parse('/draft help');
-	 let pkmn = target.toLowerCase().replace(' ', '');
-	 if (!Tools.data.Pokedex[pkmn]) {
-		 return this.errorReply('Not a Pokemon.');
-	 } else {
-		 drafts[room].Nom(pkmn, user.userid, this);
-	 }
+		if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
+		if (drafts[room].state !== 'drafting') return this.errorReply('The draft has not started.');
+		if (!target) return this.parse('/draft help');
+		let pkmn = target.toLowerCase().replace(' ', '');
+		if (!Tools.data.Pokedex[pkmn]) {
+			return this.errorReply('Not a Pokemon.');
+		} else {
+			drafts[room].Nom(pkmn, user.userid, this);
+		}
 	},
 };

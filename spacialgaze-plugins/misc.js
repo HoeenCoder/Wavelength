@@ -282,7 +282,7 @@ exports.commands = {
 		let targetUser = Users.get(target);
 		if (targetUser && targetUser.connected) return this.sendReplyBox(SG.nameColor(targetUser.name, true) + " is <b><font color='limegreen'>Currently Online</b></font>.");
 		target = Chat.escapeHTML(target);
-		let seen = Db('seen').get(toId(target));
+		let seen = Db.seen.get(toId(target));
 		if (!seen) return this.sendReplyBox(SG.nameColor(target, true) + " has <b><font color='red'>never been online</font></b> on this server.");
 		this.sendReplyBox(SG.nameColor(target, true) + " was last seen <b>" + Chat.toDurationString(Date.now() - seen, {precision: true}) + "</b> ago.");
 	},
@@ -327,4 +327,63 @@ exports.commands = {
 			"|/text This user is currently offline. Your message will be delivered when they are next online.");
 	},
 	tellhelp: ["/tell [username], [message] - Send a message to an offline user that will be received when they log in."],
+
+	usetoken: function (target, room, user, connection, cmd, message) {
+		target = target.split(',');
+		if (target.length < 2) return this.parse('/help usetoken');
+		target[0] = toId(target[0]);
+		let msg = '';
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (!user.tokens || !user.tokens[target[0]]) return this.errorReply('You need to buy this from the shop first.');
+		target[1] = target[1].trim();
+
+		switch (target[0]) {
+		case 'avatar':
+			msg = '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed a avatar token.<br/><img src="' + target[1] + '" alt="avatar"/><br/>';
+			msg += '<button class="button" name="send" value="/customavatar set ' + user.userid + ', ' + target[1] + '">Apply Avatar</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		case 'declare':
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed a global declare token.<br/> Message: ' + target[1] + "<br/>";
+			msg += '<button class="button" name="send" value="/globaldeclare ' + target[1] + '">Globally Declare the Message</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		case 'color':
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed a custom color token.<br/> hex color: <span' + target[1] + '<br/>';
+			msg += '<button class="button" name="send" value="/customcolor set ' + user.name + ',' + target[1] + '">Set color (<b><font color="' + target[1] + '">' + target[1] + '</font></b>)</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		case 'icon':
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed a icon token.<br/><img src="' + target[1] + '" alt="icon"/><br/>';
+			msg += '<button class="button" name="send" value="/customicon set ' + user.userid + ', ' + target[1] + '">Apply icon</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		case 'title':
+			if (!target[2]) return this.errorReply('/usetoken title, [name], [hex code]');
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeem a title token.<br/> title name: ' + target[1] + '<br/>';
+			msg += '<button class="button" name="send" value="/customtitle set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set title (<b><font color="' + target[2] + '">' + target[2] + '</font></b>)</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		case 'emote':
+			if (!target[2]) return this.errorReply('/usetoken emote, [name], [img]');
+			target[2] = target[2].trim();
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeem a emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
+			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
+		default:
+			return this.errorReply('An error occured in the command.'); // This should never happen.
+		}
+	},
+	usetokenhelp: ['/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
+		      '/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
+		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]'],
+
+	bonus: 'dailybonus',
+	checkbonus: 'dailybonus',
+	dailybonus: function (target, room, user) {
+		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
+		if (nextBonus <= 0) return SG.giveDailyReward(user.userid, user);
+		return this.sendReply('Your next bonus is ' + Db.DailyBonus.get(user.userid, [1, Date.now()])[0] + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
+	},
 };

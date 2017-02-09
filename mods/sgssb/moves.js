@@ -221,6 +221,24 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Fire",
 	},
+	// Ashley the Pikachu
+	rocketpunch: {
+		accuracy: 100,
+		basePower: 100,
+		category: "Special",
+		id: "rocketpunch",
+		isNonstandard: true,
+		name: "Rocket Punch",
+		pp: 10,
+		priority: 1,
+		target: "Normal",
+		type: "Fire",
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Flare Blitz", source);
+			this.add('-anim', source, "Mach Punch", target);
+		},
+	},
 	// BDH93
 	gettingtrolled: {
 		category: "Physical",
@@ -424,7 +442,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Dark",
 	},
-	// Saber Ran
+	// Ranfen
 	outripper: {
 		category: "Physical",
 		id: "outripper",
@@ -503,7 +521,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Ice",
 	},
-	// SilverKill
+	// Vacuo
 	mechanicaldysfunction: {
 		category: "Special",
 		basePower: 110,
@@ -524,7 +542,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Electric",
 	},
-	//Desokoro
+	// Desokoro
 	tsunamicrash: {
 		category: "Physical",
 		basePower: 150,

@@ -101,7 +101,8 @@ if (Config.watchconfig) {
  *********************************************************/
 
 global.SG = {};
-global.Db = require('origindb')('config/db');
+
+global.Db = require('nef')(require('nef-fs')('config/db'));
 
 global.Monitor = require('./monitor');
 
