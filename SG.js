@@ -222,11 +222,11 @@ exports.SG = {
 		let baseSpecies = pokemon;
 		let forme = null;
 		if (pokemon.otherForms && (!exact || !exact.species)) {
-				let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x)});
-				forme = formes[Math.floor(Math.random() * formes.length)];
-				pokemon = Tools.getTemplate(forme);
+			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
+			forme = formes[Math.floor(Math.random() * formes.length)];
+			pokemon = Tools.getTemplate(forme);
 		} else if (pokemon.otherForms && exact.species && exact.allowOtherFormes) {
-			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x)});
+			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
 			forme = formes[Math.floor(Math.random() * formes.length)];
 			pokemon = Tools.getTemplate(forme);
 		}
@@ -501,7 +501,7 @@ exports.SG = {
 			if (parts[0]) obj.name = parts[0];
 			let pokemon = Tools.getTemplate(parts[1]);
 			if (!pokemon.exists) continue; // Invalid species
-			obj.species =  pokemon.species;
+			obj.species = pokemon.species;
 			if (pokemon.otherForms && pokemon.otherForms.indexOf(parts[1]) > -1) {
 				let forme = parts[1].substr(pokemon.species.length);
 				obj.species = pokemon.species + "-" + forme.substr(0, 1).toUpperCase() + forme.substr(1);
