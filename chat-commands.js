@@ -3158,6 +3158,7 @@ exports.commands = {
 					if (canForceTimer) room.send('|inactiveoff|Timer was turned off by staff. Please do not turn it back on until our staff say it\'s okay');
 				}
 			} else if (target === 'on' || target === 'true' || !target) {
+				if (toId(room.battle.format) === 'gen7wildpokemonalpha') return this.errorReply('You can\'t start the timer during a Wild Pokemon Encounter.');
 				room.requestKickInactive(user, user.can('timer'));
 			} else {
 				this.errorReply("'" + target + "' is not a recognized timer state.");
