@@ -6,13 +6,11 @@
  * Updated and restyled by Mystifi; main profile restyle goes out to panpawn/jd/other contributors.
  **/
 'use strict';
-//TODO reimplement geoip-ultralight
 
-//let geoip = require('geoip-ultralight');
+let geoip = require('geoip-lite-country');
 
 // fill in '' with the server IP
 let serverIp = Config.serverIp;
-//geoip.startWatchingDataUpdate();
 
 function isVIP(user) {
 	if (!user) return;
@@ -301,14 +299,6 @@ exports.commands = {
 			showProfile();
 		});
 
-		function getFlag(flagee) {
-			return false;
-			/*if (!Users(flagee)) return false;
-			let geo = geoip.lookupCountry(Users(flagee).latestIp);
-			return (Users(flagee) && geo ? '<img src="https://github.com/kevogod/cachechu/blob/master/flags/' + geo.toLowerCase() + '.png?raw=true" height=10 title="' + geo + '">' : false);
-			*/
-		}
-
 		function getLastSeen(useid) {
 			if (Users(userid) && Users(userid).connected) return '<font color = "limegreen"><strong>Currently Online</strong></font>';
 			let seen = Db.seen.get(userid);
@@ -316,16 +306,18 @@ exports.commands = {
 			return Chat.toDurationString(Date.now() - seen, {precision: true}) + " ago.";
 		}
 
+		function getFlag(userid) {
+			let ip = geoip.lookup(Users(userid).latestIP);
+			if (!ip || ip === null) return '';
+			return '<img src="http://flags.fmcdn.net/data/flags/normal/' + ip.country.toLowerCase() + '.png" alt="' + ip.country + '" title="' + ip.country + '" width="20" height="10">';
+		}
+
 		function showProfile() {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
 				profile += showBadges(toId(username));
 				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
-				if (!getFlag(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + ' ' + showTitle(username) + '<br />';
-				} else {
-					profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
-				}
+				profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + SG.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';

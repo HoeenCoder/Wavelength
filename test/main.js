@@ -53,6 +53,8 @@ function init(callback) {
 	callback();
 }
 
+require('geoip-lite-country');
+
 before('initialization', function (done) {
 	this.timeout(0); // Remove timeout limitation
 

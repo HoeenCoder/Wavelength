@@ -10,7 +10,7 @@
     "autolinker": "*",
     "request": "2.74.0",
     "md5": "*",
-    "geoip-ultralight": "*",
+    "geoip-lite-country": "1.1.5",
     "githubhook": "1.7.1"
   },
   "optionalDependencies": {
