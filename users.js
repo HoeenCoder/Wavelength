@@ -1233,7 +1233,7 @@ class User {
 				connection.popup('You cannot challenge users to this format.');
 				return Promise.resolve(false);
 			}
-			this.team = SG.packTeam(Db('players').get(this.userid).party);
+			this.team = SG.packTeam(Db.players.get(this.userid).party);
 		}
 		let gameCount = this.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
