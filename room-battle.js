@@ -15,7 +15,7 @@
 
 global.Config = require('./config/config');
 
-global.Db = require('origindb')('config/db');
+global.Db = require('nef')(require('nef-fs')('config/db'));
 
 const ProcessManager = require('./process-manager');
 
