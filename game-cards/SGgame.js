@@ -336,6 +336,7 @@ exports.commands = {
 		if (room.battle.ended) return this.errorReply('The battle is already over, you can\'t throw a pokeball.');
 		target = toId(target);
 		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('Thats not a pokeball, or at least not one we support.');
+		if (target === 'masterball' && !user.can('hotpatch')) return this.errorReply('You don\'t have any Master Balls.');
 		let side = (toId(room.battle.p1.name) === toId(user) ? "p1" : "p2");
 		if (room.battle.ended) return this.errorReply('The battle has already ended.');
 		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You cant throw a pokeball because your not the trainer here!');

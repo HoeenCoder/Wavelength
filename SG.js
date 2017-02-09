@@ -208,7 +208,7 @@ exports.SG = {
 		let pokemon = [];
 		for (let i = 0; i < mons.length; i++) {
 			let poke = Tools.getTemplate(mons[i]);
-			if (!poke.exists || poke.illegal) continue;
+			if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP') continue;
 			if (poke.forme) {
 				let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
 				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
@@ -253,6 +253,7 @@ exports.SG = {
 		}
 		data += ability + "|";
 		let lvl = Math.round(Math.random() * 5) + 8; //8 -> 12 for test. TODO base on location
+		if (lvl < pokemon.evoLevel) lvl = pokemon.evoLevel;
 		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
 		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
 		let moves = "";
@@ -309,7 +310,7 @@ exports.SG = {
 			gender = "";
 		}
 		data += gender + "|";
-		if ((pokemon.eggGroups[0] === 'Undiscovered' || pokemon.species === 'Manaphy') && !pokemon.prevo && !pokemon.nfe && pokemon.species !== 'Unown' && pokemon.baseSpecies !== 'Pikachu' && (pokemon.baseSpecies !== 'Diancie' || !set.shiny)) {
+		if ((pokemon.eggGroups[0] === 'Undiscovered' || pokemon.species === 'Manaphy') && !pokemon.prevo && !pokemon.nfe && pokemon.species !== 'Unown' && pokemon.baseSpecies !== 'Pikachu') {
 			// 3 Perfect Ivs required
 			let left = 3;
 			for (let i = 0; i < 6; i++) {
@@ -330,7 +331,6 @@ exports.SG = {
 		} else {
 			data += "|";
 		}
-		if (lvl < pokemon.evoLevel) lvl = pokemon.evoLevel;
 		data += lvl + "|0";
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
@@ -369,10 +369,16 @@ exports.SG = {
 		default:
 			statusBonus = 1;
 		}
-		let rate = gameData[toId(pokemon.species)].rate;
-		if (!rate) {
-			console.log('Catch rate not found for ' + pokemon.species);
-			rate = 150;
+		let rate;
+		try {
+			rate = gameData[toId(pokemon.species)].rate;
+		} catch (e) {
+			if (gameData[toId(pokemon.baseSpecies)]) {
+				rate = gameData[toId(pokemon.baseSpecies)].rate;
+			} else {
+				console.log('Catch rate not found for ' + pokemon.species);
+				rate = 150;
+			}
 		}
 		let a = (((3 * pokemon.maxhp - 2 * pokemon.hp) * rate * ballRates[ball]) / (3 * pokemon.maxhp)) * statusBonus;
 		if (a >= 255) return true;
@@ -496,7 +502,7 @@ exports.SG = {
 			let pokemon = Tools.getTemplate(parts[1]);
 			if (!pokemon.exists) continue; // Invalid species
 			obj.species =  pokemon.species;
-			if (pokemon.otherForms.indexOf(parts[1]) > -1) {
+			if (pokemon.otherForms && pokemon.otherForms.indexOf(parts[1]) > -1) {
 				let forme = parts[1].substr(pokemon.species.length);
 				obj.species = pokemon.species + "-" + forme.substr(0, 1).toUpperCase() + forme.substr(1);
 			}
