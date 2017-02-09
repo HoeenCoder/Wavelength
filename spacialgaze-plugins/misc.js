@@ -145,11 +145,11 @@ exports.commands = {
 			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + SG.nameColor('Opple', true) + " (Social Media Lead)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Policy and Media)<br />" +
 			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + SG.nameColor('The Run', true) + " (Former Server Owner)<br />" +
+			"- " + SG.nameColor('The Run', true) + " (Former Server Owner, Development)<br />" +
 			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
