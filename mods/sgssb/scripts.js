@@ -164,6 +164,24 @@ exports.BattleScripts = {
 			},
 
 			// Global Drivers:
+			'%Ashley the Pikachu': {
+				species: 'Pikachu',
+				ability: 'Electric Surge',
+				item: 'Light Ball',
+				gender: 'F',
+				moves: ['Thunderbolt', 'Surf', 'Hidden Power Ice',
+				],
+				signatureMove: 'Rocket Punch',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				ivs: {
+					atk: 0,
+				},
+				nature: 'Modest',
+			},
 			'%ducktown': {
 				species: 'Golduck',
 				ability: 'Cloud Nine',

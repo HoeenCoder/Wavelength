@@ -255,6 +255,9 @@ exports.Formats = [
 			if (name === 'vacuo') {
 				this.add('c', '@Vacuo', 'glhf');
 			}
+			if (name === 'ashleythepikachu') {
+				this.add('c', '%Ashley the Pikachu', 'Pika-Pikachu');
+			}
 			if (name === 'umichbrendan') {
 				this.add('c', '+UmichBrendan', 'All right, time for a Umich sweep!');
 			}
@@ -326,6 +329,9 @@ exports.Formats = [
 			}
 			if (name === 'hurricaned') {
 				this.add('c', '+Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
+			}
+			if (name === 'ashleythepikachu') {
+				this.add('c', '%Ashley the Pikachu', 'Pi-kaPika');
 			}
 			if (name === 'ducktown') {
 				this.add('c', '%ducktown', 'My other ducks will come attack you!');
@@ -400,6 +406,9 @@ exports.Formats = [
 			}
 			if (name === 'hoeenhero') {
 				this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');
+			}
+			if (name === 'ashleythepikachu') {
+				this.add('c', '%Ashley the Pikachu', 'PikaPikaaaa');
 			}
 			if (name === 'vulcaron') {
 				this.add('c', '%Vulcaron', 'The flames are dowsed.');
