@@ -13,7 +13,7 @@ class Console {
 		let defaultInfo = '<div style="display: inline-block; color: white; font-family: monospace;">#####################<br/>## PS Game Console ##<br/>#####################<br/><br/>This is the default screen. You probably meant to launch a game.<br/>General Options:<br/><br/>';
 		for (let game in SG.gameList) {
 			if (!SG.gameList[game].startCommand) continue;
-			defaultInfo += '<button name="send" value="/console forcestart ' + SG.gameList[game].name + '" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>' + (SG.gameList[game].name ? SG.gameList[game].name : 'Untitled Game') + '</u></button>';
+			defaultInfo += '<button name="send" value="/console forcestart ' + game + '" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>' + (SG.gameList[game].name ? SG.gameList[game].name : game) + '</u></button>';
 		}
 		defaultInfo += '<br/><button name="send" value="/console kill" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>Shutdown</u></button></div>';
 		this.defaultHTML = html || defaultInfo;
