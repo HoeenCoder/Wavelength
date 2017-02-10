@@ -5,6 +5,7 @@ class SGgame extends Console.Console {
 		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button>', muted);
 		// Lines of text to be displayed
 		this.curText = [];
+		this.curPane = null;
 		this.callback = false;
 		this.location = null;
 		this.nextSymbol = '\u2605';
@@ -38,7 +39,12 @@ class SGgame extends Console.Console {
 		if (!menu) menu = 'items';
 	}
 	pc(box, slot, action) {
-		if (action === 'close') return this.buildMap();
+		if (this.curPane && this.curPane !== 'pc') return this.buildMap();
+		this.curPane = 'pc';
+		if (action === 'close') {
+			this.curPane = null;
+			return this.buildMap();
+		}
 		let targetParty = (box.split('|')[0] === 'party');
 		if (targetParty) box = box.split('|')[1];
 		if (!box || isNaN(Number(box)) || box < 0 || box > Db.players.get(this.userid).pc.length) box = 1;
@@ -319,8 +325,8 @@ exports.commands = {
 			}
 			if (target[2] === 'release') orders.back = true;
 			if ((slot || Number(slot) === 0) && !target[2]) orders.back = true;
-			let base = (target[2] === 'close' ? user.console.buildBase() : user.console.buildBase('pc', orders));
-			return user.console.update(null, user.console.pc(target[0], slot, target[2]), base);
+			let base = ((target[2] === 'close' || (user.console.curPane && user.console.curPane !== 'pc')) ? user.console.buildBase() : user.console.buildBase('pc', orders));
+			return user.console.update(user.console.curScreen[0], user.console.pc(target[0], slot, target[2]), base);
 		},
 	},
 	pickstarter: function (target, room, user) {
