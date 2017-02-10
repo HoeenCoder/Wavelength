@@ -299,7 +299,7 @@ exports.commands = {
 			showProfile();
 		});
 
-		function getLastSeen(useid) {
+		function getLastSeen(userid) {
 			if (Users(userid) && Users(userid).connected) return '<font color = "limegreen"><strong>Currently Online</strong></font>';
 			let seen = Db.seen.get(userid);
 			if (!seen) return '<font color = "red"><strong>Never</strong></font>';
