@@ -865,6 +865,16 @@ function saveRegdateCache() {
 	fs.writeFileSync('config/regdate.json', JSON.stringify(regdateCache));
 }
 
+function showDailyRewardAni(userid) {
+	userid = toId(userid);
+	let streak = Db.DailyBonus.get(userid)[0];
+	let output = '';
+	for (let i = 1; i <= streak; i++) {
+		output += "<img src='http://i.imgur.com/ZItWCLB.png' width='16' height='16'> ";
+	}
+	return output;
+}
+
 function getEXPType(pokemon) {
 	return SG.gameData[pokemon].expType;
 }
