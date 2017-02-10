@@ -607,9 +607,9 @@ class CommandContext {
 				}
 				if (targetUser.ignorePMs && targetUser.ignorePMs !== user.group && !user.can('lock')) {
 					if (!targetUser.can('lock')) {
-						return this.errorReply(`This user is blocking private messages right now.`);
-					} else if (targetUser.can('bypassall')) {
-						return this.errorReply(`This admin is too busy to answer private messages right now. Please contact a different staff member.`);
+						return this.errorReply(`This user is blocking private messages right now.`);	   
+					} else if (targetUser.can('roomowner')) {
+						return this.errorReply(`This ` + (targetUser.can('bypassall') ? `admin` : `leader`) + ` is too busy to answer private messages right now. Please contact a different staff member.`);
 					}
 				}
 				if (user.ignorePMs && user.ignorePMs !== targetUser.group && !targetUser.can('lock')) {
