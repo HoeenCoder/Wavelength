@@ -9,6 +9,7 @@ class Console {
 		this.muted = !!muted;
 		this.sound = sound || null;
 		this.curScreen = [null, null, null];
+		this.prevScreen = [null, null, null];
 		this.screenCSS = css || 'background-color: #000; font-size: 12px';
 		let defaultInfo = '<div style="display: inline-block; color: white; font-family: monospace;">#####################<br/>## PS Game Console ##<br/>#####################<br/><br/>This is the default screen. You probably meant to launch a game.<br/>General Options:<br/><br/>';
 		for (let game in SG.gameList) {
@@ -24,6 +25,7 @@ class Console {
 	}
 	update(css, html, bottom) {
 		Users(this.userid).sendTo(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|' + this.buildConsole(css, html, bottom));
+		this.prevScreen = this.curScreen;
 		this.curScreen = [(css || null), (html || null), (bottom || null)];
 	}
 	buildConsole(css, html, bottom) {
