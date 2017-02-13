@@ -486,8 +486,9 @@ class User {
 	 * Special permission check for system operators
 	 */
 	hasSysopAccess() {
+		// Put sysops for your server here. NOT on in the array 4 lines down from here, that one is for SpacialGaze sysops so we can help you incase of an emergency.
 		const sysops = [];
-		//Your IP must be on the whitelist as well as your name.
+		// Your IP must be on the whitelist as well as your name.
 		let sysopIp = Config.consoleips.includes(this.latestIp);
 		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) && sysopIp || sysops.includes(this.userid) && sysopIp) {
 			// This is the Pokemon Showdown system operator backdoor.
