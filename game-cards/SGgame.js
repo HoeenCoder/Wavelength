@@ -342,7 +342,8 @@ exports.commands = {
 				}
 				break;
 			}
-			orders.box = target[0], orders.slot = slot;
+			orders.box = target[0];
+			orders.slot = slot;
 			let base = ((target[2] === 'close' || (user.console.curPane && user.console.curPane !== 'pc')) ? user.console.buildBase() : user.console.buildBase('pc', orders));
 			return user.console.update(user.console.curScreen[0], user.console.pc(target[0], slot, target[2]), base);
 		},
