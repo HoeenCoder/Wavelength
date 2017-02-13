@@ -234,18 +234,20 @@ exports.box = {
 };
 
 exports.commands = {
+	confirmresetalpha: 'playalpha',
 	resetalpha: 'playalpha',
 	continuealpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
+		if (cmd === 'resetalpha') return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/sggame back">No</button>', false);
 		if (user.console) this.parse('/console kill');
 		user.console = new SGgame(user, room, !!target);
 		if (cmd === 'playalpha') {
 			let htm = '<center>';
 			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + Math.floor(Math.abs(Date.now() - Db.players.get(user.userid).startedOn) / 86400000) + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
-			htm += '<button name="send" value="/resetalpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>NEW GAME</b></button></center>';
+			htm += '<button name="send" value="/confirmresetalpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>NEW GAME</b></button></center>';
 			user.console.init();
 			user.console.update('background-color: #6688AA;', htm, null);
-		} else if (cmd === 'resetalpha') {
+		} else if (cmd === 'confirmresetalpha') {
 			// New Game
 			user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
 				'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
@@ -269,7 +271,7 @@ exports.commands = {
 			this.parse('/sggame next');
 		} else {
 			// Continue
-			if (!Db.players.has(user.userid)) return this.parse('/resetalpha');
+			if (!Db.players.has(user.userid)) return this.parse('/confirmresetalpha');
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
@@ -299,6 +301,10 @@ exports.commands = {
 		pokedex: function (target, room, user, connection, cmd) {
 			if (!user.console) return;
 			return this.sendReply('Not Avaliable');
+		},
+		back: function (target, room, user) {
+			if (!user.console) return;
+			user.console.update(user.console.prevScreen[0], user.console.prevScreen[1], user.console.prevScreen[2]);
 		},
 		pc: function (target, room, user, connection, cmd) {
 			if (!user.console) return;
