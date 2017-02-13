@@ -312,19 +312,37 @@ exports.commands = {
 			}
 			let slot = target[1];
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
-			let orders = {box: target[0], slot: slot};
+			let orders = {};
 			if (target[0].split('|')[0] === 'party' && slot && Db.players.get(user.userid).party.length > 1 && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 6 && !target[2]) {
-				orders.deposit = true;
-				orders.release = true;
-				orders.back = true;
+				orders = {deposit: true, release: true, back: true};
 			}
 			if (slot && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 30 && Db.players.get(user.userid).pc[Number(box) - 1][Number(slot)] && !target[2] && target[0].split('|')[0] !== 'party') {
-				if (Db.players.get(user.userid).party.length < 6) orders.withdraw = true;
-				orders.release = true;
-				orders.back = true;
+				orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: true};
 			}
 			if (target[2] === 'release') orders.back = true;
 			if ((slot || Number(slot) === 0) && !target[2]) orders.back = true;
+			switch (target[2]) {
+			case 'withdraw':
+				if (target[0].split('|')[0] === 'party') {
+					target[2] = '';
+					orders = {deposit: (Db.players.get(user.userid).party.length > 1), release: (Db.players.get(user.userid).party.length > 1), back: true};
+				}
+				break;
+			case 'deposit':
+				if (target[0].split('|')[0] !== 'party') {
+					target[2] = '';
+					orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: true};
+				}
+				break;
+			case 'release':
+			case 'confirmrelease':
+				if (target[0].split('|')[0] === 'party' && Db.players.get(user.userid).party.length <= 1) {
+					target[2] = '';
+					orders = {back: true};
+				}
+				break;
+			}
+			orders.box = target[0], orders.slot = slot;
 			let base = ((target[2] === 'close' || (user.console.curPane && user.console.curPane !== 'pc')) ? user.console.buildBase() : user.console.buildBase('pc', orders));
 			return user.console.update(user.console.curScreen[0], user.console.pc(target[0], slot, target[2]), base);
 		},
