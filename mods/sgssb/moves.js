@@ -232,7 +232,7 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 1,
 		target: "Normal",
-		type: "Fire",
+		type: "Fighting",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Flare Blitz", source);
