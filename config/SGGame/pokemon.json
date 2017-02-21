@@ -2779,7 +2779,7 @@
 			"trigger": null,
 			"type": null,
 			"exact": null,
-			"evolvesTo": "vaporeon|jolteon|flareon|umbreon|espion|leafeon|glaceon|sylveon"
+			"evolvesTo": "vaporeon|jolteon|flareon|umbreon|espeon|leafeon|glaceon|sylveon"
 		},
 		"baseExp": 65,
 		"evDrops": {
@@ -10319,7 +10319,17 @@
 			"type": null,
 			"exact": null,
 			"evolvesTo": null
-		}
+		},
+		"baseExp": 270,
+		"evDrops": {
+			"hp": 3,
+			"atk": 0,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 3
 	},
 	"arceus": {
 		"expType": "slow",
@@ -10367,6 +10377,12 @@
 		"expType": "mediumslow",
 		"num": 495,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "servine"
+		},
 		"baseExp": 62,
 		"evDrops": {
 			"hp": 0,
@@ -10382,6 +10398,12 @@
 		"expType": "mediumslow",
 		"num": 496,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 17,
+			"evolvesTo": "serperior"
+		},
 		"baseExp": 145,
 		"evDrops": {
 			"hp": 0,
@@ -10397,6 +10419,12 @@
 		"expType": "mediumslow",
 		"num": 497,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 238,
 		"evDrops": {
 			"hp": 0,
@@ -10412,6 +10440,12 @@
 		"expType": "mediumslow",
 		"num": 498,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "pignite"
+		},
 		"baseExp": 62,
 		"evDrops": {
 			"hp": 1,
@@ -10427,6 +10461,12 @@
 		"expType": "mediumslow",
 		"num": 499,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 17,
+			"evolvesTo": "emboar"
+		},
 		"baseExp": 146,
 		"evDrops": {
 			"hp": 0,
@@ -10442,6 +10482,12 @@
 		"expType": "mediumslow",
 		"num": 500,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 238,
 		"evDrops": {
 			"hp": 0,
@@ -10457,6 +10503,12 @@
 		"expType": "mediumslow",
 		"num": 501,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "dewott"
+		},
 		"baseExp": 62,
 		"evDrops": {
 			"hp": 0,
@@ -10472,6 +10524,12 @@
 		"expType": "mediumslow",
 		"num": 502,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 17,
+			"evolvesTo": "samurott"
+		},
 		"baseExp": 145,
 		"evDrops": {
 			"hp": 0,
@@ -10487,6 +10545,12 @@
 		"expType": "mediumslow",
 		"num": 503,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 238,
 		"evDrops": {
 			"hp": 0,
@@ -10502,6 +10566,12 @@
 		"expType": "mediumfast",
 		"num": 504,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "watchog"
+		},
 		"baseExp": 51,
 		"evDrops": {
 			"hp": 0,
@@ -10517,6 +10587,12 @@
 		"expType": "mediumfast",
 		"num": 505,
 		"rate": "255",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 20,
+			"evolvesTo": null
+		},
 		"baseExp": 147,
 		"evDrops": {
 			"hp": 0,
@@ -10532,6 +10608,12 @@
 		"expType": "mediumslow",
 		"num": 506,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "herdier"
+		},
 		"baseExp": 55,
 		"evDrops": {
 			"hp": 0,
@@ -10547,6 +10629,12 @@
 		"expType": "mediumslow",
 		"num": 507,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 16,
+			"evolvesTo": "stoutland"
+		},
 		"baseExp": 130,
 		"evDrops": {
 			"hp": 0,
@@ -10562,6 +10650,12 @@
 		"expType": "mediumslow",
 		"num": 508,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 32,
+			"evolvesTo": null
+		},
 		"baseExp": 225,
 		"evDrops": {
 			"hp": 0,
@@ -10577,6 +10671,12 @@
 		"expType": "mediumfast",
 		"num": 509,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "liepard"
+		},
 		"baseExp": 56,
 		"evDrops": {
 			"hp": 0,
@@ -10592,6 +10692,12 @@
 		"expType": "mediumfast",
 		"num": 510,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 20,
+			"evolvesTo": null
+		},
 		"baseExp": 156,
 		"evDrops": {
 			"hp": 0,
@@ -10607,6 +10713,12 @@
 		"expType": "mediumfast",
 		"num": 511,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "simisage"
+		},
 		"baseExp": 63,
 		"evDrops": {
 			"hp": 0,
@@ -10622,6 +10734,12 @@
 		"expType": "mediumfast",
 		"num": 512,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "leafstone",
+			"evolvesTo": null
+		},
 		"baseExp": 174,
 		"evDrops": {
 			"hp": 0,
@@ -10637,6 +10755,12 @@
 		"expType": "mediumfast",
 		"num": 513,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "simisear"
+		},
 		"baseExp": 63,
 		"evDrops": {
 			"hp": 0,
@@ -10652,6 +10776,12 @@
 		"expType": "mediumfast",
 		"num": 514,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "firestone",
+			"evolvesTo": null
+		},
 		"baseExp": 174,
 		"evDrops": {
 			"hp": 0,
@@ -10667,6 +10797,12 @@
 		"expType": "mediumfast",
 		"num": 515,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "simipour"
+		},
 		"baseExp": 63,
 		"evDrops": {
 			"hp": 0,
@@ -10682,6 +10818,12 @@
 		"expType": "mediumfast",
 		"num": 516,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "waterstone",
+			"evolvesTo": null
+		},
 		"baseExp": 174,
 		"evDrops": {
 			"hp": 0,
@@ -10697,6 +10839,12 @@
 		"expType": "fast",
 		"num": 517,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "musharna"
+		},
 		"baseExp": 58,
 		"evDrops": {
 			"hp": 1,
@@ -10712,6 +10860,12 @@
 		"expType": "fast",
 		"num": 518,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "moonstone",
+			"evolvesTo": null
+		},
 		"baseExp": 170,
 		"evDrops": {
 			"hp": 2,
@@ -10727,6 +10881,12 @@
 		"expType": "mediumslow",
 		"num": 519,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "tranquill"
+		},
 		"baseExp": 53,
 		"evDrops": {
 			"hp": 0,
@@ -10742,6 +10902,12 @@
 		"expType": "mediumslow",
 		"num": 520,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 21,
+			"evolvesTo": "unfezant"
+		},
 		"baseExp": 125,
 		"evDrops": {
 			"hp": 0,
@@ -10757,6 +10923,12 @@
 		"expType": "mediumslow",
 		"num": 521,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 32,
+			"evolvesTo": null
+		},
 		"baseExp": 220,
 		"evDrops": {
 			"hp": 0,
@@ -10772,6 +10944,12 @@
 		"expType": "mediumfast",
 		"num": 522,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "zebstrika"
+		},
 		"baseExp": 59,
 		"evDrops": {
 			"hp": 0,
@@ -10787,6 +10965,12 @@
 		"expType": "mediumfast",
 		"num": 523,
 		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 27,
+			"evolvesTo": null
+		},
 		"baseExp": 174,
 		"evDrops": {
 			"hp": 0,
@@ -10802,6 +10986,12 @@
 		"expType": "mediumslow",
 		"num": 524,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "boldore"
+		},
 		"baseExp": 56,
 		"evDrops": {
 			"hp": 0,
@@ -10817,6 +11007,12 @@
 		"expType": "mediumslow",
 		"num": 525,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 25,
+			"evolvesTo": "gigalith"
+		},
 		"baseExp": 137,
 		"evDrops": {
 			"hp": 0,
@@ -10832,6 +11028,12 @@
 		"expType": "mediumslow",
 		"num": 526,
 		"rate": "45",
+		"evolution": {
+			"trigger": "trade",
+			"type": "trade",
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 232,
 		"evDrops": {
 			"hp": 0,
@@ -10847,6 +11049,12 @@
 		"expType": "mediumfast",
 		"num": 527,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "swoobat"
+		},
 		"baseExp": 65,
 		"evDrops": {
 			"hp": 0,
@@ -10862,6 +11070,12 @@
 		"expType": "mediumfast",
 		"num": 528,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "friendship",
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 149,
 		"evDrops": {
 			"hp": 0,
@@ -10877,6 +11091,12 @@
 		"expType": "mediumfast",
 		"num": 529,
 		"rate": "120",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "excadrill"
+		},
 		"baseExp": 66,
 		"evDrops": {
 			"hp": 0,
@@ -10892,6 +11112,12 @@
 		"expType": "mediumfast",
 		"num": 530,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 31,
+			"evolvesTo": null
+		},
 		"baseExp": 178,
 		"evDrops": {
 			"hp": 0,
@@ -10928,6 +11154,12 @@
 		"expType": "mediumslow",
 		"num": 532,
 		"rate": "180",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "gurdurr"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -10943,6 +11175,12 @@
 		"expType": "mediumslow",
 		"num": 533,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 25,
+			"evolvesTo": "conkeldurr"
+		},
 		"baseExp": 142,
 		"evDrops": {
 			"hp": 0,
@@ -10958,6 +11196,12 @@
 		"expType": "mediumslow",
 		"num": 534,
 		"rate": "45",
+		"evolution": {
+			"trigger": "trade",
+			"type": "trade",
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 227,
 		"evDrops": {
 			"hp": 0,
@@ -10973,6 +11217,12 @@
 		"expType": "mediumslow",
 		"num": 535,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "palpitoad"
+		},
 		"baseExp": 59,
 		"evDrops": {
 			"hp": 0,
@@ -10988,6 +11238,12 @@
 		"expType": "mediumslow",
 		"num": 536,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 25,
+			"evolvesTo": "seismitoad"
+		},
 		"baseExp": 134,
 		"evDrops": {
 			"hp": 2,
@@ -11003,6 +11259,12 @@
 		"expType": "mediumslow",
 		"num": 537,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 229,
 		"evDrops": {
 			"hp": 3,
@@ -11018,6 +11280,12 @@
 		"expType": "mediumfast",
 		"num": 538,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 163,
 		"evDrops": {
 			"hp": 2,
@@ -11033,6 +11301,12 @@
 		"expType": "mediumfast",
 		"num": 539,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 163,
 		"evDrops": {
 			"hp": 0,
@@ -11048,6 +11322,12 @@
 		"expType": "mediumslow",
 		"num": 540,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "swadloon"
+		},
 		"baseExp": 62,
 		"evDrops": {
 			"hp": 0,
@@ -11063,6 +11343,12 @@
 		"expType": "mediumslow",
 		"num": 541,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 20,
+			"evolvesTo": "leavanny"
+		},
 		"baseExp": 133,
 		"evDrops": {
 			"hp": 0,
@@ -11078,6 +11364,12 @@
 		"expType": "mediumslow",
 		"num": 542,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "friendship",
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 225,
 		"evDrops": {
 			"hp": 0,
@@ -11093,6 +11385,12 @@
 		"expType": "mediumslow",
 		"num": 543,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "whirlipede"
+		},
 		"baseExp": 52,
 		"evDrops": {
 			"hp": 0,
@@ -11108,6 +11406,12 @@
 		"expType": "mediumslow",
 		"num": 544,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 22,
+			"evolvesTo": "scolipede"
+		},
 		"baseExp": 126,
 		"evDrops": {
 			"hp": 0,
@@ -11123,6 +11427,12 @@
 		"expType": "mediumslow",
 		"num": 545,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 30,
+			"evolvesTo": null
+		},
 		"baseExp": 218,
 		"evDrops": {
 			"hp": 0,
@@ -11138,6 +11448,12 @@
 		"expType": "mediumfast",
 		"num": 546,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "whimsicott"
+		},
 		"baseExp": 56,
 		"evDrops": {
 			"hp": 0,
@@ -11153,6 +11469,12 @@
 		"expType": "mediumfast",
 		"num": 547,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "sunstone",
+			"evolvesTo": null
+		},
 		"baseExp": 168,
 		"evDrops": {
 			"hp": 0,
@@ -11168,6 +11490,12 @@
 		"expType": "mediumfast",
 		"num": 548,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "lilligant"
+		},
 		"baseExp": 56,
 		"evDrops": {
 			"hp": 0,
@@ -11183,6 +11511,12 @@
 		"expType": "mediumfast",
 		"num": 549,
 		"rate": "75",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "sunstone",
+			"evolvesTo": null
+		},
 		"baseExp": 168,
 		"evDrops": {
 			"hp": 0,
@@ -11219,6 +11553,12 @@
 		"expType": "mediumslow",
 		"num": 551,
 		"rate": "180",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "krokorok"
+		},
 		"baseExp": 58,
 		"evDrops": {
 			"hp": 0,
@@ -11234,6 +11574,12 @@
 		"expType": "mediumslow",
 		"num": 552,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 29,
+			"evolvesTo": "krookodile"
+		},
 		"baseExp": 123,
 		"evDrops": {
 			"hp": 0,
@@ -11249,6 +11595,12 @@
 		"expType": "mediumslow",
 		"num": 553,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 40,
+			"evolvesTo": null
+		},
 		"baseExp": 234,
 		"evDrops": {
 			"hp": 0,
@@ -11264,6 +11616,12 @@
 		"expType": "mediumslow",
 		"num": 554,
 		"rate": "120",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "darmanitan"
+		},
 		"baseExp": 63,
 		"evDrops": {
 			"hp": 0,
@@ -11279,6 +11637,12 @@
 		"expType": "mediumslow",
 		"num": 555,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 35,
+			"evolvesTo": null
+		},
 		"baseExp": 168,
 		"evDrops": {
 			"hp": 0,
@@ -11315,6 +11679,12 @@
 		"expType": "mediumfast",
 		"num": 557,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "crustle"
+		},
 		"baseExp": 65,
 		"evDrops": {
 			"hp": 0,
@@ -11330,6 +11700,12 @@
 		"expType": "mediumfast",
 		"num": 558,
 		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 34,
+			"evolvesTo": null
+		},
 		"baseExp": 170,
 		"evDrops": {
 			"hp": 0,
@@ -11345,6 +11721,12 @@
 		"expType": "mediumfast",
 		"num": 559,
 		"rate": "180",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "scrafty"
+		},
 		"baseExp": 70,
 		"evDrops": {
 			"hp": 0,
@@ -11360,6 +11742,12 @@
 		"expType": "mediumfast",
 		"num": 560,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 39,
+			"evolvesTo": null
+		},
 		"baseExp": 171,
 		"evDrops": {
 			"hp": 0,
@@ -11396,6 +11784,12 @@
 		"expType": "mediumfast",
 		"num": 562,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "cofagrigus"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -11411,6 +11805,12 @@
 		"expType": "mediumfast",
 		"num": 563,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 34,
+			"evolvesTo": null
+		},
 		"baseExp": 169,
 		"evDrops": {
 			"hp": 0,
@@ -11426,6 +11826,12 @@
 		"expType": "mediumfast",
 		"num": 564,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "carracosta"
+		},
 		"baseExp": 71,
 		"evDrops": {
 			"hp": 0,
@@ -11441,6 +11847,12 @@
 		"expType": "mediumfast",
 		"num": 565,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 37,
+			"evolvesTo": null
+		},
 		"baseExp": 173,
 		"evDrops": {
 			"hp": 0,
@@ -11456,6 +11868,12 @@
 		"expType": "mediumfast",
 		"num": 566,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "archeops"
+		},
 		"baseExp": 71,
 		"evDrops": {
 			"hp": 0,
@@ -11471,6 +11889,12 @@
 		"expType": "mediumfast",
 		"num": 567,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 37,
+			"evolvesTo": null
+		},
 		"baseExp": 177,
 		"evDrops": {
 			"hp": 0,
@@ -11486,6 +11910,12 @@
 		"expType": "mediumfast",
 		"num": 568,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "garbodor"
+		},
 		"baseExp": 66,
 		"evDrops": {
 			"hp": 0,
@@ -11501,6 +11931,12 @@
 		"expType": "mediumfast",
 		"num": 569,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 166,
 		"evDrops": {
 			"hp": 0,
@@ -11516,6 +11952,12 @@
 		"expType": "mediumslow",
 		"num": 570,
 		"rate": "75",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "zoroark"
+		},
 		"baseExp": 66,
 		"evDrops": {
 			"hp": 0,
@@ -11531,6 +11973,12 @@
 		"expType": "mediumslow",
 		"num": 571,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 30,
+			"evolvesTo": null
+		},
 		"baseExp": 179,
 		"evDrops": {
 			"hp": 0,
@@ -11546,6 +11994,12 @@
 		"expType": "fast",
 		"num": 572,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "cinccino"
+		},
 		"baseExp": 60,
 		"evDrops": {
 			"hp": 0,
@@ -11561,6 +12015,12 @@
 		"expType": "fast",
 		"num": 573,
 		"rate": "60",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "shinystone",
+			"evolvesTo": null
+		},
 		"baseExp": 165,
 		"evDrops": {
 			"hp": 0,
@@ -11576,6 +12036,12 @@
 		"expType": "mediumslow",
 		"num": 574,
 		"rate": "200",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "gothorita"
+		},
 		"baseExp": 58,
 		"evDrops": {
 			"hp": 0,
@@ -11591,6 +12057,12 @@
 		"expType": "mediumslow",
 		"num": 575,
 		"rate": "100",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 32,
+			"evolvesTo": "gothitelle"
+		},
 		"baseExp": 137,
 		"evDrops": {
 			"hp": 0,
@@ -11606,6 +12078,12 @@
 		"expType": "mediumslow",
 		"num": 576,
 		"rate": "50",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 41,
+			"evolvesTo": null
+		},
 		"baseExp": 221,
 		"evDrops": {
 			"hp": 0,
@@ -11621,6 +12099,12 @@
 		"expType": "mediumslow",
 		"num": 577,
 		"rate": "200",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "duosion"
+		},
 		"baseExp": 58,
 		"evDrops": {
 			"hp": 0,
@@ -11636,6 +12120,12 @@
 		"expType": "mediumslow",
 		"num": 578,
 		"rate": "100",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 32,
+			"evolvesTo": "reuniclus"
+		},
 		"baseExp": 130,
 		"evDrops": {
 			"hp": 0,
@@ -11651,6 +12141,12 @@
 		"expType": "mediumslow",
 		"num": 579,
 		"rate": "50",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 41,
+			"evolvesTo": null
+		},
 		"baseExp": 221,
 		"evDrops": {
 			"hp": 0,
@@ -11666,6 +12162,12 @@
 		"expType": "mediumfast",
 		"num": 580,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "swanna"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 1,
@@ -11681,6 +12183,12 @@
 		"expType": "mediumfast",
 		"num": 581,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 35,
+			"evolvesTo": null
+		},
 		"baseExp": 166,
 		"evDrops": {
 			"hp": 0,
@@ -11696,6 +12204,12 @@
 		"expType": "slow",
 		"num": 582,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "vanillish"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -11711,6 +12225,12 @@
 		"expType": "slow",
 		"num": 583,
 		"rate": "120",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 35,
+			"evolvesTo": "vanilluxe"
+		},
 		"baseExp": 138,
 		"evDrops": {
 			"hp": 0,
@@ -11726,6 +12246,12 @@
 		"expType": "slow",
 		"num": 584,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 47,
+			"evolvesTo": null
+		},
 		"baseExp": 241,
 		"evDrops": {
 			"hp": 0,
@@ -11741,6 +12267,12 @@
 		"expType": "mediumfast",
 		"num": 585,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "sawsbuck"
+		},
 		"baseExp": 67,
 		"evDrops": {
 			"hp": 0,
@@ -11756,6 +12288,12 @@
 		"expType": "mediumfast",
 		"num": 586,
 		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 34,
+			"evolvesTo": null
+		},
 		"baseExp": 166,
 		"evDrops": {
 			"hp": 0,
@@ -11792,6 +12330,12 @@
 		"expType": "mediumfast",
 		"num": 588,
 		"rate": "200",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "escavalier"
+		},
 		"baseExp": 63,
 		"evDrops": {
 			"hp": 0,
@@ -11807,6 +12351,12 @@
 		"expType": "mediumfast",
 		"num": 589,
 		"rate": "75",
+		"evolution": {
+			"trigger": "trade",
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 173,
 		"evDrops": {
 			"hp": 0,
@@ -11822,6 +12372,12 @@
 		"expType": "mediumfast",
 		"num": 590,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "amoonguss"
+		},
 		"baseExp": 59,
 		"evDrops": {
 			"hp": 1,
@@ -11837,6 +12393,12 @@
 		"expType": "mediumfast",
 		"num": 591,
 		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 39,
+			"evolvesTo": null
+		},
 		"baseExp": 162,
 		"evDrops": {
 			"hp": 2,
@@ -11852,6 +12414,12 @@
 		"expType": "mediumfast",
 		"num": 592,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "jellicent"
+		},
 		"baseExp": 67,
 		"evDrops": {
 			"hp": 0,
@@ -11867,6 +12435,12 @@
 		"expType": "mediumfast",
 		"num": 593,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 40,
+			"evolvesTo": null
+		},
 		"baseExp": 168,
 		"evDrops": {
 			"hp": 0,
@@ -11882,6 +12456,12 @@
 		"expType": "fast",
 		"num": 594,
 		"rate": "75",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 165,
 		"evDrops": {
 			"hp": 2,
@@ -11897,6 +12477,12 @@
 		"expType": "mediumfast",
 		"num": 595,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "galvantula"
+		},
 		"baseExp": 64,
 		"evDrops": {
 			"hp": 0,
@@ -11912,6 +12498,12 @@
 		"expType": "mediumfast",
 		"num": 596,
 		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 36,
+			"evolvesTo": null
+		},
 		"baseExp": 165,
 		"evDrops": {
 			"hp": 0,
@@ -11927,6 +12519,12 @@
 		"expType": "mediumfast",
 		"num": 597,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "ferrothorn"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -11942,6 +12540,12 @@
 		"expType": "mediumfast",
 		"num": 598,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 40,
+			"evolvesTo": null
+		},
 		"baseExp": 171,
 		"evDrops": {
 			"hp": 0,
@@ -11957,6 +12561,12 @@
 		"expType": "mediumslow",
 		"num": 599,
 		"rate": "130",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "klang"
+		},
 		"baseExp": 60,
 		"evDrops": {
 			"hp": 0,
@@ -11972,6 +12582,12 @@
 		"expType": "mediumslow",
 		"num": 600,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 38,
+			"evolvesTo": "klinklang"
+		},
 		"baseExp": 154,
 		"evDrops": {
 			"hp": 0,
@@ -11987,6 +12603,12 @@
 		"expType": "mediumslow",
 		"num": 601,
 		"rate": "30",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 49,
+			"evolvesTo": null
+		},
 		"baseExp": 234,
 		"evDrops": {
 			"hp": 0,
@@ -12002,6 +12624,12 @@
 		"expType": "slow",
 		"num": 602,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "eelektrik"
+		},
 		"baseExp": 55,
 		"evDrops": {
 			"hp": 0,
@@ -12017,6 +12645,12 @@
 		"expType": "slow",
 		"num": 603,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 39,
+			"evolvesTo": "eelektross"
+		},
 		"baseExp": 142,
 		"evDrops": {
 			"hp": 0,
@@ -12032,6 +12666,12 @@
 		"expType": "slow",
 		"num": 604,
 		"rate": "30",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "thunderstone",
+			"evolvesTo": null
+		},
 		"baseExp": 232,
 		"evDrops": {
 			"hp": 0,
@@ -12047,6 +12687,12 @@
 		"expType": "mediumfast",
 		"num": 605,
 		"rate": "255",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "beheeyem"
+		},
 		"baseExp": 67,
 		"evDrops": {
 			"hp": 0,
@@ -12062,6 +12708,12 @@
 		"expType": "mediumfast",
 		"num": 606,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 42,
+			"evolvesTo": null
+		},
 		"baseExp": 170,
 		"evDrops": {
 			"hp": 0,
@@ -12077,6 +12729,12 @@
 		"expType": "mediumslow",
 		"num": 607,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "lampent"
+		},
 		"baseExp": 55,
 		"evDrops": {
 			"hp": 0,
@@ -12092,6 +12750,12 @@
 		"expType": "mediumslow",
 		"num": 608,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 41,
+			"evolvesTo": "chandelure"
+		},
 		"baseExp": 130,
 		"evDrops": {
 			"hp": 0,
@@ -12107,6 +12771,12 @@
 		"expType": "mediumslow",
 		"num": 609,
 		"rate": "45",
+		"evolution": {
+			"trigger": "item",
+			"type": "stone",
+			"exact": "duskstone",
+			"evolvesTo": null
+		},
 		"baseExp": 234,
 		"evDrops": {
 			"hp": 0,
@@ -12122,6 +12792,12 @@
 		"expType": "slow",
 		"num": 610,
 		"rate": "75",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "fraxure"
+		},
 		"baseExp": 64,
 		"evDrops": {
 			"hp": 0,
@@ -12137,6 +12813,12 @@
 		"expType": "slow",
 		"num": 611,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 38,
+			"evolvesTo": "haxorus"
+		},
 		"baseExp": 144,
 		"evDrops": {
 			"hp": 0,
@@ -12152,6 +12834,12 @@
 		"expType": "slow",
 		"num": 612,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 48,
+			"evolvesTo": null
+		},
 		"baseExp": 243,
 		"evDrops": {
 			"hp": 0,
@@ -12167,6 +12855,12 @@
 		"expType": "mediumfast",
 		"num": 613,
 		"rate": "120",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "beartic"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -12182,6 +12876,12 @@
 		"expType": "mediumfast",
 		"num": 614,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 37,
+			"evolvesTo": null
+		},
 		"baseExp": 177,
 		"evDrops": {
 			"hp": 0,
@@ -12197,6 +12897,12 @@
 		"expType": "mediumfast",
 		"num": 615,
 		"rate": "25",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 180,
 		"evDrops": {
 			"hp": 0,
@@ -12212,6 +12918,12 @@
 		"expType": "mediumfast",
 		"num": 616,
 		"rate": "200",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "accelgor"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -12227,6 +12939,12 @@
 		"expType": "mediumfast",
 		"num": 617,
 		"rate": "75",
+		"evolution": {
+			"trigger": "trade",
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 173,
 		"evDrops": {
 			"hp": 0,
@@ -12263,6 +12981,12 @@
 		"expType": "mediumslow",
 		"num": 619,
 		"rate": "180",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "mienshao"
+		},
 		"baseExp": 70,
 		"evDrops": {
 			"hp": 0,
@@ -12278,6 +13002,12 @@
 		"expType": "mediumslow",
 		"num": 620,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 50,
+			"evolvesTo": null
+		},
 		"baseExp": 179,
 		"evDrops": {
 			"hp": 0,
@@ -12314,6 +13044,12 @@
 		"expType": "mediumfast",
 		"num": 622,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "golurk"
+		},
 		"baseExp": 61,
 		"evDrops": {
 			"hp": 0,
@@ -12329,6 +13065,12 @@
 		"expType": "mediumfast",
 		"num": 623,
 		"rate": "90",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 43,
+			"evolvesTo": null
+		},
 		"baseExp": 169,
 		"evDrops": {
 			"hp": 0,
@@ -12344,6 +13086,12 @@
 		"expType": "mediumfast",
 		"num": 624,
 		"rate": "120",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "bisharp"
+		},
 		"baseExp": 68,
 		"evDrops": {
 			"hp": 0,
@@ -12359,6 +13107,12 @@
 		"expType": "mediumfast",
 		"num": 625,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 52,
+			"evolvesTo": null
+		},
 		"baseExp": 172,
 		"evDrops": {
 			"hp": 0,
@@ -12374,6 +13128,12 @@
 		"expType": "mediumfast",
 		"num": 626,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
 		"baseExp": 172,
 		"evDrops": {
 			"hp": 0,
@@ -12389,6 +13149,12 @@
 		"expType": "slow",
 		"num": 627,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "braviary"
+		},
 		"baseExp": 70,
 		"evDrops": {
 			"hp": 0,
@@ -12404,6 +13170,12 @@
 		"expType": "slow",
 		"num": 628,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 54,
+			"evolvesTo": null
+		},
 		"baseExp": 179,
 		"evDrops": {
 			"hp": 0,
@@ -12419,6 +13191,12 @@
 		"expType": "slow",
 		"num": 629,
 		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "mandibuzz"
+		},
 		"baseExp": 74,
 		"evDrops": {
 			"hp": 0,
@@ -12434,6 +13212,12 @@
 		"expType": "slow",
 		"num": 630,
 		"rate": "60",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 54,
+			"evolvesTo": null
+		},
 		"baseExp": 179,
 		"evDrops": {
 			"hp": 0,
@@ -12491,6 +13275,12 @@
 		"expType": "slow",
 		"num": 633,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "zweilous"
+		},
 		"baseExp": 60,
 		"evDrops": {
 			"hp": 0,
@@ -12506,6 +13296,12 @@
 		"expType": "slow",
 		"num": 634,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 50,
+			"evolvesTo": "hydreigon"
+		},
 		"baseExp": 147,
 		"evDrops": {
 			"hp": 0,
@@ -12521,6 +13317,12 @@
 		"expType": "slow",
 		"num": 635,
 		"rate": "45",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 64,
+			"evolvesTo": null
+		},
 		"baseExp": 270,
 		"evDrops": {
 			"hp": 0,
@@ -12536,6 +13338,12 @@
 		"expType": "slow",
 		"num": 636,
 		"rate": "45",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "volcarona"
+		},
 		"baseExp": 72,
 		"evDrops": {
 			"hp": 0,
@@ -12551,6 +13359,12 @@
 		"expType": "slow",
 		"num": 637,
 		"rate": "15",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 59,
+			"evolvesTo": null
+		},
 		"baseExp": 248,
 		"evDrops": {
 			"hp": 0,
@@ -15427,7 +16241,17 @@
 			"type": null,
 			"exact": null,
 			"evolvesTo": null
-		}
+		},
+		"baseExp": 154, 
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 1,
+			"spa": 0,
+			"spd": 1,
+			"spe": 0,
+		},
+		"totalEvDrops": 2
 	},
 	"komala": {
 		"expType": "slow",
@@ -16959,19 +17783,6 @@
 			"spe": 1
 		},
 		"totalEvDrops": 2
-	},
-	"shyamin": {
-		"id": "shyamin",
-		"baseExp": 270,
-		"evDrops": {
-			"hp": 3,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
 	},
 	"shayminsky": {
 		"id": "shayminsky",
