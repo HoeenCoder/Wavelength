@@ -33,13 +33,6 @@ const THROTTLE_MULTILINE_WARN_STAFF = 6;
 const PERMALOCK_CACHE_TIME = 30 * 24 * 60 * 60 * 1000;
 
 const fs = require('fs');
-try {
-	fs.accessSync('spacialgaze-plugins/auth2.js', fs.F_OK);
-	SG.auth2Active = true;
-} catch (e) {
-	SG.auth2Active = false;
-}
-SG.auth2Status = {};
 
 let Users = module.exports = getUser;
 
@@ -408,9 +401,6 @@ class User {
 		if (this.namelocked) {
 			return '‽' + this.name;
 		}
-		if (SG.auth2Active && !SG.auth2Status[this.userid]) {
-			return '✖' + this.name;
-		}
 		if (roomid && roomid !== 'global') {
 			let room = Rooms(roomid);
 			if (!room) {
@@ -436,7 +426,6 @@ class User {
 	}
 	can(permission, target, room) {
 		if (this.hasSysopAccess()) return true;
-		if (SG.auth2Active && !SG.auth2Status[this.userid]) return false;
 		let groupData = Config.groups[this.group];
 		if (groupData && groupData['root']) {
 			return true;
@@ -664,16 +653,6 @@ class User {
 			});
 		} else {
 			this.send(`|nametaken|${name}|Your authentication token was invalid.`);
-		}
-		// Two Factor Authentication (private file). Shouldnt effect side servers with the first check in place.
-		if (SG.auth2Active) {
-			if (!SG.checkLogin(userid, this.latestIp)) {
-				SG.auth2Status[userid] = false;
-				this.popup('|html|<center><h2 style="color:red"><u>Two Factor Authentication Failed</u></h2><hr/><br/><b>You are now rank locked. Your ranks been disabled (not removed).</b><br/><br/>Login to your backup account and use <code style="border: 1px solid #555; background: #333; color: #DDD">/auth2 passcode ' + userid + '</code> to get the passcode to un rank lock yourself.');
-				return false;
-			} else {
-				SG.auth2Status[userid] = true;
-			}
 		}
 		if (Tells.inbox[userid]) Tells.sendTell(userid, this);
 		SG.showNews(userid, this);
