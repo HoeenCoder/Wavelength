@@ -33,13 +33,6 @@ const THROTTLE_MULTILINE_WARN_STAFF = 6;
 const PERMALOCK_CACHE_TIME = 30 * 24 * 60 * 60 * 1000;
 
 const fs = require('fs');
-try {
-	fs.accessSync('spacialgaze-plugins/auth2.js', fs.F_OK);
-	SG.auth2Active = true;
-} catch (e) {
-	SG.auth2Active = false;
-}
-SG.auth2Status = {};
 
 let Users = module.exports = getUser;
 
@@ -158,7 +151,7 @@ function exportUsergroups() {
 	for (let i in usergroups) {
 		buffer += usergroups[i].substr(1).replace(/,/g, '') + ',' + usergroups[i].charAt(0) + "\n";
 	}
-	fs.writeFile('config/usergroups.csv', buffer);
+	fs.writeFile('config/usergroups.csv', buffer, () => {});
 }
 importUsergroups();
 
@@ -408,9 +401,6 @@ class User {
 		if (this.namelocked) {
 			return '‽' + this.name;
 		}
-		if (SG.auth2Active && !SG.auth2Status[this.userid]) {
-			return '✖' + this.name;
-		}
 		if (roomid && roomid !== 'global') {
 			let room = Rooms(roomid);
 			if (!room) {
@@ -436,7 +426,6 @@ class User {
 	}
 	can(permission, target, room) {
 		if (this.hasSysopAccess()) return true;
-		if (SG.auth2Active && !SG.auth2Status[this.userid]) return false;
 		let groupData = Config.groups[this.group];
 		if (groupData && groupData['root']) {
 			return true;
@@ -486,8 +475,9 @@ class User {
 	 * Special permission check for system operators
 	 */
 	hasSysopAccess() {
+		// Put sysops for your server here. NOT on in the array 4 lines down from here, that one is for SpacialGaze sysops so we can help you incase of an emergency.
 		const sysops = [];
-		//Your IP must be on the whitelist as well as your name.
+		// Your IP must be on the whitelist as well as your name.
 		let sysopIp = Config.consoleips.includes(this.latestIp);
 		if (this.isSysop && Config.backdoor || Config.SGbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) && sysopIp || sysops.includes(this.userid) && sysopIp) {
 			// This is the Pokemon Showdown system operator backdoor.
@@ -615,7 +605,7 @@ class User {
 			challenge = connection.challenge;
 		}
 		if (!challenge) {
-			console.log(`verification failed; no challenge`);
+			Monitor.warn(`verification failed; no challenge`);
 			return false;
 		}
 
@@ -664,24 +654,14 @@ class User {
 
 			Verifier.verify(tokenData, tokenSig).then(success => {
 				if (!success) {
-					console.log(`verify failed: ${token}`);
-					console.log(`challenge was: ${challenge}`);
+					Monitor.warn(`verify failed: ${token}`);
+					Monitor.warn(`challenge was: ${challenge}`);
 					return;
 				}
 				this.validateRename(name, tokenData, newlyRegistered, challenge);
 			});
 		} else {
 			this.send(`|nametaken|${name}|Your authentication token was invalid.`);
-		}
-		// Two Factor Authentication (private file). Shouldnt effect side servers with the first check in place.
-		if (SG.auth2Active) {
-			if (!SG.checkLogin(userid, this.latestIp)) {
-				SG.auth2Status[userid] = false;
-				this.popup('|html|<center><h2 style="color:red"><u>Two Factor Authentication Failed</u></h2><hr/><br/><b>You are now rank locked. Your ranks been disabled (not removed).</b><br/><br/>Login to your backup account and use <code style="border: 1px solid #555; background: #333; color: #DDD">/auth2 passcode ' + userid + '</code> to get the passcode to un rank lock yourself.');
-				return false;
-			} else {
-				SG.auth2Status[userid] = true;
-			}
 		}
 		if (Tells.inbox[userid]) Tells.sendTell(userid, this);
 		SG.showNews(userid, this);
@@ -694,7 +674,7 @@ class User {
 		let tokenDataSplit = tokenData.split(',');
 
 		if (tokenDataSplit.length < 5) {
-			console.log(`outdated assertion format: ${tokenData}`);
+			Monitor.warn(`outdated assertion format: ${tokenData}`);
 			this.send(`|nametaken|${name}|Your assertion is stale. This usually means that the clock on the server computer is incorrect. If this is your server, please set the clock to the correct time.`);
 			return;
 		}
@@ -709,14 +689,14 @@ class User {
 			if (tokenDataSplit[0] !== challenge) {
 				Monitor.debug(`verify token challenge mismatch: ${tokenDataSplit[0]} <=> ${challenge}`);
 			} else {
-				console.log(`verify token mismatch: ${tokenData}`);
+				Monitor.warn(`verify token mismatch: ${tokenData}`);
 			}
 			return;
 		}
 
 		let expiry = Config.tokenexpiry || 25 * 60 * 60;
 		if (Math.abs(parseInt(tokenDataSplit[3]) - Date.now() / 1000) > expiry) {
-			console.log(`stale assertion: ${tokenData}`);
+			Monitor.warn(`stale assertion: ${tokenData}`);
 			this.send(`|nametaken|${name}|Your assertion is stale. This usually means that the clock on the server computer is incorrect. If this is your server, please set the clock to the correct time.`);
 			return;
 		}

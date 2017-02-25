@@ -506,7 +506,23 @@ exports.BattleMovedex = {
 		type: "Fairy",
 	},
 	//CUSTOM MADE CUSTOM MOVES
-
+	rocketpunch: {
+		accuracy: 100,
+		basePower: 100,
+		category: "Special",
+		id: "rocketpunch",
+		isNonstandard: true,
+		name: "Rocket Punch",
+		pp: 10,
+		priority: 1,
+		target: "Normal",
+		type: "Fire",
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Flare Blitz", source);
+			this.add('-anim', source, "Mach Punch", target);
+		},
+	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
 	/*spacialblast: {

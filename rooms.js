@@ -51,7 +51,7 @@ class Room {
 	send(message, errorArgument) {
 		if (errorArgument) throw new Error("Use Room#sendUser");
 		if (this.id !== 'lobby') message = '>' + this.id + '\n' + message;
-		Sockets.channelBroadcast(this.id, message);
+		if (this.userCount) Sockets.channelBroadcast(this.id, message);
 	}
 	sendAuth(message) {
 		for (let i in this.users) {
@@ -615,7 +615,7 @@ class GlobalRoom {
 	send(message, user) {
 		if (user) {
 			user.sendTo(this, message);
-		} else {
+		} else if (this.userCount) {
 			Sockets.channelBroadcast(this.id, message);
 		}
 	}
@@ -846,7 +846,7 @@ class GlobalRoom {
 		if (time - this.lastReportedCrash < CRASH_REPORT_THROTTLE) {
 			const stackUS = (err ? Chat.escapeHTML(err.stack).split(`\n`).slice(0, 2).join(`.`) : ``);
 			const crashMessageUS = `**The server has crashed:** ${stackUS}`;
-			SG.messageSeniorStaff(crashMessageUS, '~Crashlogger');
+			SG.messageSeniorStaff(crashMessageUS, '~SG Server');
 			return;
 		}
 		this.lastReportedCrash = time;
@@ -1004,7 +1004,9 @@ class BattleRoom extends Room {
 	update(excludeUser) {
 		if (this.log.length <= this.lastUpdate) return;
 
-		Sockets.subchannelBroadcast(this.id, '>' + this.id + '\n\n' + this.log.slice(this.lastUpdate).join('\n'));
+		if (this.userCount) {
+			Sockets.subchannelBroadcast(this.id, '>' + this.id + '\n\n' + this.log.slice(this.lastUpdate).join('\n'));
+		}
 
 		this.lastUpdate = this.log.length;
 

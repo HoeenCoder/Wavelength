@@ -145,11 +145,11 @@ exports.commands = {
 			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + SG.nameColor('Opple', true) + " (Social Media Lead)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Policy and Media)<br />" +
 			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + SG.nameColor('The Run', true) + " (Former Server Owner)<br />" +
+			"- " + SG.nameColor('The Run', true) + " (Former Server Owner, Development)<br />" +
 			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
@@ -383,7 +383,7 @@ exports.commands = {
 	checkbonus: 'dailybonus',
 	dailybonus: function (target, room, user) {
 		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
-		if (nextBonus <= 0) return SG.giveDailyReward(user.userid, user);
-		return this.sendReply('Your next bonus is ' + Db.DailyBonus.get(user.userid, [1, Date.now()])[0] + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
+		if ((86400000 - nextBonus) <= 0) return SG.giveDailyReward(user.userid, user);
+		return this.sendReply('Your next bonus is ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 8 ? 7 : Db.DailyBonus.get(user.userid, [1, Date.now()])[0]) + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
 	},
 };

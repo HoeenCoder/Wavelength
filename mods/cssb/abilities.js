@@ -68,4 +68,29 @@ exports.BattleAbilities = {
 			this.add('raw', '<span style="font-family: monospace;">./spacialgaze>node app.js<br/>NEW GLOBAL: global<br/>NEW CHATROOM: lobby<br/>NEW CHATROOM: staff<br/>Worker 1 now listening on 0.0.0.0:8000<br/>Test your server at http://localhost:8000<br/>_</span>');
 		},
 	},
+	primalsurge: {
+		name: 'Primal Surge',
+		id: 'primalsurge',
+		onStart: function (source) {
+			this.setTerrain('electricterrain');
+			this.terrainData.duration = 0;
+		},
+		onModifySpe: function (spe) {
+			return this.chainModify(2);
+		},
+		onEnd: function (pokemon) {
+			if (this.terrainData.source !== pokemon) return;
+			for (let i = 0; i < this.sides.length; i++) {
+				for (let j = 0; j < this.sides[i].active.length; j++) {
+					let target = this.sides[i].active[j];
+					if (target === pokemon) continue;
+					if (target && target.hp && target.hasAbility('primalsurge')) {
+						this.terrainData.source = target;
+						return;
+					}
+				}
+			}
+			this.setTerrain('');
+		},
+	},
 };
