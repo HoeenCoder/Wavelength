@@ -4014,7 +4014,7 @@ class Battle extends Tools.BattleDex {
 						if (!toExport.levelUps[faintData.source.slot]) toExport.levelUps[faintData.source.slot] = 0;
 						toExport.levelUps[faintData.source.slot]++;
 					}
-					Db.players.get(userid).party[faintData.source.slot].exp += activeExp;
+					faintData.source.slot.exp += activeExp;
 					this.add('');
 					// Non-Active pokemon
 					while (exp.length) {
@@ -4040,13 +4040,13 @@ class Battle extends Tools.BattleDex {
 							}
 						}
 						toExport.evs[mon.slot] = newEvs;
-						while ((cur.exp + Db.players.get(userid).party[cur.slot].exp) >= SG.calcExp(mon.species, (mon.level + 1))) {
+						while ((cur.exp + mon.exp) >= SG.calcExp(mon.species, (mon.level + 1))) {
 							this.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
 							mon.level++; // TODO will this work? If not, how to level up others mid battle?
 							if (!toExport.levelUps[mon.slot]) toExport.levelUps[mon.slot] = 0;
 							toExport.levelUps[mon.slot]++;
 						}
-						Db.players.get(userid).party[mon.slot].exp += cur.exp;
+						mon.exp += cur.exp;
 						this.add('');
 					}
 					// Send to main process for saving
