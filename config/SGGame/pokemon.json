@@ -16242,14 +16242,14 @@
 			"exact": null,
 			"evolvesTo": null
 		},
-		"baseExp": 154, 
+		"baseExp": 154,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
 			"def": 1,
 			"spa": 0,
 			"spd": 1,
-			"spe": 0,
+			"spe": 0
 		},
 		"totalEvDrops": 2
 	},
@@ -17024,7 +17024,7 @@
 		},
 		"totalEvDrops": 2
 	},
-	"vulpix": {
+	"vulpixalola": {
 		"expType": "mediumfast",
 		"num": 37,
 		"rate": "190",

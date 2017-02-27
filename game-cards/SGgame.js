@@ -65,7 +65,7 @@ class SGgame extends Console.Console {
 			if (user.party.length > 5) break;
 			pokemon = user.pc[box - 1][slot];
 			user.unBoxPoke(box, slot);
-			user.party = user.party.concat(SG.unpackTeam(pokemon));
+			user.party = user.party.concat(Tools.fastUnpackTeam(pokemon));
 			Db.players.set(this.userid, user);
 			slot = null;
 			break;
@@ -96,7 +96,9 @@ class SGgame extends Console.Console {
 			output += '<tr style="width: 100%;">';
 			for (let j = 0; j < 6; j++) {
 				let bg = user.pc[(box - 1)][count];
-				bg = (bg ? SG.getPokemonIcon(user.pc[(box - 1)][count].split('|')[1]) : 'background: none');
+				let species;
+				if (bg) species = (user.pc[(box - 1)][count].split('|')[1] ? user.pc[(box - 1)][count].split('|')[1] : user.pc[(box - 1)][count].split('|')[0]);
+				bg = (bg ? SG.getPokemonIcon(species) : 'background: none');
 				output += '<td style="width: 15%; height: 20%;"><button style="' + bg + '; width: 100%; height: 100%; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '"></button></td>';
 				count++;
 			}
@@ -114,18 +116,10 @@ class SGgame extends Console.Console {
 				if (isNaN(slot) || slot < 0 || slot > 5) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (user.party[slot]) {
-					let species = user.party[slot].species;
-					species = species.split('-').map(part => {
-						return toId(part);
-					});
-					if (species[1]) {
-						species = species.shift() + '-' + species.shift() + species.join('');
-					} else {
-						species = species[0];
-					}
+					let species = Tools.getTemplate(user.party[slot].species).spriteid;
 					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (user.party[slot].shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
-				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + (user.party[slot].name ? user.party[slot].name + '<br/>(' + user.party[slot].species + ')' : user.party[slot].species) + '</b> Lvl ' + (user.party[slot].level) + '<br/>';
+				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((user.party[slot].name && user.party[slot].name !== user.party[slot].species) ? user.party[slot].name + '<br/>(' + user.party[slot].species + ')' : user.party[slot].species) + '</b> Lvl ' + (user.party[slot].level) + '<br/>';
 				if (action === 'release') {
 					output += 'Are you sure you want to release this pokemon?<br/>This cannot be undone.<br/><button class="button" name="send" value="/sggame pc party|' + box + ', ' + slot + ', confirmrelease">Yes, release this pokemon</button>';
 				} else {
@@ -137,14 +131,14 @@ class SGgame extends Console.Console {
 				output += '</div>';
 			} else {
 				if (isNaN(slot) || slot < 0 || slot > 29) return output + 'Error</div></div>';
-				let data = SG.unpackTeam(user.pc[(box - 1)][slot])[0];
+				let data = Tools.fastUnpackTeam(user.pc[(box - 1)][slot])[0];
 				if (!data) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (data) {
 					let species = Tools.getTemplate(data.species).spriteid;
 					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (data.shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
-				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + (data.name ? data.name + '<br/>(' + data.species + ')' : data.species) + '</b> Lvl ' + (data.level) + '<br/>';
+				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((data.name && data.name !== data.species) ? data.name + '<br/>(' + data.species + ')' : data.species) + '</b> Lvl ' + (data.level) + '<br/>';
 				if (action === 'release') {
 					output += 'Are you sure you want to release this pokemon?<br/>This cannot be undone.<br/><button class="button" name="send" value="/sggame pc ' + box + ', ' + slot + ', confirmrelease">Yes, release this pokemon</button>';
 				} else {
@@ -196,8 +190,10 @@ class Player {
 		return true;
 	}
 	boxPoke(pokemon, box) {
+		console.log(pokemon);
 		if (typeof pokemon !== 'string') {
-			pokemon = SG.packTeam(pokemon);
+			pokemon = Tools.packTeam(pokemon);
+			console.log(pokemon);
 			if (!pokemon) return false;
 		}
 		let count = 0, first = false;
@@ -275,7 +271,7 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newObj = new Player(user.userid, SG.unpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				let newObj = new Player(user.userid, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
@@ -358,7 +354,7 @@ exports.commands = {
 		if (!user.console) return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
 		if (!target || starters.indexOf(target) === -1) return false;
-		let obj = new Player(user, SG.unpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));
+		let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));
 		Db.players.set(user.userid, obj);
 		this.parse('/sggame next');
 	},

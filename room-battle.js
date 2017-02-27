@@ -278,14 +278,20 @@ class Battle {
 			this.score = [parseInt(lines[2]), parseInt(lines[3])];
 			break;
 		case 'caught':
-			let curTeam = Db.players.get(lines[2]);
+			lines[2] = lines[2].split('|');
+			let curTeam = Db.players.get(lines[2][0]);
 			if (curTeam.party.length < 6) {
-				let newSet = Users.get('sgserver').wildTeams[lines[2]];
-				newSet = SG.unpackTeam(newSet)[0];
+				let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
+				newSet = Tools.fastUnpackTeam(newSet)[0];
+				newSet.pokeball = lines[2][1];
 				curTeam.party.push(newSet);
 				Db.players.set(lines[2][0], curTeam);
 			} else {
-				let newSet = Users.get('sgserver').wildTeams[lines[2]];
+				let newSet = Users.get('sgserver').wildTeams[lines[2][0]].split('|');
+				let details = newSet[newSet.length - 1].split(',');
+				details[2] = lines[2][1];
+				newSet[newSet.length - 1] = details.join(',');
+				newSet = newSet.join('|');
 				let response = curTeam.boxPoke(newSet, 1);
 				if (response) {
 					this.room.push(newSet.split('|')[1] + ' was sent to box ' + response + '.');
@@ -294,6 +300,26 @@ class Battle {
 				}
 				this.room.update();
 			}
+			break;
+		case 'updateExp':
+			let data = lines[2].split(']');
+			let userid = data.shift();
+			let gameObj = Db.players.get(userid);
+			for (let i = 0; i < data.length; i++) {
+				let cur = data[i].split('|');
+				cur[0] = Number(cur[0]);
+				console.log(cur[0]);
+				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
+				gameObj.party[cur[0]].level += (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
+				let evs = cur[3].split(',');
+				if (!gameObj.party[cur[0]].evs) gameObj.party[cur[0]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+				let j = 0;
+				for (let ev in gameObj.party[cur[0]].evs) {
+					gameObj.party[cur[0]].evs[ev] += Number(evs[j]);
+					j++;
+				}
+			}
+			Db.players.set(userid, gameObj);
 			break;
 		}
 		Monitor.activeIp = null;

@@ -116,7 +116,6 @@ global.Verifier = require('./verifier');
 Verifier.PM.spawn();
 
 global.SG = require('./SG.js').SG;
-//SG.readGameData();
 
 global.Tournaments = require('./tournaments');
 

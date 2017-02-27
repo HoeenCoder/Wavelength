@@ -111,66 +111,6 @@ exports.SG = {
 		user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + Db.DailyBonus.get(userid)[0] + ' Stardust.<br>' + showDailyRewardAni(userid) + '<br>Because you have connected to the server for the past ' + Db.DailyBonus.get(userid)[0] + ' Days.</center>');
 		Db.DailyBonus.set(userid, [(Db.DailyBonus.get(userid)[0] + 1), Date.now()]);
 	},
-
-	//This code is a WIP
-	/*masterGameObj: {},
-	writingGame: false, // TODO: To prevent a restart while writeSteam is running
-	writeGameData: function () {
-		// TODO: use fs.writeStream so we dont overload anything with the massive object.
-		// TODO: what happens if we write from multiple process a the same time? Does the second write undo the first? Will it corrupt the JSON? Should we prevent that and only allow the main process to write to game.json?
-		let buf = '';
-		for (let key in SG.masterGameObj) {
-			let obj = {};
-			obj[key] = SG.masterGameObj[key];
-			buf += JSON.stringify(obj) + '\n';
-		}
-		fs.writeFile('config/game.json', buf, 'utf-8');
-	},
-
-	readGameData: function () {
-		try {
-			fs.accessSync('config/game.json', fs.F_OK);
-		} catch (e) {
-			fs.writeFile('config/game.json', "{}", function (err) {
-				if (err) {
-					console.error('Error while creating game.json: ' + err);
-				} else {
-					console.log("config/game.json not found, creating a new one...");
-				}
-			});
-			return; //No need to read from the file we just created.
-		}
-		let stream = fs.createReadStream('config/game.json', {flags: 'r', encoding: 'utf-8'});
-		let buf = '';
-
-		stream.on('data', function (d) {
-			buf += d.toString(); // when data is read, stash it in a string buffer
-			pump(); // then process the buffer
-		});
-
-		function pump() {
-			let pos;
-
-			while ((pos = buf.indexOf('\n')) >= 0) { // keep going while there's a newline somewhere in the buffer
-				// if there's more than one newline in a row, the buffer will now start with a newline
-				if (pos == 0) { // eslint-disable-line eqeqeq
-					buf = buf.slice(1); // discard it
-					continue; // so that the next iteration will start with data
-				}
-				processLine(buf.slice(0, pos)); // hand off the line
-				buf = buf.slice(pos + 1); // and slice the processed data off the buffer
-			}
-		}
-
-		function processLine(line) { // here's where we do something with a line
-			// discard CR (0x0D)
-			if (line[line.length - 1] == '\r') line = line.substr(0, line.length - 1); // eslint-disable-line eqeqeq
-			if (line.length > 0) { // ignore empty lines
-				let obj = JSON.parse(line); // parse the JSON
-				Object.assign(SG.masterGameObj, obj); // do something with the data here!
-			}
-		}
-	},*/
 	gameData: gameData,
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
@@ -220,19 +160,9 @@ exports.SG = {
 	},
 	makeWildPokemon: function (location, exact) {
 		//TODO: locations
-		let mons = Object.keys(Tools.data.Pokedex);
-		let pokemon = [];
-		for (let i = 0; i < mons.length; i++) {
-			let poke = Tools.getTemplate(mons[i]);
-			if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP') continue;
-			if (poke.forme) {
-				let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
-				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
-			}
-			pokemon.push(poke.id);
-		}
 		//let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
-		pokemon = pokemon[Math.floor(Math.random() * pokemon.length)];
+		if (wildPokemon.length <= 0) loadPokemon();
+		let pokemon = wildPokemon[Math.floor(Math.random() * wildPokemon.length)];
 		if (exact && Tools.getTemplate(exact.species).exists) pokemon = exact.species;
 		pokemon = Tools.getTemplate(pokemon);
 		let baseSpecies = pokemon;
@@ -251,7 +181,7 @@ exports.SG = {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
 		}
-		let data = "|" + (forme ? toId(forme) : pokemon.id) + "||";
+		let data = (forme ? toId(forme) : pokemon.id) + "|||";
 		let ability = Math.round(Math.random());
 		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
 		if (exact && exact.ability) {
@@ -348,6 +278,7 @@ exports.SG = {
 			data += "|";
 		}
 		data += lvl + "|0";
+		data += ",,pokeball," + this.calcExp(pokemon.species, lvl);
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
@@ -356,7 +287,7 @@ exports.SG = {
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
 	teamAverage: function (team) {
-		if (typeof team === "string") team = SG.unpackTeam(team);
+		if (typeof team === "string") team = Tools.fastUnpackTeam(team);
 		let avrg = 0;
 		for (let i = 0; i < team.length; i++) {
 			avrg += team[i].level;
@@ -404,180 +335,9 @@ exports.SG = {
 		}
 		return true;
 	},
-	packTeam: function (team) {
-		let buf = '';
-		if (!team) return '';
-
-		for (let i = 0; i < team.length; i++) {
-			let set = team[i];
-			if (buf) buf += ']';
-
-			// name
-			if (set.name) buf += set.name;
-
-			// species
-			let id = toId(set.species);
-			buf += '|' + (toId(set.name) === id ? '' : id);
-
-			// item
-			buf += '|' + toId(set.item);
-
-			// ability
-			let template = Tools.getTemplate(set.species || set.name);
-			let abilities = template.abilities;
-			id = toId(set.ability);
-			if (abilities) {
-				if (id === toId(abilities['0']) || id === 0) {
-					buf += '|';
-				} else if (id === toId(abilities['1']) || id === 1) {
-					buf += '|1';
-				} else if (id === toId(abilities['H']) || id === 'h') {
-					buf += '|H';
-				} else {
-					buf += '|' + id;
-				}
-			} else {
-				buf += '|' + id;
-			}
-
-			// moves
-			if (set.moves) {
-				buf += '|' + set.moves.map(toId).join(',');
-			} else {
-				buf += '|';
-			}
-
-			// nature
-			buf += '|' + (set.nature || '');
-
-			// evs
-			let evs = '|';
-			if (set.evs) {
-				evs = '|' + (set.evs['hp'] || '') + ',' + (set.evs['atk'] || '') + ',' + (set.evs['def'] || '') + ',' + (set.evs['spa'] || '') + ',' + (set.evs['spd'] || '') + ',' + (set.evs['spe'] || '');
-			}
-			if (evs === '|,,,,,') {
-				buf += '|';
-				// doing it this way means packTeam doesn't need to be past-gen aware
-				if (set.evs['hp'] === 0) buf += '0';
-			} else {
-				buf += evs;
-			}
-
-			// gender
-			if (set.gender && set.gender !== template.gender) {
-				buf += '|' + set.gender;
-			} else {
-				buf += '|';
-			}
-
-			// ivs
-			let ivs = '|';
-			if (set.ivs) {
-				ivs = '|' + (set.ivs['hp'] === 31 || set.ivs['hp'] === undefined ? '' : set.ivs['hp']) + ',' + (set.ivs['atk'] === 31 || set.ivs['atk'] === undefined ? '' : set.ivs['atk']) + ',' + (set.ivs['def'] === 31 || set.ivs['def'] === undefined ? '' : set.ivs['def']) + ',' + (set.ivs['spa'] === 31 || set.ivs['spa'] === undefined ? '' : set.ivs['spa']) + ',' + (set.ivs['spd'] === 31 || set.ivs['spd'] === undefined ? '' : set.ivs['spd']) + ',' + (set.ivs['spe'] === 31 || set.ivs['spe'] === undefined ? '' : set.ivs['spe']);
-			}
-			if (ivs === '|,,,,,') {
-				buf += '|';
-			} else {
-				buf += ivs;
-			}
-
-			// shiny
-			if (set.shiny) {
-				buf += '|S';
-			} else {
-				buf += '|';
-			}
-
-			// level
-			if (set.level && set.level !== 100) {
-				buf += '|' + set.level;
-			} else {
-				buf += '|';
-			}
-
-			// happiness
-			if (set.happiness !== undefined && set.happiness !== 255) {
-				buf += '|' + set.happiness;
-			} else {
-				buf += '|';
-			}
-		}
-		return buf;
-	},
-	unpackTeam: function (team) {
-		if (!team) return [];
-		team = team.split(']');
-		let buf = [];
-
-		for (let i = 0; i < team.length; i++) {
-			let set = team[i];
-			let parts = set.split('|');
-			let obj = {};
-
-			if (parts[0]) obj.name = parts[0];
-			let pokemon = Tools.getTemplate(parts[1]);
-			if (!pokemon.exists) continue; // Invalid species
-			obj.species = pokemon.species;
-			if (pokemon.otherForms && pokemon.otherForms.indexOf(parts[1]) > -1) {
-				let forme = parts[1].substr(pokemon.species.length);
-				obj.species = pokemon.species + "-" + forme.substr(0, 1).toUpperCase() + forme.substr(1);
-			}
-
-			if (parts[2]) obj.item = Tools.getItem(parts[2]).name;
-
-			let ability = parts[3];
-			if (parseInt(ability) === 1) {
-				obj.ability = pokemon.abilities[1];
-			} else if (toId(ability) === 'h') {
-				obj.ability = pokemon.abilities['H'];
-			} else {
-				obj.ability = pokemon.abilities[0];
-			}
-
-			let moves = parts[4].split(',');
-			obj.moves = [];
-			for (let j = 0; j < moves.length; j++) {
-				obj.moves.push(Tools.getMove(moves[j]).name);
-			}
-
-			obj.nature = parts[5];
-
-			obj.evs = {};
-			if (parts[6]) {
-				parts[6] = parts[6].split(',');
-				let evs = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
-				for (let j = 0; j < parts[6].length; j++) {
-					obj.evs[evs[j]] = (parts[6][j] ? parts[6][j] : 0);
-				}
-			}
-
-			if (parts[7]) obj.gender = parts[7];
-
-			obj.ivs = {};
-			if (parts[8]) {
-				parts[8] = parts[8].split(',');
-				let ivs = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
-				for (let j = 0; j < parts[8].length; j++) {
-					obj.ivs[ivs[j]] = (parts[8][j] ? parts[8][j] : undefined);
-				}
-			}
-
-			obj.shiny = false;
-			if (parts[9] === 'S') obj.shiny = true;
-			obj.level = 100;
-			if (parts[10]) obj.level = parseInt(parts[10]);
-			obj.happiness = 255;
-			if (parts[11]) obj.happiness = parseInt(parts[11]);
-
-			buf.push(obj);
-		}
-
-		return buf;
-	},
-	calcExp: function (pokemon, level) {
-		let n = level;
+	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
-		let type = getEXPType(pokemon);
+		let type = this.getEXPType(pokemon);
 		let EXP;
 		switch (type) {
 		case 'erratic':
@@ -607,17 +367,20 @@ exports.SG = {
 		if (EXP < 0) return 0; // Experience underflow glitch
 		return EXP;
 	},
+	getEXPType: function (pokemon) {
+		pokemon = toId(pokemon);
+		try {
+			return this.gameData[pokemon].expType;
+		} catch (e) {
+			throw new Error('Cannot find pokemon ' + pokemon + ' in pokemon.json');
+		}
+	},
 	getGain: function (userid, pokemon, foe, particpated) {
-		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1);
-		/* TODO
-		b is the base experience yield of the fainted Pokémon's species; values for the current Generation are listed here ( http://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_effort_value_yield )
-		TODO base experience yeild => JSON
-		* * * * *
-		using default atm...
-		Why 57 for b as default? The test mons are low formes.
-		*/
-		let b = 57;
+		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1), b = this.gameData[toId(foe.species)].baseExp;
 		return (((a * b * L) / (5 * s)) * (Math.pow((2 * L + 10), 2.5) / Math.pow((L + Lp + 10), 2.5)) + 1) * t * e * p;
+	},
+	getEvGain: function (pokemon) {
+		return this.gameData[toId(pokemon.species)].evDrops;
 	},
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {
@@ -875,6 +638,16 @@ function showDailyRewardAni(userid) {
 	return output;
 }
 
-function getEXPType(pokemon) {
-	return SG.gameData[pokemon].expType;
+let wildPokemon = [];
+function loadPokemon() {
+	let mons = Object.keys(Tools.data.Pokedex);
+	for (let i = 0; i < mons.length; i++) {
+		let poke = Tools.getTemplate(mons[i]);
+		if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP') continue;
+		if (poke.forme) {
+			let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+			if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
+		}
+		wildPokemon.push(poke.id);
+	}
 }

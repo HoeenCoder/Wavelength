@@ -18,7 +18,7 @@ const PRNG = require('./prng');
 const SG = require('./SG.js').SG;
 
 class BattlePokemon {
-	constructor(set, side) {
+	constructor(set, side, slot) {
 		this.side = side;
 		this.battle = side.battle;
 
@@ -85,6 +85,8 @@ class BattlePokemon {
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
+		this.exp = this.set.exp || SG.calcExp(this.speciesid, this.level);
+		this.slot = (!slot && slot !== 0 ? -1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
 		this.details = this.species + (this.level === 100 ? '' : ', L' + this.level) + (this.gender === '' ? '' : ', ' + this.gender) + (this.set.shiny ? ', shiny' : '');
@@ -1305,6 +1307,7 @@ class BattleSide {
 
 		this.isActive = false;
 		this.pokemonLeft = 0;
+		this.battled = [[], [], [], [], [], []];
 		this.faintedLastTurn = false;
 		this.faintedThisTurn = false;
 		this.choiceData = null;
@@ -1324,7 +1327,7 @@ class BattleSide {
 		this.team = this.battle.getTeam(this, team);
 		for (let i = 0; i < this.team.length && i < 6; i++) {
 			//console.log("NEW POKEMON: " + (this.team[i] ? this.team[i].name : '[unidentified]'));
-			this.pokemon.push(new BattlePokemon(this.team[i], this));
+			this.pokemon.push(new BattlePokemon(this.team[i], this, i));
 		}
 		this.pokemonLeft = this.pokemon.length;
 		for (let i = 0; i < this.pokemon.length; i++) {
@@ -3013,6 +3016,9 @@ class Battle extends Tools.BattleDex {
 		this.add('switch', pokemon, pokemon.getDetails);
 		this.insertQueue({pokemon: pokemon, choice: 'runUnnerve'});
 		this.insertQueue({pokemon: pokemon, choice: 'runSwitch'});
+		let foe = this[(side.id === 'p1' ? 'p2' : 'p1')].pokemon[0];
+		if (side.battled[foe.slot].indexOf(pokemon.slot) < 0) side.battled[foe.slot].push(pokemon.slot);
+		if (foe.side.battled[pokemon.slot].indexOf(foe.slot) < 0) foe.side.battled[pokemon.slot].push(foe.slot);
 	}
 	canSwitch(side) {
 		let canSwitchIn = [];
@@ -3964,6 +3970,104 @@ class Battle extends Tools.BattleDex {
 				faintData.target.isActive = false;
 				faintData.target.isStarted = false;
 				faintData.target.side.faintedThisTurn = true;
+				//console.log(faintData.target.side.name); //TODO sides
+				if (Tools.getFormat(this.format).useSGgame && !Tools.getFormat(this.format).noExp && faintData.source.side.name !== 'SG Server') {
+					// Award Experience
+					let userid = toId(faintData.source.side.name);
+					let toExport = {userid: userid, exp: [], evs: {}, levelUps: {}};
+					let exp = faintData.source.side.battled[faintData.target.slot].map(mon => {
+						let pkmn = null;
+						for (let i = 0; i < faintData.source.side.pokemon.length; i++) {
+							if (faintData.source.side.pokemon[i].slot === mon) {
+								pkmn = faintData.source.side.pokemon[i];
+								break;
+							}
+						}
+						if (pkmn.slot !== faintData.source.slot) {
+							toExport.exp.push({exp: SG.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn});
+							return {exp: SG.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn};
+						}
+						return null;
+					});
+					let activeExp = SG.getGain(userid, faintData.source, faintData.target, true);
+					this.add('message', (faintData.source.name || faintData.source.species) + " gained " + Math.round(activeExp) + " Exp. Points!");
+					let newEvs = SG.getEvGain(faintData.source);
+					let totalEvs = 0, newCount = 0;
+					for (let ev in newEvs) {
+						if (faintData.source.set.evs[ev] >= 255) newEvs[ev] = 0;
+						totalEvs += faintData.source.set.evs[ev];
+						newCount += newEvs[ev];
+					}
+					if (totalEvs >= 510) {
+						newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+					} else if (newCount + totalEvs > 510) {
+						// Apply as many evs as possible
+						for (let ev in newEvs) {
+							if (faintData.source.evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
+							totalEvs += newEvs[ev];
+						}
+					}
+					toExport.evs[faintData.source.slot] = newEvs;
+					let curExp = Db.players.get(userid).party[faintData.source.slot].exp;
+					while ((curExp + activeExp) >= SG.calcExp(faintData.source.species, (faintData.source.level + 1))) {
+						this.add('message', (faintData.source.name || faintData.source.species) + " grew to level " + (faintData.source.level + 1) + "!");
+						faintData.source.level++;
+						if (!toExport.levelUps[faintData.source.slot]) toExport.levelUps[faintData.source.slot] = 0;
+						toExport.levelUps[faintData.source.slot]++;
+					}
+					Db.players.get(userid).party[faintData.source.slot].exp += activeExp;
+					this.add('');
+					// Non-Active pokemon
+					while (exp.length) {
+						let cur = exp.shift();
+						if (!cur) continue;
+						let mon = cur.mon;
+						if (mon.fainted) continue;
+						this.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
+						//newEvs = SG.getEvGain(faintData.source);
+						totalEvs = 0, newCount = 0;
+						for (let ev in newEvs) {
+							if (mon.set.evs[ev] >= 255) newEvs[ev] = 0;
+							totalEvs += mon.set.evs[ev];
+							newCount += newEvs[ev];
+						}
+						if (totalEvs >= 510) {
+							newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+						} else if (newCount + totalEvs > 510) {
+							// Apply as many evs as possible
+							for (let ev in newEvs) {
+								if (mon.set.evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
+								totalEvs += newEvs[ev];
+							}
+						}
+						toExport.evs[mon.slot] = newEvs;
+						while ((cur.exp + Db.players.get(userid).party[cur.slot].exp) >= SG.calcExp(mon.species, (mon.level + 1))) {
+							this.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
+							mon.level++; // TODO will this work? If not, how to level up others mid battle?
+							if (!toExport.levelUps[mon.slot]) toExport.levelUps[mon.slot] = 0;
+							toExport.levelUps[mon.slot]++;
+						}
+						Db.players.get(userid).party[mon.slot].exp += cur.exp;
+						this.add('');
+					}
+					// Send to main process for saving
+					let out = toExport.userid + ']';
+					for (let key in toExport.evs) {
+						out += key + '|';
+						//out += toExport.exp[Number(key)].exp;
+						for (let i = 0; i < toExport.exp.length; i++) {
+							if (toExport.exp[i].slot === Number(key)) {
+								out += toExport.exp[i].exp;
+								break;
+							} else if (i + 1 === toExport.exp.length) out += activeExp;
+						}
+						out += '|' + (toExport.levelUps[Number(key)] || 0) + '|';
+						for (let ev in toExport.evs[key]) {
+							out += (toExport.evs[key][ev] || '') + (ev === 'spe' ? ']' : ',');
+						}
+					}
+					this.send('updateExp', out.substring(0, out.length - 1));
+				}
 			}
 		}
 
@@ -4980,7 +5084,7 @@ class Battle extends Tools.BattleDex {
 			if (result === true) {
 				this.add('message', msgs[msgs.length - 1]);
 				// Giving the newly caught pokemon handled in the main process.
-				this.send('caught', toId(user));
+				this.send('caught', toId(user) + '|' + target);
 				this.win(side);
 			} else {
 				this.add('message', msgs[result]);
