@@ -4014,7 +4014,7 @@ class Battle extends Tools.BattleDex {
 						if (!toExport.levelUps[faintData.source.slot]) toExport.levelUps[faintData.source.slot] = 0;
 						toExport.levelUps[faintData.source.slot]++;
 					}
-					faintData.source.slot.exp += activeExp;
+					faintData.source.exp += activeExp;
 					this.add('');
 					// Non-Active pokemon
 					while (exp.length) {
