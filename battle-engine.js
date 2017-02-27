@@ -3970,7 +3970,6 @@ class Battle extends Tools.BattleDex {
 				faintData.target.isActive = false;
 				faintData.target.isStarted = false;
 				faintData.target.side.faintedThisTurn = true;
-				//console.log(faintData.target.side.name); //TODO sides
 				if (Tools.getFormat(this.format).useSGgame && !Tools.getFormat(this.format).noExp && faintData.source.side.name !== 'SG Server') {
 					// Award Experience
 					let userid = toId(faintData.source.side.name);
@@ -4008,7 +4007,7 @@ class Battle extends Tools.BattleDex {
 						}
 					}
 					toExport.evs[faintData.source.slot] = newEvs;
-					let curExp = Db.players.get(userid).party[faintData.source.slot].exp;
+					let curExp = faintData.source.exp;
 					while ((curExp + activeExp) >= SG.calcExp(faintData.source.species, (faintData.source.level + 1))) {
 						this.add('message', (faintData.source.name || faintData.source.species) + " grew to level " + (faintData.source.level + 1) + "!");
 						faintData.source.level++;

@@ -308,7 +308,6 @@ class Battle {
 			for (let i = 0; i < data.length; i++) {
 				let cur = data[i].split('|');
 				cur[0] = Number(cur[0]);
-				console.log(cur[0]);
 				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
 				gameObj.party[cur[0]].level += (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
 				let evs = cur[3].split(',');
