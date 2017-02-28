@@ -17134,6 +17134,48 @@
 		},
 		"totalEvDrops": 2
 	},
+	"grimeralola": {
+		"id": "grimeralola",
+		"num": 88,
+		"rate": "190",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "mukalola"
+		},
+		"baseExp": 65,
+		"evDrops": {
+			"hp": 1,
+			"atk": 0,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 1,
+	},
+	"mukalola": {
+		"id": "mukalola",
+		"num": 89,
+		"rate": "75",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 38,
+			"evolvesTo": null
+		},
+		"baseExp": 65,
+		"evDrops": {
+			"hp": 1,
+			"atk": 1,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 2,
+	},
 	"gengarmega": {
 		"id": "gengarmega",
 		"baseExp": 270,
