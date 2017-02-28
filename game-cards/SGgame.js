@@ -190,10 +190,8 @@ class Player {
 		return true;
 	}
 	boxPoke(pokemon, box) {
-		console.log(pokemon);
 		if (typeof pokemon !== 'string') {
 			pokemon = Tools.packTeam(pokemon);
-			console.log(pokemon);
 			if (!pokemon) return false;
 		}
 		let count = 0, first = false;

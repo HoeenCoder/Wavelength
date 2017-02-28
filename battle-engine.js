@@ -4023,8 +4023,7 @@ class Battle extends Tools.BattleDex {
 						let mon = cur.mon;
 						if (mon.fainted) continue;
 						this.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
-						//newEvs = SG.getEvGain(faintData.source);
-						totalEvs = 0, newCount = 0;
+						totalEvs = 0, newCount = 0; // eslint-disable-line
 						for (let ev in newEvs) {
 							if (mon.set.evs[ev] >= 255) newEvs[ev] = 0;
 							totalEvs += mon.set.evs[ev];
@@ -4058,7 +4057,9 @@ class Battle extends Tools.BattleDex {
 							if (toExport.exp[i].slot === Number(key)) {
 								out += toExport.exp[i].exp;
 								break;
-							} else if (i + 1 === toExport.exp.length) out += activeExp;
+							} else if (i + 1 === toExport.exp.length) {
+								out += activeExp;
+							}
 						}
 						out += '|' + (toExport.levelUps[Number(key)] || 0) + '|';
 						for (let ev in toExport.evs[key]) {

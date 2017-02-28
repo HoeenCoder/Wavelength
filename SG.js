@@ -5,7 +5,7 @@ let http = require('http');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
-
+let wildPokemon = [];
 let gameData = {};
 try {
 	gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
@@ -638,7 +638,6 @@ function showDailyRewardAni(userid) {
 	return output;
 }
 
-let wildPokemon = [];
 function loadPokemon() {
 	let mons = Object.keys(Tools.data.Pokedex);
 	for (let i = 0; i < mons.length; i++) {
