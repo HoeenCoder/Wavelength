@@ -86,7 +86,7 @@ class BattlePokemon {
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
 		this.exp = this.set.exp || SG.calcExp(this.speciesid, this.level);
-		this.slot = (!slot && slot !== 0 ? -1 : slot);
+		this.slot = (!slot && slot !== 0 ? this.side.pokemon.length - 1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
 		this.details = this.species + (this.level === 100 ? '' : ', L' + this.level) + (this.gender === '' ? '' : ', ' + this.gender) + (this.set.shiny ? ', shiny' : '');

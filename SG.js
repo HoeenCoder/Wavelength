@@ -6,10 +6,12 @@ const Autolinker = require('autolinker');
 
 let regdateCache = {};
 let wildPokemon = [];
-let gameData = {};
-try {
-	gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
-} catch (e) {}
+let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
+gameData.giratinaorigin = gameData.giratina;
+const types = ["bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"];
+for (let type = 0; type < types.length; type++) {
+	gameData['arceus' + types[type]] = gameData.arceus;
+}
 
 exports.SG = {
 	nameColor: function (name, bold) {
@@ -111,7 +113,6 @@ exports.SG = {
 		user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + Db.DailyBonus.get(userid)[0] + ' Stardust.<br>' + showDailyRewardAni(userid) + '<br>Because you have connected to the server for the past ' + Db.DailyBonus.get(userid)[0] + ' Days.</center>');
 		Db.DailyBonus.set(userid, [(Db.DailyBonus.get(userid)[0] + 1), Date.now()]);
 	},
-	gameData: gameData,
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
@@ -318,10 +319,10 @@ exports.SG = {
 		}
 		let rate;
 		try {
-			rate = gameData[toId(pokemon.species)].rate;
+			rate = this.gameData[toId(pokemon.species)].rate;
 		} catch (e) {
-			if (gameData[toId(pokemon.baseSpecies)]) {
-				rate = gameData[toId(pokemon.baseSpecies)].rate;
+			if (this.gameData[toId(pokemon.baseSpecies)]) {
+				rate = this.gameData[toId(pokemon.baseSpecies)].rate;
 			} else {
 				console.log('Catch rate not found for ' + pokemon.species);
 				rate = 150;
@@ -335,6 +336,7 @@ exports.SG = {
 		}
 		return true;
 	},
+	gameData: gameData,
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
 		let type = this.getEXPType(pokemon);
