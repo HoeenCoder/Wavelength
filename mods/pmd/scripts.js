@@ -442,7 +442,7 @@ exports.BattleScripts = {
 				nature: 'Bold',
 			},
 
-			'Fenneken': {
+			'Fennekin': {
 				species: 'Fennekin',
 				ability: 'Blaze',
 				item: '',
