@@ -1218,13 +1218,17 @@ class User {
 			return Promise.resolve(false);
 		}
 		if (Tools.getFormat(formatid).useSGgame) {
+			if (!Db.players.get(this.userid) || Db.players.get(this.userid).party.length <= 0) {
+				connection.popup('You need to start SGgame before you can play this format.');
+				return Promise.resolve(false);
+			}
 			if (type === 'challenge' && Tools.getFormat(formatid).isWildEncounter) {
 				connection.popup('You cannot challenge users to this format.');
 				return Promise.resolve(false);
 			}
 			for (let key of this.inRooms) {
 				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).isWildEncounter && this.games.has(key) && Tools.getFormat(formatid).isWildEncounter) {
-					connection.popup('Your already in a wild pokemon battle!');
+					connection.popup('Your already in a wild pokemon battle.');
 					return Promise.resolve(false);
 				}
 			}
