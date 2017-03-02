@@ -37,10 +37,10 @@ class Console {
 			this.defaultBottomHTML = this.defaultBottomHTML.split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' + this.defaultBottomHTML.split("<!--endmute-->")[1];
 		}
 		if (this.curScreen[2] && this.curScreen[2].indexOf("<!--mutebutton-->") > -1 && this.curScreen[2].indexOf("<!--endmute-->") > -1) {
-			this.curScreen[2] = this.curScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' +  this.curScreen[2].split("<!--endmute-->")[1];
+			this.curScreen[2] = this.curScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' + this.curScreen[2].split("<!--endmute-->")[1];
 		}
 		if (this.prevScreen[2] && this.prevScreen[2].indexOf("<!--mutebutton-->") > -1 && this.prevScreen[2].indexOf("<!--endmute-->") > -1) {
-			this.prevScreen[2] = this.prevScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' +  this.prevScreen[2].split("<!--endmute-->")[1];
+			this.prevScreen[2] = this.prevScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' + this.prevScreen[2].split("<!--endmute-->")[1];
 		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
 	}

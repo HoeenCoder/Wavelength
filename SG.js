@@ -180,7 +180,7 @@ exports.SG = {
 		if (pokemon.baseSpecies) baseSpecies = Tools.getTemplate(pokemon.baseSpecies);
 		if (!pokemon || !pokemon.exists) {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
-			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
 		let data = (forme ? toId(forme) : pokemon.id) + "|||";
 		let ability = Math.round(Math.random());
@@ -210,7 +210,7 @@ exports.SG = {
 			pokemon.learnset = baseSpecies.learnset;
 		} else if (!pokemon.learnset) {
 			console.log('Error on pokemon generation: No learn set found for: ' + pokemon.id + ' or for its base species: ' + baseSpecies.id);
-			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
 		for (let move in pokemon.learnset) {
 			for (let learned in pokemon.learnset[move]) {
@@ -279,10 +279,10 @@ exports.SG = {
 			data += "|";
 		}
 		data += lvl + "|0";
-		data += ",,pokeball," + this.calcExp(pokemon.species, lvl);
+		data += ",,pokeball," + this.calcExp(pokemon.species, lvl) + "," + (exact && exact.ot ? exact.ot : '');
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
-			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0";
+			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";

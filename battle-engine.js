@@ -5089,6 +5089,104 @@ class Battle extends Tools.BattleDex {
 				this.add('message', msgs[msgs.length - 1]);
 				// Giving the newly caught pokemon handled in the main process.
 				this.send('caught', toId(user) + '|' + target);
+				if (Tools.getFormat(this.format).useSGgame && !Tools.getFormat(this.format).noExp && this[side].name !== 'SG Server') {
+					// Award Experience
+					let userid = toId(user);
+					let toExport = {userid: userid, exp: [], evs: {}, levelUps: {}};
+					let exp = this[side].battled[this[opp].pokemon[0].slot].map(mon => {
+						let pkmn = null;
+						for (let i = 0; i < this[side].pokemon.length; i++) {
+							if (this[side].pokemon[i].slot === mon) {
+								pkmn = this[side].pokemon[i];
+								break;
+							}
+						}
+						if (pkmn.slot !== this[side].pokemon[0].slot) {
+							toExport.exp.push({exp: SG.getGain(userid, pkmn, this[opp].pokemon[0], true), slot: pkmn.slot, mon: pkmn});
+							return {exp: SG.getGain(userid, pkmn, this[opp].pokemon[0], true), slot: pkmn.slot, mon: pkmn};
+						}
+						return null;
+					});
+					let activeExp = SG.getGain(userid, this[side].pokemon[0], this[opp].pokemon[0], true);
+					this.add('message', (this[side].pokemon[0].name || this[side].pokemon[0].species) + " gained " + Math.round(activeExp) + " Exp. Points!");
+					let newEvs = SG.getEvGain(this[side].pokemon[0]);
+					let totalEvs = 0, newCount = 0;
+					for (let ev in newEvs) {
+						if (this[side].pokemon[0].set.evs[ev] >= 255) newEvs[ev] = 0;
+						totalEvs += this[side].pokemon[0].set.evs[ev];
+						newCount += newEvs[ev];
+					}
+					if (totalEvs >= 510) {
+						newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+					} else if (newCount + totalEvs > 510) {
+						// Apply as many evs as possible
+						for (let ev in newEvs) {
+							if (this[side].pokemon[0].evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
+							totalEvs += newEvs[ev];
+						}
+					}
+					toExport.evs[this[side].pokemon[0].slot] = newEvs;
+					let curExp = this[side].pokemon[0].exp;
+					while ((curExp + activeExp) >= SG.calcExp(this[side].pokemon[0].species, (this[side].pokemon[0].level + 1))) {
+						this.add('message', (this[side].pokemon[0].name || this[side].pokemon[0].species) + " grew to level " + (this[side].pokemon[0].level + 1) + "!");
+						this[side].pokemon[0].level++;
+						if (!toExport.levelUps[this[side].pokemon[0].slot]) toExport.levelUps[this[side].pokemon[0].slot] = 0;
+						toExport.levelUps[this[side].pokemon[0].slot]++;
+					}
+					this[side].pokemon[0].exp += activeExp;
+					this.add('');
+					// Non-Active pokemon
+					while (exp.length) {
+						let cur = exp.shift();
+						if (!cur) continue;
+						let mon = cur.mon;
+						if (mon.fainted) continue;
+						this.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
+						totalEvs = 0, newCount = 0; // eslint-disable-line
+						for (let ev in newEvs) {
+							if (mon.set.evs[ev] >= 255) newEvs[ev] = 0;
+							totalEvs += mon.set.evs[ev];
+							newCount += newEvs[ev];
+						}
+						if (totalEvs >= 510) {
+							newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+						} else if (newCount + totalEvs > 510) {
+							// Apply as many evs as possible
+							for (let ev in newEvs) {
+								if (mon.set.evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
+								totalEvs += newEvs[ev];
+							}
+						}
+						toExport.evs[mon.slot] = newEvs;
+						while ((cur.exp + mon.exp) >= SG.calcExp(mon.species, (mon.level + 1))) {
+							this.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
+							mon.level++; // TODO will this work? If not, how to level up others mid battle?
+							if (!toExport.levelUps[mon.slot]) toExport.levelUps[mon.slot] = 0;
+							toExport.levelUps[mon.slot]++;
+						}
+						mon.exp += cur.exp;
+						this.add('');
+					}
+					// Send to main process for saving
+					let out = toExport.userid + ']';
+					for (let key in toExport.evs) {
+						out += key + '|';
+						//out += toExport.exp[Number(key)].exp;
+						for (let i = 0; i < toExport.exp.length; i++) {
+							if (toExport.exp[i].slot === Number(key)) {
+								out += toExport.exp[i].exp;
+								break;
+							} else if (i + 1 === toExport.exp.length) {
+								out += activeExp;
+							}
+						}
+						out += '|' + (toExport.levelUps[Number(key)] || 0) + '|';
+						for (let ev in toExport.evs[key]) {
+							out += (toExport.evs[key][ev] || '') + (ev === 'spe' ? ']' : ',');
+						}
+					}
+					this.send('updateExp', out.substring(0, out.length - 1));
+				}
 				this.win(side);
 			} else {
 				this.add('message', msgs[result]);

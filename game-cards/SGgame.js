@@ -362,7 +362,7 @@ exports.commands = {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
 		if (!target || starters.indexOf(target) === -1) return false;
-		let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));
+		let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
 		Db.players.set(user.userid, obj);
 		this.parse('/sggame next');
 	},

@@ -280,23 +280,20 @@ class Battle {
 		case 'caught':
 			lines[2] = lines[2].split('|');
 			let curTeam = Db.players.get(lines[2][0]);
+			let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
+			newSet = Tools.fastUnpackTeam(newSet)[0];
+			newSet.pokeball = lines[2][1];
+			newSet.ot = toId(lines[2][0]);
 			if (curTeam.party.length < 6) {
-				let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
-				newSet = Tools.fastUnpackTeam(newSet)[0];
-				newSet.pokeball = lines[2][1];
 				curTeam.party.push(newSet);
 				Db.players.set(lines[2][0], curTeam);
 			} else {
-				let newSet = Users.get('sgserver').wildTeams[lines[2][0]].split('|');
-				let details = newSet[newSet.length - 1].split(',');
-				details[2] = lines[2][1];
-				newSet[newSet.length - 1] = details.join(',');
-				newSet = newSet.join('|');
+				newSet = Tools.packTeam(newSet);
 				let response = curTeam.boxPoke(newSet, 1);
 				if (response) {
-					this.room.push(newSet.split('|')[1] + ' was sent to box ' + response + '.');
+					this.room.push((newSet.split('|')[0] || newSet.split('|')[1]) + ' was sent to box ' + response + '.');
 				} else {
-					this.room.push(newSet.split('|')[1] + ' was released because your PC is full...');
+					this.room.push((newSet.split('|')[0] || newSet.split('|')[1]) + ' was released because your PC is full...');
 				}
 				this.room.update();
 			}
