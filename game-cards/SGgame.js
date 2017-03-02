@@ -194,6 +194,8 @@ class Player {
 		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|0"], [], [], []];
 		this.party = starter;
 		this.pokedex = {};
+		// Queue for learning moves and evolutions, run the data with this.runQueue();
+		this.queue = [];
 		// More to come...
 	}
 	test() {
@@ -229,6 +231,16 @@ class Player {
 		if ((!slot && slot !== 0) || isNaN(slot) || slot > 30 || slot < 0) return false;
 		this.pc[box - 1].splice(slot, 1);
 		return true;
+	}
+	runQueue() {
+		if (!this.queue.length) return;
+		while (this.queue.length) {
+			let cur = this.queue.shift();
+			// TODO
+			
+		}
+		// Save data
+		//Db.players.set(this.userid, this); // Commented to prevent errors while in development
 	}
 }
 
