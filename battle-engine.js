@@ -5073,11 +5073,15 @@ class Battle extends Tools.BattleDex {
 				this.add('raw', '<span style="color:red">You can\'t throw a pokeball right now.</span>');
 				break;
 			}
+			if (toId(this[(side === 'p1' ? 'p2' : 'p1')].pokemon[0].species) === 'missingno') {
+				this.add('raw', '<span style="color:red">You can\'t catch an error! Report the error to an Administrator if you haven\'t already!</span>');
+				break;
+			}
 			this.add('message', user + ' threw a ' + (target.charAt(0).toUpperCase() + target.slice(1)) + '!');
 			let result = SG.throwPokeball(target, this[opp].pokemon[0]);
 			let count = result;
 			if (count === true) count = 3;
-			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appered to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + this[opp].pokemon[0].species + ' was caught!'];
+			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appered to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (this[opp].pokemon[0].name || this[opp].pokemon[0].species) + ' was caught!'];
 			for (count; count > 0; count--) {
 				this.add('message', '...');
 			}

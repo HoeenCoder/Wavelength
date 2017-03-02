@@ -1222,6 +1222,12 @@ class User {
 				connection.popup('You cannot challenge users to this format.');
 				return Promise.resolve(false);
 			}
+			for (let key of this.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).isWildEncounter && this.games.has(key) && Tools.getFormat(formatid).isWildEncounter) {
+					connection.popup('Your already in a wild pokemon battle!');
+					return Promise.resolve(false);
+				}
+			}
 			this.team = Tools.packTeam(Db.players.get(this.userid).party);
 		}
 		let gameCount = this.games.size;

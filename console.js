@@ -18,7 +18,7 @@ class Console {
 		}
 		defaultInfo += '<br/><button name="send" value="/console kill" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>Shutdown</u></button></div>';
 		this.defaultHTML = html || defaultInfo;
-		this.defaultBottomHTML = bottom || '<center><button name="send" value="/console sound" class="button">Toggle Sound</button></center>';
+		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--></center>';
 	}
 	init() {
 		Users(this.userid).sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole());
@@ -33,6 +33,15 @@ class Console {
 	}
 	toggleSound() {
 		this.muted = !this.muted;
+		if (this.defaultBottomHTML && this.defaultBottomHTML.indexOf("<!--mutebutton-->") > -1 && this.defaultBottomHTML.indexOf("<!--endmute-->") > -1) {
+			this.defaultBottomHTML = this.defaultBottomHTML.split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' + this.defaultBottomHTML.split("<!--endmute-->")[1];
+		}
+		if (this.curScreen[2] && this.curScreen[2].indexOf("<!--mutebutton-->") > -1 && this.curScreen[2].indexOf("<!--endmute-->") > -1) {
+			this.curScreen[2] = this.curScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' +  this.curScreen[2].split("<!--endmute-->")[1];
+		}
+		if (this.prevScreen[2] && this.prevScreen[2].indexOf("<!--mutebutton-->") > -1 && this.prevScreen[2].indexOf("<!--endmute-->") > -1) {
+			this.prevScreen[2] = this.prevScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' +  this.prevScreen[2].split("<!--endmute-->")[1];
+		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
 	}
 	// Overwrite these to use them.
@@ -40,6 +49,7 @@ class Console {
 	down(data) {}
 	left(data) {}
 	right(data) {}
+	onKill() {}
 }
 
 exports.commands = {
@@ -77,6 +87,7 @@ exports.commands = {
 		kill: function (target, room, user, connection, cmd, message) {
 			if (!user.console) return;
 			user.sendTo(user.console.room, '|uhtmlchange|console' + user.userid + user.consoleId + '|');
+			user.console.onKill();
 			delete user.console;
 		},
 	},

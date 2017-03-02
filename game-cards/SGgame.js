@@ -2,8 +2,9 @@
 
 class SGgame extends Console.Console {
 	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button>', muted);
+		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button>', muted);
 		// Lines of text to be displayed
+		this.gameId = 'SGgame';
 		this.curText = [];
 		this.curPane = null;
 		this.callback = false;
@@ -171,6 +172,15 @@ class SGgame extends Console.Console {
 		}
 		return output;
 	}
+	onKill() {
+		let user = Users(this.userid);
+		for (let key of user.inRooms) {
+			if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+				// FORCE FORFEIT
+				Rooms(key).game.forfeit(user);
+			}
+		}
+	}
 }
 
 class Player {
@@ -257,7 +267,7 @@ exports.commands = {
 			}
 			user.console.curText.push(msg + '|hide');
 			user.console.callback = function () {
-				user.console.defaultBottomHTML = '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 				user.console.callback = null;
 			};
 			user.console.curText.push('Great choice! I\'ll leave you to your game now.|callback');
@@ -274,34 +284,34 @@ exports.commands = {
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.curText = ['Welcome back to the alpha, tell me if you like the game or find any bugs!'];
-			user.console.defaultBottomHTML = '<center><button class="button" name="send" value="/console sound">Toggle Sound</button> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button disabled" name="send" value="/sggame pokedex">Pokedex</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 			user.console.init();
 			this.parse('/sggame next');
 		}
 	},
 	sggame: {
 		next: function (target, room, user, connection, cmd) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return user.console.update(null, user.console.next('text'), null);
 		},
 		bag: function (target, room, user, connection, cmd) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return this.sendReply('Not Avaliable');
 		},
 		pokemon: function (target, room, user, connection, cmd) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return this.sendReply('Not Avaliable');
 		},
 		pokedex: function (target, room, user, connection, cmd) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return this.sendReply('Not Avaliable');
 		},
 		back: function (target, room, user) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			user.console.update(user.console.prevScreen[0], user.console.prevScreen[1], user.console.prevScreen[2]);
 		},
 		pc: function (target, room, user, connection, cmd) {
-			if (!user.console) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.curText.length) return; // No PC while talking
 			target = target.split(',');
 			target = target.map(data => {
@@ -349,7 +359,7 @@ exports.commands = {
 		},
 	},
 	pickstarter: function (target, room, user) {
-		if (!user.console) return;
+		if (!user.console || user.console.gameId !== 'SGgame') return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
 		if (!target || starters.indexOf(target) === -1) return false;
 		let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0})));
@@ -357,6 +367,7 @@ exports.commands = {
 		this.parse('/sggame next');
 	},
 	throwpokeball: function (target, room, user) {
+		if (!user.console || user.console.gameId !== 'SGgame') return;
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
 		if (room.battle.ended) return this.errorReply('The battle is already over, you can\'t throw a pokeball.');
 		target = toId(target);
