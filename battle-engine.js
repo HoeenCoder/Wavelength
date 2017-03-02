@@ -5081,7 +5081,7 @@ class Battle extends Tools.BattleDex {
 			let result = SG.throwPokeball(target, this[opp].pokemon[0]);
 			let count = result;
 			if (count === true) count = 3;
-			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appered to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (this[opp].pokemon[0].name || this[opp].pokemon[0].species) + ' was caught!'];
+			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appeared to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (this[opp].pokemon[0].name || this[opp].pokemon[0].species) + ' was caught!'];
 			for (count; count > 0; count--) {
 				this.add('message', '...');
 			}
