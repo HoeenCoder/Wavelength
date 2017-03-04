@@ -235,9 +235,8 @@ class Player {
 	runQueue() {
 		if (!this.queue.length) return;
 		while (this.queue.length) {
-			let cur = this.queue.shift();
-			// TODO
-			
+		//	let cur = this.queue.shift();
+		// TODO
 		}
 		// Save data
 		//Db.players.set(this.userid, this); // Commented to prevent errors while in development
@@ -370,13 +369,35 @@ exports.commands = {
 			return user.console.update(user.console.curScreen[0], user.console.pc(target[0], slot, target[2]), base);
 		},
 	},
-	pickstarter: function (target, room, user) {
+	confirmpickstarter: 'pickstarter',
+	pickstarter: function (target, room, user, connection, cmd) {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
 		if (!target || starters.indexOf(target) === -1) return false;
-		let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
-		Db.players.set(user.userid, obj);
-		this.parse('/sggame next');
+		let type, typeColor;
+		if (starters.indexOf(target) <= 6) {
+			type = "Grass";
+		} else if (starters.indexOf(target) >= 7 && starters.indexOf(target) <= 13) {
+			type = "Fire";
+		} else if (starters.indexOf(target) >= 14) {
+			type = "Water";
+		}
+		if (type === "Grass") {
+			typeColor = "green";
+		} else if (type === "Fire") {
+			typeColor = "red";
+		} else {
+			typeColor = "blue";
+		}
+		switch (cmd) {
+		case 'pickstarter':
+			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/sggame back'>No</button></div>", null);
+			break;
+		case 'confirmpickstarter':
+			let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			Db.players.set(user.userid, obj);
+			this.parse('/sggame next');
+		}
 	},
 	throwpokeball: function (target, room, user) {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
