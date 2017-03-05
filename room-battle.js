@@ -288,12 +288,13 @@ class Battle {
 				curTeam.party.push(newSet);
 				Db.players.set(lines[2][0], curTeam);
 			} else {
-				newSet = Tools.packTeam(newSet);
+				let name = (newSet.name || newSet.species);
+				newSet = Tools.packTeam([newSet]);
 				let response = curTeam.boxPoke(newSet, 1);
 				if (response) {
-					this.room.push((newSet.split('|')[0] || newSet.split('|')[1]) + ' was sent to box ' + response + '.');
+					this.room.push(name + ' was sent to box ' + response + '.');
 				} else {
-					this.room.push((newSet.split('|')[0] || newSet.split('|')[1]) + ' was released because your PC is full...');
+					this.room.push(name + ' was released because your PC is full...');
 				}
 				this.room.update();
 			}

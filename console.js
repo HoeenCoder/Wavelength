@@ -18,7 +18,7 @@ class Console {
 		}
 		defaultInfo += '<br/><button name="send" value="/console kill" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>Shutdown</u></button></div>';
 		this.defaultHTML = html || defaultInfo;
-		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--></center>';
+		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button></center>';
 	}
 	init() {
 		Users(this.userid).sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole());
@@ -44,6 +44,13 @@ class Console {
 		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
 	}
+	shift() {
+		let user = Users(this.userid);
+		user.sendTo(user.console.room, '|uhtmlchange|console' + user.userid + user.consoleId + '|');
+		user.consoleid++;
+		this.consoleid++;
+		user.sendTo(user.console.room, '|uhtml|console' + user.userid + user.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
+	}
 	// Overwrite these to use them.
 	up(data) {}
 	down(data) {}
@@ -54,25 +61,29 @@ class Console {
 
 exports.commands = {
 	console: {
-		up: function (target, room, user, connection, cmd, message) {
+		up: function (target, room, user) {
 			if (!user.console) return;
 			user.console.up(target);
 		},
-		down: function (target, room, user, connection, cmd, message) {
+		down: function (target, room, user) {
 			if (!user.console) return;
 			user.console.down(target);
 		},
-		left: function (target, room, user, connection, cmd, message) {
+		left: function (target, room, user) {
 			if (!user.console) return;
 			user.console.left(target);
 		},
-		right: function (target, room, user, connection, cmd, message) {
+		right: function (target, room, user) {
 			if (!user.console) return;
 			user.console.right(target);
 		},
-		sound: function (target, room, user, connection, cmd, message) {
+		sound: function (target, room, user) {
 			if (!user.console) return;
 			user.console.toggleSound();
+		},
+		shift: function (target, room, user) {
+			if (!user.console) return;
+			user.console.shift();
 		},
 		forcestart: 'start',
 		start: function (target, room, user, connection, cmd, message) {
@@ -84,7 +95,7 @@ exports.commands = {
 			}
 			return this.parse(SG.gameList[toId(target)].startCommand);
 		},
-		kill: function (target, room, user, connection, cmd, message) {
+		kill: function (target, room, user) {
 			if (!user.console) return;
 			user.sendTo(user.console.room, '|uhtmlchange|console' + user.userid + user.consoleId + '|');
 			user.console.onKill();
