@@ -1316,6 +1316,10 @@ class BattleRoom extends Room {
 		if (this.game && this.game.onLeave) {
 			this.game.onLeave(user);
 		}
+		if (user.console && user.console.room === this.id) {
+			user.console.onKill();
+			delete user.console;
+		}
 		this.update();
 		this.kickInactiveUpdate();
 	}
@@ -1629,6 +1633,10 @@ class ChatRoom extends Room {
 			this.reportJoin('l', user.getIdentity(this.id));
 		}
 		if (this.game && this.game.onLeave) this.game.onLeave(user);
+		if (user.console && user.console.room === this.id) {
+			user.console.onKill();
+			delete user.console;
+		}
 	}
 	destroy() {
 		// deallocate ourself
