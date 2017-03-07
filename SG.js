@@ -7,11 +7,6 @@ const Autolinker = require('autolinker');
 let regdateCache = {};
 let wildPokemon = [];
 let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
-gameData.giratinaorigin = gameData.giratina;
-const types = ["bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"];
-for (let type = 0; type < types.length; type++) {
-	gameData['arceus' + types[type]] = gameData.arceus;
-}
 
 exports.SG = {
 	nameColor: function (name, bold) {

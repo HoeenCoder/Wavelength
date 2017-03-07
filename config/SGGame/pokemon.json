@@ -1,4 +1,25 @@
 {
+	"missingno": {
+		"expType": null,
+		"num": 0,
+		"rate": "1",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": null
+		},
+		"baseExp": 0,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 0
+	},
 	"bulbasaur": {
 		"expType": "mediumslow",
 		"num": 1,
@@ -1584,7 +1605,7 @@
 			"exact": null,
 			"evolvesTo": null
 		},
-		"baseExp": 223,
+		"baseExp": 177,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -2128,7 +2149,7 @@
 			"trigger": null,
 			"type": null,
 			"exact": null,
-			"evolvesTo": "exeggutor"
+			"evolvesTo": "exeggutor|exeggutoralola"
 		},
 		"baseExp": 65,
 		"evDrops": {
@@ -2170,7 +2191,7 @@
 			"trigger": null,
 			"type": null,
 			"exact": null,
-			"evolvesTo": "marowak"
+			"evolvesTo": "marowak|marowakalola"
 		},
 		"baseExp": 64,
 		"evDrops": {
@@ -15610,7 +15631,7 @@
 			"trigger": null,
 			"type": null,
 			"exact": null,
-			"evolvesTo": "lycanroc"
+			"evolvesTo": "lycanroc|lycanrocmidnight"
 		},
 		"baseExp": 56,
 		"evDrops": {
@@ -16843,212 +16864,115 @@
 	},
 	"venusaurmega": {
 		"id": "venusaurmega",
-		"baseExp": 281,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 2,
-			"spd": 1,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "venusaur",
+		"baseExp": 281
 	},
 	"charizardmegax": {
 		"id": "charizardmegax",
-		"baseExp": 285,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "charizard",
+		"baseExp": 285
 	},
 	"charizardmegay": {
 		"id": "charizardmegay",
-		"baseExp": 285,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "charizard",
+		"baseExp": 285
 	},
 	"blastoisemega": {
 		"id": "blastoisemega",
-		"baseExp": 284,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 3,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "blastoise",
+		"baseExp": 284
 	},
 	"beedrillmega": {
 		"id": "beedrillmega",
-		"baseExp": 223,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 1,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "beedrill",
+		"baseExp": 223
 	},
 	"pidgeotmega": {
 		"id": "pidgeotmega",
-		"baseExp": 261,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 3
-		},
-		"totalEvDrops": 3
+		"inherit": "pidgeot",
+		"baseExp": 261
 	},
 	"rattataalola": {
-		"expType": "mediumfast",
-		"num": 19,
-		"rate": "255",
+		"id": "rattataalola",
+		"inherit": "rattata",
 		"evolution": {
 			"trigger": null,
 			"type": null,
 			"exact": null,
 			"evolvesTo": "raticatealola"
-		},
-		"baseExp": 51,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 1
+		}
 	},
 	"raticatealola": {
-		"expType": "mediumfast",
-		"num": 20,
-		"rate": "127",
+		"id": "raticatealola",
+		"inherit": "raticate",
 		"evolution": {
 			"trigger": "level",
 			"type": "timeNumber",
 			"exact": "night|20",
 			"evolvesTo": null
-		},
-		"baseExp": 145,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 2
-		},
-		"totalEvDrops": 2
+		}
+	},
+	"pikachurockstar": {
+		"id": "pikachurockstar",
+		"inherit": "pikachu"
+	},
+	"pikachubelle": {
+		"id": "pikachubelle",
+		"inherit": "pikachu"
+	},
+	"pikachuphd": {
+		"id": "pikachuphd",
+		"inherit": "pikachu"
+	},
+	"pikachupopstar": {
+		"id": "pikachupopstar",
+		"inherit": "pikachu"
+	},
+	"pikachulibre": {
+		"id": "pikachulibre",
+		"inherit": "pikachu"
+	},
+	"pikachucosplay": {
+		"id": "pikachucosplay",
+		"inherit": "pikachu"
 	},
 	"raichualola": {
-		"expType": "mediumfast",
-		"num": 26,
-		"rate": "75",
-		"evolution": {
-			"trigger": "item",
-			"type": "stone",
-			"exact": "thunderstone",
-			"evolvesTo": null
-		},
-		"baseExp": 218,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 3
-		},
-		"totalEvDrops": 3
+		"id": "raichualola",
+		"inherit": "raichu"
 	},
 	"sandshrewalola": {
-		"expType": "mediumfast",
-		"num": 27,
-		"rate": "255",
+		"id": "sandshrewalola",
+		"inherit": "sandshew",
 		"evolution": {
 			"trigger": null,
 			"type": null,
 			"exact": null,
 			"evolvesTo": "sandslashalola"
-		},
-		"baseExp": 60,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 1,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 1
+		}
 	},
 	"sandslashalola": {
-		"expType": "mediumfast",
-		"num": 28,
-		"rate": "90",
+		"id": "sandslashalola",
+		"inherit": "sandslash",
 		"evolution": {
 			"trigger": "item",
 			"type": "stone",
 			"exact": "icestone",
 			"evolvesTo": null
-		},
-		"baseExp": 158,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 2,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"vulpixalola": {
-		"expType": "mediumfast",
-		"num": 37,
-		"rate": "190",
+		"id": "vulpixalola",
+		"inherit": "vulpix",
 		"evolution": {
 			"trigger": null,
 			"type": null,
 			"exact": null,
 			"evolvesTo": "ninetalesalola"
-		},
-		"baseExp": 60,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 1
+		}
 	},
 	"ninetalesalola": {
-		"expType": "mediumfast",
-		"num": 38,
-		"rate": "75",
+		"id": "ninetalesalola",
+		"inherit": "ninetales",
 		"evolution": {
 			"trigger": "item",
 			"type": "stone",
@@ -17063,40 +16987,21 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 2
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"diglettalola": {
-		"expType": "mediumfast",
-		"num": 50,
-		"rate": "255",
+		"id": "diglettalola",
+		"inherit": "diglett",
 		"evolution": {
 			"trigger": null,
 			"type": null,
 			"exact": null,
 			"evolvesTo": "dugtrio"
-		},
-		"baseExp": 53,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 1
+		}
 	},
 	"dugtrioalola": {
-		"expType": "mediumfast",
-		"num": 51,
-		"rate": "50",
-		"evolution": {
-			"trigger": "level",
-			"type": "number",
-			"exact": 26,
-			"evolvesTo": null
-		},
+		"id": "dugtrioalola",
+		"inherit": "dugtrio",
 		"baseExp": 149,
 		"evDrops": {
 			"hp": 0,
@@ -17105,495 +17010,365 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
+	},
+	"meowthalola": {
+		"id": "meowthalola",
+		"inherit": "meowth",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "persianalola"
+		}
+	},
+	"persianalola": {
+		"id": "persianalola",
+		"inherit": "persian"
 	},
 	"alakazammega": {
 		"id": "alakazammega",
-		"baseExp": 270,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "alakazam",
+		"baseExp": 270
+	},
+	"geodudealola": {
+		"id": "geodudealola",
+		"inherit": "geodude",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "graveleralola"
+		}
+	},
+	"graveleralola": {
+		"id": "gravelerlola",
+		"inherit": "graveler",
+		"evolution": {
+			"trigger": "level",
+			"type": "number",
+			"exact": 25,
+			"evolvesTo": "golemalola"
+		}
+	},
+	"golemalola": {
+		"id": "golemalola",
+		"inherit": "golem"
 	},
 	"slowbromega": {
 		"id": "slowbromega",
-		"baseExp": 207,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 2,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "slowbro",
+		"baseExp": 207
 	},
 	"grimeralola": {
 		"id": "grimeralola",
-		"num": 88,
-		"rate": "190",
+		"inherit": "grimer",
 		"evolution": {
 			"trigger": null,
 			"type": null,
 			"exact": null,
 			"evolvesTo": "mukalola"
-		},
-		"baseExp": 65,
-		"evDrops": {
-			"hp": 1,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 1
+		}
 	},
 	"mukalola": {
 		"id": "mukalola",
-		"num": 89,
-		"rate": "75",
-		"evolution": {
-			"trigger": "level",
-			"type": "number",
-			"exact": 38,
-			"evolvesTo": null
-		},
-		"baseExp": 65,
-		"evDrops": {
-			"hp": 1,
-			"atk": 1,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "muk"
 	},
 	"gengarmega": {
 		"id": "gengarmega",
-		"baseExp": 270,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "gengar",
+		"baseExp": 270
+	},
+	"exeggutoralola": {
+		"id": "exeggutoralola",
+		"inherit": "exeggutor"
+	},
+	"marowakalola": {
+		"id": "marowakalola",
+		"inherit": "marowak"
 	},
 	"kangaskhanmega": {
 		"id": "kangaskhanmega",
-		"baseExp": 207,
-		"evDrops": {
-			"hp": 2,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "kangaskhan",
+		"baseExp": 207
 	},
 	"pinsirmega": {
 		"id": "pinsirmega",
-		"baseExp": 210,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "pinsir",
+		"baseExp": 210
 	},
 	"gyaradosmega": {
 		"id": "gyaradosmega",
-		"baseExp": 224,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "gyarados",
+		"baseExp": 224
 	},
 	"aerodactylmega": {
 		"id": "aerodactylmega",
-		"baseExp": 215,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 2
-		},
-		"totalEvDrops": 2
+		"inherit": "aerodactyl",
+		"baseExp": 215
 	},
 	"mewtwomegax": {
 		"id": "mewtwomegax",
-		"baseExp": 351,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "mewtwo",
+		"baseExp": 351
 	},
 	"mewtwomegay": {
 		"id": "mewtwomegay",
-		"baseExp": 351,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "mewtwo",
+		"baseExp": 351
+	},
+	"pichuspikyeared": {
+		"id": "pichuspikyeared",
+		"inherit": "pichu"
 	},
 	"ampharosmega": {
 		"id": "ampharosmega",
-		"baseExp": 275,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "ampharos",
+		"baseExp": 275
 	},
+	"unownb": {
+		"id": "unownb",
+		"inherit": "unown"
+	},
+	"unownc": {
+		"id": "unownc",
+		"inherit": "unown"
+	},
+	"unownd": {
+		"id": "unownd",
+		"inherit": "unown"
+	},
+	"unowne": {
+		"id": "unowne",
+		"inherit": "unown"
+	},
+	"unownf": {
+		"id": "unownf",
+		"inherit": "unown"
+	},
+	"unowng": {
+		"id": "unowng",
+		"inherit": "unown"
+	},
+	"unownh": {
+		"id": "unownh",
+		"inherit": "unown"
+	},
+	"unowni": {
+		"id": "unowni",
+		"inherit": "unown"
+	},
+	"unownj": {
+		"id": "unownj",
+		"inherit": "unown"
+	},
+	"unownk": {
+		"id": "unownk",
+		"inherit": "unown"
+	},
+	"unownl": {
+		"id": "unownl",
+		"inherit": "unown"
+	},
+	"unownm": {
+		"id": "unownm",
+		"inherit": "unown"
+	},
+	"unownn": {
+		"id": "unownn",
+		"inherit": "unown"
+	},	
+	"unowno": {
+		"id": "unowno",
+		"inherit": "unown"
+	},	
+	"unownp": {
+		"id": "unownp",
+		"inherit": "unown"
+	},	
+	"unownq": {
+		"id": "unownq",
+		"inherit": "unown"
+	},	
+	"unownr": {
+		"id": "unownr",
+		"inherit": "unown"
+	},	
+	"unowns": {
+		"id": "unowns",
+		"inherit": "unown"
+	},	
+	"unownt": {
+		"id": "unownt",
+		"inherit": "unown"
+	},	
+	"unownu": {
+		"id": "unownu",
+		"inherit": "unown"
+	},	
+	"unownv": {
+		"id": "unownv",
+		"inherit": "unown"
+	},	
+	"unownw": {
+		"id": "unownw",
+		"inherit": "unown"
+	},
+	"unownx": {
+		"id": "unownx",
+		"inherit": "unown"
+	},
+	"unowny": {
+		"id": "unowny",
+		"inherit": "unown"
+	},
+	"unownz": {
+		"id": "unownz",
+		"inherit": "unown"
+	},
+	"unownexclamation": {
+		"id": "unownexclamation",
+		"inherit": "unown"
+	},
+	"unownquestion": {
+		"id": "unownquestion",
+		"inherit": "unown"
+	},	
 	"steelixmega": {
 		"id": "steelixmega",
-		"baseExp": 214,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 2,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "steelix",
+		"baseExp": 214
 	},
 	"scizormega": {
 		"id": "scizormega",
-		"baseExp": 210,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "scizor",
+		"baseExp": 210
 	},
 	"heracrossmega": {
 		"id": "heracrossmega",
-		"baseExp": 210,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "heracross",
+		"baseExp": 210
 	},
 	"houndoommega": {
 		"id": "houndoommega",
-		"baseExp": 210,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 2,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "houndoom",
+		"baseExp": 210
 	},
 	"tyranitarmega": {
 		"id": "tyranitarmega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "tyranitar",
+		"baseExp": 315
 	},
 	"sceptilemega": {
 		"id": "sceptilemega",
-		"baseExp": 284,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 3
-		},
-		"totalEvDrops": 3
+		"inherit": "sceptile",
+		"baseExp": 284
 	},
 	"blazikenmega": {
 		"id": "blazikenmega",
-		"baseExp": 284,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "blaziken",
+		"baseExp": 284
 	},
 	"swampertmega": {
 		"id": "swampertmega",
-		"baseExp": 286,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "swampert",
+		"baseExp": 286
 	},
 	"gardevoirmega": {
 		"id": "gardevoirmega",
-		"baseExp": 278,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "gardevoir",
+		"baseExp": 278
 	},
 	"sableyemega": {
 		"id": "sableyemega",
-		"baseExp": 168,
-		"evDrops": {
-			"hp": 0,
-			"atk": 1,
-			"def": 1,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "sableye",
+		"baseExp": 168
 	},
 	"mawilemega": {
 		"id": "mawilemega",
-		"baseExp": 168,
-		"evDrops": {
-			"hp": 0,
-			"atk": 1,
-			"def": 1,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "mawile",
+		"baseExp": 168
 	},
 	"aggronmega": {
 		"id": "aggronmega",
-		"baseExp": 284,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 3,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "aggron",
+		"baseExp": 284
 	},
 	"medichammega": {
 		"id": "medichammega",
-		"baseExp": 179,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 2
-		},
-		"totalEvDrops": 2
+		"inherit": "medicham",
+		"baseExp": 179
 	},
 	"manectricmega": {
 		"id": "manectricmega",
-		"baseExp": 201,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 2
-		},
-		"totalEvDrops": 2
+		"inherit": "manetric",
+		"baseExp": 201
 	},
 	"sharpedomega": {
 		"id": "sharpedomega",
-		"baseExp": 196,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "sharpedo",
+		"baseExp": 196
 	},
 	"cameruptmega": {
 		"id": "cameruptmega",
-		"baseExp": 196,
-		"evDrops": {
-			"hp": 0,
-			"atk": 1,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "camerupt",
+		"baseExp": 196
 	},
 	"altariamega": {
 		"id": "altariamega",
-		"baseExp": 207,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 2,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "altaria",
+		"baseExp": 207
+	},
+	"castformsunny": {
+		"id": "castformsunny",
+		"inherit": "castform"
+	},
+	"castformrainy": {
+		"id": "castformrainy",
+		"inherit": "castform"
+	},
+	"castformsnowy": {
+		"id": "castformsnowy",
+		"inherit": "castform"
 	},
 	"banettemega": {
 		"id": "banettemega",
-		"baseExp": 194,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "banette",
+		"baseExp": 194
 	},
 	"absolmega": {
 		"id": "absolmega",
-		"baseExp": 198,
-		"evDrops": {
-			"hp": 0,
-			"atk": 2,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "absol",
+		"baseExp": 198
 	},
 	"glaliemega": {
 		"id": "glaliemega",
-		"baseExp": 203,
-		"evDrops": {
-			"hp": 2,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "glalie",
+		"baseExp": 203
 	},
 	"salamencemega": {
 		"id": "salamencemega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "salamence",
+		"baseExp": 315
 	},
 	"metagrossmega": {
 		"id": "metagrossmega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 3,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "metagross",
+		"baseExp": 315
 	},
 	"latiasmega": {
 		"id": "latiasmega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 3,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "latias",
+		"baseExp": 315
 	},
 	"latiosmega": {
 		"id": "latiosmega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 3,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "latios",
+		"baseExp": 315
 	},
 	"kyogreprimal": {
 		"id": "kyogreprimal",
+		"inherit": "kyogre",
 		"baseExp": 347,
 		"evDrops": {
 			"hp": 0,
@@ -17602,11 +17377,11 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"groudonprimal": {
 		"id": "groudonprimal",
+		"inherit": "groudon",
 		"baseExp": 347,
 		"evDrops": {
 			"hp": 0,
@@ -17615,11 +17390,11 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"rayquazamega": {
 		"id": "rayquazamega",
+		"inherit": "rayquaza",
 		"baseExp": 351,
 		"evDrops": {
 			"hp": 0,
@@ -17628,12 +17403,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"deoxysattack": {
 		"id": "deoxysattack",
-		"baseExp": 270,
+		"inherit": "deoxys",
 		"evDrops": {
 			"hp": 0,
 			"atk": 2,
@@ -17641,12 +17415,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"deoxysdefense": {
 		"id": "deoxysdefense",
-		"baseExp": 270,
+		"inherit": "deoxys",
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -17654,12 +17427,11 @@
 			"spa": 0,
 			"spd": 1,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"deoxysspeed": {
 		"id": "deoxysspeed",
-		"baseExp": 270,
+		"inherit": "deoxys",
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -17667,168 +17439,31 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 3
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"burmysandy": {
+		"id": "burmysandy",
+		"inherit": "burmy"
+	},
+	"burmytrash": {
+		"id": "burmytrash",
+		"inherit": "burmy"
 	},
 	"wormadamsandy": {
 		"id": "wormadamsandy",
-		"baseExp": 148,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 2,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "wormadam"
 	},
 	"wormadamtrash": {
 		"id": "wormadamtrash",
-		"baseExp": 148,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 1,
-			"spa": 0,
-			"spd": 1,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "wormadam"
 	},
-	"lopunnymega": {
-		"id": "lopunnymega",
-		"baseExp": 203,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 2
-		},
-		"totalEvDrops": 2
-	},
-	"garchompmega": {
-		"id": "garchompmega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
-	},
-	"lucariomega": {
-		"id": "lucariomega",
-		"baseExp": 219,
-		"evDrops": {
-			"hp": 0,
-			"atk": 1,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
-	},
-	"abomasnowmega": {
-		"id": "abomasnowmega",
-		"baseExp": 208,
-		"evDrops": {
-			"hp": 0,
-			"atk": 1,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
-	},
-	"gallademega": {
-		"id": "gallademega",
-		"baseExp": 278,
-		"evDrops": {
-			"hp": 0,
-			"atk": 3,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 3
-	},
-	"rotomheat": {
-		"id": "rotomheat",
-		"baseExp": 182,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 2
-	},
-	"rotomwash": {
-		"id": "rotomwash",
-		"baseExp": 182,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 2
-	},
-	"rotomfrost": {
-		"id": "rotomfrost",
-		"baseExp": 182,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 2
-	},
-	"rotomfan": {
-		"id": "rotomfan",
-		"baseExp": 182,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 2
-	},
-	"rotommow": {
-		"id": "rotommow",
-		"baseExp": 182,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 1,
-			"spd": 0,
-			"spe": 1
-		},
-		"totalEvDrops": 2
+	"cherrimsunshine": {
+		"id": "cherrimsunshine",
+		"inherit": "cherrim"
 	},
 	"shayminsky": {
 		"id": "shayminsky",
-		"baseExp": 270,
+		"inherit": "shaymin",
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -17836,24 +17471,173 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 3
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"lopunnymega": {
+		"id": "lopunnymega",
+		"inherit": "lopunny",
+		"baseExp": 203
+	},
+	"garchompmega": {
+		"id": "garchompmega",
+		"inherit": "garchomp",
+		"baseExp": 315
+	},
+	"lucariomega": {
+		"id": "lucariomega",
+		"inherit": "lucario",
+		"baseExp": 219
+	},
+	"abomasnowmega": {
+		"id": "abomasnowmega",
+		"inherit": "abomasnow",
+		"baseExp": 208
+	},
+	"gallademega": {
+		"id": "gallademega",
+		"inherit": "gallade",
+		"baseExp": 278
+	},
+	"rotomheat": {
+		"id": "rotomheat",
+		"inherit": "rotom",
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		}
+	},
+	"rotomwash": {
+		"id": "rotomwash",
+		"inherit": "rotom",
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		}
+	},
+	"rotomfrost": {
+		"id": "rotomfrost",
+		"inherit": "rotom",
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		}
+	},
+	"rotomfan": {
+		"id": "rotomfan",
+		"inherit": "rotom",
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		}
+	},
+	"rotommow": {
+		"id": "rotommow",
+		"inherit": "rotom",
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		}
+	},
+	"giratinaorigin": {
+		"id": "giratinaorigin",
+		"inherit": "giratina"
+	},
+	"arceuswater": {
+		"id": "arceuswater",
+		"inherit": "arceus"
+	},
+	"arceuselectric": {
+		"id": "arceuselectric",
+		"inherit": "arceus"
+	},
+	"arceusgrass": {
+		"id": "arceusgrass",
+		"inherit": "arceus"
+	},
+	"arceusice": {
+		"id": "arceusice",
+		"inherit": "arceus"
+	},
+	"arceusfighting": {
+		"id": "arceusfighting",
+		"inherit": "arceus"
+	},
+	"arceuspoison": {
+		"id": "arceuspoison",
+		"inherit": "arceus"
+	},
+	"arceusground": {
+		"id": "arceusground",
+		"inherit": "arceus"
+	},
+	"arceusflying": {
+		"id": "arceusflying",
+		"inherit": "arceus"
+	},
+	"arceuspsychic": {
+		"id": "arceuspsychic",
+		"inherit": "arceus"
+	},
+	"arceusbug": {
+		"id": "arceusbug",
+		"inherit": "arceus"
+	},
+	"arceusrock": {
+		"id": "arceusrock",
+		"inherit": "arceus"
+	},
+	"arceusghost": {
+		"id": "arceusflying",
+		"inherit": "arceus"
+	},
+	"arceusdragon": {
+		"id": "arceusdragon",
+		"inherit": "arceus"
+	},
+	"arceusdark": {
+		"id": "arceusdark",
+		"inherit": "arceus"
+	},
+	"arceussteel": {
+		"id": "arceussteel",
+		"inherit": "arceus"
+	},
+	"arceusfairy": {
+		"id": "arceusfairy",
+		"inherit": "arceus"
 	},
 	"audinomega": {
 		"id": "audinomega",
-		"baseExp": 425,
-		"evDrops": {
-			"hp": 2,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 2
+		"inherit": "audino",
+		"baseExp": 425
+	},
+	"basculinbluestriped": {
+		"id": "basculinbluestriped",
+		"inherit": "basculin"
 	},
 	"darmanitanzen": {
 		"id": "darmanitanzen",
+		"inherit": "darmanitan",
 		"baseExp": 189,
 		"evDrops": {
 			"hp": 0,
@@ -17862,12 +17646,35 @@
 			"spa": 2,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
+	},
+	"deerlingsummer": {
+		"id": "deerlingsummer",
+		"inherit": "deerling"
+	},
+	"deerlingautumn": {
+		"id": "deerlingautumn",
+		"inherit": "deerling"
+	},
+	"deerlingwinter": {
+		"id": "deerlingwinter",
+		"inherit": "deerling"
+	},
+	"sawsbucksummer": {
+		"id": "sawsbucksummer",
+		"inherit": "sawsbuck"
+	},
+	"sawsbuckautumn": {
+		"id": "sawsbuckautumn",
+		"inherit": "sawsbuck"
+	},
+	"sawsbuckwinter": {
+		"id": "sawsbuckwinter",
+		"inherit": "sawsbuck"
 	},
 	"tornadustherian": {
 		"id": "tornadustherian",
-		"baseExp": 261,
+		"inherit": "tornadus",
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -17875,11 +17682,11 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 3
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"thundurustherian": {
 		"id": "thundurustherian",
+		"inherit": "thundurus",
 		"baseExp": 261,
 		"evDrops": {
 			"hp": 0,
@@ -17888,12 +17695,11 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"landorustherian": {
 		"id": "landorustherian",
-		"baseExp": 270,
+		"inherit": "landorus",
 		"evDrops": {
 			"hp": 0,
 			"atk": 3,
@@ -17901,11 +17707,11 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"kyuremwhite": {
 		"id": "kyuremwhite",
+		"inherit": "kyurem",
 		"baseExp": 315,
 		"evDrops": {
 			"hp": 0,
@@ -17914,11 +17720,11 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"kyuremblack": {
 		"id": "kyuremblack",
+		"inherit": "kyurem",
 		"baseExp": 315,
 		"evDrops": {
 			"hp": 0,
@@ -17927,11 +17733,15 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"keldeoresolute": {
+		"id": "keldeoresolute",
+		"inherit": "keldeo"
 	},
 	"meloettapirouette": {
 		"id": "meloettapirouette",
+		"inherit": "meloetta",
 		"baseExp": 270,
 		"evDrops": {
 			"hp": 0,
@@ -17940,25 +17750,156 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 1
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"genesectburn": {
+		"id": "genesectburn",
+		"inherit": "genesect"
+	},
+	"genesectchill": {
+		"id": "genesectchill",
+		"inherit": "genesect"
+	},
+	"genesectdouse": {
+		"id": "genesectdouse",
+		"inherit": "genesect"
+	},
+	"genesectshock": {
+		"id": "genesectshock",
+		"inherit": "genesect"
 	},
 	"greninjaash": {
 		"id": "greninjaash",
-		"baseExp": 288,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 3
-		},
-		"totalEvDrops": 3
+		"inherit": "greninja",
+		"baseExp": 288
+	},
+	"vivillonarchipelago": {
+		"id": "vivillonarchipelago",
+		"inherit": "vivillon"
+	},
+	"vivilloncontinental": {
+		"id": "vivilloncontinental",
+		"inherit": "vivillon"
+	},
+	"vivillonelegant": {
+		"id": "vivillonelegant",
+		"inherit": "vivillon"
+	},
+	"vivillongarden": {
+		"id": "vivillongarden",
+		"inherit": "vivillon"
+	},
+	"vivillonhighplains": {
+		"id": "vivillonhighplains",
+		"inherit": "vivillon"
+	},
+	"vivillonicysnow": {
+		"id": "vivillonicysnow",
+		"inherit": "vivillon"
+	},
+	"vivillonjungle": {
+		"id": "vivillonjungle",
+		"inherit": "vivillon"
+	},
+	"vivillonmarine": {
+		"id": "vivillonmarine",
+		"inherit": "vivillon"
+	},
+	"vivillonmodern": {
+		"id": "vivillonmodern",
+		"inherit": "vivillon"
+	},
+	"vivillonmonsoon": {
+		"id": "vivillonmonsoon",
+		"inherit": "vivillon"
+	},
+	"vivillonocean": {
+		"id": "vivillonocean",
+		"inherit": "vivillon"
+	},
+	"vivillonpolar": {
+		"id": "vivillonpolar",
+		"inherit": "vivillon"
+	},
+	"vivillonriver": {
+		"id": "vivillonriver",
+		"inherit": "vivillon"
+	},
+	"vivillonsandstorm": {
+		"id": "vivillonsandstorm",
+		"inherit": "vivillon"
+	},
+	"vivillonsavanna": {
+		"id": "vivillonsavanna",
+		"inherit": "vivillon"
+	},
+	"vivillonsun": {
+		"id": "vivillonsun",
+		"inherit": "vivillon"
+	},
+	"vivillontundra": {
+		"id": "vivillontundra",
+		"inherit": "vivillon"
+	},
+	"vivillonpokeball": {
+		"id": "vivillonpokeball",
+		"inherit": "vivillon"
+	},
+	"vivillonfancy": {
+		"id": "vivillonfancy",
+		"inherit": "vivillon"
+	},
+	"flabebeyellow": {
+		"id": "flabebeyellow",
+		"inherit": "flabebe"
+	},
+	"flabebeorange": {
+		"id": "flabebeorange",
+		"inherit": "flabebe"
+	},
+	"flabebeblue": {
+		"id": "flabebeblue",
+		"inherit": "flabebe"
+	},
+	"flabebewhite": {
+		"id": "flabebewhite",
+		"inherit": "flabebe"
+	},
+	"floetteyellow": {
+		"id": "floetteyellow",
+		"inherit": "floette"
+	},
+	"floetteorange": {
+		"id": "floetteorange",
+		"inherit": "floette"
+	},
+	"floetteblue": {
+		"id": "floetteblue",
+		"inherit": "floette"
+	},
+	"floettewhite": {
+		"id": "floettewhite",
+		"inherit": "floette"
+	},
+	"florgesyellow": {
+		"id": "florgesyellow",
+		"inherit": "florges"
+	},
+	"florgesorange": {
+		"id": "florgesorange",
+		"inherit": "florges"
+	},
+	"florgesblue": {
+		"id": "florgesblue",
+		"inherit": "florges"
+	},
+	"florgeswhite": {
+		"id": "florgeswhite",
+		"inherit": "florges"
 	},
 	"aegislashblade": {
 		"id": "aegislashblade",
-		"baseExp": 234,
+		"inherit": "aegislash",
 		"evDrops": {
 			"hp": 0,
 			"atk": 2,
@@ -17966,12 +17907,53 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"pumpkaboolarge": {
+		"id": "pumpkaboolarge",
+		"inherit": "pumpkaboo",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "gourgeistlarge"
+		}
+	},
+	"pumpkaboosmall": {
+		"id": "pumpkaboosmall",
+		"inherit": "pumpkaboo",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "gourgeistsmall"
+		}
+	},
+	"pumpkaboosuper": {
+		"id": "pumpkaboosuper",
+		"inherit": "pumpkaboo",
+		"evolution": {
+			"trigger": null,
+			"type": null,
+			"exact": null,
+			"evolvesTo": "gourgeistsuper"
+		}
+	},
+	"gourgeistlarge": {
+		"id": "gourgeistlarge",
+		"inherit": "gourgeist"
+	},
+	"gourgeistsmall": {
+		"id": "gourgeistsmall",
+		"inherit": "gourgeist"
+	},
+	"gourgeistsuper": {
+		"id": "gourgeistsuper",
+		"inherit": "gourgeist"
 	},
 	"zygarde10": {
 		"id": "zygarde10",
-		"baseExp": 219,
+		"inherit": "zygarde",
 		"evDrops": {
 			"hp": 3,
 			"atk": 0,
@@ -17979,12 +17961,11 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"zygardecomplete": {
 		"id": "zygardecomplete",
-		"baseExp": 319,
+		"inherit": "zygarde",
 		"evDrops": {
 			"hp": 3,
 			"atk": 0,
@@ -17992,25 +17973,16 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
 	},
 	"dianciemega": {
 		"id": "dianciemega",
-		"baseExp": 315,
-		"evDrops": {
-			"hp": 0,
-			"atk": 0,
-			"def": 1,
-			"spa": 0,
-			"spd": 2,
-			"spe": 0
-		},
-		"totalEvDrops": 3
+		"inherit": "diancie",
+		"baseExp": 315
 	},
 	"hoopaunbound": {
 		"id": "hoopaunbound",
-		"baseExp": 306,
+		"inherit": "hoopa",
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -18018,21 +17990,92 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 3
+		}
+	},
+	"oricoriopompom": {
+		"id": "oricoriopompom",
+		"inherit": "oricorio"
+	},
+	"oricoriopau": {
+		"id": "oricoriopau",
+		"inherit": "oricorio"
+	},
+	"oricoriosensu": {
+		"id": "oricoriosensu",
+		"inherit": "oricorio"
+	},
+	"lycanrocmidnight": {
+		"id": "lycanrocmidnight",
+		"inherit": "lycanroc"
 	},
 	"wishiwashischool": {
 		"id": "wishiwashischool",
-		"baseExp": 217,
-		"evDrops": {
-			"hp": 1,
-			"atk": 0,
-			"def": 0,
-			"spa": 0,
-			"spd": 0,
-			"spe": 0
-		},
-		"totalEvDrops": 1
+		"inherit": "wishiwashi",
+		"baseExp": 217
+	},
+	"silvallywater": {
+		"id": "silvallywater",
+		"inherit": "silvally"
+	},
+	"silvallyelectric": {
+		"id": "silvallyelectric",
+		"inherit": "silvally"
+	},
+	"silvallygrass": {
+		"id": "silvallygrass",
+		"inherit": "silvally"
+	},
+	"silvallyice": {
+		"id": "silvallyice",
+		"inherit": "silvally"
+	},
+	"silvallyfighting": {
+		"id": "silvallyfighting",
+		"inherit": "silvally"
+	},
+	"silvallypoison": {
+		"id": "silvallypoison",
+		"inherit": "silvally"
+	},
+	"silvallyground": {
+		"id": "silvallyground",
+		"inherit": "silvally"
+	},
+	"silvallyflying": {
+		"id": "silvallyflying",
+		"inherit": "silvally"
+	},
+	"silvallypsychic": {
+		"id": "silvallypsychic",
+		"inherit": "silvally"
+	},
+	"silvallybug": {
+		"id": "silvallybug",
+		"inherit": "silvally"
+	},
+	"silvallyrock": {
+		"id": "silvallyrock",
+		"inherit": "silvally"
+	},
+	"silvallyghost": {
+		"id": "silvallyflying",
+		"inherit": "silvally"
+	},
+	"silvallydragon": {
+		"id": "silvallydragon",
+		"inherit": "silvally"
+	},
+	"silvallydark": {
+		"id": "silvallydark",
+		"inherit": "silvally"
+	},
+	"silvallysteel": {
+		"id": "silvallysteel",
+		"inherit": "silvally"
+	},
+	"silvallyfairy": {
+		"id": "silvallyfairy",
+		"inherit": "silvally"
 	},
 	"miniormeteor": {
 		"id": "miniormeteor",
@@ -18044,12 +18087,11 @@
 			"spa": 0,
 			"spd": 1,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniorred": {
 		"id": "miniorred",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18057,12 +18099,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniororange": {
 		"id": "miniororange",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18070,12 +18111,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"minioryellow": {
 		"id": "minioryellow",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18083,12 +18123,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniorgreen": {
 		"id": "miniorgreen",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18096,12 +18135,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniorblue": {
 		"id": "miniorblue",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18109,12 +18147,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniorindigo": {
 		"id": "miniorindigo",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18122,12 +18159,11 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	},
 	"miniorviolet": {
 		"id": "miniorviolet",
-		"baseExp": 175,
+		"inherit": "minior",
 		"evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -18135,7 +18171,6 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 0
-		},
-		"totalEvDrops": 2
+		}
 	}
 }
