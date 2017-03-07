@@ -167,7 +167,7 @@ class SGgame extends Console.Console {
 		switch (addOn) {
 		case "pc":
 			output += '<center><button name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', deposit" class="button ' + (data.deposit ? '' : 'disabled') + '">Deposit</button> <button class="button ' + (data.withdraw ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', withdraw">Withdraw</button> ';
-			output += '<button class="button ' + (data.release ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', release">Release</button> <button class="button ' + (data.back ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + '">Back</button> <button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
+			output += '<button class="button ' + (data.release ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', release">Release</button> <button class="button ' + (data.back ? '' : 'disabled') + '" name="send" value="/sggame back">Back</button> <button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
 			break;
 		}
 		return output;
