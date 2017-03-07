@@ -339,7 +339,7 @@ exports.Formats = [
 		onBegin: function () {
 			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
 			for (let i = 0, len = allPokemon.length; i < len; i++) {
-				allPokemon[i].maxhp *= 5;
+				allPokemon[i].maxhp *= 3;
 				allPokemon[i].hp = allPokemon[i].maxhp;
 			}
 		},
