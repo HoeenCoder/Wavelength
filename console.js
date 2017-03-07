@@ -4,7 +4,7 @@ class Console {
 	constructor(user, room, css, html, bottom, muted, sound) {
 		this.userid = user.userid;
 		this.consoleId = user.consoleId + 1 || 1;
-		user.consoleId = this.consoleId;
+		if (!user.consoleId) user.consoleId = this.consoleId;
 		this.room = room.id;
 		this.muted = !!muted;
 		this.sound = sound || null;
@@ -46,10 +46,10 @@ class Console {
 	}
 	shift() {
 		let user = Users(this.userid);
-		user.sendTo(user.console.room, '|uhtmlchange|console' + user.userid + user.consoleId + '|');
-		user.consoleid++;
-		this.consoleid++;
-		user.sendTo(user.console.room, '|uhtml|console' + user.userid + user.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
+		user.sendTo(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
+		user.consoleId++;
+		this.consoleId++;
+		user.sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
 	}
 	// Overwrite these to use them.
 	up(data) {}
