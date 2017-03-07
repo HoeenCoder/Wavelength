@@ -447,7 +447,7 @@ exports.BattleScripts = {
 				ability: 'Blaze',
 				item: '',
 				gender: (variant === 1) ? 'M' : 'F',
-				moves: ['Will-O-Wisp', 'Wish', 'Fire Pledge', 'Psybeam'],
+				moves: ['Will-O-Wisp', 'Light Screen', 'Fire Pledge', 'Psybeam'],
 				weather: 'sun',
 				evs: {
 					hp: 4,
