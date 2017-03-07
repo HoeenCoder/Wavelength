@@ -6,7 +6,9 @@ class Console {
 		this.consoleId = user.consoleId + 1 || 1;
 		if (!user.consoleId) {
 			user.consoleId = this.consoleId;
-		} else user.consoleId++;
+		} else {
+			user.consoleId++;
+		}
 		this.room = room.id;
 		this.muted = !!muted;
 		this.sound = sound || null;
