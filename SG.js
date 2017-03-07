@@ -366,18 +366,48 @@ exports.SG = {
 	},
 	getEXPType: function (pokemon) {
 		pokemon = toId(pokemon);
-		try {
-			return this.gameData[pokemon].expType;
-		} catch (e) {
-			throw new Error('Cannot find pokemon ' + pokemon + ' in pokemon.json');
+		if (!this.gameData[pokemon]) throw new Error(pokemon + " not found in pokemon.json");
+		if (this.gameData[pokemon].expType) return this.gameData[pokemon].expType;
+		if (!this.gameData[pokemon].inherit) throw new Error('Unable to find expType for ' + pokemon);
+		let depth = 0, curData = null;
+		while (true) {
+			if (depth >= 8) throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
+			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon);
+			curData = this.gameData[(this.gameData[(curData ? curData.id : pokemon)].inherit)];
+			if (curData.expType) return curData.expType;
+			depth++;
 		}
 	},
 	getGain: function (userid, pokemon, foe, particpated) {
-		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1), b = this.gameData[toId(foe.species)].baseExp;
+		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1), b = this.getBaseExp(foe.species);
 		return (((a * b * L) / (5 * s)) * (Math.pow((2 * L + 10), 2.5) / Math.pow((L + Lp + 10), 2.5)) + 1) * t * e * p;
 	},
+	getBaseExp: function (pokemon) {
+		pokemon = toId(pokemon);
+		if (!this.gameData[pokemon]) throw new Error(pokemon + " not found in pokemon.json");
+		if (this.gameData[pokemon].baseExp) return this.gameData[pokemon].baseExp;
+		if (!this.gameData[pokemon].inherit) throw new Error('Unable to find expType for ' + pokemon);
+		let depth = 0, curData = null;
+		while (true) {
+			if (depth >= 8) throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
+			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon);
+			curData = this.gameData[(this.gameData[(curData ? curData.id : pokemon)].inherit)];
+			if (curData.baseExp) return curData.baseExp;
+			depth++;
+		}
+	},
 	getEvGain: function (pokemon) {
-		return this.gameData[toId(pokemon.species)].evDrops;
+		if (!this.gameData[toId(pokemon.species)]) throw new Error(pokemon.species + " not found in pokemon.json");
+		if (this.gameData[toId(pokemon.species)].evDrops) return this.gameData[toId(pokemon.species)].evDrops;
+		if (!this.gameData[toId(pokemon.species)].inherit) throw new Error('Unable to find evDrops for ' + pokemon.species);
+		let depth = 0, curData = null;
+		while (true) {
+			if (depth >= 8) throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
+			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon.species);
+			curData = this.gameData[(this.gameData[(curData ? curData.id : toId(pokemon.species))].inherit)];
+			if (curData.evDrops) return curData.evDrops;
+			depth++;
+		}
 	},
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {

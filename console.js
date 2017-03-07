@@ -4,7 +4,9 @@ class Console {
 	constructor(user, room, css, html, bottom, muted, sound) {
 		this.userid = user.userid;
 		this.consoleId = user.consoleId + 1 || 1;
-		if (!user.consoleId) user.consoleId = this.consoleId;
+		if (!user.consoleId) {
+			user.consoleId = this.consoleId;
+		} else user.consoleId++;
 		this.room = room.id;
 		this.muted = !!muted;
 		this.sound = sound || null;

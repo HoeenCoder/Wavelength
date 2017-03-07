@@ -253,7 +253,8 @@ exports.commands = {
 	resetalpha: 'playalpha',
 	continuealpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
-		if (cmd === 'resetalpha') return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/sggame back">No</button>', false);
+		if (cmd === 'resetalpha' && user.console) return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/sggame back">No</button>', false);
+		if (cmd === 'resetalpha') return; // User didnt have a console setup.
 		if (user.console) this.parse('/console kill');
 		user.console = new SGgame(user, room, !!target);
 		if (cmd === 'playalpha') {
