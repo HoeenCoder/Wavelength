@@ -91,6 +91,7 @@ exports.commands = {
 		},
 		forcestart: 'start',
 		start: function (target, room, user, connection, cmd, message) {
+			if (room.battle) return this.errorReply('The game console is not designed to be used in battle rooms.');
 			if (user.console && cmd !== 'forcestart') return;
 			if (cmd === 'forcestart') this.parse('/console kill');
 			if (!target || Object.keys(SG.gameList).indexOf(toId(target)) === -1) {
