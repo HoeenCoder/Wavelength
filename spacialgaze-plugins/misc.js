@@ -171,6 +171,7 @@ exports.commands = {
 		let targetUser = this.targetUser;
 		if (!targetUser || !targetUser.connected) return this.sendReply("User \"" + this.targetUsername + "\" not found.");
 		if (!this.can('mute', targetUser, room)) return false;
+		if (!room.users[targetUser.userid]) return this.errorReply("User \"" + this.targetUsername + "\" is not in this room.");
 
 		this.addModCommand(targetUser.name + " was kicked from the room by " + user.name + ".");
 		targetUser.popup("You were kicked from " + room.id + " by " + user.name + ".");
