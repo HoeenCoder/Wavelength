@@ -218,14 +218,14 @@ exports.BattleStatuses = {
 		exists: true,
 		onStart: function () {
 			this.add('c', '%Spacial Bot', '``Bot rebooting...``');
-			this.add('c', '%Spacial Bot', '``Rebooting complete. Beginning to engage in battle.``');
+			this.add('c', '%Spacial Bot', '``Rebooting complete. Engaging in battle.``');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '+The Run', '.battleswitchout');
 			this.add('c', '%Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Spacial Bot', 'I blame my creator for my loss');
+			this.add('c', '%Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
 		},
 	},
 	hydrostatics: {
