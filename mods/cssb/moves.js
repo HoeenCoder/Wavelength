@@ -545,7 +545,7 @@ exports.BattleMovedex = {
 			if (stats.length) {
 				let randomStat = stats[this.random(stats.length)];
 				let boost = {};
-				boost[randomStat] = 2;
+				boost[randomStat] = 3;
 				this.boost(boost);
 			} else {
 				return false;
