@@ -32,7 +32,7 @@ exports.BattleMovedex = {
 	flametower: {
 		category: "Special",
 		accuracy: 100,
-		basePower: 75,
+		basePower: 80,
 		id: "flametower",
 		name: "Flame Tower",
 		isNonstandard: true,
@@ -58,7 +58,7 @@ exports.BattleMovedex = {
 	rainspear: {
 		category: "Special",
 		accuracy: 100,
-		basePower: 50,
+		basePower: 70,
 		id: "rainspear",
 		name: "Rain Spear",
 		isNonstandard: true,
@@ -99,7 +99,7 @@ exports.BattleMovedex = {
 			this.useMove('Aromatherapy', pokemon);
 		},
 		self: {
-			heal: [1, 4],
+			heal: [1, 2],
 		},
 		pp: 5,
 		priority: 0,
@@ -205,7 +205,7 @@ exports.BattleMovedex = {
 	//Poison
 	nuclearwaste: {
 		category: "Status",
-		accuracy: 90,
+		accuracy: 95,
 		id: "nuclearwaste",
 		name: "Nuclear Waste",
 		isNonstandard: true,
@@ -231,7 +231,7 @@ exports.BattleMovedex = {
 	terratremor: {
 		category: "Physical",
 		accuracy: 75,
-		basePower: 150,
+		basePower: 140,
 		id: "terratremor",
 		name: "Terratremor",
 		isNonstandard: true,
@@ -315,7 +315,7 @@ exports.BattleMovedex = {
 			this.useMove('Light Screen', pokemon);
 			this.useMove('Reflect', pokemon);
 		},
-		pp: 10,
+		pp: 5,
 		target: "Self",
 		type: "Psychic",
 	},
@@ -351,7 +351,7 @@ exports.BattleMovedex = {
 	//Rock
 	rockcannon: {
 		category: "Special",
-		basePower: 95,
+		basePower: 110,
 		accuracy: 100,
 		id: "rockcannon",
 		name: "Rock Cannon",
@@ -376,7 +376,7 @@ exports.BattleMovedex = {
 	//Ghost
 	spook: {
 		category: "Special",
-		basePower: 70,
+		basePower: 80,
 		accuracy: 100,
 		id: "spook",
 		name: "Spook",
@@ -391,7 +391,7 @@ exports.BattleMovedex = {
 		},
 		willCrit: true,
 		secondary: {
-			chance: 10,
+			chance: 30,
 			volatileStatus: 'Flinch',
 		},
 		pp: 10,
@@ -462,7 +462,7 @@ exports.BattleMovedex = {
 	magnorang: {
 		category: "Physical",
 		accuracy: 90,
-		basePower: 100,
+		basePower: 120,
 		id: "magnorang",
 		name: "Magnorang",
 		isNonstandard: true,
@@ -498,14 +498,15 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Powder", target);
 		},
 		secondary: {
-			chance: 10,
+			chance: 30,
 			status: 'par',
 		},
 		pp: 10,
 		target: "normal",
 		type: "Fairy",
 	},
-	//CUSTOM MADE CUSTOM MOVES
+	// CUSTOM MADE CUSTOM MOVES
+	// Ashley the Pikachu
 	rocketpunch: {
 		accuracy: 100,
 		basePower: 100,
@@ -521,6 +522,40 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Flare Blitz", source);
 			this.add('-anim', source, "Mach Punch", target);
+		},
+	},
+	// Stellation
+	teamplayer: {
+		accuracy: 100,
+		category: "Status",
+		id: "teamplayer",
+		isNonstandard: true,
+		name: "Team Player",
+		pp: 10,
+		target: "self",
+		selfSwitch: 'copyvolatile',
+		type: "Normal",
+		onHit: function (target) {
+			let stats = [];
+			for (let stat in target.boosts) {
+				if (target.boosts[stat] < 6) {
+					stats.push(stat);
+				}
+			}
+			if (stats.length) {
+				let randomStat = stats[this.random(stats.length)];
+				let boost = {};
+				boost[randomStat] = 2;
+				this.boost(boost);
+			} else {
+				return false;
+			}
+		},
+		secondary: false,
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Acupressure", source);
+			this.add('-anim', source, "Baton Pass", source);
 		},
 	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
