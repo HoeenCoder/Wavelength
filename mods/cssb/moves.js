@@ -513,6 +513,9 @@ exports.BattleMovedex = {
 		category: "Special",
 		id: "rocketpunch",
 		isNonstandard: true,
+		flags: {
+			protect: true,
+		},
 		name: "Rocket Punch",
 		pp: 10,
 		priority: 1,
