@@ -17,7 +17,7 @@ exports.commands = {
     if (Users(target) && (cmd !== 'offlinepermalock' && cmd !== 'forceofflinepermalock')) return this.parse('/permalock ' + target);
     if (cmd === 'offlinepermalock' || cmd === 'forceofflinepermalock') {
       target = toId(target);
-      if (Db.perma.get(target.userid, 0) === 5) return this.errorReply(target + ' is already permalocked.');
+      if (Db.perma.get(target, 0) === 5) return this.errorReply(target + ' is already permalocked.');
       if (Users.usergroups[target] && cmd !== 'forceofflinepermalock') return this.errorReply(target + ' is a trusted user. If your sure you want to permalock them, please use /forceofflinepermalock');
       Db.perma.set(target, 5);
       if (Users.usergroups[target]) {
@@ -46,9 +46,9 @@ exports.commands = {
     if (!this.can('lockdown')) return;
     if (!toId(target)) return this.parse('/help unpermalock');
     target = toId(target);
-    if (Db.perma.get(target.userid, 0) < 5) return this.errorReply(target + ' is not permalocked.');
-    if (Db.perma.get(target.userid, 0) === 6) return this.errorReply(target + ' is permabanned. If you want to unpermaban them, use /unpermaban');
-    Db.perma.set(target.userid, 0);
+    if (Db.perma.get(target, 0) < 5) return this.errorReply(target + ' is not permalocked.');
+    if (Db.perma.get(target, 0) === 6) return this.errorReply(target + ' is permabanned. If you want to unpermaban them, use /unpermaban');
+    Db.perma.set(target, 0);
     Punshiments.unlock(target);
     if (Users(target)) Users(target).popup('Your permalock was lifted by ' + user.name + '.');
     if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermalocked ' + target + '.').update();
@@ -65,7 +65,7 @@ exports.commands = {
     if (Users(target) && (cmd !== 'offlinepermaban' && cmd !== 'forceofflinepermaban')) return this.parse('/permaban ' + target);
     if (cmd === 'offlinepermaban' || cmd === 'forceofflinepermaban') {
       target = toId(target);
-      if (Db.perma.get(target.userid, 0) === 6) return this.errorReply(target + ' is already permabanned.');
+      if (Db.perma.get(target, 0) === 6) return this.errorReply(target + ' is already permabanned.');
       if (Users.usergroups[target] && cmd !== 'forceofflinepermaban') return this.errorReply(target + ' is a trusted user. If your sure you want to permaban them, please use /forceofflinepermaban');
       Db.perma.set(target, 6);
       if (Users.usergroups[target]) {
@@ -91,8 +91,8 @@ exports.commands = {
     if (!this.can('lockdown')) return;
     if (!toId(target)) return this.parse('/help unpermaban');
     target = toId(target);
-    if (Db.perma.get(target.userid, 0) !== 6) return this.errorReply(target + ' is not permabanned.');
-    Db.perma.set(target.userid, 0);
+    if (Db.perma.get(target, 0) !== 6) return this.errorReply(target + ' is not permabanned.');
+    Db.perma.set(target, 0);
     Punishments.unban(target);
     if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermabanned ' + target + '.').update();
     return this.addModCommand(target + ' was unpermabanned by ' + user.name + '.');
