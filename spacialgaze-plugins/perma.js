@@ -6,14 +6,6 @@
 
 'use strict';
 
-function exportUsergroups() {
-	let buffer = '';
-	for (let i in Users.usergroups) {
-		buffer += Users.usergroups[i].substr(1).replace(/,/g, '') + ',' + Users.usergroups[i].charAt(0) + "\n";
-	}
-	fs.writeFile('../config/usergroups.csv', buffer, () => {});
-}
-
 exports.commands = {
   forceofflinepermalock: 'permalock',
   offlinepermalock: 'permalock',
@@ -29,8 +21,7 @@ exports.commands = {
       if (Users.usergroups[target] && cmd !== 'forceofflinepermalock') return this.errorReply(target + ' is a trusted user. If your sure you want to permalock them, please use /forceofflinepermalock');
       Db.perma.set(target.userid, 5);
       if (Users.usergroups[target]) {
-        delete Users.usergroups[target];
-        exportUsergroups();
+        Users.setOfflineGroup(target, ' ');
         Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
       }
       if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permalocked ' + target + '.');
@@ -78,8 +69,7 @@ exports.commands = {
       if (Users.usergroups[target] && cmd !== 'forceofflinepermaban') return this.errorReply(target + ' is a trusted user. If your sure you want to permaban them, please use /forceofflinepermaban');
       Db.perma.set(target.userid, 6);
       if (Users.usergroups[target]) {
-        delete Users.usergroups[target];
-        exportUsergroups();
+        Users.setOfflineGroup(target, ' ');
         Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
       }
       if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permabanned ' + target + '.');
