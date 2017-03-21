@@ -19,12 +19,12 @@ exports.commands = {
       target = toId(target);
       if (Db.perma.get(target.userid, 0) === 5) return this.errorReply(target + ' is already permalocked.');
       if (Users.usergroups[target] && cmd !== 'forceofflinepermalock') return this.errorReply(target + ' is a trusted user. If your sure you want to permalock them, please use /forceofflinepermalock');
-      Db.perma.set(target.userid, 5);
+      Db.perma.set(target, 5);
       if (Users.usergroups[target]) {
         Users.setOfflineGroup(target, ' ');
         Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
       }
-      if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permalocked ' + target + '.');
+      if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permalocked ' + target + '.').update();
       return this.addModCommand(target + ' was permalocked by ' + user.name + '.');
     }
     target = Users(target);
@@ -38,7 +38,7 @@ exports.commands = {
     if (Punishments.userids.get(target.userid) && Punishments.userids.get(target.userid)[0] !== 'BAN') Punishments.lock(target, Date.now() + (1000 * 60 * 60 * 24 * 30), target.userid, `Permalocked as ${target.userid}`);
     target.popup('You have been permalocked by ' + user.name + '.\nUnlike permalocks issued by the main server, this permalock only effects this server.');
     Monitor.log('[CrisisMonitor] Trusted user ' + target.userid + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + target.distrust() + '.');
-    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permalocked ' + target.name + '.');
+    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permalocked ' + target.name + '.').update();
     return this.addModCommand(target.name + ' was permalocked by ' + user.name + '.');
   },
   permalockhelp: ['/permalock user - Permalock a user. Requires: ~'],
@@ -51,7 +51,7 @@ exports.commands = {
     Db.perma.set(target.userid, 0);
     Punshiments.unlock(target);
     if (Users(target)) Users(target).popup('Your permalock was lifted by ' + user.name + '.');
-    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermalocked ' + target + '.');
+    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermalocked ' + target + '.').update();
     return this.addModCommand(target + ' was unpermalocked by ' + user.name + '.');
   },
   unpermalockhelp: ['/unpermalock user - Unpermalock a user. Requires: ~'],
@@ -67,12 +67,12 @@ exports.commands = {
       target = toId(target);
       if (Db.perma.get(target.userid, 0) === 6) return this.errorReply(target + ' is already permabanned.');
       if (Users.usergroups[target] && cmd !== 'forceofflinepermaban') return this.errorReply(target + ' is a trusted user. If your sure you want to permaban them, please use /forceofflinepermaban');
-      Db.perma.set(target.userid, 6);
+      Db.perma.set(target, 6);
       if (Users.usergroups[target]) {
         Users.setOfflineGroup(target, ' ');
         Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
       }
-      if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permabanned ' + target + '.');
+      if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permabanned ' + target + '.').update();
       return this.addModCommand(target + ' was permabanned by ' + user.name + '.');
     }
     target = Users(target);
@@ -83,7 +83,7 @@ exports.commands = {
     target.popup('You have been permabanned by ' + user.name + '.\nUnlike permabans issued by the main server, this permaban only effects this server.');
     Punishments.ban(target, Date.now() + (1000 * 60 * 60 * 24 * 30), target.userid, `Permabanned as ${target.userid}`);
     Monitor.log('[CrisisMonitor] Trusted user ' + target.userid + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + target.distrust() + '.');
-    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permabanned ' + target.name + '.');
+    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permabanned ' + target.name + '.').update();
     return this.addModCommand(target.name + ' was permabanned by ' + user.name + '.');
   },
   permabanhelp: ['/permaban user - Permaban a user. Requires: ~'],
@@ -94,7 +94,7 @@ exports.commands = {
     if (Db.perma.get(target.userid, 0) !== 6) return this.errorReply(target + ' is not permabanned.');
     Db.perma.set(target.userid, 0);
     Punishments.unban(target);
-    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermabanned ' + target + '.');
+    if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermabanned ' + target + '.').update();
     return this.addModCommand(target + ' was unpermabanned by ' + user.name + '.');
   },
   unpermabanhelp: ['/unpermaban user - Unpermaban a user. Requires: ~'],
