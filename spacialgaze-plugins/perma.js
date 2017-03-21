@@ -49,7 +49,7 @@ exports.commands = {
     if (Db.perma.get(target, 0) < 5) return this.errorReply(target + ' is not permalocked.');
     if (Db.perma.get(target, 0) === 6) return this.errorReply(target + ' is permabanned. If you want to unpermaban them, use /unpermaban');
     Db.perma.set(target, 0);
-    Punshiments.unlock(target);
+    Punishments.unlock(target);
     if (Users(target)) Users(target).popup('Your permalock was lifted by ' + user.name + '.');
     if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermalocked ' + target + '.').update();
     return this.addModCommand(target + ' was unpermalocked by ' + user.name + '.');
