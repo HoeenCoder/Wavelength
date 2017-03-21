@@ -13,8 +13,8 @@ exports.commands = {
   permalock: function (target, room, user, connection, cmd) {
     if (!this.can('lockdown')) return;
     if (!toId(target)) return this.parse('/help permalock');
-    if (!Users(target) && (cmd !== 'offlinepermalock' || cmd !== 'forceofflinepermalock')) return this.errorReply('User ' + target + ' not found. If your sure you want to permalock them, use /offlinepermalock.');
-    if (Users(target) && (cmd !== 'offlinepermalock' || cmd !== 'forceofflinepermalock')) return this.parse('/permalock ' + target);
+    if (!Users(target) && (cmd !== 'offlinepermalock' && cmd !== 'forceofflinepermalock')) return this.errorReply('User ' + target + ' not found. If your sure you want to permalock them, use /offlinepermalock.');
+    if (Users(target) && (cmd !== 'offlinepermalock' && cmd !== 'forceofflinepermalock')) return this.parse('/permalock ' + target);
     if (cmd === 'offlinepermalock' || cmd === 'forceofflinepermalock') {
       target = toId(target);
       if (Db.perma.get(target.userid, 0) === 5) return this.errorReply(target + ' is already permalocked.');
@@ -61,8 +61,8 @@ exports.commands = {
   permaban: function (target, room, user, connection, cmd) {
     if (!this.can('lockdown')) return;
     if (!toId(target)) return this.parse('/help permaban');
-    if (!Users(target) && (cmd !== 'offlinepermaban' || cmd !== 'forceofflinepermaban')) return this.errorReply('User ' + target + ' not found. If your sure you want to permaban them, use /offlinepermaban.');
-    if (Users(target) && (cmd !== 'offlinepermaban' || cmd !== 'forceofflinepermaban')) return this.parse('/permaban ' + target);
+    if (!Users(target) && (cmd !== 'offlinepermaban' && cmd !== 'forceofflinepermaban')) return this.errorReply('User ' + target + ' not found. If your sure you want to permaban them, use /offlinepermaban.');
+    if (Users(target) && (cmd !== 'offlinepermaban' && cmd !== 'forceofflinepermaban')) return this.parse('/permaban ' + target);
     if (cmd === 'offlinepermaban' || cmd === 'forceofflinepermaban') {
       target = toId(target);
       if (Db.perma.get(target.userid, 0) === 6) return this.errorReply(target + ' is already permabanned.');
