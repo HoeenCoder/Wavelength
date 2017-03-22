@@ -22,23 +22,30 @@ class Validator {
 		if (supplementaryBanlist && supplementaryBanlist.length) {
 			format = Object.assign({}, format);
 			if (format.banlistTable) delete format.banlistTable;
-			if (format.banlist) {
-				format.banlist = format.banlist.slice();
-			} else {
-				format.banlist = [];
-			}
-			if (format.unbanlist) {
-				format.unbanlist = format.unbanlist.slice();
-			} else {
-				format.unbanlist = [];
-			}
+			format.banlist = format.banlist ? format.banlist.slice() : [];
+			format.unbanlist = format.unbanlist ? format.unbanlist.slice() : [];
+			format.ruleset = format.ruleset ? format.ruleset.slice() : [];
 			for (let i = 0; i < supplementaryBanlist.length; i++) {
 				let ban = supplementaryBanlist[i];
+				let unban = false;
 				if (ban.charAt(0) === '!') {
+					unban = true;
 					ban = ban.substr(1);
-					if (!format.unbanlist.includes(ban)) format.unbanlist.push(ban);
+				}
+				if (ban.startsWith('Rule:')) {
+					ban = ban.substr(5);
+					if (unban) {
+						ban = 'Rule:' + toId(ban);
+						if (!format.unbanlist.includes(ban)) format.unbanlist.push(ban);
+					} else {
+						if (!format.ruleset.includes(ban)) format.ruleset.push(ban);
+					}
 				} else {
-					if (!format.banlist.includes(ban)) format.banlist.push(ban);
+					if (unban) {
+						if (!format.unbanlist.includes(ban)) format.unbanlist.push(ban);
+					} else {
+						if (!format.banlist.includes(ban)) format.banlist.push(ban);
+					}
 				}
 			}
 			supplementaryBanlist = supplementaryBanlist.join(',');
@@ -82,7 +89,7 @@ class Validator {
 			if (format.gameType === 'doubles') lengthRange[0] = 2;
 			if (format.gameType === 'triples' || format.gameType === 'rotation') lengthRange[0] = 3;
 		}
-		if (team.length < lengthRange[0]) return [`You must bring at least ${lengthRange[0]} Pok\u00E9mon.`];
+		if (team.length < lengthRange[0]) problems.push([`You must bring at least ${lengthRange[0]} Pok\u00E9mon.`]);
 		if (team.length > lengthRange[1]) return [`You may only bring up to ${lengthRange[1]} Pok\u00E9mon.`];
 
 		let teamHas = {};
@@ -117,15 +124,15 @@ class Validator {
 			}
 			let limit = entry[2];
 			if (count > limit) {
-				let clause = entry[1] ? " by " + entry[1] : '';
-				problems.push("You are limited to " + limit + " of " + entry[0] + clause + ".");
+				let clause = entry[1] ? ` by ${entry[1]}` : ``;
+				problems.push(`You are limited to ${limit} of ${entry[0]}${clause}.`);
 			}
 		}
 
 		if (format.ruleset) {
 			for (let i = 0; i < format.ruleset.length; i++) {
 				let subformat = tools.getFormat(format.ruleset[i]);
-				if (subformat.onValidateTeam) {
+				if (subformat.onValidateTeam && format.banlistTable['Rule:' + subformat.id]) {
 					problems = problems.concat(subformat.onValidateTeam.call(tools, team, format, teamHas) || []);
 				}
 			}
@@ -181,11 +188,12 @@ class Validator {
 		let lsetData = {set:set, format:format};
 
 		let setHas = {};
+		let banlistTable = tools.getBanlistTable(format);
 
 		if (format.ruleset) {
 			for (let i = 0; i < format.ruleset.length; i++) {
 				let subformat = tools.getFormat(format.ruleset[i]);
-				if (subformat.onChangeSet) {
+				if (subformat.onChangeSet && banlistTable['Rule:' + subformat.id]) {
 					problems = problems.concat(subformat.onChangeSet.call(tools, set, format) || []);
 				}
 			}
@@ -229,8 +237,6 @@ class Validator {
 		if (set.happiness !== undefined && isNaN(set.happiness)) {
 			problems.push(`${set.species} has an invalid happiness.`);
 		}
-
-		let banlistTable = tools.getBanlistTable(format);
 
 		let check = template.id;
 		setHas[check] = true;
@@ -378,6 +384,50 @@ class Validator {
 			if (!canBottleCap && banlistTable['Rule:pokemon'] && set.hpType && set.hpType !== ivHpType) {
 				problems.push(`${name} has Hidden Power ${set.hpType}, but its IVs are for Hidden Power ${ivHpType}.`);
 			}
+			if (tools.gen <= 2) {
+				// validate DVs
+				const hpDV = Math.floor(set.ivs.hp / 2);
+				const atkDV = Math.floor(set.ivs.atk / 2);
+				const defDV = Math.floor(set.ivs.def / 2);
+				const speDV = Math.floor(set.ivs.spe / 2);
+				const spcDV = Math.floor(set.ivs.spa / 2);
+				const expectedHpDV = (atkDV % 2) * 8 + (defDV % 2) * 4 + (speDV % 2) * 2 + (spcDV % 2);
+				if (expectedHpDV !== hpDV) {
+					problems.push(`${name} has an HP DV of ${hpDV}, but its Atk, Def, Spe, and Spc DVs give it an HP DV of ${expectedHpDV}.`);
+				}
+				if (tools.gen > 1 && !template.gender) {
+					// Gen 2 gender is calculated from the Atk DV.
+					// High Atk DV <-> M. The meaning of "high" depends on the gender ratio.
+					let genderThreshold = template.genderRatio.F * 16;
+					if (genderThreshold === 4) genderThreshold = 5;
+					if (genderThreshold === 8) genderThreshold = 7;
+
+					const expectedGender = (atkDV >= genderThreshold ? 'M' : 'F');
+					if (set.gender && set.gender !== expectedGender) {
+						problems.push(`${name} is ${set.gender}, but it has an Atk DV of ${atkDV}, which makes its gender ${expectedGender}.`);
+					} else {
+						set.gender = expectedGender;
+					}
+				}
+				if (tools.gen > 1) {
+					const expectedShiny = !!(defDV === 10 && speDV === 10 && spcDV === 10 && atkDV % 4 >= 2);
+					if (expectedShiny && !set.shiny) {
+						problems.push(`${name} is not shiny, which does not match its DVs.`);
+					} else if (!expectedShiny && set.shiny) {
+						problems.push(`${name} is shiny, which does not match its DVs (its DVs must all be 10, except Atk which must be 2, 3, 6, 7, 10, 11, 14, or 15).`);
+					}
+				}
+			}
+			if (tools.gen <= 2 || tools.gen !== 6 && (format.id.endsWith('hackmons') || format.name.includes('BH'))) {
+				if (!set.evs) set.evs = Validator.fillStats(null, 252);
+				let evTotal = (set.evs.hp || 0) + (set.evs.atk || 0) + (set.evs.def || 0) + (set.evs.spa || 0) + (set.evs.spd || 0) + (set.evs.spe || 0);
+				if (evTotal === 508 || evTotal === 510) {
+					problems.push(`${name} has exactly 510 EVs, but this format does not restrict you to 510 EVs: you can max out every EV (If this was intentional, add exactly 1 to one of your EVs, which won't change its stats but will tell us that it wasn't a mistake).`);
+				}
+			}
+			if (set.evs && !Object.values(set.evs).some(value => value > 0)) {
+				problems.push(`${name} has exactly 0 EVs - did you forget to EV it? (If this was intentional, add exactly 1 to one of your EVs, which won't change its stats but will tell us that it wasn't a mistake).`);
+			}
 
 			if (lsetData.limitedEgg && lsetData.limitedEgg.length > 1 && !lsetData.sourcesBefore && lsetData.sources) {
 				// console.log("limitedEgg 1: " + lsetData.limitedEgg);
@@ -490,7 +540,17 @@ class Validator {
 						problems.push(`${template.species} is only obtainable from events - it needs to match one of its events, such as:`);
 					}
 					let eventData = eventPokemon[0];
-					let eventProblems = this.validateEvent(set, eventData, eventTemplate, ` to be`, `from ` + eventPokemon.length === 1 ? `its event` : `its first event`);
+					const minPastGen = (format.requirePlus ? 7 : format.requirePentagon ? 6 : 1);
+					let eventNum = 1;
+					for (let i = 0; i < eventPokemon.length; i++) {
+						if (eventPokemon[i].generation <= tools.gen && eventPokemon[i].generation >= minPastGen) {
+							eventData = eventPokemon[i];
+							eventNum = i + 1;
+							break;
+						}
+					}
+					let eventName = eventPokemon.length > 1 ? ` #${eventNum}` : ``;
+					let eventProblems = this.validateEvent(set, eventData, eventTemplate, ` to be`, `from its event${eventName}`);
 					if (eventProblems) problems.push(...eventProblems);
 				}
 			}
@@ -565,7 +625,7 @@ class Validator {
 		if (format.ruleset) {
 			for (let i = 0; i < format.ruleset.length; i++) {
 				let subformat = tools.getFormat(format.ruleset[i]);
-				if (subformat.onValidateSet) {
+				if (subformat.onValidateSet && banlistTable['Rule:' + subformat.id]) {
 					problems = problems.concat(subformat.onValidateSet.call(tools, set, format, setHas, teamHas) || []);
 				}
 			}
@@ -642,6 +702,10 @@ class Validator {
 		if (this.format.requirePlus && eventData.generation < 7) {
 			if (fastReturn) return true;
 			problems.push(`This format requires Pokemon from gen 7 and ${name} is from gen ${eventData.generation}${etc}.`);
+		}
+		if (tools.gen < eventData.generation) {
+			if (fastReturn) return true;
+			problems.push(`This format is in gen ${tools.gen} and ${name} is from gen ${eventData.generation}${etc}.`);
 		}
 
 		if (eventData.level && set.level < eventData.level) {
@@ -1167,6 +1231,7 @@ class TeamValidatorManager extends ProcessManager {
 			require('./crashlogger')(err, 'A team validation', {
 				format: format,
 				team: team,
+				supplementaryBanlist: supplementaryBanlist,
 			});
 			problems = [`Your team crashed the team validator. We've been automatically notified and will fix this crash, but you should use a different team for now.`];
 		}
