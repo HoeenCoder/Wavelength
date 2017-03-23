@@ -454,6 +454,11 @@ exports.BattleMovedex = {
 			}
 		},
 		pp: 10,
+		flags: {
+			contact: 1,
+			protect: 1,
+			mirror: 1,
+		},
 		priority: 1,
 		target: "normal",
 		type: "Dark",
@@ -478,6 +483,10 @@ exports.BattleMovedex = {
 			}
 		},
 		pp: 10,
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		target: "normal",
 		type: "Steel",
 	},
