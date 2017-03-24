@@ -155,10 +155,10 @@ class UNOgame extends Rooms.RoomGame {
 	getPlayers(showCards) {
 		let playerList = Object.keys(this.players);
 		if (!showCards) {
-			return playerList.sort().map(id => Chat.escapeHTML(this.players[id].name));
+			return playerList.sort().map(id => SG.nameColor(this.players[id].name, false, true));
 		}
 		if (this.direction === -1) playerList = playerList.reverse();
-		return playerList.map(id => `${(this.currentPlayer && this.currentPlayer === id ? "<strong>" : "")}${Chat.escapeHTML(this.players[id].name)} (${this.players[id].hand.length}) ${(this.currentPlayer && this.currentPlayer === id ? "</strong>" : "")}`);
+		return playerList.map(id => `${(this.currentPlayer && this.currentPlayer === id ? "<strong>" : "")}${SG.nameColor(this.players[id].name, false, true)} (${this.players[id].hand.length}) ${(this.currentPlayer && this.currentPlayer === id ? "</strong>" : "")}`);
 	}
 
 	nextTurn(starting) {
@@ -171,13 +171,13 @@ class UNOgame extends Rooms.RoomGame {
 
 		clearTimeout(this.timer);
 		let player = this.players[this.currentPlayer];
-		this.room.send(`${player.name}'s turn.`);
+		this.room.send(`|html|${SG.nameColor(player.name, true, true)}'s turn.`);
 		this.state = 'play';
 		if (player.cardLock) delete player.cardLock;
 		player.sendDisplay();
 
 		this.timer = setTimeout(() => {
-			this.sendToRoom(`${player.name} has been automatically disqualified.`);
+			this.sendToRoom(`|html|${SG.nameColor(player.name, true, true)} has been automatically disqualified.`);
 			this.eliminate(this.currentPlayer);
 		}, this.maxTime * 1000);
 	}
@@ -209,7 +209,7 @@ class UNOgame extends Rooms.RoomGame {
 
 		this.onCheckUno();
 
-		this.sendToRoom(`${user.name} has drawn a card.`);
+		this.sendToRoom(`|html|${SG.nameColor(user.name, true, true)} has drawn a card.`);
 		let player = this.players[user.userid];
 
 		let card = this.onDrawCard(user, 1, true);
@@ -240,7 +240,7 @@ class UNOgame extends Rooms.RoomGame {
 
 		player.sendDisplay(); // update display without the card in it for purposes such as choosing colors
 
-		this.sendToRoom(`|raw|${Chat.escapeHTML(player.name)} has played a <span style="color: ${card.color}">${card.name}</span>.`);
+		this.sendToRoom(`|raw|${SG.nameColor(player.name, true, true)} has played a <span style="color: ${card.color}">${card.name}</span>.`);
 
 		// handle hand size
 		if (!player.hand.length) {
@@ -265,11 +265,11 @@ class UNOgame extends Rooms.RoomGame {
 			break;
 		case "Skip":
 			this.onNextPlayer();
-			this.sendToRoom(this.players[this.currentPlayer].name + "'s turn has been skipped.");
+			this.sendToRoom(`|html|${SG.nameColor(this.players[this.currentPlayer].name, true, true)}'s turn has been skipped.`);
 			break;
 		case "+2":
 			this.onNextPlayer();
-			this.sendToRoom(this.players[this.currentPlayer].name + " has been forced to draw 2 cards.");
+			this.sendToRoom(`|html|${SG.nameColor(this.players[this.currentPlayer].name, true, true)} has been forced to draw 2 cards.`);
 			this.onDrawCard({userid: this.currentPlayer}, 2);
 			break;
 		case "+4":
@@ -277,11 +277,11 @@ class UNOgame extends Rooms.RoomGame {
 			this.state = 'color';
 			// apply to the next in line, since the current player still has to choose the color
 			let next = this.getNextPlayer();
-			this.sendToRoom(this.players[next].name + " has been forced to draw 4 cards.");
+			this.sendToRoom(`|html|${SG.nameColor(this.players[next].name, true, true)} has been forced to draw 4 cards`);
 			this.onDrawCard({userid: next}, 4);
 			this.isPlusFour = true;
 			this.timer = setTimeout(() => {
-				this.sendToRoom(`${this.players[this.currentPlayer].name} has been automatically disqualified.`);
+				this.sendToRoom(`|html|${SG.nameColor(this.players[this.currentPlayer].name, true, true)} has been automatically disqualified.`);
 				this.eliminate(this.currentPlayer);
 			}, this.maxTime * 1000);
 			break;
@@ -289,7 +289,7 @@ class UNOgame extends Rooms.RoomGame {
 			this.players[this.currentPlayer].sendRoom(colorDisplay);
 			this.state = "color";
 			this.timer = setTimeout(() => {
-				this.sendToRoom(`${this.players[this.currentPlayer].name} has been automatically disqualified.`);
+				this.sendToRoom(`${SG.nameColor(this.players[this.currentPlayer].name, true, true)} has been automatically disqualified.`);
 				this.eliminate(this.currentPlayer);
 			}, this.maxTime * 1000);
 			break;
@@ -338,7 +338,7 @@ class UNOgame extends Rooms.RoomGame {
 	onUno(user, unoId) {
 		// uno id makes spamming /uno uno impossible
 		if (this.unoId !== unoId || user.userid !== this.awaitUno) return false;
-		this.sendToRoom(`|raw|<strong>UNO!</strong> ${user.name} is down to their last card!`);
+		this.sendToRoom(`|raw|<strong>UNO!</strong> ${SG.nameColor(user.name, true, true)} is down to their last card!`);
 		delete this.awaitUno;
 		delete this.unoId;
 	}
@@ -362,7 +362,27 @@ class UNOgame extends Rooms.RoomGame {
 	}
 
 	onWin(player) {
-		this.sendToRoom(`|raw|<div class="broadcast-green">Congratulations to ${player.name} for winning the game of UNO!</div>`);
+		this.sendToRoom(`|raw|<div class="broadcast-green">Congratulations to ${SG.nameColor(player.name, true, true)} for winning the game of UNO!</div>`);
+		let targetUserid = toId(player.name);
+		let prize = 2;
+		prize += Math.floor(this.playerCount / 5);
+		if (Db.userBadges.has(targetUserid) && Db.userBadges.get(targetUserid).indexOf('Uno Champion') > -1) prize = Math.ceil(prize * 1.5);
+		if (Users(targetUserid).unoBoost) prize *= 2;
+		if (Users(targetUserid).gameBoost) prize *= 2;
+		if (this.room.isOfficial) {
+			Economy.writeMoney(targetUserid, prize, () => {
+				Economy.readMoney(targetUserid, newAmount => {
+					if (Users(targetUserid) && Users(targetUserid).connected) {
+						Users.get(targetUserid).popup('You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from winning the game of UNO.');
+					}
+					Economy.logTransaction(player.name + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from a game of UNO.');
+				});
+			});
+			for (let i = 0; i < this.players.length; i++) {
+				if (Users(this.players[i].unoBoost)) Users(this.players[i]).unoBoost = false;
+				if (Users(this.players[i].gameBoost)) Users(this.players[i]).gameBoost = false;
+			}
+		}
 		this.destroy();
 	}
 
@@ -411,7 +431,7 @@ class UNOgamePlayer extends Rooms.RoomGamePlayer {
 
 	sendDisplay() {
 		let hand = this.buildHand().join("");
-		let players = `<p><strong>Players (${this.game.playerCount}):</strong></p>${this.game.getPlayers(true).join("<br />")}`;
+		let players = `<p><strong>Players (${this.game.playerCount}):</strong></p>${this.game.getPlayers(true, true).join("<br />")}`;
 		let draw = '<button class="button" style="width: 30%; background: rgba(0, 0, 255, 0.05)" name=send value="/uno draw">Draw a card!</button>';
 		let pass = '<button class="button" style=" width: 30%; background: rgba(255, 0, 0, 0.05)" name=send value="/uno pass">Pass!</button>';
 
@@ -499,7 +519,7 @@ exports.commands = {
 					room.game.eliminate(room.game.currentPlayer);
 				}, amount * 1000);
 			}
-			this.addModCommand(`${user.name} has set the UNO automatic disqualification timer to ${amount} seconds.`);
+			this.addModCommand(`${SG.nameColor(user.name, true, true)} has set the UNO automatic disqualification timer to ${amount} seconds.`);
 		},
 
 		dq: 'disqualify',
@@ -510,7 +530,7 @@ exports.commands = {
 			let disqualified = room.game.eliminate(toId(target));
 			if (disqualified === false) return this.errorReply(`Unable to disqualify ${target}.`);
 			this.privateModCommand(`(${user.name} has disqualified ${disqualified} from the UNO game.)`);
-			room.add(`${target} has been disqualified from the UNO game.`).update();
+			room.add(`${SG.nameColor(target, true, true)} has been disqualified from the UNO game.`).update();
 		},
 
 		// player/user commands
@@ -519,7 +539,7 @@ exports.commands = {
 			if (!room.game || room.game.gameid !== 'uno') return this.errorReply("There is no UNO game going on in this room right now.");
 			if (!this.canTalk()) return false;
 			if (!room.game.joinGame(user)) return this.errorReply("Unable to join the game.");
-
+			room.addRaw(SG.nameColor(user.name, true, true) + " has joined the game of UNO.");
 			return this.sendReply("You have joined the game of UNO.");
 		},
 
@@ -547,7 +567,7 @@ exports.commands = {
 			if (room.game.currentPlayer !== user.userid) return this.errorReply("It is currently not your turn.");
 			if (!room.game.players[user.userid].cardLock) return this.errorReply("You cannot pass until you draw a card.");
 
-			room.add(`${user.name} has passed.`).update();
+			room.add(`|html|${SG.nameColor(user.name, true, true)} has passed.`).update();
 			room.game.nextTurn();
 		},
 
@@ -574,7 +594,7 @@ exports.commands = {
 		getusers: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'uno') return this.errorReply("There is no UNO game going on in this room right now.");
 			if (!this.runBroadcast()) return false;
-			this.sendReplyBox(`<strong>Players (${room.game.playerCount})</strong>:<br />${room.game.getPlayers().join(", ")}`);
+			this.sendReplyBox(`<strong>Players (${room.game.playerCount})</strong>:<br />${room.game.getPlayers(false, true).join(", ")}`);
 		},
 
 		help: function (target, room, user) {
