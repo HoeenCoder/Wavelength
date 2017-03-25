@@ -9,7 +9,7 @@
 
 'use strict';
 
-const maxTime = 30; // seconds
+const maxTime = 120; // seconds
 
 const rgb_Gradients = {
 	'Green': "rgba(0, 122, 0, 1), rgba(0, 185, 0, 0.9)",
