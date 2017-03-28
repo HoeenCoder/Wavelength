@@ -269,9 +269,9 @@ exports.commands = {
 				'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
 				'Lets get you setup.<br/>Pick a starter:'];
 			let msg = '';
-			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio']];
+			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'], ['Pikachu'], ['Eevee']];
 			for (let i = 0; i < starters.length; i++) {
-				let color = (i === 0 ? 'green' : (i === 1 ? 'red' : 'blue'));
+				let color = (i === 0 ? 'green' : (i === 1 ? 'red' : (i === 2 ? 'blue' : (i === 3 ? '#E5DA2A' : '#B08257'))));
 				for (let j = 0; j < starters[i].length; j++) {
 					msg += '<button name="send" value="/pickstarter ' + starters[i][j] + '" style="border: none; background: none; color: ' + color + '"><u>' + starters[i][j] + '</u></button> ';
 				}
@@ -373,22 +373,24 @@ exports.commands = {
 	confirmpickstarter: 'pickstarter',
 	pickstarter: function (target, room, user, connection, cmd) {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
-		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'];
+		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio', 'Pikachu', 'Eevee'];
 		if (!target || starters.indexOf(target) === -1) return false;
 		let type, typeColor;
 		if (starters.indexOf(target) <= 6) {
 			type = "Grass";
+			typeColor = "green";
 		} else if (starters.indexOf(target) >= 7 && starters.indexOf(target) <= 13) {
 			type = "Fire";
-		} else if (starters.indexOf(target) >= 14) {
-			type = "Water";
-		}
-		if (type === "Grass") {
-			typeColor = "green";
-		} else if (type === "Fire") {
 			typeColor = "red";
-		} else {
+		} else if (starters.indexOf(target) >= 14 && starters.indexOf(target) <= 20) {
+			type = "Water";
 			typeColor = "blue";
+		} else if (starters.indexOf(target) === 21) {
+			type = "Electric";
+			typeColor = "yellow";
+		} else {
+			type = "Normal";
+			typeColor = "#B08257";
 		}
 		switch (cmd) {
 		case 'pickstarter':
