@@ -397,10 +397,26 @@ exports.Formats = [
 			this.add("raw|<h1>BATTLE!</h1>");
 		},
 	},
-
+	{
+		name: "Digimon Showdown",
+		section: "Exiled's Custom Gamemodes",
+		mod: "digimon",
+		team: "randomDigimon",
+		gameType: "doubles",
+		ruleset: ['Cancel Mod', 'HP Percentage Mod'],
+		onBegin: function () {
+			this.add('raw', '<acronym title="Digimon Music"><audio controls style="width: 95% ; padding: 5px; border: 1px solid #FFF; background: #222; color: #FFF; text-shadow: 0px -1px 0px #000; border-radius: 8px; margin: 3px;"><source src="https://puu.sh/uLuiq/362ce3e54b.mp3" type="audio/mpeg"></source></audio></acronym>');
+			this.add('raw', '<acronym title="Digimon Music"><audio controls style="width: 95% ; padding: 5px; border: 1px solid #FFF; background: #222; color: #FFF; text-shadow: 0px -1px 0px #000; border-radius: 8px; margin: 3px;"><source src="https://puu.sh/uLuj6/a8d57f579b.mp3" type="audio/mpeg"></source></audio></acronym>');
+			this.add('raw', '<acronym title="Digimon Music"><audio controls style="width: 95% ; padding: 5px; border: 1px solid #FFF; background: #222; color: #FFF; text-shadow: 0px -1px 0px #000; border-radius: 8px; margin: 3px;"><source src="https://puu.sh/uLujT/a65aecfbd5.mp3" type="audio/mpeg"></source></audio></acronym>');
+		},
+		desc: [
+			"You may have thought this was Pokemon Showdown, but I must reassure you that you were mistaken, welcome to DIGIMON SHOWDOWN",
+			"Ahem, but in all seriousness, the following developers listed below created Digimon in Pokemon Showdown, so why not just try it out :D",
+			"Ashley the Pikachu (Head Researcher, Began the project), Insist (Head Developer), AlphaStorm (Animations), Stellation (Assisted other developers), HoeenHero (Assisted with Mechanics)",
+		],
+	},
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
-
 	{
 		section: "OM of the Month",
 		column: 2,
