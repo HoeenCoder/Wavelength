@@ -413,7 +413,7 @@ exports.BattleMovedex = {
 		},
 		category: "Special",
 		type: "Air",
-		target: "allAdjacentFoes",
+		target: "allPokemon",
 	},
 	"electriccloud": {
 		id: "electriccloud",
@@ -1162,7 +1162,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Rock Blast", source);
 		},
 		priority: 0,
-		target: "any",
+		target: "allPokemon",
 		type: "Filth",
 	},
 	"horizontalkick": {
@@ -2337,7 +2337,7 @@ exports.BattleMovedex = {
 	},
 	"darkclaw": {
 		id: "darkclaw",
-		name: "darkclaw",
+		name: "Dark Claw",
 		basePower: 143,
 		accuracy: 100,
 		category: "Physical",
