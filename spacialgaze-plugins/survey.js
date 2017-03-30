@@ -161,6 +161,9 @@ function validateAnswer(room, message) {
 }
 
 exports.commands = {
+	sa: function (target, room, user) {
+		this.parse('/survey answer ' + target);
+	},
 	survey: {
 		htmlcreate: 'new',
 		create: 'new',
