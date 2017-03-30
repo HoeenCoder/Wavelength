@@ -164,6 +164,9 @@ exports.commands = {
 	sa: function (target, room, user) {
 		this.parse('/survey answer ' + target);
 	},
+	sahelp: function (target, room, user) {
+		this.parse('/help survey answer');
+	},
 	survey: {
 		htmlcreate: 'new',
 		create: 'new',
@@ -193,7 +196,7 @@ exports.commands = {
 			target = Chat.escapeHTML(target);
 			room.survey.answer(user, target);
 		},
-		answerhelp: ["/survey answer [answer] - Answer a survey."],
+		answerhelp: ["/survey answer [answer] or /sa [answer] - Answer a survey."],
 
 		results: function (target, room, user, connection, cmd, message) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
