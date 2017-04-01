@@ -136,7 +136,7 @@ exports.BattleMovedex = {
 			},
 		},
 		priority: 0,
-		target: "allPokemon",
+		target: "allAdjacent",
 		pp: 30,
 		flags: {protect: 1, distance: 1},
 		onHit: function (target, source) {
@@ -174,7 +174,7 @@ exports.BattleMovedex = {
 		basePower: 400,
 		accuracy: 100,
 		pp: 5,
-		target: "allPokemon",
+		target: "allAdjacent",
 		priority: 0,
 		secondary: {
 			chance: 10,
@@ -195,7 +195,7 @@ exports.BattleMovedex = {
 		basePower: 178,
 		accuracy: 85,
 		pp: 20,
-		target: "allPokemon",
+		target: "allAdjacent",
 		priority: 0,
 		secondary: false,
 		category: "Physical",
@@ -413,7 +413,7 @@ exports.BattleMovedex = {
 		},
 		category: "Special",
 		type: "Air",
-		target: "allPokemon",
+		target: "allAdjacent",
 	},
 	"electriccloud": {
 		id: "electriccloud",
@@ -512,7 +512,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Prismatic Laser", source);
 		},
 		pp: 10,
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Air",
 	},
 	"hurricane": {
@@ -532,7 +532,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Hurricane", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Air",
 	},
 	"poisonpowder": {
@@ -552,7 +552,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Poison Powder", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Earth",
 	},
 	"bug": {
@@ -640,7 +640,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Poison Gas", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Earth",
 	},
 	"poisonclaw": {
@@ -763,7 +763,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Blizzard", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Ice",
 	},
 	"iceneedle": {
@@ -860,7 +860,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Moonlight", source);
 			this.add('-anim', source, "Power Gem", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Ice",
 	},
 	"teardrop": {
@@ -918,7 +918,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Gear Up", source);
 			this.add('-anim', source, "Hyper Beam", source);
 		},
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Mech",
 	},
 	"metalsprinter": {
@@ -935,7 +935,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Metal Burst", source);
 		},
 		priority: 0,
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Mech",
 	},
 	"pulselazer": {
@@ -1142,7 +1142,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Rock Slide", source);
 		},
 		priority: 0,
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Filth",
 	},
 	"rndspdtoss": {
@@ -1162,7 +1162,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Rock Blast", source);
 		},
 		priority: 0,
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Filth",
 	},
 	"horizontalkick": {
@@ -1202,7 +1202,7 @@ exports.BattleMovedex = {
 			},
 		},
 		priority: 0,
-		target: "allPokemon",
+		target: "allAdjacent",
 		type: "Filth",
 	},
 	//Health Items
@@ -1283,63 +1283,6 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Recover", source);
 		},
 	},
-	//MP Floppy
-	mpfloppy: {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		id: "mpfloppy",
-		isNonstandard: true,
-		name: "MP Floppy",
-		pp: 0.625,
-		priority: 0,
-		flags: {heal: 1, snatch: 1, distance: 1},
-		secondary: false,
-		heal: [1, 10],
-		target: "adjacentAllyOrSelf",
-		onHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
-		},
-	},
-	//Medium MP Floppy
-	mediummpfloppy: {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		id: "mediummpfloppy",
-		isNonstandard: true,
-		name: "Medium MP Floppy",
-		pp: 0.625,
-		priority: 0,
-		flags: {heal: 1, snatch: 1, distance: 1},
-		secondary: false,
-		heal: [1, 10],
-		target: "adjacentAllyOrSelf",
-		onHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
-		},
-	},
-	//Large MP Floppy
-	largempfloppy: {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		id: "largempfloppy",
-		isNonstandard: true,
-		name: "Large MP Floppy",
-		pp: 0.625,
-		priority: 0,
-		flags: {heal: 1, snatch: 1, distance: 1},
-		secondary: false,
-		heal: [1, 10],
-		target: "adjacentAllyOrSelf",
-		onHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
-		},
-	},
 	//Various
 	various: {
 		accuracy: true,
@@ -1351,8 +1294,14 @@ exports.BattleMovedex = {
 		pp: 0.625,
 		priority: 0,
 		flags: {snatch: 1, distance: 1},
-		onHit: function (pokemon, target, source) {
-			pokemon.cureStatus();
+		onHit: function (pokemon, source) {
+			this.add('-activate', source, 'move: Various');
+			let side = pokemon.side;
+			for (let i = 0; i < side.pokemon.length; i++) {
+				side.pokemon[i].cureStatus();
+			}
+		},
+		onTryHit: function (pokemon, target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Recover", source);
 		},
@@ -1364,20 +1313,51 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		id: "protection",
-		isNonstandard: true,
-		name: "Protection",
+		desc: "For 5 turns, the user and its party members cannot have major status conditions or confusion inflicted on them by other Pokemon. It is removed from the user's side if the user or an ally is successfully hit by Defog.",
+		shortDesc: "For 5 turns, protects user's party from status.",
 		pp: 0.625,
 		priority: 0,
-		flags: {snatch: 1, distance: 1},
-		boosts: {
-			evasion: 1,
+		flags: {snatch: 1},
+		//safeguard effects = same effect for the Protection "item" in Digimon
+		sideCondition: 'safeguard',
+		effect: {
+			duration: 5,
+			durationCallback: function (target, source, effect) {
+				if (source && source.hasAbility('persistent')) {
+					return 7;
+				}
+				return 5;
+			},
+			onSetStatus: function (status, target, source, effect) {
+				if (source && target !== source && effect && (!effect.infiltrates || target.side === source.side)) {
+					this.debug('interrupting setStatus');
+					if (effect.id === 'synchronize' || (effect.effectType === 'Move' && !effect.secondaries)) {
+						this.add('-activate', target, 'move: Protection');
+					}
+					return null;
+				}
+			},
+			onTryAddVolatile: function (status, target, source, effect) {
+				if ((status.id === 'confusion' || status.id === 'yawn') && source && target !== source && effect && (!effect.infiltrates || target.side === source.side)) {
+					if (!effect.secondaries) this.add('-activate', target, 'move: Protection');
+					return null;
+				}
+			},
+			onStart: function (side) {
+				this.add('-sidestart', side, 'Protection');
+			},
+			onResidualOrder: 21,
+			onResidualSubOrder: 2,
+			onEnd: function (side) {
+				this.add('-sideend', side, 'Protection');
+			},
 		},
 		secondary: false,
 		target: "adjacentAllyOrSelf",
+		type: "Battle",
 		onHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
+			this.add('-anim', source, "Safeguard", source);
 		},
 	},
 	//Omnipotent
@@ -1391,74 +1371,14 @@ exports.BattleMovedex = {
 		pp: 0.625,
 		priority: 0,
 		flags: {heal: 1, snatch: 1, distance: 1},
-		allyTeam: {
-			onHit: function (pokemon) {
-				pokemon.cureStatus();
-			},
-		},
-		onUpdate: function (pokemon) {
-			if (!pokemon.hp) return;
-			let move = pokemon.getMoveData(pokemon.lastMove);
-			if (move && move.pp === 0) {
-				pokemon.addVolatile('leppaberry');
-				pokemon.volatiles['leppaberry'].move = move;
-			}
-		},
-		onHit: function (pokemon, target, source) {
-			let move;
-			if (pokemon.volatiles['leppaberry']) {
-				move = pokemon.volatiles['leppaberry'].move;
-				pokemon.removeVolatile('leppaberry');
-			} else {
-				let pp = 99;
-				for (let moveid in pokemon.moveset) {
-					if (pokemon.moveset[moveid].pp < pp) {
-						move = pokemon.moveset[moveid];
-						pp = move.pp;
-					}
-				}
-			}
-			move.pp += 10;
-			if (move.pp > move.maxpp) move.pp = move.maxpp;
-			this.add('-activate', pokemon, 'item: Omnipotent', move.move);
-			if (pokemon.item !== 'omnipotent') {
-				let foeActive = pokemon.side.foe.active;
-				let foeIsStale = false;
-				for (let i = 0; i < foeActive.length; i++) {
-					if (foeActive[i].hp && foeActive[i].isStale >= 2) {
-						foeIsStale = true;
-						break;
-					}
-				}
-				if (!foeIsStale) return;
-			}
-			pokemon.isStale = 2;
-			pokemon.isStaleSource = 'useleppa';
+		onHit: function (pokemon, source) {
+			pokemon.cureStatus();
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Recover", source);
 		},
 		secondary: false,
 		heal: [1, 1],
 		target: "adjacentAllyOrSelf",
-	},
-	//Double Floppy
-	doublefloppy: {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		id: "doublefloppy",
-		isNonstandard: true,
-		name: "Double Floppy",
-		pp: 0.625,
-		priority: 0,
-		flags: {heal: 1, snatch: 1, distance: 1},
-		secondary: false,
-		heal: [1, 3],
-		target: "adjacentAllyOrSelf",
-		onHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
-		},
 	},
 	//Restore Floppy
 	restorefloppy: {

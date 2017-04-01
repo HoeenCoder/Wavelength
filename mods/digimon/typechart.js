@@ -19,8 +19,8 @@ exports.BattleTypeChart = {
 			"Air": 0,
 			"Earth": 0,
 			"Ice": 0,
-			"Mech": 0,
-			"Filth": 1,
+			"Mech": 1,
+			"Filth": 0,
 		},
 	},
 	"Air": {
@@ -48,23 +48,23 @@ exports.BattleTypeChart = {
 	"Mech": {
 		damageTaken: {
 			"Fire": 0,
-			"Battle": 1,
-			"Air": 0,
-			"Earth": 0,
-			"Ice": 0,
-			"Mech": 0,
-			"Filth": 0,
-		},
-	},
-	"Filth": {
-		damageTaken: {
-			"Fire": 0,
 			"Battle": 0,
 			"Air": 0,
 			"Earth": 0,
 			"Ice": 0,
 			"Mech": 0,
 			"Filth": 1,
+		},
+	},
+	"Filth": {
+		damageTaken: {
+			"Fire": 0,
+			"Battle": 1,
+			"Air": 0,
+			"Earth": 0,
+			"Ice": 0,
+			"Mech": 0,
+			"Filth": 0,
 		},
 	},
 	"Ice": {

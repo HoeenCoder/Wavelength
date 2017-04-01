@@ -299,8 +299,8 @@ exports.BattleScripts = {
 				signatureMove: "Variable Darts",
 				nature: "Serious",
 			},
-			"Numeon": {
-				species: "Numeon",
+			"Numemon": {
+				species: "Numemon",
 				ability: "Data",
 				moves: ['orderspray', 'poopspdtoss', 'bigpooptoss', 'bigrndtoss', 'pooprndtoss', 'rndspdtoss', 'horizontalkick', 'ultpoophell'],
 				baseSignatureMove: "partytime",
@@ -500,7 +500,7 @@ exports.BattleScripts = {
 			let set = sets[name];
 			set.level = 100;
 			set.name = name;
-			let sigItems = ['Small Recovery', 'Medium Recovery', 'Large Recovery', 'Super Recovery Floppy', 'MP Floppy', 'Medium MP Floppy', 'Large MP Floppy', 'Various', 'Protection', 'Omnipotent', 'Double Floppy', 'Restore Floppy', 'Super Restore Floppy', 'Offense Disk', 'Defense Disk', 'Hi Speed Disk', 'Super Defense Disk', 'Super Offense Disk', 'Super Speed Disk', 'Omnipotent Disk'];
+			let sigItems = ['Small Recovery', 'Medium Recovery', 'Large Recovery', 'Super Recovery Floppy', 'Various', 'Protection', 'Omnipotent', 'Restore Floppy', 'Super Restore Floppy', 'Offense Disk', 'Defense Disk', 'Hi Speed Disk', 'Super Defense Disk', 'Super Offense Disk', 'Super Speed Disk', 'Omnipotent Disk'];
 			let choosenItems = [];
 			for (let h = 0; h < 3; h++) {
 				let itemChoosen = sigItems[Math.floor(Math.random() * sigItems.length)];
