@@ -537,38 +537,38 @@ exports.BattleMovedex = {
 		},
 	},
 	// Stellation
-	teamplayer: {
+	toxicendeavors: {
 		accuracy: 100,
-		category: "Status",
-		id: "teamplayer",
+		basePower: 0,
+		damageCallback: function (pokemon, target) {
+			return target.hp - pokemon.hp;
+		},
+		category: "Physical",
+		id: "toxicendeavors",
+		name: "Toxic Endeavors",
+		pp: 5,
 		isNonstandard: true,
-		name: "Team Player",
-		pp: 10,
-		target: "self",
-		selfSwitch: 'copyvolatile',
-		type: "Normal",
-		onHit: function (target) {
-			let stats = [];
-			for (let stat in target.boosts) {
-				if (target.boosts[stat] < 6) {
-					stats.push(stat);
-				}
-			}
-			if (stats.length) {
-				let randomStat = stats[this.random(stats.length)];
-				let boost = {};
-				boost[randomStat] = 3;
-				this.boost(boost);
-			} else {
-				return false;
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		onTry: function (pokemon, target) {
+			if (pokemon.hp >= target.hp) {
+				this.add('-immune', target, '[msg]');
+				return null;
 			}
 		},
-		secondary: false,
-		onPrepareHit: function (target, source) {
+		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Acupressure", source);
-			this.add('-anim', source, "Baton Pass", source);
+			this.add('-anim', source, "Toxic", source);
+			this.add('-anim', source, "Endeavor", source);
 		},
+		secondary: {
+			chance: 33,
+			status: 'tox',
+		},
+		target: "normal",
+		type: "Bug",
+		zMovePower: 590,
+		contestType: "Tough",
 	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
