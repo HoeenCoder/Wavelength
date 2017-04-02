@@ -96,14 +96,17 @@ function validate(me, targetUser, quiet) {
 	}
 	//moves
 	for (let i in targetUser.movepool) {
-		if (!Tools.getMove(targetUser.movepool[i]).exists) {
-			//Check custom first!
-			if (!targetUser.selfCustomMove || toId(targetUser.selfCustomMove) !== targetUser.movepool[i] || !targetUser.bought.cMove) {
-				valid = false;
-				if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" was invalid.');
-				targetUser.removeMove(targetUser.movepool[i]);
-			}
+		if (!Tools.mod('cssb').getMove(targetUser.movepool[i]).exists) {
+			valid = false;
+			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" does not exist.');
+			targetUser.removeMove(targetUser.movepool[i]);
 		}
+	}
+	//Check customs to make sure the user can use them.
+	if (customMovepool.map(i => {return toId(i)}).indexOf(targetUser.cMove) === -1 && (toId(targetUser.selfCustomMove) !== targetUser.cMove || !targetUser.bought.cMove)) {
+		valid = false;
+		if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.cMove + '" is a self-made custom move exclusive to another user.');
+		targetUser.cMove = false;
 	}
 	return valid;
 }
@@ -417,10 +420,7 @@ class SSB {
 	}
 	setCustomMove(move) {
 		move = toId(move);
-		let customIds = [];
-		for (let i = 0; i < customMovepool.length; i++) {
-			customIds.push(toId(customMovepool[i]));
-		}
+		let customIds = customMovepool.map(move => {return toId(move)});
 		if (customIds.indexOf(move) < 0) {
 			//check for self-made custom move
 			if (this.selfCustomMove && toId(this.selfCustomMove) === move && this.bought.cMove) {
