@@ -351,8 +351,8 @@ exports.BattleScripts = {
 				species: "Pinsirmega",
 				ability: "Data",
 				moves: ['prominencebeam', 'redinferno', 'musclecharge', 'counter', 'megatonpunch', 'busterdrive', 'poisonpowder', 'bug', 'massmorph', 'insectplague', 'charmperfume', 'poisonclaw', 'dangersting', 'greentrap'],
-				baseSignatureMove: "highelectroshocker",
-				signatureMove: "High Electro Shocker",
+				baseSignatureMove: "highelectricshocker",
+				signatureMove: "High Electric Shocker",
 			},
 			"Mamemon": {
 				species: "Chingling",
