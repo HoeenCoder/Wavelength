@@ -546,7 +546,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		id: "toxicendeavors",
 		name: "Toxic Endeavors",
-		pp: 5,
+		pp: 0.625,
 		isNonstandard: true,
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1},
@@ -558,8 +558,7 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Toxic", source);
-			this.add('-anim', source, "Endeavor", source);
+			this.add('-anim', source, "Poison Jab", target);
 		},
 		secondary: {
 			chance: 33,
