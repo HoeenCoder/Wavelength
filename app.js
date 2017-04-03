@@ -155,11 +155,11 @@ if (Config.crashguard) {
 				exitInfo = exitCodes[code];
 			} else if (code > 128) {
 				exitInfo = 'Signal Exit';
-				console.log('');
-				console.error('WARNING: Process exiting with code ' + code);
-				console.error('Exit code details: ' + exitInfo + '.');
-				console.error('Refer to https://github.com/nodejs/node-v0.x-archive/blob/master/doc/api/process.markdown#exit-codes for more details. The process will now exit.');
 			}
+			console.log('');
+			console.error('WARNING: Process exiting with code ' + code);
+			console.error('Exit code details: ' + exitInfo + '.');
+			console.error('Refer to https://github.com/nodejs/node-v0.x-archive/blob/master/doc/api/process.markdown#exit-codes for more details. The process will now exit.');
 		}
 	});
 }
