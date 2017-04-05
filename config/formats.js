@@ -417,7 +417,7 @@ exports.Formats = [
 		],
 
 		mod: "digimon",
-		gameType: "doubles",
+		gameType: "triples",
 		team: "randomDigimon",
 		ruleset: ['Cancel Mod', 'HP Percentage Mod'],
 		onBegin: function () {
