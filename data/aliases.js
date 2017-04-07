@@ -35,9 +35,9 @@ exports.BattleAliases = {
 	"monotyperandombattle": "[Gen 7] Monotype Random Battle",
 	"monorandom": "[Gen 7] Monotype Random Battle",
 	"bf": "Battle Factory",
-	"inverse": "Inverse Battle",
-	"fullpotential": "[Gen 7] Full Potential",
-	"automagic": "[Gen 7] Automagic",
+	"gen6inverse": "Inverse Battle",
+	"camomons": "[Gen 7] Camomons",
+	"inverse": "[Gen 7] Inverse",
 
 	//SpacialGaze
 	"sgssb": "[Gen 7] Super Staff Bros",
@@ -137,7 +137,7 @@ exports.BattleAliases = {
 	// Pokéstar Studios
 	"ufo": "Pokestar UFO",
 	"ufo2": "Pokestar UFO-2",
-	"brycen-man": "Pokestar Brycen-Man",
+	"brycenman": "Pokestar Brycen-Man",
 	"mt": "Pokestar MT",
 	"mt2": "Pokestar MT2",
 	"transport": "Pokestar Transport",
