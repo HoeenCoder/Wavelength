@@ -617,7 +617,7 @@ exports.commands = {
 			if (room.game.currentPlayer !== user.userid) return this.errorReply("It is currently not your turn.");
 			if (!room.game.players[user.userid].cardLock) return this.errorReply("You cannot pass until you draw a card.");
 
-			room.game.sendToRoom(`|html|${SG.nameColor(user.name, true, true)} has passed.`).update();
+			room.game.sendToRoom(`|html|${SG.nameColor(user.name, true, true)} has passed.`);
 			room.game.nextTurn();
 		},
 
