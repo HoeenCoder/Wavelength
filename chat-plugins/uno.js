@@ -580,7 +580,7 @@ exports.commands = {
 			let disqualified = room.game.eliminate(toId(target));
 			if (disqualified === false) return this.errorReply(`Unable to disqualify ${target}.`);
 			this.privateModCommand(`(${user.name} has disqualified ${disqualified} from the UNO game.)`);
-			room.add(`${SG.nameColor(target, true, true)} has been disqualified from the UNO game.`).update();
+			room.add(`|html|${SG.nameColor(target, true, true)} has been disqualified from the UNO game.`).update();
 		},
 
 		// player/user commands
