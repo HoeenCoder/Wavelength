@@ -541,7 +541,7 @@ exports.BattleScripts = {
 				};
 			}
 
-			let sigItems = ['Oran Berry', 'Apple', 'Blast Seed', 'Gravelrock', 'Heal Seed', 'Trap Orb', 'TrapBust Orb', 'Stun Seed', 'Totter Seed', 'Vile Seed', 'Violent Seed', 'Rainy Orb', 'Sunny Orb', 'Sandy Orb', 'Hail Orb', 'One Shot Orb', 'Warp Orb', 'Escape Orb', 'Stick', 'Iron Thorn', 'Evasion Orb', 'Mug Orb', 'Awakening', 'Wonder Orb'];
+			let sigItems = ['Oran Berry', 'Apple', 'Blast Seed', 'Gravelrock', 'Heal Seed', 'Trap Orb', 'TrapBust Orb', 'Stun Seed', 'Totter Seed', 'Vile Seed', 'Violent Seed', 'Rainy Orb', 'Sunny Orb', 'Sandy Orb', 'Hail Orb', 'One Shot Orb', 'Warp Orb', 'Escape Orb', 'Stick', 'Iron Thorn', 'Evasion Orb', 'Mug Orb', 'Awakening', 'Wonder Orb', 'Quick Seed', 'Blinker Seed', 'Sleep Seed', 'X-Eye Seed', 'Slip Seed'];
 			let choosenItems = [];
 			let awakened = false;
 			for (let h = 0; h < 4; h++) {
