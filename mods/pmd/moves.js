@@ -666,4 +666,103 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Water",
 	},
+	//Decoy Orb
+	decoyorb: {
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		pp: 0.625,
+		id: "decoyorb",
+		name: "Decoy Orb",
+		priority: 0,
+		//Substitute
+		volatileStatus: 'Substitute',
+		secondary: false,
+		flags: {snatch: 1},
+		onPrepareHit: function (source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Substitute", source);
+		},
+		target: "self",
+		type: "Normal",
+	},
+	//Pounce Orb
+	pounceorb: {
+		accuracy: true,
+		basePower: 60,
+		pp: 0.625,
+		category: "Special",
+		id: "pounceorb",
+		name: "Pounce Orb",
+		priority: 0,
+		secondary: false,
+		flags: {protect: 1},
+		//Makes the target switch out
+		forceSwitch: true,
+		onPrepareHit: function (source, target) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Roar", target);
+			this.add('-anim', source, "Dragon Tail", target);
+		},
+		target: "normal",
+		type: "Normal",
+	},
+	//Sizebust Orb
+	sizebustorb: {
+		id: "sizebustorb",
+		name: "Sizebust Orb",
+		pp: 0.625,
+		basePower: 0,
+		basePowerCallback: function (pokemon, target) {
+			let targetWeight = target.getWeight();
+			if (targetWeight >= 200) {
+				this.debug('120 bp');
+				return 120;
+			}
+			if (targetWeight >= 100) {
+				this.debug('100 bp');
+				return 100;
+			}
+			if (targetWeight >= 50) {
+				this.debug('80 bp');
+				return 80;
+			}
+			if (targetWeight >= 25) {
+				this.debug('60 bp');
+				return 60;
+			}
+			if (targetWeight >= 10) {
+				this.debug('40 bp');
+				return 40;
+			}
+			this.debug('20 bp');
+			return 20;
+		},
+		category: "Special",
+		priority: 0,
+		accuracy: true,
+		flags: {protect: 1},
+		target: "normal",
+		type: "Grass",
+	},
+	//Transfer Orb
+	transferorb: {
+		id: "transferorb",
+		name: "Transfer Orb",
+		pp: 0.625,
+		basePower: 0,
+		//Makes target transfer into user
+		onHit: function (target, pokemon) {
+			if (!target.transformInto(pokemon, target)) {
+				return false;
+			}
+		},
+		accuracy: true,
+		flags: {snatch: 1},
+		priority: 0,
+		category: "Status",
+		target: "normal",
+		type: "Normal",
+	},
 };
+
