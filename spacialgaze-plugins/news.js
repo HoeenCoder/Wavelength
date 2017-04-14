@@ -1,9 +1,13 @@
-/*
+﻿/*
 * News System for SpacialGaze
 * Credits: Lord Haji, HoeenHero
 */
 
 'use strict';
+
+// All notified users are added here after they receive the news
+// notification. After an hour, they will be removed.
+const notifiedUsers = {};
 
 function generateNews(user) {
 	let newsData, newsDisplay = [];
@@ -30,11 +34,14 @@ function showSubButton(user) {
 SG.showNews = function (userid, user) {
 	if (!user || !userid) return false;
 	userid = toId(userid);
+	if (!hasSubscribed(userid) || (userid in notifiedUsers)) return false;
 	let newsDisplay = generateNews(user);
-	if (!hasSubscribed(userid)) return false;
 	if (newsDisplay.length > 0) {
 		newsDisplay = newsDisplay.join('<hr>');
 		newsDisplay += showSubButton(userid);
+		notifiedUsers[userid] = setTimeout(() => {
+			delete notifiedUsers[userid];
+		}, 60 * 60 * 1000);
 		return user.send(`|pm| SG Server|${user.getIdentity()}|/raw ${newsDisplay}`);
 	}
 };
