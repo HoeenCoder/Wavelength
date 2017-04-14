@@ -615,7 +615,7 @@ exports.BattleMovedex = {
 		boosts: {accuracy: -1},
 		priority: 0,
 		secondary: false,
-		target: "normal",
+		target: "self",
 		type: "Grass",
 	},
 	//X-Eye Seed
