@@ -275,4 +275,17 @@ exports.BattleStatuses = {
 			this.add('c', '+Xavier1942', 'Nuuuuu! MY BEAUTIFUL WALL! ');
 		},
 	},
+	eelek: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+Eelek', 'Oh hey there! :3');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '+Eelek', 'Gotta go, I\'ll be back when I get to the cemetery.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+Eelek', 'If I\'m dead, I\'m taking the whole server down with me.');
+			this.add('raw', '<div class=\"broadcast-red\"><b>Oh my God the server crashed!</b><br />Please finish your battles so we can fix this error. No new battles can be started until the server resets or gets fixed. Good job, Eelek, you ruined the server.</div>');
+		},
+	},
 };

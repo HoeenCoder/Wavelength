@@ -586,4 +586,28 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Water",
 	},
+	//eelek
+	diceroll: {
+		accuracy: 100,
+		basePower: 60,
+		category: "Physical",
+		id: "diceroll",
+		inNonstandard: true,
+		name: "Dice Roll",
+		pp: 10,
+		priority: 0,
+		onPrepareHit: function (target, source) {
+			this.add('-anim', source, "Teeter Dance", source);
+			this.add('-anim', source, "Mega Punch", target);
+		},
+		flags: {protect: 1, mirror: 1, Contact: 1},
+		secondary: {
+			chance: 25,
+			onAfterHit: function (target, source) {
+				target.trySetStatus(['brn', 'par', 'psn', 'tox', 'slp', 'frz'][this.random(6)], source);
+			},
+		},
+		target: "normal",
+		type: "Normal",
+	},
 };
