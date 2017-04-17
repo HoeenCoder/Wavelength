@@ -223,7 +223,7 @@ exports.commands = {
 	hv: function (room, user, cmd) {
 		return this.parse('/hotpatch validator');
 	},
-
+	'!regdate': true,
 	regdate: function (target, room, user, connection) {
 		if (!target) target = user.name;
 		target = toId(target);
@@ -277,6 +277,7 @@ exports.commands = {
 	},
 	spacialgazerepohelp: ["/spacialgazerepo - Links to the SpacialGaze repository on Github."],
 
+	'!seen': true,
 	seen: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		if (!target) return this.parse('/help seen');

@@ -265,6 +265,7 @@ exports.commands = {
 			);
 		},
 	},
+	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
 		if (!target) target = user.name;
@@ -314,11 +315,10 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
-					profile += '&nbsp;<div style="display:inline-block;height:5px;width:80px;"></div><font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
+					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
 				}
 				profile += '<br clear="all">';
 				self.sendReplyBox(profile);
-				room.update();
 			});
 		}
 	},
