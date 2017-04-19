@@ -118,7 +118,7 @@ class UNOgame extends Rooms.RoomGame {
 
 	joinGame(user) {
 		if (this.state === 'signups' && this.addPlayer(user)) {
-			this.sendToRoom(`${user.name} has joined the game of UNO.`);
+			this.sendToRoom(`${SG.nameColor(user.name, true)} has joined the game of UNO.`);
 			return true;
 		}
 		return false;
@@ -589,7 +589,6 @@ exports.commands = {
 			if (!room.game || room.game.gameid !== 'uno') return this.errorReply("There is no UNO game going on in this room right now.");
 			if (!this.canTalk()) return false;
 			if (!room.game.joinGame(user)) return this.errorReply("Unable to join the game.");
-			room.addRaw(SG.nameColor(user.name, true, true) + " has joined the game of UNO.");
 			return this.sendReply("You have joined the game of UNO.");
 		},
 
