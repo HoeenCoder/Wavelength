@@ -74,6 +74,44 @@ let Economy = global.Economy = {
 	},
 };
 
+function rankLadder(title, type, array, prop, group) {
+	let groupHeader = group || 'Username';
+	const ladderTitle = '<center><h4><u>' + title + '</u></h4></center>';
+	const thStyle = 'class="rankladder-headers default-td" style="background: -moz-linear-gradient(#576468, #323A3C); background: -webkit-linear-gradient(#576468, #323A3C); background: -o-linear-gradient(#576468, #323A3C); background: linear-gradient(#576468, #323A3C); box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const tableTop = '<div style="max-height: 310px; overflow-y: scroll;">' +
+		'<table style="width: 100%; border-collapse: collapse;">' +
+		'<tr>' +
+			'<th ' + thStyle + '>Rank</th>' +
+			'<th ' + thStyle + '>' + groupHeader + '</th>' +
+			'<th ' + thStyle + '>' + type + '</th>' +
+		'</tr>';
+	const tableBottom = '</table></div>';
+	const tdStyle = 'class="rankladder-tds default-td" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const first = 'class="first default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const second = 'class="second default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const third = 'class="third default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	let midColumn;
+
+	let tableRows = '';
+
+	for (let i = 0; i < array.length; i++) {
+		if (i === 0) {
+			midColumn = '</td><td ' + first + '>';
+			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else if (i === 1) {
+			midColumn = '</td><td ' + second + '>';
+			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else if (i === 2) {
+			midColumn = '</td><td ' + third + '>';
+			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else {
+			midColumn = '</td><td ' + tdStyle + '>';
+			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		}
+	}
+	return ladderTitle + tableTop + tableRows + tableBottom;
+}
+
 exports.commands = {
 	'!wallet': true,
 	atm: 'wallet',
@@ -235,31 +273,16 @@ exports.commands = {
 	'!richestuser': true,
 	richestusers: 'richestuser',
 	richestuser: function (target, room, user) {
-		if (!target) target = 10;
+		if (!target) target = 100;
 		target = Number(target);
-		if (isNaN(target)) target = 10;
+		if (isNaN(target)) target = 100;
 		if (!this.runBroadcast()) return;
-		if (this.broadcasting && target > 10) target = 10; // limit to 10 while broadcasting
-		if (target > 500) target = 500;
-
-		let self = this;
-
-		function showResults(rows) {
-			let output = '<table border="1" cellspacing ="0" cellpadding="3"><tr><th>Rank</th><th>Name</th><th>' + currencyPlural + '</th></tr>';
-			let count = 1;
-			for (let u in rows) {
-				if (rows[u].amount < 1) continue;
-				output += '<tr><td>' + count + '</td><td>' + SG.nameColor(rows[u].name, true) + '</td><td>' + rows[u].amount + '</td></tr>';
-				count++;
-			}
-			self.sendReplyBox(output);
-			if (room) room.update();
-		}
-		let obj = Db.currency.keys().map(function (name) {return {name: name, amount: Db.currency.get(name)};});
-		let results = obj.sort(function (a, b) {
-			return b.amount - a.amount;
+		let keys = Db.currency.keys().map(name => {
+			return {name: name, money: Db.currency.get(name)};
 		});
-		showResults(results.slice(0, target));
+		if (!keys.length) return this.sendReplyBox("Money ladder is empty.");
+		keys.sort(function (a, b) { return b.money - a.money; });
+		this.sendReplyBox(rankLadder('Richest Users', currencyPlural, keys.slice(0, target), 'money') + '</div>');
 	},
 
 	customsymbol: function (target, room, user) {
