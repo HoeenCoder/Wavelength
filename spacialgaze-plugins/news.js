@@ -30,8 +30,6 @@ SG.showNews = function (userid, user) {
 	let newsDisplay = generateNews();
 	if (newsDisplay.length > 0) {
 		newsDisplay = `${newsDisplay.join(`<hr>`)}${showSubButton(userid)}`;
-		newsDisplay = newsDisplay.join('<hr>');
-		newsDisplay += showSubButton(userid);
 		notifiedUsers[userid] = setTimeout(() => {
 			delete notifiedUsers[userid];
 		}, 60 * 60 * 1000);
