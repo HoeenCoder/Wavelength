@@ -5,7 +5,9 @@ class SGgame extends Console.Console {
 		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
-		this.curText = [];
+		this.queue = [];
+		this.queueAction = null;
+		this.lastNextAction = null;
 		this.curPane = null;
 		this.callback = false;
 		this.location = null;
@@ -15,25 +17,58 @@ class SGgame extends Console.Console {
 		// TODO locations, and actual map, ect
 		return this.defaultHTML;
 	}
-	next(type, hideButton) {
+	next(hideButton) {
+		let base = this.buildMap();
+		if (!this.queue.length) return base;
+		let msg = this.queue.shift(), type = msg.split('|')[0], parts = null;
 		switch (type) {
 		case 'text':
-			let base = this.buildMap();
-			if (!this.curText.length) return base;
-			let msg = this.curText.shift();
-			switch (msg.split('|')[1]) {
+			switch (msg.split('|')[2]) {
 			case 'hide':
 				hideButton = true;
-				msg = msg.split('|')[0];
+				this.lastNextAction = 'hide';
+				msg = msg.split('|')[1];
 				break;
 			case 'callback':
 				this.callback();
-				msg = msg.split('|')[0];
+				this.lastNextAction = 'callback';
+				msg = msg.split('|')[1];
 				break;
+			default:
+				this.lastNextAction = null;
+				msg = msg.split('|')[1];
 			}
-			let parts = base.split('<!--split-->');
+			parts = base.split('<!--split-->');
 			return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + msg + (hideButton ? '' : '<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button>') + '</div>' + parts.join('');
 			//break;
+		case 'learn':
+			if (this.queueAction) {
+				this.queue.unshift(msg);
+				return base;
+			}
+			let poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
+			if (poke.moves.length < 4) {
+				// Automatically learn the move
+				let obj = Db.players.get(this.userid);
+				obj.party[Number(msg.split('|')[1])].moves.push(toId(msg.split('|')[2]));
+				Db.players.set(this.userid, obj);
+				parts = base.split('<!--split-->');
+				return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + (poke.name || poke.species) + ' learned ' + msg.split('|')[2] + '!</div>' + parts.join('');
+			}
+			this.queueAction = msg;
+			parts = base.split('<!--split-->');
+			return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;"><center>' + (poke.name || poke.species) + ' wants to learn the move ' + msg.split('|')[2] + '.<br/>Should a move be forgotten for ' + msg.split('|')[2] + '<br/><button name="send" value="/sggame learn" style="border: none; background: none; color: grey">Forget a move</button> <button name="send" value="/sggame learn reject" style="border: none; background: none; color: grey">Keep old moves</button></center></div>' + parts.join('');
+			//break;
+		case 'evo':
+			if (this.queueAction) {
+				this.queue.unshift(msg);
+				return base;
+			}
+			return base; // TODO
+			//break;
+		default:
+			console.log('Invalid type: ' + type + '. While running (console).next()');
+			return base;
 		}
 	}
 	bag(menu) {
@@ -194,8 +229,6 @@ class Player {
 		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|0"], [], [], []];
 		this.party = starter;
 		this.pokedex = {};
-		// Queue for learning moves and evolutions, run the data with this.runQueue();
-		this.queue = [];
 		// More to come...
 	}
 	test() {
@@ -232,15 +265,6 @@ class Player {
 		this.pc[box - 1].splice(slot, 1);
 		return true;
 	}
-	runQueue() {
-		if (!this.queue.length) return;
-		while (this.queue.length) {
-		//	let cur = this.queue.shift();
-		// TODO
-		}
-		// Save data
-		//Db.players.set(this.userid, this); // Commented to prevent errors while in development
-	}
 }
 
 exports.box = {
@@ -265,9 +289,9 @@ exports.commands = {
 			user.console.update('background-color: #6688AA;', htm, null);
 		} else if (cmd === 'confirmresetalpha') {
 			// New Game
-			user.console.curText = ['Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
-				'Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
-				'Lets get you setup.<br/>Pick a starter:'];
+			user.console.queue = ['text|Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
+				'text|Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
+				'text|Lets get you setup.<br/>Pick a starter:'];
 			let msg = '';
 			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'], ['Pikachu'], ['Eevee']];
 			for (let i = 0; i < starters.length; i++) {
@@ -277,12 +301,12 @@ exports.commands = {
 				}
 				msg += (i + 1 < starters.length ? '<br/>' : '');
 			}
-			user.console.curText.push(msg + '|hide');
+			user.console.queue.push('text|' + msg + '|hide');
 			user.console.callback = function () {
 				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 				user.console.callback = null;
 			};
-			user.console.curText.push('Great choice! I\'ll leave you to your game now.|callback');
+			user.console.queue.push('text|Great choice! I\'ll leave you to your game now.|callback');
 			user.console.init();
 			this.parse('/sggame next');
 		} else {
@@ -295,7 +319,7 @@ exports.commands = {
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
-			user.console.curText = ['Welcome back to the alpha, tell me if you like the game or find any bugs!'];
+			user.console.queue = ['text|Welcome back to the alpha, tell me if you like the game or find any bugs!'];
 			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 			user.console.init();
 			this.parse('/sggame next');
@@ -304,7 +328,69 @@ exports.commands = {
 	sggame: {
 		next: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
-			return user.console.update(null, user.console.next('text'), null);
+			if (user.console.lastNextAction === 'hide') return;
+			return user.console.update(null, user.console.next(), null);
+		},
+		learn: function (target, room, user) {
+			if (!user.console || user.console.gameId !== 'SGgame' || !user.console.queueAction) return;
+			target = toId(target);
+			let action = user.console.queueAction.split('|');
+			if (action[0] !== 'learn') return;
+			let pokemon = Db.players.get(user.userid).party[Number(action[1])];
+			let template = Tools.getTemplate(pokemon.species);
+			if (!target) {
+				// Pull up move selection menu to pick what to forget
+				user.console.curPane = 'learn'; // Force override any open pane
+				let output = user.console.buildMap();
+				output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+				output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
+				output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+				output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
+				output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
+				output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
+				output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
+				output += '<b>OT</b>:' + pokemon.ot + '<br/>';
+				output += '<b>Level</b>:' + pokemon.level + '<br/>';
+				let nextLevel = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel = SG.calcExp(pokemon.species, pokemon.level);
+				output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
+				output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress></center></div>';
+				let move = null;
+				output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
+				for (let m = 0; m < pokemon.moves.length; m++) {
+					move = Tools.getMove(pokemon.moves[m]);
+					output += '<button name="send" value="/sggame learn ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
+				}
+				move = Tools.getMove(action[2]);
+				output += '<button name="send" value="/sggame learn cancel" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
+				output += '</center></div></div></div>';
+				return user.console.update(null, output, null);
+			} else if (target === 'reject') {
+				// Cancel the move learning.
+				user.console.queueAction = null;
+				user.console.queue.unshift('text|' + (pokemon.name || pokemon.species) + ' did not learn ' + action[2] + '.');
+				user.console.lastNextAction = null;
+				user.console.curPane = null;
+				return this.parse('/sggame next');
+			} else if (target === 'cancel') {
+				// Step back
+				user.console.queue.unshift(user.console.queueAction);
+				user.console.queueAction = null;
+				user.console.lastNextAction = null;
+				user.console.curPane = null;
+				return this.parse('/sggame next');
+			} else {
+				// Attempt to forget the specified move, and learn action[2]
+				if (pokemon.moves.indexOf(toId(target)) === -1) return false; // The pokemon dosent know this move.
+				let obj = Db.players.get(user.userid);
+				obj.party[Number(action[1])].moves.splice(pokemon.moves.indexOf(toId(target)), 1);
+				obj.party[Number(action[1])].moves.push(toId(action[2]));
+				Db.players.set(user.userid, obj);
+				user.console.queueAction = null;
+				user.console.queue.unshift('text|1, 2, 3 and... POOF!<br/>' + (pokemon.name || pokemon.species) + ' forgot ' + target + ' and learned ' + action[2] + '!');
+				user.console.lastNextAction = null;
+				user.console.curPane = null;
+				return this.parse('/sggame next');
+			}
 		},
 		bag: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
@@ -324,7 +410,7 @@ exports.commands = {
 		},
 		pc: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
-			if (user.console.curText.length) return; // No PC while talking
+			if (user.console.queue.length) return; // No PC while talking
 			target = target.split(',');
 			target = target.map(data => {
 				return data.trim();
@@ -399,6 +485,7 @@ exports.commands = {
 		case 'confirmpickstarter':
 			let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
+			user.console.lastNextAction = null;
 			this.parse('/sggame next');
 		}
 	},

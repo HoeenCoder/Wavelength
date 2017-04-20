@@ -302,12 +302,18 @@ class Battle {
 		case 'updateExp':
 			let data = lines[2].split(']');
 			let userid = data.shift();
+			let user = Users(userid);
 			let gameObj = Db.players.get(userid);
+			let run = false;
+			let actions = [];
 			for (let i = 0; i < data.length; i++) {
 				let cur = data[i].split('|');
 				cur[0] = Number(cur[0]);
+				let pokemon = Tools.getTemplate(gameObj.party[cur[0]].species);
+				let olvl = gameObj.party[cur[0]].level;
 				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
 				gameObj.party[cur[0]].level += (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
+				let lvl = olvl + (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
 				let evs = cur[3].split(',');
 				if (!gameObj.party[cur[0]].evs) gameObj.party[cur[0]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 				let j = 0;
@@ -315,8 +321,34 @@ class Battle {
 					gameObj.party[cur[0]].evs[ev] += Number(evs[j]);
 					j++;
 				}
+				if (olvl !== lvl) {
+					// New Moves
+					let baseSpecies = null;
+					if (pokemon.baseSpecies) baseSpecies = Tools.getTemplate(pokemon.baseSpecies);
+					if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
+						pokemon.learnset = baseSpecies.learnset;
+					}
+					let used = [];
+					for (let move in pokemon.learnset) {
+						for (let learned in pokemon.learnset[move]) {
+							if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
+								actions.push("learn|" + cur[0] + "|" + move);
+								used.push(move);
+								run = true;
+							}
+						}
+					}
+					// Evolution
+					// TODO
+					// Add the evo array onto the end of the move array
+				}
 			}
 			Db.players.set(userid, gameObj);
+			actions.reverse();
+			for (let i = 0; i < actions.length; i++) {
+				user.console.queue.unshift(actions[i]);
+			}
+			if (run) user.console.update(null, user.console.next(), null);
 			break;
 		}
 		Monitor.activeIp = null;
