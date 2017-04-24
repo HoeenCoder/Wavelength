@@ -118,7 +118,7 @@ class UNOgame extends Rooms.RoomGame {
 
 	joinGame(user) {
 		if (this.state === 'signups' && this.addPlayer(user)) {
-			this.sendToRoom(`${SG.nameColor(user.name, true)} has joined the game of UNO.`);
+			this.sendToRoom(`|html|${SG.nameColor(user, true, true)} has joined the game of UNO.`);
 			return true;
 		}
 		return false;
