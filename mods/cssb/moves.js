@@ -530,6 +530,7 @@ exports.BattleMovedex = {
 		priority: 1,
 		target: "Normal",
 		type: "Fire",
+		zMovePower: 180,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Flare Blitz", source);
@@ -566,11 +567,11 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
-		zMovePower: 590,
+		zMovePower: 180,
 		contestType: "Tough",
 	},
-	//Eelek
-	"electrofryer": {
+	// Eelek
+	electrofryer: {
 		accuracy: 100,
 		basePower: 100,
 		category: "Special",
@@ -606,9 +607,28 @@ exports.BattleMovedex = {
 				}
 			},
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Electric",
+		zMovePower: 180,
 		ignoreImmunity: {'Electric': true},
+	},
+	// Gest1000
+	diamonddust: {
+		accuracy: 100,
+		basePower: 130,
+		category: "Special",
+		id: "diamonddust",
+		name: "Diamond Dust",
+		pp: 5,
+		priority: 0,
+		flags: {charge: 1, protect: 1, mirror: 1},
+		secondary: {
+			chance: 30,
+			status: "frz",
+		},
+		target: "normal",
+		type: "Ice",
+		zMovePower: 210,
 	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
