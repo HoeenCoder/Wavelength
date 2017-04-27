@@ -100,12 +100,28 @@ SG.giveDailyReward = function (userid, user) {
 		return false;
 	}
 	let lastTime = Db.DailyBonus.get(userid)[1];
-	if ((Date.now() - lastTime) < 86400000) return false;
-	if ((Date.now() - lastTime) >= 127800000) Db.DailyBonus.set(userid, [1, Date.now()]);
-	if (Db.DailyBonus.get(userid)[0] === 8) Db.DailyBonus.set(userid, [7, Date.now()]);
+	// Alt check
+	let alts = Object.keys(user.prevNames).map(a => {return toId(a);});
+	let longestWait = 0;
+	for (let i = 0; i < alts.length; i++) {
+		let cur = Db.DailyBonus.get(alts[i])[1];
+		if ((Date.now() - cur) < 86400000 && cur > longestWait) longestWait = cur;
+	}
+	if (longestWait > lastTime) lastTime = longestWait;
+	alts.push(userid);
+	if ((Date.now() - lastTime) < 86400000) {
+		for (let i = 0; i < alts.length; i++) {
+			Db.DailyBonus.set(alts[i], [Db.DailyBonus.get(alts[i])[0], lastTime]);
+		}
+		return false;
+	}
+	for (let i = 0; i < alts.length; i++) {
+		if ((Date.now() - lastTime) >= 127800000) Db.DailyBonus.set(alts[i], [1, Date.now()]);
+		if (Db.DailyBonus.get(alts[i])[0] === 8) Db.DailyBonus.set(alts[i], [7, Date.now()]);
+		Db.DailyBonus.set(userid, [(Db.DailyBonus.get(alts[i])[0] + 1), Date.now()]);
+	}
 	Economy.writeMoney(userid, Db.DailyBonus.get(userid)[0]);
 	user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + Db.DailyBonus.get(userid)[0] + ' Stardust.<br>' + showDailyRewardAni(userid) + '<br>Because you have connected to the server for the past ' + Db.DailyBonus.get(userid)[0] + ' Days.</center>');
-	Db.DailyBonus.set(userid, [(Db.DailyBonus.get(userid)[0] + 1), Date.now()]);
 };
 
 // last two functions needed to make sure SG.regdate() fully works
