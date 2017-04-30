@@ -104,7 +104,7 @@ SG.giveDailyReward = function (userid, user) {
 	let alts = Object.keys(user.prevNames).map(a => {return toId(a);});
 	let longestWait = 0;
 	for (let i = 0; i < alts.length; i++) {
-		let cur = Db.DailyBonus.get(alts[i])
+		let cur = Db.DailyBonus.get(alts[i]);
 		if (!cur) {
 			alts.splice(i, 1);
 			i--;
