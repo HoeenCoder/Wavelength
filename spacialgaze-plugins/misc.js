@@ -140,22 +140,22 @@ exports.commands = {
 		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
 			"<br />" +
 			"<u><b>Server Maintainers:</u></b><br />" +
-			"- " + SG.nameColor('Mystifi', true, true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + SG.nameColor('HoeenHero', true, true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + SG.nameColor('Desokoro', true, true) + " (Server Host)<br />" +
+			"- " + SG.nameColor('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
+			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + SG.nameColor('Opple', true, true) + " (Policy and Media)<br />" +
-			"- " + SG.nameColor('Kraken Mare', true, true) + " (Development)<br />" +
-			"- " + SG.nameColor('HiroZ', true, true) + " (Policy)<br />" +
-			"- " + SG.nameColor('Aeon Lucid', true, true) + " (Development)<br />" +
-			"- " + SG.nameColor('Ashley the Pikachu', true, true) + " (CSS, Spriting)<br />" +
-			"- " + SG.nameColor('Insist', true, true) + " (Development)<br />" +
-			"- " + SG.nameColor('Eelek', true, true) + " (Development)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Policy and Media)<br />" +
+			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
+			"- " + SG.nameColor('HiroZ', true) + " (Policy)<br />" +
+			"- " + SG.nameColor('Aeon Lucid', true) + " (Development)<br />" +
+			"- " + SG.nameColor('Ashley the Pikachu', true) + " (CSS, Spriting)<br />" +
+			"- " + SG.nameColor('Insist', true) + " (Development)<br />" +
+			"- " + SG.nameColor('Eelek', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + SG.nameColor('The Run', true, true) + " (Former Server Owner, Development)<br />" +
-			"- " + SG.nameColor('Vulcaron', true, true) + " (Former Policy Leader)<br />" +
+			"- " + SG.nameColor('The Run', true) + " (Former Server Owner, Development)<br />" +
+			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
