@@ -1,3 +1,12 @@
+/**
+ * GitHub Alerts
+ *
+ * Primary code from https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot/tree/master/features/github
+ * This handles alerting our Development room of GitHub updates/changes.
+ * This was converted to work on PS servers by jd.
+ *
+ * @license MIT license
+ */
 'use strict';
 
 if (!Config.github || !Config.github.port) return;
