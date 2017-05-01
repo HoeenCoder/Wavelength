@@ -420,14 +420,14 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
-			"+Eelek": {
-				species: "Eelektross",
-				ability: "Serene Grace",
-				item: "Assault Vest",
+			"+VXN": {
+				species: "Rayquaza",
+				ability: "Wonder Guard",
+				item: "Normalium Z",
 				gender: "M",
-				moves: ['Zing Zap', 'Icicle Crash', 'Flame Charge',
+				moves: ['Splash', 'Happy Hour', 'Celebrate',
 				],
-				signatureMove: "Dice Roll",
+				signatureMove: "Crash",
 				evs: {
 					atk: 252,
 					spe: 252,
