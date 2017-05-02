@@ -121,8 +121,7 @@ SG.giveDailyReward = function (userid, user) {
 		return false;
 	}
 	for (let i = 0; i < alts.length; i++) {
-		if ((Date.now() - lastTime) >= 127800000) Db.DailyBonus.set(alts[i], [1, Date.now()]);
-		if (Db.DailyBonus.get(alts[i])[0] <= 8) Db.DailyBonus.set(alts[i], [7, Date.now()]);
+		if ((Date.now() - lastTime) >= 127800000 || Db.DailyBonus.get(alts[i])[0] <= 8) Db.DailyBonus.set(alts[i], [1, Date.now()]);
 	}
 	let reward = Db.DailyBonus.get(userid)[0];
 	Economy.writeMoney(userid, reward);
