@@ -339,7 +339,7 @@ exports.commands = {
 		if (target.length < 2) return this.parse('/help usetoken');
 		target[0] = toId(target[0]);
 		let msg = '';
-		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'intro', 'disableintroscroll'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
 		if (!user.tokens || !user.tokens[target[0]]) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
@@ -377,6 +377,7 @@ exports.commands = {
 			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
 			delete user.tokens[target[0]];
 			return SG.messageSeniorStaff(msg);
+		case 'intro':
 		case 'disableintroscroll':
 			if (!target[1]) return this.errorReply('/usetoken disableintroscroll, [room]');
 			let roomid = toId(target[1]);
@@ -392,7 +393,8 @@ exports.commands = {
 	},
 	usetokenhelp: ['/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
 		      '/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
-		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]'],
+		      '/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]',
+		      '/usetoken disableintroscroll [room name]'],
 
 	bonus: 'dailybonus',
 	checkbonus: 'dailybonus',
