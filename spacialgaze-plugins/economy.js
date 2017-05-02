@@ -19,15 +19,17 @@ let Economy = global.Economy = {
  	* @return {Function} callback
  	*/
 	readMoney: function (userid, callback) {
-		if (typeof callback !== 'function') {
-			throw new Error("Economy.readMoney: Expected callback parameter to be a function, instead received " + typeof callback);
-		}
-
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
 
 		let amount = Db.currency.get(userid, DEFAULT_AMOUNT);
-		return callback(amount);
+		if (callback && typeof callback === 'function') {
+			// If a callback is specified, return `amount` through the callback.
+			return callback(amount);
+		} else {
+			// If there is no callback, just return the amount.
+			return amount;
+		}
 	},
 	/**
  	* Writes the specified amount of money to the user's "bank."
