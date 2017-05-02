@@ -246,6 +246,7 @@ exports.commands = {
 			});
 		});
 	},
+
 	moneylog: function (target, room, user) {
 		if (!this.can('forcewin')) return false;
 		if (!target) return this.sendReply("Usage: /moneylog [number] to view the last x lines OR /moneylog [text] to search for text.");
@@ -272,6 +273,7 @@ exports.commands = {
 		}
 		user.popup("|wide|" + output);
 	},
+
 	'!richestuser': true,
 	richestusers: 'richestuser',
 	richestuser: function (target, room, user) {
@@ -286,6 +288,16 @@ exports.commands = {
 		keys.sort(function (a, b) { return b.money - a.money; });
 		this.sendReplyBox(rankLadder('Richest Users', currencyPlural, keys.slice(0, target), 'money') + '</div>');
 	},
+
+	resetstardust: 'resetmoney',
+	resetmoney: function (target, room, user) {
+		if (!this.can('roomowner')) return false;
+		if (!target) return this.parse('/help resetmoney');
+		target = toId(target);
+		Economy.writeMoney(target, 0);
+		this.sendReply(target + " now has 0 " + currencyName + ".");
+	},
+	resetmoneyhelp: ['/resetmoney [user] - Resets target user\'s currency to 0. Requires: &, ~'],
 
 	customsymbol: function (target, room, user) {
 		let bannedSymbols = ['!', '|', '‽', '\u2030', '\u534D', '\u5350', '\u223C'];
