@@ -66,6 +66,11 @@ function toToken(item) {
 	case 'emote':
 		return 'emote';
 
+	case 'intro':
+	case 'disableintro':
+	case 'disableintroscroll':
+		return 'disableintroscroll';
+
 	default:
 		return false;
 	}

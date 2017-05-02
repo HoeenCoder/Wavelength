@@ -2,9 +2,9 @@
  * Miscellaneous commands
  *
  * Fixed/Improved upon by: The Run, HoeenHero, Mystifi and Lord Haji.
- *
  * Some of this code was borrowed from panpawn/jd/other contributors; as
  * such, credits go to them as well.
+ * @license MIT license
  */
 'use strict';
 
@@ -339,7 +339,7 @@ exports.commands = {
 		if (target.length < 2) return this.parse('/help usetoken');
 		target[0] = toId(target[0]);
 		let msg = '';
-		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
 		if (!user.tokens || !user.tokens[target[0]]) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
@@ -377,6 +377,15 @@ exports.commands = {
 			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
 			delete user.tokens[target[0]];
 			return SG.messageSeniorStaff(msg);
+		case 'disableintroscroll':
+			if (!target[1]) return this.errorReply('/usetoken disableintroscroll, [room]');
+			let roomid = toId(target[1]);
+			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
+			if (Db.disabledScrolls.has(roomid)) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
+			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed roomintro scroll disabler token.<br/>';
+			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scrool for <b>' + Rooms(roomid).title + '</b></button></center>';
+			delete user.tokens[target[0]];
+			return SG.messageSeniorStaff(msg);
 		default:
 			return this.errorReply('An error occured in the command.'); // This should never happen.
 		}
@@ -403,4 +412,23 @@ exports.commands = {
 		this.parse("/tour create " + target + ", roundrobin");
 	},
 	rtourhelp: ["/rtour [format] - Creates a round robin tournament in the format provided."],
+
+	disableintroscroll: function (target, room, user) {
+		if (!this.can('roomowner')) return false;
+		if (!target) return this.errorReply("No Room Specified");
+		target = toId(target);
+		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
+		if (Db.disabledScrolls.has(target)) return this.errorReply(`${Rooms(target).title} has roomintro scroll disabled.`);
+		Db.disabledScrolls.set(target, true);
+	},
+	disableintroscrollhelp: ["/disableintroscroll [room] - Disables scroll bar preset in the room's roomintro."],
+	enableintroscroll: function (target, room, user) {
+		if (!this.can('roomowner')) return false;
+		if (!target) return this.errorReply("No Room Specified");
+		target = toId(target);
+		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
+		if (!Db.disabledScrolls.has(target)) return this.errorReply(`${Rooms(target).title} has roomintro scroll enabled.`);
+		Db.disabledScrolls.remove(target);
+	},
+	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
 };

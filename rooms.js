@@ -1350,7 +1350,8 @@ class ChatRoom extends Room {
 	}
 	getIntroMessage(user) {
 		let message = '';
-		if (this.introMessage) message += '\n|raw|<div class="infobox infobox-roomintro"><div' + (!this.isOfficial ? ' class="infobox-limited"' : '') + '>' + this.introMessage.replace(/\n/g, '') + '</div>';
+		let scroll = Db.DisabledScrolls.get(this.id, false);
+		if (this.introMessage) message += '\n|raw|<div class="infobox infobox-roomintro"><div' + ((this.isOfficial || scroll) ? '' : ' class="infobox-limited"') + '>' + this.introMessage.replace(/\n/g, '') + '</div>';
 		if (this.staffMessage && user.can('mute', null, this)) message += (message ? '<br />' : '\n|raw|<div class="infobox">') + '(Staff intro:)<br /><div>' + this.staffMessage.replace(/\n/g, '') + '</div>';
 		if (this.modchat) {
 			message += (message ? '<br />' : '\n|raw|<div class="infobox">') + '<div class="broadcast-red">' +
