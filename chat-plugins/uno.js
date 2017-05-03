@@ -760,7 +760,6 @@ exports.commands = {
 			let output = `<div class = "infobox infobox-limited">`;
 			let colors = ['Green', 'Yellow', 'Blue', 'Red'];
 			let values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'Reverse', 'Skip', '+2'];
-			let curColor, curVal;
 			for (let i = 0; i < colors.length; i++) {
 				output += `<div class="infobox" style="overflow-x: auto; white-space: nowrap; width: 100%">`;
 				for (let j = 0; j < values.length; j++) {
