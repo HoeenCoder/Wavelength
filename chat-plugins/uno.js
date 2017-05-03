@@ -4,20 +4,19 @@
  *
  * This plugin allows rooms to run games of scripted UNO
  *
+ * Credits: sparkychild
+ *
+ * Pokémon Plays UNO! Coded by Lord Haji and HoeenHero
+ * UNO Card Images(Card Art) by Ashley The Pikachu
+ * Most sprites for Card Art ripped by Kyleboy(https://www.spriters-resource.com/game_boy_gbc/pokemontradingcardgame2/),
+ * PokéDoll Sprite by Nemu(https://www.spriters-resource.com/game_boy_gbc/pokemontradingcardgame/sheet/8885/)
+ *
  * @license MIT license
  */
 
 'use strict';
 
 const maxTime = 120; // seconds
-
-const rgbGradients = {
-	'Green': "rgba(0, 122, 0, 1), rgba(0, 185, 0, 0.9)",
-	'Yellow': "rgba(255, 225, 0, 1), rgba(255, 255, 85, 0.9)",
-	'Blue': "rgba(40, 40, 255, 1), rgba(125, 125, 255, 0.9)",
-	'Red': "rgba(255, 0, 0, 1), rgba(255, 125, 125, 0.9)",
-	'Black': "rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.55)",
-};
 
 const textColors = {
 	'Green': "rgb(0, 128, 0)",
@@ -28,19 +27,71 @@ const textColors = {
 };
 
 const cardImages = {
-	'Green': {},
-	'Yellow': {
-		'+2': ['http://i.imgur.com/xTf5XmZ.png', 'http://i.imgur.com/v4cuEdg.png'],
+	'Green': {
+		'0': ['https://i.imgur.com/B4RtNx3.png', 'https://i.imgur.com/CaFXPI0.png'],
+		'1': ['http://i.imgur.com/oRjVKXU.png', 'http://i.imgur.com/srixETl.png'],
+		'2': ['http://i.imgur.com/GoTH1bl.png', 'http://i.imgur.com/pO8DtWo.png'],
+		'3': ['http://i.imgur.com/O91W7VJ.png', 'http://i.imgur.com/LI2GTY6.png'],
+		'4': ['http://i.imgur.com/nxnPhh9.png', 'http://i.imgur.com/uRBViWu.png'],
+		'5': ['http://i.imgur.com/BtXeP5G.png', 'http://i.imgur.com/BgsnkQx.png'],
+		'6': ['http://i.imgur.com/woHf1Ci.png', 'http://i.imgur.com/VHgXzWw.png'],
+		'7': ['http://i.imgur.com/RJNDaN0.png', 'http://i.imgur.com/r8Qza9I.png'],
+		'8': ['http://i.imgur.com/I5V3XaR.png', 'http://i.imgur.com/swfvqLY.png'],
+		'9': ['http://i.imgur.com/1DuX0EZ.png', 'http://i.imgur.com/6WSVugH.png'],
+		'Reverse': ['http://i.imgur.com/YECYXav.png', 'http://i.imgur.com/fB8PNLX.png'],
+		'Skip': ['http://i.imgur.com/SxtBeO8.png', 'http://i.imgur.com/bQLW8NR.png'],
+		'+2': ['http://i.imgur.com/c8dQDj1.png', 'http://i.imgur.com/Vrm9HQf.png'],
 	},
-	'Blue': {},
-	'Red': {},
+	'Yellow': {
+		'0': ['https://i.imgur.com/lrOTrA2.png', 'https://i.imgur.com/NTSlL01.png'],
+		'1': ['http://i.imgur.com/iuBKJK3.png', 'http://i.imgur.com/gLKaoiX.png'],
+		'2': ['http://i.imgur.com/CRsDiE0.png', 'http://i.imgur.com/kKiNrnG.png'],
+		'3': ['http://i.imgur.com/t51aCvW.png', 'http://i.imgur.com/WMTnBrh.png'],
+		'4': ['http://i.imgur.com/w7CfOhG.png', 'http://i.imgur.com/wenaxRC.png'],
+		'5': ['http://i.imgur.com/il4ot0O.png', 'http://i.imgur.com/YqljaUj.png'],
+		'6': ['http://i.imgur.com/TDGzvlE.png', 'http://i.imgur.com/96lpoMf.png'],
+		'7': ['http://i.imgur.com/h65iQaC.png', 'http://i.imgur.com/sx1LhK9.png'],
+		'8': ['http://i.imgur.com/QSTYJxq.png', 'http://i.imgur.com/zSiYPZ4.png'],
+		'9': ['http://i.imgur.com/8lV4UPp.png', 'http://i.imgur.com/IKxT4a5.png'],
+		'Reverse': ['http://i.imgur.com/lUPmvTW.png', 'http://i.imgur.com/65Rdy35.png'],
+		'Skip': ['http://i.imgur.com/z99dERC.png', 'http://i.imgur.com/Ps7xyC1.png'],
+		'+2': ['http://i.imgur.com/eMYpZI0.png', 'http://i.imgur.com/5ZVAGyW.png'],
+	},
+	'Blue': {
+		'0': ['https://i.imgur.com/USxkz00.png', 'https://i.imgur.com/uBpitT3.png'],
+		'1': ['http://i.imgur.com/UPQtfFS.png', 'http://i.imgur.com/yhoJa5A.png'],
+		'2': ['http://i.imgur.com/oda2Jgc.png', 'http://i.imgur.com/y8HkEWj.png'],
+		'3': ['http://i.imgur.com/GV1KoS8.png', 'http://i.imgur.com/Y9dw9rH.png'],
+		'4': ['http://i.imgur.com/YbrUZZl.png', 'hhttp://i.imgur.com/2ZOG5cE.png'],
+		'5': ['http://i.imgur.com/0LNEV9u.png', 'http://i.imgur.com/ODF2g9a.png'],
+		'6': ['http://i.imgur.com/sesxOUz.png', 'http://i.imgur.com/Zo6aRE3.png'],
+		'7': ['http://i.imgur.com/DCXYkHE.png', 'http://i.imgur.com/vOKI7YE.png'],
+		'8': ['http://i.imgur.com/sr3ycsf.png', 'http://i.imgur.com/DGDSpX2.png'],
+		'9': ['http://i.imgur.com/ku26T44.png', 'http://i.imgur.com/NoGcuFG.png'],
+		'Reverse': ['http://i.imgur.com/73IKBT0.png', 'http://i.imgur.com/1aqFEmr.png'],
+		'Skip': ['http://i.imgur.com/ooI5g8V.png', 'http://i.imgur.com/ClaaNj3.png'],
+		'+2': ['http://i.imgur.com/Kc2aYFm.png', 'http://i.imgur.com/09BhP1E.png'],
+	},
+	'Red': {
+		'0': ['https://i.imgur.com/EDkhoc3.png', 'https://i.imgur.com/KDAvqho.png'],
+		'1': ['http://i.imgur.com/2CmkOfZ.png', 'http://i.imgur.com/LG5ZEBh.png'],
+		'2': ['http://i.imgur.com/GnAbg2O.png', 'http://i.imgur.com/fz6dsPC.png'],
+		'3': ['http://i.imgur.com/KG2DlU0.png', 'http://i.imgur.com/7WWO0O1.png'],
+		'4': ['http://i.imgur.com/bL15w1H.png', 'http://i.imgur.com/SciPCET.png'],
+		'5': ['http://i.imgur.com/65gLmtS.png', 'http://i.imgur.com/F9uYr0l.png'],
+		'6': ['http://i.imgur.com/zO1QKIx.png', 'http://i.imgur.com/o6YgVNk.png'],
+		'7': ['http://i.imgur.com/TRbnmlC.png', 'http://i.imgur.com/Zv2bImk.png'],
+		'8': ['http://i.imgur.com/NgAlOvb.png', 'http://i.imgur.com/Zo7OM6q.png'],
+		'9': ['http://i.imgur.com/ed4GgFY.png', 'http://i.imgur.com/nQdDcPC.png'],
+		'Reverse': ['http://i.imgur.com/1II7MXH.png', 'http://i.imgur.com/PGSUrZr.png'],
+		'Skip': ['http://i.imgur.com/ud1XP2T.png', 'http://i.imgur.com/gg5BUWh.png'],
+		'+2': ['http://i.imgur.com/Ie83rhz.png', 'http://i.imgur.com/T4uwyQC.png'],
+	},
 	'Black': {
-		'Wild': null,
-		'+4': null,
+		'Wild': ['https://i.imgur.com/xWy8VM5.png', 'https://i.imgur.com/wdLeyR1.png'],
+		'+4': ['http://i.imgur.com/25T2j9b.png', 'http://i.imgur.com/sunITaw.png'],
 	},
 };
-
-const textShadow = 'text-shadow: 1px 0px black, -1px 0px black, 0px -1px black, 0px 1px black, 2px -2px black;';
 
 function cardImg(card, fullsize) {
 	let img = cardImages[card.color][card.value];
@@ -52,11 +103,7 @@ function cardImg(card, fullsize) {
 
 function cardHTML(card, fullsize) {
 	let img = cardImg(card, fullsize);
-	let surface = card.value.replace(/[^A-Z0-9\+]/g, "");
-	let background = rgbGradients[card.color];
-	if (surface === 'R') surface = '<i class="fa fa-refresh" aria-hidden="true"></i>';
-
-	return `<button class="button" style="font-size: 14px; font-weight: bold; color: white; ${textShadow} padding-bottom: 117px; text-align: left; height: 135px; width: ${fullsize ? '72' : '37'}px; border-radius: 10px 2px 2px 3px; color: white; background: ${card.color}; background: -webkit-linear-gradient(${background}); background: -o-linear-gradient(${background}); background: -moz-linear-gradient(${background}); background: linear-gradient(${background})${img ? `background-image: url("${img}"); background-size: cover; background-position: center, center;` : ``}" name=send value="/uno play ${card.name}">${surface}</button>`;
+	return `<button class="button" style="height: 135px; width: ${fullsize ? '72' : '37'}px; border-radius: 10px 2px 2px 3px; background-image: url('${img}');" name=send value="/uno play ${card.name}" title="${card.color + card.value}"></button>`;
 }
 
 function createDeck() {
@@ -708,6 +755,25 @@ exports.commands = {
 			delete room.game.spectators[user.userid];
 			this.sendReply("You are no longer spectating this private UNO game.");
 		},
+		showcase: function (target, room, user) {
+			if (!this.runBroadcast()) return;
+			let output = `<div class = "infobox infobox-limited">`;
+			let colors = ['Green', 'Yellow', 'Blue', 'Red'];
+			let values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'Reverse', 'Skip', '+2'];
+			let curColor, curVal;
+			for (let i = 0; i < colors.length; i++) {
+				output += `<div class="infobox" style="overflow-x: auto; white-space: nowrap; width: 100%">`;
+				for (let j = 0; j < values.length; j++) {
+					for (let k = 0; k < cardImages[colors[i]][values[j]].length; k++) {
+						output += `<img src=${cardImages[colors[i]][values[j]][k]} />&nbsp;&nbsp;`;
+					}
+				}
+				output += `</div><br />`;
+			}
+			output += `<div class="infobox" style="overflow-x: auto; white-space: nowrap; width: 100%"><img src=${cardImages['Black']['Wild'][0]} />&nbsp;&nbsp;<img src=${cardImages['Black']['Wild'][1]} />&nbsp;&nbsp;<img src=${cardImages['Black']['+4'][0]} />&nbsp;&nbsp;<img src=${cardImages['Black']['+4'][1]} />&nbsp;&nbsp;</div><br/>`;
+			output += '</div>';
+			this.sendReply('|raw|' + output);
+		},
 	},
 
 	unohelp: [
@@ -720,5 +786,6 @@ exports.commands = {
 		"/uno getusers - displays the players still in the game.",
 		"/uno [spectate | unspectate] - spectate / unspectate the current private UNO game.",
 		"/uno suppress [on | off] - Toggles suppression of game messages.",
+		"/uno showcase - Displays all of the Pokémon Plays UNO! Cards.",
 	],
 };
