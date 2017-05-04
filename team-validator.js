@@ -178,7 +178,7 @@ class Validator {
 		}
 
 		let nameTemplate = tools.getTemplate(set.name);
-		if (nameTemplate.exists && nameTemplate.name.toLowerCase() === set.name.toLowerCase()) {
+		if (toId(format.name) !== 'gen7crossevolution' && nameTemplate.exists && nameTemplate.name.toLowerCase() === set.name.toLowerCase()) {
 			set.name = null;
 		}
 		set.name = set.name || set.baseSpecies;
@@ -204,8 +204,9 @@ class Validator {
 
 		if (!template) {
 			template = tools.getTemplate(set.species);
-			if (ability.id === 'battlebond' && template.id === 'greninja') {
+			if (ability.id === 'battlebond' && template.id === 'greninja' && !banlistTable['Rule:ignoreillegalabilities']) {
 				template = tools.getTemplate('greninjaash');
+				set.gender = 'M';
 			}
 		}
 		if (!template.exists) {
@@ -276,7 +277,7 @@ class Validator {
 			// Don't check abilities for metagames with All Abilities
 			if (tools.gen <= 2) {
 				set.ability = 'None';
-			} else if (!banlistTable['ignoreillegalabilities']) {
+			} else if (!banlistTable['Rule:ignoreillegalabilities']) {
 				if (!ability.name) {
 					problems.push(`${name} needs to have an ability.`);
 				} else if (!Object.values(template.abilities).includes(ability.name)) {
@@ -340,7 +341,8 @@ class Validator {
 					let problem = this.checkLearnset(move, template, lsetData);
 					if (problem) {
 						// Sketchmons hack
-						if (banlistTable['allowonesketch'] && format.noSketch.indexOf(move.name) < 0 && !set.sketchmonsMove && !move.noSketch && !move.isZ) {
+						const noSketch = format.noSketch || tools.getFormat('gen7sketchmons').noSketch;
+						if (banlistTable['Rule:allowonesketch'] && noSketch.indexOf(move.name) < 0 && !set.sketchmonsMove && !move.noSketch && !move.isZ) {
 							set.sketchmonsMove = move.id;
 							continue;
 						}
@@ -394,6 +396,13 @@ class Validator {
 				const expectedHpDV = (atkDV % 2) * 8 + (defDV % 2) * 4 + (speDV % 2) * 2 + (spcDV % 2);
 				if (expectedHpDV !== hpDV) {
 					problems.push(`${name} has an HP DV of ${hpDV}, but its Atk, Def, Spe, and Spc DVs give it an HP DV of ${expectedHpDV}.`);
+				}
+				if (set.ivs.spa !== set.ivs.spd) {
+					if (tools.gen === 2) {
+						problems.push(`${name} has different SpA and SpD DVs, which is not possible in Gen 2.`);
+					} else {
+						set.ivs.spd = set.ivs.spa;
+					}
 				}
 				if (tools.gen > 1 && !template.gender) {
 					// Gen 2 gender is calculated from the Atk DV.

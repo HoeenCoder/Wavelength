@@ -79,6 +79,7 @@ class Tournament {
 		}));
 		this.update();
 	}
+	destroy() {}
 
 	setGenerator(generator, output) {
 		if (this.isTournamentStarted) {
@@ -862,7 +863,7 @@ class Tournament {
 
 		this.isBracketInvalidated = true;
 		if (this.autoDisqualifyTimeout !== Infinity) this.runAutoDisqualify(this.room);
-		if (this.forceTimer) room.requestKickInactive(false);
+		if (this.forceTimer) room.battle.timer.start();
 		this.update();
 	}
 	forfeit(user) {
@@ -1053,7 +1054,7 @@ function createTournament(room, format, generator, playerCap, isRated, args, out
 	format = Tools.getFormat(format);
 	if (format.effectType !== 'Format' || !format.tournamentShow) {
 		output.errorReply(format.id + " is not a valid tournament format.");
-		output.errorReply("Valid formats: " + Object.values(Tools.data.Formats).filter(f => f.effectType === 'Format' && f.tournamentShow).map(format => format.name).join(", "));
+		output.errorReply("Valid formats: " + Object.values(Tools.formats).filter(f => f.tournamentShow).map(format => format.name).join(", "));
 		return;
 	}
 	if (!TournamentGenerators[toId(generator)]) {
