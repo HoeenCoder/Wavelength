@@ -111,7 +111,7 @@ class Matchmaker {
 			formatSearches = new Set();
 			this.searches.set(formatid, formatSearches);
 		}
-		
+
 		if (Tools.getFormat(formatid).isWildEncounter) {
 			delete user.searching[formatid];
 			if (!Users('sgserver')) SG.makeCOM();
