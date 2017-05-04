@@ -1,5 +1,7 @@
 'use strict';
 
+const Matchmaker = require('../ladders-matchmaker').matchmaker;
+
 const BRACKET_MINIMUM_UPDATE_INTERVAL = 2 * 1000;
 const AUTO_DISQUALIFY_WARNING_TIMEOUT = 30 * 1000;
 const AUTO_START_MINIMUM_TIMEOUT = 30 * 1000;
@@ -77,6 +79,7 @@ class Tournament {
 		}));
 		this.update();
 	}
+	destroy() {}
 
 	setGenerator(generator, output) {
 		if (this.isTournamentStarted) {
@@ -110,6 +113,7 @@ class Tournament {
 			output.errorReply(format.name + " does not support supplementary banlists.");
 			return false;
 		}
+		if (!format.banlistTable) Tools.getBanlistTable(format);
 		let banlist = [];
 		for (let i = 0; i < params.length; i++) {
 			let param = params[i].trim();
@@ -118,14 +122,28 @@ class Tournament {
 				unban = true;
 				param = param.substr(1);
 			}
-			let search = Tools.dataSearch(param);
-			if (!search || search.length < 1) continue;
-			search = search[0];
-			if (search.searchType === 'nature') continue;
-			let ban = search.name;
-			let oppositeBan;
+			let ban, oppositeBan;
+			let subformat = Tools.getFormat(param);
+			if (subformat.effectType === 'ValidatorRule' || subformat.effectType === 'Format') {
+				if (unban) {
+					if (format.banlistTable['Rule:' + subformat.id] === false) continue;
+				} else {
+					if (format.banlistTable['Rule:' + subformat.id]) continue;
+				}
+				ban = 'Rule:' + subformat.name;
+			} else {
+				let search = Tools.dataSearch(param);
+				if (!search || search.length < 1) continue;
+				search = search[0];
+				if (!search.exactMatch || search.searchType === 'nature') continue;
+				if (unban) {
+					if (format.banlistTable[search.name] === false) continue;
+				} else {
+					if (format.banlistTable[search.name]) continue;
+				}
+				ban = search.name;
+			}
 			if (unban) {
-				if (format.unbanlist && format.unbanlist.includes(ban)) continue;
 				oppositeBan = ban;
 				ban = '!' + ban;
 			} else {
@@ -135,7 +153,7 @@ class Tournament {
 			if (index > -1) {
 				banlist.splice(index, 1);
 			} else {
-				if (!format.banlist || !format.banlist.includes(ban)) banlist.push(ban);
+				banlist.push(ban);
 			}
 		}
 		if (banlist.length < 1) {
@@ -144,6 +162,33 @@ class Tournament {
 		}
 		this.banlist = banlist;
 		return true;
+	}
+
+	getBanlist() {
+		let bans = [];
+		let unbans = [];
+		let addedRules = [];
+		let removedRules = [];
+		for (let i = 0; i < this.banlist.length; i++) {
+			let ban = this.banlist[i];
+			let unban = false;
+			if (ban.charAt(0) === '!') {
+				unban = true;
+				ban = ban.substr(1);
+			}
+			if (ban.startsWith('Rule:')) {
+				ban = ban.substr(5);
+				(unban ? removedRules : addedRules).push(ban);
+			} else {
+				(unban ? unbans : bans).push(ban);
+			}
+		}
+		let html = [];
+		if (bans.length) html.push("<b>Bans</b> - " + Chat.escapeHTML(bans.join(", ")));
+		if (unbans.length) html.push("<b>Unbans</b> - " + Chat.escapeHTML(unbans.join(", ")));
+		if (addedRules.length) html.push("<b>Added rules</b> - " + Chat.escapeHTML(addedRules.join(", ")));
+		if (removedRules.length) html.push("<b>Removed rules</b> - " + Chat.escapeHTML(removedRules.join(", ")));
+		return html.join("<br />");
 	}
 
 	forceEnd() {
@@ -802,10 +847,7 @@ class Tournament {
 		let player = this.players[user.userid];
 		if (!this.pendingChallenges.get(player)) return;
 
-		let room = Rooms.global.startBattle(from, user, this.format, challenge.team, user.team, {
-			rated: this.isRated,
-			tour: this,
-		});
+		let room = Matchmaker.startBattle(from, user, this.format, challenge.team, user.team, {rated: this.isRated, tour: this});
 		if (!room) return;
 
 		this.pendingChallenges.set(challenge.from, null);
@@ -821,7 +863,7 @@ class Tournament {
 
 		this.isBracketInvalidated = true;
 		if (this.autoDisqualifyTimeout !== Infinity) this.runAutoDisqualify(this.room);
-		if (this.forceTimer) room.requestKickInactive(false);
+		if (this.forceTimer) room.battle.timer.start();
 		this.update();
 	}
 	forfeit(user) {
@@ -1012,7 +1054,7 @@ function createTournament(room, format, generator, playerCap, isRated, args, out
 	format = Tools.getFormat(format);
 	if (format.effectType !== 'Format' || !format.tournamentShow) {
 		output.errorReply(format.id + " is not a valid tournament format.");
-		output.errorReply("Valid formats: " + Object.values(Tools.data.Formats).filter(f => f.effectType === 'Format' && f.tournamentShow).map(format => format.name).join(", "));
+		output.errorReply("Valid formats: " + Object.values(Tools.formats).filter(f => f.tournamentShow).map(format => format.name).join(", "));
 		return;
 	}
 	if (!TournamentGenerators[toId(generator)]) {
@@ -1088,12 +1130,13 @@ let commands = {
 		acceptchallenge: function (tournament, user) {
 			tournament.acceptChallenge(user, this);
 		},
+		viewruleset: 'viewbanlist',
 		viewbanlist: function (tournament) {
 			if (!this.runBroadcast()) return;
 			if (tournament.banlist.length < 1) {
 				return this.errorReply("The tournament's banlist is empty.");
 			}
-			this.sendReplyBox("<b>This tournament's banlist:</b><br />" + Chat.escapeHTML(tournament.banlist.join(', ')));
+			this.sendReplyBox("This tournament includes:<br />" + tournament.getBanlist());
 		},
 	},
 	creation: {
@@ -1124,6 +1167,7 @@ let commands = {
 				this.privateModCommand("(" + user.name + " forcibly ended a tournament.)");
 			}
 		},
+		ruleset: 'banlist',
 		banlist: function (tournament, user, params, cmd) {
 			if (params.length < 1) {
 				return this.sendReply("Usage: " + cmd + " <comma-separated arguments>");
@@ -1132,11 +1176,11 @@ let commands = {
 				return this.errorReply("The banlist cannot be changed once the tournament has started.");
 			}
 			if (tournament.setBanlist(params, this)) {
-				const banlist = tournament.banlist.join(', ');
-				this.room.addRaw("<b>The tournament's banlist is now:</b> " + Chat.escapeHTML(banlist) + ".");
-				this.privateModCommand("(" + user.name + " set the tournament's banlist to " + banlist + ".)");
+				this.room.addRaw("<div class='infobox'>This tournament includes:<br />" + tournament.getBanlist() + "</div>");
+				this.privateModCommand("(" + user.name + " set the tournament's banlist to " + tournament.banlist.join(", ") + ".)");
 			}
 		},
+		clearruleset: 'clearbanlist',
 		clearbanlist: function (tournament, user) {
 			if (tournament.isTournamentStarted) {
 				return this.errorReply("The banlist cannot be changed once the tournament has started.");

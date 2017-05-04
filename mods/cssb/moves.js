@@ -32,7 +32,7 @@ exports.BattleMovedex = {
 	flametower: {
 		category: "Special",
 		accuracy: 100,
-		basePower: 75,
+		basePower: 80,
 		id: "flametower",
 		name: "Flame Tower",
 		isNonstandard: true,
@@ -58,7 +58,7 @@ exports.BattleMovedex = {
 	rainspear: {
 		category: "Special",
 		accuracy: 100,
-		basePower: 50,
+		basePower: 70,
 		id: "rainspear",
 		name: "Rain Spear",
 		isNonstandard: true,
@@ -99,7 +99,7 @@ exports.BattleMovedex = {
 			this.useMove('Aromatherapy', pokemon);
 		},
 		self: {
-			heal: [1, 4],
+			heal: [1, 2],
 		},
 		pp: 5,
 		priority: 0,
@@ -205,7 +205,7 @@ exports.BattleMovedex = {
 	//Poison
 	nuclearwaste: {
 		category: "Status",
-		accuracy: 90,
+		accuracy: 95,
 		id: "nuclearwaste",
 		name: "Nuclear Waste",
 		isNonstandard: true,
@@ -231,7 +231,7 @@ exports.BattleMovedex = {
 	terratremor: {
 		category: "Physical",
 		accuracy: 75,
-		basePower: 150,
+		basePower: 140,
 		id: "terratremor",
 		name: "Terratremor",
 		isNonstandard: true,
@@ -315,7 +315,7 @@ exports.BattleMovedex = {
 			this.useMove('Light Screen', pokemon);
 			this.useMove('Reflect', pokemon);
 		},
-		pp: 10,
+		pp: 5,
 		target: "Self",
 		type: "Psychic",
 	},
@@ -351,7 +351,7 @@ exports.BattleMovedex = {
 	//Rock
 	rockcannon: {
 		category: "Special",
-		basePower: 95,
+		basePower: 110,
 		accuracy: 100,
 		id: "rockcannon",
 		name: "Rock Cannon",
@@ -376,7 +376,7 @@ exports.BattleMovedex = {
 	//Ghost
 	spook: {
 		category: "Special",
-		basePower: 70,
+		basePower: 80,
 		accuracy: 100,
 		id: "spook",
 		name: "Spook",
@@ -391,7 +391,7 @@ exports.BattleMovedex = {
 		},
 		willCrit: true,
 		secondary: {
-			chance: 10,
+			chance: 30,
 			volatileStatus: 'Flinch',
 		},
 		pp: 10,
@@ -454,6 +454,11 @@ exports.BattleMovedex = {
 			}
 		},
 		pp: 10,
+		flags: {
+			contact: 1,
+			protect: 1,
+			mirror: 1,
+		},
 		priority: 1,
 		target: "normal",
 		type: "Dark",
@@ -462,7 +467,7 @@ exports.BattleMovedex = {
 	magnorang: {
 		category: "Physical",
 		accuracy: 90,
-		basePower: 100,
+		basePower: 120,
 		id: "magnorang",
 		name: "Magnorang",
 		isNonstandard: true,
@@ -478,6 +483,10 @@ exports.BattleMovedex = {
 			}
 		},
 		pp: 10,
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
 		target: "normal",
 		type: "Steel",
 	},
@@ -498,30 +507,128 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Powder", target);
 		},
 		secondary: {
-			chance: 10,
+			chance: 30,
 			status: 'par',
 		},
 		pp: 10,
 		target: "normal",
 		type: "Fairy",
 	},
-	//CUSTOM MADE CUSTOM MOVES
+	// CUSTOM MADE CUSTOM MOVES
+	// Ashley the Pikachu
 	rocketpunch: {
 		accuracy: 100,
 		basePower: 100,
 		category: "Special",
 		id: "rocketpunch",
 		isNonstandard: true,
+		flags: {
+			protect: true,
+		},
 		name: "Rocket Punch",
 		pp: 10,
 		priority: 1,
 		target: "Normal",
 		type: "Fire",
+		zMovePower: 180,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Flare Blitz", source);
 			this.add('-anim', source, "Mach Punch", target);
 		},
+	},
+	// Stellation
+	toxicendeavors: {
+		accuracy: 100,
+		basePower: 0,
+		damageCallback: function (pokemon, target) {
+			return target.hp - pokemon.hp;
+		},
+		category: "Physical",
+		id: "toxicendeavors",
+		name: "Toxic Endeavors",
+		pp: 0.625,
+		isNonstandard: true,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		onTry: function (pokemon, target) {
+			if (pokemon.hp >= target.hp) {
+				this.add('-immune', target, '[msg]');
+				return null;
+			}
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Poison Jab", target);
+		},
+		secondary: {
+			chance: 33,
+			status: 'tox',
+		},
+		target: "normal",
+		type: "Bug",
+		zMovePower: 180,
+		contestType: "Tough",
+	},
+	// Eelek
+	electrofryer: {
+		accuracy: 100,
+		basePower: 100,
+		category: "Special",
+		id: "electrofryer",
+		name: "Electro-Fryer",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		onEffectiveness: function (typeMod, type, move) {
+			return typeMod + this.getEffectiveness('Fire', type);
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Discharge", target);
+			this.add('-anim', target, "Sacred Fire", target);
+		},
+		onAfterHit: function (target, source) {
+			if (source.hp) {
+				let item = target.takeItem();
+				if (item) {
+					this.add('-enditem', target, item.name, '[from] move: Electro-Fryer', '[of] ' + source);
+				}
+			}
+		},
+		secondary: {
+			chance: 20,
+			onHit: function (target, source) {
+				let result = this.random(2);
+				if (result === 0) {
+					target.trySetStatus('brn', source);
+				} else {
+					target.trySetStatus('par', source);
+				}
+			},
+		},
+		target: "normal",
+		type: "Electric",
+		zMovePower: 180,
+		ignoreImmunity: {'Electric': true},
+	},
+	// Gest1000
+	diamonddust: {
+		accuracy: 100,
+		basePower: 130,
+		category: "Special",
+		id: "diamonddust",
+		name: "Diamond Dust",
+		pp: 5,
+		priority: 0,
+		flags: {charge: 1, protect: 1, mirror: 1},
+		secondary: {
+			chance: 30,
+			status: "frz",
+		},
+		target: "normal",
+		type: "Ice",
+		zMovePower: 210,
 	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer

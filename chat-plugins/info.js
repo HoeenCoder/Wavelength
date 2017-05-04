@@ -297,6 +297,34 @@ exports.commands = {
 	},
 	ipsearchhelp: ["/ipsearch [ip|range|host] - Find all users with specified IP, IP range, or host. Requires: & ~"],
 
+	checkchallenges: function (target, room, user) {
+		if (!this.can('ban', null, room)) return false;
+		if (!this.runBroadcast()) return;
+		if (!this.broadcasting) {
+			this.errorReply(`This command must be broadcast:`);
+			return this.parse(`/help checkchallenges`);
+		}
+		target = this.splitTarget(target);
+		const user1 = this.targetUser;
+		const user2 = Users.get(target);
+		if (!user1 || !user2 || user1 === user2) return this.parse(`/help checkchallenges`);
+		if (!(user1 in room.users) || !(user2 in room.users)) {
+			return this.errorReply(`Both users must be in this room.`);
+		}
+		let challenges = [];
+		if (user1.challengeTo && user1.challengeTo.to === user2.userid) {
+			challenges.push(Chat.html`${user1.name} is challenging ${user2.name} in ${Tools.getFormat(user1.challengeTo.format).name}.`);
+		}
+		if (user2.challengeTo && user2.challengeTo.to === user1.userid) {
+			challenges.push(Chat.html`${user2.name} is challenging ${user1.name} in ${Tools.getFormat(user2.challengeTo.format).name}.`);
+		}
+		if (!challenges.length) {
+			return this.sendReplyBox(Chat.html`${user1.name} and ${user2.name} are not challenging each other.`);
+		}
+		this.sendReplyBox(challenges.join(`<br />`));
+	},
+	checkchallengeshelp: ["!checkchallenges [user1], [user2] - Check if the specified users are challenging each other. Requires: @ * # & ~"],
+
 	/*********************************************************
 	 * Client fallback
 	 *********************************************************/
@@ -1307,7 +1335,7 @@ exports.commands = {
 		let format = Tools.getFormat(targetId);
 		if (format.effectType === 'Format') formatList = [targetId];
 		if (!formatList) {
-			formatList = Object.keys(Tools.data.Formats).filter(formatid => Tools.data.Formats[formatid].effectType === 'Format');
+			formatList = Object.keys(Tools.formats);
 		}
 
 		// Filter formats and group by section
@@ -1426,20 +1454,20 @@ exports.commands = {
 	'!processes': true,
 	processes: function (target, room, user) {
 		if (!this.can('lockdown')) return false;
-		let buf = "<strong>" + process.pid + "</strong> - Main<br />";
-		for (let i in Sockets.workers) {
-			let worker = Sockets.workers[i];
-			buf += "<strong>" + (worker.pid || worker.process.pid) + "</strong> - Sockets " + i + "<br />";
-		}
+
+		let buf = `<strong>${process.pid}</strong> - Main<br />`;
+		Sockets.workers.forEach(worker => {
+			buf += `<strong>${worker.pid || worker.process.pid}</strong> - Sockets ${worker.id}<br />`;
+		});
 
 		const ProcessManager = require('../process-manager');
-		for (let managerData of ProcessManager.cache) {
+		ProcessManager.cache.forEach((processManager, execFile) => {
 			let i = 0;
-			let processType = path.basename(managerData[1]);
-			for (let process of managerData[0].processes) {
-				buf += "<strong>" + process.process.pid + "</strong> - " + processType + " " + (i++) + "<br />";
-			}
-		}
+			processManager.processes.forEach(process => {
+				buf += `<strong>${process.process.pid}</strong> - ${path.baseName(execFile)} ${i++}<br />`;
+			});
+		});
+
 		this.sendReplyBox(buf);
 	},
 

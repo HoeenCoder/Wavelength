@@ -3,8 +3,6 @@
  * By bumbadadabum and Zarel.
  */
 
-// Refactored by Lord Haji for SpacialGaze
-
 'use strict';
 
 class Poll {
@@ -83,15 +81,15 @@ class Poll {
 	generateResults(ended, option) {
 		let icon = '<span style="border: 1px solid #' + (ended ? '777; color: #555' : '3B763B; color: #2D5A2D') + '; border-radius: 4px; padding: 0 3px; box-shadow: 0px 0px 2px rgba(255, 255, 255, 0.8);"><i class="fa fa-bar-chart"></i> ' + (ended ? "Poll ended" : "Poll") + '</span>';
 		let totalVotes = '<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Votes: ' + this.totalVotes + '] (Started by ' + this.startedUser + ' ' + Chat.toDurationString(Date.now() - this.startTime) + ' ago.)</span></div>';
-		let output = '<div style="background: rgba(0, 0, 0, 0.4); width: 100%; border: 1px solid #79330A; border-radius: 20px;"><div class="poll-td" style="background: rgba(255, 174, 127, 0.8); background: linear-gradient(rgba(70, 173, 212, 0.5), rgba(126, 192, 238, 0.8)); border-bottom: 1px solid #79330A; border-top-right-radius: 20px; border-top-left-radius: 20px; text-shadow: 0px 0px 2px #EEE; box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8) inset, 0px 0px 1px rgba(0, 0, 0, 0.5) inset;">' + icon + ' <strong style="font-size: 11pt; color: #512106;">' + this.getQuestionMarkup() + '</strong><img src="https://pldh.net/media/pokecons_action/385.gif" width="32" height="32">';
+		let output = '<div style="background: rgba(0, 0, 0, 0.4); width: 100%; border: 1px solid #FFFF00; border-radius: 20px;"><div class="poll-td" style="background: rgba(255, 174, 127, 0.8); background: linear-gradient(rgba(70, 173, 212, 0.5), rgba(126, 192, 238, 0.8)); border-bottom: 1px solid #79330A; border-top-right-radius: 20px; border-top-left-radius: 20px; text-shadow: 0px 0px 2px #EEE; box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8) inset, 0px 0px 1px rgba(0, 0, 0, 0.5) inset;">' + icon + ' <strong style="font-size: 11pt; color: #512106;">' + this.getQuestionMarkup() + '</strong><img src="https://pldh.net/media/pokecons_action/385.gif" width="32" height="32">';
 		output += totalVotes;
-		output += '<div style="padding: 8px 15px;"><font color="grey"><small><center>(Options with 0 votes are not shown)</center></small></font>';
+		output += '<div style="padding: 8px 15px;"><font color="yellow"><small><center>(Options with 0 votes are not shown)</center></small></font>';
 		output += '<table cellspacing="0" style="width: 100%;margin-top: 3px;">';
 		let iter = this.options.entries();
 
 		let i = iter.next();
 		let c = 0;
-		let colors = ['#00FFFF', '#00EEEE', '#00CDCD'];
+		let colors = ['#00FFFF', '#66CCCC', '#388E8E'];
 		while (!i.done) {
 			if (i.value[1].votes && i.value[1].votes !== 0) {
 				let percentage = Math.round((i.value[1].votes * 100) / (this.totalVotes || 1));
@@ -100,7 +98,7 @@ class Poll {
 			i = iter.next();
 			c++;
 		}
-		if (option === 0 && !ended) output += '<div><small>(You can\'t vote after viewing results)</small></div>';
+		if (option === 0 && !ended) output += '<div style="text-align:center; color:yellow;"><small>(You can\'t vote after viewing results)</small></div>';
 		output += '</table>';
 
 		return output;
@@ -193,7 +191,7 @@ class Poll {
 		let results = this.generateResults(true);
 
 		this.room.send('|uhtmlchange|poll' + this.room.pollNumber + '|<div class="infobox">(The poll has ended &ndash; scroll down to see the results)</div>');
-		this.room.add('|html|' + results);
+		this.room.add('|html|' + results).update();
 	}
 }
 
@@ -447,18 +445,19 @@ exports.commands = {
 		if (!this.can('minigame', null, room)) return false;
 		if (room.poll) return this.errorReply("There is already a poll in progress in this room.");
 		let options = [];
-		for (let key in Tools.data.Formats) {
-			if (!Tools.data.Formats[key].mod) continue;
-			if (!Tools.data.Formats[key].searchShow) continue;
+		for (let key in Tools.formats) {
+			if (!Tools.formats[key].mod) continue;
+			if (!Tools.formats[key].searchShow) continue;
 			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'sgssb', 'pmd', 'cssb'];
-				if (commonMods.indexOf(Tools.data.Formats[key].mod) === -1) continue;
+				let commonMods = ['gen7', 'sgssb', 'pmd', 'cssb', 'metronome'];
+				if (commonMods.indexOf(Tools.formats[key].mod) === -1) continue;
 			}
-			options.push(Tools.data.Formats[key].name);
+			options.push(Tools.formats[key].name);
 		}
 		room.poll = new Poll(room, {
 			source: 'What should the next tournament tier be?',
 			supportHTML: false,
+			username: user.name,
 		}, options);
 		room.poll.display();
 		this.logEntry("" + user.name + " used " + message);

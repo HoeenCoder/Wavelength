@@ -558,4 +558,211 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Fairy",
 	},
+	//Sleep Seed
+	sleepseed: {
+		accuracy: true,
+		category: "Status",
+		id: "sleepseed",
+		isNonstandard: true,
+		name: "Sleep Seed",
+		basePower: 0,
+		pp: 0.625,
+		priority: 0,
+		flags: {authentic: 1, bullet: 1, snatch: 1},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Bullet Seed", target);
+			this.add('-anim', target, "Rest", target);
+		},
+		status: 'slp',
+		target: "normal",
+		type: "Normal",
+	},
+	//Quick Seed
+	quickseed: {
+		id: "quickseed",
+		name: "Quick Seed",
+		accuracy: true,
+		category: "Status",
+		isNonstandard: true,
+		pp: 0.625,
+		flags: {snatch: 1},
+		onPrepareHit: function (source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Agility", source);
+		},
+		boosts: {spe: 2},
+		basePower: 0,
+		priority: 0,
+		secondary: false,
+		target: "self",
+		type: "Grass",
+	},
+	//Blinker Seed
+	blinkerseed: {
+		id: "blinkerseed",
+		name: "Blinker Seed",
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		isNonstandard: true,
+		pp: 0.625,
+		flags: {snatch: 1},
+		onPrepareHit: function (source, target) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Smokescreen", target);
+		},
+		boosts: {accuracy: -1},
+		priority: 0,
+		secondary: false,
+		target: "self",
+		type: "Grass",
+	},
+	//X-Eye Seed
+	xeyeseed: {
+		id: "xeyeseed",
+		name: "X-Eye Seed",
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		isNonstandard: true,
+		pp: 0.625,
+		priority: 0,
+		secondary: false,
+		flags: {snatch: 1},
+		onPrepareHit: function (source, target) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Confuse Ray", target);
+			this.add('-anim', source, "Substitute", source);
+		},
+		self: {
+			volatileStatus: "substitute",
+		},
+		volatileStatus: "confusion",
+		target: "normal",
+		type: "Grass",
+	},
+	//Slip Seed
+	slipseed: {
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		desc: "Causes self to become a Water type.",
+		shortDesc: "Changes the self's type to Water.",
+		id: "slipseed",
+		name: "Slip Seed",
+		pp: 0.625,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, mystery: 1},
+		onHit: function (target) {
+			if (!target.setType('Water')) return false;
+			this.add('-start', target, 'typechange', 'Water');
+		},
+		onPrepareHit: function (source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Soak", source);
+		},
+		secondary: false,
+		target: "self",
+		type: "Water",
+	},
+	//Decoy Orb
+	decoyorb: {
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		pp: 0.625,
+		id: "decoyorb",
+		name: "Decoy Orb",
+		priority: 0,
+		//Substitute
+		volatileStatus: 'Substitute',
+		secondary: false,
+		flags: {snatch: 1},
+		onPrepareHit: function (source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Substitute", source);
+		},
+		target: "self",
+		type: "Normal",
+	},
+	//Pounce Orb
+	pounceorb: {
+		accuracy: true,
+		basePower: 60,
+		pp: 0.625,
+		category: "Special",
+		id: "pounceorb",
+		name: "Pounce Orb",
+		priority: 0,
+		secondary: false,
+		flags: {protect: 1},
+		//Makes the target switch out
+		forceSwitch: true,
+		onPrepareHit: function (source, target) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Roar", target);
+			this.add('-anim', source, "Dragon Tail", target);
+		},
+		target: "normal",
+		type: "Normal",
+	},
+	//Sizebust Orb
+	sizebustorb: {
+		id: "sizebustorb",
+		name: "Sizebust Orb",
+		pp: 0.625,
+		basePower: 0,
+		basePowerCallback: function (pokemon, target) {
+			let targetWeight = target.getWeight();
+			if (targetWeight >= 200) {
+				this.debug('120 bp');
+				return 120;
+			}
+			if (targetWeight >= 100) {
+				this.debug('100 bp');
+				return 100;
+			}
+			if (targetWeight >= 50) {
+				this.debug('80 bp');
+				return 80;
+			}
+			if (targetWeight >= 25) {
+				this.debug('60 bp');
+				return 60;
+			}
+			if (targetWeight >= 10) {
+				this.debug('40 bp');
+				return 40;
+			}
+			this.debug('20 bp');
+			return 20;
+		},
+		category: "Special",
+		priority: 0,
+		accuracy: true,
+		flags: {protect: 1},
+		target: "normal",
+		type: "Grass",
+	},
+	//Transfer Orb
+	transferorb: {
+		id: "transferorb",
+		name: "Transfer Orb",
+		pp: 0.625,
+		basePower: 0,
+		//Makes target transfer into user
+		onHit: function (target, pokemon) {
+			if (!target.transformInto(pokemon, target)) {
+				return false;
+			}
+		},
+		accuracy: true,
+		flags: {snatch: 1},
+		priority: 0,
+		category: "Status",
+		target: "normal",
+		type: "Normal",
+	},
 };
+

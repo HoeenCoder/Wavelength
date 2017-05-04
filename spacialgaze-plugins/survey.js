@@ -161,6 +161,12 @@ function validateAnswer(room, message) {
 }
 
 exports.commands = {
+	sa: function (target, room, user) {
+		this.parse('/survey answer ' + target);
+	},
+	sahelp: function (target, room, user) {
+		this.parse('/help survey answer');
+	},
 	survey: {
 		htmlcreate: 'new',
 		create: 'new',
@@ -190,7 +196,7 @@ exports.commands = {
 			target = Chat.escapeHTML(target);
 			room.survey.answer(user, target);
 		},
-		answerhelp: ["/survey answer [answer] - Answer a survey."],
+		answerhelp: ["/survey answer [answer] or /sa [answer] - Answer a survey."],
 
 		results: function (target, room, user, connection, cmd, message) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
@@ -248,13 +254,46 @@ exports.commands = {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!room.survey) return this.errorReply("There is no poll running in this room.");
-			if (room.survey.timeout) clearTimeout(room.poll.timeout);
+			if (room.survey.timeout) clearTimeout(room.survey.timeout);
 
 			room.survey.end();
 			delete room.survey;
 			return this.privateModCommand("(The survey was ended by " + user.name + ".)");
 		},
 		endhelp: ["/survey end - Ends a survey and displays the results. Requires: % @ # & ~"],
+
+		timer: function (target, room, user) {
+			if (!room.survey) return this.errorReply("There is no survey running in this room.");
+
+			if (target) {
+				if (!this.can('minigame', null, room)) return false;
+				if (target === 'clear' || target === 'off') {
+					if (!room.survey.timeout) return this.errorReply("There is no timer to clear.");
+					clearTimeout(room.survey.timeout);
+					room.survey.timeout = null;
+					room.survey.timeoutMins = 0;
+					return this.add("The survey timer was turned off.");
+				}
+				let timeout = parseFloat(target);
+				if (isNaN(timeout) || timeout <= 0 || timeout > 0x7FFFFFFF) return this.errorReply("Invalid time given.");
+				if (room.survey.timeout) clearTimeout(room.survey.timeout);
+				room.survey.timeoutMins = timeout;
+				room.survey.timeout = setTimeout(() => {
+					room.survey.end();
+					delete room.survey;
+				}, (timeout * 60000));
+				room.add("The survey timer was turned on: the survey will end in " + timeout + " minute(s).");
+				return this.privateModCommand("(The survey timer was set to " + timeout + " minute(s) by " + user.name + ".)");
+			} else {
+				if (!this.runBroadcast()) return;
+				if (room.survey.timeout) {
+					return this.sendReply("The survey timer is on and will end in " + room.survey.timeoutMins + " minute(s).");
+				} else {
+					return this.sendReply("The survey timer is off.");
+				}
+			}
+		},
+		timerhelp: ["/survey timer [minutes] - Sets the survey to automatically end after [minutes] minutes. Requires: % @ * # & ~", "/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~"],
 
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help survey');
@@ -268,5 +307,6 @@ exports.commands = {
 		"/survey display - Display the survey.",
 		"/survey remove [user] - Removes a users reply and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
 		"/survey end - Ends a survey and displays the results. Requires: % @ # & ~",
+		"/survey timer [time in minutes] - Sets a timer for the survey to automatically end. Require % @ # & ~",
 	],
 };

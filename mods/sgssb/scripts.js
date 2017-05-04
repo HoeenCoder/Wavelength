@@ -420,6 +420,37 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
+			"+VXN": {
+				species: "Rayquaza",
+				ability: "Wonder Guard",
+				item: "Normalium Z",
+				gender: "M",
+				moves: ['Splash', 'Happy Hour', 'Celebrate',
+				],
+				signatureMove: "Crash",
+				evs: {
+					atk: 252,
+					spe: 252,
+					spd: 4,
+				},
+				nature: "Jolly",
+			},
+			"+Insist": {
+				species: "Ludicolo",
+				ability: "Primordial Sea",
+				item: "Life Orb",
+				gender: "M",
+				shiny: true,
+				moves: ['freezedry', 'gigadrain', 'focusblast'],
+				baseSignatureMove: "aquasubscribe",
+				signatureMove: "Aqua Subscribe",
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: "Timid",
+			},
 		};
 		// convert moves to ids.
 		for (let k in sets) {

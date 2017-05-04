@@ -478,6 +478,7 @@ exports.SG = {
 			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1))) {
 				battle.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
 				battle[faintData.source.side.id].pokemon[mon.slot].level++;
+				levelUps++;
 			}
 			battle[faintData.source.side.id].pokemon[mon.slot].exp += cur.exp;
 			out += "|" + levelUps;

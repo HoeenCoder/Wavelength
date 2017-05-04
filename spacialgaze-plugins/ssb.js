@@ -96,13 +96,18 @@ function validate(me, targetUser, quiet) {
 	}
 	//moves
 	for (let i in targetUser.movepool) {
-		if (!Tools.getMove(targetUser.movepool[i]).exists) {
-			//Check custom first!
-			if (!targetUser.selfCustomMove || toId(targetUser.selfCustomMove) !== targetUser.movepool[i] || !targetUser.bought.cMove) {
-				valid = false;
-				if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" was invalid.');
-				targetUser.removeMove(targetUser.movepool[i]);
-			}
+		if (!Tools.mod('cssb').getMove(targetUser.movepool[i]).exists) {
+			valid = false;
+			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" does not exist.');
+			targetUser.removeMove(targetUser.movepool[i]);
+		}
+	}
+	//Check customs to make sure the user can use them.
+	if (targetUser.cMove) {
+		if (customMovepool.map(i => {return toId(i);}).indexOf(toId(targetUser.cMove)) === -1 && (toId(targetUser.selfCustomMove) !== toId(targetUser.cMove) || !targetUser.bought.cMove)) {
+			valid = false;
+			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.cMove + '" is a self-made custom move exclusive to another user.');
+			targetUser.cMove = false;
 		}
 	}
 	return valid;
@@ -149,7 +154,7 @@ function buildMenu(userid) {
 	}
 	output += '</div></div>';
 	//output += '<div class="setcol setcol-stats"><div class="setrow"><label>Stats</label><button class="textbox setstats" name="send" value="/ssb edit stats"><span class="statrow statrow-head"><label></label><span class="statgraph"></span><em>EV</em></span><span class="statrow"><label>HP</label><span class="statgraph"><span style="width:25.248579545454547px; background:hsl(59,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Atk</label><span class="statgraph"><span style="width:19.94047619047619px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Def</label><span class="statgraph"><span style="width:19.642857142857142px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>SpA</label><span class="statgraph"><span style="width:39.732142857142854px; background:hsl(67,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>SpD</label><span class="statgraph"><span style="width:19.791666666666668px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Spe</label><span class="statgraph"><span style="width:29.017857142857142px; background:hsl(49,40%,75%);"></span></span><em>?</em></span></button></div></div></div>';
-	output += '<div style="text-align:center"><button class="button" name="send" value="/ssb custom">Custom Move List</button> | <button class="button" name="send" value="/ssb toggle">' + (SG.ssb[userid].active ? 'Deactive your pokemon' : 'Activate your pokemon') + '</button></div></div>';
+	output += '<div style="text-align:center"><button class="button" name="send" value="/ssb custom">Custom Move List</button> | <button class="button" name="send" value="/ssb toggle">' + (SG.ssb[userid].active ? 'Deactivate your pokemon' : 'Activate your pokemon') + '</button></div></div>';
 	return output;
 }
 
@@ -417,10 +422,7 @@ class SSB {
 	}
 	setCustomMove(move) {
 		move = toId(move);
-		let customIds = [];
-		for (let i = 0; i < customMovepool.length; i++) {
-			customIds.push(toId(customMovepool[i]));
-		}
+		let customIds = customMovepool.map(move => {return toId(move);});
 		if (customIds.indexOf(move) < 0) {
 			//check for self-made custom move
 			if (this.selfCustomMove && toId(this.selfCustomMove) === move && this.bought.cMove) {

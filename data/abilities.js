@@ -47,7 +47,7 @@ exports.BattleAbilities = {
 		},
 		id: "adaptability",
 		name: "Adaptability",
-		rating: 3.5,
+		rating: 4,
 		num: 91,
 	},
 	"aftermath": {
@@ -101,15 +101,25 @@ exports.BattleAbilities = {
 		desc: "The power of this Pokemon's move is multiplied by 1.3 if it is the last to move in a turn. Does not affect Doom Desire and Future Sight.",
 		shortDesc: "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
 		onBasePowerPriority: 8,
-		onBasePower: function (basePower, attacker, defender, move) {
-			if (!this.willMove(defender)) {
+		onBasePower: function (basePower, pokemon) {
+			let boosted = true;
+			let allActives = pokemon.side.active.concat(pokemon.side.foe.active);
+			for (let i = 0; i < allActives.length; i++) {
+				let target = allActives[i];
+				if (target === pokemon) continue;
+				if (this.willMove(target)) {
+					boosted = false;
+					break;
+				}
+			}
+			if (boosted) {
 				this.debug('Analytic boost');
 				return this.chainModify([0x14CD, 0x1000]);
 			}
 		},
 		id: "analytic",
 		name: "Analytic",
-		rating: 2,
+		rating: 2.5,
 		num: 148,
 	},
 	"angerpoint": {
@@ -409,6 +419,7 @@ exports.BattleAbilities = {
 		desc: "This Pokemon's type changes to match the type of the last move that hit it, unless that type is already one of its types. This effect applies after all hits from a multi-hit move; Sheer Force prevents it from activating if the move has a secondary effect.",
 		shortDesc: "This Pokemon's type changes to the type of a move it's hit by, unless it has the type.",
 		onAfterMoveSecondary: function (target, source, move) {
+			if (!target.hp) return;
 			let type = move.type;
 			if (target.isActive && move.effectType === 'Move' && move.category !== 'Status' && type !== '???' && !target.hasType(type)) {
 				if (!target.setType(type)) return false;
@@ -558,10 +569,10 @@ exports.BattleAbilities = {
 		id: "dancer",
 		onAnyAfterMove: function (source, target, move) {
 			if (!this.effectData.target.hp || source === this.effectData.target || move.isExternal) return;
-			if (move.id.includes('dance') && move.id !== 'raindance') {
+			if (move.flags['dance']) {
 				this.faintMessages();
 				this.add('-activate', this.effectData.target, 'ability: Dancer');
-				this.runMove(move, this.effectData.target, 0, this.getAbility('dancer'), undefined, true);
+				this.runMove(move.id, this.effectData.target, 0, this.getAbility('dancer'), undefined, true);
 			}
 		},
 		name: "Dancer",
@@ -1215,7 +1226,7 @@ exports.BattleAbilities = {
 		shortDesc: "When this Pokemon has 1/2 or less of its maximum HP, it uses certain Berries early.",
 		id: "gluttony",
 		name: "Gluttony",
-		rating: 1,
+		rating: 1.5,
 		num: 82,
 	},
 	"gooey": {
@@ -2990,7 +3001,7 @@ exports.BattleAbilities = {
 		shortDesc: "This Pokemon is not affected by the secondary effect of another Pokemon's attack.",
 		onModifySecondaries: function (secondaries) {
 			this.debug('Shield Dust prevent secondary');
-			return secondaries.filter(effect => !!effect.self);
+			return secondaries.filter(effect => !!(effect.self || effect.dustproof));
 		},
 		id: "shielddust",
 		name: "Shield Dust",
@@ -3197,7 +3208,7 @@ exports.BattleAbilities = {
 	"soundproof": {
 		shortDesc: "This Pokemon is immune to sound-based moves, including Heal Bell.",
 		onTryHit: function (target, source, move) {
-			if (target !== source && move.flags['sound']) {
+			if (move.flags['sound']) {
 				this.add('-immune', target, '[msg]', '[from] ability: Soundproof');
 				return null;
 			}
@@ -3259,7 +3270,7 @@ exports.BattleAbilities = {
 		},
 		id: "stamina",
 		name: "Stamina",
-		rating: 1.5,
+		rating: 3,
 		num: 192,
 	},
 	"stancechange": {
@@ -3532,7 +3543,7 @@ exports.BattleAbilities = {
 		},
 		id: "synchronize",
 		name: "Synchronize",
-		rating: 2.5,
+		rating: 2,
 		num: 28,
 	},
 	"tangledfeet": {

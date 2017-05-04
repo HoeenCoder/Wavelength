@@ -192,7 +192,7 @@ exports.commands = {
 	},
 	movesearchhelp: [
 		"/movesearch [parameter], [parameter], [parameter], ... - Searches for moves that fulfill the selected criteria.",
-		"Search categories are: type, category, contest condition, flag, status inflicted, type boosted, and numeric range for base power, pp, and accuracy.",
+		"Search categories are: type, category, gen, contest condition, flag, status inflicted, type boosted, and numeric range for base power, pp, and accuracy.",
 		"Types must be followed by ' type', e.g., 'dragon type'.",
 		"Stat boosts must be preceded with 'boosts ', e.g., 'boosts attack' searches for moves that boost the attack stat.",
 		"Inequality ranges use the characters '>' and '<' though they behave as '≥' and '≤', e.g., 'bp > 100' searches for all moves equal to and greater than 100 base power.",
@@ -297,7 +297,7 @@ function runDexsearch(target, cmd, canAll, message) {
 	let allTiers = {'uber':'Uber', 'ou':'OU', 'bl':"BL", 'uu':'UU', 'bl2':"BL2", 'ru':'RU', 'bl3':"BL3", 'nu':'NU', 'bl4':"BL4", 'pu':'PU', 'nfe':'NFE', 'lc uber':"LC Uber", 'lc':'LC', 'cap':"CAP"};
 	let allColours = {'green':1, 'red':1, 'blue':1, 'white':1, 'brown':1, 'yellow':1, 'purple':1, 'pink':1, 'gray':1, 'black':1};
 	let allEggGroups = {'amorphous':'Amorphous', 'bug':'Bug', 'ditto':'Ditto', 'dragon':'Dragon', 'fairy':'Fairy', 'field':'Field', 'flying':'Flying', 'grass':'Grass', 'humanlike':'Human-Like', 'mineral':'Mineral', 'monster':'Monster', 'undiscovered':'Undiscovered', 'water1':'Water 1', 'water2':'Water 2', 'water3':'Water 3'};
-	let allStats = {'hp':1, 'atk':1, 'def':1, 'spa':1, 'spd':1, 'spe':1, 'bst':1};
+	let allStats = {'hp':1, 'atk':1, 'def':1, 'spa':1, 'spd':1, 'spe':1, 'bst':1, 'weight':1};
 	let showAll = false;
 	let megaSearch = null;
 	let capSearch = null;
@@ -537,6 +537,7 @@ function runDexsearch(target, cmd, canAll, message) {
 				case 'specialdefense': stat = 'spd'; break;
 				case 'spdef': stat = 'spd'; break;
 				case 'speed': stat = 'spe'; break;
+				case 'wt': stat = 'weight'; break;
 				}
 				if (!(stat in allStats)) return {reply: "'" + escapeHTML(target) + "' did not contain a valid stat."};
 				if (!orGroup.stats[stat]) orGroup.stats[stat] = {};
@@ -564,6 +565,7 @@ function runDexsearch(target, cmd, canAll, message) {
 	const accumulateKeyCount = (count, searchData) => count + (typeof searchData === 'object' ? Object.keys(searchData).length : 0);
 	searches.sort((a, b) => Object.values(a).reduce(accumulateKeyCount, 0) - Object.values(b).reduce(accumulateKeyCount, 0));
 
+	let lsetData = {};
 	for (let group = 0; group < searches.length; group++) {
 		let alts = searches[group];
 		if (alts.skip) continue;
@@ -590,7 +592,7 @@ function runDexsearch(target, cmd, canAll, message) {
 				if (alts.tiers[dex[mon].tier]) continue;
 				if (Object.values(alts.tiers).includes(false) && alts.tiers[dex[mon].tier] !== false) continue;
 				// some LC Pokemon are also in other tiers and need to be handled separately
-				if (alts.tiers.LC && !dex[mon].prevo && dex[mon].nfe && dex[mon].tier !== 'LC Uber' && !Tools.data.Formats.lc.banlist.includes(dex[mon].species)) continue;
+				if (alts.tiers.LC && !dex[mon].prevo && dex[mon].nfe && dex[mon].tier !== 'LC Uber' && !Tools.formats.lc.banlist.includes(dex[mon].species)) continue;
 			}
 
 			for (let type in alts.types) {
@@ -627,6 +629,8 @@ function runDexsearch(target, cmd, canAll, message) {
 					for (let monStats in dex[mon].baseStats) {
 						monStat += dex[mon].baseStats[monStats];
 					}
+				} else if (stat === 'weight') {
+					monStat = dex[mon].weightkg;
 				} else {
 					monStat = dex[mon].baseStats[stat];
 				}
@@ -652,8 +656,8 @@ function runDexsearch(target, cmd, canAll, message) {
 			if (matched) continue;
 
 			for (let move in alts.moves) {
-				let lsetData = {fastCheck: true, set: {}};
-				if (!TeamValidator('gen7ou').checkLearnset(move, mon, lsetData) === alts.moves[move]) {
+				if (!lsetData[mon]) lsetData[mon] = {fastCheck: true, set: {}};
+				if (!TeamValidator('gen7ou').checkLearnset(move, mon, lsetData[mon]) === alts.moves[move]) {
 					matched = true;
 					break;
 				}
@@ -744,6 +748,26 @@ function runMovesearch(target, cmd, canAll, message) {
 			if ((searches['flags'][target] && isNotSearch) || (searches['flags'][target] === false && !isNotSearch)) return {reply: 'A search cannot both exclude and include \'' + target + '\'.'};
 			searches['flags'][target] = !isNotSearch;
 			continue;
+		}
+
+		if (target.startsWith('gen')) {
+			let targetInt = parseInt(target.substr(3));
+			if (targetInt && targetInt < 8 && targetInt > 0) {
+				if (searches['gens']) {
+					if (searches['gens'][targetInt]) {
+						if (searches['gens'][targetInt] === isNotSearch) {
+							return {reply: "A search cannot both include and exclude '" + escapeHTML(target) + "'."};
+						} else {
+							return {reply: "The search included '" + escapeHTML(target) + "' more than once."};
+						}
+					} else {
+						return {reply: "A move cannot have multiple gens."};
+					}
+				}
+				searches['gens'] = {};
+				searches['gens'][targetInt] = !isNotSearch;
+				continue;
+			}
 		}
 
 		if (target === 'all') {
@@ -965,6 +989,17 @@ function runMovesearch(target, cmd, canAll, message) {
 						} else {
 							if (dex[move].secondary && dex[move].secondaries) delete dex[move];
 						}
+					}
+				}
+			}
+			break;
+
+		case 'gens':
+			for (let gen in searches[search]) {
+				let targetGen = parseInt(gen);
+				for (let move in dex) {
+					if ((dex[move].gen === targetGen) !== searches[search][gen]) {
+						delete dex[move];
 					}
 				}
 			}
