@@ -162,9 +162,9 @@ exports.commands = {
 			});
 			if (demoted.length) Rooms.global.writeChatRoomData();
 			if (targetUser) targetUser.popup(`|html|<center>${user.name} has banned you from owning rooms. (${(target[2] ? `(${target[2].trim()})` : ``)})<br/>You have been automatcally demoted from room owner in all rooms you had it in (if any).<br/>To appeal your room ownership blacklist, PM a & or ~.</center>`);
-			if (Rooms('upperstaff')) Monitor.adminlog(`${target[1]} was banned from owning rooms by ${user.name} ${(demoted.length ? `and demoted from # in ${demoted.join(', ')}` : ``)}. ${(target[2] ? `(${target[2]})` : ``)}`);
+			if (Rooms('upperstaff')) Monitor.adminlog(`${target[1]} was banned from owning rooms by ${user.name} ${(demoted.length ? `and demoted from # in ${demoted.join(', ')}` : ``)}. ${(target[2] ? `(${target[2].trim()})` : ``)}`);
 			if (targetUser && targetUser.trusted) Monitor.log("[CrisisMonitor] Trusted user " + targetUser.name + (targetUser.trusted !== targetUser.userid ? " (" + targetUser.trusted + ")" : "") + " was banned from owning rooms by " + user.name + ", and should probably be demoted.");
-			this.globalModlog("ROOMOWNERBAN", targetUser, " by " + user.name + (target[2] ? ": " + target[2] : ""));
+			this.globalModlog("ROOMOWNERBAN", (targetUser || target[1]), " by " + user.name + (target[2] ? ": " + target[2] : ""));
 			return this.sendReply(`${target[1]} was banned from owning rooms.`);
 			//break;
 		case 'unblacklist':
@@ -195,11 +195,13 @@ exports.commands = {
 		case 'open':
 			if (allowRequests) return this.errorReply(`Room Requests are already open.`);
 			allowRequests = true;
+			Monitor.adminlog(`${user.name} opened room requests`);
 			return this.sendReply(`Room Requests are now open.`);
 			//break;
 		case 'close':
 			if (!allowRequests) return this.errorReply(`Room Requests are already closed.`);
 			allowRequests = false;
+			Monitor.adminlog(`${user.name} closed room requests`);
 			return this.sendReply(`Room Requests are now closed.`);
 			//break;
 		default:
