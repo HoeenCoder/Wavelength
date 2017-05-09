@@ -56,6 +56,8 @@ exports.commands = {
 			'<b>/pmall [message]</b> - sends a pm to all users connected to SG <br />' +
 			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to SG <br />' +
 			'<b>/greendeclare [message] or /reddeclare [message]</b> - Anonymously announces a message in a room <br />' +
+			'<b>/roomrequests - Manage room requests, use /help roomrequests for more info. <br />' +
+			'<b>/checkroomrequest [user] - Check a room request <br />' +
 			'& all lower commands. </font>'
 		);
 	},
