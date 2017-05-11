@@ -20,7 +20,7 @@
  *   rooms.js. There's also a global room which every user is in, and
  *   handles miscellaneous things like welcoming the user.
  *
- * Tools - from tools.js
+ * Dex - from sim/dex.js
  *
  *   Handles getting data about Pokemon, items, etc.
  *
@@ -94,8 +94,8 @@ global.Db = require('nef')(require('nef-fs')('config/db'));
 
 global.Monitor = require('./monitor');
 
-global.Tools = require('./tools');
-global.toId = Tools.getId;
+global.Dex = require('./sim/dex');
+global.toId = Dex.getId;
 
 global.LoginServer = require('./loginserver');
 
@@ -187,9 +187,6 @@ if (require.main === module) {
 /*********************************************************
  * Set up our last global
  *********************************************************/
-
-// Generate and cache the format list.
-Tools.includeFormats();
 
 global.TeamValidator = require('./team-validator');
 TeamValidator.PM.spawn();

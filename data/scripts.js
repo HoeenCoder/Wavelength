@@ -1,6 +1,6 @@
 'use strict';
 
-const PRNG = require('./../prng');
+const PRNG = require('./../sim/prng');
 const CHOOSABLE_TARGETS = new Set(['normal', 'any', 'adjacentAlly', 'adjacentAllyOrSelf', 'adjacentFoe']);
 
 exports.BattleScripts = {
@@ -1033,7 +1033,7 @@ exports.BattleScripts = {
 
 			let stats = template.baseStats;
 			// If Wishiwashi, use the school-forme's much higher stats
-			if (template.baseSpecies === 'Wishiwashi') stats = Tools.getTemplate('wishiwashischool').baseStats;
+			if (template.baseSpecies === 'Wishiwashi') stats = Dex.getTemplate('wishiwashischool').baseStats;
 
 			// Modified base stat total assumes 31 IVs, 85 EVs in every stat
 			let mbst = (stats["hp"] * 2 + 31 + 21 + 100) + 10;
@@ -1236,7 +1236,7 @@ exports.BattleScripts = {
 			setupType: '',
 		};
 
-		for (let type in Tools.data.TypeChart) {
+		for (let type in Dex.data.TypeChart) {
 			counter[type] = 0;
 		}
 
@@ -2888,6 +2888,11 @@ exports.BattleScripts = {
 				case 'toxic':
 					if (hasMove['thunderwave'] || hasMove['willowisp'] || hasMove['scald'] || hasMove['yawn'] || hasMove['spore'] || hasMove['sleeppowder']) rejected = true;
 					break;
+
+				// Z-status
+				case 'hypnosis':
+					if ((teamDetails.zMove || !counter.setupType) && template.baseStats.spe < 100) rejected = true;
+					break;
 				}
 
 				// Increased/decreased priority moves unneeded with moves that boost only speed
@@ -3182,14 +3187,16 @@ exports.BattleScripts = {
 			} else {
 				item = 'Choice Scarf';
 			}
+		} else if (ability === 'Gluttony' || ability === 'Schooling') {
+			item = ['Aguav', 'Figy', 'Iapapa', 'Mago', 'Wiki'][this.random(5)] + ' Berry';
 		} else if (hasMove['bellydrum']) {
-			if (ability === 'Gluttony') {
-				item = ['Aguav', 'Figy', 'Iapapa', 'Mago', 'Wiki'][this.random(5)] + ' Berry';
-			} else if (template.baseStats.spe <= 50 && !teamDetails.zMove && this.random(2)) {
+			if (template.baseStats.spe <= 50 && !teamDetails.zMove && this.random(2)) {
 				item = 'Normalium Z';
 			} else {
 				item = 'Sitrus Berry';
 			}
+		} else if (hasMove['hypnosis'] && (!teamDetails.zMove && counter.setupType && template.baseStats.spe < 100)) {
+			item = 'Psychium Z';
 		} else if (hasMove['rest'] && !hasMove['sleeptalk'] && ability !== 'Natural Cure' && ability !== 'Shed Skin') {
 			item = 'Chesto Berry';
 		} else if (hasMove['naturalgift']) {
@@ -3320,7 +3327,7 @@ exports.BattleScripts = {
 		// Every 10.34 BST adds a level from 70 up to 99. Results are floored. Uses the Mega's stats if holding a Mega Stone
 		let baseStats = template.baseStats;
 		// If Wishiwashi, use the school-forme's much higher stats
-		if (template.baseSpecies === 'Wishiwashi') baseStats = Tools.getTemplate('wishiwashischool').baseStats;
+		if (template.baseSpecies === 'Wishiwashi') baseStats = Dex.getTemplate('wishiwashischool').baseStats;
 
 		let bst = baseStats.hp + baseStats.atk + baseStats.def + baseStats.spa + baseStats.spd + baseStats.spe;
 		// Adjust levels of mons based on abilities (Pure Power, Sheer Force, etc.) and also Eviolite
@@ -3335,6 +3342,10 @@ exports.BattleScripts = {
 			bst += 0.3 * (counter.Physical > counter.Special ? baseStats.atk : baseStats.spa);
 		} else if (templateAbility === 'Fur Coat') {
 			bst += baseStats.def;
+		} else if (templateAbility === 'Slow Start') {
+			bst -= baseStats.atk / 2 + baseStats.spe / 2;
+		} else if (templateAbility === 'Truant') {
+			bst *= 2 / 3;
 		}
 		if (item === 'Eviolite') {
 			bst += 0.5 * (baseStats.def + baseStats.spd);

@@ -45,8 +45,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const {Tools, Effect} = require('./dex-data');
+
+const DATA_DIR = path.resolve(__dirname, '../data');
+const MODS_DIR = path.resolve(__dirname, '../mods');
+const FORMATS = path.resolve(__dirname, '../config/formats');
+
 // shim Object.values
 if (!Object.values) {
+	// @ts-ignore
 	Object.values = function (object) {
 		let values = [];
 		for (let k in object) values.push(object[k]);
@@ -72,10 +79,11 @@ if (!Object.values) {
 // 	};
 // }
 
-/** @type {{[mod: string]: BattleDex}} */
+/** @type {{[mod: string]: ModdedDex}} */
 let dexes = {};
 
 /** @typedef {'Pokedex' | 'FormatsData' | 'Learnsets' | 'Movedex' | 'Statuses' | 'TypeChart' | 'Scripts' | 'Items' | 'Abilities' | 'Natures' | 'Formats' | 'Aliases'} DataType */
+/** @type {DataType[]} */
 const DATA_TYPES = ['Pokedex', 'FormatsData', 'Learnsets', 'Movedex', 'Statuses', 'TypeChart', 'Scripts', 'Items', 'Abilities', 'Natures', 'Formats', 'Aliases'];
 
 const DATA_FILES = {
@@ -93,12 +101,10 @@ const DATA_FILES = {
 	'Natures': 'natures',
 };
 
-/** @typedef {{
- id: string,
- name: string,
-}} DexTemplate */
+/** @typedef {{id: string, name: string, [k: string]: any}} DexTemplate */
+/** @typedef {{[id: string]: AnyObject}} DexTable */
 
-/** @typedef {{Pokedex: object, Movedex: object, Statuses: object, TypeChart: object, Scripts: object, Items: object, Abilities: object, FormatsData: object, Learnsets: object, Aliases: object, Natures: object}} BattleDexData */
+/** @typedef {{Pokedex: DexTable, Movedex: DexTable, Statuses: DexTable, TypeChart: DexTable, Scripts: DexTable, Items: DexTable, Abilities: DexTable, FormatsData: DexTable, Learnsets: DexTable, Aliases: DexTable, Natures: DexTable, Formats: DexTable, MoveCache: Map, ItemCache: Map, AbilityCache: Map, TemplateCache: Map}} DexTableData */
 
 const BattleNatures = {
 	adamant: {name:"Adamant", plus:'atk', minus:'spa'},
@@ -128,18 +134,9 @@ const BattleNatures = {
 	timid: {name:"Timid", plus:'spe', minus:'atk'},
 };
 
-function toId(text) {
-	// this is a duplicate of Dex.getId, for performance reasons
-	if (text && text.id) {
-		text = text.id;
-	} else if (text && text.userid) {
-		text = text.userid;
-	}
-	if (typeof text !== 'string' && typeof text !== 'number') return '';
-	return ('' + text).toLowerCase().replace(/[^a-z0-9]+/g, '');
-}
+const toId = Tools.getId;
 
-class BattleDex {
+class ModdedDex {
 
 	/**
 	 * @param {string=} mod
@@ -147,29 +144,40 @@ class BattleDex {
 	constructor(mod = 'base') {
 		this.gen = 0;
 
-		this.name = "[BattleDex]";
+		this.name = "[ModdedDex]";
 
 		this.isBase = (mod === 'base');
 		this.currentMod = mod;
 		this.parentMod = '';
 
-		/** @type {any} */
+		/** @type {?DexTableData} */
 		this.dataCache = null;
-		/** @type {any} */
+		/** @type {?DexTable} */
 		this.formatsCache = null;
 		this.modsLoaded = false;
 
-		this.BattleDex = BattleDex;
+		this.getString = Tools.getString;
+		this.getId = Tools.getId;
+		this.ModdedDex = ModdedDex;
 	}
 
+	/**
+	 * @return {DexTableData}
+	 */
 	get data() {
-		this.includeData();
-		return this.dataCache;
+		return this.loadData();
 	}
+	/**
+	 * @return {DexTable}
+	 */
 	get formats() {
 		this.includeFormats();
+		// @ts-ignore
 		return this.formatsCache;
 	}
+	/**
+	 * @return {{[mod: string]: ModdedDex}}
+	 */
 	get dexes() {
 		this.includeMods();
 		return dexes;
@@ -177,13 +185,17 @@ class BattleDex {
 
 	/**
 	 * @param {string} mod
-	 * @return {BattleDex}
+	 * @return {ModdedDex}
 	 */
 	mod(mod) {
 		if (!dexes['base'].modsLoaded) dexes['base'].includeMods();
 		if (!mod) mod = 'base';
 		return dexes[mod];
 	}
+	/**
+	 * @param {AnyObject | string} format
+	 * @return {ModdedDex}
+	 */
 	format(format) {
 		if (!this.modsLoaded) this.includeMods();
 		const mod = this.getFormat(format).mod;
@@ -203,23 +215,6 @@ class BattleDex {
 
 	effectToString() {
 		return this.name;
-	}
-
-	/**
-	 * Safely converts the passed variable into a string. Unlike '' + str,
-	 * String(str), or str.toString(), Tools.getString is guaranteed not to
-	 * crash.
-	 *
-	 * The other methods of casting to string can crash if str.toString crashes
-	 * or isn't a function. Instead, Tools.getString simply returns '' if the
-	 * passed variable isn't a string or a number.
-	 *
-	 * @param {any} str
-	 * @return {string}
-	 */
-	getString(str) {
-		if (typeof str === 'string' || typeof str === 'number') return '' + str;
-		return '';
 	}
 
 	/**
@@ -259,36 +254,19 @@ class BattleDex {
 	}
 
 	/**
-	 * Converts anything to an ID. An ID must have only lowercase alphanumeric
-	 * characters.
-	 * If a string is passed, it will be converted to lowercase and
-	 * non-alphanumeric characters will be stripped.
-	 * If an object with an ID is passed, its ID will be returned.
-	 * Otherwise, an empty string will be returned.
-	 *
-	 * Tools.getId is generally assigned to the global toId, because of how
-	 * commonly it's used.
-	 *
-	 * @param {any} text
-	 * @return {string}
-	 */
-	getId(text) {
-		if (text && text.id) {
-			text = text.id;
-		} else if (text && text.userid) {
-			text = text.userid;
-		}
-		if (typeof text !== 'string' && typeof text !== 'number') return '';
-		return ('' + text).toLowerCase().replace(/[^a-z0-9]+/g, '');
-	}
-
-	/**
 	 * returns false if the target is immune; true otherwise
 	 *
 	 * also checks immunity to some statuses
+	 * @param {{type: string} | string} source
+	 * @param {{types: string[]} | string[] | string} target
+	 * @return {boolean}
 	 */
 	getImmunity(source, target) {
+		/** @type {string} */
+		// @ts-ignore
 		let sourceType = source.type || source;
+		/** @type {string[] | string} */
+		// @ts-ignore
 		let targetTyping = target.getTypes && target.getTypes() || target.types || target;
 		if (Array.isArray(targetTyping)) {
 			for (let i = 0; i < targetTyping.length; i++) {
@@ -300,9 +278,18 @@ class BattleDex {
 		if (typeData && typeData.damageTaken[sourceType] === 3) return false;
 		return true;
 	}
+	/**
+	 * @param {{type: string} | string} source
+	 * @param {{types: string[]} | string[] | string} target
+	 * @return {number}
+	 */
 	getEffectiveness(source, target) {
+		/** @type {string} */
+		// @ts-ignore
 		let sourceType = source.type || source;
 		let totalTypeMod = 0;
+		/** @type {string[] | string} */
+		// @ts-ignore
 		let targetTyping = target.getTypes && target.getTypes() || target.types || target;
 		if (Array.isArray(targetTyping)) {
 			for (let i = 0; i < targetTyping.length; i++) {
@@ -323,10 +310,10 @@ class BattleDex {
 
 	/**
 	 * Convert a pokemon name, ID, or template into its species name, preserving
-	 * form name (which is the main way Tools.getSpecies(id) differs from
-	 * Tools.getTemplate(id).species).
+	 * form name (which is the main way Dex.getSpecies(id) differs from
+	 * Dex.getTemplate(id).species).
 	 *
-	 * @param {string|DexTemplate} species
+	 * @param {string | AnyObject} species
 	 * @return {string}
 	 */
 	getSpecies(species) {
@@ -341,6 +328,10 @@ class BattleDex {
 		return species;
 	}
 
+	/**
+	 * @param {string | AnyObject} template
+	 * @return {AnyObject}
+	 */
 	getTemplate(template) {
 		if (!template || typeof template === 'string') {
 			let name = (template || '').trim();
@@ -442,11 +433,19 @@ class BattleDex {
 		}
 		return template;
 	}
+	/**
+	 * @param {string | AnyObject} template
+	 * @return {AnyObject}
+	 */
 	getLearnset(template) {
 		const id = toId(template);
 		if (!this.data.Learnsets[id]) return null;
 		return this.data.Learnsets[id].learnset;
 	}
+	/**
+	 * @param {string | AnyObject} move
+	 * @return {AnyObject}
+	 */
 	getMove(move) {
 		if (!move || typeof move === 'string') {
 			let name = (move || '').trim();
@@ -509,88 +508,87 @@ class BattleDex {
 	 * Ensure we're working on a copy of a move (and make a copy if we aren't)
 	 *
 	 * Remember: "ensure" - by default, it won't make a copy of a copy:
-	 *     moveCopy === Tools.getMoveCopy(moveCopy)
+	 *     moveCopy === Dex.getMoveCopy(moveCopy)
 	 *
 	 * If you really want to, use:
-	 *     moveCopyCopy = Tools.getMoveCopy(moveCopy.id)
+	 *     moveCopyCopy = Dex.getMoveCopy(moveCopy.id)
 	 *
-	 * @param  move    Move ID, move object, or movecopy object describing move to copy
-	 * @return         movecopy object
+	 * @param {AnyObject | string} move - Move ID, move object, or movecopy object describing move to copy
+	 * @return {AnyObject} movecopy object
 	 */
 	getMoveCopy(move) {
+		// @ts-ignore
 		if (move && move.isCopy) return move;
 		move = this.getMove(move);
 		let moveCopy = this.deepClone(move);
 		moveCopy.isCopy = true;
 		return moveCopy;
 	}
-	getEffect(effect) {
-		if (!effect || typeof effect === 'string') {
-			let name = (effect || '').trim();
-			let id = toId(name);
-			effect = {};
-			if (id && this.data.Statuses[id]) {
-				effect = this.data.Statuses[id];
-				effect.name = effect.name || this.data.Statuses[id].name;
-			} else if (id && this.data.Movedex[id] && this.data.Movedex[id].effect) {
-				effect = this.data.Movedex[id].effect;
-				effect.name = effect.name || this.data.Movedex[id].name;
-			} else if (id && this.data.Abilities[id] && this.data.Abilities[id].effect) {
-				effect = this.data.Abilities[id].effect;
-				effect.name = effect.name || this.data.Abilities[id].name;
-			} else if (id && this.data.Items[id] && this.data.Items[id].effect) {
-				effect = this.data.Items[id].effect;
-				effect.name = effect.name || this.data.Items[id].name;
-			} else if (id && this.data.Formats[id]) {
-				effect = this.data.Formats[id];
-				effect.name = effect.name || this.data.Formats[id].name;
-				if (!effect.mod) effect.mod = 'gen6';
-				if (!effect.effectType) effect.effectType = 'Format';
-			} else if (id === 'recoil') {
-				effect = {
-					effectType: 'Recoil',
-				};
-			} else if (id === 'drain') {
-				effect = {
-					effectType: 'Drain',
-				};
-			}
-			if (!effect.id) effect.id = id;
-			if (!effect.name) effect.name = name;
-			if (!effect.fullname) effect.fullname = effect.name;
-			effect.toString = this.effectToString;
-			if (!effect.category) effect.category = 'Effect';
-			if (!effect.effectType) effect.effectType = 'Effect';
+	/**
+	 * @param {string | AnyObject} name
+	 * @return {AnyObject}
+	 */
+	getEffect(name) {
+		if (name && typeof name !== 'string') {
+			return name;
+		}
+		let id = toId(name);
+		let effect;
+		if (id && this.data.Statuses.hasOwnProperty(id)) {
+			effect = new Effect({name}, this.data.Statuses[id]);
+		} else if (id && this.data.Movedex.hasOwnProperty(id) && this.data.Movedex[id].effect) {
+			effect = new Effect({name}, this.data.Movedex[id].effect);
+		} else if (id && this.data.Abilities.hasOwnProperty(id) && this.data.Abilities[id].effect) {
+			effect = new Effect({name}, this.data.Abilities[id].effect);
+		} else if (id && this.data.Items.hasOwnProperty(id) && this.data.Items[id].effect) {
+			effect = new Effect({name}, this.data.Items[id].effect);
+		} else if (id && this.data.Formats.hasOwnProperty(id)) {
+			effect = new Effect({name, mod: 'gen6', effectType: 'Format'}, this.data.Formats[id]);
+		} else if (id === 'recoil') {
+			effect = new Effect({name: 'Recoil', effectType: 'Recoil'});
+		} else if (id === 'drain') {
+			effect = new Effect({name: 'Drain', effectType: 'Drain'});
+		} else {
+			effect = new Effect({name, exists: false});
 		}
 		return effect;
 	}
-	getFormat(effect) {
-		if (!effect || typeof effect === 'string') {
-			let name = (effect || '').trim();
-			let id = toId(name);
-			if (this.data.Aliases[id]) {
-				name = this.data.Aliases[id];
-				id = toId(name);
-			}
-			effect = {};
-			if (this.data.Formats.hasOwnProperty(id)) {
-				effect = this.data.Formats[id];
-				if (effect.cached) return effect;
-				effect.cached = true;
-				effect.exists = true;
-				effect.name = effect.name || this.data.Formats[id].name;
-				if (!effect.mod) effect.mod = 'gen6';
-				if (!effect.effectType) effect.effectType = 'Format';
-			}
-			if (!effect.id) effect.id = id;
-			if (!effect.name) effect.name = name;
-			if (!effect.fullname) effect.fullname = effect.name;
-			effect.toString = this.effectToString;
-			if (!effect.category) effect.category = 'Effect';
-			if (!effect.effectType) effect.effectType = 'Effect';
+	/**
+	 * @param {string | AnyObject} name
+	 * @return {AnyObject}
+	 */
+	getFormat(name) {
+		if (name && typeof name !== 'string') {
+			return name;
 		}
+		name = (name || '').trim();
+		let id = toId(name);
+		if (this.data.Aliases[id]) {
+			name = this.data.Aliases[id];
+			id = toId(name);
+		}
+		let effect = {};
+		if (this.data.Formats.hasOwnProperty(id)) {
+			effect = this.data.Formats[id];
+			if (effect.cached) return effect;
+			effect.cached = true;
+			effect.exists = true;
+			effect.name = effect.name || this.data.Formats[id].name;
+			if (!effect.mod) effect.mod = 'gen6';
+			if (!effect.effectType) effect.effectType = 'Format';
+		}
+		if (!effect.id) effect.id = id;
+		if (!effect.name) effect.name = name;
+		if (!effect.fullname) effect.fullname = effect.name;
+		effect.toString = this.effectToString;
+		if (!effect.category) effect.category = 'Effect';
+		if (!effect.effectType) effect.effectType = 'Effect';
 		return effect;
 	}
+	/**
+	 * @param {string | AnyObject} item
+	 * @return {AnyObject}
+	 */
 	getItem(item) {
 		if (!item || typeof item === 'string') {
 			let name = (item || '').trim();
@@ -644,6 +642,10 @@ class BattleDex {
 		}
 		return item;
 	}
+	/**
+	 * @param {string | AnyObject} ability
+	 * @return {AnyObject}
+	 */
 	getAbility(ability) {
 		if (!ability || typeof ability === 'string') {
 			let name = (ability || '').trim();
@@ -683,6 +685,10 @@ class BattleDex {
 		}
 		return ability;
 	}
+	/**
+	 * @param {string | AnyObject} type
+	 * @return {AnyObject}
+	 */
 	getType(type) {
 		if (!type || typeof type === 'string') {
 			let id = toId(type);
@@ -704,6 +710,10 @@ class BattleDex {
 		}
 		return type;
 	}
+	/**
+	 * @param {string | AnyObject} nature
+	 * @return {AnyObject}
+	 */
 	getNature(nature) {
 		if (!nature || typeof nature === 'string') {
 			let name = (nature || '').trim();
@@ -722,6 +732,11 @@ class BattleDex {
 		}
 		return nature;
 	}
+	/**
+	 * @param {AnyObject} stats
+	 * @param {AnyObject} set
+	 * @return {AnyObject}
+	 */
 	spreadModify(stats, set) {
 		const modStats = {atk:10, def:10, spa:10, spd:10, spe:10};
 		for (let statName in modStats) {
@@ -734,6 +749,11 @@ class BattleDex {
 		}
 		return this.natureModify(modStats, set.nature);
 	}
+	/**
+	 * @param {AnyObject} stats
+	 * @param {string | AnyObject} nature
+	 * @return {AnyObject}
+	 */
 	natureModify(stats, nature) {
 		nature = this.getNature(nature);
 		if (nature.plus) stats[nature.plus] = Math.floor(stats[nature.plus] * 1.1);
@@ -741,6 +761,9 @@ class BattleDex {
 		return stats;
 	}
 
+	/**
+	 * @param {AnyObject} ivs
+	 */
 	getHiddenPower(ivs) {
 		const hpTypes = ['Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark'];
 		const stats = {hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31};
@@ -771,6 +794,12 @@ class BattleDex {
 		}
 	}
 
+	/**
+	 * @param {AnyObject} format
+	 * @param {AnyObject=} subformat
+	 * @param {number=} depth
+	 * @return {AnyObject}
+	 */
 	getBanlistTable(format, subformat, depth) {
 		let banlistTable;
 		if (!depth) depth = 0;
@@ -845,6 +874,11 @@ class BattleDex {
 		return banlistTable;
 	}
 
+	/**
+	 * TODO: TypeScript generics
+	 * @param {Array} arr
+	 * @return {Array}
+	 */
 	shuffle(arr) {
 		// In-place shuffle by Fisher-Yates algorithm
 		for (let i = arr.length - 1; i > 0; i--) {
@@ -860,6 +894,7 @@ class BattleDex {
 	 * @param {string} s - string 1
 	 * @param {string} t - string 2
 	 * @param {number} l - limit
+	 * @return {number} - distance
 	 */
 	levenshtein(s, t, l) {
 		// Original levenshtein distance function by James Westgate, turned out to be the fastest
@@ -909,6 +944,13 @@ class BattleDex {
 		return d[n][m];
 	}
 
+	/**
+	 * Forces num to be an integer (between min and max).
+	 * @param {any} num
+	 * @param {number=} min
+	 * @param {number=} max
+	 * @return {number}
+	 */
 	clampIntRange(num, min, max) {
 		if (typeof num !== 'number') num = 0;
 		num = Math.floor(num);
@@ -917,33 +959,44 @@ class BattleDex {
 		return num;
 	}
 
+	/**
+	 * @param {string} target
+	 * @param {DataType[] | null=} searchIn
+	 * @param {boolean=} isInexact
+	 * @return {AnyObject[] | false}
+	 */
 	dataSearch(target, searchIn, isInexact) {
 		if (!target) {
 			return false;
 		}
 
+		/** @type {DataType[]} */
 		searchIn = searchIn || ['Pokedex', 'Movedex', 'Abilities', 'Items', 'Natures'];
 
 		let searchFunctions = {Pokedex: 'getTemplate', Movedex: 'getMove', Abilities: 'getAbility', Items: 'getItem', Natures: 'getNature'};
 		let searchTypes = {Pokedex: 'pokemon', Movedex: 'move', Abilities: 'ability', Items: 'item', Natures: 'nature'};
 		let searchResults = [];
 		for (let i = 0; i < searchIn.length; i++) {
+			/** @type {AnyObject} */
+			// @ts-ignore
 			let res = this[searchFunctions[searchIn[i]]](target);
-			if (res.exists) {
+			if (res.exists && res.gen <= this.gen) {
 				searchResults.push({
 					exactMatch: !isInexact,
 					searchType: searchTypes[searchIn[i]],
-					name: res.name,
+					name: isInexact || res.name,
 				});
 			}
 		}
 		if (searchResults.length) {
 			return searchResults;
 		}
+		if (isInexact) {
+			return false; // prevent infinite loop
+		}
 
-		let cmpTarget = target.toLowerCase();
+		let cmpTarget = toId(target);
 		let maxLd = 3;
-		let fuzzyResults = [];
 		if (cmpTarget.length <= 1) {
 			return false;
 		} else if (cmpTarget.length <= 4) {
@@ -951,48 +1004,33 @@ class BattleDex {
 		} else if (cmpTarget.length <= 6) {
 			maxLd = 2;
 		}
-		for (let i = 0; i < searchIn.length; i++) {
-			let searchObj = this.data[searchIn[i]];
+		searchResults = false;
+		for (let i = 0; i <= searchIn.length; i++) {
+			let searchObj = this.data[searchIn[i] || 'Aliases'];
 			if (!searchObj) {
 				continue;
 			}
 
 			for (let j in searchObj) {
-				let word = searchObj[j];
-				if (typeof word === "object") {
-					word = word.name || word.species;
-				}
-				if (!word) {
-					continue;
-				}
-
-				let ld = this.levenshtein(cmpTarget, word.toLowerCase(), maxLd);
+				let ld = this.levenshtein(cmpTarget, j, maxLd);
 				if (ld <= maxLd) {
-					fuzzyResults.push({word: word, ld: ld});
+					let word = searchObj[j].name || searchObj[j].species || j;
+					let results = this.dataSearch(word, searchIn, word);
+					if (results) {
+						searchResults = results;
+						maxLd = ld;
+					}
 				}
 			}
 		}
 
-		if (fuzzyResults.length) {
-			/** @type {any} */
-			let newTarget = "";
-			let newLD = 10;
-			for (let i = 0, l = fuzzyResults.length; i < l; i++) {
-				if (fuzzyResults[i].ld < newLD) {
-					newTarget = fuzzyResults[i];
-					newLD = fuzzyResults[i].ld;
-				}
-			}
-
-			// To make sure we aren't in an infinite loop...
-			if (cmpTarget !== newTarget.word) {
-				return this.dataSearch(newTarget.word, null, true);
-			}
-		}
-
-		return false;
+		return searchResults;
 	}
 
+	/**
+	 * @param {AnyObject[]} team
+	 * @return {string}
+	 */
 	packTeam(team) {
 		if (!team) return '';
 
@@ -1095,6 +1133,10 @@ class BattleDex {
 		return buf;
 	}
 
+	/**
+	 * @param {string} buf
+	 * @return {AnyObject[]}
+	 */
 	fastUnpackTeam(buf) {
 		if (!buf) return null;
 
@@ -1214,6 +1256,10 @@ class BattleDex {
 		return team;
 	}
 
+	/**
+	 * @param {AnyObject} obj
+	 * @return {AnyObject}
+	 */
 	deepClone(obj) {
 		if (typeof obj === 'function') return obj;
 		if (obj === null || typeof obj !== 'object') return obj;
@@ -1226,6 +1272,11 @@ class BattleDex {
 		return clone;
 	}
 
+	/**
+	 * @param {string} basePath
+	 * @param {DataType} dataType
+	 * @return {AnyObject}
+	 */
 	loadDataFile(basePath, dataType) {
 		try {
 			const filePath = basePath + DATA_FILES[dataType];
@@ -1242,31 +1293,48 @@ class BattleDex {
 		return {};
 	}
 
+	/**
+	 * @return {ModdedDex}
+	 */
 	includeMods() {
 		if (!this.isBase) throw new Error(`This must be called on the base Dex`);
 		if (this.modsLoaded) return this;
 
-		let modList = fs.readdirSync(path.resolve(__dirname, 'mods'));
+		let modList = fs.readdirSync(MODS_DIR);
 		for (let i = 0; i < modList.length; i++) {
-			dexes[modList[i]] = new BattleDex(modList[i]);
+			dexes[modList[i]] = new ModdedDex(modList[i]);
 		}
 		this.modsLoaded = true;
 
 		return this;
 	}
 
+	/**
+	 * @return {ModdedDex}
+	 */
 	includeModData() {
 		for (const mod in this.dexes) {
 			dexes[mod].includeData();
 		}
+		return this;
 	}
 
+	/**
+	 * @return {ModdedDex}
+	 */
 	includeData() {
-		if (this.dataCache) return this;
+		this.loadData();
+		return this;
+	}
+	/**
+	 * @return {DexTableData}
+	 */
+	loadData() {
+		if (this.dataCache) return this.dataCache;
 		dexes['base'].includeMods();
 		this.dataCache = {};
 
-		let basePath = this.isBase ? './data/' : './mods/' + this.currentMod + '/';
+		let basePath = (this.isBase ? DATA_DIR : MODS_DIR + '/' + this.currentMod) + '/';
 
 		let BattleScripts = this.loadDataFile(basePath, 'Scripts');
 		this.parentMod = this.isBase ? '' : (BattleScripts.inherit || 'base');
@@ -1332,9 +1400,12 @@ class BattleDex {
 		// Execute initialization script.
 		if (BattleScripts.init) BattleScripts.init.call(this);
 
-		return this;
+		return this.dataCache;
 	}
 
+	/**
+	 * @return {ModdedDex}
+	 */
 	includeFormats() {
 		if (!this.isBase) throw new Error(`This should only be run on the base mod`);
 		this.includeMods();
@@ -1345,7 +1416,7 @@ class BattleDex {
 		// Load formats
 		let Formats;
 		try {
-			Formats = require('./config/formats').Formats;
+			Formats = require(FORMATS).Formats;
 		} catch (e) {
 			if (e.code !== 'MODULE_NOT_FOUND') throw e;
 		}
@@ -1375,26 +1446,22 @@ class BattleDex {
 		return this;
 	}
 
+	/**
+	 * @param {string} id - Format ID
+	 * @param {object} format - Format
+	 */
 	installFormat(id, format) {
 		dexes['base'].includeFormats();
+		// @ts-ignore
 		dexes['base'].formatsCache[id] = format;
 		if (this.dataCache) this.dataCache.Formats[id] = format;
 		if (!this.isBase) {
 			if (dexes['base'].dataCache) dexes['base'].dataCache.Formats[id] = format;
 		}
 	}
-
-	/**
-	 * Install our Tools functions into the battle object
-	 */
-	install(battle) {
-		for (let i in this.data.Scripts) {
-			battle[i] = this.data.Scripts[i];
-		}
-	}
 }
 
-dexes['base'] = new BattleDex();
+dexes['base'] = new ModdedDex();
 
 // "gen7" is an alias for the current base data
 dexes['gen7'] = dexes['base'];
