@@ -437,8 +437,8 @@ exports.BattleScripts = {
 			},
 			"+Insist": {
 				species: "Ludicolo",
-				ability: "Primordial Sea",
-				item: "Life Orb",
+				ability: "Crippling Depression",
+				item: "Playnium Z",
 				gender: "M",
 				shiny: true,
 				moves: ['freezedry', 'gigadrain', 'focusblast'],
