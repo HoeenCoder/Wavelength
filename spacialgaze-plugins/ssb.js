@@ -358,7 +358,7 @@ class SSB {
 		item = Dex.getItem(toId(item));
 		if (!item.exists) {
 			//check custom
-			if (this.cItem && toId(this.cItem) === item.id && this.bought.citem) {
+			if (this.cItem && toId(this.cItem) === item.id && this.bought.cItem) {
 				this.item = this.cItem;
 				return true;
 			} else {
