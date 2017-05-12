@@ -210,7 +210,7 @@ class SGgame extends Console.Console {
 	onKill() {
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
-			if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+			if (Rooms.get(key).type === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
 				// FORCE FORFEIT
 				Rooms(key).game.forfeit(user);
 			}
