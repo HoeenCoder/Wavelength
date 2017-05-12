@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 class Console {
 	constructor(user, room, css, html, bottom, muted, sound) {
@@ -55,6 +55,17 @@ class Console {
 		this.consoleId++;
 		user.sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
 	}
+	move(newRoom) {
+		newRoom = toId(newRoom);
+		if (newRoom === this.room || !Rooms.search(newRoom)) return false;
+		let user = Users(this.userid);
+		if (!user.inRooms.has(newRoom)) return false;
+		user.send(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
+		this.room = newRoom;
+		user.consoleId++;
+		this.consoleId++;
+		user.sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
+	}
 	// Overwrite these to use them.
 	up(data) {}
 	down(data) {}
@@ -88,6 +99,10 @@ exports.commands = {
 		shift: function (target, room, user) {
 			if (!user.console) return;
 			user.console.shift();
+		},
+		move: function (target, room, user) {
+			if (!user.console) return;
+			user.console.move(toId(target) || room.id);
 		},
 		forcestart: 'start',
 		start: function (target, room, user, connection, cmd, message) {
