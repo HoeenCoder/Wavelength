@@ -76,6 +76,7 @@ exports.commands = {
 			if (!Db.userBadges.has(userid)) return this.errorReply("This user doesn't have any badges.");
 			userBadges = Db.userBadges.get(userid);
 			selectedBadge = parts[2].trim();
+			if (!Db.badgeData.get.has(selectedBadge)) return this.errorReply(selectedBadge + " is not a badge.");
 			userBadges = userBadges.filter(b => b !== selectedBadge);
 			Db.userBadges.set(userid, userBadges);
 			this.logModCommand(user.name + " took the badge '" + selectedBadge + "' badge from " + userid + ".");
