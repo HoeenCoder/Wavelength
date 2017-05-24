@@ -1,6 +1,9 @@
 /**
  * Badges plugin
+ *
  * Credits: Niisama
+ *
+ * @license MIT license
  */
 
 'use strict';
@@ -49,7 +52,7 @@ exports.commands = {
 			if (Db.badgeData.has(badgeName)) return this.errorReply('This badge already exists.');
 			Db.badgeData.set(badgeName, [description, img]);
 			this.logModCommand(user.name + " created the badge '" + badgeName + ".");
-			Users.get(user.userid).popup('|modal||html|You have succesfully created the badge ' + '<img src ="' + img + '" width="16" height="16"> (' + badgeName + ')');
+			if (Users(user.usrid)) Users.get(user.userid).popup('|modal||html|You have succesfully created the badge ' + '<img src ="' + img + '" width="16" height="16"> (' + badgeName + ')');
 			break;
 		case 'list':
 			if (!this.runBroadcast()) return;
@@ -81,7 +84,7 @@ exports.commands = {
 			Db.userBadges.set(userid, userBadges);
 			this.logModCommand(user.name + " took the badge '" + selectedBadge + "' badge from " + userid + ".");
 			this.sendReply("The '" + selectedBadge + "' badge was taken from '" + userid + "'.");
-			Users.get(userid).popup('|modal||html|' + SG.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
+			if (Users(userid)) Users.get(userid).popup('|modal||html|' + SG.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
 			break;
 		case 'delete':
 			if (!this.can('ban')) return false;
