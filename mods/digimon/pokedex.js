@@ -953,12 +953,12 @@ exports.BattlePokedex = {
 		digimon: "MetalGreymon",
 		types: ["Mech", "Fire", "Battle"],
 		baseStats: {
-			hp: 222,
+			hp: 220,
 			atk: 136,
 			def: 117,
 			spa: 136,
 			spd: 117,
-			spe: 100,
+			spe: 102,
 		},
 		abilities: {
 			0: "Virus",
