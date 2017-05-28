@@ -1450,8 +1450,11 @@ exports.BattleAbilities = {
 			if (pokemon === pokemon.side.pokemon[i]) return;
 			pokemon.illusion = pokemon.side.pokemon[i];
 		},
-		// illusion clearing for damage is hardcoded in the damage
-		// function because mold breaker inhibits the damage event
+		onAfterDamage: function (damage, target, source, effect) {
+			if (target.illusion && effect && effect.effectType === 'Move' && effect.id !== 'confused') {
+				this.singleEvent('End', this.getAbility('Illusion'), target.abilityData, target, source, effect);
+			}
+		},
 		onEnd: function (pokemon) {
 			if (pokemon.illusion) {
 				this.debug('illusion cleared');
@@ -1464,6 +1467,7 @@ exports.BattleAbilities = {
 		onFaint: function (pokemon) {
 			pokemon.illusion = null;
 		},
+		isUnbreakable: true,
 		id: "illusion",
 		name: "Illusion",
 		rating: 4,
@@ -2683,7 +2687,7 @@ exports.BattleAbilities = {
 			duration: 1,
 			onBasePowerPriority: 8,
 			onBasePower: function (basePower, pokemon, target, move) {
-				return this.chainModify([0x14CD, 0x1000]);
+				return this.chainModify([0x1333, 0x1000]);
 			},
 		},
 		id: "refrigerate",
@@ -3703,10 +3707,7 @@ exports.BattleAbilities = {
 		shortDesc: "On switch-in, or when it can, this Pokemon copies a random adjacent foe's Ability.",
 		onUpdate: function (pokemon) {
 			if (!pokemon.isStarted) return;
-			let possibleTargets = [];
-			for (let i = 0; i < pokemon.side.foe.active.length; i++) {
-				if (pokemon.side.foe.active[i] && !pokemon.side.foe.active[i].fainted) possibleTargets.push(pokemon.side.foe.active[i]);
-			}
+			let possibleTargets = pokemon.side.foe.active.filter(foeActive => foeActive && this.isAdjacent(pokemon, foeActive));
 			while (possibleTargets.length) {
 				let rand = 0;
 				if (possibleTargets.length > 1) rand = this.random(possibleTargets.length);

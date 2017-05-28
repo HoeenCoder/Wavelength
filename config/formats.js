@@ -38,18 +38,8 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		searchShow: false,
-		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Baton Pass Clause'],
-		banlist: ['Uber', 'Power Construct', 'Shadow Tag'],
-	},
-	{
-		name: "[Gen 7] OU (suspect test)",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/3602385/\">OU Suspect Discussion</a>"],
-
-		mod: 'gen7',
-		challengeShow: false,
-		ruleset: ['[Gen 7] OU'],
-		banlist: ['Metagrossite'],
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
+		banlist: ['Uber', 'Power Construct', 'Shadow Tag', 'Baton Pass'],
 	},
 	{
 		name: "[Gen 7] Ubers",
@@ -72,7 +62,7 @@ exports.Formats = [
 
 		mod: 'gen7',
 		ruleset: ['[Gen 7] OU'],
-		banlist: ['OU', 'BL', 'Drizzle', 'Power Construct', 'Mewnium Z', 'Baton Pass'],
+		banlist: ['OU', 'BL', 'Drizzle', 'Power Construct', 'Mewnium Z'],
 	},
 	{
 		name: "[Gen 7] RU (beta)",
@@ -84,6 +74,17 @@ exports.Formats = [
 		mod: 'gen7',
 		ruleset: ['[Gen 7] UU'],
 		banlist: ['UU', 'BL2'],
+	},
+	{
+		name: "[Gen 7] NU (alpha)",
+
+		mod: 'gen7',
+		ruleset: ['[Gen 7] RU (beta)'],
+		banlist: [
+			'Aerodactyl', 'Araquanid', 'Blastoise', 'Bronzong', 'Bruxish', 'Chesnaught', 'Cloyster', 'Comfey', 'Cresselia', 'Dhelmise', 'Diancie', 'Donphan', 'Doublade', 'Durant', 'Escavalier', 'Espeon', 'Feraligatr',
+			'Florges', 'Flygon', 'Froslass', 'Galvantula', 'Gardevoir', 'Gigalith', 'Glalitite', 'Gligar', 'Golisopod', 'Goodra', 'Heliolisk', 'Heracross', 'Honchkrow', 'Hoopa', 'Jellicent', 'Jolteon', 'Kommo-o',
+			'Linoone', 'Mantine', 'Milotic', 'Nidoqueen', 'Registeel', 'Reuniclus', 'Rhyperior', 'Roserade', 'Rotom-Heat', 'Salazzle', 'Sharpedo', 'Shaymin', 'Snorlax', 'Swellow', 'Torkoal', 'Umbreon', 'Venusaur', 'Zoroark',
+		],
 	},
 	{
 		name: "[Gen 7] LC",
@@ -150,21 +151,21 @@ exports.Formats = [
 		requirePentagon: true,
 	},
 	{
-		name: "[Gen 7] Battle Spot Special 3",
-		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3598297/\">Battle Spot Special</a>"],
+		name: "[Gen 7] Battle Spot Special 4",
+		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3603342/\">Battle Spot Special</a>"],
 
 		mod: 'gen7',
 		maxForcedLevel: 50,
 		teamLength: {
-			validate: [3, 6],
-			battle: 3,
+			validate: [1, 6],
+			battle: 1,
 		},
 		ruleset: ['Pokemon', 'Standard GBU', 'Team Preview'],
-		unbanlist: ['Mew'],
+		banlist: ['Eviolite', 'Focus Sash'],
 		onValidateSet(set) {
 			let item = this.getItem(set.item);
-			if (item.exists && !item.zMove) {
-				return [`${set.name || set.species} has ${item.name}, which is banned in Battle Spot Special 3.`];
+			if (item.exists && (item.megaStone || item.zMove)) {
+				return [`${set.name || set.species} has ${item.name}, which is banned in Battle Spot Special 4.`];
 			}
 		},
 	},
@@ -474,8 +475,12 @@ exports.Formats = [
 		ruleset: ['[Gen 7] OU'],
 		banlist: ['Endeavor', 'Blast Burn + Explosion + Frenzy Plant + Giga Impact + Hydro Cannon + Hyper Beam + Self Destruct + V-Create > 2'],
 		onBeforeFaint: function (pokemon, source) {
-			this.add('-hint', `${pokemon.name || pokemon.species}'s Last Will let it use one last move!`);
-			this.runMove(pokemon.moves[pokemon.moves.length - 1], pokemon);
+			try {
+				this.add('-hint', `${pokemon.name || pokemon.species}'s Last Will let it use one last move!`);
+				this.runMove(pokemon.moves[pokemon.moves.length - 1], pokemon);
+			} catch (e) {
+				this.add('-message', 'But it failed!');
+			}
 		},
 	},
 	{
@@ -485,7 +490,7 @@ exports.Formats = [
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3594854/\">Cross Evolution</a>",
 		],
 		mod: 'gen7',
-		ruleset: ['[Gen 7] Ubers', 'Baton Pass Clause'],
+		ruleset: ['[Gen 7] Ubers', 'Baton Pass'],
 		banlist: ['Rule:nicknameclause'],
 		searchShow: false,
 		onValidateTeam: function (team) {
@@ -501,16 +506,16 @@ exports.Formats = [
 			}
 		},
 		validateSet: function (set, teamHas) {
-			let crossTemplate = this.tools.getTemplate(set.name);
+			let crossTemplate = this.dex.getTemplate(set.name);
 			if (!crossTemplate.exists || crossTemplate.isNonstandard) return this.validateSet(set, teamHas);
-			let template = this.tools.getTemplate(set.species);
+			let template = this.dex.getTemplate(set.species);
 			if (!template.exists || template.isNonstandard || template === crossTemplate) return this.validateSet(set, teamHas);
 			if (!template.nfe) return [`${template.species} cannot cross evolve because it doesn't evolve.`];
 			if (crossTemplate.battleOnly || !crossTemplate.prevo) return [`${template.species} cannot cross evolve into ${crossTemplate.species} because it isn't an evolution.`];
 			if (template.species === 'Sneasel') return [`Sneasel as a base Pokemon is banned.`];
 			let crossBans = {'shedinja': 1, 'solgaleo': 1, 'lunala': 1};
 			if (crossTemplate.id in crossBans) return [`${template.species} cannot cross evolve into ${crossTemplate.species} because it is banned.`];
-			let crossPrevoTemplate = this.tools.getTemplate(crossTemplate.prevo);
+			let crossPrevoTemplate = this.dex.getTemplate(crossTemplate.prevo);
 			if (!crossPrevoTemplate.prevo !== !template.prevo) return [`${template.species} cannot cross into ${crossTemplate.species} because they are not consecutive evolutionary stages.`];
 
 			// Make sure no stat is too high/low to cross evolve to
@@ -526,7 +531,7 @@ exports.Formats = [
 
 			let mixedTemplate = Object.assign({}, template);
 			// Ability test
-			let ability = this.tools.getAbility(set.ability);
+			let ability = this.dex.getAbility(set.ability);
 			let abilityBans = {'hugepower': 1, 'purepower': 1, 'shadowtag': 1};
 			if (!(ability.id in abilityBans)) mixedTemplate.abilities = crossTemplate.abilities;
 
@@ -590,6 +595,7 @@ exports.Formats = [
 			"Anything that can be hacked in-game and is usable in local battles is allowed.",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3587475/\">Balanced Hackmons</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3588586/\">BH Suspects and Bans Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3593766/\">BH Resources</a>",
 			"&bullet; <a href=\"https://www.smogon.com/tiers/om/analyses/bh/\">BH Analyses</a>",
 		],
 
@@ -607,23 +613,6 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		searchShow: false,
-		teamLength: {
-			validate: [1, 3],
-			battle: 1,
-		},
-		ruleset: ['Pokemon', 'Species Clause', 'Nickname Clause', 'Moody Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Swagger Clause', 'Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod', 'Team Preview'],
-		banlist: [
-			'Illegal', 'Unreleased', 'Arceus', 'Blaziken', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Giratina', 'Groudon', 'Ho-Oh', 'Kyogre',
-			'Kyurem-White', 'Lugia', 'Lunala', 'Mewtwo', 'Palkia', 'Rayquaza', 'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
-			'Power Construct', 'Perish Song', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Chansey + Charm + Seismic Toss',
-		],
-	},
-	{
-		name: "[Gen 7] 1v1 (suspect test)",
-
-		mod: 'gen7',
-		challengeShow: false,
 		teamLength: {
 			validate: [1, 3],
 			battle: 1,
@@ -722,11 +711,11 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		ruleset: ['Pokemon', 'Standard', 'Ability Clause', 'Ignore Illegal Abilities', 'Baton Pass Clause', 'Swagger Clause', 'Team Preview'],
+		ruleset: ['Pokemon', 'Standard', 'Ability Clause', 'Ignore Illegal Abilities', 'Swagger Clause', 'Team Preview'],
 		banlist: ['Aegislash', 'Arceus', 'Archeops', 'Blaziken', 'Darkrai', 'Deoxys', 'Dialga', 'Dragonite', 'Dugtrio-Base', 'Giratina', 'Groudon',
 			'Ho-Oh', 'Kartana', 'Keldeo', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Lunala', 'Mewtwo', 'Palkia', 'Pheromosa',
 			'Rayquaza', 'Regigigas', 'Reshiram', 'Shaymin-Sky', 'Shedinja', 'Slaking', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
-			'Power Construct', 'Shadow Tag', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Salamencite',
+			'Power Construct', 'Shadow Tag', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Salamencite', 'Baton Pass',
 		],
 		onValidateSet: function (set) {
 			let bannedAbilities = {'Arena Trap': 1, 'Comatose': 1, 'Contrary': 1, 'Fluffy': 1, 'Fur Coat': 1, 'Huge Power': 1, 'Illusion': 1, 'Imposter': 1, 'Innards Out': 1, 'Parental Bond': 1, 'Protean': 1, 'Pure Power': 1, 'Simple':1, 'Speed Boost': 1, 'Stakeout': 1, 'Water Bubble': 1, 'Wonder Guard': 1};
@@ -810,6 +799,21 @@ exports.Formats = [
 
 		team: 'randomFactory',
 		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod', 'Mega Rayquaza Clause'],
+	},
+	{
+		name: "[Gen 7] BSS Factory",
+		desc: [
+			"Randomised 3v3 Singles featuring Pok&eacute;mon and movesets popular in Battle Spot Singles.",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3604845/\">Information and Suggestions Thread</a>",
+		],
+
+		mod: 'gen7',
+		team: 'randomBSSFactory',
+		teamLength: {
+			validate: [3, 6],
+			battle: 3,
+		},
+		ruleset: ['Pokemon', 'Standard GBU', 'Team Preview'],
 	},
 	{
 		name: "[Gen 7] Challenge Cup 1v1",
@@ -1370,7 +1374,7 @@ exports.Formats = [
 		mod: 'gen4',
 		maxLevel: 5,
 		ruleset: ['Pokemon', 'Standard', 'Little Cup'],
-		banlist: ['LC Uber', 'Misdreavus', 'Murkrow', 'Scyther', 'Sneasel', 'Tangela', 'Yanma', 'Berry Juice', 'DeepSeaTooth', 'Dragon Rage', 'Sonic Boom'],
+		banlist: ['LC Uber', 'Misdreavus', 'Murkrow', 'Scyther', 'Sneasel', 'Tangela', 'Yanma', 'Berry Juice', 'Deep Sea Tooth', 'Dragon Rage', 'Sonic Boom'],
 	},
 	{
 		name: "[Gen 4] Custom Game",
@@ -1492,8 +1496,8 @@ exports.Formats = [
 
 		mod: 'gen1',
 		searchShow: false,
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'Species Clause', 'OHKO Clause', 'Evasion Moves Clause', 'HP Percentage Mod', 'Cancel Mod'],
-		banlist: ['Allow Tradeback', 'Uber', 'Unreleased', 'Illegal',
+		ruleset: ['Pokemon', 'Allow Tradeback', 'Sleep Clause Mod', 'Freeze Clause Mod', 'Species Clause', 'OHKO Clause', 'Evasion Moves Clause', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['Uber', 'Unreleased', 'Illegal',
 			'Nidoking + Fury Attack + Thrash', 'Exeggutor + Poison Powder + Stomp', 'Exeggutor + Sleep Powder + Stomp',
 			'Exeggutor + Stun Spore + Stomp', 'Jolteon + Focus Energy + Thunder Shock', 'Flareon + Focus Energy + Ember',
 		],
