@@ -108,12 +108,9 @@ global.Punishments = require('./punishments');
 global.Chat = require('./chat');
 global.Rooms = require('./rooms');
 
-<<<<<<< HEAD
 global.Tells = require('./tells.js');
 
 delete process.send; // in case we're a child process
-=======
->>>>>>> 176f0f8fc21803feb826bc661d1a38edcb021ae5
 global.Verifier = require('./verifier');
 Verifier.PM.spawn();
 
