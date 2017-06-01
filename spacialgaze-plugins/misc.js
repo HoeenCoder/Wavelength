@@ -436,6 +436,20 @@ exports.commands = {
 	},
 	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
 
+	fj: 'forcejoin',
+	forcejoin: function (target, room, user) {
+		if (!user.can('root')) return false;
+		if (!target) return this.parse('/help forcejoin');
+		let parts = target.split(',');
+		if (!parts[0] || !parts[1]) return this.parse('/help forcejoin');
+		let userid = toId(parts[0]);
+		let roomid = toId(parts[1]);
+		if (!Users.get(userid)) return this.sendReply("User not found.");
+		if (!Rooms.get(roomid)) return this.sendReply("Room not found.");
+		Users.get(userid).joinRoom(roomid);
+	},
+	forcejoinhelp: ["/forcejoin [target], [room] - Forces a user to join a room"],
+
 	//Credits to OCPU for this run play function
 	'!dub': true,
 	dub: 'dubtrack',
