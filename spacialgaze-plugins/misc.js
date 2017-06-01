@@ -8,6 +8,8 @@
  */
 'use strict';
 
+const https = require('https');
+
 function clearRoom(room) {
 	let len = (room.log && room.log.length) || 0;
 	let users = [];
@@ -433,4 +435,34 @@ exports.commands = {
 		Db.disabledScrolls.remove(target);
 	},
 	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
+
+	//Credits to OCPU for this run play function
+	'!dub': true,
+	dub: 'dubtrack',
+	music: 'dubtrack',
+	radio: 'dubtrack',
+	dubtrackfm: 'dubtrack',
+	dubtrack: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		let nowPlaying = "";
+		let options = {
+			host: 'api.dubtrack.fm',
+			port: 443,
+			path: '/room/lavender-radio-tower',
+			method: 'GET',
+		};
+		https.get(options, res => {
+			let data = '';
+			res.on('data', chunk => {
+				data += chunk;
+			}).on('end', () => {
+				if (data.charAt(0) === '{') {
+					data = JSON.parse(data);
+					if (data['data'] && data['data']['currentSong']) nowPlaying = "<br /><b>Now Playing:</b> " + Chat.escapeHTML(data['data']['currentSong'].name);
+				}
+				this.sendReplyBox('Join our dubtrack.fm room <a href="https://www.dubtrack.fm/join/lavender-radio-tower">here!</a>' + nowPlaying);
+				room.update();
+			});
+		});
+	},
 };
