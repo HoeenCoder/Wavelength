@@ -436,6 +436,22 @@ exports.commands = {
 	},
 	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
 
+	pmroom: 'rmall',
+	roompm: 'rmall',
+	rmall: function (target, room, user) {
+		if (!this.can('declare', null, room)) return this.errorReply("/rmall - Access denied.");
+		if (!target) return this.sendReply("/rmall [message] - Sends a pm to all users in the room.");
+		target = target.replace(/<(?:.|\n)*?>/gm, '');
+
+		let pmName = ' SG Server';
+
+		for (let i in room.users) {
+			let message = '|pm|' + pmName + '|' + room.users[i].getIdentity() + '| ' + target;
+			room.users[i].send(message);
+		}
+		this.privateModCommand('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
+	},
+
 	fj: 'forcejoin',
 	forcejoin: function (target, room, user) {
 		if (!user.can('root')) return false;
