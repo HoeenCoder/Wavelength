@@ -147,7 +147,9 @@ exports.BattleScripts = {
 				},
 				nature: 'Jolly',
 			},
-			'@Vacuo': {
+
+			// Global Drivers:
+			'%Vacuo': {
 				species: 'Magnezone',
 				ability: 'Levitate',
 				item: 'Choice Specs',
@@ -162,8 +164,6 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
-
-			// Global Drivers:
 			'%Ashley the Pikachu': {
 				species: 'Pikachu-Cosplay',
 				ability: 'Primal Surge',
@@ -288,7 +288,7 @@ exports.BattleScripts = {
 			},
 			'+Almighty Bronzong': {
 				species: 'Bronzong',
-				ability: 'Levitate',
+				ability: 'Conflict Of Interest',
 				item: 'Leftovers',
 				gender: (variant === 1) ? 'M' : 'F',
 				moves: ['Gyro Ball', 'Confuse Ray', 'Toxic', 'Earthquake',
@@ -317,26 +317,11 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
-			'+Hydrostatics': {
-				species: 'Charizard',
-				ability: 'Solar Power',
-				item: 'Charizardite X',
-				gender: 'M',
-				moves: ['Outrage', 'Flare Blitz', 'Thunder Punch',
-				],
-				signatureMove: 'Nature\'s Fury',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Jolly',
-			},
 			'+Ranfen': {
 				species: 'Flygon',
-				ability: 'Levitate',
-				item: 'Choice Band',
-				moves: ['Outrage', 'Dragon Dance', 'Earthquake',
+				ability: 'DesertDragon',
+				item: 'Focus Sash',
+				moves: ['Stone Edge', 'Dragon Claw', 'Earthquake',
 				],
 				signatureMove: 'Out Ripper',
 				evs: {
@@ -359,36 +344,6 @@ exports.BattleScripts = {
 					hp: 4,
 				},
 				nature: 'Timid',
-			},
-			'+UmichBrendan': {
-				species: 'Slaking',
-				ability: 'Guts',
-				item: 'Flame Orb',
-				gender: 'M',
-				moves: ['Fire Punch', 'Thunder Punch', 'Facade',
-				],
-				signatureMove: 'Vacation Time',
-				evs: {
-					atk: 252,
-					spe: 4,
-					hp: 252,
-				},
-				nature: 'Modest',
-			},
-			'+Xavier1942': {
-				species: 'Porygon2',
-				ability: 'Prankster',
-				item: 'Eviolite',
-				moves: ['Tri Attack', 'Recover', 'Ice Beam',
-				],
-				signatureMove: 'Xavier Hax',
-				evs: {
-					hp: 252,
-					def: 136,
-					spa: 24,
-					spd: 96,
-				},
-				nature: 'Bold',
 			},
 			'+Hurricane\'d': {
 				species: 'Tomohawk',
