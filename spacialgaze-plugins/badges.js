@@ -1,6 +1,9 @@
 /**
  * Badges plugin
+ *
  * Credits: Niisama
+ *
+ * @license MIT license
  */
 
 'use strict';
@@ -76,11 +79,12 @@ exports.commands = {
 			if (!Db.userBadges.has(userid)) return this.errorReply("This user doesn't have any badges.");
 			userBadges = Db.userBadges.get(userid);
 			selectedBadge = parts[2].trim();
+			if (!Db.badgeData.get.has(selectedBadge)) return this.errorReply(selectedBadge + " is not a badge.");
 			userBadges = userBadges.filter(b => b !== selectedBadge);
 			Db.userBadges.set(userid, userBadges);
 			this.logModCommand(user.name + " took the badge '" + selectedBadge + "' badge from " + userid + ".");
 			this.sendReply("The '" + selectedBadge + "' badge was taken from '" + userid + "'.");
-			Users.get(userid).popup('|modal||html|' + SG.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
+			if (Users(userid)) Users.get(userid).popup('|modal||html|' + SG.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
 			break;
 		case 'delete':
 			if (!this.can('ban')) return false;

@@ -418,8 +418,8 @@ class GlobalRoom {
 		this.formatList = '|formats' + (Ladders.formatsListPrefix || '');
 		let section = '', prevSection = '';
 		let curColumn = 1;
-		for (let i in Tools.formats) {
-			let format = Tools.formats[i];
+		for (let i in Dex.formats) {
+			let format = Dex.formats[i];
 			if (format.section) section = format.section;
 			if (format.column) curColumn = format.column;
 			if (!format.name) continue;
@@ -752,7 +752,7 @@ class BattleRoom extends Room {
 		}
 
 		let rated;
-		if (options.rated && Tools.getFormat(formatid).rated !== false) {
+		if (options.rated && Dex.getFormat(formatid).rated !== false) {
 			rated = options.rated;
 		} else {
 			rated = false;
@@ -768,7 +768,7 @@ class BattleRoom extends Room {
 		this.p2 = p2 || null;
 
 		this.rated = rated;
-		this.battle = new Rooms.RoomBattle(this, format, rated);
+		this.battle = new Rooms.RoomBattle(this, format, rated, options.supplementaryRuleset);
 		this.game = this.battle;
 
 		this.sideTicksLeft = [21, 21];
@@ -882,6 +882,7 @@ class BattleRoom extends Room {
 		}
 	}
 	logBattle(p1score, p1rating, p2rating) {
+		if (this.battle.supplementaryRuleset) return;
 		let logData = this.battle.logData;
 		if (!logData) return;
 		this.battle.logData = null; // deallocate to save space

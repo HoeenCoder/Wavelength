@@ -573,7 +573,7 @@ class User {
 			name = name.slice(0, 18);
 		}
 
-		name = Tools.getName(name);
+		name = Dex.getName(name);
 		if (Config.namefilter) {
 			name = Config.namefilter(name, this);
 		}
@@ -1244,22 +1244,22 @@ class User {
 			connection.popup(message);
 			return Promise.resolve(false);
 		}
-		if (Tools.getFormat(formatid).useSGgame) {
+		if (Dex.getFormat(formatid).useSGgame) {
 			if (!this.console || this.console.gameId !== 'SGgame' || !Db.players.get(this.userid) || Db.players.get(this.userid).party.length <= 0) {
 				connection.popup('You need to start SGgame before you can play this format.');
 				return Promise.resolve(false);
 			}
-			if (type === 'challenge' && Tools.getFormat(formatid).isWildEncounter) {
+			if (type === 'challenge' && Dex.getFormat(formatid).isWildEncounter) {
 				connection.popup('You cannot challenge users to this format.');
 				return Promise.resolve(false);
 			}
 			for (let key of this.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).isWildEncounter && this.games.has(key) && Tools.getFormat(formatid).isWildEncounter) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).isWildEncounter && this.games.has(key) && Dex.getFormat(formatid).isWildEncounter) {
 					connection.popup('Your already in a wild pokemon battle.');
 					return Promise.resolve(false);
 				}
 			}
-			this.team = Tools.packTeam(Db.players.get(this.userid).party);
+			this.team = Dex.packTeam(Db.players.get(this.userid).party);
 		}
 		let gameCount = this.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
@@ -1269,7 +1269,7 @@ class User {
 			return Promise.resolve(false);
 		}
 
-		let format = Tools.getFormat(formatid);
+		let format = Dex.getFormat(formatid);
 		if (!format['' + type + 'Show']) {
 			connection.popup(`That format is not available.`);
 			return Promise.resolve(false);

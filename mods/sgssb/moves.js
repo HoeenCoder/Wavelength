@@ -487,15 +487,15 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Spacial Blast",
 		secondary: {
-			chance: 70,
-			status: 'par',
+			chance: 60,
+			status: 'brn',
 		},
 		pp: 10,
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Wish", source);
-			this.add('-anim', source, "Hyper Beam", target);
+			this.add('-anim', source, "Diamond Storm", target);
 		},
 		target: "Normal",
 		type: "Fairy",
@@ -508,7 +508,7 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Frost Bite",
 		secondary: {
-			chance: 70,
+			chance: 60,
 			status: 'frz',
 		},
 		pp: 10,

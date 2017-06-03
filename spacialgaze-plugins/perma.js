@@ -25,7 +25,8 @@ exports.commands = {
 				Users.setOfflineGroup(target, ' ');
 				Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
 			}
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permalocked ' + target + '.').update();
+			if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has (offline) permalocked ' + target + '.');
+			this.globalModlog("PERMALOCK", target, " by " + user.name);
 			return this.addModCommand(target + ' was permalocked by ' + user.name + '.');
 		}
 		if (!tarUser.registered) return this.errorReply('Only registered users can be permalocked.');
@@ -38,7 +39,8 @@ exports.commands = {
 		if (!Punishments.userids.get(tarUser.userid) || Punishments.userids.get(tarUser.userid)[0] !== 'BAN') Punishments.lock(tarUser, Date.now() + (1000 * 60 * 60 * 24 * 30), tarUser.userid, `Permalocked as ${tarUser.userid}`);
 		tarUser.popup('You have been permalocked by ' + user.name + '.\nUnlike permalocks issued by the main server, this permalock only effects this server.');
 		if (tarUser.trusted) Monitor.log('[CrisisMonitor] Trusted user ' + tarUser.userid + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + tarUser.distrust() + '.');
-		if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permalocked ' + tarUser.name + '.').update();
+		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has permalocked ' + tarUser.name + '.');
+		this.globalModlog("PERMALOCK", tarUser, " by " + user.name);
 		return this.addModCommand(tarUser.name + ' was permalocked by ' + user.name + '.');
 	},
 	permalockhelp: ['/permalock user - Permalock a user. Requires: ~'],
@@ -52,7 +54,8 @@ exports.commands = {
 		Db.perma.set(target, 0);
 		Punishments.unlock(target);
 		if (Users(target)) Users(target).popup('Your permalock was lifted by ' + user.name + '.');
-		if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermalocked ' + target + '.').update();
+		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has unpermalocked ' + target + '.');
+		this.globalModlog("UNPERMALOCK", (Users(target) || target), " by " + user.name);
 		return this.addModCommand(target + ' was unpermalocked by ' + user.name + '.');
 	},
 	unpermalockhelp: ['/unpermalock user - Unpermalock a user. Requires: ~'],
@@ -75,7 +78,8 @@ exports.commands = {
 				Users.setOfflineGroup(target, ' ');
 				Monitor.log('[CrisisMonitor] Trusted user ' + target + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + Users.usergroups[target].substr(0, 1) + '.');
 			}
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has (offline) permabanned ' + target + '.').update();
+			if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has (offline) permabanned ' + target + '.');
+			this.globalModlog("PERMABAN", target, " by " + user.name);
 			return this.addModCommand(target + ' was permabanned by ' + user.name + '.');
 		}
 		if (!tarUser.registered) return this.errorReply('Only registered users can be permalocked.');
@@ -85,7 +89,8 @@ exports.commands = {
 		tarUser.popup('You have been permabanned by ' + user.name + '.\nUnlike permabans issued by the main server, this permaban only effects this server.');
 		Punishments.ban(tarUser, Date.now() + (1000 * 60 * 60 * 24 * 30), tarUser.userid, `Permabanned as ${tarUser.userid}`);
 		if (tarUser.trusted) Monitor.log('[CrisisMonitor] Trusted user ' + tarUser.userid + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + tarUser.distrust() + '.');
-		if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has permabanned ' + tarUser.name + '.').update();
+		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has permabanned ' + tarUser.name + '.');
+		this.globalModlog("PERMABAN", tarUser, " by " + user.name);
 		return this.addModCommand(tarUser.name + ' was permabanned by ' + user.name + '.');
 	},
 	permabanhelp: ['/permaban user - Permaban a user. Requires: ~'],
@@ -96,7 +101,8 @@ exports.commands = {
 		if (Db.perma.get(target, 0) !== 6) return this.errorReply(target + ' is not permabanned.');
 		Db.perma.set(target, 0);
 		Punishments.unban(target);
-		if (Rooms('upperstaff')) Rooms('upperstaff').add('[Perma Monitor] ' + user.name + ' has unpermabanned ' + target + '.').update();
+		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has unpermabanned ' + target + '.');
+		this.globalModlog("UNPERMABAN", target, " by " + user.name);
 		return this.addModCommand(target + ' was unpermabanned by ' + user.name + '.');
 	},
 	unpermabanhelp: ['/unpermaban user - Unpermaban a user. Requires: ~'],

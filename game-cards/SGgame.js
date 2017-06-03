@@ -101,7 +101,7 @@ class SGgame extends Console.Console {
 			if (user.party.length > 5) break;
 			pokemon = user.pc[box - 1][slot];
 			user.unBoxPoke(box, slot);
-			user.party = user.party.concat(Tools.fastUnpackTeam(pokemon));
+			user.party = user.party.concat(Dex.fastUnpackTeam(pokemon));
 			Db.players.set(this.userid, user);
 			slot = null;
 			break;
@@ -152,7 +152,7 @@ class SGgame extends Console.Console {
 				if (isNaN(slot) || slot < 0 || slot > 5) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (user.party[slot]) {
-					let species = Tools.getTemplate(user.party[slot].species).spriteid;
+					let species = Dex.getTemplate(user.party[slot].species).spriteid;
 					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (user.party[slot].shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((user.party[slot].name && user.party[slot].name !== user.party[slot].species) ? user.party[slot].name + '<br/>(' + user.party[slot].species + ')' : user.party[slot].species) + '</b> Lvl ' + (user.party[slot].level) + '<br/>';
@@ -167,11 +167,11 @@ class SGgame extends Console.Console {
 				output += '</div>';
 			} else {
 				if (isNaN(slot) || slot < 0 || slot > 29) return output + 'Error</div></div>';
-				let data = Tools.fastUnpackTeam(user.pc[(box - 1)][slot])[0];
+				let data = Dex.fastUnpackTeam(user.pc[(box - 1)][slot])[0];
 				if (!data) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (data) {
-					let species = Tools.getTemplate(data.species).spriteid;
+					let species = Dex.getTemplate(data.species).spriteid;
 					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (data.shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((data.name && data.name !== data.species) ? data.name + '<br/>(' + data.species + ')' : data.species) + '</b> Lvl ' + (data.level) + '<br/>';
@@ -210,7 +210,7 @@ class SGgame extends Console.Console {
 	onKill() {
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
-			if (Rooms.get(key).type === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+			if (Rooms.get(key).type === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
 				// FORCE FORFEIT
 				Rooms(key).game.forfeit(user);
 			}
@@ -236,7 +236,7 @@ class Player {
 	}
 	boxPoke(pokemon, box) {
 		if (typeof pokemon !== 'string') {
-			pokemon = Tools.packTeam(pokemon);
+			pokemon = Dex.packTeam(pokemon);
 			if (!pokemon) return false;
 		}
 		let count = 0, first = false;
@@ -315,7 +315,7 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newObj = new Player(user.userid, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				let newObj = new Player(user.userid, Dex.fastUnpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
@@ -337,7 +337,7 @@ exports.commands = {
 			let action = user.console.queueAction.split('|');
 			if (action[0] !== 'learn') return;
 			let pokemon = Db.players.get(user.userid).party[Number(action[1])];
-			let template = Tools.getTemplate(pokemon.species);
+			let template = Dex.getTemplate(pokemon.species);
 			if (!target) {
 				// Pull up move selection menu to pick what to forget
 				user.console.curPane = 'learn'; // Force override any open pane
@@ -357,10 +357,10 @@ exports.commands = {
 				let move = null;
 				output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 				for (let m = 0; m < pokemon.moves.length; m++) {
-					move = Tools.getMove(pokemon.moves[m]);
+					move = Dex.getMove(pokemon.moves[m]);
 					output += '<button name="send" value="/sggame learn ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
 				}
-				move = Tools.getMove(action[2]);
+				move = Dex.getMove(action[2]);
 				output += '<button name="send" value="/sggame learn cancel" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
 				output += '</center></div></div></div>';
 				return user.console.update(null, output, null);
@@ -416,7 +416,7 @@ exports.commands = {
 				return data.trim();
 			});
 			for (let key of user.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Tools.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling
 			}
 			let slot = target[1];
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
@@ -483,7 +483,7 @@ exports.commands = {
 			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/sggame back'>No</button></div>", null);
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Tools.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
 			user.console.lastNextAction = null;
 			this.parse('/sggame next');

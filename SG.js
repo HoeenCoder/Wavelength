@@ -131,7 +131,7 @@ exports.SG = {
 		switch (type) {
 		case 'random':
 			if (battle[side].active[0].fainted) {
-				let choices = Tools.shuffle(battle[side].pokemon.slice(0));
+				let choices = Dex.shuffle(battle[side].pokemon.slice(0));
 				for (let i = 0; i < choices.length; i++) {
 					if (choices[i].fainted) continue;
 					let idx = battle[side].pokemon.indexOf(choices[i]);
@@ -159,20 +159,20 @@ exports.SG = {
 		//let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
 		if (wildPokemon.length <= 0) loadPokemon();
 		let pokemon = wildPokemon[Math.floor(Math.random() * wildPokemon.length)];
-		if (exact && Tools.getTemplate(exact.species).exists) pokemon = exact.species;
-		pokemon = Tools.getTemplate(pokemon);
+		if (exact && Dex.getTemplate(exact.species).exists) pokemon = exact.species;
+		pokemon = Dex.getTemplate(pokemon);
 		let baseSpecies = pokemon;
 		let forme = null;
 		if (pokemon.otherForms && (!exact || !exact.species)) {
 			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
 			forme = formes[Math.floor(Math.random() * formes.length)];
-			pokemon = Tools.getTemplate(forme);
+			pokemon = Dex.getTemplate(forme);
 		} else if (pokemon.otherForms && exact.species && exact.allowOtherFormes) {
 			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
 			forme = formes[Math.floor(Math.random() * formes.length)];
-			pokemon = Tools.getTemplate(forme);
+			pokemon = Dex.getTemplate(forme);
 		}
-		if (pokemon.baseSpecies) baseSpecies = Tools.getTemplate(pokemon.baseSpecies);
+		if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
 		if (!pokemon || !pokemon.exists) {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
@@ -234,9 +234,9 @@ exports.SG = {
 			}
 		}
 		if (Math.ceil(Math.random() * 10) > 3) {
-			for (let key in Tools.data.Natures) {
-				if (Tools.data.Natures[key].plus === plus && Tools.data.Natures[key].minus === minus) {
-					data += Tools.data.Natures[key].name + "||";
+			for (let key in Dex.data.Natures) {
+				if (Dex.data.Natures[key].plus === plus && Dex.data.Natures[key].minus === minus) {
+					data += Dex.data.Natures[key].name + "||";
 					break;
 				}
 			}
@@ -283,7 +283,7 @@ exports.SG = {
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
 	teamAverage: function (team) {
-		if (typeof team === "string") team = Tools.fastUnpackTeam(team);
+		if (typeof team === "string") team = Dex.fastUnpackTeam(team);
 		let avrg = 0;
 		for (let i = 0; i < team.length; i++) {
 			avrg += team[i].level;
@@ -509,7 +509,7 @@ exports.SG = {
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {
 		let base = pokemon;
-		pokemon = Tools.getTemplate(pokemon);
+		pokemon = Dex.getTemplate(pokemon);
 		let resourcePrefix = "//play.pokemonshowdown.com/";
 		let num = 0;
 		if (base === 'pokeball') {
@@ -763,9 +763,9 @@ function showDailyRewardAni(userid) {
 }
 
 function loadPokemon() {
-	let mons = Object.keys(Tools.data.Pokedex);
+	let mons = Object.keys(Dex.data.Pokedex);
 	for (let i = 0; i < mons.length; i++) {
-		let poke = Tools.getTemplate(mons[i]);
+		let poke = Dex.getTemplate(mons[i]);
 		if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP') continue;
 		if (poke.forme) {
 			let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];

@@ -6,7 +6,7 @@
  * interface. It also abstracts away the multi-process nature of the
  * simulator.
  *
- * For the actual battle simulation, see battle-engine.js
+ * For the actual battle simulation, see sim/
  *
  * @license MIT license
  */
@@ -21,6 +21,9 @@ const STARTING_TICKS = 21;
 const MAX_TURN_TICKS = 15;
 const STARTING_TICKS_CHALLENGE = 28;
 const MAX_TURN_TICKS_CHALLENGE = 30;
+
+// time after a player disabling the timer before they can re-enable it
+const TIMER_COOLDOWN = 20 * 1000;
 
 global.Config = require('./config/config');
 
@@ -144,6 +147,9 @@ class BattleTimer {
 		 */
 		this.dcTicksLeft = [];
 
+		this.lastDisabledTime = 0;
+		this.lastDisabledByUser = null;
+
 		this.isChallenge = !battle.rated && !battle.room.tour;
 
 		const ticksLeft = (this.isChallenge ? STARTING_TICKS_CHALLENGE : STARTING_TICKS);
@@ -156,11 +162,19 @@ class BattleTimer {
 	start(requester) {
 		let userid = requester ? requester.userid : 'staff';
 		if (this.timerRequesters.has(userid)) return false;
-		this.timerRequesters.add(userid);
 		if (this.timer && requester) {
 			this.battle.room.send(`|inactive|${requester.userid} also wants the timer to be on`);
+			this.timerRequesters.add(userid);
 			return false;
 		}
+		if (requester && this.battle.players[requester.userid] && this.lastDisabledByUser === requester.userid) {
+			const remainingCooldownTime = (this.lastDisabledTime || 0) + TIMER_COOLDOWN - Date.now();
+			if (remainingCooldownTime > 0) {
+				this.battle.players[requester.userid].sendRoom(`|inactiveoff|The timer can't be re-enabled so soon after disabling it (${Math.ceil(remainingCooldownTime / 1000)} seconds remaining).`);
+				return false;
+			}
+		}
+		this.timerRequesters.add(userid);
 		this.nextRequest();
 		const requestedBy = requester ? ` (requested by ${requester.name})` : ``;
 		this.battle.room.add(`|inactive|Battle timer is ON: inactive players will automatically lose when time's up.${requestedBy}`);
@@ -170,6 +184,8 @@ class BattleTimer {
 		if (requester) {
 			if (!this.timerRequesters.has(requester.userid)) return false;
 			this.timerRequesters.delete(requester.userid);
+			this.lastDisabledByUser = requester.userid;
+			this.lastDisabledTime = Date.now();
 		} else {
 			this.timerRequesters.clear();
 		}
@@ -278,10 +294,10 @@ class BattleTimer {
 }
 
 class Battle {
-	constructor(room, format, rated) {
+	constructor(room, format, rated, supplementaryRuleset) {
 		this.id = room.id;
 		this.room = room;
-		this.title = Tools.getFormat(format).name;
+		this.title = Dex.getFormat(format).name;
 		if (!this.title.endsWith(" Battle")) this.title += " Battle";
 		this.allowRenames = !rated;
 
@@ -308,6 +324,7 @@ class Battle {
 		// data to be logged
 		this.logData = null;
 		this.endType = 'normal';
+		this.supplementaryRuleset = !!supplementaryRuleset;
 
 		this.rqid = 1;
 
@@ -316,7 +333,7 @@ class Battle {
 			throw new Error(`Battle with ID ${room.id} already exists.`);
 		}
 
-		this.send('init', this.format, rated ? '1' : '');
+		this.send('init', this.format, rated ? '1' : '', supplementaryRuleset ? supplementaryRuleset.join(',') : '');
 		this.process.pendingTasks.set(room.id, this);
 	}
 
@@ -473,7 +490,7 @@ class Battle {
 			lines[2] = lines[2].split('|');
 			let curTeam = Db.players.get(lines[2][0]);
 			let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
-			newSet = Tools.fastUnpackTeam(newSet)[0];
+			newSet = Dex.fastUnpackTeam(newSet)[0];
 			newSet.pokeball = lines[2][1];
 			newSet.ot = toId(lines[2][0]);
 			if (curTeam.party.length < 6) {
@@ -481,7 +498,7 @@ class Battle {
 				Db.players.set(lines[2][0], curTeam);
 			} else {
 				let name = (newSet.name || newSet.species);
-				newSet = Tools.packTeam([newSet]);
+				newSet = Dex.packTeam([newSet]);
 				let response = curTeam.boxPoke(newSet, 1);
 				if (response) {
 					this.room.push(name + ' was sent to box ' + response + '.');
@@ -501,7 +518,7 @@ class Battle {
 			for (let i = 0; i < data.length; i++) {
 				let cur = data[i].split('|');
 				cur[0] = Number(cur[0]);
-				let pokemon = Tools.getTemplate(gameObj.party[cur[0]].species);
+				let pokemon = Dex.getTemplate(gameObj.party[cur[0]].species);
 				let olvl = gameObj.party[cur[0]].level;
 				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
 				gameObj.party[cur[0]].level += (isNaN(Number(cur[2])) ? 0 : Number(cur[2]));
@@ -516,7 +533,7 @@ class Battle {
 				if (olvl !== lvl) {
 					// New Moves
 					let baseSpecies = null;
-					if (pokemon.baseSpecies) baseSpecies = Tools.getTemplate(pokemon.baseSpecies);
+					if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
 					if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
 						pokemon.learnset = baseSpecies.learnset;
 					}
@@ -735,10 +752,10 @@ exports.SimulatorProcess = SimulatorProcess;
 if (process.send && module === process.mainModule) {
 	// This is a child process!
 
-	global.Tools = require('./tools').includeFormats();
-	global.toId = Tools.getId;
 	global.Chat = require('./chat');
-	const BattleEngine = require('./battle-engine');
+	const Sim = require('./sim');
+	global.Dex = require('./sim/dex');
+	global.toId = Dex.getId;
 
 	if (Config.crashguard) {
 		// graceful crash - allow current battles to finish before restarting
@@ -747,7 +764,7 @@ if (process.send && module === process.mainModule) {
 		});
 	}
 
-	require('./repl').start('battle-engine-', process.pid, cmd => eval(cmd));
+	require('./repl').start('sim-', process.pid, cmd => eval(cmd));
 
 	let Battles = new Map();
 
@@ -766,7 +783,29 @@ if (process.send && module === process.mainModule) {
 			const id = data[0];
 			if (!Battles.has(id)) {
 				try {
-					const battle = BattleEngine.construct(data[2], data[3], sendBattleMessage);
+					let format = Dex.getFormat(data[2]);
+					if (data[4]) {
+						Dex.mod(format.mod || 'base').getBanlistTable(format);
+						format = Object.assign({}, format);
+						format.ruleset = format.ruleset ? format.ruleset.slice() : [];
+						const supplementaryRuleset = data[4].split(',');
+						for (let i = 0; i < supplementaryRuleset.length; i++) {
+							let rule = supplementaryRuleset[i];
+							let remove = false;
+							if (rule.charAt(0) === '!') {
+								remove = true;
+								rule = rule.substr(1);
+							}
+							if (!rule.startsWith('Rule:')) continue;
+							rule = rule.substr(5);
+							if (remove) {
+								if (format.ruleset.includes(rule)) format.ruleset.splice(format.ruleset.indexOf(rule), 1);
+							} else {
+								if (!format.ruleset.includes(rule)) format.ruleset.push(rule);
+							}
+						}
+					}
+					const battle = Sim.construct(format, data[3], sendBattleMessage);
 					battle.id = id;
 					Battles.set(id, battle);
 				} catch (err) {

@@ -50,7 +50,7 @@ class Matchmaker {
 
 	searchBattle(user, formatid) {
 		if (!user.connected) return;
-		formatid = Tools.getFormat(formatid).id;
+		formatid = Dex.getFormat(formatid).id;
 		return user.prepBattle(formatid, 'search', null)
 			.then(result => this.finishSearchBattle(user, formatid, result));
 	}
@@ -112,7 +112,7 @@ class Matchmaker {
 			this.searches.set(formatid, formatSearches);
 		}
 
-		if (Tools.getFormat(formatid).isWildEncounter) {
+		if (Dex.getFormat(formatid).isWildEncounter) {
 			delete user.searching[formatid];
 			if (!Users('sgserver')) SG.makeCOM();
 			let wildTeam = SG.makeWildPokemon();
