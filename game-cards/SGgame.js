@@ -2,7 +2,7 @@
 
 class SGgame extends Console.Console {
 	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button disabled" name="send" value="/sggame pc">PC Boxes</button>', muted);
+		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
 		this.queue = [];
@@ -196,13 +196,168 @@ class SGgame extends Console.Console {
 		output += '</div></div>';
 		return output;
 	}
+	summary(section, pokemon, details) {
+		let output = this.buildMap();
+		let player = Db.players.get(this.userid);
+		switch (section) {
+		case 'pokemon':
+		case 'summary':
+			if (!pokemon) return '<div style="color:red">An error has occured</div>';
+			let template = Dex.getTemplate(pokemon.species);
+			if (!template.exists) return '<div style="color:red">An error has occured</div>';
+			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
+			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
+			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
+			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
+			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
+			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
+			output += '<b>Level</b>:' + pokemon.level + '<br/>';
+			let nextLevel = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel = SG.calcExp(pokemon.species, pokemon.level);
+			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
+			output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress>';
+			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
+			let move = null;
+			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
+			for (let m = 0; m < pokemon.moves.length; m++) {
+				move = Dex.getMove(pokemon.moves[m]);
+				output += '<button name="send" value="/dt ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
+			}
+			output += '</center></div></div></div>';
+			break;
+		case 'stats':
+			if (!pokemon) return '<div style="color:red">An error has occured</div>';
+			let evs = pokemon.evs || {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+			let totalEvs = 0;
+			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%; text-align: center;">';
+			output += '<br/><b>' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '\'s Evs</b><br/>';
+			for (let ev in evs) {
+				output += '<b>' + ev + '</b>: ' + evs[ev] + ' / 255<br/>';
+				totalEvs += evs[ev];
+			}
+			output += '<br/><b>Total Evs</b>: ' + totalEvs + ' / 510<br/>';
+			output += '<progress max="510" value="' + totalEvs + '"></progress></div>';
+			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;">';
+			output += '<br/><b>' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '\'s Ivs</b><br/>';
+			for (let iv in pokemon.ivs) {
+				output += '<b>' + iv + '</b>: ' + pokemon.ivs[iv] + ' / 255<br/>';
+			}
+			output += '</div></div>';
+			break;
+		case 'move':
+			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%; text-align: center;"><br/><b>Select ' + (details ? 'second' : 'first') + ' pokemon</b><br/>&nbsp;';
+			let pmon = null;
+			for (let i = 0; i < 6; i += 2) {
+				if (i !== 0) output += '<br/><br/>&nbsp;';
+				pmon = player.party[i];
+				if (pmon) {
+					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
+					output += '<div style="' + SG.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(has item)' : '(no item)');
+					output += '</button>';
+				} else {
+					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
+				}
+			}
+			output += '</div>';
+			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><br/><br/>&nbsp;';
+			for (let i = 1; i < 6; i += 2) {
+				if (i !== 1) output += '<br/><br/>&nbsp;';
+				pmon = player.party[i];
+				if (pmon) {
+					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
+					output += '<div style="' + SG.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(has item)' : '(no item)');
+					output += '</button>';
+				} else {
+					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
+				}
+			}
+			output += '</div></div>';
+			break;
+		case 'learn':
+			if (!pokemon) return '<div style="color:red">An error has occured</div>';
+			let template2 = Dex.getTemplate(pokemon.species);
+			if (!template2.exists) return '<div style="color:red">An error has occured</div>';
+			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
+			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
+			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[0] + '.png" alt="' + template2.types[0] + '"/>' + (template2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[1] + '.png" alt="' + template2.types[1] + '"/>' : '') + '<br/>';
+			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
+			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
+			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
+			output += '<b>Level</b>:' + pokemon.level + '<br/>';
+			let nextLevel2 = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel2 = SG.calcExp(pokemon.species, pokemon.level);
+			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel2) + '<br/>';
+			output += '<progress max="' + (nextLevel2 - curLevel2) + '" value="' + (pokemon.exp - curLevel2) + '"></progress></center></div>';
+			let move2 = null;
+			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
+			for (let m = 0; m < pokemon.moves.length; m++) {
+				move2 = Dex.getMove(pokemon.moves[m]);
+				output += '<button name="send" value="/sggame learn ' + move2.id + '" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + move2.pp + '/' + move2.pp + '</small>&nbsp;</button><br/><br/><br/>';
+			}
+			move2 = Dex.getMove(details);
+			output += '<button name="send" value="/sggame learn cancel" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + move2.pp + '/' + move2.pp + '</small>&nbsp;</button><br/><br/><br/>';
+			output += '</center></div></div></div>';
+			break;
+		default:
+			// Show party
+			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
+			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%; text-align: center;"><br/>&nbsp;';
+			let mon = null;
+			for (let i = 0; i < 6; i += 2) {
+				if (i !== 0) output += '<br/><br/>&nbsp;';
+				mon = player.party[i];
+				if (mon) {
+					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
+					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<b>' + (mon.name && mon.name !== mon.species ? mon.name + '(' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
+					output += '</button>';
+				} else {
+					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
+				}
+			}
+			output += '</div>';
+			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><br/>&nbsp;';
+			for (let i = 1; i < 6; i += 2) {
+				if (i !== 1) output += '<br/><br/>&nbsp;';
+				mon = player.party[i];
+				if (mon) {
+					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
+					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<b>' + (mon.name && mon.name !== mon.species ? mon.name + '(' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
+					output += '</button>';
+				} else {
+					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
+				}
+			}
+			output += '</div></div>';
+		}
+		return output;
+	}
 	buildBase(addOn, data) {
 		if (!addOn) return this.defaultBottomHTML;
 		let output = this.defaultBottomHTML + "<br/>";
+		let checkButton = function (title, prop, command) {
+			if (data[prop]) {
+				return '<button class="button" name="send" value="' + (data[prop] === true ? command : data[prop]) + '">' + title + '</button>';
+			} else {
+				return '<button class="button disabled">' + title + '</button>';
+			}
+		};
 		switch (addOn) {
 		case "pc":
-			output += '<center><button name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', deposit" class="button ' + (data.deposit ? '' : 'disabled') + '">Deposit</button> <button class="button ' + (data.withdraw ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', withdraw">Withdraw</button> ';
-			output += '<button class="button ' + (data.release ? '' : 'disabled') + '" name="send" value="/sggame pc ' + data.box + ', ' + data.slot + ', release">Release</button> <button class="button ' + (data.back ? '' : 'disabled') + '" name="send" value="/sggame back">Back</button> <button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
+			output += '<center>' + checkButton('Deposit', 'deposit', '/sggame pc ' + data.box + ', ' + data.slot + ', deposit') + ' ' + checkButton('Withdraw', 'withdraw', '/sggame pc ' + data.box + ', ' + data.slot + ', withdraw') + ' ';
+			output += checkButton('Release', 'release', '/sggame pc ' + data.box + ', ' + data.slot + ', release') + ' ' + checkButton('Back', 'back', '/sggame back') + ' ';
+			output += '<button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
+			break;
+		case "pokemon":
+			output += '<center>' + checkButton('Swap', 'move') + ' ' + checkButton('Move Items', 'item') + ' ' + checkButton('Back', 'back') + ' ' + checkButton('Cancel', 'cancel');
+			output += '<button class="button" name="send" value="/sggame pokemon close">Close</button></center>';
 			break;
 		}
 		return output;
@@ -303,7 +458,7 @@ exports.commands = {
 			}
 			user.console.queue.push('text|' + msg + '|hide');
 			user.console.callback = function () {
-				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 				user.console.callback = null;
 			};
 			user.console.queue.push('text|Great choice! I\'ll leave you to your game now.|callback');
@@ -320,7 +475,7 @@ exports.commands = {
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.queue = ['text|Welcome back to the alpha, tell me if you like the game or find any bugs!'];
-			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button disabled" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 			user.console.init();
 			this.parse('/sggame next');
 		}
@@ -337,33 +492,10 @@ exports.commands = {
 			let action = user.console.queueAction.split('|');
 			if (action[0] !== 'learn') return;
 			let pokemon = Db.players.get(user.userid).party[Number(action[1])];
-			let template = Dex.getTemplate(pokemon.species);
 			if (!target) {
 				// Pull up move selection menu to pick what to forget
 				user.console.curPane = 'learn'; // Force override any open pane
-				let output = user.console.buildMap();
-				output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
-				output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-				output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
-				output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
-				output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
-				output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
-				output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
-				output += '<b>OT</b>:' + pokemon.ot + '<br/>';
-				output += '<b>Level</b>:' + pokemon.level + '<br/>';
-				let nextLevel = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel = SG.calcExp(pokemon.species, pokemon.level);
-				output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
-				output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress></center></div>';
-				let move = null;
-				output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
-				for (let m = 0; m < pokemon.moves.length; m++) {
-					move = Dex.getMove(pokemon.moves[m]);
-					output += '<button name="send" value="/sggame learn ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
-				}
-				move = Dex.getMove(action[2]);
-				output += '<button name="send" value="/sggame learn cancel" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
-				output += '</center></div></div></div>';
-				return user.console.update(null, output, null);
+				return user.console.update(null, user.console.summary('learn', pokemon, action[2]), null);
 			} else if (target === 'reject') {
 				// Cancel the move learning.
 				user.console.queueAction = null;
@@ -398,7 +530,48 @@ exports.commands = {
 		},
 		pokemon: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
-			return this.sendReply('Not Avaliable');
+			if (user.console.queue.length) return;
+			target = target.split(',');
+			target = target.map(data => {
+				return data.trim();
+			});
+			for (let key of user.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[0] !== 'close') return false; // No PC while battling
+			}
+			if (target[0] === 'close') {
+				user.console.curPane = null;
+				return user.console.update(null, user.console.buildMap(), null);
+			}
+			if (user.console.curPane && user.console.curPane !== 'pokemon') return;
+			user.console.curPane = 'pokemon';
+			let data = {};
+			let player = Db.players.get(user.userid);
+			let detail = null;
+			if (!target[0]) {
+				data = {move: '/sggame pokemon move'};
+				return user.console.update(null, user.console.summary(), user.console.buildBase('pokemon', data));
+			}
+			if (target[0] === 'pokemon' || target[0] === 'summary' || target[0] === 'stats') {
+				detail = Number(target[1]);
+				target[1] = player.party[detail] || null;
+				data.back = (target[0] === 'stats' ? '/sggame pokemon summary, ' + detail : '/sggame pokemon');
+			}
+			if (target[0] === 'move') {
+				if (target[1] && target[2]) {
+					target[1] = Number(target[1]);
+					target[2] = Number(target[2]);
+					if (isNaN(target[1]) || isNaN(target[2]) || !player.party[target[1]] || !player.party[target[2]]) return this.parse('/sggame pokemon');
+					let holding = player.party[target[1]];
+					player.party[target[1]] = player.party[target[2]];
+					player.party[target[2]] = holding;
+					Db.players.set(user.userid, player);
+					return this.parse('/sggame pokemon');
+				} else {
+					data.cancel = '/sggame pokemon';
+					return user.console.update(null, user.console.summary(target[0], null, target[1] || null), user.console.buildBase('pokemon', data));
+				}
+			}
+			return user.console.update(null, user.console.summary(target[0], target[1], detail), user.console.buildBase('pokemon', data));
 		},
 		pokedex: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
