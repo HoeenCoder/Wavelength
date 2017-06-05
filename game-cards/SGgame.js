@@ -315,7 +315,7 @@ class SGgame extends Console.Console {
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '<b>' + (mon.name && mon.name !== mon.species ? mon.name + '(' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -329,7 +329,7 @@ class SGgame extends Console.Console {
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '<b>' + (mon.name && mon.name !== mon.species ? mon.name + '(' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(has item)' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -356,7 +356,7 @@ class SGgame extends Console.Console {
 			output += '<button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
 			break;
 		case "pokemon":
-			output += '<center>' + checkButton('Swap', 'move') + ' ' + checkButton('Move Items', 'item') + ' ' + checkButton('Back', 'back') + ' ' + checkButton('Cancel', 'cancel');
+			output += '<center>' + checkButton('Swap', 'move') + ' ' + checkButton('Move Items', 'item') + ' ' + checkButton('Change Nickname', 'nick') + ' ' + checkButton('Back', 'back') + ' ' + checkButton('Cancel', 'cancel');
 			output += '<button class="button" name="send" value="/sggame pokemon close">Close</button></center>';
 			break;
 		}
@@ -387,6 +387,16 @@ class Player {
 		// More to come...
 	}
 	test() {
+		return true;
+	}
+	nickname(name, slot) {
+		if (!this.party[slot]) return false;
+		name = name.trim();
+		name = name.replace(/[^A-Za-z0-9]+/g, '');
+		if (Config.nicknameFilter) {
+			if (!Config.nicknameFilter(name)) return false;
+		}
+		this.party[slot].name = name;
 		return true;
 	}
 	boxPoke(pokemon, box) {
@@ -461,7 +471,7 @@ exports.commands = {
 				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button disabled" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 				user.console.callback = null;
 			};
-			user.console.queue.push('text|Great choice! I\'ll leave you to your game now.|callback');
+			user.console.queue.push('text|Great choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to your game now.|callback');
 			user.console.init();
 			this.parse('/sggame next');
 		} else {
@@ -555,6 +565,7 @@ exports.commands = {
 				detail = Number(target[1]);
 				target[1] = player.party[detail] || null;
 				data.back = (target[0] === 'stats' ? '/sggame pokemon summary, ' + detail : '/sggame pokemon');
+				data.nick = '/help sggame nickname';
 			}
 			if (target[0] === 'move') {
 				if (target[1] && target[2]) {
@@ -628,6 +639,26 @@ exports.commands = {
 			let base = ((target[2] === 'close' || (user.console.curPane && user.console.curPane !== 'pc')) ? user.console.buildBase() : user.console.buildBase('pc', orders));
 			return user.console.update(user.console.curScreen[0], user.console.pc(target[0], slot, target[2]), base);
 		},
+		nickname: function (target, room, user) {
+			if (!user.console || user.console.gameId !== 'SGgame') return;
+			if (!target) return this.parse('/help sggame nickname');
+			target = target.split(',');
+			target[0] = Number(toId(target[0]));
+			if (isNaN(target[0])) return this.errorReply("[party slot] should be a number between 1 and 6.");
+			target[0] -= 1; // array offset
+			let player = Db.players.get(user.userid);
+			if (!player) return this.errorReply("You need to advance farther in the game before you can use this command!");
+			if (!player.party[target[0]]) return this.errorReply("There is no pokemon in slot #" + (target[0] + 1) + " in your party.");
+			if (target[1].trim().length > 12) return this.errorReply("Nicknames cannot be more than 12 characters.");
+			if (player.party[target[0]].ot !== user.userid) return this.errorReply("You can't change the nickname of a pokemon that your not the original trainer of!");
+			let result = player.nickname(target[1], target[0]);
+			if (!result) {
+				return this.errorReply("The nickname you choose is not allowed.");
+			} else {
+				return this.sendReply("Your " + player.party[target[0]].species + "'s nickname has been set to: \"" + player.party[target[0]].name + "\".");
+			}
+		},
+		nicknamehelp: ["/sggame nickname [party slot], [new nickname] - Set a pokemon's nickname. The pokemon needs to be in your party, and party slot should be the number of the slot the pokemon is in (1-6)."],
 	},
 	confirmpickstarter: 'pickstarter',
 	pickstarter: function (target, room, user, connection, cmd) {
