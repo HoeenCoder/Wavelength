@@ -109,7 +109,7 @@ exports.commands = {
 
 	dexsearchhelp: [
 		"/dexsearch [parameter], [parameter], [parameter], ... - Searches for Pok\u00e9mon that fulfill the selected criteria",
-		"Search categories are: type, tier, color, moves, ability, gen, resists, recovery, priority, stat, egg group.",
+		"Search categories are: type, tier, color, moves, ability, gen, resists, recovery, priority, stat, weight, height, egg group.",
 		"Valid colors are: green, red, blue, white, brown, yellow, purple, pink, gray and black.",
 		"Valid tiers are: Uber/OU/BL/UU/BL2/RU/BL3/NU/BL4/PU/NFE/LC/CAP.",
 		"Types must be followed by ' type', e.g., 'dragon type'.",
@@ -297,7 +297,7 @@ function runDexsearch(target, cmd, canAll, message) {
 	let allTiers = {'uber':'Uber', 'ou':'OU', 'bl':"BL", 'uu':'UU', 'bl2':"BL2", 'ru':'RU', 'bl3':"BL3", 'nu':'NU', 'bl4':"BL4", 'pu':'PU', 'nfe':'NFE', 'lc uber':"LC Uber", 'lc':'LC', 'cap':"CAP"};
 	let allColours = {'green':1, 'red':1, 'blue':1, 'white':1, 'brown':1, 'yellow':1, 'purple':1, 'pink':1, 'gray':1, 'black':1};
 	let allEggGroups = {'amorphous':'Amorphous', 'bug':'Bug', 'ditto':'Ditto', 'dragon':'Dragon', 'fairy':'Fairy', 'field':'Field', 'flying':'Flying', 'grass':'Grass', 'humanlike':'Human-Like', 'mineral':'Mineral', 'monster':'Monster', 'undiscovered':'Undiscovered', 'water1':'Water 1', 'water2':'Water 2', 'water3':'Water 3'};
-	let allStats = {'hp':1, 'atk':1, 'def':1, 'spa':1, 'spd':1, 'spe':1, 'bst':1, 'weight':1};
+	let allStats = {'hp':1, 'atk':1, 'def':1, 'spa':1, 'spd':1, 'spe':1, 'bst':1, 'weight':1, 'height':1};
 	let showAll = false;
 	let megaSearch = null;
 	let capSearch = null;
@@ -505,30 +505,25 @@ function runDexsearch(target, cmd, canAll, message) {
 				} else {
 					inequality = target.charAt(inequality);
 				}
-				let inequalityOffset = (inequality.charAt(1) === '=' ? 0 : -1);
 				let targetParts = target.replace(/\s/g, '').split(inequality);
-				let num, stat, direction;
+				let num, stat;
+				let directions = [];
 				if (!isNaN(targetParts[0])) {
 					// e.g. 100 < spe
 					num = parseFloat(targetParts[0]);
 					stat = targetParts[1];
-					switch (inequality.charAt(0)) {
-					case '>': direction = 'less'; num += inequalityOffset; break;
-					case '<': direction = 'greater'; num -= inequalityOffset; break;
-					case '=': direction = 'equal'; break;
-					}
+					if (inequality[0] === '>') directions.push('less');
+					if (inequality[0] === '<') directions.push('greater');
 				} else if (!isNaN(targetParts[1])) {
 					// e.g. spe > 100
 					num = parseFloat(targetParts[1]);
 					stat = targetParts[0];
-					switch (inequality.charAt(0)) {
-					case '<': direction = 'less'; num += inequalityOffset; break;
-					case '>': direction = 'greater'; num -= inequalityOffset; break;
-					case '=': direction = 'equal'; break;
-					}
+					if (inequality[0] === '<') directions.push('less');
+					if (inequality[0] === '>') directions.push('greater');
 				} else {
 					return {reply: "No value given to compare with '" + escapeHTML(target) + "'."};
 				}
+				if (inequality.slice(-1) === '=') directions.push('equal');
 				switch (toId(stat)) {
 				case 'attack': stat = 'atk'; break;
 				case 'defense': stat = 'def'; break;
@@ -538,18 +533,22 @@ function runDexsearch(target, cmd, canAll, message) {
 				case 'spdef': stat = 'spd'; break;
 				case 'speed': stat = 'spe'; break;
 				case 'wt': stat = 'weight'; break;
+				case 'ht': stat = 'height'; break;
 				}
 				if (!(stat in allStats)) return {reply: "'" + escapeHTML(target) + "' did not contain a valid stat."};
 				if (!orGroup.stats[stat]) orGroup.stats[stat] = {};
-				if (orGroup.stats[stat][direction]) return {reply: "Invalid stat range for " + stat + "."};
-				orGroup.stats[stat][direction] = num;
+				for (let direction of directions) {
+					if (orGroup.stats[stat][direction]) return {reply: "Invalid stat range for " + stat + "."};
+					orGroup.stats[stat][direction] = num;
+				}
 				continue;
 			}
 			return {reply: "'" + escapeHTML(target) + "' could not be found in any of the search categories."};
 		}
-		searches.push(orGroup);
+		if (!orGroup.skip) {
+			searches.push(orGroup);
+		}
 	}
-
 	if (showAll && searches.length === 0 && megaSearch === null) return {reply: "No search parameters other than 'all' were found. Try '/help dexsearch' for more information on this command."};
 
 	let dex = {};
@@ -592,7 +591,7 @@ function runDexsearch(target, cmd, canAll, message) {
 				if (alts.tiers[dex[mon].tier]) continue;
 				if (Object.values(alts.tiers).includes(false) && alts.tiers[dex[mon].tier] !== false) continue;
 				// some LC Pokemon are also in other tiers and need to be handled separately
-				if (alts.tiers.LC && !dex[mon].prevo && dex[mon].nfe && dex[mon].tier !== 'LC Uber' && !Dex.formats.lc.banlist.includes(dex[mon].species)) continue;
+				if (alts.tiers.LC && !dex[mon].prevo && dex[mon].nfe && dex[mon].tier !== 'LC Uber' && !Dex.formats.gen7lc.banlist.includes(dex[mon].species)) continue;
 			}
 
 			for (let type in alts.types) {
@@ -631,17 +630,19 @@ function runDexsearch(target, cmd, canAll, message) {
 					}
 				} else if (stat === 'weight') {
 					monStat = dex[mon].weightkg;
+				} else if (stat === 'height') {
+					monStat = dex[mon].heightm;
 				} else {
 					monStat = dex[mon].baseStats[stat];
 				}
 				if (typeof alts.stats[stat].less === 'number') {
-					if (monStat <= alts.stats[stat].less) {
+					if (monStat < alts.stats[stat].less) {
 						matched = true;
 						break;
 					}
 				}
 				if (typeof alts.stats[stat].greater === 'number') {
-					if (monStat >= alts.stats[stat].greater) {
+					if (monStat > alts.stats[stat].greater) {
 						matched = true;
 						break;
 					}
@@ -667,7 +668,6 @@ function runDexsearch(target, cmd, canAll, message) {
 			delete dex[mon];
 		}
 	}
-
 	let results = [];
 	for (let mon in dex) {
 		if (dex[mon].baseSpecies && results.includes(dex[mon].baseSpecies)) continue;
