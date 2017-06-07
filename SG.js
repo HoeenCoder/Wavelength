@@ -7,6 +7,7 @@ const Autolinker = require('autolinker');
 let regdateCache = {};
 let wildPokemon = [];
 let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
+let itemData = JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8'));
 
 exports.SG = {
 	nameColor: function (name, bold) {
@@ -273,7 +274,7 @@ exports.SG = {
 		} else {
 			data += "|";
 		}
-		data += lvl + "|0";
+		data += lvl + "|70";
 		data += ",,pokeball," + this.calcExp(pokemon.species, lvl) + "," + (exact && exact.ot ? exact.ot : '');
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
@@ -408,6 +409,12 @@ exports.SG = {
 		}
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
+	},
+	itemData: itemData,
+	getItem: function (id) {
+		id = toId(id);
+		if (!this.itemData[id]) return false;
+		return this.itemData[id];
 	},
 	onFaint: function (userid, battle, faintData) {
 		userid = toId(userid);

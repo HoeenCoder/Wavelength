@@ -473,6 +473,7 @@ exports.Formats = [
 		rated: false,
 		useSGgame: true,
 		isWildEncounter: true,
+		allowBag: true,
 
 		mod: 'gen7',
 		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],

@@ -2722,7 +2722,7 @@ class Battle extends Dex.ModdedDex {
 				this.add('raw', '<span style="color:red">You can\'t throw a pokeball right now.</span>');
 				break;
 			}
-			if (toId(this[(side === 'p1' ? 'p2' : 'p1')].pokemon[0].species) === 'missingno') {
+			if (toId(this[opp].pokemon[0].species) === 'missingno') {
 				this.add('raw', '<span style="color:red">You can\'t catch an error! Report the error to an Administrator if you haven\'t already!</span>');
 				break;
 			}
@@ -2734,6 +2734,7 @@ class Battle extends Dex.ModdedDex {
 			for (count; count > 0; count--) {
 				this.add('message', '...');
 			}
+			this.send('takeitem', user + '|' + target + '|' + this[side].pokemon[0].slot);
 			if (result === true) {
 				this.add('message', msgs[msgs.length - 1]);
 				// Giving the newly caught pokemon handled in the main process.
@@ -2748,6 +2749,84 @@ class Battle extends Dex.ModdedDex {
 				this.add('message', msgs[result]);
 				this[side].pokemon[0].addVolatile('mustrecharge');
 				this.add('');
+			}
+			break;
+		}
+		
+		case 'useitem': {
+			let raw2 = data.slice(2).join('|').replace(/\f/g, '\n').split('|');
+			// [userid, itemid, party slot #, move slot (0-3) for PP]
+			let userid = toId(raw2[0]);
+			if (Dex.getFormat(this.format).useSGgame && Dex.getFormat(this.format).allowBag) {
+				let side = (toId(this.p1.name) === userid ? "p1" : "p2");
+				let item = SG.getItem(raw2[1]);
+				let mon = null;
+				for (let p in this[side].pokemon) {
+					if (this[side].pokemon[p].slot === parseInt(raw2[2])) mon = this[side].pokemon[p];
+				}
+				if (!mon) break;
+				let hadEffect = false;
+				if (item.use.healHP) {
+					let heal = 0;
+					if (typeof item.use.healHP === 'string' && item.use.healHP !== "true") {
+						heal = mon.maxhp * (Number(item.use.healHP.substring(0, item.use.healHP.length - 1)) * 0.01)
+					} else if (item.use.healHP === "true") {
+						heal = mon.maxhp - mon.hp;
+					} else {
+						heal = item.use.healHP;
+					}
+					if (mon.hp + heal > mon.maxhp) heal = mon.maxhp - mon.hp;
+					if (heal > 0) {
+						this.heal(heal, mon, null, {fullname: item.name});
+						hadEffect = true;
+					}
+				}
+				if (item.use.healStatus) {
+					if (mon.status || mon.volatiles['confusion']) {
+						if (item.use.healStatus === "true") {
+							mon.cureStatus();
+							mon.removeVolatile('confusion');
+							hadEffect = true;
+						} else {
+							let canHeal = item.use.healStatus.split('|');
+							if (canHeal.indexOf(mon.status) > -1) {
+								mon.cureStatus();
+								hadEffect = true;
+							}
+							if (canHeal.indexOf('confusion') > -1 && ('confusion' in mon.volatiles)) {
+								mon.removeVolatile('confusion');
+								hadEffect = true;
+							}
+						}
+					}
+				}
+				if (item.use.healPP) {
+					let move = mon.moveset[raw2[3]];
+					if (move.pp < move.maxpp) {
+						move.pp += item.use.healPP;
+						if (move.pp > move.maxpp) move.pp = move.maxpp;
+						hadEffect = true;
+						this.add('', (mon.name || mon.species) + "'s " + move.id + " had its PP restored by " + item.use.healPP + "!");
+					}
+				}
+				if (item.use.revive) {
+					if (mon.fainted) {
+						delete mon.fainted;
+						delete mon.faintQueued;
+						mon.hp = (item.use.revive === "true" || item.use.revive === 100 ? mon.maxhp : (Math.round(mon.maxhp * item.use.revive)));
+						if (item.use.revive === "true") {
+							for (let m in mon.moveset) {
+								mon.moveset[m].pp = mon.moveset[m].maxpp;
+							}
+						}
+						hadEffect = true;
+					}
+				}
+				if (hadEffect) {
+					this.add('message', this[side].name + " used a " + item.name + "!");
+					this.send('takeitem', userid + "|" + item.id + "|" + raw2[2]);
+					this[side].pokemon[0].addVolatile('mustrecharge');
+				}
 			}
 			break;
 		}

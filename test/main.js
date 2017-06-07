@@ -18,6 +18,7 @@ function getDirTypedContentsSync(dir, forceType) {
 }
 
 before('initialization', function () {
+	this.timeout(3000);
 	// Load and override configuration before starting the server
 	let config;
 	try {

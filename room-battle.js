@@ -28,6 +28,7 @@ const TIMER_COOLDOWN = 20 * 1000;
 global.Config = require('./config/config');
 
 global.Db = require('nef')(require('nef-fs')('config/db'));
+global.SG = require('./SG.js').SG;
 
 const ProcessManager = require('./process-manager');
 
@@ -507,6 +508,19 @@ class Battle {
 				}
 				this.room.update();
 			}
+			break;
+		case 'takeitem':
+			let raw = lines[2].split('|');
+			raw[0] = toId(raw[0]);
+			let player = Db.players.get(raw[0]);
+			let item = SG.getItem(raw[1]);
+			// ['userid', 'itemid', 'party slot #'];
+			player.bag[item.slot][item.id]--;
+			if (item.use.happiness) {
+				player.party[raw[2]].happiness += item.use.happiness;
+			}
+			Db.players.set(raw[0], player);
+			Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
 			break;
 		case 'updateExp':
 			let data = lines[2].split(']');
