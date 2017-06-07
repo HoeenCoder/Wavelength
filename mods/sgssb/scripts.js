@@ -132,39 +132,7 @@ exports.BattleScripts = {
 				},
 				nature: 'Naughty',
 			},
-			'@Mimiroppu': {
-				species: 'Lopunny',
-				ability: 'Limber',
-				item: 'Lopunnite',
-				gender: 'F',
-				moves: ['Fake out', 'Return', 'High Jump Kick',
-				 ],
-				signatureMove: 'Charm Up',
-				evs: {
-					atk: 252,
-					spe: 252,
-					def: 4,
-				},
-				nature: 'Jolly',
-			},
-
-			// Global Drivers:
-			'%Vacuo': {
-				species: 'Magnezone',
-				ability: 'Levitate',
-				item: 'Choice Specs',
-				moves: [
-					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
-				],
-				signatureMove: 'Mechanical Dysfunction',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
-			'%Ashley the Pikachu': {
+			'@Ashley the Pikachu': {
 				species: 'Pikachu-Cosplay',
 				ability: 'Primal Surge',
 				item: 'Light Ball',
@@ -179,6 +147,22 @@ exports.BattleScripts = {
 				},
 				ivs: {
 					atk: 0,
+				},
+				nature: 'Modest',
+			},
+			// Global Drivers:
+			'%Vacuo': {
+				species: 'Magnezone',
+				ability: 'Levitate',
+				item: 'Choice Specs',
+				moves: [
+					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
+				],
+				signatureMove: 'Mechanical Dysfunction',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
 				},
 				nature: 'Modest',
 			},
@@ -360,21 +344,6 @@ exports.BattleScripts = {
 				},
 				nature: 'Timid',
 			},
-			'+Hurricane\'d': {
-				species: 'Tomohawk',
-				ability: 'Gale Wings',
-				item: 'Rocky Helmet',
-				gender: 'M',
-				moves: ['Aura Sphere', 'Taunt', 'Hurricane',
-				],
-				signatureMove: 'Rainbust Orb',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Bold',
-			},
 			'+CelestialTater': {
 				species: 'Armaldo',
 				ability: 'Unburden',
@@ -404,6 +373,37 @@ exports.BattleScripts = {
 					spd: 4,
 				},
 				nature: "Jolly",
+			},
+			'+Mimiroppu': {
+				species: 'Lopunny',
+				ability: 'Limber',
+				item: 'Lopunnite',
+				gender: 'F',
+				moves: ['Fake out', 'Return', 'High Jump Kick',
+				 ],
+				signatureMove: 'Charm Up',
+				evs: {
+					atk: 252,
+					spe: 252,
+					def: 4,
+				},
+				nature: 'Jolly',
+			},
+			//Former Staff + Regs
+			'+Hurricane\'d': {
+				species: 'Tomohawk',
+				ability: 'Gale Wings',
+				item: 'Rocky Helmet',
+				gender: 'M',
+				moves: ['Aura Sphere', 'Taunt', 'Hurricane',
+				],
+				signatureMove: 'Rainbust Orb',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: 'Bold',
 			},
 		};
 		// convert moves to ids.
