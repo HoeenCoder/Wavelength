@@ -639,4 +639,38 @@ exports.BattleMovedex = {
 		zMovePower: 140,
 		contestType: "Cool",
 	},
+	//Insist
+	"exiledfromallothers": {
+		id: "exiledfromallothers",
+		name: "Exiled From All Others",
+		basePower: 140,
+		accuracy: 100,
+		pp: 0.625,
+		secondary: false,
+		category: "Special",
+		isNonStandard: true,
+		isZ: "playniumz",
+		priority: 1,
+		flags: {
+			protect: 1,
+		},
+		self: {
+			boosts: {
+				atk: 1,
+				def: 1,
+				spa: 1,
+				spd: 1,
+				spe: 1,
+			},
+		},
+		onHit: function (target, source, move) {
+			this.add('c|+Insist|Exiled from all others, we shall become greater than ever before.');
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Hydro Pump", target);
+		},
+		target: "normal",
+		type: "Water",
+	},
 };
