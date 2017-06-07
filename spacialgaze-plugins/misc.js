@@ -8,6 +8,8 @@
  */
 'use strict';
 
+const https = require('https');
+
 function clearRoom(room) {
 	let len = (room.log && room.log.length) || 0;
 	let users = [];
@@ -433,4 +435,64 @@ exports.commands = {
 		Db.disabledScrolls.remove(target);
 	},
 	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
+
+	pmroom: 'rmall',
+	roompm: 'rmall',
+	rmall: function (target, room, user) {
+		if (!this.can('declare', null, room)) return this.errorReply("/rmall - Access denied.");
+		if (!target) return this.sendReply("/rmall [message] - Sends a pm to all users in the room.");
+		target = target.replace(/<(?:.|\n)*?>/gm, '');
+
+		let pmName = ' SG Server';
+
+		for (let i in room.users) {
+			let message = '|pm|' + pmName + '|' + room.users[i].getIdentity() + '| ' + target;
+			room.users[i].send(message);
+		}
+		this.privateModCommand('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
+	},
+
+	fj: 'forcejoin',
+	forcejoin: function (target, room, user) {
+		if (!user.can('root')) return false;
+		if (!target) return this.parse('/help forcejoin');
+		let parts = target.split(',');
+		if (!parts[0] || !parts[1]) return this.parse('/help forcejoin');
+		let userid = toId(parts[0]);
+		let roomid = toId(parts[1]);
+		if (!Users.get(userid)) return this.sendReply("User not found.");
+		if (!Rooms.get(roomid)) return this.sendReply("Room not found.");
+		Users.get(userid).joinRoom(roomid);
+	},
+	forcejoinhelp: ["/forcejoin [target], [room] - Forces a user to join a room"],
+
+	//Credits to OCPU for this run play function
+	'!dub': true,
+	dub: 'dubtrack',
+	music: 'dubtrack',
+	radio: 'dubtrack',
+	dubtrackfm: 'dubtrack',
+	dubtrack: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		let nowPlaying = "";
+		let options = {
+			host: 'api.dubtrack.fm',
+			port: 443,
+			path: '/room/lavender-radio-tower',
+			method: 'GET',
+		};
+		https.get(options, res => {
+			let data = '';
+			res.on('data', chunk => {
+				data += chunk;
+			}).on('end', () => {
+				if (data.charAt(0) === '{') {
+					data = JSON.parse(data);
+					if (data['data'] && data['data']['currentSong']) nowPlaying = "<br /><b>Now Playing:</b> " + Chat.escapeHTML(data['data']['currentSong'].name);
+				}
+				this.sendReplyBox('Join our dubtrack.fm room <a href="https://www.dubtrack.fm/join/lavender-radio-tower">here!</a>' + nowPlaying);
+				room.update();
+			});
+		});
+	},
 };

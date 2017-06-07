@@ -1,10 +1,6 @@
 'use strict';
 
 exports.BattleItems = {
-	abomasite: {
-		inherit: true,
-		isUnreleased: false,
-	},
 	aggronite: {
 		inherit: true,
 		isUnreleased: false,
@@ -43,10 +39,6 @@ exports.BattleItems = {
 	bigroot: {
 		inherit: true,
 		desc: "Holder gains 1.3x HP from draining moves, Aqua Ring, Ingrain, and Leech Seed.",
-	},
-	blazikenite: {
-		inherit: true,
-		isUnreleased: false,
 	},
 	cameruptite: {
 		inherit: true,
@@ -92,14 +84,6 @@ exports.BattleItems = {
 		isUnreleased: false,
 	},
 	gardevoirite: {
-		inherit: true,
-		isUnreleased: false,
-	},
-	heracronite: {
-		inherit: true,
-		isUnreleased: false,
-	},
-	houndoominite: {
 		inherit: true,
 		isUnreleased: false,
 	},
@@ -168,10 +152,6 @@ exports.BattleItems = {
 		inherit: true,
 		isUnreleased: false,
 	},
-	manectite: {
-		inherit: true,
-		isUnreleased: false,
-	},
 	micleberry: {
 		inherit: true,
 		isUnreleased: false,
@@ -215,19 +195,7 @@ exports.BattleItems = {
 			}
 		},
 	},
-	sceptilite: {
-		inherit: true,
-		isUnreleased: false,
-	},
 	spelonberry: {
-		inherit: true,
-		isUnreleased: false,
-	},
-	swampertite: {
-		inherit: true,
-		isUnreleased: false,
-	},
-	tyranitarite: {
 		inherit: true,
 		isUnreleased: false,
 	},

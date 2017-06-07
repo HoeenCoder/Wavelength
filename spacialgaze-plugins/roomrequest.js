@@ -48,7 +48,7 @@ exports.commands = {
 		SG.messageSeniorStaff(`/html ${user.name} has requested a room. <button class="button" name="send" value="/checkroomrequest ${user.userid}">Check request</button>`);
 		return this.sendReply('Your room request has been sent to Upper Staff.');
 	},
-	requestroomhelp: ["/requestroom [name], [public|private], [why this room should be created] - Sends a room creation request to the Upper Staff. You can only request 1 room every (TBD) days/weeks. Upper staff will most likely contact you for further information before the room is created. We reserve the right to reject any requests."],
+	requestroomhelp: ["/requestroom [name], [public|private], [why this room should be created] - Sends a room creation request to the Upper Staff. You cannot request another room for 2 weeks after your request is completed. Upper staff will most likely contact you for further information before the room is created. We reserve the right to reject any requests."],
 	checkroomrequest: function (target, room, user) {
 		target = toId(target);
 		if (!target) target = user.userid;

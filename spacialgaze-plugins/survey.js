@@ -253,7 +253,7 @@ exports.commands = {
 		end: function (target, room, user, connection, cmd, message) {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
-			if (!room.survey) return this.errorReply("There is no poll running in this room.");
+			if (!room.survey) return this.errorReply("There is no survey running in this room.");
 			if (room.survey.timeout) clearTimeout(room.survey.timeout);
 
 			room.survey.end();

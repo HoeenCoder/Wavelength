@@ -52,9 +52,7 @@ class Poll {
 		let ip = user.latestIp;
 		let userid = user.userid;
 
-		if (userid in this.voters || ip in this.voterIps) {
-			user.sendTo(this.room, "You're already looking at the results.");
-		} else {
+		if (!(userid in this.voters) || !(ip in this.voterIps)) {
 			this.voters[userid] = 0;
 			this.voterIps[ip] = 0;
 		}
@@ -445,14 +443,14 @@ exports.commands = {
 		if (!this.can('minigame', null, room)) return false;
 		if (room.poll) return this.errorReply("There is already a poll in progress in this room.");
 		let options = [];
-		for (let key in Tools.formats) {
-			if (!Tools.formats[key].mod) continue;
-			if (!Tools.formats[key].searchShow) continue;
+		for (let key in Dex.formats) {
+			if (!Dex.formats[key].mod) continue;
+			if (!Dex.formats[key].searchShow) continue;
 			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'sgssb', 'pmd', 'cssb', 'metronome'];
-				if (commonMods.indexOf(Tools.formats[key].mod) === -1) continue;
+				let commonMods = ['gen7', 'sgssb', 'pmd', 'cssb', 'metronome', 'digimon'];
+				if (commonMods.indexOf(Dex.formats[key].mod) === -1) continue;
 			}
-			options.push(Tools.formats[key].name);
+			options.push(Dex.formats[key].name);
 		}
 		room.poll = new Poll(room, {
 			source: 'What should the next tournament tier be?',

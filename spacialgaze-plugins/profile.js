@@ -2,7 +2,7 @@
  * profile.js
  * Displays to users a profile of a given user.
  * For order's sake:
- * - vip, dev, customtitle, friendcode, and profie were placed in here.
+ * - vip, dev, customtitle, friendcode, and profile were placed in here.
  * Updated and restyled by Mystifi; main profile restyle goes out to panpawn/jd/other contributors.
  **/
 'use strict';

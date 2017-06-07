@@ -13,8 +13,10 @@ exports.BattleAliases = {
 	"vgc17": "[Gen 7] VGC 2017",
 	"vgc": "[Gen 7] VGC 2017",
 	"bss": "[Gen 7] Battle Spot Singles",
+	"bsd": "[Gen 7] Battle Spot Doubles",
 	"bsdoubles": "[Gen 7] Battle Spot Doubles",
 	"bstriples": "Battle Spot Triples",
+	"bssf": "[Gen 7] BSS Factory",
 	"balancedhackmons": "[Gen 7] Balanced Hackmons",
 	"bh": "[Gen 7] Balanced Hackmons",
 	"1v1": "[Gen 7] 1v1",
@@ -36,8 +38,8 @@ exports.BattleAliases = {
 	"monorandom": "[Gen 7] Monotype Random Battle",
 	"bf": "Battle Factory",
 	"gen6inverse": "Inverse Battle",
-	"lastwill": "[Gen 7] Last Will",
-	"crossevolution": "[Gen 7] Cross Evolution",
+	"godlygift": "[Gen 7] Godly Gift",
+	"dancerability": "[Gen 7] Dancerability",
 
 	//SpacialGaze
 	"sgssb": "[Gen 7] Super Staff Bros",

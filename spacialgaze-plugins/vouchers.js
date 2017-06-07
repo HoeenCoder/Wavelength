@@ -29,10 +29,10 @@ class Voucher {
 			let self = this;
 			Economy.writeMoney(self.userid, self.item, () => {
 				Economy.readMoney(self.userid, newAmount => {
-					if (Users(self.userid).connected) Users(self.userid).popup('|html|You have redemed a voucher for ' + self.item + ' ' + (self.item > 1 ? global.currencyPlural : global.currencyName) + '.');
+					if (Users(self.userid).connected) Users(self.userid).popup('|html|You have redeemed a voucher for ' + self.item + ' ' + (self.item > 1 ? global.currencyPlural : global.currencyName) + '.');
 				});
 			});
-			Economy.logTransaction(Chat.escapeHTML(Users(self.userid).name) + ' has redemed a voucher for ' + self.item + ' ' + (self.item === 1 ? global.currencyName : global.currencyPlural) + '.');
+			Economy.logTransaction(Chat.escapeHTML(Users(self.userid).name) + ' has redeemed a voucher for ' + self.item + ' ' + (self.item === 1 ? global.currencyName : global.currencyPlural) + '.');
 			break;
 		case 'item':
 			let user = Users(this.userid);
@@ -75,17 +75,17 @@ class Voucher {
 			break;
 		case 'boostuno':
 			if (Users(this.userid).unoBoost) return 'active';
-			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redemed a voucher for double Uno winnings.<br/>If you win your next Uno game you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
+			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redeemed a voucher for double Uno winnings.<br/>If you win your next Uno game you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redeemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
 			Users(this.userid).unoBoost = true;
 			break;
 		case 'boosttour':
 			if (Users(this.userid).tourBoost) return 'active';
-			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redemed a voucher for double tournamnet winnings.<br/>If you win your next tournament you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
+			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redeemed a voucher for double tournamnet winnings.<br/>If you win your next tournament you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redeemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
 			Users(this.userid).tourBoost = true;
 			break;
 		case 'boostgame':
 			if (Users(this.userid).gameBoost) return 'active';
-			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redemed a voucher for double Uno OR tournamnet winnings.<br/>If you win your next tournament OR game of Uno you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
+			if (Users(this.userid).connected) Users(this.userid).popup('|html|You have redeemed a voucher for double Uno OR tournamnet winnings.<br/>If you win your next tournament OR game of Uno you will receive DOUBLE ' + (this.item > 1 ? global.currencyPlural : global.currencyName) + '!<br/>Please note that redeemed boost vouchers expire when the server restarts, or when you have been offline for an hour.');
 			Users(this.userid).gameBoost = true;
 			break;
 		default:

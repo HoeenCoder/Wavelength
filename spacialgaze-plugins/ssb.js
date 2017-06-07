@@ -32,13 +32,13 @@ function getStat(stat, set, evOverride, natureOverride) {
 
 	// do this after setting set.evs because it's assumed to exist
 	// after getStat is run
-	let template = Tools.getTemplate(set.species);
+	let template = Dex.getTemplate(set.species);
 	if (!template.exists) return 0;
 
 	if (!set.level) set.level = 100;
 	if (typeof set.ivs[stat] === 'undefined') set.ivs[stat] = 31;
 
-	let baseStat = Tools.getTemplate(set.species).baseStats[stat];
+	let baseStat = Dex.getTemplate(set.species).baseStats[stat];
 	let iv = (set.ivs[stat] || 0);
 	let ev = set.evs[stat];
 	if (evOverride !== undefined) ev = evOverride;
@@ -51,9 +51,9 @@ function getStat(stat, set, evOverride, natureOverride) {
 	let val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
 	if (natureOverride) {
 		val *= natureOverride;
-	} else if (Tools.getNature(set.nature) && Tools.getNature(set.nature).plus === stat) {
+	} else if (Dex.getNature(set.nature) && Dex.getNature(set.nature).plus === stat) {
 		val *= 1.1;
-	} else if (Tools.getNature(set.nature) && Tools.getNature(set.nature).minus === stat) {
+	} else if (Dex.getNature(set.nature) && Dex.getNature(set.nature).minus === stat) {
 		val *= 0.9;
 	}
 	return Math.floor(val);
@@ -62,11 +62,11 @@ function getStat(stat, set, evOverride, natureOverride) {
 function validate(me, targetUser, quiet) {
 	let valid = true;
 	//species
-	let species = Tools.getTemplate(targetUser.species);
+	let species = Dex.getTemplate(targetUser.species);
 	if (!species.exists || (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') || species.gen < 1 || species.tier === 'Uber' || species.tier === 'Bank-Uber' || species.battleOnly) {
 		valid = false;
 		if (!quiet) me.errorReply(targetUser.name + '\'s species was invalid.');
-		species = Tools.getTemplate('unown');
+		species = Dex.getTemplate('unown');
 		targetUser.species = species.species;
 		targetUser.ability = species.abilities['0']; //Force legal ability
 		targetUser.movepool = []; //force legal normal moves
@@ -76,7 +76,7 @@ function validate(me, targetUser, quiet) {
 		if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
 			if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');
 			valid = false;
-			species = Tools.getTemplate('unown');
+			species = Dex.getTemplate('unown');
 			targetUser.species = species.species;
 			targetUser.ability = species.abilities['0']; //Force legal ability
 			targetUser.movepool = []; //force legal normal moves
@@ -92,11 +92,11 @@ function validate(me, targetUser, quiet) {
 	if (!targetUser.setAbility(targetUser.ability)) {
 		valid = false;
 		if (!quiet) me.errorReply(targetUser.name + '\'s ability was invalid.');
-		targetUser.ability = Tools.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
+		targetUser.ability = Dex.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
 	}
 	//moves
 	for (let i in targetUser.movepool) {
-		if (!Tools.mod('cssb').getMove(targetUser.movepool[i]).exists) {
+		if (!Dex.mod('cssb').getMove(targetUser.movepool[i]).exists) {
 			valid = false;
 			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" does not exist.');
 			targetUser.removeMove(targetUser.movepool[i]);
@@ -124,7 +124,7 @@ function buildMenu(userid) {
 		speciesName = toId(split[0]) + '-' + speciesName.substring(toId(split[0]).length);
 	}
 	let output = '';
-	output += '<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/' + (Tools.getTemplate(toId(SG.ssb[userid].species)).gen === 7 ? 'bw' : 'xydex') + '' + (SG.ssb[userid].shiny ? '-shiny' : '') + '/' + speciesName + '.png); background-position: -2px -3px; background-repeat: no-repeat;">';
+	output += '<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/' + (Dex.getTemplate(toId(SG.ssb[userid].species)).gen === 7 ? 'bw' : 'xydex') + '' + (SG.ssb[userid].shiny ? '-shiny' : '') + '/' + speciesName + '.png); background-position: -2px -3px; background-repeat: no-repeat;">';
 	output += '<div class="setcol setcol-icon"><div class="setcell-sprite"></div><div class="setcell setcell-pokemon"><label>Pokémon</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit species">' + SG.ssb[userid].species + '</button></div></div>';
 	output += '<div class="setcol setcol-details"><div class="setrow"><div class="setcell setcell-details"><label>Details</label><button class="textbox setdetails" tabindex="-1" name="send" value="/ssb edit details"><span class="detailcell detailcell-first"><label>Level</label>' + SG.ssb[userid].level + '</span><span class="detailcell"><label>Gender</label>' + (SG.ssb[userid].gender === 'random' ? '-' : SG.ssb[userid].gender) + '</span><span class="detailcell"><label>Happiness</label>' + SG.ssb[userid].happiness + '</span><span class="detailcell"><label>Shiny</label>' + (SG.ssb[userid].shiny ? 'Yes' : 'No') + '</span></button><span class="itemicon" style="background: none"></span></div></div><div class="setrow"><div class="setcell setcell-item"><label>Item</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit item">' + (SG.ssb[userid].item ? SG.ssb[userid].item : '') + '</button></div><div class="setcell setcell-ability"><label>Ability</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit ability">' + SG.ssb[userid].ability + '</button></div></div></div>';
 	output += '<div class="setcol setcol-moves"><div class="setcell"><label>Moves</label><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[0] ? SG.ssb[userid].movepool[0] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[1] ? SG.ssb[userid].movepool[1] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[2] ? SG.ssb[userid].movepool[2] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].cMove ? SG.ssb[userid].cMove : (SG.ssb[userid].movepool[3] ? SG.ssb[userid].movepool[3] : '')) + '</button></div></div>';
@@ -140,9 +140,9 @@ function buildMenu(userid) {
 			level: SG.ssb[userid].level,
 		});
 		let evBuf = '<em>' + (SG.ssb[userid].evs[toId(statNames[i])] === 0 ? '' : SG.ssb[userid].evs[toId(statNames[i])]) + '</em>';
-		if (Tools.getNature(SG.ssb[userid].nature).plus === toId(statNames[i])) {
+		if (Dex.getNature(SG.ssb[userid].nature).plus === toId(statNames[i])) {
 			evBuf += '<small>+</small>';
-		} else if (Tools.getNature(SG.ssb[userid].nature).minus === toId(statNames[i])) {
+		} else if (Dex.getNature(SG.ssb[userid].nature).minus === toId(statNames[i])) {
 			evBuf += '<small>&minus;</small>';
 		}
 		let width = stats[toId(statNames[i])] * 75 / 504;
@@ -177,7 +177,7 @@ function itemMenu(userid) {
 
 function abilityMenu(userid) {
 	let output = '<div class="setchart" style="text-align:center"><h3><u>Ability Menu</u></h3><div style="padding-bottom: 2px"><i>Current Ability:</i> ' + SG.ssb[userid].ability + '</div><div style="padding-bottom: 2px"><i>Custom Ability:</i> ' + (SG.ssb[userid].cAbility ? SG.ssb[userid].cAbility : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
-	let pokemon = Tools.getTemplate(SG.ssb[userid].species);
+	let pokemon = Dex.getTemplate(SG.ssb[userid].species);
 	for (let i in pokemon.abilities) {
 		output += '<button name="send" value="/ssb edit abilityq ' + pokemon.abilities[i] + '" class="button">Set to ' + pokemon.abilities[i] + '</button> | ';
 	}
@@ -259,8 +259,8 @@ class SSB {
 		let speciesId = toId(species);
 		let speciesNum = parseInt(speciesId);
 		if (!isNaN(speciesNum)) {
-			for (let p in Tools.data.Pokedex) {
-				let pokemon = Tools.getTemplate(p);
+			for (let p in Dex.data.Pokedex) {
+				let pokemon = Dex.getTemplate(p);
 				if (pokemon.num === speciesNum) {
 					species = pokemon.species;
 					speciesId = pokemon.id;
@@ -268,7 +268,7 @@ class SSB {
 				}
 			}
 		}
-		species = Tools.getTemplate(speciesId);
+		species = Dex.getTemplate(speciesId);
 		if (!species.exists) return false;
 		if (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') return false;
 		if (species.gen < 1) return false;
@@ -355,10 +355,10 @@ class SSB {
 		return true;
 	}
 	setItem(item) {
-		item = Tools.getItem(toId(item));
+		item = Dex.getItem(toId(item));
 		if (!item.exists) {
 			//check custom
-			if (this.cItem && toId(this.cItem) === item.id && this.bought.citem) {
+			if (this.cItem && toId(this.cItem) === item.id && this.bought.cItem) {
 				this.item = this.cItem;
 				return true;
 			} else {
@@ -371,7 +371,7 @@ class SSB {
 		return true;
 	}
 	setAbility(ability) {
-		ability = Tools.getAbility(toId(ability));
+		ability = Dex.getAbility(toId(ability));
 		if (!ability.exists) {
 			//check custom
 			if (this.cAbility && toId(this.cAbility) === ability.id && this.bought.cAbility) {
@@ -381,8 +381,8 @@ class SSB {
 				return false;
 			}
 		} else {
-			for (let i in Tools.getTemplate(this.species).abilities) {
-				if (toId(Tools.getTemplate(this.species).abilities[i]) === ability.id) {
+			for (let i in Dex.getTemplate(this.species).abilities) {
+				if (toId(Dex.getTemplate(this.species).abilities[i]) === ability.id) {
 					this.ability = ability.name;
 					return true;
 				}
@@ -391,7 +391,7 @@ class SSB {
 		}
 	}
 	addMove(move) {
-		move = Tools.getMove(toId(move));
+		move = Dex.getMove(toId(move));
 		if (!move.exists) return false; //Only normal moves here.
 		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return false;
 		/*let learnpool = [];
@@ -407,7 +407,7 @@ class SSB {
 		return true;
 	}
 	removeMove(move) {
-		move = Tools.getMove(toId(move));
+		move = Dex.getMove(toId(move));
 		if (move.exists) {
 			if (this.movepool.length < 1) return false;
 			if (this.movepool.indexOf(move.name) === -1) return false;
@@ -460,7 +460,7 @@ class SSB {
 		return true;
 	}
 	setNature(nature) {
-		nature = Tools.getNature(toId(nature));
+		nature = Dex.getNature(toId(nature));
 		if (!nature.exists) return false;
 		this.nature = nature.name;
 		return true;
@@ -945,7 +945,7 @@ exports.commands = {
 	ssbhelp: ['/ssb - Commands for editing your custom super staff bros pokemon. Includes the following commands: ',
 		'/ssb edit - pulls up the general menu, allowing you to edit species and contains buttons to access other menus.',
 		'/ssb edit species - change the pokemon\'s species, not a menu',
-		'/ssb edit move - pulls up the move selection menu, allowing selection of 16 pre-created custom moves (1 per type) and (if purchased) your own custom-made custom move, As well as instructions for selecting normal moves.',
+		'/ssb edit move - pulls up the move selection menu, allowing selection of 16 pre-created custom moves (1 per type) and (if purchased) your own custom-made custom move, as well as instructions for selecting normal moves.',
 		'/ssb edit stats - pulls up the stat selection menu, allowing edits of evs, ivs, and nature.',
 		'/ssb edit ability - pulls up the ability selection menu, showing the pokemons legal abilities and (if purchased) your custom ability for you to choose from.',
 		'/ssb edit item - pulls up the item editing menu, giving instructions for setting a normal item, and (if purchased) a button to set your custom item.',
@@ -953,7 +953,7 @@ exports.commands = {
 		'/ssb toggle - Attempts to active or deactive your pokemon. Acitve pokemon can be seen in the tier. If your pokemon cannot be activated, you will see a popup explaining why.',
 		'/ssb custom - Shows all the default custom moves, with details.',
 		'/ssb log - Shows purchase details for SSBFFA.',
-		'/ssb [validate|validateall] (user) - validate a users SSBFFA pokemon, or validate all SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
-		'Programed by HoeenHero.',
+		'/ssb [validate|validateall] (user) - validates a user\'s SSBFFA pokemon, or validates all SSBFFA pokemon. If the pokemon is invalid it will be fixed and decativated. Requires: &, ~',
+		'Programmed by HoeenHero.',
 	],
 };

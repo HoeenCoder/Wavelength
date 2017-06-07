@@ -50,7 +50,7 @@ class Draft {
 	start(self) {
 		if (this.originalOrder.length < 2) return self.errorReply('There is no point of having a draft league if there is only 1 team!');
 		this.order = this.originalOrder;
-		if (this.random === true) Tools.shuffle(this.order);
+		if (this.random === true) Dex.shuffle(this.order);
 		this.state = 'drafting';
 		this.turn = this.order[0];
 		this.room.add('|html|<div style="' + greencss + '">The Draft has started!<br>The order of this draft is <b>: ' + this.order.join(', ') + '.</b></div>');
@@ -95,14 +95,14 @@ class Draft {
 		let display = '';
 		for (let i = 0; i < team.length; i++) {
 			let dex = '';
-			if (Tools.data.Pokedex[team[i]].num < 100) {
-				if (Tools.data.Pokedex[team[i]].num < 10) {
-					dex = '00' + Tools.data.Pokedex[team[i]].num;
+			if (Dex.data.Pokedex[team[i]].num < 100) {
+				if (Dex.data.Pokedex[team[i]].num < 10) {
+					dex = '00' + Dex.data.Pokedex[team[i]].num;
 	                } else {
-	                    dex = '0' + Tools.data.Pokedex[team[i]].num;
+	                    dex = '0' + Dex.data.Pokedex[team[i]].num;
 				}
 			} else {
-				dex = Tools.data.Pokedex[team[i]].num;
+				dex = Dex.data.Pokedex[team[i]].num;
 			}
 			let url = 'http://www.serebii.net/pokedex-sm/icon/' + dex + '.png';
 			display += '<img src="' + url + '" title="' + team[i] + '">';
@@ -128,7 +128,7 @@ class Draft {
 		let oldpick = this.teams[team].draftpicks[pick - 1];
 		if (!this.teams[team]) return self.errorReply('This team is not apart of the draft.');
 		if (!oldpick) return self.errorReply('ERROR: No pokemon with this pick has been found.');
-		if (!Tools.data.Pokedex[mon]) return self.errorReply('This is not a pokemon.');
+		if (!Dex.data.Pokedex[mon]) return self.errorReply('This is not a pokemon.');
 		if (this.draftedMons.includes(mon)) return self.errorReply('This pokemon has already been drafted by someone.');
 		let oldpickDraftSpot = this.draftedMons.indexOf(oldpick);
 		this.draftedMons[oldpickDraftSpot] = mon;
@@ -279,7 +279,7 @@ exports.commands = {
 		if (drafts[room].state !== 'drafting') return this.errorReply('The draft has not started.');
 		if (!target) return this.parse('/draft help');
 		let pkmn = target.toLowerCase().replace(' ', '');
-		if (!Tools.data.Pokedex[pkmn]) {
+		if (!Dex.data.Pokedex[pkmn]) {
 			return this.errorReply('Not a Pokemon.');
 		} else {
 			drafts[room].Nom(pkmn, user.userid, this);
