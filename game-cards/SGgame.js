@@ -11,6 +11,7 @@ class SGgame extends Console.Console {
 		this.curPane = null;
 		this.callback = false;
 		this.location = null;
+		this.session = Date.now();
 		this.nextSymbol = '\u2605';
 	}
 	buildMap(location) {
@@ -454,6 +455,10 @@ class SGgame extends Console.Console {
 				Rooms(key).game.forfeit(user);
 			}
 		}
+		let player = Db.players.get(this.userid);
+		if (!player) return;
+		player.time += (Date.now() - this.session);
+		Db.players.set(this.userid, player);
 	}
 }
 
@@ -462,7 +467,7 @@ class Player {
 		this.game = 'SGgame - Alpha';
 		this.userid = user.userid;
 		this.poke = 0; // Currency
-		this.startedOn = Date.now();
+		this.time = 0;
 		this.bag = {items: {}, medicine: {potion: 2, rarecandy: 5}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 1}, tms: {}, keyitems: {}};
 		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|0"], [], [], []];
@@ -532,7 +537,7 @@ exports.commands = {
 		user.console = new SGgame(user, room, !!target);
 		if (cmd === 'playalpha') {
 			let htm = '<center>';
-			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + Math.floor(Math.abs(Date.now() - Db.players.get(user.userid).startedOn) / 86400000) + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
+			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + Chat.toDurationString(Db.players.get(user.userid).time), {precision: 2}) + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
 			htm += '<button name="send" value="/confirmresetalpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>NEW GAME</b></button></center>';
 			user.console.init();
 			user.console.update('background-color: #6688AA;', htm, null);
