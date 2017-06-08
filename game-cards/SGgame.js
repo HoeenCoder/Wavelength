@@ -784,7 +784,17 @@ exports.commands = {
 						}
 						if (item.use.triggerEvo) {
 							user.console.queue.push('text|But it would have no effect... (Evolution isnt coded yet!)<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ' + target[0] + ', ' + target[1] + '">Return to bag</button>');
-						} else if (!hadEffect) {
+							return user.console.update(user.console.curScreen[0], user.console.next(true), null);
+						}
+						if (item.use.boostEv && item.use.boostEvAmount) {
+							if (!player.party[target[3]].evs) player.party[target[3]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+							if (player.party[target[3]].evs[item.use.boostEv] + item.use.boostEvAmount <= 255) {
+								player.party[target[3]].evs[item.use.boostEv] += item.use.boostEvAmount;
+								user.console.queue.push('text|' + (player.party[target[3]].name || player.party[target[3]].species) + ' gained ' + item.use.boostEvAmount + ' ' + item.use.boostEv + ' evs.');
+								hadEffect = true;
+							}
+						}
+						if (!hadEffect) {
 							user.console.queue.push('text|But it would have no effect...<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ' + target[0] + ', ' + target[1] + '">Return to bag</button>');
 						} else {
 							player.bag[target[0]][target[1]]--;
