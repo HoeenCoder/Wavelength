@@ -1,6 +1,6 @@
 {
 	"missingno": {
-		"expType": null,
+		"expType": "erratic",
 		"num": 0,
 		"rate": "1",
 		"evolution": {
@@ -14224,7 +14224,7 @@
 			"trigger": null,
 			"type": null,
 			"exact": null,
-			"evolvesTo": "meowstic"
+			"evolvesTo": "meowstic|meowsticf"
 		},
 		"baseExp": 71,
 		"evDrops": {
@@ -17896,6 +17896,10 @@
 	"florgeswhite": {
 		"id": "florgeswhite",
 		"inherit": "florges"
+	},
+	"meowsticf": {
+		"id": "meowsticf",
+		"inherit": "meowstic"
 	},
 	"aegislashblade": {
 		"id": "aegislashblade",
