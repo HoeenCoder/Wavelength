@@ -58,7 +58,7 @@ class SGgame extends Console.Console {
 				obj.party[Number(msg.split('|')[1])].moves.push(toId(msg.split('|')[2]));
 				Db.players.set(this.userid, obj);
 				parts = base.split('<!--split-->');
-				return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + (poke.name || poke.species) + ' learned ' + msg.split('|')[2] + '!</div>' + parts.join('');
+				return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + (poke.name || poke.species) + ' learned ' + msg.split('|')[2] + '! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button></div>' + parts.join('');
 			}
 			this.queueAction = msg;
 			parts = base.split('<!--split-->');
@@ -426,8 +426,8 @@ class SGgame extends Console.Console {
 		let output = this.buildMap();
 		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
 		output += '<img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
-		output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + pokemon.gender + ')<br/>';
-		output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/wild battle">Battle!</button>' : '') + ' <button class="button" name="send" value="/wild flee">Flee!</button></div>';
+		output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + (pokemon.gender || 'N') + ')<br/>';
+		output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/wild battle">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>') + ' <button class="button" name="send" value="/wild flee">Flee!</button></div>';
 		return output;
 	}
 	buildBase(addOn, data) {

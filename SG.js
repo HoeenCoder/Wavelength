@@ -434,7 +434,7 @@ exports.SG = {
 	onFaint: function (userid, battle, faintData) {
 		userid = toId(userid);
 		let out = userid + "]";
-		let active = null, levelUps = 0, newEvs = this.getEvGain(faintData.source), totalEvs = 0, newCount = 0;
+		let active = null;
 		let exp = faintData.source.side.battled[faintData.target.slot].map(mon => {
 			let pkmn = null;
 			for (let i = 0; i < faintData.source.side.pokemon.length; i++) {
@@ -496,7 +496,7 @@ exports.SG = {
 			battle.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
 			out += mon.slot + "|" + cur.exp;
 			// Level Ups
-			levelUps = 0;
+			let levelUps = 0;
 			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1))) {
 				battle.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
 				battle[faintData.source.side.id].pokemon[mon.slot].level++;
@@ -505,7 +505,9 @@ exports.SG = {
 			battle[faintData.source.side.id].pokemon[mon.slot].exp += cur.exp;
 			out += "|" + levelUps;
 			// New Evs
-			totalEvs = 0, newCount = 0; // eslint-disable-line
+			let newEvs = this.getEvGain(faintData.target);
+			let totalEvs = 0, newCount = 0;
+			//totalEvs = 0, newCount = 0; // eslint-disable-line
 			for (let ev in newEvs) {
 				if (mon.set.evs[ev] >= 255) newEvs[ev] = 0;
 				totalEvs += mon.set.evs[ev];
