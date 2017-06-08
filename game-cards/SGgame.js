@@ -667,6 +667,7 @@ exports.commands = {
 			}
 			if (target[3]) {
 				// Execute action
+				if (target[2] === 'use' && !item.use) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]); // This item cannot be 'used'
 				let mon = player.party[target[3]];
 				if (!mon) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 				if (target[2] === 'give' && !inBattle) {
