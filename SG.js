@@ -179,6 +179,8 @@ exports.SG = {
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
 		let lvl = Math.round(Math.random() * (lvlBase - 5)) + 10; //-5 levels -> +5 levels. TODO base on location
+		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
+		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
 		if (lvl < pokemon.evoLevel) {
 			let depth = 0;
 			do {
@@ -212,8 +214,6 @@ exports.SG = {
 			}
 		}
 		data += ability + "|";
-		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
-		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
 		let moves = "";
 		let raw = [];
 		let used = [];
