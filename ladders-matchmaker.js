@@ -115,8 +115,8 @@ class Matchmaker {
 		if (Dex.getFormat(formatid).isWildEncounter) {
 			delete user.searching[formatid];
 			if (!Users('sgserver')) SG.makeCOM();
-			let wildTeam = SG.makeWildPokemon();
-			Users('sgserver').wildTeams[user.userid] = wildTeam;
+			let wildTeam = Users('sgserver').wildTeams[user.userid];
+			if (!wildTeam) return;
 			this.startBattle(Users('sgserver'), user, formatid, wildTeam, newSearch.team, {rated: false});
 			return;
 		}

@@ -1250,12 +1250,12 @@ class User {
 				return Promise.resolve(false);
 			}
 			if (type === 'challenge' && Dex.getFormat(formatid).isWildEncounter) {
-				connection.popup('You cannot challenge users to this format.');
+				connection.popup('You cannot challenge users to wild pokemon battles.');
 				return Promise.resolve(false);
 			}
 			for (let key of this.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).isWildEncounter && this.games.has(key) && Dex.getFormat(formatid).isWildEncounter) {
-					connection.popup('Your already in a wild pokemon battle.');
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && this.games.has(key) && Dex.getFormat(formatid).isWildEncounter) {
+					connection.popup('Your already in a SGgame battle.');
 					return Promise.resolve(false);
 				}
 			}

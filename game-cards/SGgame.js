@@ -231,7 +231,7 @@ class SGgame extends Console.Console {
 			if (!template.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -308,7 +308,7 @@ class SGgame extends Console.Console {
 			if (!template2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[0] + '.png" alt="' + template2.types[0] + '"/>' + (template2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[1] + '.png" alt="' + template2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -366,7 +366,7 @@ class SGgame extends Console.Console {
 			if (!tempalte2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[0] + '.png" alt="' + tempalte2.types[0] + '"/>' + (tempalte2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[1] + '.png" alt="' + tempalte2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -420,6 +420,16 @@ class SGgame extends Console.Console {
 		}
 		return output;
 	}
+	wild(pokemon) {
+		if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to preview a wild pokemon</b></div>';
+		if (typeof pokemon === 'string') pokemon = Dex.fastUnpackTeam(pokemon)[0];
+		let output = this.buildMap();
+		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
+		output += '<img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+		output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + pokemon.gender + ')<br/>';
+		output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/wild battle">Battle!</button>' : '') + ' <button class="button" name="send" value="/wild flee">Flee!</button></div>';
+		return output;
+	}
 	buildBase(addOn, data) {
 		if (!addOn) return this.defaultBottomHTML;
 		let output = this.defaultBottomHTML + "<br/>";
@@ -468,7 +478,7 @@ class Player {
 		this.userid = user.userid;
 		this.poke = 0; // Currency
 		this.time = 0;
-		this.bag = {items: {}, medicine: {potion: 2, rarecandy: 5}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 1}, tms: {}, keyitems: {}};
+		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {}};
 		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|0"], [], [], []];
 		this.party = starter;
@@ -537,7 +547,7 @@ exports.commands = {
 		user.console = new SGgame(user, room, !!target);
 		if (cmd === 'playalpha') {
 			let htm = '<center>';
-			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + Chat.toDurationString(Db.players.get(user.userid).time), {precision: 2}) + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
+			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + (Chat.toDurationString(Db.players.get(user.userid).time, {precision: 2}) || '0 Seconds') + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
 			htm += '<button name="send" value="/confirmresetalpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>NEW GAME</b></button></center>';
 			user.console.init();
 			user.console.update('background-color: #6688AA;', htm, null);
@@ -557,7 +567,7 @@ exports.commands = {
 			}
 			user.console.queue.push('text|' + msg + '|hide');
 			user.console.callback = function () {
-				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 				user.console.callback = null;
 			};
 			user.console.queue.push('text|Great choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to your game now.|callback');
@@ -569,14 +579,43 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newObj = new Player(user.userid, Dex.fastUnpackTeam(SG.makeWildPokemon(false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				let newObj = new Player(user.userid, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.queue = ['text|Welcome back to the alpha, tell me if you like the game or find any bugs!'];
-			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/search gen7wildpokemonalpha" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
+			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button>';
 			user.console.init();
 			this.parse('/sggame next');
+		}
+	},
+	wild: function (target, room, user) {
+		if (user.console.queue.length) return;
+		if (user.console.curPane && user.console.curPane !== 'wild') return;
+		user.console.curPane = 'wild';
+		if (!Users('sgserver')) SG.makeCOM();
+		if (!toId(target)) {
+			for (let key of user.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+					user.console.curPane = null;
+					return;
+				}
+			}
+			Users('sgserver').wildTeams[user.userid] = SG.makeWildPokemon(false, SG.teamAverage(Db.players.get(user.userid).party));
+			return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
+		} else {
+			if (!Users('sgserver')) return;
+			target = toId(target);
+			if (target === 'battle') {
+				if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/wild');
+				user.console.curPane = null;
+				user.console.update();
+				this.parse('/search gen7wildpokemonalpha');
+			} else {
+				Users('sgserver').wildTeams[user.userid] = null;
+				user.console.curPane = null;
+				user.console.update();
+			}
 		}
 	},
 	sggame: {
@@ -828,6 +867,7 @@ exports.commands = {
 			target = target.map(data => {
 				return data.trim();
 			});
+			if (user.console.curPane && user.console.curPane !== 'pc') return;
 			for (let key of user.inRooms) {
 				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key) && target[2] !== 'close') return false; // No PC while battling
 			}
@@ -916,7 +956,7 @@ exports.commands = {
 			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/sggame back'>No</button></div>", null);
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
 			user.console.lastNextAction = null;
 			this.parse('/sggame next');

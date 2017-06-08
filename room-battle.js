@@ -514,13 +514,17 @@ class Battle {
 			raw[0] = toId(raw[0]);
 			let player = Db.players.get(raw[0]);
 			let item = SG.getItem(raw[1]);
-			// ['userid', 'itemid', 'party slot #'];
-			player.bag[item.slot][item.id]--;
+			// ['userid', 'itemid', 'party slot #', from pokemon?];
+			if (raw[3]) {
+				player.party[raw[2]].item = '';
+			} else {
+				player.bag[item.slot][item.id]--;
+			}
 			if (item.use.happiness) {
 				player.party[raw[2]].happiness += item.use.happiness;
 			}
 			Db.players.set(raw[0], player);
-			Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
+			if (!raw[3]) Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
 			break;
 		case 'updateExp':
 			let data = lines[2].split(']');

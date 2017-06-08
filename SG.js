@@ -155,9 +155,9 @@ exports.SG = {
 			//break;
 		}
 	},
-	makeWildPokemon: function (location, exact) {
+	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
-		//let pokemon = ['lotad', 'snorunt', 'archen', 'klink', 'cacnea', 'lillipup', 'gible', 'magikarp', 'numel', 'pineco', 'pikachu', 'makuhita', 'starly', 'gulpin', 'elgyem', 'swirlix', 'purrloin'][Math.floor(Math.random() * 17)]; //TODO pull from location
+		if (!lvlBase) lvlBase = 10;
 		if (wildPokemon.length <= 0) loadPokemon();
 		let pokemon = wildPokemon[Math.floor(Math.random() * wildPokemon.length)];
 		if (exact && Dex.getTemplate(exact.species).exists) pokemon = exact.species;
@@ -178,6 +178,23 @@ exports.SG = {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
+		let lvl = Math.round(Math.random() * (lvlBase - 5)) + 10; //-5 levels -> +5 levels. TODO base on location
+		if (lvl < pokemon.evoLevel) {
+			let depth = 0;
+			do {
+				pokemon = Dex.getTemplate(pokemon.prevo);
+				if (!pokemon || !pokemon.exists) {
+					// Shouldn't happen
+					console.log('Error on pokemon generation while de-evolving: Invalid pokemon: ' + pokemon.id);
+					return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+				}
+				depth++;
+			} while (lvl < pokemon.evoLevel && depth < 5);
+			if (depth >= 5 && lvl < pokemon.evoLevel) {
+				console.log('Error on pokemon generation: MAXIMUM CALL STACK SIZE EXCEEDED');
+				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+			}
+		}
 		let data = (forme ? toId(forme) : pokemon.id) + "|||";
 		let ability = Math.round(Math.random());
 		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
@@ -195,8 +212,6 @@ exports.SG = {
 			}
 		}
 		data += ability + "|";
-		let lvl = Math.round(Math.random() * 5) + 8; //8 -> 12 for test. TODO base on location
-		if (lvl < pokemon.evoLevel) lvl = pokemon.evoLevel;
 		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
 		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
 		let moves = "";

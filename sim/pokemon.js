@@ -924,6 +924,7 @@ class Pokemon {
 			this.battle.singleEvent('Eat', item, this.itemData, this, source, sourceEffect);
 			this.battle.runEvent('EatItem', this, null, null, item);
 
+			if (Dex.getFormat(this.battle.format).takeItems) this.battle.send('takeitem', toId(this.side.name) + "|" + toId(this.item) + "|" + this.slot + "|1");
 			this.lastItem = this.item;
 			this.item = '';
 			this.itemData = {id: '', target: this};
@@ -958,6 +959,7 @@ class Pokemon {
 
 			this.battle.singleEvent('Use', item, this.itemData, this, source, sourceEffect);
 
+			if (Dex.getFormat(this.battle.format).takeItems) this.battle.send('takeitem', toId(this.side.name) + "|" + toId(this.item) + "|" + this.slot + "|1");
 			this.lastItem = this.item;
 			this.item = '';
 			this.itemData = {id: '', target: this};
