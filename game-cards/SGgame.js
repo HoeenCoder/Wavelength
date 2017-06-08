@@ -688,17 +688,17 @@ exports.commands = {
 			if (target[1] && player.bag[target[0]][target[1]] && !target[2]) {
 				if (!item) return this.parse('/sggame bag ' + target[0]);
 				if (inBattle) {
-					if (!item.use.noBattle) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
+					if (item.use && !item.use.noBattle) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 				} else {
 					if (Dex.getItem(target[1]).exists) data.give = '/sggame bag ' + target[0] + ', ' + target[1] + ', give';
-					if (!item.use.battleOnly) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
+					if (item.use && !item.use.battleOnly) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 					//data.toss = '/sggame bag ' + target[0] + ', ' + target[1] + ', toss';
 				}
 				data.back = '/sggame bag ' + target[0];
 			}
 			if (target[2] && !target[3]) {
 				if (!item) return this.parse('/sggame bag ' + target[0]);
-				if (item.use.isBall) {
+				if (item.use && item.use.isBall) {
 					if (inBattle) {
 						return Chat.parse("/throwpokeball " + item.id, inBattle, user, user.connections[0]);
 					} else if (target[2] === 'use') {
