@@ -483,7 +483,12 @@
         "name": "Kebia Berry",
         "slot": "berries"
     },
-    "kelpsyberry": {
+    "keeberry": {
+        "id": "keeberry",
+        "name": "Kee Berry",
+        "slot": "berries"
+    },   
+     "kelpsyberry": {
         "id": "kelpsyberry",
         "name": "Kelpsy Berry",
         "slot": "berries"
@@ -506,6 +511,11 @@
     "magostberry": {
         "id": "magostberry",
         "name": "Magost Berry",
+        "slot": "berries"
+    },
+    "marangaberry": {
+        "id": "marangaberry",
+        "name": "Maranga Berry",
         "slot": "berries"
     },
     "micleberry": {
@@ -577,6 +587,11 @@
         "id": "rindoberry",
         "name": "Rindo Berry",
         "slot": "berries"
+    },
+    "roseliberry": {
+        "id": "roseliberry",
+        "name": "Roseli Berry",
+        "slots": "berries"
     }, 
     "rowapberry": {
         "id": "rowapberry",
