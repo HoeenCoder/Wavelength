@@ -368,9 +368,9 @@
             "healPP": 10
         }
     },
-    "aguaveberry": {
-        "id": "aguaveberry",
-        "name": "Aguave Berry",
+    "aguavberry": {
+        "id": "aguavberry",
+        "name": "Aguav Berry",
         "slot": "berries"
     },
     "apicotberry": {
@@ -443,9 +443,9 @@
         "name": "Figy Berry",
         "slot": "berries"
     },
-    "galonberry": {
-        "id": "galonberry",
-        "name": "Galon Berry",
+    "ganlonberry": {
+        "id": "ganlonberry",
+        "name": "Ganlon Berry",
         "slot": "berries"
     },
     "grepaberry": {
@@ -543,9 +543,9 @@
         "name": "Pamtre Berry",
         "slot": "berries"
     },
-    "pacchoberry": {
-        "id": "pacchoberry",
-        "name": "Paccho Berry",
+    "passhoberry": {
+        "id": "passhoberry",
+        "name": "Passho Berry",
         "slot": "berries"
     },
     "payapaberry": {
@@ -591,7 +591,7 @@
     "roseliberry": {
         "id": "roseliberry",
         "name": "Roseli Berry",
-        "slots": "berries"
+        "slot": "berries"
     }, 
     "rowapberry": {
         "id": "rowapberry",
@@ -648,7 +648,7 @@
         "name": "Wiki Berry",
         "slot": "berries"
     }, 
-    "yachebery": {
+    "yacheberry": {
         "id": "yacheberry",
         "name": "Yache Berry",
         "slot": "berries"

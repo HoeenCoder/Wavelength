@@ -583,6 +583,7 @@ exports.Formats = [
 		name: "[Gen 7] [SGgame] Anything Goes",
 		desc: ["Anything Goes rules with the teams you build in SGgame."],
 		useSGgame: true,
+		noExp: true,
 
 		mod: 'gen7',
 		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
