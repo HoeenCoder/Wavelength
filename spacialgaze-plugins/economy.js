@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const fs = require('fs');
 
@@ -321,17 +321,16 @@ exports.commands = {
 		this.sendReply('Your symbol has been removed.');
 	},
 
+	economy: 'economystats',
 	currency: 'economystats',
 	stardust: 'economystats',
 	economystats: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		const users = Object.keys(Db.currency.object());
-		const total = users.reduce(function (acc, cur) {
-			return acc + Db.currency.get(cur);
-		}, 0);
+		const users = Db.currency.keys().map(curUser => ({amount: Db.currency.get(curUser)}));
+		const total = users.reduce((acc, cur) => acc + cur.amount, 0);
 		let average = Math.floor(total / users.length) || 0;
-		let output = "There " + (total > 1 ? "are " : "is ") + total + (total > 1 ? currencyPlural : currencyName) + " circulating in the economy. ";
-		output += "The average user has " + average + (average > 1 ? currencyPlural : currencyName) + ".";
+		let output = "There " + (total > 1 ? "are " : "is ") + total + " " + (total > 1 ? currencyPlural : currencyName) + " circulating in the economy. ";
+		output += "The average user has " + average + " " + (average > 1 ? currencyPlural : currencyName) + ".";
 		this.sendReplyBox(output);
 	},
 };
