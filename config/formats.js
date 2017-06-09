@@ -66,9 +66,10 @@ exports.Formats = [
 		banlist: ['OU', 'BL', 'Drizzle', 'Power Construct', 'Mewnium Z'],
 	},
 	{
-		name: "[Gen 7] RU (beta)",
+		name: "[Gen 7] RU",
 		desc: [
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3598017/\">RU Metagame Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3602279/\">RU Viability Ranking</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3598090/\">RU Sample Teams</a>",
 		],
 
@@ -77,15 +78,15 @@ exports.Formats = [
 		banlist: ['UU', 'BL2'],
 	},
 	{
-		name: "[Gen 7] NU (alpha)",
+		name: "[Gen 7] NU (beta)",
+		desc: [
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3606077/\">NU Metagame Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3606112/\">NU Sample Teams</a>",
+		],
 
 		mod: 'gen7',
-		ruleset: ['[Gen 7] RU (beta)'],
-		banlist: [
-			'Aerodactyl', 'Araquanid', 'Blastoise', 'Bronzong', 'Bruxish', 'Chesnaught', 'Cloyster', 'Comfey', 'Cresselia', 'Dhelmise', 'Diancie', 'Donphan', 'Doublade', 'Durant', 'Escavalier', 'Espeon', 'Feraligatr',
-			'Florges', 'Flygon', 'Froslass', 'Galvantula', 'Gardevoir', 'Gigalith', 'Glalitite', 'Gligar', 'Golisopod', 'Goodra', 'Heliolisk', 'Heracross', 'Honchkrow', 'Hoopa', 'Jellicent', 'Jolteon', 'Kommo-o',
-			'Linoone', 'Mantine', 'Milotic', 'Nidoqueen', 'Registeel', 'Reuniclus', 'Rhyperior', 'Roserade', 'Rotom-Heat', 'Salazzle', 'Sharpedo', 'Shaymin', 'Snorlax', 'Swellow', 'Torkoal', 'Umbreon', 'Venusaur', 'Zoroark',
-		],
+		ruleset: ['[Gen 7] RU'],
+		banlist: ['RU', 'BL3'],
 	},
 	{
 		name: "[Gen 7] LC",
@@ -555,7 +556,7 @@ exports.Formats = [
 		banlist: [
 			'Illegal', 'Unreleased', 'Arceus', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Giratina', 'Groudon', 'Ho-Oh', 'Kyogre',
 			'Kyurem-White', 'Lugia', 'Lunala', 'Mewtwo', 'Palkia', 'Rayquaza', 'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
-			'Power Construct', 'Perish Song', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Chansey + Charm + Seismic Toss',
+			'Power Construct', 'Perish Song', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Chansey + Charm + Seismic Toss', 'Chansey + Charm + Psywave',
 		],
 	},
 	{
