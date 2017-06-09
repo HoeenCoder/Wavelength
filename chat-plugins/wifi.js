@@ -155,7 +155,7 @@ class Giveaway {
 		return `<p style="text-align:center;font-size:14pt;font-weight:bold;margin-bottom:2px;">It's giveaway time!</p>` +
 			`<p style="text-align:center;font-size:7pt;">Giveaway started by ${Chat.escapeHTML(this.host.name)}</p>` +
 			`<table style="margin-left:auto;margin-right:auto;"><tr><td style="text-align:center;width:45%">${this.sprite}<p style="font-weight:bold;">Giver: ${this.giver}</p>${Chat.parseText(this.prize)}<br />OT: ${Chat.escapeHTML(this.ot)}, TID: ${this.tid}</td>` +
-			`<td style="text-align:center;width:45%">${rightSide}</td></tr></table><p style="text-align:center;font-size:7pt;font-weight:bold;"><u>Note:</u> Please do not join if you don't have a 3DS, a copy of Pokémon Sun/Moon, or are currently unable to receive the prize.</p>`;
+			`<td style="text-align:center;width:45%">${rightSide}</td></tr></table><p style="text-align:center;font-size:7pt;font-weight:bold;"><u>Reminder:</u> Please don't get salty about luck, this is totally random and nobody wants a sore loser.</p>`;
 	}
 }
 
@@ -469,7 +469,7 @@ let commands = {
 	quiz: 'question',
 	qg: 'question',
 	question: function (target, room, user) {
-		if ((room.id !== 'serverevents' && room.id !== 'lobby') || !target) return false;
+		if ((room.id !== 'games' && room.id !== 'lobby') || !target) return false;
 		if (room.giveaway) return this.errorReply("There is already a giveaway going on!");
 
 		let [giver, ot, tid, fc, prize, question, ...answers] = target.split(target.includes('|') ? '|' : ',').map(param => param.trim());
@@ -490,7 +490,7 @@ let commands = {
 	},
 	changeanswer: 'changequestion',
 	changequestion: function (target, room, user, conn, cmd) {
-		if (room.id !== 'serverevents' && room.id !== 'lobby') return false;
+		if (room.id !== 'games' && room.id !== 'lobby') return false;
 		if (!room.giveaway) return this.errorReply("There is no giveaway going on at the moment.");
 		if (room.giveaway.type !== 'question') return this.errorReply("This is not a question giveaway.");
 
@@ -500,7 +500,7 @@ let commands = {
 	},
 	showanswer: 'viewanswer',
 	viewanswer: function (target, room, user) {
-		if (room.id !== 'serverevents' && room.id !== 'lobby') return false;
+		if (room.id !== 'games' && room.id !== 'lobby') return false;
 		let giveaway = room.giveaway;
 		if (!giveaway) return this.errorReply("There is no giveaway going on at the moment.");
 		if (giveaway.type !== 'question') return this.errorReply("This is not a question giveaway.");
@@ -511,7 +511,7 @@ let commands = {
 	},
 	guessanswer: 'guess',
 	guess: function (target, room, user) {
-		if (room.id !== 'serverevents' && room.id !== 'lobby') return this.errorReply("This command can only be used in the Wi-Fi room.");
+		if (room.id !== 'games' && room.id !== 'lobby') return this.errorReply("You can't use this command here.");
 		if (!this.canTalk()) return;
 		if (!room.giveaway) return this.errorReply("There is no giveaway going on at the moment.");
 		if (room.giveaway.type !== 'question') return this.errorReply("This is not a question giveaway.");
@@ -522,7 +522,7 @@ let commands = {
 	lg: 'lottery',
 	lotto: 'lottery',
 	lottery: function (target, room, user) {
-		if ((room.id !== 'serverevents' && room.id !== 'lobby') || !target) return false;
+		if ((room.id !== 'games' && room.id !== 'lobby') || !target) return false;
 		if (room.giveaway) return this.errorReply("There is already a giveaway going on!");
 
 		let [giver, ot, tid, fc, prize, winners] = target.split(target.includes('|') ? '|' : ',').map(param => param.trim());
@@ -553,7 +553,7 @@ let commands = {
 	joinlotto: 'join',
 	joinlottery: 'join',
 	join: function (target, room, user, conn, cmd) {
-		if (room.id !== 'serverevents' && room.id !== 'lobby') return this.errorReply("This command can only be used in the Wi-Fi room.");
+		if (room.id !== 'games' && room.id !== 'lobby') return this.errorReply("This command can only be used in the Wi-Fi room.");
 		if (!this.canTalk()) return;
 		let giveaway = room.giveaway;
 		if (!giveaway) return this.errorReply("There is no giveaway going on at the moment.");
