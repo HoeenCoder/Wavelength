@@ -74,7 +74,8 @@ Special Move Effects: Dragon type, Status, Boosts user's Attack and Speed by one
 Desokoro
 (Gyarados)
 @ Leftovers
-Ability: Guts
+Ability: Wave Call
+    - If either the user is statused or its HP is below 1/2 of its maximum hp, the user's Water type moves get boosted by 2x.
 Adamant Nature
 EVs: 252 Atk / 4 HP / 252 Spe
 Moves: Dragon Dance, Bounce, Substitute

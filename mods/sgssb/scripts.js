@@ -104,7 +104,7 @@ exports.BattleScripts = {
 			},
 			'@Desokoro': {
 				species: 'Gyarados',
-				ability: 'Guts',
+				ability: 'Wave Call',
 				item: 'Leftovers',
 				gender: 'M',
 				moves: ['Substitute', 'Dragon Dance', 'Bounce',

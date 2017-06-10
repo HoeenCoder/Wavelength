@@ -100,4 +100,14 @@ exports.BattleAbilities = {
 			}
 		},
 	},
+	wavecall: {
+		onModifyAtkPriority: 5,
+		onModifyAtk: function (atk, pokemon, move) {
+			if (pokemon.status && move.type === 'Water' || move.type === 'Water' && attacker.hp <= attacker.maxhp / 2) {
+				return this.chainModify(2);
+			}
+		},
+		id: "wavecall",
+		name: "Wave Call",
+	},
 };
