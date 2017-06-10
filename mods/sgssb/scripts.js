@@ -72,14 +72,14 @@ exports.BattleScripts = {
 				nature: 'Adamant',
 			},
 			'&Kraken Mare': {
-				species: 'Gardevoir',
-				ability: 'Moody',
+				species: 'Gardevoir-Mega',
+				ability: 'krakensboost',
 				shiny: true,
-				item: 'Gardevoirite',
+				item: 'Focus Sash',
 				gender: 'F',
 				moves: ['Moonblast', 'Calm Mind', 'Psychic',
 				],
-				signatureMove: 'Mega Rage',
+				signatureMove: 'Revenge of Kraken Mare',
 				evs: {
 					hp: 248,
 					spa: 252,

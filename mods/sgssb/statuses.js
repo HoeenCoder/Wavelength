@@ -146,13 +146,13 @@ exports.BattleStatuses = {
 	krakenmare: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&Kraken Mare', 'You can\'t touch the master of RAGE!');
+			this.add('c', '&Kraken Mare', 'Today, I prove Gardevoir as the best Pokmeon!');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '&Kraken Mare', 'I shall spare you today, young one!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&Kraken Mare', 'The RAGE wasn\'t enough to overpower you!');
+			this.add('c', '&Kraken Mare', 'Even though I fall, I\'m sure I took a few down with me.');
 		},
 	},
 	almightybronzong: {

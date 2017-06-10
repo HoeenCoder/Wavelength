@@ -121,26 +121,25 @@ exports.BattleMovedex = {
 		},
 	},
 	// Kraken Mare
-	megarage: {
+	revengeofkrakenmare: {
 		category: "Special",
-		basePower: 150,
-		id: "megarage",
+		accuracy: true,
+		basePower: 77000,
+		id: "revengeofkrakenmare",
 		isNonstandard: true,
-		name: "Mega Rage",
-		pp: 15,
-		priority: 0,
-		self: {
-			boosts: {
-				def: -1,
-				spd: -1,
-			},
-		},
+		name: "Revenge of Kraken Mare",
+		pp: 0.625,
+		priority: 5,
+		selfdestruct: "always",
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Hyper Voice", source);
+			this.add('-anim', source, "Surf", target);
+		},
+		onHit: function (target, source, move) {
+			this.add('c| Kraken Mare ☭|If I go down I\'m taking you with me!');
 		},
 		target: "Normal",
-		type: "Fairy",
+		type: "Water",
 	},
 	// C733937 123
 	lightshotgigalance: {
