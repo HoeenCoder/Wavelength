@@ -30,10 +30,74 @@ Signature Move Effects: Displays a server crash message and faints the user.
 
 Insist
 (Ludicolo)
-@ Life Orb
-Ability: Primordial Sea
+@ Playnium Z
+	- Allows user to use Exiled From All Others.
+		- Exiled From All Others: Water type, Special, Z-Move, 140 BP, Boosts all stats by one (except evasion).
+Ability: Crippling Depression
+	- Primordial Sea + Rain Dish + Swift Swim Effects.
 Timid Nature
 EVs: 252 SpA / 252 Spe / 4 HP
 Moves: Giga Drain, Focus Blast, Freeze-Dry
 Signature Move: Aqua Subscribe
 Signature Move Effects: Water, Special, +1 priority, 90 BP, Boosts own SpA and Spe by one stage.
+
+HiroZ
+(Genesect)
+@ Choice Scarf
+Ability: Download
+Hasty Nature
+EVs: 252 Atk / 4 SpA / 252 Spe
+Moves: Explosion, Ice Beam, U-Turn
+Signature Move: Crystallized Ukaku
+Signature Move Effects: Dark type, Special, 140 BP, 30% chance to badly poison it's target.
+
+Kraken Mare
+(Gardevoir)
+@ Gardevoirite
+Ability: Moody
+EVs: 248 HP / 8 Def / 252 SpA
+Modest Nature
+Moves: Moonblast, Calm Mind, Psychic
+Special Move: Mega Rage
+Special Move Effects: Fairy Type, Special, 150 BP, user's defense and special defense lower by 1 stage after usage of this.
+
+Opple
+(Dragonite)
+@ Weakness Policy
+Ability: Multiscale
+Adamant Nature
+EVs: 252 Atk / 4 HP / 252 Spe
+Moves: Dragon Claw, Fire Punch, Waterfall
+Special Move: Ancient Orb
+Special Move Effects: Dragon type, Status, Boosts user's Attack and Speed by one stage, and heals the user by 1/4th maximum health.
+
+Desokoro
+(Gyarados)
+@ Leftovers
+Ability: Guts
+Adamant Nature
+EVs: 252 Atk / 4 HP / 252 Spe
+Moves: Dragon Dance, Bounce, Substitute
+Special Move: Tsunami Crash
+Special Move Effects: Water Type, Physical, 150 BP, 35% chance to flinch target.
+
+BDH93
+(Dunsparce)
+@ King's Rock
+Ability: Serene Grace
+Naughty Nature
+EVs: 252 Atk / 4 Def / 252 HP
+Moves: Roost, Coil, Rock Slide, Glare, Body Slam
+Special Move: Getting Trolled
+Special Move Effects: 40 BP, Physical, Normal Type, 30% chance to paralyze, confuse, or flinch the target.
+
+Ashley the Pikachu
+(Pikachu-Cosplay)
+@ Light Ball
+Ability: Primal Surge
+	- Sets permanent Electric Terrain, doubles speed.
+Modest Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Thunderbolt, Surf, Hidden Power Ice
+Special Move: Rocket Punch
+Special Move Effects: Fire Type, Special, 100 BP, +1 priority
