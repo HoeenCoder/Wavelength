@@ -5,8 +5,6 @@
 		"rate": "1",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 0,
@@ -26,8 +24,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ivysaur"
 		},
 		"baseExp": 64,
@@ -47,8 +43,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+		    "level": 16,
 			"evolvesTo": "venusaur"
 		},
 		"baseExp": 142,
@@ -68,8 +63,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 236,
@@ -89,8 +83,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "charmeleon"
 		},
 		"baseExp": 62,
@@ -110,8 +102,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "charizard"
 		},
 		"baseExp": 142,
@@ -131,8 +122,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 240,
@@ -152,8 +142,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "wartortle"
 		},
 		"baseExp": 63,
@@ -173,8 +161,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": "16",
+			"level": 16,
 			"evolvesTo": "blastoise"
 		},
 		"baseExp": 142,
@@ -194,8 +181,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -215,8 +201,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "metapod"
 		},
 		"baseExp": 39,
@@ -236,8 +220,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 7,
+			"level": 7,
 			"evolvesTo": "butterfree"
 		},
 		"baseExp": 72,
@@ -257,8 +240,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 10,
+			"level": 10,
 			"evolvesTo": null
 		},
 		"baseExp": 178,
@@ -278,8 +260,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kakuna"
 		},
 		"baseExp": 39,
@@ -299,8 +279,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 7,
+			"level": 7,
 			"evolvesTo": "beedrill"
 		},
 		"baseExp": 72,
@@ -320,8 +299,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 10,
+			"level": 10,
 			"evolvesTo": null
 		},
 		"baseExp": 178,
@@ -341,8 +319,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pidgeotto"
 		},
 		"baseExp": 50,
@@ -362,8 +338,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "pidgeot"
 		},
 		"baseExp": 122,
@@ -383,8 +358,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 216,
@@ -404,9 +378,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "raticate"
+			"evolvesTo": "raticate|raticatealola"
 		},
 		"baseExp": 51,
 		"evDrops": {
@@ -425,8 +397,7 @@
 		"rate": "127*",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 145,
@@ -446,8 +417,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "fearow"
 		},
 		"baseExp": 52,
@@ -467,8 +436,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 155,
@@ -488,8 +456,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "arbok"
 		},
 		"baseExp": 58,
@@ -509,8 +475,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 157,
@@ -530,8 +495,7 @@
 		"rate": "190*",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": "raichu|raichualola"
 		},
 		"baseExp": 112,
@@ -551,8 +515,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "thunderstone",
+			"item": "thunderstone",
 			"evolvesTo": null
 		},
 		"baseExp": 218,
@@ -572,9 +535,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "sandslash"
+			"evolvesTo": "sandslash|sandshrewalola"
 		},
 		"baseExp": 60,
 		"evDrops": {
@@ -593,8 +554,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -614,8 +574,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "nidorina"
 		},
 		"baseExp": 55,
@@ -635,8 +593,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "nidoqueen"
 		},
 		"baseExp": 128,
@@ -656,8 +613,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 227,
@@ -677,8 +633,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "nidorino"
 		},
 		"baseExp": 55,
@@ -698,8 +652,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "nidoking"
 		},
 		"baseExp": 128,
@@ -719,8 +672,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 227,
@@ -740,8 +692,7 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": "clefable"
 		},
 		"baseExp": 113,
@@ -761,8 +712,7 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 217,
@@ -782,9 +732,7 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "ninetales"
+			"evolvesTo": "ninetales|ninetalesalola"
 		},
 		"baseExp": 60,
 		"evDrops": {
@@ -803,8 +751,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "firestone",
+			"item": "firestone",
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -824,8 +771,7 @@
 		"rate": "170",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": "clefable"
 		},
 		"baseExp": 95,
@@ -845,8 +791,7 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 196,
@@ -866,8 +811,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "golbat"
 		},
 		"baseExp": 49,
@@ -887,8 +830,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": "crobat"
 		},
 		"baseExp": 159,
@@ -908,8 +850,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gloom"
 		},
 		"baseExp": 64,
@@ -929,8 +869,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 21,
+			"level": 21,
 			"evolvesTo": "vileplume|bellossom"
 		},
 		"baseExp": 138,
@@ -950,8 +889,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "leafstone",
+			"item": "leafstone",
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -971,8 +909,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "parasect"
 		},
 		"baseExp": 57,
@@ -992,8 +928,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 24,
+			"level": 24,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -1013,8 +948,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "venomoth"
 		},
 		"baseExp": 61,
@@ -1034,8 +967,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 31,
+			"level": 31,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -1055,9 +987,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "dugtrio"
+			"evolvesTo": "dugtrio|dugtrioalola"
 		},
 		"baseExp": 53,
 		"evDrops": {
@@ -1076,8 +1006,7 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 26,
+			"level": 26,
 			"evolvesTo": null
 		},
 		"baseExp": 149,
@@ -1097,9 +1026,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "persian"
+			"evolvesTo": "persian|persianalola"
 		},
 		"baseExp": 58,
 		"evDrops": {
@@ -1118,8 +1045,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 154,
@@ -1139,8 +1065,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "golduck"
 		},
 		"baseExp": 64,
@@ -1160,8 +1084,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 33,
+			"level": 33,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -1181,8 +1104,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "primeape"
 		},
 		"baseExp": 61,
@@ -1202,8 +1123,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -1223,8 +1143,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "arcanine"
 		},
 		"baseExp": 70,
@@ -1244,8 +1162,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "firestone",
+			"item": "firestone",
 			"evolvesTo": null
 		},
 		"baseExp": 194,
@@ -1265,8 +1182,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "poliwhirl"
 		},
 		"baseExp": 60,
@@ -1286,8 +1201,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "poliwrath|politoed"
 		},
 		"baseExp": 135,
@@ -1307,8 +1221,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 230,
@@ -1328,8 +1241,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kadabra"
 		},
 		"baseExp": 62,
@@ -1349,8 +1260,7 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "alakazam"
 		},
 		"baseExp": 140,
@@ -1370,8 +1280,6 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -1391,8 +1299,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": 28,
 			"evolvesTo": "machoke"
 		},
 		"baseExp": 61,
@@ -1412,8 +1318,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": "28",
+			"level": 28,
 			"evolvesTo": "machamp"
 		},
 		"baseExp": 142,
@@ -1433,8 +1338,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 227,
@@ -1454,8 +1357,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "weepinbell"
 		},
 		"baseExp": 60,
@@ -1475,8 +1376,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 21,
+			"level": 21,
 			"evolvesTo": "victreebel"
 		},
 		"baseExp": 137,
@@ -1496,8 +1396,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "leafstone",
+			"item": "leafstone",
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -1517,8 +1416,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "tentacruel"
 		},
 		"baseExp": 67,
@@ -1538,8 +1435,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -1559,9 +1455,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "graveler"
+			"evolvesTo": "graveler|graveleralola"
 		},
 		"baseExp": 60,
 		"evDrops": {
@@ -1580,9 +1474,8 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
-			"evolvesTo": "golem"
+			"level": 25,
+			"evolvesTo": "golem|golemalola"
 		},
 		"baseExp": 137,
 		"evDrops": {
@@ -1601,8 +1494,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -1622,8 +1513,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "rapidash"
 		},
 		"baseExp": 82,
@@ -1643,8 +1532,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -1664,8 +1552,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "slowbro|slowking"
 		},
 		"baseExp": 63,
@@ -1685,8 +1571,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -1706,8 +1591,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "magneton"
 		},
 		"baseExp": 65,
@@ -1727,8 +1610,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": "magnezone"
 		},
 		"baseExp": 163,
@@ -1748,8 +1630,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 132,
@@ -1769,8 +1649,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dodrio"
 		},
 		"baseExp": 62,
@@ -1790,8 +1668,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 31,
+			"level": 31,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -1811,8 +1688,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dewgong"
 		},
 		"baseExp": 65,
@@ -1832,8 +1707,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -1853,9 +1727,7 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "muk"
+			"evolvesTo": "muk|mukalola"
 		},
 		"baseExp": 65,
 		"evDrops": {
@@ -1874,8 +1746,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -1895,8 +1766,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cloyster"
 		},
 		"baseExp": 61,
@@ -1916,8 +1785,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -1937,8 +1805,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "haunter"
 		},
 		"baseExp": 62,
@@ -1958,8 +1824,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "gengar"
 		},
 		"baseExp": 142,
@@ -1979,8 +1844,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -2000,8 +1863,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "steelix"
 		},
 		"baseExp": 77,
@@ -2021,8 +1882,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "hypno"
 		},
 		"baseExp": 66,
@@ -2042,8 +1901,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 26,
+			"level": 26,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -2063,8 +1921,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kingler"
 		},
 		"baseExp": 65,
@@ -2084,8 +1940,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -2105,8 +1960,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "electrode"
 		},
 		"baseExp": 66,
@@ -2126,8 +1979,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -2147,8 +1999,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "exeggutor|exeggutoralola"
 		},
 		"baseExp": 65,
@@ -2168,8 +2018,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "leafstone",
+			"item": "leafstone",
 			"evolvesTo": null
 		},
 		"baseExp": 186,
@@ -2189,8 +2038,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "marowak|marowakalola"
 		},
 		"baseExp": 64,
@@ -2210,8 +2057,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 149,
@@ -2231,8 +2077,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": 20,
+			"level": 20,
+			"stat": "atk>def",
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -2252,8 +2098,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": 20,
+			"level": 20,
+			"stat": "def>atk",
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -2273,8 +2119,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lickilicky"
 		},
 		"baseExp": 77,
@@ -2294,8 +2138,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "weezing"
 		},
 		"baseExp": 68,
@@ -2315,8 +2157,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -2336,8 +2177,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "rhydon"
 		},
 		"baseExp": 69,
@@ -2357,8 +2196,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 42,
+			"level": 42,
 			"evolvesTo": "rhyperior"
 		},
 		"baseExp": 170,
@@ -2378,8 +2216,8 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": "ovalstone",
+			"item": "ovalstone",
+			"time": "day",
 			"evolvesTo": "blissey"
 		},
 		"baseExp": 395,
@@ -2399,8 +2237,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "tangrowth"
 		},
 		"baseExp": 87,
@@ -2420,8 +2256,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -2441,8 +2275,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "seadra"
 		},
 		"baseExp": 59,
@@ -2462,8 +2294,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": "kingdra"
 		},
 		"baseExp": 154,
@@ -2483,8 +2314,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "seaking"
 		},
 		"baseExp": 64,
@@ -2504,8 +2333,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 33,
+			"level": 33,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -2525,8 +2353,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "starmie"
 		},
 		"baseExp": 68,
@@ -2546,8 +2372,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 182,
@@ -2567,8 +2392,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "mimic",
+			"move": "mimic",
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -2588,8 +2412,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "scizor"
 		},
 		"baseExp": 100,
@@ -2609,8 +2431,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -2630,8 +2451,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": "electivire"
 		},
 		"baseExp": 172,
@@ -2651,8 +2471,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": "magmortar"
 		},
 		"baseExp": 173,
@@ -2672,8 +2491,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -2693,8 +2510,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -2714,8 +2529,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gyarados"
 		},
 		"baseExp": 40,
@@ -2735,8 +2548,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 189,
@@ -2756,8 +2568,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 187,
@@ -2777,8 +2587,6 @@
 		"rate": "35",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 101,
@@ -2798,9 +2606,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "vaporeon|jolteon|flareon|umbreon|espeon|leafeon|glaceon|sylveon"
+			"evolvesTo": "vaporeon|jolteon|flareon|espeon|umbreon|leafeon|glaceon|sylveon"
 		},
 		"baseExp": 65,
 		"evDrops": {
@@ -2819,8 +2625,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -2840,8 +2645,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "thunderstone",
+			"item": "thunderstone",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -2861,8 +2665,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "firestone",
+			"item": "firestone",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -2882,8 +2685,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "porygon2"
 		},
 		"baseExp": 79,
@@ -2903,8 +2704,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "omastar"
 		},
 		"baseExp": 71,
@@ -2924,8 +2723,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"item": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -2945,8 +2743,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kabutops"
 		},
 		"baseExp": 71,
@@ -2966,8 +2762,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -2987,8 +2782,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -3008,8 +2801,7 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 189,
@@ -3029,8 +2821,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -3050,8 +2840,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -3071,8 +2859,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -3092,8 +2878,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dragonair"
 		},
 		"baseExp": 60,
@@ -3113,8 +2897,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": "dragonite"
 		},
 		"baseExp": 147,
@@ -3134,8 +2917,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 55,
+			"level": 55,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -3155,8 +2937,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -3176,8 +2956,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -3197,8 +2975,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bayleef"
 		},
 		"baseExp": 64,
@@ -3218,8 +2994,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "meganium"
 		},
 		"baseExp": 142,
@@ -3239,8 +3014,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 236,
@@ -3260,8 +3034,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "quilava"
 		},
 		"baseExp": 62,
@@ -3281,8 +3053,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "typhlosion"
 		},
 		"baseExp": 142,
@@ -3302,8 +3073,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 240,
@@ -3323,8 +3093,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "croconaw"
 		},
 		"baseExp": 63,
@@ -3344,8 +3112,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "feraligatr"
 		},
 		"baseExp": 142,
@@ -3365,8 +3132,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -3386,8 +3152,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "furret"
 		},
 		"baseExp": 43,
@@ -3407,8 +3171,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 15,
+			"level": 15,
 			"evolvesTo": null
 		},
 		"baseExp": 145,
@@ -3428,8 +3191,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "noctowl"
 		},
 		"baseExp": 52,
@@ -3449,8 +3210,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -3470,8 +3230,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ledian"
 		},
 		"baseExp": 53,
@@ -3491,8 +3249,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": null
 		},
 		"baseExp": 137,
@@ -3512,8 +3269,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ariados"
 		},
 		"baseExp": 50,
@@ -3533,8 +3288,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 140,
@@ -3554,8 +3308,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -3575,8 +3328,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lanturn"
 		},
 		"baseExp": 66,
@@ -3596,8 +3347,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 27,
+			"level": 27,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -3617,8 +3367,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pikachu"
 		},
 		"baseExp": 41,
@@ -3638,8 +3386,6 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "clefairy"
 		},
 		"baseExp": 44,
@@ -3659,8 +3405,6 @@
 		"rate": "170",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "jigglypuff"
 		},
 		"baseExp": 42,
@@ -3680,8 +3424,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "togetic"
 		},
 		"baseExp": 49,
@@ -3701,8 +3443,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": "togekiss"
 		},
 		"baseExp": 142,
@@ -3722,8 +3463,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "xatu"
 		},
 		"baseExp": 64,
@@ -3743,8 +3482,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -3764,8 +3502,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "flaaffy"
 		},
 		"baseExp": 56,
@@ -3785,8 +3521,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 15,
+			"level": 15,
 			"evolvesTo": "ampharos"
 		},
 		"baseExp": 128,
@@ -3806,8 +3541,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 230,
@@ -3827,8 +3561,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "sunstone",
+			"item": "sunstone",
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -3848,8 +3581,7 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": "azumarill"
 		},
 		"baseExp": 88,
@@ -3869,8 +3601,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": null
 		},
 		"baseExp": 189,
@@ -3890,8 +3621,7 @@
 		"rate": "65",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "mimic",
+			"move": "mimic",
 			"evolvesTo": null
 		},
 		"baseExp": 144,
@@ -3911,8 +3641,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "kingsrock",
+			"hold": "kingsrock",
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -3932,8 +3661,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "skiploom"
 		},
 		"baseExp": 50,
@@ -3953,8 +3680,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "jumpluff"
 		},
 		"baseExp": 119,
@@ -3974,8 +3700,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 27,
+			"level": 27,
 			"evolvesTo": null
 		},
 		"baseExp": 207,
@@ -3995,8 +3720,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ambipom"
 		},
 		"baseExp": 72,
@@ -4016,8 +3739,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sunflora"
 		},
 		"baseExp": 36,
@@ -4037,8 +3758,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "sunstone",
+			"item": "sunstone",
 			"evolvesTo": null
 		},
 		"baseExp": 149,
@@ -4058,8 +3778,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "yanmega"
 		},
 		"baseExp": 78,
@@ -4079,8 +3797,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "quagsire"
 		},
 		"baseExp": 42,
@@ -4100,8 +3816,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 151,
@@ -4121,8 +3836,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": "day",
+			"happiness": 255,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -4142,8 +3857,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": "night",
+			"happiness": 255,
+			"time": "night",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -4163,8 +3878,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "honchkrow"
 		},
 		"baseExp": 81,
@@ -4184,8 +3897,7 @@
 		"rate": "70",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "kingsrock",
+			"hold": "kingsrock",
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -4205,8 +3917,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mismagius"
 		},
 		"baseExp": 87,
@@ -4226,8 +3936,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 118,
@@ -4247,8 +3955,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"level": 15,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -4268,8 +3975,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -4289,8 +3994,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "forretress"
 		},
 		"baseExp": 58,
@@ -4310,8 +4013,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 31,
+			"level": 31,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -4331,8 +4033,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 145,
@@ -4352,8 +4052,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gliscor"
 		},
 		"baseExp": 86,
@@ -4372,9 +4070,8 @@
 		"num": 208,
 		"rate": "25",
 		"evolution": {
-			"trigger": "level",
-			"type": "item",
-			"exact": "metalcoat",
+			"trigger": "item",
+			"item": "metalcoat",
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -4394,8 +4091,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "granbull"
 		},
 		"baseExp": 60,
@@ -4415,8 +4110,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 23,
+			"level": 23, 
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -4436,8 +4130,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 88,
@@ -4456,9 +4148,8 @@
 		"num": 212,
 		"rate": "25",
 		"evolution": {
-			"trigger": "level",
-			"type": "item",
-			"exact": "metalcoat",
+			"trigger": "item",
+			"item": "metalcoat",
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -4478,8 +4169,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -4499,8 +4188,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -4520,8 +4207,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "weavile"
 		},
 		"baseExp": 86,
@@ -4541,8 +4226,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ursaring"
 		},
 		"baseExp": 66,
@@ -4562,8 +4245,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -4583,8 +4265,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "magcargo"
 		},
 		"baseExp": 50,
@@ -4604,8 +4284,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": null
 		},
 		"baseExp": 151,
@@ -4625,8 +4304,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "piloswine"
 		},
 		"baseExp": 50,
@@ -4646,8 +4323,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 33,
+			"level": 33,
 			"evolvesTo": "mamoswine"
 		},
 		"baseExp": 158,
@@ -4688,8 +4364,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "octillery"
 		},
 		"baseExp": 60,
@@ -4709,8 +4383,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -4730,8 +4403,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 116,
@@ -4751,8 +4422,7 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": null,
+			"special": "true",
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -4772,8 +4442,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -4793,8 +4461,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "houndoom"
 		},
 		"baseExp": 66,
@@ -4814,8 +4480,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": "24",
+			"level": "24",
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -4835,8 +4500,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "dragonscale",
+		    "hold": "dragonscale",
 			"evolvesTo": null
 		},
 		"baseExp": 243,
@@ -4856,8 +4520,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "donphan"
 		},
 		"baseExp": 66,
@@ -4877,8 +4539,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -4898,8 +4559,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "upgrade",
+			"hold": "upgrade",
 			"evolvesTo": "porygonz"
 		},
 		"baseExp": 180,
@@ -4919,8 +4579,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -4940,8 +4598,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 88,
@@ -4961,8 +4617,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "hitmonlee|hitmonchan|hitmontop"
 		},
 		"baseExp": 42,
@@ -4982,8 +4636,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": 20,
+			"level": 20,
+			"stats": "atk=def",
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -5003,8 +4657,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "jynx"
 		},
 		"baseExp": 61,
@@ -5024,8 +4676,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "electabuzz"
 		},
 		"baseExp": 72,
@@ -5045,8 +4695,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "magmar"
 		},
 		"baseExp": 73,
@@ -5066,8 +4714,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -5087,8 +4733,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 608,
@@ -5108,8 +4753,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -5129,8 +4772,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -5150,8 +4791,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -5171,8 +4810,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pupitar"
 		},
 		"baseExp": 60,
@@ -5192,8 +4829,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30, 
 			"evolvesTo": "tyranitar"
 		},
 		"baseExp": 144,
@@ -5213,8 +4849,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 55,
+			"level": 55,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -5234,8 +4869,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -5255,8 +4888,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -5276,8 +4907,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -5297,8 +4926,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "grovyle"
 		},
 		"baseExp": 62,
@@ -5318,8 +4945,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "sceptile"
 		},
 		"baseExp": 142,
@@ -5339,8 +4965,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -5360,8 +4985,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "combusken"
 		},
 		"baseExp": 62,
@@ -5381,8 +5004,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "blaziken"
 		},
 		"baseExp": 142,
@@ -5402,8 +5024,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -5423,8 +5044,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "marshtomp"
 		},
 		"baseExp": 62,
@@ -5444,8 +5063,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "swampert"
 		},
 		"baseExp": 142,
@@ -5465,8 +5083,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -5486,8 +5103,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mightyena"
 		},
 		"baseExp": 56,
@@ -5507,8 +5122,7 @@
 		"rate": "127",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": null
 		},
 		"baseExp": 147,
@@ -5528,8 +5142,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "linoone"
 		},
 		"baseExp": 56,
@@ -5549,8 +5161,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 147,
@@ -5570,8 +5181,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "silcoon|cascoon"
 		},
 		"baseExp": 56,
@@ -5591,8 +5200,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 7,
+			"level": 7,
 			"evolvesTo": "beautifly"
 		},
 		"baseExp": 72,
@@ -5612,8 +5220,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 10,
+			"level": 10,
 			"evolvesTo": null
 		},
 		"baseExp": 178,
@@ -5633,8 +5240,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 7,
+			"level": 7,
 			"evolvesTo": "dustox"
 		},
 		"baseExp": 72,
@@ -5654,8 +5260,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 10,
+			"level": 10,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -5675,8 +5280,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lombre"
 		},
 		"baseExp": 44,
@@ -5696,8 +5299,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "ludicolo"
 		},
 		"baseExp": 119,
@@ -5717,8 +5319,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 216,
@@ -5738,8 +5339,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "nuzleaf"
 		},
 		"baseExp": 44,
@@ -5759,8 +5358,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "shiftry"
 		},
 		"baseExp": 119,
@@ -5780,8 +5378,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "leafstone",
+			"item": "leafstone",
 			"evolvesTo": null
 		},
 		"baseExp": 216,
@@ -5801,8 +5398,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "swellow"
 		},
 		"baseExp": 54,
@@ -5822,8 +5417,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -5843,8 +5437,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pelipper"
 		},
 		"baseExp": 54,
@@ -5864,8 +5456,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 154,
@@ -5885,8 +5476,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kirlia"
 		},
 		"baseExp": 40,
@@ -5906,8 +5495,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": "gardevoir|gallade"
 		},
 		"baseExp": 97,
@@ -5927,8 +5515,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 233,
@@ -5948,8 +5535,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "masquerain"
 		},
 		"baseExp": 54,
@@ -5969,8 +5554,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -5990,8 +5574,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "breloom"
 		},
 		"baseExp": 59,
@@ -6011,8 +5593,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 23,
+			"level": 23,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -6032,8 +5613,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "vigoroth"
 		},
 		"baseExp": 56,
@@ -6053,8 +5632,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "slaking"
 		},
 		"baseExp": 154,
@@ -6074,8 +5652,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 252,
@@ -6095,8 +5672,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ninjask|shedinja"
 		},
 		"baseExp": 53,
@@ -6116,8 +5691,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 160,
@@ -6137,8 +5711,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
+			"special": "true",
 			"evolvesTo": null
 		},
 		"baseExp": 83,
@@ -6158,8 +5732,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "loudred"
 		},
 		"baseExp": 48,
@@ -6179,8 +5751,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": "exploud"
 		},
 		"baseExp": 126,
@@ -6200,8 +5771,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -6221,8 +5791,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "hariyama"
 		},
 		"baseExp": 47,
@@ -6242,8 +5810,7 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 24,
+			"level": 24,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -6263,8 +5830,6 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "marill"
 		},
 		"baseExp": 38,
@@ -6284,8 +5849,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "probopass"
 		},
 		"baseExp": 75,
@@ -6305,8 +5868,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "delcatty"
 		},
 		"baseExp": 52,
@@ -6326,8 +5887,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 140,
@@ -6347,8 +5907,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 133,
@@ -6368,8 +5926,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 133,
@@ -6389,8 +5945,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lairon"
 		},
 		"baseExp": 66,
@@ -6410,8 +5964,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": "aggron"
 		},
 		"baseExp": 151,
@@ -6431,8 +5984,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 42,
+			"level": 42,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -6452,8 +6004,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "medicham"
 		},
 		"baseExp": 56,
@@ -6473,8 +6023,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 144,
@@ -6494,8 +6043,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "manectric"
 		},
 		"baseExp": 59,
@@ -6515,8 +6062,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 26,
+			"level": 26,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -6536,8 +6082,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -6557,8 +6101,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -6578,8 +6120,6 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 151,
@@ -6599,8 +6139,6 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 151,
@@ -6620,8 +6158,8 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
+			"time": "day",
 			"evolvesTo": "roserade"
 		},
 		"baseExp": 140,
@@ -6641,8 +6179,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "swalot"
 		},
 		"baseExp": 60,
@@ -6662,8 +6198,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 26,
+			"level": 26,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -6683,8 +6218,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sharpedo"
 		},
 		"baseExp": 61,
@@ -6704,8 +6237,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -6725,8 +6257,6 @@
 		"rate": "125",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "wailord"
 		},
 		"baseExp": 80,
@@ -6746,8 +6276,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -6767,8 +6296,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "camerupt"
 		},
 		"baseExp": 61,
@@ -6788,8 +6315,7 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 33,
+			"level": 33,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -6809,8 +6335,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -6830,8 +6354,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "grumpig"
 		},
 		"baseExp": 66,
@@ -6851,8 +6373,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -6872,8 +6393,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 126,
@@ -6893,8 +6412,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "vibrava"
 		},
 		"baseExp": 58,
@@ -6914,8 +6431,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": "flygon"
 		},
 		"baseExp": 119,
@@ -6935,8 +6451,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 45,
+			"level": 45,
 			"evolvesTo": null
 		},
 		"baseExp": 234,
@@ -6956,8 +6471,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cacturne"
 		},
 		"baseExp": 67,
@@ -6977,8 +6490,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -6998,8 +6510,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "altaria"
 		},
 		"baseExp": 62,
@@ -7019,8 +6529,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -7040,8 +6549,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 160,
@@ -7061,8 +6568,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 160,
@@ -7082,8 +6587,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -7103,8 +6606,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -7124,8 +6625,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "whiscash"
 		},
 		"baseExp": 58,
@@ -7145,8 +6644,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 164,
@@ -7166,8 +6664,6 @@
 		"rate": "205",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "crawdaunt"
 		},
 		"baseExp": 62,
@@ -7187,8 +6683,7 @@
 		"rate": "155",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 164,
@@ -7208,8 +6703,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "claydol"
 		},
 		"baseExp": 60,
@@ -7229,8 +6722,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -7250,8 +6742,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cradily"
 		},
 		"baseExp": 71,
@@ -7271,8 +6761,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -7292,8 +6781,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "armaldo"
 		},
 		"baseExp": 71,
@@ -7313,8 +6800,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -7334,8 +6820,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "milotic"
 		},
 		"baseExp": 40,
@@ -7355,8 +6839,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "prismscale",
+			"hold": "prismscale",
 			"evolvesTo": null
 		},
 		"baseExp": 189,
@@ -7376,8 +6859,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 147,
@@ -7397,8 +6878,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 154,
@@ -7418,8 +6897,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "banette"
 		},
 		"baseExp": 59,
@@ -7439,8 +6916,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -7460,8 +6936,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dusclops"
 		},
 		"baseExp": 59,
@@ -7481,8 +6955,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": "dusknoir"
 		},
 		"baseExp": 159,
@@ -7502,8 +6975,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -7523,8 +6994,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": "night",
+			"happiness": 255,
+			"time": "night",
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -7544,8 +7015,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -7565,8 +7034,6 @@
 		"rate": "125",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "wobbuffet"
 		},
 		"baseExp": 52,
@@ -7586,8 +7053,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "glalie|froslass"
 		},
 		"baseExp": 60,
@@ -7607,8 +7072,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 42,
+			"level": 42,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -7628,8 +7092,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sealeo"
 		},
 		"baseExp": 58,
@@ -7649,8 +7111,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": "walrein"
 		},
 		"baseExp": 144,
@@ -7670,8 +7131,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 44,
+			"level": 44,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -7691,8 +7151,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "huntail|gorebyss"
 		},
 		"baseExp": 69,
@@ -7712,8 +7170,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "deepseatooth",
+			"hold": "deepseatooth",
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -7733,8 +7190,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "deepseascale",
+			"hold": "deepseascale",
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -7754,8 +7210,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -7775,8 +7229,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 116,
@@ -7796,8 +7248,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "shelgon"
 		},
 		"baseExp": 60,
@@ -7817,8 +7267,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": "salamence"
 		},
 		"baseExp": 147,
@@ -7838,8 +7287,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 50,
+			"level": 50,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -7859,8 +7307,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "metang"
 		},
 		"baseExp": 60,
@@ -7880,8 +7326,7 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": "metagross"
 		},
 		"baseExp": 147,
@@ -7901,8 +7346,7 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 45,
+			"level": 45,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -7922,8 +7366,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -7943,8 +7385,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -7964,8 +7404,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -7985,8 +7423,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -8006,8 +7442,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -8027,8 +7461,6 @@
 		"rate": "3*",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 302,
@@ -8048,8 +7480,6 @@
 		"rate": "3*",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 302,
@@ -8069,8 +7499,6 @@
 		"rate": "45*",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -8090,8 +7518,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -8111,8 +7537,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -8132,8 +7556,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "grotle"
 		},
 		"baseExp": 64,
@@ -8153,8 +7575,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "torterra"
 		},
 		"baseExp": 142,
@@ -8174,8 +7595,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 236,
@@ -8195,8 +7615,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "monferno"
 		},
 		"baseExp": 62,
@@ -8216,8 +7634,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "infernape"
 		},
 		"baseExp": 142,
@@ -8237,8 +7654,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 240,
@@ -8258,8 +7674,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "prinplup"
 		},
 		"baseExp": 63,
@@ -8279,8 +7693,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "empoleon"
 		},
 		"baseExp": 142,
@@ -8300,8 +7713,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -8321,8 +7733,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "staravia"
 		},
 		"baseExp": 49,
@@ -8342,8 +7752,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "staraptor"
 		},
 		"baseExp": 119,
@@ -8363,8 +7772,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 218,
@@ -8384,8 +7792,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bibarel"
 		},
 		"baseExp": 50,
@@ -8405,8 +7811,7 @@
 		"rate": "127",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 15,
+			"level": 15,
 			"evolvesTo": null
 		},
 		"baseExp": 144,
@@ -8426,8 +7831,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "kricketune"
 		},
 		"baseExp": 39,
@@ -8447,8 +7850,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 10,
+			"level": 10,
 			"evolvesTo": null
 		},
 		"baseExp": 134,
@@ -8468,8 +7870,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "luxio"
 		},
 		"baseExp": 53,
@@ -8489,8 +7889,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 15,
+			"level": 15,
 			"evolvesTo": "luxray"
 		},
 		"baseExp": 127,
@@ -8510,8 +7909,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 235,
@@ -8531,8 +7929,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "roselia"
 		},
 		"baseExp": 56,
@@ -8552,8 +7948,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "shinystone",
+			"item": "shinystone",
 			"evolvesTo": null
 		},
 		"baseExp": 232,
@@ -8573,8 +7968,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "rampardos"
 		},
 		"baseExp": 70,
@@ -8594,8 +7987,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -8615,8 +8007,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bastiodon"
 		},
 		"baseExp": 70,
@@ -8636,8 +8026,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -8657,8 +8046,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "wormadam|mothim"
 		},
 		"baseExp": 45,
@@ -8678,8 +8065,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "numberGender",
-			"exact": "20|female",
+			"level": 20,
+			"gender": "f",
 			"evolvesTo": null
 		},
 		"baseExp": 148,
@@ -8699,8 +8086,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "numberGender",
-			"exact": "20|male",
+			"level": 20,
+			"gender": "m",
 			"evolvesTo": null
 		},
 		"baseExp": 148,
@@ -8720,8 +8107,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "vespiquen"
 		},
 		"baseExp": 49,
@@ -8741,8 +8126,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "numberGender",
-			"exact": "21|female",
+			"level": 21,
+			"gender": "f",
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -8762,8 +8147,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -8783,8 +8166,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "floatzel"
 		},
 		"baseExp": 66,
@@ -8804,8 +8185,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 26,
+			"level": 26,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -8825,8 +8205,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cherrim"
 		},
 		"baseExp": 55,
@@ -8846,8 +8224,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -8867,8 +8244,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gastrodon"
 		},
 		"baseExp": 65,
@@ -8888,8 +8263,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -8909,8 +8283,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "doublehit",
+			"move": "doublehit",
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -8930,8 +8303,6 @@
 		"rate": "125",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dribflim"
 		},
 		"baseExp": 70,
@@ -8951,8 +8322,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 174,
@@ -8972,8 +8342,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lopunny"
 		},
 		"baseExp": 70,
@@ -8993,8 +8361,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -9014,8 +8381,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "duskstone",
+			"item": "duskstone",
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -9035,8 +8401,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "duskstone",
+			"item": "duskstone",
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -9056,8 +8421,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "purugly"
 		},
 		"baseExp": 62,
@@ -9077,8 +8440,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": null
 		},
 		"baseExp": 158,
@@ -9098,8 +8460,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "chimecho"
 		},
 		"baseExp": 57,
@@ -9119,8 +8479,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "skuntank"
 		},
 		"baseExp": 66,
@@ -9140,8 +8498,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -9161,8 +8518,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bronzong"
 		},
 		"baseExp": 60,
@@ -9182,8 +8537,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 33,
+			"level": 33,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -9203,8 +8557,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sudowoodo"
 		},
 		"baseExp": 58,
@@ -9224,8 +8576,6 @@
 		"rate": "145",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mrmime"
 		},
 		"baseExp": 62,
@@ -9245,8 +8595,6 @@
 		"rate": "130",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "chansey"
 		},
 		"baseExp": 110,
@@ -9266,8 +8614,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 144,
@@ -9287,8 +8633,6 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -9308,8 +8652,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gabite"
 		},
 		"baseExp": 60,
@@ -9329,8 +8671,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 24,
+			"level": 24,
 			"evolvesTo": "garchomp"
 		},
 		"baseExp": 144,
@@ -9350,8 +8691,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 48,
+			"level": 48,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -9371,8 +8711,6 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "snorlax"
 		},
 		"baseExp": 78,
@@ -9392,8 +8730,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lucario"
 		},
 		"baseExp": 57,
@@ -9413,8 +8749,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": "day",
+			"happiness": 255,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -9434,8 +8770,6 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "hippowdon"
 		},
 		"baseExp": 66,
@@ -9455,8 +8789,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -9476,8 +8809,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "drapion"
 		},
 		"baseExp": 66,
@@ -9497,8 +8828,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -9518,8 +8848,6 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "toxicroak"
 		},
 		"baseExp": 60,
@@ -9539,8 +8867,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -9560,8 +8887,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -9581,8 +8906,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lumineon"
 		},
 		"baseExp": 66,
@@ -9602,8 +8925,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 31,
+			"level": 31,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -9623,8 +8945,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mantine"
 		},
 		"baseExp": 69,
@@ -9644,8 +8964,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "abomasnow"
 		},
 		"baseExp": 67,
@@ -9665,8 +8983,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -9686,8 +9003,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeItem",
-			"exact": "night|razorclaw",
+			"hold": "razorclaw",
+			"time": "night",
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -9707,8 +9024,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "electric",
+			"location": "electric",
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -9728,8 +9044,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "rollout",
+			"move": "rollout",
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -9749,8 +9064,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "protector",
+			"hold": "protector",
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -9770,8 +9084,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "ancientpower",
+			"move": "ancientpower",
 			"evolvesTo": null
 		},
 		"baseExp": 187,
@@ -9791,8 +9104,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "electirizer",
+			"hold": "electirizer",
 			"evolvesTo": null
 		},
 		"baseExp": 243,
@@ -9812,8 +9124,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "magmarizer",
+			"hold": "magmarizer",
 			"evolvesTo": null
 		},
 		"baseExp": 243,
@@ -9833,8 +9144,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "shinystone",
+			"item": "shinystone",
 			"evolvesTo": null
 		},
 		"baseExp": 245,
@@ -9854,8 +9164,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "ancientpower",
+			"move": "ancientpower",
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -9875,8 +9184,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "moss",
+			"location": "mossy",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -9896,8 +9204,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "ice",
+			"location": "icy",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -9917,8 +9224,8 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeItem",
-			"exact": "night|razorfang",
+			"hold": "razorfang",
+			"time": "night",
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -9938,8 +9245,7 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "level",
-			"type": "move",
-			"exact": "ancientpower",
+			"move": "ancientpower",
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -9959,8 +9265,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "dubiousdisc",
+			"hold": "dubiousdisc",
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -9980,8 +9285,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": null,
-			"exact": "dawnstone",
+			"gender": "m",
+			"item": "dawnstone",
 			"evolvesTo": null
 		},
 		"baseExp": 233,
@@ -10001,8 +9306,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "electric",
+			"location": "electric",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -10022,8 +9326,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "reapercloth",
+			"hold": "reapercloth",
 			"evolvesTo": null
 		},
 		"baseExp": 236,
@@ -10043,8 +9346,8 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": null,
-			"exact": "dawnstone",
+			"gender": "f",
+			"item": "dawnstone",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -10064,8 +9367,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 154,
@@ -10085,8 +9386,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -10106,8 +9405,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -10127,8 +9424,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -10148,8 +9443,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -10169,8 +9462,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -10190,8 +9481,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10211,8 +9500,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 302,
@@ -10232,8 +9519,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -10253,8 +9538,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10274,8 +9557,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 216,
@@ -10295,8 +9576,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10316,8 +9595,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10337,8 +9614,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10358,8 +9633,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 324,
@@ -10379,8 +9652,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -10400,8 +9671,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "servine"
 		},
 		"baseExp": 62,
@@ -10421,8 +9690,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "serperior"
 		},
 		"baseExp": 145,
@@ -10442,8 +9710,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 238,
@@ -10463,8 +9730,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pignite"
 		},
 		"baseExp": 62,
@@ -10484,8 +9749,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "emboar"
 		},
 		"baseExp": 146,
@@ -10505,8 +9769,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 238,
@@ -10526,8 +9789,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dewott"
 		},
 		"baseExp": 62,
@@ -10547,8 +9808,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "samurott"
 		},
 		"baseExp": 145,
@@ -10568,8 +9828,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 238,
@@ -10589,8 +9848,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "watchog"
 		},
 		"baseExp": 51,
@@ -10610,8 +9867,7 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 147,
@@ -10631,8 +9887,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "herdier"
 		},
 		"baseExp": 55,
@@ -10652,8 +9906,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "stoutland"
 		},
 		"baseExp": 130,
@@ -10673,8 +9926,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -10694,8 +9946,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "liepard"
 		},
 		"baseExp": 56,
@@ -10715,8 +9965,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 156,
@@ -10736,8 +9985,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "simisage"
 		},
 		"baseExp": 63,
@@ -10757,8 +10004,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "leafstone",
+			"item": "leafstone",
 			"evolvesTo": null
 		},
 		"baseExp": 174,
@@ -10778,8 +10024,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "simisear"
 		},
 		"baseExp": 63,
@@ -10799,8 +10043,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "firestone",
+			"item": "firestone",
 			"evolvesTo": null
 		},
 		"baseExp": 174,
@@ -10820,8 +10063,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "simipour"
 		},
 		"baseExp": 63,
@@ -10841,8 +10082,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "waterstone",
+			"item": "waterstone",
 			"evolvesTo": null
 		},
 		"baseExp": 174,
@@ -10862,8 +10102,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "musharna"
 		},
 		"baseExp": 58,
@@ -10883,8 +10121,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "moonstone",
+			"item": "moonstone",
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -10904,8 +10141,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "tranquill"
 		},
 		"baseExp": 53,
@@ -10925,8 +10160,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 21,
+			"level": 21,
 			"evolvesTo": "unfezant"
 		},
 		"baseExp": 125,
@@ -10946,8 +10180,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 220,
@@ -10967,8 +10200,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "zebstrika"
 		},
 		"baseExp": 59,
@@ -10988,8 +10219,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 27,
+			"level": 27,
 			"evolvesTo": null
 		},
 		"baseExp": 174,
@@ -11009,8 +10239,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "boldore"
 		},
 		"baseExp": 56,
@@ -11030,8 +10258,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "gigalith"
 		},
 		"baseExp": 137,
@@ -11051,8 +10278,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 232,
@@ -11072,8 +10297,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "swoobat"
 		},
 		"baseExp": 65,
@@ -11093,8 +10316,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 149,
@@ -11114,8 +10336,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "excadrill"
 		},
 		"baseExp": 66,
@@ -11135,8 +10355,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 31,
+			"level": 31,
 			"evolvesTo": null
 		},
 		"baseExp": 178,
@@ -11156,8 +10375,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 390,
@@ -11177,8 +10394,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gurdurr"
 		},
 		"baseExp": 61,
@@ -11198,8 +10413,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "conkeldurr"
 		},
 		"baseExp": 142,
@@ -11219,8 +10433,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 227,
@@ -11240,8 +10452,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "palpitoad"
 		},
 		"baseExp": 59,
@@ -11261,8 +10471,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "seismitoad"
 		},
 		"baseExp": 134,
@@ -11282,8 +10491,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 229,
@@ -11303,8 +10511,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -11324,8 +10530,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -11345,8 +10549,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "swadloon"
 		},
 		"baseExp": 62,
@@ -11366,8 +10568,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": "leavanny"
 		},
 		"baseExp": 133,
@@ -11387,8 +10588,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -11408,8 +10608,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "whirlipede"
 		},
 		"baseExp": 52,
@@ -11429,8 +10627,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": "scolipede"
 		},
 		"baseExp": 126,
@@ -11450,8 +10647,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 218,
@@ -11471,8 +10667,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "whimsicott"
 		},
 		"baseExp": 56,
@@ -11492,8 +10686,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "sunstone",
+			"item": "sunstone",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -11513,8 +10706,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lilligant"
 		},
 		"baseExp": 56,
@@ -11534,8 +10725,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "sunstone",
+			"item": "sunstone",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -11555,8 +10745,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -11576,8 +10764,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "krokorok"
 		},
 		"baseExp": 58,
@@ -11597,8 +10783,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 29,
+			"level": 29,
 			"evolvesTo": "krookodile"
 		},
 		"baseExp": 123,
@@ -11618,8 +10803,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 234,
@@ -11639,8 +10823,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "darmanitan"
 		},
 		"baseExp": 63,
@@ -11660,8 +10842,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -11681,8 +10862,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 161,
@@ -11702,8 +10881,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "crustle"
 		},
 		"baseExp": 65,
@@ -11723,8 +10900,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -11744,8 +10920,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "scrafty"
 		},
 		"baseExp": 70,
@@ -11765,8 +10939,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 39,
+			"level": 39,
 			"evolvesTo": null
 		},
 		"baseExp": 171,
@@ -11786,8 +10959,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -11807,8 +10978,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cofagrigus"
 		},
 		"baseExp": 61,
@@ -11828,8 +10997,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -11849,8 +11017,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "carracosta"
 		},
 		"baseExp": 71,
@@ -11870,8 +11036,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -11891,8 +11056,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "archeops"
 		},
 		"baseExp": 71,
@@ -11912,8 +11075,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -11933,8 +11095,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "garbodor"
 		},
 		"baseExp": 66,
@@ -11954,8 +11114,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -11975,8 +11134,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "zoroark"
 		},
 		"baseExp": 66,
@@ -11996,8 +11153,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -12017,8 +11173,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cinccino"
 		},
 		"baseExp": 60,
@@ -12038,8 +11192,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "shinystone",
+			"item": "shinystone",
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -12059,8 +11212,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gothorita"
 		},
 		"baseExp": 58,
@@ -12080,8 +11231,7 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": "gothitelle"
 		},
 		"baseExp": 137,
@@ -12101,8 +11251,7 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 41,
+			"level": 41,
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -12122,8 +11271,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "duosion"
 		},
 		"baseExp": 58,
@@ -12143,8 +11290,7 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": "reuniclus"
 		},
 		"baseExp": 130,
@@ -12164,8 +11310,7 @@
 		"rate": "50",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 41,
+			"level": 41,
 			"evolvesTo": null
 		},
 		"baseExp": 221,
@@ -12185,8 +11330,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "swanna"
 		},
 		"baseExp": 61,
@@ -12206,8 +11349,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -12227,8 +11369,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "vanillish"
 		},
 		"baseExp": 61,
@@ -12248,8 +11388,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": "vanilluxe"
 		},
 		"baseExp": 138,
@@ -12269,8 +11408,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 47,
+			"level": 47,
 			"evolvesTo": null
 		},
 		"baseExp": 241,
@@ -12290,8 +11428,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sawsbuck"
 		},
 		"baseExp": 67,
@@ -12311,8 +11447,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -12332,8 +11467,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 150,
@@ -12353,8 +11486,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "escavalier"
 		},
 		"baseExp": 63,
@@ -12374,8 +11505,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "trade",
-			"type": null,
-			"exact": null,
+			"partner": "shelmet",
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -12395,8 +11525,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "amoonguss"
 		},
 		"baseExp": 59,
@@ -12416,8 +11544,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 39,
+			"level": 39,
 			"evolvesTo": null
 		},
 		"baseExp": 162,
@@ -12437,8 +11564,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "jellicent"
 		},
 		"baseExp": 67,
@@ -12458,8 +11583,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -12479,8 +11603,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -12500,8 +11622,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "galvantula"
 		},
 		"baseExp": 64,
@@ -12521,8 +11641,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -12542,8 +11661,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ferrothorn"
 		},
 		"baseExp": 61,
@@ -12563,8 +11680,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": null
 		},
 		"baseExp": 171,
@@ -12584,8 +11700,6 @@
 		"rate": "130",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "klang"
 		},
 		"baseExp": 60,
@@ -12605,8 +11719,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": "klinklang"
 		},
 		"baseExp": 154,
@@ -12626,8 +11739,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 49,
+			"level": 49,
 			"evolvesTo": null
 		},
 		"baseExp": 234,
@@ -12647,8 +11759,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "eelektrik"
 		},
 		"baseExp": 55,
@@ -12668,8 +11778,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 39,
+			"level": 39,
 			"evolvesTo": "eelektross"
 		},
 		"baseExp": 142,
@@ -12689,8 +11798,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "thunderstone",
+			"item": "thunderstone",
 			"evolvesTo": null
 		},
 		"baseExp": 232,
@@ -12710,8 +11818,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "beheeyem"
 		},
 		"baseExp": 67,
@@ -12731,8 +11837,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 42,
+			"level": 42,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -12752,8 +11857,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lampent"
 		},
 		"baseExp": 55,
@@ -12773,8 +11876,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 41,
+			"level": 41,
 			"evolvesTo": "chandelure"
 		},
 		"baseExp": 130,
@@ -12794,8 +11896,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "duskstone",
+			"item": "duskstone",
 			"evolvesTo": null
 		},
 		"baseExp": 234,
@@ -12815,8 +11916,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "fraxure"
 		},
 		"baseExp": 64,
@@ -12836,8 +11935,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": "haxorus"
 		},
 		"baseExp": 144,
@@ -12857,8 +11955,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 48,
+			"level": 48,
 			"evolvesTo": null
 		},
 		"baseExp": 243,
@@ -12878,8 +11975,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "beartic"
 		},
 		"baseExp": 61,
@@ -12899,8 +11994,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -12920,8 +12014,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -12941,8 +12033,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "accelgor"
 		},
 		"baseExp": 61,
@@ -12962,8 +12052,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "trade",
-			"type": null,
-			"exact": null,
+			"partner": "karrablast",
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -12983,8 +12072,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -13004,8 +12091,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mienshao"
 		},
 		"baseExp": 70,
@@ -13025,8 +12110,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 50,
+			"level": 50,
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -13046,8 +12130,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -13067,8 +12149,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "golurk"
 		},
 		"baseExp": 61,
@@ -13088,8 +12168,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 43,
+			"level": 43,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -13109,8 +12188,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bisharp"
 		},
 		"baseExp": 68,
@@ -13130,8 +12207,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 52,
+			"level": 52,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -13151,8 +12227,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -13172,8 +12246,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "braviary"
 		},
 		"baseExp": 70,
@@ -13193,8 +12265,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 54,
+			"level": 54,
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -13214,8 +12285,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mandibuzz"
 		},
 		"baseExp": 74,
@@ -13235,8 +12304,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 54,
+			"level": 54,
 			"evolvesTo": null
 		},
 		"baseExp": 179,
@@ -13256,8 +12324,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -13277,8 +12343,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -13298,8 +12362,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "zweilous"
 		},
 		"baseExp": 60,
@@ -13319,8 +12381,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 50,
+			"level": 50,
 			"evolvesTo": "hydreigon"
 		},
 		"baseExp": 147,
@@ -13340,8 +12401,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 64,
+			"level": 64,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -13361,8 +12421,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "volcarona"
 		},
 		"baseExp": 72,
@@ -13382,8 +12440,7 @@
 		"rate": "15",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 59,
+			"level": 59,
 			"evolvesTo": null
 		},
 		"baseExp": 248,
@@ -13403,8 +12460,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13424,8 +12479,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13445,8 +12498,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13466,8 +12517,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13487,8 +12536,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13508,8 +12555,6 @@
 		"rate": "3*",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -13529,8 +12574,6 @@
 		"rate": "3*",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -13550,8 +12593,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -13571,8 +12612,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 297,
@@ -13592,8 +12631,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 261,
@@ -13613,8 +12650,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -13634,8 +12669,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -13655,8 +12688,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "quilladin"
 		},
 		"baseExp": 63,
@@ -13676,8 +12707,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "chesnaught"
 		},
 		"baseExp": 142,
@@ -13697,8 +12727,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -13718,8 +12747,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "brainxen"
 		},
 		"baseExp": 61,
@@ -13739,8 +12766,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "delphox"
 		},
 		"baseExp": 143,
@@ -13760,8 +12786,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 240,
@@ -13781,8 +12806,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "frogadier"
 		},
 		"baseExp": 63,
@@ -13802,8 +12825,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 16,
+			"level": 16,
 			"evolvesTo": "greninja"
 		},
 		"baseExp": 142,
@@ -13823,8 +12845,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 36,
+			"level": 36,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -13844,8 +12865,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "diggersby"
 		},
 		"baseExp": 47,
@@ -13865,8 +12884,7 @@
 		"rate": "127",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": null
 		},
 		"baseExp": 148,
@@ -13886,8 +12904,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "fletchinder"
 		},
 		"baseExp": 56,
@@ -13907,8 +12923,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "talonflame"
 		},
 		"baseExp": 134,
@@ -13928,8 +12943,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -13949,8 +12963,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "spewpa"
 		},
 		"baseExp": 40,
@@ -13970,8 +12982,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 9,
+			"level": 9,
 			"evolvesTo": "vivillon"
 		},
 		"baseExp": 75,
@@ -13991,8 +13002,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 12,
+			"level": 12,
 			"evolvesTo": null
 		},
 		"baseExp": 185,
@@ -14012,8 +13022,6 @@
 		"rate": "220",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pyroar"
 		},
 		"baseExp": 74,
@@ -14033,8 +13041,7 @@
 		"rate": "65",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -14054,8 +13061,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "floette"
 		},
 		"baseExp": 61,
@@ -14075,8 +13080,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": "19",
+			"level": 19,
 			"evolvesTo": "florges"
 		},
 		"baseExp": 130,
@@ -14096,8 +13100,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "shinystone",
+			"item": "shinystone",
 			"evolvesTo": null
 		},
 		"baseExp": 248,
@@ -14117,8 +13120,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gogoat"
 		},
 		"baseExp": 70,
@@ -14138,8 +13139,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 186,
@@ -14159,8 +13159,6 @@
 		"rate": "220",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "pangoro"
 		},
 		"baseExp": 70,
@@ -14180,8 +13178,7 @@
 		"rate": "65",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": 32,
+			"level": 32,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -14201,8 +13198,6 @@
 		"rate": "160",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -14222,8 +13217,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "meowstic|meowsticf"
 		},
 		"baseExp": 71,
@@ -14243,8 +13236,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": null
 		},
 		"baseExp": 163,
@@ -14264,8 +13256,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "doublade"
 		},
 		"baseExp": 65,
@@ -14285,8 +13275,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": "aegislash"
 		},
 		"baseExp": 157,
@@ -14306,8 +13295,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "duskstone",
+			"item": "duskstone",
 			"evolvesTo": null
 		},
 		"baseExp": 234,
@@ -14327,8 +13315,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "aromatisse"
 		},
 		"baseExp": 68,
@@ -14348,8 +13334,7 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "sachet",
+			"hold": "sachet",
 			"evolvesTo": null
 		},
 		"baseExp": 162,
@@ -14369,8 +13354,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "slurpuff"
 		},
 		"baseExp": 68,
@@ -14390,8 +13373,7 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": "whippeddream",
+			"hold": "whippeddream",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -14411,8 +13393,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "malamar"
 		},
 		"baseExp": 58,
@@ -14432,8 +13412,7 @@
 		"rate": "80",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 169,
@@ -14453,8 +13432,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "barbaracle"
 		},
 		"baseExp": 61,
@@ -14474,8 +13451,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 39,
+			"level": 39,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -14495,8 +13471,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dragalge"
 		},
 		"baseExp": 64,
@@ -14516,8 +13490,7 @@
 		"rate": "55",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 48,
+			"level": 48,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -14537,8 +13510,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "clawitzer"
 		},
 		"baseExp": 66,
@@ -14558,8 +13529,7 @@
 		"rate": "55",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 100,
@@ -14579,8 +13549,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "heliolisk"
 		},
 		"baseExp": 58,
@@ -14600,8 +13568,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "sunstone",
+			"item": "sunstone",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -14621,8 +13588,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "tyrantrum"
 		},
 		"baseExp": 72,
@@ -14642,8 +13607,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeLevel",
-			"exact": "day|39",
+			"level": 39,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 182,
@@ -14663,8 +13628,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "aurorus"
 		},
 		"baseExp": 72,
@@ -14684,8 +13647,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeLevel",
-			"exact": "night|39",
+			"level": 39,
+			"time": "night",
 			"evolvesTo": null
 		},
 		"baseExp": 104,
@@ -14705,8 +13668,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": null,
+			"moveType": "fairy",
 			"evolvesTo": null
 		},
 		"baseExp": 184,
@@ -14726,8 +13688,6 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -14747,8 +13707,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 151,
@@ -14768,8 +13726,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 100,
@@ -14789,8 +13745,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sliggoo"
 		},
 		"baseExp": 60,
@@ -14810,8 +13764,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 40,
+			"level": 40,
 			"evolvesTo": "goodra"
 		},
 		"baseExp": 158,
@@ -14831,8 +13784,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": null,
-			"exact": 50,
+			"level": 50,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -14852,8 +13804,6 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 165,
@@ -14873,8 +13823,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "trevenant"
 		},
 		"baseExp": 62,
@@ -14894,8 +13842,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -14915,8 +13861,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gourgeist"
 		},
 		"baseExp": 67,
@@ -14936,8 +13880,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "trade",
-			"type": "trade",
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -14957,8 +13899,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "avalugg"
 		},
 		"baseExp": 61,
@@ -14978,8 +13918,7 @@
 		"rate": "55",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 37,
+			"level": 37,
 			"evolvesTo": null
 		},
 		"baseExp": 180,
@@ -14999,8 +13938,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "noivern"
 		},
 		"baseExp": 49,
@@ -15020,8 +13957,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 48,
+			"level": 48,
 			"evolvesTo": null
 		},
 		"baseExp": 187,
@@ -15041,8 +13977,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -15062,8 +13996,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 306,
@@ -15083,8 +14015,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -15104,8 +14034,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -15125,8 +14053,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -15146,8 +14072,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -15167,8 +14091,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "dartrix"
 		},
 		"baseExp": 64,
@@ -15188,8 +14110,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "decidueye"
 		},
 		"baseExp": 147,
@@ -15209,8 +14130,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -15230,8 +14150,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "torracat"
 		},
 		"baseExp": 64,
@@ -15251,8 +14169,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "incineroar"
 		},
 		"baseExp": 147,
@@ -15272,8 +14189,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -15293,8 +14209,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "brionne"
 		},
 		"baseExp": 64,
@@ -15314,8 +14228,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 17,
+			"level": 17,
 			"evolvesTo": "primarina"
 		},
 		"baseExp": 147,
@@ -15335,8 +14248,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 34,
+			"level": 34,
 			"evolvesTo": null
 		},
 		"baseExp": 239,
@@ -15356,8 +14268,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "trumbeak"
 		},
 		"baseExp": 53,
@@ -15377,8 +14287,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 14,
+			"level": 14,
 			"evolvesTo": "toucannon"
 		},
 		"baseExp": 124,
@@ -15398,8 +14307,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 28,
+			"level": 28,
 			"evolvesTo": null
 		},
 		"baseExp": 218,
@@ -15419,8 +14327,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "gumshoos"
 		},
 		"baseExp": 51,
@@ -15440,8 +14346,8 @@
 		"rate": "127",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 146,
@@ -15461,8 +14367,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "charjabug"
 		},
 		"baseExp": 60,
@@ -15482,8 +14386,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 20,
+			"level": 20,
 			"evolvesTo": "vikavolt"
 		},
 		"baseExp": 140,
@@ -15503,8 +14406,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "electric",
+			"location": "electric",
 			"evolvesTo": null
 		},
 		"baseExp": 225,
@@ -15524,8 +14426,6 @@
 		"rate": "225",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "crabominable"
 		},
 		"baseExp": 68,
@@ -15545,8 +14445,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "area",
-			"exact": "mountain",
+			"location": "snow",
 			"evolvesTo": null
 		},
 		"baseExp": 167,
@@ -15566,8 +14465,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 167,
@@ -15587,8 +14484,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ribombee"
 		},
 		"baseExp": 61,
@@ -15608,8 +14503,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25, 
 			"evolvesTo": null
 		},
 		"baseExp": 162,
@@ -15629,8 +14523,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lycanroc|lycanrocmidnight"
 		},
 		"baseExp": 56,
@@ -15650,8 +14542,8 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeNumber",
-			"exact": "null|25",
+			"level": 25,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -15671,8 +14563,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 61,
@@ -15692,8 +14582,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "toxapex"
 		},
 		"baseExp": 61,
@@ -15713,8 +14601,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 38,
+			"level": 38,
 			"evolvesTo": null
 		},
 		"baseExp": 173,
@@ -15734,8 +14621,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mudsdale"
 		},
 		"baseExp": 77,
@@ -15755,8 +14640,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -15776,8 +14660,6 @@
 		"rate": "200",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "araquanid"
 		},
 		"baseExp": 54,
@@ -15797,8 +14679,7 @@
 		"rate": "100",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 22,
+			"level": 22,
 			"evolvesTo": null
 		},
 		"baseExp": 159,
@@ -15818,8 +14699,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "lurantis"
 		},
 		"baseExp": 50,
@@ -15839,8 +14718,8 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeNumber",
-			"exact": "day|33",
+			"level": 34,
+			"time": "day",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -15860,8 +14739,6 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "shiinotic"
 		},
 		"baseExp": 57,
@@ -15881,8 +14758,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 24,
+			"level": 24,
 			"evolvesTo": null
 		},
 		"baseExp": 142,
@@ -15902,8 +14778,6 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "salazzle"
 		},
 		"baseExp": 64,
@@ -15923,8 +14797,8 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "numberGender",
-			"exact": "33|female",
+			"level": 33,
+			"gender": "f",
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -15944,8 +14818,6 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "bewear"
 		},
 		"baseExp": 68,
@@ -15965,8 +14837,7 @@
 		"rate": "70",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 27,
+			"level": 27,
 			"evolvesTo": null
 		},
 		"baseExp": 175,
@@ -15986,8 +14857,6 @@
 		"rate": "235",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "steenee"
 		},
 		"baseExp": 42,
@@ -16007,8 +14876,7 @@
 		"rate": "120",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 18,
+			"level": 18,
 			"evolvesTo": "tsareena"
 		},
 		"baseExp": 102,
@@ -16028,8 +14896,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "numberMove",
-			"exact": "29|stomp",
+			"move": "stomp", 
 			"evolvesTo": null
 		},
 		"baseExp": 230,
@@ -16049,8 +14916,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -16070,8 +14935,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -16091,8 +14954,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 172,
@@ -16112,8 +14973,6 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "golisopod"
 		},
 		"baseExp": 46,
@@ -16133,8 +14992,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 30,
+			"level": 30,
 			"evolvesTo": null
 		},
 		"baseExp": 186,
@@ -16154,8 +15012,6 @@
 		"rate": "140",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "palossand"
 		},
 		"baseExp": 64,
@@ -16175,8 +15031,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 42,
+			"level": 42, 
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -16196,8 +15051,6 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 144,
@@ -16217,8 +15070,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "silvally"
 		},
 		"baseExp": 107,
@@ -16238,8 +15089,7 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": "level",
-			"type": "friendship",
-			"exact": null,
+			"happiness": 255,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16259,8 +15109,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 154,
@@ -16280,8 +15128,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 168,
@@ -16301,8 +15147,6 @@
 		"rate": "70",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -16322,8 +15166,6 @@
 		"rate": "180",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 152,
@@ -16343,8 +15185,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 167,
@@ -16364,8 +15204,6 @@
 		"rate": "80",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 166,
@@ -16385,8 +15223,6 @@
 		"rate": "70",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 170,
@@ -16406,8 +15242,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 181,
@@ -16427,8 +15261,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "hakamoo"
 		},
 		"baseExp": 60,
@@ -16448,8 +15280,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 35,
+			"level": 35,
 			"evolvesTo": "kommoo"
 		},
 		"baseExp": 147,
@@ -16469,8 +15300,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 45,
+			"level": 45,
 			"evolvesTo": null
 		},
 		"baseExp": 270,
@@ -16490,8 +15320,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16511,8 +15339,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16532,8 +15358,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16553,8 +15377,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16574,8 +15396,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "cosmoem"
 		},
 		"baseExp": 40,
@@ -16595,8 +15415,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 43,
+			"level": 43,
 			"evolvesTo": "solgaleo|lunala"
 		},
 		"baseExp": 80,
@@ -16616,8 +15435,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeNumber",
-			"exact": "day|53",
+			"level": 53,
 			"evolvesTo": null
 		},
 		"baseExp": 136,
@@ -16637,8 +15455,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeNumber",
-			"exact": "night|53",
+			"level": 53,
 			"evolvesTo": null
 		},
 		"baseExp": 136,
@@ -16658,8 +15475,6 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16679,8 +15494,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16700,8 +15513,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16721,8 +15532,6 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16742,8 +15551,6 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16763,8 +15570,6 @@
 		"rate": "255",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16784,8 +15589,6 @@
 		"rate": "15",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 114,
@@ -16805,8 +15608,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 120,
@@ -16826,8 +15627,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 120,
@@ -16847,8 +15646,6 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": null
 		},
 		"baseExp": 120,
@@ -16897,8 +15694,6 @@
 		"inherit": "rattata",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "raticatealola"
 		}
 	},
@@ -16907,8 +15702,8 @@
 		"inherit": "raticate",
 		"evolution": {
 			"trigger": "level",
-			"type": "timeNumber",
-			"exact": "night|20",
+			"level": 20,
+			"time": "night",
 			"evolvesTo": null
 		}
 	},
@@ -16942,11 +15737,9 @@
 	},
 	"sandshrewalola": {
 		"id": "sandshrewalola",
-		"inherit": "sandshew",
+		"inherit": "sandshrew",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "sandslashalola"
 		}
 	},
@@ -16955,8 +15748,7 @@
 		"inherit": "sandslash",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "icestone",
+			"item": "icestone",
 			"evolvesTo": null
 		}
 	},
@@ -16965,8 +15757,6 @@
 		"inherit": "vulpix",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "ninetalesalola"
 		}
 	},
@@ -16975,8 +15765,7 @@
 		"inherit": "ninetales",
 		"evolution": {
 			"trigger": "item",
-			"type": "stone",
-			"exact": "icestone",
+			"item": "icestone",
 			"evolvesTo": null
 		},
 		"baseExp": 177,
@@ -16994,9 +15783,7 @@
 		"inherit": "diglett",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
-			"evolvesTo": "dugtrio"
+			"evolvesTo": "dugtrioalola"
 		}
 	},
 	"dugtrioalola": {
@@ -17017,14 +15804,16 @@
 		"inherit": "meowth",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "persianalola"
 		}
 	},
 	"persianalola": {
 		"id": "persianalola",
-		"inherit": "persian"
+		"inherit": "persian",
+		"evolution": {
+		    "trigger": "level",
+		    "happiness": 255
+		}
 	},
 	"alakazammega": {
 		"id": "alakazammega",
@@ -17036,8 +15825,6 @@
 		"inherit": "geodude",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "graveleralola"
 		}
 	},
@@ -17046,8 +15833,7 @@
 		"inherit": "graveler",
 		"evolution": {
 			"trigger": "level",
-			"type": "number",
-			"exact": 25,
+			"level": 25,
 			"evolvesTo": "golemalola"
 		}
 	},
@@ -17065,8 +15851,6 @@
 		"inherit": "grimer",
 		"evolution": {
 			"trigger": null,
-			"type": null,
-			"exact": null,
 			"evolvesTo": "mukalola"
 		}
 	},
@@ -17085,7 +15869,13 @@
 	},
 	"marowakalola": {
 		"id": "marowakalola",
-		"inherit": "marowak"
+		"inherit": "marowak",
+		"evolution": {
+		    "trigger": "level",
+		    "level": 28,
+		    "time": "night",
+		    "evolvesTo": null
+		}
 	},
 	"kangaskhanmega": {
 		"id": "kangaskhanmega",
@@ -17650,15 +16440,27 @@
 	},
 	"deerlingsummer": {
 		"id": "deerlingsummer",
-		"inherit": "deerling"
+		"inherit": "deerling",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "sawabucksummer"
+		}
 	},
 	"deerlingautumn": {
 		"id": "deerlingautumn",
-		"inherit": "deerling"
+		"inherit": "deerling",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "sawabuckautumn"
+		}
 	},
 	"deerlingwinter": {
 		"id": "deerlingwinter",
-		"inherit": "deerling"
+		"inherit": "deerling",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "sawabuckwinter"
+		}
 	},
 	"sawsbucksummer": {
 		"id": "sawsbucksummer",
@@ -17851,35 +16653,71 @@
 	},
 	"flabebeyellow": {
 		"id": "flabebeyellow",
-		"inherit": "flabebe"
+		"inherit": "flabebe",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "floetteyellow"
+		}
 	},
 	"flabebeorange": {
 		"id": "flabebeorange",
-		"inherit": "flabebe"
+		"inherit": "flabebe",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "floetteorange"
+		}
 	},
 	"flabebeblue": {
 		"id": "flabebeblue",
-		"inherit": "flabebe"
+		"inherit": "flabebe",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "floetteblue"
+		}
 	},
 	"flabebewhite": {
 		"id": "flabebewhite",
-		"inherit": "flabebe"
+		"inherit": "flabebe",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": "floettewhite"
+		}
 	},
 	"floetteyellow": {
 		"id": "floetteyellow",
-		"inherit": "floette"
+		"inherit": "floette",
+		"evolution": {
+		    "trigger": "item",
+		    "item": "shinystone",
+		    "evolvesTo": "florgesyellow"
+		}
 	},
 	"floetteorange": {
 		"id": "floetteorange",
-		"inherit": "floette"
+		"inherit": "floette",
+		"evolution": {
+		    "trigger": "item",
+		    "item": "shinystone",
+		    "evolvesTo": "florgesorange"
+		}
 	},
 	"floetteblue": {
 		"id": "floetteblue",
-		"inherit": "floette"
+		"inherit": "floette",
+		"evolution": {
+		    "trigger": "item",
+		    "item": "shinystone",
+		    "evolvesTo": "florgesblue"
+		}
 	},
 	"floettewhite": {
 		"id": "floettewhite",
-		"inherit": "floette"
+		"inherit": "floette",
+		"evolution": {
+		    "trigger": "item",
+		    "item": "shinystone",
+		    "evolvesTo": "florgeswhite"
+		}
 	},
 	"florgesyellow": {
 		"id": "florgesyellow",
@@ -18010,7 +16848,13 @@
 	},
 	"lycanrocmidnight": {
 		"id": "lycanrocmidnight",
-		"inherit": "lycanroc"
+		"inherit": "lycanroc",
+		"evolution": {
+		    "trigger": "level",
+		    "level": 25,
+		    "time": "night",
+		    "evolvesTo": null
+		}
 	},
 	"wishiwashischool": {
 		"id": "wishiwashischool",
