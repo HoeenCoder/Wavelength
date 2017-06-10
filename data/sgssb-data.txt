@@ -1,4 +1,4 @@
-HoeenCoder
+HoeenHero
 (Ludicolo)
 @ Leftovers
 Ability: Swift Swim
@@ -53,14 +53,15 @@ Signature Move: Crystallized Ukaku
 Signature Move Effects: Dark type, Special, 140 BP, 30% chance to badly poison it's target.
 
 Kraken Mare
-(Gardevoir)
-@ Gardevoirite
-Ability: Moody
+(Gardevoir-Mega)
+@ Focus Sash
+Ability: Kraken's Boosts
+	- No Guard + Moody
 EVs: 248 HP / 8 Def / 252 SpA
 Modest Nature
 Moves: Moonblast, Calm Mind, Psychic
-Special Move: Mega Rage
-Special Move Effects: Fairy Type, Special, 150 BP, user's defense and special defense lower by 1 stage after usage of this.
+Special Move: Revenge of Kraken Mare
+Special Move Effects: Water Type, Special, 77,000 BP, Always selfdestructs after usage, +5 priority, Always hits.
 
 Opple
 (Dragonite)
