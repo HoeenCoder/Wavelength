@@ -729,6 +729,7 @@ exports.commands = {
 					if (!item.use.battleOnly) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 					data.back = '/sggame bag ' + target[0];
 				} else { // 'use'
+					if (!item.use) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 					if (inBattle) {
 						if (item.use.revive) return this.errorReply("Reviving items are disabled at this time.");
 						if (item.use.healPP && !target[4]) {

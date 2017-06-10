@@ -425,6 +425,127 @@ exports.SG = {
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
 	},
+	getEvoData: function (pokemon) {
+		pokemon = (pokemon.species ? toId(pokemon.species) : pokemon);
+		if (!this.gameData[toId(pokemon)]) throw new Error(pokemon + " not found in pokemon.json");
+		if (this.gameData[toId(pokemon)].evolution) return this.gameData[toId(pokemon)].evolution;
+		if (!this.gameData[toId(pokemon)].inherit) throw new Error('Unable to find evolution data for ' + pokemon);
+		let curData = null;
+		for (let depth = 0; depth < 8; depth++) {
+			if (curData && !curData.inherit) throw new Error('Unable to find evolution data for ' + pokemon);
+			curData = this.gameData[(this.gameData[(curData ? curData.id : toId(pokemon))].inherit)];
+			if (curData.evolution) return curData.evolution;
+		}
+		// If we reach here its an error
+		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
+	},
+	/**
+	 * Checks if a pokemon can evolve
+	 * @param {Object} pokemon, a pokemon party object
+	 * @param {String} trigger, "level", "item", or "trade", what is triggering this check?
+	 * @param {Object} options, extra data for the evolution including location, trade partner, item used, ect
+	 * @return {String} the pokemon it should evolve into OR {Boolean} false
+	 */
+	canEvolve: function (pokemon, trigger, userid, options) {
+		trigger = toId(trigger);
+		if (!(trigger in {'level': 1, 'item': 1, 'trade': 1})) return false;
+		if (!pokemon || typeof pokemon !== 'object' || !pokemon.species) return false;
+		if (!toId(userid)) return false;
+		userid = toId(userid);
+		let evoData = this.getEvoData(pokemon);
+		if (!evoData || !evoData.evolvesTo) return false;
+		let evos = evoData.evolvesTo.split('|');
+		let time = new Date();
+		time = ((time.getHours >= 6 && time.getHours < 18) ? "day" : "night");
+		let valid = [];
+		for (let e = 0; e < evos.length; e++) {
+			evoData = this.getEvoData(evos[e]);
+			if (evoData.trigger !== trigger) continue;
+			if (evoData.level && pokemon.level < evoData.level) continue;
+			if (evoData.happiness && pokemon.happiness < evoData.happiness) continue;
+			if (evoData.time && evoData.time !== time) continue;
+			if (evoData.hold && pokemon.item !== evoData.hold) continue;
+			if (evoData.move || evoData.moveType) {
+				let moves = (evoData.moves ? evoData.moves.split('|') : null);
+				let types = (evoData.moveType ? evoData.moveType.split('|') : null);
+				for (let m = 0; m < pokemon.moves.length; m++) {
+					if (moves && moves.length && moves.indexOf(pokemon.moves[m]) > -1) moves.splice(moves.indexOf(pokemon.moves[m]), 1);
+					let type = Dex.getMove(pokemon.moves[m]).type;
+					if (types && types.length && types.indexOf(type) > -1) types.splice(types.indexOf(type), 1);
+				}
+				if (moves && moves.length) continue;
+				if (types && types.length) continue;
+			}
+			if (evoData.location && (!options || options.location !== evoData.location)) continue;
+			if (evoData.item && (!options || options.item !== evoData.location)) continue;
+			if (evoData.gender && pokemon.gender !== evoData.gender) continue;
+			if (evoData.partner && (!options || options.partner !== evoData.partner)) continue;
+			if (evoData.stat) {
+				let stats = [];
+				let symbol = (evoData.stat.search('>') > -1 ? '>' : '=');
+				let toCheck = evoData.stat.split(symbol);
+				let base = Dex.getTemplate(pokemon.species);
+				if (!base.baseStats) base = Dex.getTemplate(base.baseSpecies).baseStats;
+				if (!pokemon.evs) pokemon.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+				for (let i = 0; i < toCheck.length; i++) {
+					if (toCheck[i] === 'hp') {
+						if (pokemon.species === 'shedinja') stats[i] = 1;
+						stats[i] = (((2 * base.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10;
+					} else {
+						let n = Dex.getNature(pokemon.nature);
+						if (n.plus === toCheck[i]) {
+							n = 1.1;
+						} else if (n.minus === toCheck[i]) {
+							n = 0.9;
+						} else {
+							n = 1;
+						}
+						stats[i] = (((((2 * base[toCheck[i]] + pokemon.ivs[toCheck[i]] + (pokemon.evs[toCheck[i]] / 4)) * pokemon.level) / 100) + 5) * n);
+					}
+				}
+				if (symbol === '>' && stats[0] < stats[1]) continue;
+				if (symbol === '=' && stats[0] !== stats[1]) continue;
+			}
+			if (evoData.special) {
+				// Special rules for special evolutions
+				if (pokemon.species === 'nincada') {
+					let player = Db.players.get(toId(userid));
+					if (player.party.length >= 5 || !player.bag.pokeballs.pokeball) continue;
+				} else if (pokemon.species === 'mantyke') {
+					let player = Db.players.get(toId(userid));
+					let rem = false;
+					for (let p = 0; p < player.party.length; p++) {
+						if (player.party[p].species === 'remoraid') {
+							rem = true;
+							break;
+						}
+					}
+					if (!rem) continue;
+				}
+			}
+			valid.push(evos[e]);
+		}
+		if (valid.length > 1) {
+			// Prioritze evoluitons for pokemon like eevee
+			let priority, depth = 0;
+			switch (pokemon.species) {
+			case 'eevee':
+				// location > fairy + affection (SGgame uses friendship as affection) > friendship
+				priority = ['espeon', 'umbreon', 'sylveon', 'leafeon', 'glaceon', 'flareon', 'jolteon', 'vaporeon'];
+				do {
+					if (valid.indexOf(priority[depth]) > -1) valid.splice(valid.indexOf(priority[depth]));
+					depth++;
+				} while (valid.length > 1 && depth < priority.length);
+				break;
+			case 'nincada':
+				// Falls through due to special rule
+				break;
+			default:
+				console.log('Multiple valid evolutions detected and unhandled. Base: ' + pokemon.species + '. Valid Evos: ' + valid.join('|'));
+			}
+		}
+		return (valid.length ? valid.join('|') : false); // Incase of shedinja return the two evos joined with "|"
+	},
 	itemData: itemData,
 	getItem: function (id) {
 		id = toId(id);
@@ -451,42 +572,6 @@ exports.SG = {
 			}
 		});
 		exp.unshift(active);
-		/*// EXP
-		let activeExp = this.getGain(userid, faintData.source, faintData.target, true);
-		battle.add('message', (faintData.source.name || faintData.source.species) + " gained " + Math.round(activeExp) + " Exp. Points!");
-		out += faintData.source.slot + "|" + activeExp;
-		// Level ups
-		let curExp = faintData.source.exp;
-		let levelUps = 0;
-		while ((curExp + activeExp) >= this.calcExp(faintData.source.species, (faintData.source.level + 1))) {
-			battle.add('message', (faintData.source.name || faintData.source.species) + " grew to level " + (faintData.source.level + 1) + "!");
-			battle[faintData.source.side.id].pokemon[faintData.source.slot].level++;
-			levelUps++;
-		}
-		battle[faintData.source.side.id].pokemon[faintData.source.slot].exp += activeExp;
-		out += "|" + levelUps;
-		// New evs
-		let newEvs = this.getEvGain(faintData.source);
-		let totalEvs = 0, newCount = 0;
-		for (let ev in newEvs) {
-			if (faintData.source.set.evs[ev] >= 255) newEvs[ev] = 0;
-			totalEvs += faintData.source.set.evs[ev];
-			newCount += newEvs[ev];
-		}
-		if (totalEvs >= 510) {
-			newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
-		} else if (newCount + totalEvs > 510) {
-			// Apply as many evs as possible
-			for (let ev in newEvs) {
-				if (faintData.source.evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
-				totalEvs += newEvs[ev];
-			}
-		}
-		out += "|";
-		for (let ev in newEvs) {
-			out += newEvs[ev] + (ev === 'spe' ? ']' : ',');
-		}
-		battle.add('');*/
 		while (exp.length) {
 			let cur = exp.shift();
 			if (!cur) continue;
