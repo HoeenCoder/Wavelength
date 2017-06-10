@@ -21,7 +21,8 @@ Signature Move Effects: Status, Boosts the user's Def, SpA, and SpD by one stage
 VXN
 (Rayquaza)
 @ Normalium Z
-Ability: Wonder Guard
+Ability: No
+	- Pokemon with this ability cannot be damaged by direct attacks.
 Jolly Nature
 EVs: 252 Atk / 252 Spe / 4 SpD
 Moves: Splash, Happy Hour, Celebrate

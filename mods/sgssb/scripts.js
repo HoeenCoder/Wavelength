@@ -361,7 +361,7 @@ exports.BattleScripts = {
 			},
 			'+VXN': {
 				species: "Rayquaza",
-				ability: "Wonder Guard",
+				ability: "No",
 				item: "Normalium Z",
 				gender: "M",
 				moves: ['Splash', 'Happy Hour', 'Celebrate',
