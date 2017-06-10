@@ -269,7 +269,7 @@ exports.BattleScripts = {
 					spd: 252,
 					hp: 4,
 				},
-				nature: 'Adamant',
+				nature: 'Modest',
 			},
 			// Global Voices:
 			'+Admewn': {
