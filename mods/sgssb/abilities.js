@@ -102,7 +102,7 @@ exports.BattleAbilities = {
 	},
 	wavecall: {
 		onModifyAtkPriority: 5,
-		onModifyAtk: function (atk, pokemon, move) {
+		onModifyAtk: function (atk, pokemon, move, attacker) {
 			if (pokemon.status && move.type === 'Water' || move.type === 'Water' && attacker.hp <= attacker.maxhp / 2) {
 				return this.chainModify(2);
 			}
