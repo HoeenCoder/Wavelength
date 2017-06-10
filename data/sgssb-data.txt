@@ -22,7 +22,7 @@ VXN
 (Rayquaza)
 @ Normalium Z
 Ability: No
-	- Pokemon with this ability cannot be damaged by direct attacks.
+	- Pokemon with this ability have a 50% chance to be immune to direct attacks.
 Jolly Nature
 EVs: 252 Atk / 252 Spe / 4 SpD
 Moves: Splash, Happy Hour, Celebrate

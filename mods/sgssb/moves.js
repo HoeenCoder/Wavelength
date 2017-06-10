@@ -599,35 +599,11 @@ exports.BattleMovedex = {
 			this.add('raw|<div class=\"broadcast-red\"><b>The server has crashed:</b><br/>TypeError: Cannot read property \'Overpowered\' of undefined at CommandContext.meme (./SpacialGaze/spacialgaze-plugins/hoeenhero/spellcheck.js:420:69)</div>');
 		},
 		onPrepareHit: function (target, source) {
-			this.add('-anim', source, "10000000 Volt Thunderbolt", target);
-			this.add('-anim', source, "Acid Downpour", target);
 			this.add('-anim', source, "All-Out Pummeling", target);
 			this.add('-anim', source, "Black Hole Eclipse", target);
-			this.add('-anim', source, "Bloom Doom", target);
 			this.add('-anim', source, "Breakneck Blitz", target);
-			this.add('-anim', source, "Catrastropika", target);
 			this.add('-anim', source, "Continental Crush", target);
-			this.add('-anim', source, "Corkscrew Crash", target);
-			this.add('-anim', source, "Devastating Drake", target);
-			this.add('-anim', source, "Extreme Evoboost", target);
-			this.add('-anim', source, "Genesis Supernova", target);
-			this.add('-anim', source, "Gigavolt Havoc", target);
-			this.add('-anim', source, "Guardian of Alola", target);
-			this.add('-anim', source, "Hydro Vortex", target);
-			this.add('-anim', source, "Inferno Overdrive", target);
-			this.add('-anim', source, "Malicious Moonsault", target);
 			this.add('-anim', source, "Never-Ending Nightmare", target);
-			this.add('-anim', source, "Oceanic Operetta", target);
-			this.add('-anim', source, "Pulverizing Pancake", target);
-			this.add('-anim', source, "Savage Spin-Out", target);
-			this.add('-anim', source, "Shattered Psyche", target);
-			this.add('-anim', source, "Sinister Arrow Raid", target);
-			this.add('-anim', source, "Soul-Stealing 7-Star Strike", target);
-			this.add('-anim', source, "Stoked Sparksurfer", target);
-			this.add('-anim', source, "Subzero Slammer", target);
-			this.add('-anim', source, "Supersonic Skystrike", target);
-			this.add('-anim', source, "Tectonic Rage", target);
-			this.add('-anim', source, "Twinkle Tackle", target);
 		},
 		flags: {},
 		secondary: false,

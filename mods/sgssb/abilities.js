@@ -113,8 +113,10 @@ exports.BattleAbilities = {
 	no: {
 		onDamage: function (damage, target, source, effect) {
 			if (effect.effectType === 'Move') {
-				this.add('-immune', target, '[msg]', '[from] ability: No');
-				return null;
+				if (this.random(2) === 0) {
+					this.add('-immune', target, '[msg]', '[from] ability: No');
+					return null;
+				}
 			}
 		},
 		id: "no",
