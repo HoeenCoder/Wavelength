@@ -102,3 +102,155 @@ EVs: 252 SpA / 4 HP / 252 Spe
 Moves: Thunderbolt, Surf, Hidden Power Ice
 Special Move: Rocket Punch
 Special Move Effects: Fire Type, Special, 100 BP, +1 priority
+
+Vacuo
+(Magnezone)
+@ Choice Specs
+Ability: Levitate
+Modest Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Volt Switch/Thunderbolt, Aura Sphere, Hidden Power Ice
+Special Move: Mechanical Dysfunction
+Special Move Effects: Electric type, Special, 110 BP, 90% accuracy, 50% chance to paralyze.
+
+ducktown
+(Golduck)
+@ Leftovers
+Ability: Cloud Nine
+Modest Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Scald, Ice Beam, Psychic
+Special Move: Duck Power
+Special Move Effects: Water type, Status, Sets Rain Dance, Boosts Special Attack and Special Defense by 8 stages.
+
+Serperiorater
+(Serperior)
+@ Leftovers
+Ability: Sturdy
+Timid Nature
+EVs: 252 SpA / 4 SpD / 252 Spe
+Moves: Aura Sphere, Dark Pulse, Psychic
+Special Move: Saber Strike
+Special Move Effects: Grass type, Special, 140 BP, Boosts user's Special Attack by two stages and heals user by 1/5 max HP.
+
+Vulcaron
+(Murkrow)
+@ Eviolite
+Ability: Prankster
+Impish Nature
+EVs: 252 HP / 4 SpD / 252 Def
+Moves: Thunder Wave, Mean Look, Confuse Ray
+Special Move: Troll
+Special Move Effects: Dark type, Status, Confuses target, Boosts user's Evasion by one stage and heals user by 6/20 of its max HP.
+
+SpaceGazer
+(Registeel)
+@ Weakness Policy
+Ability: No Guard
+Adamant Nature
+EVs: 252 Atk / 4 HP / 252 SpD
+Moves: Zap Cannon, Iron Head, Stone Edge
+Special Move: Spacial Blast
+Special Move Effects: Fairy type, Physical, 150 BP, 60% chance to burn target.
+
+Spacial Bot
+(Regirock)
+@ Leftovers
+Ability: Wonder Guard
+Adamant Nature
+EVs: 252 Atk / 4 HP / 252 SpD
+Moves: Stone Edge, Earthquake, Iron Head/Explosion
+Special Move: Ancient Ritual
+Special Move Effects: Rock type, Status, Boosts user's Attack by one stage and Speed by two stages.
+
+SG Bot
+(Regice)
+@ Leftovers
+Ability: Flash Fire
+Modest Nature
+EVs: 252 SpA / 4 HP / 252 SpD
+Moves: Ice Beam, Ancient Power, Thunderbolt
+Special Move: Frostbite
+Special Move Effects: Ice Type, Special, 100 BP, 60% chance to freeze target.
+
+Admewn
+(Mew)
+@ Expert Belt
+Ability: Protean
+Timid Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Energy Ball, Oblivion Wing, Shadow Ball
+Special Move: Mewtation
+Special Move Effects: Transforms into a Dark type, Status.
+
+Almighty Bronzong
+(Bronzong)
+@ Leftovers
+Ability: Conflict of Interest
+	- Uses Magnet Rise upon entry, Ghost + Dark + Fire moves do 0.5x damage to user, Burn damage is halved.
+Sassy Nature
+EVs: 252 HP / 88 SpD / 168 Def
+Moves: Gyro Ball, Toxic, Confuse Ray, Earthquake
+Special Move: Blast Furnace
+Special Move Effects: Fire Type, Status, Boosts user's Defense by one stage, Heals user by 7/20 of its max HP.
+
+Auction
+(Aegislash)
+@ Leftovers
+Ability: Water Absorb
+Adamant Nature
+EVs: 248 HP / 8 SpD / 252 Atk
+Moves: Swords Dance, Sacred Sword, Shadow Sneak, King's Shield
+Special Move: Zeo-Bash
+Special Move Effects: Steel Type, Physical, 90 BP.
+
+Ranfen
+(Flygon)
+@ Focus Sash
+Ability: DesertDragon
+	- Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by +2.
+Adamant Nature
+EVs: 252 Atk / 4 HP / 252 Spe
+Moves: Stone Edge, Dragon Claw, Earthquake
+Special Move: Out Ripper
+Special Move Effects: Dragon type, Physical, 100 BP, High crit ratio.
+
+The Run
+(Volcanion)
+@ Life Orb
+Ability: Protean
+Timid Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Fire Blast, Steam Eruption, Recover
+Special Move: Vapor Boost
+Special Move Effects: Ice Type, Status, Boosts user's Special Attack by 2 stages.
+
+CelestialTater
+(Armaldo)
+@ White Herb
+Ability: Unburden
+Adamant Nature
+EVs: 252 HP / 128 Atk / 128 Spe
+Moves: Megahorn, Stone Edge, Drain Punch
+Special Move: Shell Break
+Special Move Effects: Water Type, Status, +1 priority, Boosts user's Attack, Speed, Special Attack by 2 stage, its Accuracy by 1 stage, and lowers its Defense and Special Defense by 1 stage.
+
+Mimiroppu
+(Lopunny)
+@ Lopunnite
+Ability: Limber
+Jolly Nature
+EVs: 252 Atk / 4 Def / 252 Spe
+Moves: Fake Out, Return, High Jump Kick
+Special Attack: Charm Up
+Special Attack Effects: Normal Type, Status, Infatuates target, Boosts own Attack by one stage.
+
+Hurricane'd
+(Tomohawk)
+@ Rocky Helmet
+Ability: Gale Wings
+Bold Nature
+EVs: 252 SpA / 4 HP / 252 Spe
+Moves: Aura Sphere, Taunt, Hurricane
+Special Attack: Rainbust Orb
+Special Attack Effects: Water Type, Status, Sets weather to Rain Dance, Boosts user's Special Attack and Defense by two stages.
