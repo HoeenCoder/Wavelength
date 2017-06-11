@@ -15709,27 +15709,99 @@
 	},
 	"pikachurockstar": {
 		"id": "pikachurockstar",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"pikachubelle": {
 		"id": "pikachubelle",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"pikachuphd": {
 		"id": "pikachuphd",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"pikachupopstar": {
 		"id": "pikachupopstar",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"pikachulibre": {
 		"id": "pikachulibre",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"pikachucosplay": {
 		"id": "pikachucosplay",
-		"inherit": "pikachu"
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachuoriginal": {
+		"id": "pikachuoriginal",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachuhoenn": {
+		"id": "pikachuhoenn",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachusinnoh": {
+		"id": "pikachusinnoh",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachuunova": {
+		"id": "pikachuunova",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachukalos": {
+		"id": "pikachukalos",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachualola": {
+		"id": "pikachualola",
+		"inehrit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"raichualola": {
 		"id": "raichualola",
