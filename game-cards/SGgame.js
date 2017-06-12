@@ -5,6 +5,7 @@ class SGgame extends Console.Console {
 		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
+		this.version = '(Alpha) 1.0';
 		this.queue = [];
 		this.queueAction = null;
 		this.lastNextAction = null;
@@ -566,9 +567,10 @@ exports.commands = {
 			user.console.update('background-color: #6688AA;', htm, null);
 		} else if (cmd === 'confirmresetalpha') {
 			// New Game
-			user.console.queue = ['text|Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for the game. (click the star to continue)',
-				'text|Were not done creating the game yet so its limited as to what you can do.<br/>But you can help out by testing whats here, and reporting any issues you find!',
-				'text|Lets get you setup.<br/>Pick a starter:'];
+			user.console.queue = ['text|Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for this project. (click the star to continue)',
+				'text|We\'ve been working hard on this project, but were still not even close to finished, were only in ' + user.console.version + ' after all!',
+				'text|Tell us what you think about it, and any ideas you come up with too! We would love to hear them. Any help with the project is also appreciated, code, spriting, even just writing raw data when we need it.',
+				'text|Well thats enough from me, lets get you started!<br/>Pick a starter:'];
 			let msg = '';
 			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'], ['Pikachu'], ['Eevee']];
 			for (let i = 0; i < starters.length; i++) {
@@ -583,7 +585,7 @@ exports.commands = {
 				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				user.console.callback = null;
 			};
-			user.console.queue.push('text|Great choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to your game now.|callback');
+			user.console.queue.push('text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to it now.|callback');
 			user.console.init();
 			this.parse('/sggame next');
 		} else {
@@ -596,7 +598,7 @@ exports.commands = {
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
-			user.console.queue = ['text|Welcome back to the alpha, tell me if you like the game or find any bugs!'];
+			user.console.queue = ['text|Welcome back.<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
 			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			this.parse('/sggame next');
