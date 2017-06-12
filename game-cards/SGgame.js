@@ -2,7 +2,7 @@
 
 class SGgame extends Console.Console {
 	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button name="send" value="/console kill">Power</button>', muted);
+		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
 		this.queue = [];
@@ -20,8 +20,8 @@ class SGgame extends Console.Console {
 	}
 	next(hideButton) {
 		let base = this.buildMap();
-		if (!this.queue.length) return base;
-		let msg = this.queue.shift(), type = msg.split('|')[0], parts = null;
+		if (!this.queue.length) return [null, base, null];
+		let msg = this.queue.shift(), type = msg.split('|')[0], parts = null, poke = null;
 		switch (type) {
 		case 'text':
 			switch (msg.split('|')[2]) {
@@ -40,7 +40,7 @@ class SGgame extends Console.Console {
 				msg = msg.split('|')[1];
 			}
 			parts = base.split('<!--split-->');
-			return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + msg + (hideButton ? '' : '<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button>') + '</div>' + parts.join('');
+			return [null, parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + msg + (hideButton ? '' : '<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button>') + '</div>' + parts.join(''), null];
 			//break;
 		case 'callback':
 			this.callback();
@@ -51,25 +51,27 @@ class SGgame extends Console.Console {
 				this.queue.unshift(msg);
 				return base;
 			}
-			let poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
+			poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
 			if (poke.moves.length < 4) {
 				// Automatically learn the move
 				let obj = Db.players.get(this.userid);
 				obj.party[Number(msg.split('|')[1])].moves.push(toId(msg.split('|')[2]));
 				Db.players.set(this.userid, obj);
 				parts = base.split('<!--split-->');
-				return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + (poke.name || poke.species) + ' learned ' + msg.split('|')[2] + '! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button></div>' + parts.join('');
+				return [null, parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">' + (poke.name || poke.species) + ' learned ' + msg.split('|')[2] + '! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame next"><u>&#9733;</u></button></div>' + parts.join(''), null];
 			}
 			this.queueAction = msg;
 			parts = base.split('<!--split-->');
-			return parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;"><center>' + (poke.name || poke.species) + ' wants to learn the move ' + msg.split('|')[2] + '.<br/>Should a move be forgotten for ' + msg.split('|')[2] + '<br/><button name="send" value="/sggame learn" style="border: none; background: none; color: grey">Forget a move</button> <button name="send" value="/sggame learn reject" style="border: none; background: none; color: grey">Keep old moves</button></center></div>' + parts.join('');
+			return [null, parts.shift() + '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;"><center>' + (poke.name || poke.species) + ' wants to learn the move ' + msg.split('|')[2] + '.<br/>Should a move be forgotten for ' + msg.split('|')[2] + '<br/><button name="send" value="/sggame learn" style="border: none; background: none; color: grey">Forget a move</button> <button name="send" value="/sggame learn reject" style="border: none; background: none; color: grey">Keep old moves</button></center></div>' + parts.join(''), null];
 			//break;
 		case 'evo':
 			if (this.queueAction) {
 				this.queue.unshift(msg);
 				return base;
 			}
-			return base; // TODO
+			poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
+			this.queueAction = msg;
+			return ['background: linear-gradient(blue, white);', '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', null];
 			//break;
 		default:
 			console.log('Invalid type: ' + type + '. While running (console).next()');
@@ -444,7 +446,7 @@ class SGgame extends Console.Console {
 		switch (addOn) {
 		case "pc":
 			output += '<center>' + checkButton('Deposit', 'deposit', '/sggame pc ' + data.box + ', ' + data.slot + ', deposit') + ' ' + checkButton('Withdraw', 'withdraw', '/sggame pc ' + data.box + ', ' + data.slot + ', withdraw') + ' ';
-			output += checkButton('Release', 'release', '/sggame pc ' + data.box + ', ' + data.slot + ', release') + ' ' + checkButton('Back', 'back', '/sggame back') + ' ';
+			output += checkButton('Release', 'release', '/sggame pc ' + data.box + ', ' + data.slot + ', release') + ' ' + checkButton('Back', 'back') + ' ';
 			output += '<button name="send" value="/sggame pc ,,close" class="button">Close</button></center>';
 			break;
 		case "pokemon":
@@ -479,7 +481,7 @@ class Player {
 		this.userid = user.userid;
 		this.poke = 0; // Currency
 		this.time = 0;
-		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {}};
+		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1, linkcable: 5}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {}};
 		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|255,,pokeball,117360,hoeenhero"], [], [], []];
 		this.party = starter;
@@ -540,10 +542,20 @@ exports.box = {
 exports.commands = {
 	confirmresetalpha: 'playalpha',
 	resetalpha: 'playalpha',
+	cancelresetalpha: 'playalpha',
 	continuealpha: 'playalpha',
 	playalpha: function (target, room, user, connection, cmd) {
-		if (cmd === 'resetalpha' && user.console) return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/sggame back">No</button>', false);
+		if (cmd === 'resetalpha' && user.console) {
+			user.lastCommand = 'resetalpha';
+			return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/cancelresetalpha">No</button>', false);
+		}
 		if (cmd === 'resetalpha') return; // User didnt have a console setup.
+		if (cmd === 'cancelresetalpha') {
+			if (user.lastCommand !== 'resetalpha') return;
+			delete user.lastCommand;
+			return user.console.update(user.console.prevScreen[0], user.console.prevScreen[1], user.console.prevScreen[2]);
+		}
+		if (user.lastCommand) delete user.lastCommand;
 		if (user.console) this.parse('/console kill');
 		user.console = new SGgame(user, room, !!target);
 		if (cmd === 'playalpha') {
@@ -568,7 +580,7 @@ exports.commands = {
 			}
 			user.console.queue.push('text|' + msg + '|hide');
 			user.console.callback = function () {
-				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button name="send" value="/console kill">Power</button>';
+				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				user.console.callback = null;
 			};
 			user.console.queue.push('text|Great choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to your game now.|callback');
@@ -585,13 +597,14 @@ exports.commands = {
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.queue = ['text|Welcome back to the alpha, tell me if you like the game or find any bugs!'];
-			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button name="send" value="/console kill">Power</button>';
+			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			this.parse('/sggame next');
 		}
 	},
 	wild: function (target, room, user) {
 		if (user.console.queue.length) return;
+		if (user.console.queueAction) return;
 		if (user.console.curPane && user.console.curPane !== 'wild') return;
 		user.console.curPane = 'wild';
 		if (!Users('sgserver')) SG.makeCOM();
@@ -623,7 +636,8 @@ exports.commands = {
 		next: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.lastNextAction === 'hide') return;
-			return user.console.update(null, user.console.next(), null);
+			let r = user.console.next();
+			return user.console.update((r[0] || user.console.curScreen[0]), (r[1] || user.console.curScreen[1]), (r[2] || user.console.curScreen[2]));
 		},
 		learn: function (target, room, user) {
 			if (!user.console || user.console.gameId !== 'SGgame' || !user.console.queueAction) return;
@@ -663,8 +677,79 @@ exports.commands = {
 				return this.parse('/sggame next');
 			}
 		},
+		evo: function (target, room, user) {
+			if (!user.console || user.console.gameId !== 'SGgame' || !user.console.queueAction) return;
+			target = toId(target);
+			let action = user.console.queueAction.split('|');
+			if (action[0] !== 'evo') return;
+			let pokemon = Db.players.get(user.userid).party[Number(action[1])];
+			if (!target) {
+				return user.console.update(user.console.curScreen[0], '<br/><br/><center><div style="border-radius: 100%; background: radial-gradient(white, #ddf); width: 15em; height: 15em;"></div></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;"><center><button name="send" value="/sggame evo evolve" style="border: none; background: none; color: grey">Evolve!</button> <button name="send" value="/sggame evo stop" style="border: none; background: none; color: grey">Stop!</button></center></div>', null);
+			} else if (target === 'evolve') {
+				let obj = Db.players.get(user.userid);
+				let temp = Dex.getTemplate(action[2]);
+				if (!temp.exists) throw new Error('Unable to evolve into non-existant pokemon: ' + action[2]);
+				if (pokemon.name === pokemon.species) obj.party[Number(action[1])].name = action[2];
+				obj.party[Number(action[1])].species = action[2];
+				obj.party[Number(action[1])].exp = SG.calcExp(action[2], pokemon.level);
+				let aSlot = '0';
+				for (let a in temp.abilities) {
+					if (toId(temp.abilities[a]) === obj.party[Number(action[1])].ability) {
+						aSlot = a;
+						break;
+					}
+				}
+				obj.party[Number(action[1])].ability = temp.abilities[aSlot];
+				if (action[3] && pokemon.item === action[3]) {
+					obj.party[Number(action[1])].item = false;
+				} else if (action[3] && obj.bag.items[action[3]] && obj.bag.items[action[3]] >= 1) {
+					obj.bag.items[action[3]]--;
+				}
+				if (user.console.shed && obj.party.length < 5 && obj.bag.pokeballs.pokeball > 0) {
+					obj.bag.pokeballs.pokeball--;
+					let shed = {species: 'shedinja', level: pokemon.level, exp: SG.calcExp('shedinja', pokemon.level), ot: obj.userid, ivs: pokemon.ivs, evs: pokemon.evs, nature: pokemon.nature, ability: "Wonder Guard", happiness: 70, pokeball: pokemon.pokeball};
+					if (shed.evs) shed.evs.hp = 0;
+					if (pokemon.shiny) shed.shiny = true;
+					shed.moves = [];
+					let used = [], raw = [];
+					let mon = Dex.getTemplate('shedinja');
+					for (let move in mon.learnset) {
+						for (let learned in mon.learnset[move]) {
+							if (mon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(mon.learnset[move][learned].substr(2)) <= shed.level && !used[move]) {
+								raw.push({move: move, lvl: mon.learnset[move][learned]});
+								used.push(move);
+							}
+						}
+					}
+					raw = raw.sort(function (a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
+					for (let i = 0; i < 4; i++) {
+						if (raw.length === 0) break;
+						let tar = raw.pop();
+						if (shed.moves.indexOf(tar.move) > -1) {
+							// Duplicate move
+							i--;
+							continue;
+						}
+						shed.moves.push(tar.move);
+					}
+					obj.party.push(shed);
+					delete user.console.shed;
+				}
+				Db.players.set(user.userid, obj);
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + temp.spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Congratulations! Your ' + (pokemon.name === pokemon.species ? temp.prevo : pokemon.name) + ' evolved into ' + action[2] + '!<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+			} else if (target === 'stop') {
+				if (user.console.shed) delete user.console.shed;
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(action[2]).spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Huh? ' + (pokemon.name || pokemon.species) + ' stopped evolving.<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+			} else if (target === 'finish') {
+				user.console.queueAction = null;
+				user.console.lastNextAction = null;
+				user.console.curPane = null;
+				return user.console.update();
+			}
+		},
 		bag: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
+			if (user.console.queueAction) return;
 			if (user.console.queue.length) return;
 			if (!target) target = "items";
 			target = target.split(',');
@@ -691,7 +776,7 @@ exports.commands = {
 				if (inBattle) {
 					if (item.use && !item.use.noBattle) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 				} else {
-					if (Dex.getItem(target[1]).exists) data.give = '/sggame bag ' + target[0] + ', ' + target[1] + ', give';
+					if (Dex.getItem(target[1]).exists || item.use.triggerEvo) data.give = '/sggame bag ' + target[0] + ', ' + target[1] + ', give';
 					if (item.use && !item.use.battleOnly) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 					//data.toss = '/sggame bag ' + target[0] + ', ' + target[1] + ', toss';
 				}
@@ -715,8 +800,9 @@ exports.commands = {
 				if (target[2] === 'use' && !item.use) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]); // This item cannot be 'used'
 				let mon = player.party[target[3]];
 				if (!mon) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
+				if (!Db.players.get(user.userid).bag[item.slot][item.id]) return this.parse('/sggame bag ' + target[0]); // Dont have one to use
 				if (target[2] === 'give' && !inBattle) {
-					if (!Dex.getItem(target[1]).exists) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
+					if (!Dex.getItem(target[1]).exists && !item.use.triggerEvo) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 					let old = mon.item;
 					if (old) {
 						let slot = player.bag[SG.getItem(old).slot];
@@ -771,7 +857,19 @@ exports.commands = {
 									}
 								}
 								// Evolution
-								// TODO
+								let evos = SG.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations
+								if (evos) {
+									evos = evos.split('|');
+									if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
+										user.console.shed = true;
+										evos.splice(evos.indexOf('shedinja'), 1);
+									}
+									evos = evos[0];
+									//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
+									let take = SG.getEvoItem(evos);
+									user.console.queue.push("evo|" + target[3] + "|" + evos + "|" + (take || ''));
+									canReturn = false;
+								}
 								if (!canReturn) {
 									user.console.curPane = null;
 								} else {
@@ -781,12 +879,33 @@ exports.commands = {
 								}
 								player.bag[target[0]][target[1]]--;
 								Db.players.set(user.userid, player);
-								return user.console.update(user.console.curScreen[0], user.console.next(canReturn), null);
+								let r = user.console.next(canReturn);
+								return user.console.update((r[0] || user.console.curScreen[0]), (r[1] || user.console.curScreen[1]), (r[2] || user.console.curScreen[2]));
 							}
 						}
 						if (item.use.triggerEvo) {
-							user.console.queue.push('text|But it would have no effect... (Evolution isnt coded yet!)<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ' + target[0] + ', ' + target[1] + '">Return to bag</button>');
-							return user.console.update(user.console.curScreen[0], user.console.next(true), null);
+							// Evolution
+							// Hacky trigger change for trade evos till we add trading
+							let trigger = (item.id === 'linkcable' ? "trade" : "item");
+							let evos = SG.canEvolve(player.party[target[3]], trigger, user.userid, {location: null, item: item.id}); // TODO locations
+							if (evos) {
+								if (trigger === 'trade') {
+									let obj = Db.players.get(user.userid);
+									obj.bag.items.linkcable--;
+									Db.players.set(user.userid, obj);
+								}
+								evos = evos.split('|');
+								if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
+									user.console.shed = true;
+									evos.splice(evos.indexOf('shedinja'), 1);
+								}
+								evos = evos[0];
+								//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
+								let take = SG.getEvoItem(evos);
+								user.console.queue.push("evo|" + target[3] + "|" + evos + "|" + (take || ''));
+								let r = user.console.next(true);
+								return user.console.update((r[0] || user.console.curScreen[0]), (r[1] || user.console.curScreen[1]), (r[2] || user.console.curScreen[2]));
+							}
 						}
 						if (item.use.boostEv && item.use.boostEvAmount) {
 							if (!player.party[target[3]].evs) player.party[target[3]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
@@ -802,7 +921,8 @@ exports.commands = {
 							player.bag[target[0]][target[1]]--;
 							Db.players.set(user.userid, player);
 						}
-						return user.console.update(user.console.curScreen[0], user.console.next(true), null);
+						let r = user.console.next(true);
+						return user.console.update((r[0] || user.console.curScreen[0]), (r[1] || user.console.curScreen[1]), (r[2] || user.console.curScreen[2]));
 					}
 				}
 			}
@@ -810,6 +930,7 @@ exports.commands = {
 		},
 		pokemon: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
+			if (user.console.queueAction) return;
 			if (user.console.queue.length) return;
 			target = target.split(',');
 			target = target.map(data => {
@@ -868,12 +989,9 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return this.sendReply('Not Avaliable');
 		},
-		back: function (target, room, user) {
-			if (!user.console || user.console.gameId !== 'SGgame') return;
-			user.console.update(user.console.prevScreen[0], user.console.prevScreen[1], user.console.prevScreen[2]);
-		},
 		pc: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
+			if (user.console.queueAction) return;
 			if (user.console.queue.length) return; // No PC while talking
 			target = target.split(',');
 			target = target.map(data => {
@@ -887,31 +1005,31 @@ exports.commands = {
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
 			let orders = {};
 			if (target[0].split('|')[0] === 'party' && slot && Db.players.get(user.userid).party.length > 1 && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 6 && !target[2]) {
-				orders = {deposit: true, release: true, back: true};
+				orders = {deposit: true, release: true, back: '/sggame pc ' + box};
 			}
 			if (slot && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 30 && Db.players.get(user.userid).pc[Number(box) - 1][Number(slot)] && !target[2] && target[0].split('|')[0] !== 'party') {
-				orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: true};
+				orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: '/sggame pc ' + box};
 			}
-			if (target[2] === 'release') orders.back = true;
-			if ((slot || Number(slot) === 0) && !target[2]) orders.back = true;
+			if (target[2] === 'release') orders.back = '/sggame pc ' + target[0] + ', ' + target[1];
+			if ((slot || Number(slot) === 0) && !target[2]) orders.back = '/sggame pc ' + box;
 			switch (target[2]) {
 			case 'withdraw':
 				if (target[0].split('|')[0] === 'party') {
 					target[2] = '';
-					orders = {deposit: (Db.players.get(user.userid).party.length > 1), release: (Db.players.get(user.userid).party.length > 1), back: true};
+					orders = {deposit: (Db.players.get(user.userid).party.length > 1), release: (Db.players.get(user.userid).party.length > 1), back: '/sggame pc ' + box};
 				}
 				break;
 			case 'deposit':
 				if (target[0].split('|')[0] !== 'party') {
 					target[2] = '';
-					orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: true};
+					orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: '/sggame pc ' + box};
 				}
 				break;
 			case 'release':
 			case 'confirmrelease':
 				if (target[0].split('|')[0] === 'party' && Db.players.get(user.userid).party.length <= 1) {
 					target[2] = '';
-					orders = {back: true};
+					orders = {back: '/sggame pc ' + box};
 				}
 				break;
 			}
@@ -942,10 +1060,11 @@ exports.commands = {
 		nicknamehelp: ["/sggame nickname [party slot], [new nickname] - Set a pokemon's nickname. The pokemon needs to be in your party, and party slot should be the number of the slot the pokemon is in (1-6)."],
 	},
 	confirmpickstarter: 'pickstarter',
+	cancelpickstarter: 'pickstarter',
 	pickstarter: function (target, room, user, connection, cmd) {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
 		let starters = ['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet', 'Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten', 'Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio', 'Pikachu', 'Eevee'];
-		if (!target || starters.indexOf(target) === -1) return false;
+		if ((!target || starters.indexOf(target) === -1) && cmd !== 'cancelpickstarter') return false;
 		let type, typeColor;
 		if (starters.indexOf(target) <= 6) {
 			type = "Grass";
@@ -965,13 +1084,21 @@ exports.commands = {
 		}
 		switch (cmd) {
 		case 'pickstarter':
-			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/sggame back'>No</button></div>", null);
+			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/cancelpickstarter'>No</button></div>", null);
+			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 20, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
 			user.console.lastNextAction = null;
+			if (user.lastCommand) delete user.lastCommand;
 			this.parse('/sggame next');
+			break;
+		case 'cancelpickstarter':
+			if (user.lastCommand !== 'pickstarter') return;
+			delete user.lastCommand;
+			user.console.update(user.console.prevScreen[0], user.console.prevScreen[1], user.console.prevScreen[2]);
+			break;
 		}
 	},
 	throwpokeball: function (target, room, user) {

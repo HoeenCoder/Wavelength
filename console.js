@@ -22,7 +22,7 @@ class Console {
 		}
 		defaultInfo += '<br/><button name="send" value="/console kill" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>Shutdown</u></button></div>';
 		this.defaultHTML = html || defaultInfo;
-		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button></center>';
+		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button></center>';
 	}
 	init() {
 		Users(this.userid).sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole());

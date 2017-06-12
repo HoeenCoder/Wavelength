@@ -260,12 +260,16 @@ exports.SG = {
 			data += ['Bashful', 'Docile', 'Hardy', 'Quirky', 'Serious'][Math.floor(Math.random() * 5)] + "||";
 		}
 		let gender = Math.random();
-		if (pokemon.genderRatio.M > gender) {
-			gender = "M";
-		} else if (pokemon.genderRatio.M !== 0 && pokemon.genderRatio.F !== 0) {
-			gender = "F";
+		if (pokemon.gender) {
+			gender = pokemon.gender;
 		} else {
-			gender = "";
+			if (pokemon.genderRatio.M > gender) {
+				gender = "M";
+			} else if (pokemon.genderRatio.M !== 0 && pokemon.genderRatio.F !== 0) {
+				gender = "F";
+			} else {
+				gender = "";
+			}
 		}
 		data += gender + "|";
 		if ((pokemon.eggGroups[0] === 'Undiscovered' || pokemon.species === 'Manaphy') && !pokemon.prevo && !pokemon.nfe && pokemon.species !== 'Unown' && pokemon.baseSpecies !== 'Pikachu') {
@@ -451,6 +455,7 @@ exports.SG = {
 		if (!(trigger in {'level': 1, 'item': 1, 'trade': 1})) return false;
 		if (!pokemon || typeof pokemon !== 'object' || !pokemon.species) return false;
 		if (!toId(userid)) return false;
+		if (pokemon.item === 'everstone') return false;
 		userid = toId(userid);
 		let evoData = this.getEvoData(pokemon);
 		if (!evoData || !evoData.evolvesTo) return false;
@@ -477,7 +482,7 @@ exports.SG = {
 				if (types && types.length) continue;
 			}
 			if (evoData.location && (!options || options.location !== evoData.location)) continue;
-			if (evoData.item && (!options || options.item !== evoData.location)) continue;
+			if (evoData.item && (!options || options.item !== evoData.item)) continue;
 			if (evoData.gender && pokemon.gender !== evoData.gender) continue;
 			if (evoData.partner && (!options || options.partner !== evoData.partner)) continue;
 			if (evoData.stat) {
@@ -545,6 +550,18 @@ exports.SG = {
 			}
 		}
 		return (valid.length ? valid.join('|') : false); // Incase of shedinja return the two evos joined with "|"
+	},
+	/**
+	 * Get the required evolution item for the prevo to evolve into the provided pokemon
+	 * @param {String} pokemon
+	 * @return {String|Boolean} item or false
+	 */
+	getEvoItem: function (pokemon) {
+		let data = this.getEvoData(pokemon);
+		if (!data) return false;
+		if (data.hold) return data.hold;
+		if (data.item) return data.item;
+		return false;
 	},
 	itemData: itemData,
 	getItem: function (id) {

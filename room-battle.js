@@ -524,7 +524,7 @@ class Battle {
 				player.party[raw[2]].happiness += item.use.happiness;
 			}
 			Db.players.set(raw[0], player);
-			if (!raw[3]) Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
+			if (!raw[3] && Users(raw[0]).console.curPane === 'bag') Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
 			break;
 		case 'updateExp':
 			let data = lines[2].split(']');
@@ -566,8 +566,20 @@ class Battle {
 						}
 					}
 					// Evolution
-					// TODO
 					// Add the evo array onto the end of the move array
+					let evos = SG.canEvolve(gameObj.party[cur[0]], "level", userid, {location: null}); // TODO locations
+					if (evos) {
+						evos = evos.split('|');
+						if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
+							user.console.shed = true;
+							evos.splice(evos.indexOf('shedinja'), 1);
+						}
+						evos = evos[0];
+						//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
+						let take = SG.getEvoItem(evos);
+						actions.push("evo|" + cur[0] + "|" + evos + "|" + (take || ''));
+						run = true;
+					}
 				}
 			}
 			Db.players.set(userid, gameObj);
@@ -575,7 +587,10 @@ class Battle {
 			for (let i = 0; i < actions.length; i++) {
 				user.console.queue.unshift(actions[i]);
 			}
-			if (run) user.console.update(null, user.console.next(), null);
+			if (run) {
+				let r = user.console.next();
+				user.console.update(r[0], r[1], r[2]);
+			}
 			break;
 		}
 		Monitor.activeIp = null;

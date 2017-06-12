@@ -2749,6 +2749,7 @@ class Battle extends Dex.ModdedDex {
 				this.add('message', msgs[result]);
 				this[side].pokemon[0].addVolatile('mustrecharge');
 				this.add('');
+				if (this[opp].choice.actions.length) this.commitDecisions();
 			}
 			break;
 		}
@@ -2826,6 +2827,7 @@ class Battle extends Dex.ModdedDex {
 					this.add('message', this[side].name + " used a " + item.name + "!");
 					this.send('takeitem', userid + "|" + item.id + "|" + raw2[2]);
 					this[side].pokemon[0].addVolatile('mustrecharge');
+					if (this[(side === 'p1' ? 'p2' : 'p1')].choice.actions.length) this.commitDecisions();
 				}
 			}
 			break;
