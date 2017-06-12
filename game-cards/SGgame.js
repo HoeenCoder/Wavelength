@@ -2,7 +2,7 @@
 
 class SGgame extends Console.Console {
 	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white);', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
+		super(user, room, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
 		this.version = '(Alpha) 1.0';
@@ -72,7 +72,7 @@ class SGgame extends Console.Console {
 			}
 			poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
 			this.queueAction = msg;
-			return ['background: linear-gradient(blue, white);', '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', null];
+			return ['background: linear-gradient(blue, white); color: #000;', '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', null];
 			//break;
 		default:
 			console.log('Invalid type: ' + type + '. While running (console).next()');
@@ -1090,7 +1090,7 @@ exports.commands = {
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 20, ability: 0, ot: user.userid})));
+			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
 			user.console.lastNextAction = null;
 			if (user.lastCommand) delete user.lastCommand;
