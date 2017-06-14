@@ -288,7 +288,7 @@ exports.SG = {
 				data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
 			}
 		}
-		if (Math.ceil(Math.random() * 4096) === 1) {
+		if (Math.ceil(Math.random() * 4096) === 1 || (exact && exact.shiny)) {
 			data += "S|";
 		} else {
 			data += "|";

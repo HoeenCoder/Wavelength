@@ -271,6 +271,7 @@ class SGgame extends Console.Console {
 			for (let iv in pokemon.ivs) {
 				output += '<b>' + iv + '</b>: ' + pokemon.ivs[iv] + ' / 31<br/>';
 			}
+			output += '<br/><b>Nature</b>: ' + pokemon.nature + '<br/>';
 			output += '</div></div>';
 			break;
 		case 'move':
@@ -548,7 +549,7 @@ exports.commands = {
 	playalpha: function (target, room, user, connection, cmd) {
 		if (cmd === 'resetalpha' && user.console) {
 			user.lastCommand = 'resetalpha';
-			return user.console.update(false, '<h2><center>Are You sure ?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/cancelresetalpha">No</button>', false);
+			return user.console.update(false, '<h2><center>Are you sure?<br /><button class="button" name="send" value="/confirmresetalpha">Yes</button> <button class="button" name="send" value="/cancelresetalpha">No</button>', false);
 		}
 		if (cmd === 'resetalpha') return; // User didnt have a console setup.
 		if (cmd === 'cancelresetalpha') {
@@ -567,10 +568,10 @@ exports.commands = {
 			user.console.update('background-color: #6688AA;', htm, null);
 		} else if (cmd === 'confirmresetalpha') {
 			// New Game
-			user.console.queue = ['text|Welcome to the world of Pokemon!<br/>I\'m HoeenHero, one of the programmers for this project. (click the star to continue)',
-				'text|We\'ve been working hard on this project, but were still not even close to finished, were only in ' + user.console.version + ' after all!',
-				'text|Tell us what you think about it, and any ideas you come up with too! We would love to hear them. Any help with the project is also appreciated, code, spriting, even just writing raw data when we need it.',
-				'text|Well thats enough from me, lets get you started!<br/>Pick a starter:'];
+			user.console.queue = ["text|Welcome to the world of Pokemon!<br/>I'm HoeenHero, the creator and main programmer of this project. (Click the star to continue)",
+				"text|The developers have been working hard on this project, but we're still not even close to finished! We're only in " + user.console.version + ", after all!",
+				"text|Tell us what you think about it, and any ideas you come up with, too! We would love to hear them. Any help with the project is also appreciated; coding, spriting, or even just writing raw data when we need it.",
+				"text|Well, that's enough from me. Let's get you started!<br/>Pick a starter:"];
 			let msg = '';
 			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'], ['Pikachu'], ['Eevee']];
 			for (let i = 0; i < starters.length; i++) {
@@ -585,7 +586,7 @@ exports.commands = {
 				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				user.console.callback = null;
 			};
-			user.console.queue.push('text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname</button><br/>I\'ll leave you to it now.|callback');
+			user.console.queue.push(`text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname.</button><br/>I'll leave you to it now.|callback`);
 			user.console.init();
 			this.parse('/sggame next');
 		} else {
@@ -598,13 +599,13 @@ exports.commands = {
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
-			user.console.queue = ['text|Welcome back.<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
+			user.console.queue = ['text|Welcome back!<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
 			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			this.parse('/sggame next');
 		}
 	},
-	wild: function (target, room, user) {
+	wild: function (target, room, user, connection) {
 		if (user.console.queue.length) return;
 		if (user.console.queueAction) return;
 		if (user.console.curPane && user.console.curPane !== 'wild') return;
@@ -617,6 +618,7 @@ exports.commands = {
 					return;
 				}
 			}
+			if (Monitor.countPokemonGeneration(connection.ip || connection.latestIp, connection)) return false;
 			Users('sgserver').wildTeams[user.userid] = SG.makeWildPokemon(false, SG.teamAverage(Db.players.get(user.userid).party));
 			return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
 		} else {
@@ -673,7 +675,7 @@ exports.commands = {
 				obj.party[Number(action[1])].moves.push(toId(action[2]));
 				Db.players.set(user.userid, obj);
 				user.console.queueAction = null;
-				user.console.queue.unshift('text|1, 2, 3 and... POOF!<br/>' + (pokemon.name || pokemon.species) + ' forgot ' + target + ' and learned ' + action[2] + '!');
+				user.console.queue.unshift('text|1, 2, 3, and... POOF!<br/>' + (pokemon.name || pokemon.species) + ' forgot ' + target + ' and learned ' + action[2] + '!');
 				user.console.lastNextAction = null;
 				user.console.curPane = null;
 				return this.parse('/sggame next');
@@ -690,7 +692,7 @@ exports.commands = {
 			} else if (target === 'evolve') {
 				let obj = Db.players.get(user.userid);
 				let temp = Dex.getTemplate(action[2]);
-				if (!temp.exists) throw new Error('Unable to evolve into non-existant pokemon: ' + action[2]);
+				if (!temp.exists) throw new Error('Unable to evolve into non-existent pokemon: ' + action[2]);
 				if (pokemon.name === pokemon.species) obj.party[Number(action[1])].name = action[2];
 				obj.party[Number(action[1])].species = action[2];
 				obj.party[Number(action[1])].exp = SG.calcExp(action[2], pokemon.level);
@@ -1051,7 +1053,7 @@ exports.commands = {
 			if (!player) return this.errorReply("You need to advance farther in the game before you can use this command!");
 			if (!player.party[target[0]]) return this.errorReply("There is no pokemon in slot #" + (target[0] + 1) + " in your party.");
 			if (target[1].trim().length > 12) return this.errorReply("Nicknames cannot be more than 12 characters.");
-			if (player.party[target[0]].ot !== user.userid) return this.errorReply("You can't change the nickname of a pokemon that your not the original trainer of!");
+			if (player.party[target[0]].ot !== user.userid) return this.errorReply("You can't change the nickname of a pokemon that you're not the original trainer of!");
 			let result = player.nickname(target[1], target[0]);
 			if (!result) {
 				return this.errorReply("The nickname you choose is not allowed.");
@@ -1060,6 +1062,16 @@ exports.commands = {
 			}
 		},
 		nicknamehelp: ["/sggame nickname [party slot], [new nickname] - Set a pokemon's nickname. The pokemon needs to be in your party, and party slot should be the number of the slot the pokemon is in (1-6)."],
+		'': function (target, room, user, connection, cmd, message) {
+			return this.parse('/help sggame');
+		},
+	},
+	sggamehelp: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReplyBox(
+			"Wanna know how to play SGGame? <br/>" +
+			"<a href=\"https://pastebin.com/raw/GK3fsSqS\">Check it out here!</a>"
+		);
 	},
 	confirmpickstarter: 'pickstarter',
 	cancelpickstarter: 'pickstarter',
@@ -1086,7 +1098,7 @@ exports.commands = {
 		}
 		switch (cmd) {
 		case 'pickstarter':
-			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do You Want to Pick <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/cancelpickstarter'>No</button></div>", null);
+			user.console.update(null, "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do you want to pick the <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/cancelpickstarter'>No</button></div>", null);
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':

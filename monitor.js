@@ -77,12 +77,17 @@ const Monitor = module.exports = {
 		Monitor.battlePreps.clear();
 		Monitor.battles.clear();
 		Monitor.connections.clear();
+		Monitor.comBattles.clear();
+		Monitor.pokemonGenerations.clear();
 		Dnsbl.cache.clear();
 	},
 	connections: new TimedCounter(),
 	battles: new TimedCounter(),
 	battlePreps: new TimedCounter(),
 	groupChats: new TimedCounter(),
+	comBattles: new TimedCounter(),
+	pokemonGenerations: new TimedCounter(),
+	gameQueue: [],
 	networkUse: {},
 	networkCount: {},
 	hotpatchLock: false,
@@ -127,6 +132,26 @@ const Monitor = module.exports = {
 		if (count > 12) {
 			if (Punishments.sharedIps.has(ip) && count < 120) return;
 			connection.popup(`Due to high load, you are limited to 12 battles and team validations every 3 minutes.`);
+			return true;
+		}
+	},
+	/**
+	 * Counts battles VS the COM. Returns true if too much
+	 */
+	countComBattle: function (ip, connection) {
+		let count = this.comBattles.increment(ip, 60 * 1000)[0];
+		if (count > 1) {
+			connection.popup(`Due to high load, you are limited to 1 SGgame battle VS the COM (SG Server) every minute.`);
+			return true;
+		}
+	},
+	/**
+	 * Count the number of times SG.makeWildPokemon() is called for this IP
+	 */
+	countPokemonGeneration: function (ip, connection) {
+		let count = this.pokemonGenerations.increment(ip, 30 * 1000)[0];
+		if (count > 3) {
+			connection.popup(`Due to high load, you are limited to generating 3 wild pokemon every 30 seconds.`);
 			return true;
 		}
 	},
@@ -196,6 +221,26 @@ const Monitor = module.exports = {
 		}
 
 		return bytes;
+	},
+	/**
+	 * To prevent too many wild pokemon / trainer battles at once, delay some if 3+ are in progress
+	 */
+	addGame: async function (userid, connection) {
+		if (this.gameQueue.indexOf(userid) > -1) return false; // Already queued
+		let waitTime = Math.floor(this.gameQueue.length / 3);
+		this.gameQueue.push(userid);
+		if (waitTime > 0) {
+			connection.popup(`Due to high load, your game has been queued. It will automatically start in ${waitTime} minute(s).`);
+			await this.sleep(waitTime * 60 * 1000);
+		}
+		return true;
+	},
+	sleep: function (interval) {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(true);
+			}, interval);
+		});
 	},
 };
 

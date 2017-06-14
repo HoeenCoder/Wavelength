@@ -1231,7 +1231,7 @@ class User {
 			this.inRooms.delete(room.id);
 		}
 	}
-	prepBattle(formatid, type, connection, supplementaryBanlist) {
+	async prepBattle(formatid, type, connection, supplementaryBanlist) {
 		// all validation for a battle goes through here
 		if (!connection) connection = this;
 		if (!type) type = 'challenge';
@@ -1249,13 +1249,18 @@ class User {
 				connection.popup('You need to start SGgame before you can play this format.');
 				return Promise.resolve(false);
 			}
-			if (type === 'challenge' && Dex.getFormat(formatid).isWildEncounter) {
-				connection.popup('You cannot challenge users to wild pokemon battles.');
-				return Promise.resolve(false);
-			}
 			for (let key of this.inRooms) {
 				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && this.games.has(key) && Dex.getFormat(formatid).isWildEncounter) {
 					connection.popup('Your already in a SGgame battle.');
+					return Promise.resolve(false);
+				}
+			}
+			if (Dex.getFormat(formatid).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+				if (type === 'challenge') {
+					connection.popup('You cannot challenge users to wild pokemon or trainer battles.');
+					return Promise.resolve(false);
+				}
+				if (Monitor.countComBattle(connection.ip || connection.latestIp, connection)) {
 					return Promise.resolve(false);
 				}
 			}
@@ -1277,6 +1282,14 @@ class User {
 		if (type === 'search' && this.searching[formatid]) {
 			connection.popup(`You are already searching a battle in that format.`);
 			return Promise.resolve(false);
+		}
+		if (Dex.getFormat(formatid).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+			let response = await Monitor.addGame(this.userid, connection);
+			if (!response) {
+				connection.popup(`Your already queued for a wild pokemon OR trainer battle!`);
+				return Promise.resolve(false);
+			}
+			this.team = Dex.packTeam(Db.players.get(this.userid).party);
 		}
 		return TeamValidator(formatid, supplementaryBanlist).prepTeam(this.team, this.locked || this.namelocked).then(result => this.finishPrepBattle(connection, result));
 	}

@@ -469,7 +469,7 @@ exports.Formats = [
 	},
 	{
 		name: "[Gen 7] Wild Pokemon (Alpha)",
-		desc: ["Wild Pok&eacute;mon battles for the SG game project (WIP)"],
+		desc: ["Wild Pok&eacute;mon battles for the SG game project. (WIP)"],
 		rated: false,
 		useSGgame: true,
 		isWildEncounter: true,
