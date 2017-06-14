@@ -32,7 +32,7 @@ exports.commands = {
 		if (!tarUser.registered) return this.errorReply('Only registered users can be permalocked.');
 		if (Db.perma.get(tarUser.userid, 0) >= 5) {
 			if (Db.perma.get(tarUser.userid, 0) === 5) return this.errorReply(tarUser.name + ' is already permalocked.');
-			if (cmd !== 'forcepermalock') return this.errorReply(tarUser.name + ' is permabanned and cannot be permalocked. If you want to change thier permaban to a permalock, please use /forcepermalock');
+			if (cmd !== 'forcepermalock') return this.errorReply(tarUser.name + ' is permabanned and cannot be permalocked. If you want to change their permaban to a permalock, please use /forcepermalock');
 		}
 		if (tarUser.trusted && cmd !== 'forcepermalock') return this.errorReply(tarUser.name + ' is a trusted user. If your sure you want to permalock them, please use /forcepermalock');
 		Db.perma.set(tarUser.userid, 5);
