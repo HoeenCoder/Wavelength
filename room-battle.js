@@ -452,7 +452,10 @@ class Battle {
 					if (Monitor.gameQueue.indexOf(toId(this.room.p2.name)) > -1) Monitor.gameQueue.splice(Monitor.gameQueue.indexOf(toId(this.room.p2.name)), 1);
 					let notCom = toId(this.room.p1.name);
 					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
-					if (Dex.getFormat(this.format).isWildEncounter) Users('sgserver').wildTeams[notCom] = null;
+					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					setTimeout(() => {
+						this.room.destroy();
+					}, 10000);
 				}
 			}
 			this.checkActive();
