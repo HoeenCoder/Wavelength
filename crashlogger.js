@@ -15,9 +15,20 @@ const LOCKDOWN_PERIOD = 30 * 60 * 1000; // 30 minutes
 
 const logPath = require('path').resolve(__dirname, 'logs/errors.txt');
 let lastCrashLog = 0;
+/** @type {any} */
 let transport;
+let hadException = false;
 
-exports = module.exports = function (err, description, data) {
+/**
+ * Logs when a crash happens to console, then e-mails those who are configured
+ * to receive them.
+ *
+ * @param {Error} err
+ * @param {string} description
+ * @param {?Object} [data = null]
+ * @return {?string}
+ */
+module.exports = function crashLogger(err, description, data = null) {
 	const datenow = Date.now();
 
 	let stack = (err.stack || err);
@@ -30,10 +41,10 @@ exports = module.exports = function (err, description, data) {
 
 	console.error(`\nCRASH: ${stack}\n`);
 	let out = require('fs').createWriteStream(logPath, {'flags': 'a'});
-	out.on("open", fd => {
+	out.on('open', fd => {
 		out.write(`\n${stack}\n`);
 		out.end();
-	}).on("error", err => {
+	}).on('error', /** @param {Error} err */ err => {
 		console.error(`\nSUBCRASH: ${err.stack}\n`);
 	});
 
@@ -49,16 +60,18 @@ exports = module.exports = function (err, description, data) {
 				from: Config.crashguardemail.from,
 				to: Config.crashguardemail.to,
 				subject: Config.crashguardemail.subject,
-				text: `${description} crashed ${exports.hadException ? "again " : ""}with this stack trace:\n${stack}`,
-			}, err => {
+				text: `${description} crashed ${hadException ? 'again ' : ''}with this stack trace:\n${stack}`,
+			}, /** @param {?Error} err */ err => {
 				if (err) console.error(`Error sending email: ${err}`);
 			});
 		}
 	}
 
-	exports.hadException = true;
+	hadException = true;
 	if (process.uptime() * 1000 < LOCKDOWN_PERIOD) {
 		// lock down the server
 		return 'lockdown';
 	}
+
+	return null;
 };

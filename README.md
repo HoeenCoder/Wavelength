@@ -1,4 +1,4 @@
-﻿Spacialgaze Server @ Pokémon Showdown
+Spacialgaze Server @ Pokémon Showdown
 ========================================================================
 
 Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repository][2] | [PS Dex repository][3]
@@ -100,8 +100,13 @@ This server is brought to you and maintained by the following people:
 
 Owners
 
-[HoeenCoder](https://github.com/HoeenCoder) | [Mystifi](https://github.com/Mystifi)
+[HoeenCoder](https://github.com/HoeenCoder)
+[Mystifi](https://github.com/Mystifi)
 
+Contributors
+
+[Insist](https://github.com/DeathlyPlays)
+[VXN](https://github.com/vxxn)
 
 Special thanks
 

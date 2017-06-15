@@ -354,6 +354,7 @@ class Battle {
 		Rooms.global.battleCount += (active ? 1 : 0) - (this.active ? 1 : 0);
 		this.room.active = active;
 		this.active = active;
+		if (Rooms.global.battleCount === 0) Rooms.global.automaticKillRequest();
 	}
 	choose(user, data) {
 		const player = this.players[user];
@@ -686,7 +687,7 @@ if (process.send && module === process.mainModule) {
 		});
 	}
 
-	require('./repl').start('sim-', process.pid, cmd => eval(cmd));
+	require('./repl').start(`sim-${process.pid}`, cmd => eval(cmd));
 
 	let Battles = new Map();
 
