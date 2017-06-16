@@ -100,13 +100,13 @@ This server is brought to you and maintained by the following people:
 
 Owners
 
-[HoeenCoder](https://github.com/HoeenCoder)
-[Mystifi](https://github.com/Mystifi)
+- [HoeenCoder](https://github.com/HoeenCoder)
+- [Mystifi](https://github.com/Mystifi)
 
 Contributors
 
-[Insist](https://github.com/DeathlyPlays)
-[VXN](https://github.com/vxxn)
+- [Insist](https://github.com/DeathlyPlays)
+- [VXN](https://github.com/vxxn)
 
 Special thanks
 
