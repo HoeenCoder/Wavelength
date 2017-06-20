@@ -1299,14 +1299,12 @@ exports.BattleMovedex = {
 		flags: {snatch: 1, distance: 1},
 		onPrepareHit: function (pokemon, source) {
 			this.add('-activate', source, 'move: Various');
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Recover", source);
 			let side = pokemon.side;
 			for (let i = 0; i < side.pokemon.length; i++) {
 				side.pokemon[i].cureStatus();
 			}
-		},
-		onTryHit: function (pokemon, target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Recover", source);
 		},
 		secondary: false,
 		target: "adjacentAllyOrSelf",
