@@ -488,7 +488,7 @@ class UNOgame extends Rooms.RoomGame {
 	}
 
 	onWin(player) {
-		this.sendToRoom(`|raw|<div class="broadcast-green">Congratulations to ${SG.nameColor(player.name, true, true)} for winning the game of UNO!</div>`, true);
+		this.sendToRoom(`|raw|<div class="broadcast-green">Congratulations to ${player.name} for winning the game of UNO!</div>`, true);
 		let targetUserid = toId(player.name);
 		let prize = 2;
 		prize += Math.floor(this.playerCount / 5);
