@@ -353,6 +353,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 1, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "thunder", "agility"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		tier: "NU",
 	},
 	pikachuhoenn: {
@@ -360,6 +361,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 6, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "thunder", "irontail"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		tier: "NU",
 	},
 	pikachusinnoh: {
@@ -367,6 +369,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 10, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "irontail", "volttackle"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		tier: "NU",
 	},
 	pikachuunova: {
@@ -374,6 +377,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 14, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "irontail", "volttackle"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		tier: "NU",
 	},
 	pikachukalos: {
@@ -381,6 +385,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 17, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "irontail", "electroball"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		tier: "NU",
 	},
 	pikachualola: {
@@ -388,6 +393,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 20, "nature": "Hardy", "moves":["thunderbolt", "quickattack", "irontail", "electroball"]},
 		],
 		eventOnly: true,
+		gen: 7,
 		isUnreleased: true,
 		tier: "Unreleased",
 	},
@@ -939,7 +945,7 @@ exports.BattleFormatsData = {
 		tier: "NU",
 	},
 	mukalola: {
-		randomBattleMoves: ["curse", "gunkshot", "knockoff", "poisonjab", "shadowsneak", "stoneedge"],
+		randomBattleMoves: ["curse", "gunkshot", "knockoff", "poisonjab", "shadowsneak", "stoneedge", "pursuit"],
 		randomDoubleBattleMoves: ["gunkshot", "knockoff", "stoneedge", "snarl", "protect", "poisonjab", "shadowsneak"],
 		tier: "UU",
 	},
@@ -2115,7 +2121,7 @@ exports.BattleFormatsData = {
 			{"generation": 4, "level": 30, "gender": "M", "nature": "Jolly", "moves":["fakeout", "iceshard", "nightslash", "brickbreak"], "pokeball": "cherishball"},
 			{"generation": 6, "level": 48, "gender": "M", "perfectIVs": 2, "isHidden": false, "moves":["nightslash", "icepunch", "brickbreak", "xscissor"], "pokeball": "cherishball"},
 		],
-		tier: "BL",
+		tier: "UU",
 	},
 	teddiursa: {
 		randomBattleMoves: ["swordsdance", "protect", "facade", "closecombat", "firepunch", "crunch", "playrough", "gunkshot"],
@@ -2228,7 +2234,7 @@ exports.BattleFormatsData = {
 		randomBattleMoves: ["nastyplot", "darkpulse", "taunt", "fireblast", "hiddenpowergrass"],
 		randomDoubleBattleMoves: ["nastyplot", "darkpulse", "taunt", "heatwave", "hiddenpowergrass", "protect"],
 		requiredItem: "Houndoominite",
-		tier: "UU",
+		tier: "BL",
 	},
 	phanpy: {
 		randomBattleMoves: ["stealthrock", "earthquake", "iceshard", "headsmash", "knockoff", "seedbomb", "superpower", "playrough"],
@@ -2702,7 +2708,7 @@ exports.BattleFormatsData = {
 			{"generation": 3, "level": 100, "moves":["roar", "rest", "sleeptalk", "hypervoice"]},
 			{"generation": 3, "level": 50, "moves":["stomp", "screech", "hyperbeam", "roar"]},
 		],
-		tier: "NU",
+		tier: "BL3",
 	},
 	makuhita: {
 		randomBattleMoves: ["crosschop", "bulletpunch", "closecombat", "icepunch", "bulkup", "fakeout", "earthquake"],
@@ -2954,7 +2960,7 @@ exports.BattleFormatsData = {
 		randomBattleMoves: ["stealthrock", "fireblast", "earthpower", "ancientpower", "willowisp", "toxic"],
 		randomDoubleBattleMoves: ["fireblast", "earthpower", "heatwave", "eruption", "rockslide", "protect"],
 		requiredItem: "Cameruptite",
-		tier: "Unreleased",
+		tier: "OU",
 	},
 	torkoal: {
 		randomBattleMoves: ["shellsmash", "fireblast", "earthpower", "solarbeam", "stealthrock", "rapidspin", "yawn", "lavaplume"],
@@ -3202,7 +3208,7 @@ exports.BattleFormatsData = {
 		randomBattleMoves: ["destinybond", "taunt", "shadowclaw", "suckerpunch", "willowisp", "knockoff"],
 		randomDoubleBattleMoves: ["destinybond", "taunt", "shadowclaw", "suckerpunch", "willowisp", "knockoff", "protect"],
 		requiredItem: "Banettite",
-		tier: "Unreleased",
+		tier: "OU",
 	},
 	duskull: {
 		randomBattleMoves: ["willowisp", "shadowsneak", "painsplit", "substitute", "nightshade", "destinybond", "trickroom"],
@@ -6034,6 +6040,9 @@ exports.BattleFormatsData = {
 		tier: "LC",
 	},
 	steenee: {
+		eventPokemon: [
+			{"generation": 7, "level": 20, "nature": "Naive", "isHidden": false, "abilities":["leafguard"], "moves":["magicalleaf", "doubleslap", "sweetscent"], "pokeball": "cherishball"},
+		],
 		tier: "NFE",
 	},
 	tsareena: {

@@ -167,10 +167,13 @@ function cacheGroupData() {
 			`Please ensure that you update your config.js to the new format (see config-example.js, line 220).\n`
 		);
 	} else {
+		Config.punishgroups = Object.create(null);
 		Config.groups = Object.create(null);
 		Config.groupsranking = [];
 	}
+
 	let groups = Config.groups;
+	let punishgroups = Config.punishgroups;
 	let cachedGroups = {};
 
 	function cacheGroup(sym, groupData) {
@@ -197,6 +200,13 @@ function cacheGroupData() {
 		let numGroups = grouplist.length;
 		for (let i = 0; i < numGroups; i++) {
 			let groupData = grouplist[i];
+
+			// punish groups
+			if (groupData.punishgroup) {
+				punishgroups[groupData.id] = groupData;
+				continue;
+			}
+
 			groupData.rank = numGroups - i - 1;
 			groups[groupData.symbol] = groupData;
 			Config.groupsranking.unshift(groupData.symbol);
@@ -206,6 +216,22 @@ function cacheGroupData() {
 	for (let sym in groups) {
 		let groupData = groups[sym];
 		cacheGroup(sym, groupData);
+	}
+
+	// hardcode default punishgroups.
+	if (!punishgroups.locked) {
+		punishgroups.locked = {
+			name: 'Locked',
+			id: 'locked',
+			symbol: '‽',
+		};
+	}
+	if (!punishgroups.muted) {
+		punishgroups.muted = {
+			name: 'Muted',
+			id: 'muted',
+			symbol: '!',
+		};
 	}
 }
 cacheGroupData();
@@ -397,11 +423,8 @@ class User {
 		this.send(`|popup|` + message.replace(/\n/g, '||'));
 	}
 	getIdentity(roomid) {
-		if (this.locked) {
-			return '‽' + this.name;
-		}
-		if (this.namelocked) {
-			return '‽' + this.name;
+		if (this.locked || this.namelocked) {
+			return (Config.punishgroups && Config.punishgroups.locked ? Config.punishgroups.locked.symbol : '‽') + this.name;
 		}
 		if (roomid && roomid !== 'global') {
 			let room = Rooms(roomid);
@@ -409,7 +432,7 @@ class User {
 				throw new Error(`Room doesn't exist: ${roomid}`);
 			}
 			if (room.isMuted(this)) {
-				return '!' + this.name;
+				return (Config.punishgroups && Config.punishgroups.muted ? Config.punishgroups.muted.symbol : '!') + this.name;
 			}
 			if ((!room.auth || !room.auth[this.userid]) && this.customSymbol) return this.customSymbol + this.name;
 			return room.getAuth(this) + this.name;
@@ -552,7 +575,7 @@ class User {
 			// \u2E80-\u32FF              CJK symbols
 			// \u3400-\u9FFF              CJK
 			// \uF900-\uFAFF\uFE00-\uFE6F CJK extended
-			name = name.replace(/[^a-zA-Z0-9 \/\\.~()<>^*%&=+$@#_'?!"\u00A1-\u00BF\u00D7\u00F7\u02B9-\u0362\u2012-\u2027\u2030-\u205E\u2050-\u205F\u2190-\u23FA\u2500-\u2BD1\u2E80-\u32FF\u3400-\u9FFF\uF900-\uFAFF\uFE00-\uFE6F-]+/g, '');
+			name = name.replace(/[^a-zA-Z0-9 /\\.~()<>^*%&=+$@#_'?!"\u00A1-\u00BF\u00D7\u00F7\u02B9-\u0362\u2012-\u2027\u2030-\u205E\u2050-\u205F\u2190-\u23FA\u2500-\u2BD1\u2E80-\u32FF\u3400-\u9FFF\uF900-\uFAFF\uFE00-\uFE6F-]+/g, '');
 
 			// blacklist
 			// \u00a1 upside-down exclamation mark (i)
@@ -1093,17 +1116,16 @@ class User {
 		});
 		this.inRooms.clear();
 	}
-	getAlts(includeTrusted, forPunishment) {
-		return this.getAltUsers(includeTrusted, forPunishment).map(user => user.getLastName());
-	}
 	getAltUsers(includeTrusted, forPunishment) {
 		let alts = [];
 		if (forPunishment) alts.push(this);
+		let ips = Object.keys(this.ips);
+		if (forPunishment) ips = ips.filter(ip => !Punishments.sharedIps.has(ip));
 		users.forEach(user => {
 			if (user === this) return;
 			if (!forPunishment && !user.named && !user.connected) return;
 			if (!includeTrusted && user.trusted) return;
-			for (let myIp in this.ips) {
+			for (let myIp of ips) {
 				if (myIp in user.ips) {
 					alts.push(user);
 					return;

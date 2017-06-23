@@ -14,12 +14,11 @@
   },
   "optionalDependencies": {
     "cloud-env": "0.2.2",
-    "http-proxy": "1.16.2",
-    "nodemailer": "4.0.1",
     "node-static": "0.7.9"
   },
   "nonDefaultDependencies": {
-    "ofe": "0.1.2"
+    "nodemailer": "4.0.1",
+    "ofe": "0.5.1"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -27,7 +26,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ spacialgaze-plugins/ config/ data/ dev-tools/ mods/ tournaments/ test/ && mocha"
+    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ spacialgaze-plugins/ config/ data/ dev-tools/ mods/ sim/ tournaments/ test/ && mocha"
   },
   "bin": "./pokemon-showdown",
   "homepage": "http://pokemonshowdown.com",
@@ -55,7 +54,7 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^3.2.2",
+    "eslint": "^4.0.0",
     "mocha": "^3.0.0",
     "mock-fs-require-fix": "~1.0.0"
   }

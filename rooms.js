@@ -341,7 +341,7 @@ class GlobalRoom {
 				writing = true;
 
 				let data = JSON.stringify(this.chatRoomData)
-					.replace(/\{"title"\:/g, '\n{"title":')
+					.replace(/\{"title":/g, '\n{"title":')
 					.replace(/\]$/, '\n]');
 
 				fs.writeFile('config/chatrooms.json.0', data, () => {
@@ -439,6 +439,36 @@ class GlobalRoom {
 		}
 		return this.formatList;
 	}
+	get configRankList() {
+		if (Config.nocustomgrouplist) return '';
+
+		// putting the resultant object in Config would enable this to be run again should config.js be reloaded.
+		if (Config.rankList) {
+			return Config.rankList;
+		}
+		let rankList = [];
+
+		for (let rank in Config.groups) {
+			if (!Config.groups[rank] || !rank) continue;
+
+			let tarGroup = Config.groups[rank];
+			let groupType = tarGroup.addhtml || (!tarGroup.mute && !tarGroup.root) ? 'normal' : (tarGroup.root || tarGroup.declare) ? 'leadership' : 'staff';
+
+			rankList.push({symbol: rank, name: (Config.groups[rank].name || null), type: groupType}); // send the first character in the rank, incase they put a string several characters long
+		}
+
+		const typeOrder = ['punishment', 'normal', 'staff', 'leadership'];
+
+		rankList = rankList.sort((a, b) => typeOrder.indexOf(b.type) - typeOrder.indexOf(a.type));
+
+		// add the punishment types at the very end.
+		for (let rank in Config.punishgroups) {
+			rankList.push({symbol: Config.punishgroups[rank].symbol, name: Config.punishgroups[rank].name, type: 'punishment'});
+		}
+
+		Config.rankList = '|customgroups|' + JSON.stringify(rankList) + '\n';
+		return Config.rankList;
+	}
 
 	getRoomList(filter) {
 		let rooms = [];
@@ -532,7 +562,7 @@ class GlobalRoom {
 
 	prepBattleRoom(format) {
 		//console.log('BATTLE START BETWEEN: ' + p1.userid + ' ' + p2.userid);
-		let roomPrefix = `battle-${toId(format)}-`;
+		let roomPrefix = `battle-${toId(Dex.getFormat(format).name)}-`;
 		let battleNum = this.lastBattle;
 		let roomid;
 		do {
@@ -638,7 +668,7 @@ class GlobalRoom {
 	}
 	onConnect(user, connection) {
 		let initdata = '|updateuser|' + user.name + '|' + (user.named ? '1' : '0') + '|' + user.avatar + '\n';
-		connection.send(initdata + this.formatListText);
+		connection.send(initdata + this.configRankList + this.formatListText);
 		if (this.chatRooms.length > 2) connection.send('|queryresponse|rooms|null'); // should display room list
 	}
 	onJoin(user, connection) {
@@ -805,7 +835,7 @@ class BattleRoom extends Room {
 		this.p2 = p2 || null;
 
 		this.rated = rated;
-		this.battle = new Rooms.RoomBattle(this, format, rated, options.supplementaryRuleset);
+		this.battle = new Rooms.RoomBattle(this, format, rated);
 		this.game = this.battle;
 
 		this.sideTicksLeft = [21, 21];
@@ -919,7 +949,7 @@ class BattleRoom extends Room {
 		}
 	}
 	logBattle(p1score, p1rating, p2rating) {
-		if (this.battle.supplementaryRuleset) return;
+		if (this.battle.supplementaryBanlist) return;
 		let logData = this.battle.logData;
 		if (!logData) return;
 		this.battle.logData = null; // deallocate to save space

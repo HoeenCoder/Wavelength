@@ -72,6 +72,19 @@ const PM = exports.PM = new ModlogManager({
 	isChatBased: true,
 });
 
+if (!process.send) {
+	PM.spawn();
+}
+
+if (process.send && module === process.mainModule) {
+	global.Config = require('../config/config');
+	global.Dex = require('../sim/dex');
+	global.toId = Dex.getId;
+	process.on('message', message => PM.onMessageDownstream(message));
+	process.on('disconnect', () => process.exit());
+	require('../repl').start('modlog', cmd => eval(cmd));
+}
+
 class SortedLimitedLengthList {
 	constructor(maxSize) {
 		this.maxSize = maxSize;
@@ -138,10 +151,10 @@ function runModlog(room, searchString, exactSearch, maxLines) {
 	if (!searchString) {
 		regexString = '.';
 	} else if (exactSearch) {
-		regexString = searchString.replace(/[\\.+*?()|\[\]{}\^$]/g, '\\$&');
+		regexString = searchString.replace(/[\\.+*?()|[\]{}^$]/g, '\\$&');
 	} else {
 		searchString = toId(searchString);
-		regexString = `\\b${searchString.split('').join('\\W*')}\\b`;
+		regexString = `\\b${searchString.split('').join('[\\W_]*')}\\b`;
 	}
 
 	let results = new SortedLimitedLengthList(maxLines);
@@ -190,7 +203,7 @@ function checkRoomModlog(path, regex, results) {
 		}
 	} while (startPos > 0);
 
-	fs.close(fd);
+	fs.close(fd, () => {});
 
 	return results;
 }
@@ -304,8 +317,10 @@ exports.commands = {
 			searchString = searchString.substring(1, searchString.length - 1);
 		}
 
-		PM.send(roomId, searchString, exactSearch, lines).then(response => connection.popup(prettifyResults(response, roomId, searchString, exactSearch, addModlogLinks, hideIps)));
-		if (cmd === 'timedmodlog') this.sendReply(`The modlog query took ${Date.now() - startTime} ms to complete.`);
+		PM.send(roomId, searchString, exactSearch, lines).then(response => {
+			connection.popup(prettifyResults(response, roomId, searchString, exactSearch, addModlogLinks, hideIps));
+			if (cmd === 'timedmodlog') this.sendReply(`The modlog query took ${Date.now() - startTime} ms to complete.`);
+		});
 	},
 	modloghelp: ["/modlog [roomid|all|public], [n] - Roomid defaults to current room.",
 		"If n is a number or omitted, display the last n lines of the moderator log. Defaults to 20.",

@@ -83,7 +83,7 @@ class Effect {
 		this.fullname = '';
 		/**
 		 * Effect type.
-		 * @type {'Effect' | 'Pokemon' | 'Move' | 'Item' | 'Ability' | 'Format' | 'Ruleset' | 'Weather' | 'Status'}
+		 * @type {'Effect' | 'Pokemon' | 'Move' | 'Item' | 'Ability' | 'Format' | 'Ruleset' | 'Weather' | 'Status' | 'Rule' | 'ValidatorRule'}
 		 */
 		this.effectType = 'Effect';
 		/**
@@ -133,19 +133,40 @@ class Format extends Effect {
 		super(data, moreData);
 		/** @type {string} */
 		this.mod = Tools.getString(this.mod) || 'gen6';
-		/** @type {'Format' | 'Ruleset'} */
+		/** @type {'Format' | 'Ruleset' | 'Rule' | 'ValidatorRule'} */
 		// @ts-ignore
 		this.effectType = Tools.getString(this.effectType) || 'Format';
 		/**
 		 * List of rule names.
 		 * @type {string[]}
 		 */
-		this.ruleset = this.ruleset;
+		this.ruleset = this.ruleset || [];
 		/**
-		 * List of banned effecdts.
+		 * Base list of rule names as specified in "./config/formats.js".
+		 * Used in a custom format to correctly display the altered ruleset.
 		 * @type {string[]}
 		 */
-		this.banlist = this.banlist;
+		this.baseRuleset = this.baseRuleset || [];
+		/**
+		 * List of banned effects.
+		 * @type {string[]}
+		 */
+		this.banlist = this.banlist || [];
+		/**
+		 * List of inherited banned effects to override.
+		 * @type {string[]}
+		 */
+		this.unbanlist = this.unbanlist || [];
+		/**
+		 * List of ruleset and banlist changes in a custom format.
+		 * @type {string[]}
+		 */
+		this.supplementaryBanlist = this.supplementaryBanlist || [];
+		/**
+		 * Table of rule names and banned effects.
+		 * @type {?{[mod: string]: string | boolean}}
+		 */
+		this.banlistTable = this.banlistTable;
 	}
 }
 
@@ -372,8 +393,8 @@ class Template extends Effect {
 		 */
 		this.genderRatio = this.genderRatio || (this.gender === 'M' ? {M:1, F:0} :
 			this.gender === 'F' ? {M:0, F:1} :
-			this.gender === 'N' ? {M:0, F:0} :
-			{M:0.5, F:0.5});
+				this.gender === 'N' ? {M:0, F:0} :
+					{M:0.5, F:0.5});
 
 		/**
 		 * Required item. Do not use this directly; see requiredItems.
@@ -426,11 +447,13 @@ class Template extends Effect {
  * @property {?1} bullet - Has no effect on Pokemon with the Ability Bulletproof.
  * @property {?1} charge - The user is unable to make a move between turns.
  * @property {?1} contact - Makes contact.
+ * @property {?1} dance - When used by a Pokemon, other Pokemon with the Ability Dancer can attempt to execute the same move.
  * @property {?1} defrost - Thaws the user if executed successfully while the user is frozen.
  * @property {?1} distance - Can target a Pokemon positioned anywhere in a Triple Battle.
  * @property {?1} gravity - Prevented from being executed or selected during Gravity's effect.
  * @property {?1} heal - Prevented from being executed or selected during Heal Block's effect.
  * @property {?1} mirror - Can be copied by Mirror Move.
+ * @property {?1} mystery - Unknown effect.
  * @property {?1} nonsky - Prevented from being executed or selected in a Sky Battle.
  * @property {?1} powder - Has no effect on Grass-type Pokemon, Pokemon with the Ability Overcoat, and Pokemon holding Safety Goggles.
  * @property {?1} protect - Blocked by Detect, Protect, Spiky Shield, and if not a Status move, King's Shield.
