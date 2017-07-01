@@ -52,7 +52,7 @@ exports.commands = {
 			if (Db.badgeData.has(badgeName)) return this.errorReply('This badge already exists.');
 			Db.badgeData.set(badgeName, [description, img]);
 			this.logModCommand(user.name + " created the badge '" + badgeName + ".");
-			Users.get(user.userid).popup('|modal||html|You have succesfully created the badge ' + '<img src ="' + img + '" width="16" height="16"> (' + badgeName + ')');
+			Users.get(user.userid).popup('|modal||html|You have successfully created the badge ' + '<img src ="' + img + '" width="16" height="16"> (' + badgeName + ')');
 			break;
 		case 'list':
 			if (!this.runBroadcast()) return;

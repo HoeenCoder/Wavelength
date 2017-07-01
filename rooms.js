@@ -341,7 +341,7 @@ class GlobalRoom {
 				writing = true;
 
 				let data = JSON.stringify(this.chatRoomData)
-					.replace(/\{"title"\:/g, '\n{"title":')
+					.replace(/\{"title":/g, '\n{"title":')
 					.replace(/\]$/, '\n]');
 
 				fs.writeFile('config/chatrooms.json.0', data, () => {
@@ -439,6 +439,36 @@ class GlobalRoom {
 		}
 		return this.formatList;
 	}
+	get configRankList() {
+		if (Config.nocustomgrouplist) return '';
+
+		// putting the resultant object in Config would enable this to be run again should config.js be reloaded.
+		if (Config.rankList) {
+			return Config.rankList;
+		}
+		let rankList = [];
+
+		for (let rank in Config.groups) {
+			if (!Config.groups[rank] || !rank) continue;
+
+			let tarGroup = Config.groups[rank];
+			let groupType = tarGroup.addhtml || (!tarGroup.mute && !tarGroup.root) ? 'normal' : (tarGroup.root || tarGroup.declare) ? 'leadership' : 'staff';
+
+			rankList.push({symbol: rank, name: (Config.groups[rank].name || null), type: groupType}); // send the first character in the rank, incase they put a string several characters long
+		}
+
+		const typeOrder = ['punishment', 'normal', 'staff', 'leadership'];
+
+		rankList = rankList.sort((a, b) => typeOrder.indexOf(b.type) - typeOrder.indexOf(a.type));
+
+		// add the punishment types at the very end.
+		for (let rank in Config.punishgroups) {
+			rankList.push({symbol: Config.punishgroups[rank].symbol, name: Config.punishgroups[rank].name, type: 'punishment'});
+		}
+
+		Config.rankList = '|customgroups|' + JSON.stringify(rankList) + '\n';
+		return Config.rankList;
+	}
 
 	getRoomList(filter) {
 		let rooms = [];
@@ -517,7 +547,7 @@ class GlobalRoom {
 	}
 	addChatRoom(title) {
 		let id = toId(title);
-		if (id === 'battles' || id === 'rooms' || id === 'ladder' || id === 'teambuilder' || id === 'home') return false;
+		if (id === 'battles' || id === 'rooms' || id === 'ladder' || id === 'teambuilder' || id === 'home' || id === 'all' || id === 'public') return false;
 		if (Rooms.rooms.has(id)) return false;
 
 		let chatRoomData = {
@@ -532,7 +562,7 @@ class GlobalRoom {
 
 	prepBattleRoom(format) {
 		//console.log('BATTLE START BETWEEN: ' + p1.userid + ' ' + p2.userid);
-		let roomPrefix = `battle-${toId(format)}-`;
+		let roomPrefix = `battle-${toId(Dex.getFormat(format).name)}-`;
 		let battleNum = this.lastBattle;
 		let roomid;
 		do {
@@ -638,7 +668,7 @@ class GlobalRoom {
 	}
 	onConnect(user, connection) {
 		let initdata = '|updateuser|' + user.name + '|' + (user.named ? '1' : '0') + '|' + user.avatar + '\n';
-		connection.send(initdata + this.formatListText);
+		connection.send(initdata + this.configRankList + this.formatListText);
 		if (this.chatRooms.length > 2) connection.send('|queryresponse|rooms|null'); // should display room list
 	}
 	onJoin(user, connection) {
@@ -693,9 +723,47 @@ class GlobalRoom {
 				}
 			}
 		});
+		Users.users.forEach(u => {
+			u.send(`|pm|~|${u.group}${u.name}|/raw <div class="broadcast-red"><b>The server is restarting soon.</b><br />Please finish your battles quickly. No new battles can be started until the server resets in a few minutes.</div>`);
+		});
 
 		this.lockdown = true;
 		this.lastReportedCrash = Date.now();
+	}
+	automaticKillRequest() {
+		const notifyPlaces = ['development', 'staff', 'upperstaff'];
+		if (Config.autolockdown === undefined) Config.autolockdown = true; // on by default
+
+		if (Config.autolockdown && Rooms.global.lockdown === true && Rooms.global.battleCount === 0) {
+			// The server is in lockdown, the final battle has finished, and the option is set
+			// so we will now automatically kill the server here if it is not updating.
+			if (Chat.updateServerLock) {
+				this.notifyRooms(notifyPlaces, `|html|<div class="broadcast-red"><b>Automatic server lockdown kill canceled.</b><br /><br />The server tried to automatically kill itself upon the final battle finishing, but the server was updating while trying to kill itself.</div>`);
+				return;
+			}
+
+			Sockets.workers.forEach(worker => worker.kill());
+
+			// final warning
+			this.notifyRooms(notifyPlaces, `|html|<div class="broadcast-red"><b>The server is about to automatically kill itself in 10 seconds.</b></div>`);
+
+			// kill server in 10 seconds if it's still set to
+			setTimeout(() => {
+				if (Config.autolockdown && Rooms.global.lockdown === true) {
+					// finally kill the server
+					process.exit();
+				} else {
+					this.notifyRooms(notifyPlaces, `|html|<div class="broadcsat-red"><b>Automatic server lockdown kill canceled.</b><br /><br />In the last final seconds, the automatic lockdown was manually disabled.</div>`);
+				}
+			}, 10 * 1000);
+		}
+	}
+	notifyRooms(rooms, message) {
+		if (!rooms || !message) return;
+		for (let roomid of rooms) {
+			let curRoom = Rooms(roomid);
+			if (curRoom) curRoom.add(message).update();
+		}
 	}
 	reportCrash(err) {
 		if (this.lockdown) return;
@@ -767,7 +835,7 @@ class BattleRoom extends Room {
 		this.p2 = p2 || null;
 
 		this.rated = rated;
-		this.battle = new Rooms.RoomBattle(this, format, rated, options.supplementaryRuleset);
+		this.battle = new Rooms.RoomBattle(this, format, rated);
 		this.game = this.battle;
 
 		this.sideTicksLeft = [21, 21];
@@ -881,7 +949,7 @@ class BattleRoom extends Room {
 		}
 	}
 	logBattle(p1score, p1rating, p2rating) {
-		if (this.battle.supplementaryRuleset) return;
+		if (this.battle.supplementaryBanlist) return;
 		let logData = this.battle.logData;
 		if (!logData) return;
 		this.battle.logData = null; // deallocate to save space

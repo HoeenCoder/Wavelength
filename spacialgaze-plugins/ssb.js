@@ -63,7 +63,7 @@ function validate(me, targetUser, quiet) {
 	let valid = true;
 	//species
 	let species = Dex.getTemplate(targetUser.species);
-	if (!species.exists || (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') || species.gen < 1 || species.tier === 'Uber' || species.tier === 'Bank-Uber' || species.battleOnly) {
+	if (!species.exists || (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') || species.gen < 1 || species.tier === 'Uber' || species.battleOnly) {
 		valid = false;
 		if (!quiet) me.errorReply(targetUser.name + '\'s species was invalid.');
 		species = Dex.getTemplate('unown');
@@ -71,7 +71,7 @@ function validate(me, targetUser, quiet) {
 		targetUser.ability = species.abilities['0']; //Force legal ability
 		targetUser.movepool = []; //force legal normal moves
 	}
-	if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
+	if (species.tier === 'Uber') {
 		//Most are banned a few arent
 		if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
 			if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');

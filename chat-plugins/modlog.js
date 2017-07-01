@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const ProcessManager = require('./../process-manager');
-const execSync = require('child_process').execSync;
+const execFileSync = require('child_process').execFileSync;
 
 const MAX_PROCESSES = 1;
 const RESULTS_MAX_LENGTH = 100;
@@ -72,6 +72,19 @@ const PM = exports.PM = new ModlogManager({
 	isChatBased: true,
 });
 
+if (!process.send) {
+	PM.spawn();
+}
+
+if (process.send && module === process.mainModule) {
+	global.Config = require('../config/config');
+	global.Dex = require('../sim/dex');
+	global.toId = Dex.getId;
+	process.on('message', message => PM.onMessageDownstream(message));
+	process.on('disconnect', () => process.exit());
+	require('../repl').start('modlog', cmd => eval(cmd));
+}
+
 class SortedLimitedLengthList {
 	constructor(maxSize) {
 		this.maxSize = maxSize;
@@ -97,7 +110,7 @@ class SortedLimitedLengthList {
 		}
 		if (insertedAt < 0) this.list.splice(0, 0, element);
 		if (this.list.length > this.maxSize) {
-			this.list.splice(-1, 1);
+			this.list.pop();
 			if (insertedAt === this.list.length) return false;
 		}
 		return true;
@@ -107,7 +120,7 @@ class SortedLimitedLengthList {
 function checkRipgrepAvailability() {
 	if (Config.ripgrepmodlog === undefined) {
 		try {
-			execSync(`rg --version`, {cwd: `${__dirname}/${LOG_PATH}`});
+			execFileSync('rg', ['--version'], {cwd: path.normalize(`${__dirname}/${LOG_PATH}`)});
 			Config.ripgrepmodlog = true;
 		} catch (error) {
 			Config.ripgrepmodlog = false;
@@ -134,23 +147,23 @@ function runModlog(room, searchString, exactSearch, maxLines) {
 		fileNameList = [`modlog_${room}.txt`];
 	}
 
-	let searchStringRegex;
+	let regexString;
 	if (!searchString) {
-		searchStringRegex = new RegExp('.');
+		regexString = '.';
 	} else if (exactSearch) {
-		const escapedSearchString = searchString.replace(/\\/g, '\\\\\\\\').replace(/["'`]/g, '\'\\$&\'').replace(/[\{\}\[\]\(\)\$\^\.\?\+\-\*]/g, '[$&]');
-		searchStringRegex = new RegExp(escapedSearchString, 'i');
+		regexString = searchString.replace(/[\\.+*?()|[\]{}^$]/g, '\\$&');
 	} else {
-		searchString = searchString.replace(/[^a-zA-Z0-9]/, '');
-		searchStringRegex = new RegExp(`\\b${searchString.split('').join('\\W*')}\\b`, 'i');
+		searchString = toId(searchString);
+		regexString = `\\b${searchString.split('').join('[\\W_]*')}\\b`;
 	}
 
 	let results = new SortedLimitedLengthList(maxLines);
 	if (useRipgrep && searchString) {
 		if (room === 'all') fileNameList = [`${__dirname}/${LOG_PATH}`];
-		runRipgrepModlog(fileNameList.join(' '), searchStringRegex.toString().slice(1, -2), results);
+		runRipgrepModlog(fileNameList, regexString, results);
 	} else {
 		fileNameList = fileNameList.map(filename => path.normalize(`${__dirname}/${LOG_PATH}${filename}`));
+		const searchStringRegex = new RegExp(regexString, 'i');
 		for (let i = 0; i < fileNameList.length; i++) {
 			checkRoomModlog(fileNameList[i], searchStringRegex, results);
 		}
@@ -190,7 +203,7 @@ function checkRoomModlog(path, regex, results) {
 		}
 	} while (startPos > 0);
 
-	fs.close(fd);
+	fs.close(fd, () => {});
 
 	return results;
 }
@@ -198,7 +211,7 @@ function checkRoomModlog(path, regex, results) {
 function runRipgrepModlog(paths, regexString, results) {
 	let stdout;
 	try {
-		stdout = execSync(`rg -i -e ${regexString} --no-filename --no-line-number ${paths}`, {cwd: `${__dirname}/${LOG_PATH}`});
+		stdout = execFileSync('rg', ['-i', '-e', regexString, '--no-filename', '--no-line-number', ...paths], {cwd: path.normalize(`${__dirname}/${LOG_PATH}`)});
 	} catch (error) {
 		return results;
 	}
@@ -278,7 +291,14 @@ exports.commands = {
 		if (targetRoom) roomId = targetRoom.id;
 		if (roomId.startsWith('battle-') || roomId.startsWith('groupchat-')) this.errorReply("Battles and groupchats don't have individual modlogs.");
 
-		let addModlogLinks = Config.modloglink && (!hideIps || (targetRoom && !targetRoom.isPrivate));
+		// permission checking
+		if (roomId === 'all' || roomId === 'public') {
+			if (!this.can('modlog')) return;
+		} else {
+			if (!this.can('modlog', null, targetRoom)) return;
+		}
+
+		let addModlogLinks = Config.modloglink && (!hideIps || (targetRoom && targetRoom.isPrivate !== true));
 		// Let's check the number of lines to retrieve or if it's a word instead
 		let lines = 0;
 		if (!target.match(/[^0-9]/)) {
@@ -288,7 +308,7 @@ exports.commands = {
 		let wordSearch = (!lines || lines < 0);
 		let searchString = '';
 		if (wordSearch) {
-			searchString = target;
+			searchString = target.trim();
 			lines = RESULTS_MAX_LENGTH;
 		}
 		let exactSearch = '0';
@@ -297,8 +317,10 @@ exports.commands = {
 			searchString = searchString.substring(1, searchString.length - 1);
 		}
 
-		PM.send(roomId, searchString, exactSearch, lines).then(response => connection.popup(prettifyResults(response, roomId, searchString, exactSearch, addModlogLinks, hideIps)));
-		if (cmd === 'timedmodlog') this.sendReply(`The modlog query took ${Date.now() - startTime} ms to complete.`);
+		PM.send(roomId, searchString, exactSearch, lines).then(response => {
+			connection.popup(prettifyResults(response, roomId, searchString, exactSearch, addModlogLinks, hideIps));
+			if (cmd === 'timedmodlog') this.sendReply(`The modlog query took ${Date.now() - startTime} ms to complete.`);
+		});
 	},
 	modloghelp: ["/modlog [roomid|all|public], [n] - Roomid defaults to current room.",
 		"If n is a number or omitted, display the last n lines of the moderator log. Defaults to 20.",

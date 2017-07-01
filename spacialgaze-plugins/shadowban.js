@@ -33,7 +33,7 @@ function getAllAlts(user) {
 	if (typeof user === 'string') {
 		targets[toId(user)] = 1;
 	} else {
-		user.getAlts().concat(user.name).forEach(function (altName) {
+		user.getAltUsers().map(u => u.getLastName()).concat(user.name).forEach(function (altName) {
 			let alt = Users.get(altName);
 			if (!alt.named) return;
 
