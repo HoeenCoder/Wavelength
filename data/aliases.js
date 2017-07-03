@@ -41,14 +41,6 @@ exports.BattleAliases = {
 	"godlygift": "[Gen 7] Godly Gift",
 	"dancerability": "[Gen 7] Dancerability",
 
-<<<<<<< HEAD
-	//SpacialGaze
-	"sgssb": "[Gen 7] Super Staff Bros",
-	"ssb": "[Gen 7] Super Staff Bros",
-	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
-	"rssb": "[Gen 1] Retro Super Staff Bros",
-	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
-=======
 	// temporary aliases for gen 6 formats (for bots to stay working)
 	"outheorymon": "[Gen 6] OU Theorymon",
 	"gennextou": "[Gen 6] Gen-NEXT OU",
@@ -73,7 +65,13 @@ exports.BattleAliases = {
 	"doublescustomgame": "[Gen 6] Doubles Custom Game",
 	"battlespottriples": "[Gen 6] Battle Spot Triples",
 	"triplescustomgame": "[Gen 6] Triples Custom Game",
->>>>>>> a83c149536ad6ec544df290cb2f1284daa32f453
+
+	//SpacialGaze
+	"sgssb": "[Gen 7] Super Staff Bros",
+	"ssb": "[Gen 7] Super Staff Bros",
+	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
+	"rssb": "[Gen 1] Retro Super Staff Bros",
+	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
 	// mega evos
 	"maero": "Aerodactyl-Mega",

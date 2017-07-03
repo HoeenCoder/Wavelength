@@ -2,12 +2,9 @@
 
 const path = require('path');
 const fs = require('fs');
-<<<<<<< HEAD
 const Module = require('module');
 const mock = require('mock-fs-require-fix');
 require('geoip-lite-country');
-=======
->>>>>>> a83c149536ad6ec544df290cb2f1284daa32f453
 
 const noop = () => {};
 
