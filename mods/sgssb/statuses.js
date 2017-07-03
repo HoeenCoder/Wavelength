@@ -24,16 +24,16 @@ exports.BattleStatuses = {
 			this.add('c', '%Serperiorater', 'Dammit Benny, why ya gotta be that guy?');
 		},
 	},
-	vacuo: {
+	clue: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Vacuo', 'glhf');
+			this.add('c', '%Clue', 'glhf');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Vacuo', 'lmfao brb');
+			this.add('c', '%Clue', 'lmfao brb');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Vacuo', 'yeah so I\'mma go get some food see you later');
+			this.add('c', '%Clue', 'yeah so I\'mma go get some food see you later');
 		},
 	},
 	ashleythepikachu: {
