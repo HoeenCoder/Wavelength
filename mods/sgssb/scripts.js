@@ -150,7 +150,7 @@ exports.BattleScripts = {
 				nature: 'Modest',
 			},
 			// Global Drivers:
-			'%Vacuo': {
+			'%Clue': {
 				species: 'Magnezone',
 				ability: 'Levitate',
 				item: 'Choice Specs',

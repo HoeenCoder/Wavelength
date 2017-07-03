@@ -105,7 +105,7 @@ Moves: Thunderbolt, Surf, Hidden Power Ice
 Special Move: Rocket Punch
 Special Move Effects: Fire Type, Special, 100 BP, +1 priority
 
-Vacuo
+Clue
 (Magnezone)
 @ Choice Specs
 Ability: Levitate
