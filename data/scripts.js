@@ -1580,6 +1580,9 @@ exports.BattleScripts = {
 				case 'rapidspin':
 					if (counter.setupType || teamDetails.hazardClear) rejected = true;
 					break;
+				case 'reversal':
+					if (hasMove['substitute'] && teamDetails.zMove) rejected = true;
+					break;
 				case 'roar': case 'whirlwind':
 					if (counter.setupType || hasMove['dragontail']) rejected = true;
 					break;
@@ -2237,6 +2240,8 @@ exports.BattleScripts = {
 			item = 'Choice Scarf';
 		} else if (ability === 'Defeatist' || hasMove['eruption'] || hasMove['waterspout']) {
 			item = counter.Status <= 1 ? 'Expert Belt' : 'Leftovers';
+		} else if (hasMove['reversal'] && hasMove['substitute'] && !teamDetails.zMove) {
+			item = 'Fightinium Z';
 		} else if ((hasMove['endeavor'] || hasMove['flail'] || hasMove['reversal']) && ability !== 'Sturdy') {
 			item = 'Focus Sash';
 		} else if (this.getEffectiveness('Ground', template) >= 2 && ability !== 'Levitate' && !hasMove['magnetrise']) {
@@ -3605,7 +3610,7 @@ exports.BattleScripts = {
 			'swiftswim': 'raindance',
 			'sandrush': 'sandstorm', 'sandveil': 'sandstorm',
 		};
-		let weatherAbilitiesSet = {'drizzle':1, 'sandstream':1};
+		let weatherAbilitiesSet = {'drizzle':1, 'drought':1, 'snowwarning':1, 'sandstream':1};
 
 		// Build a pool of eligible sets, given the team partners
 		// Also keep track of sets with moves the team requires
@@ -3686,12 +3691,11 @@ exports.BattleScripts = {
 		let teamData = {typeCount: {}, typeComboCount: {}, baseFormes: {}, megaCount: 0, zCount: 0, has: {}, forceResult: forceResult, weaknesses: {}, resistances: {}};
 		let requiredMoveFamilies = {};
 		let requiredMoves = {};
-		let weatherAbilitiesSet = {'drizzle': 'raindance', 'sandstream': 'sandstorm'};
+		let weatherAbilitiesSet = {'drizzle': 'raindance', 'drought': 'sunnyday', 'snowwarning': 'hail', 'sandstream': 'sandstorm'};
 		let resistanceAbilities = {
-			'dryskin': ['Water'], 'waterabsorb': ['Water'], 'stormdrain': ['Water'],
-			'flashfire': ['Fire'], 'heatproof': ['Fire'],
-			'lightningrod': ['Electric'], 'motordrive': ['Electric'], 'voltabsorb': ['Electric'],
-			'sapsipper': ['Grass'],
+			'waterabsorb': ['Water'],
+			'flashfire': ['Fire'],
+			'lightningrod': ['Electric'], 'voltabsorb': ['Electric'],
 			'thickfat': ['Ice', 'Fire'],
 			'levitate': ['Ground'],
 		};

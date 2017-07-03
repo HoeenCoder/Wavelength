@@ -2,20 +2,14 @@
 
 const path = require('path');
 const fs = require('fs');
+<<<<<<< HEAD
 const Module = require('module');
 const mock = require('mock-fs-require-fix');
 require('geoip-lite-country');
+=======
+>>>>>>> a83c149536ad6ec544df290cb2f1284daa32f453
 
 const noop = () => {};
-
-function getDirTypedContentsSync(dir, forceType) {
-	// Return value can be fed to mock-fs
-	if (forceType !== 'dir' && forceType !== 'file') throw new Error("Not implemented");
-	return fs.readdirSync(dir).reduce((dict, elem) => {
-		dict[elem] = forceType === 'dir' ? {} : '';
-		return dict;
-	}, {});
-}
 
 before('initialization', function () {
 	// Load and override configuration before starting the server
@@ -35,22 +29,15 @@ before('initialization', function () {
 
 	// Actually crash if we crash
 	config.crashguard = false;
+	// Don't allow config to be overridden while test is running
+	config.watchconfig = false;
 	// Don't try to write to file system
-	config.logladderip = false;
-	config.logchallenges = false;
-	config.logchat = false;
-
-	try {
-		let chatRoomsPath = require.resolve('../config/chatrooms.json');
-		let chatRoomsData = require.cache[chatRoomsPath] = new Module(chatRoomsPath, module);
-		chatRoomsData.filename = chatRoomsData.id;
-		chatRoomsData.exports = []; // empty chatrooms list
-		chatRoomsData.loaded = true;
-	} catch (e) {}
+	config.nofswriting = true;
 
 	// Don't create a REPL
 	require('../repl').start = noop;
 
+<<<<<<< HEAD
 	// `watchFile` is unsupported and throws with mock-fs
 	Object.defineProperty(fs, 'watchFile', {
 		get: function () {return noop;},
@@ -70,6 +57,8 @@ before('initialization', function () {
 		},
 	});
 
+=======
+>>>>>>> a83c149536ad6ec544df290cb2f1284daa32f453
 	// Start the server.
 	require('../app');
 
@@ -81,7 +70,4 @@ before('initialization', function () {
 	}
 
 	LoginServer.disabled = true;
-
-	// Disable writing to modlog
-	Rooms.Room.prototype.modlog = noop;
 });

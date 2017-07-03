@@ -23,18 +23,29 @@ To reload chat commands:
 */
 'use strict';
 
+const MAX_MESSAGE_LENGTH = 300;
+
+const BROADCAST_COOLDOWN = 20 * 1000;
+const MESSAGE_COOLDOWN = 5 * 60 * 1000;
+
+const MAX_PARSE_RECURSION = 10;
+
+const VALID_COMMAND_TOKENS = '/!';
+const BROADCAST_TOKEN = '!';
+
+const FS = require('./fs');
+
 let Chat = module.exports;
 
 // Regex copied from the client
 const domainRegex = '[a-z0-9\\-]+(?:[.][a-z0-9\\-]+)*';
 const parenthesisRegex = '[(](?:[^\\s()<>&]|&amp;)*[)]';
 const linkRegex = new RegExp(
-	'\\b' +
 	'(?:' +
 		'(?:' +
 			// When using www. or http://, allow any-length TLD (like .museum)
-			'(?:https?://|www[.])' + domainRegex +
-			'|' + domainRegex + '[.]' +
+			'(?:https?://|\\bwww[.])' + domainRegex +
+			'|\\b' + domainRegex + '[.]' +
 				// Allow a common TLD, or any 2-3 letter TLD followed by : or /
 				'(?:com?|org|net|edu|info|us|jp|[a-z]{2,3}(?=[:/]))' +
 		')' +
@@ -99,19 +110,6 @@ const formattingResolvers = [
 		return `<a href="http://www.google.com/search?ie=UTF-8&btnI&q=${encodeURIComponent(query)}" target="_blank">${querystr}</a>`;
 	}},
 ];
-
-const MAX_MESSAGE_LENGTH = 300;
-
-const BROADCAST_COOLDOWN = 20 * 1000;
-const MESSAGE_COOLDOWN = 5 * 60 * 1000;
-
-const MAX_PARSE_RECURSION = 10;
-
-const VALID_COMMAND_TOKENS = '/!';
-const BROADCAST_TOKEN = '!';
-
-const fs = require('fs');
-const path = require('path');
 
 class PatternTester {
 	// This class sounds like a RegExp
@@ -959,9 +957,8 @@ Chat.uncacheTree = function (root) {
 Chat.loadCommands = function () {
 	if (Chat.commands) return;
 
-	fs.readFile(path.resolve(__dirname, 'package.json'), (err, data) => {
-		if (err) return;
-		Chat.package = JSON.parse(data);
+	FS('package.json').readTextIfExists().then(data => {
+		if (data) Chat.package = JSON.parse(data);
 	});
 
 	let baseCommands = Chat.baseCommands = require('./chat-commands').commands;
@@ -973,7 +970,7 @@ Chat.loadCommands = function () {
 	Object.assign(commands, require('./chat-plugins/info').commands);
 	Object.assign(commands, require('./spacialgaze-plugins/SG.js').commands);
 
-	for (let file of fs.readdirSync(path.resolve(__dirname, 'chat-plugins'))) {
+	for (let file of FS('chat-plugins/').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
 		Object.assign(commands, require('./chat-plugins/' + file).commands);
 	}
