@@ -974,7 +974,7 @@ Chat.loadCommands = function () {
 		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
 		Object.assign(commands, require('./chat-plugins/' + file).commands);
 	}
-	for (let file of fs.readdirSync(path.resolve(__dirname, 'spacialgaze-plugins'))) {
+	for (let file of FS('spacialgaze-plugins').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'SG.js') continue;
 		Object.assign(commands, require('./spacialgaze-plugins/' + file).commands);
 	}

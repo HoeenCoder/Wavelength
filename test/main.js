@@ -34,7 +34,6 @@ before('initialization', function () {
 	// Don't create a REPL
 	require('../repl').start = noop;
 
-<<<<<<< HEAD
 	// `watchFile` is unsupported and throws with mock-fs
 	Object.defineProperty(fs, 'watchFile', {
 		get: function () {return noop;},
@@ -54,8 +53,6 @@ before('initialization', function () {
 		},
 	});
 
-=======
->>>>>>> a83c149536ad6ec544df290cb2f1284daa32f453
 	// Start the server.
 	require('../app');
 
