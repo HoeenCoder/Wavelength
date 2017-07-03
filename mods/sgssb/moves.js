@@ -520,7 +520,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Ice",
 	},
-	// Vacuo
+	// Clue
 	mechanicaldysfunction: {
 		category: "Special",
 		basePower: 110,
