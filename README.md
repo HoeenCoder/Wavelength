@@ -112,7 +112,7 @@ Owners
 Contributors
 
 - [Insist](https://github.com/DeathlyPlays)
-- [VXN](https://github.com/vxxn)
+- [Gligars](https://github.com/Gligar)
 
 Special thanks
 
