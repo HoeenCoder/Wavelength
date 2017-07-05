@@ -585,30 +585,35 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Water",
 	},
-	// VXN
-	crash: {
-		accuracy: true,
-		category: "Status",
-		id: "crash",
-		inNonstandard: true,
-		name: "Crash",
-		pp: 5,
-		priority: 0,
-		onHit: function (pokemon) {
-			pokemon.faint();
-			this.add('raw|<div class=\"broadcast-red\"><b>The server has crashed:</b><br/>TypeError: Cannot read property \'Overpowered\' of undefined at CommandContext.meme (./SpacialGaze/spacialgaze-plugins/hoeenhero/spellcheck.js:420:69)</div>');
+	// Gligars
+	Daredevil: {
+		accuracy: 100,
+		basePower: 70,
+		basePowerCallback: function (pokemon, target, move) {
+			if (this.willMove(target)) {
+				this.debug("Power doubled for going first");
+				return move.basePower * 2;
+			}
+			return move.basePower;
 		},
+		category: "Physical",
 		onPrepareHit: function (target, source) {
-			this.add('-anim', source, "All-Out Pummeling", target);
-			this.add('-anim', source, "Black Hole Eclipse", target);
-			this.add('-anim', source, "Breakneck Blitz", target);
-			this.add('-anim', source, "Continental Crush", target);
-			this.add('-anim', source, "Never-Ending Nightmare", target);
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Giga Impact", target);
 		},
-		flags: {},
+		desc: "Power doubles if the user goes first.",
+		shortDesc: "Power doubles if the user goes first.",
+		id: "daredevil",
+		isNonStandard: true,
+		name: "Daredevil",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
 		secondary: false,
-		target: "self",
-		type: "Dragon",
+		target: "normal",
+		type: "Flying",
+		zMovePower: 140,
+		contestType: "Cool",
 	},
 	// Insist
 	aquasubscribe: {

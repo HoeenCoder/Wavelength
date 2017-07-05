@@ -239,16 +239,16 @@ exports.BattleStatuses = {
 			this.add('c', '+Ranfen', 'No Fair flygon cant be beat D:');
 		},
 	},
-	vxn: {
+	gligars: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+VXN', 'Get ready for TRUE overpoweredness!');
+			this.add('c', '+Gligars', 'Smokin\'!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+VXN', 'Gotta go, I\'ll have fun with you later...');
+			this.add('c', '+Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+VXN', 'w8 wut?');
+			this.add('c', '+Gligars', 'Look, ma! I\'m roadkill!');
 		},
 	},
 	insist: {

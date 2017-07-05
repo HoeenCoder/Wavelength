@@ -115,19 +115,6 @@ exports.BattleAbilities = {
 		id: "wavecall",
 		name: "Wave Call",
 	},
-	no: {
-		desc: "50% chance to be immune to an attack",
-		onDamage: function (damage, target, source, effect) {
-			if (effect.effectType === 'Move') {
-				if (this.random(2) === 0) {
-					this.add('-immune', target, '[msg]', '[from] ability: No');
-					return null;
-				}
-			}
-		},
-		id: "no",
-		name: "No",
-	},
 	//Kraken Mare
 	krakensboost: {
 		id: "krakensboost",

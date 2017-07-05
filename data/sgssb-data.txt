@@ -18,16 +18,15 @@ Moves: Cosmic Power/Calm Mind, Soft-Boiled, Stored Power
 Signature Move: Mystic Mirage
 Signature Move Effects: Status, Boosts the user's Def, SpA, and SpD by one stage.
 
-VXN
-(Rayquaza)
-@ Normalium Z
-Ability: No
-	- Pokemon with this ability have a 50% chance to be immune to direct attacks.
-Jolly Nature
-EVs: 252 Atk / 252 Spe / 4 SpD
-Moves: Splash, Happy Hour, Celebrate
-Signature Move: Crash
-Signature Move Effects: Displays a server crash message and faints the user.
+Gligars
+(Gligar)
+@ Eviolite
+Ability: Regenerator
+Adamant Nature
+EVs: 172 Atk / 84 Def / 252 SpD
+Moves: Thousand Arrows, U-Turn, Sacred Fire/Bolt Strike
+Signature Move: Daredevil
+Signature Move Effects: Flying type, Physical, 70 BP, Power doubles if the user goes first.
 
 Insist
 (Ludicolo)
