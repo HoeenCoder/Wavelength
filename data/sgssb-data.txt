@@ -1,45 +1,54 @@
 HoeenHero
 (Ludicolo)
 @ Leftovers
-Ability: Swift Swim
-Modest Nature
 EVs: 252 SpA / 252 Spe / 4 HP
+Modest Nature
+Ability: Programmer's Domain
+	- Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
 Moves: Scald/Hydro Pump, Giga Drain, Ice Beam
 Signature Move: Scripting
-Signature Move Effects: Psychic type, Status, Confuses target, Activates Rain Dance, and raises the user's SpA by 2 stages and SpD for 1 stages.
+	- Psychic type, Status, 10 PP, Confuses target, Rain Dance and boosts the user's SpA by 2 stages and SpD for 1 stage.
+Notes: N/A.
+Rank: N/A.
 
 Mystifi
 (Clefairy)
 @ Eviolite
-Ability: Analytic
-Bold Nature
 EVs: 252 HP / 252 Def / 4 SpD
+Bold Nature
+Ability: Analytic
 Moves: Cosmic Power/Calm Mind, Soft-Boiled, Stored Power
 Signature Move: Mystic Mirage
-Signature Move Effects: Status, Boosts the user's Def, SpA, and SpD by one stage.
+	- Fairy Type, Status, 10 PP and boosts the user's Def, SpA, and SpD by 1 stage.
+Notes: idk
+Rank: N/A.
 
 Gligars
 (Gligar)
 @ Eviolite
-Ability: Regenerator
-Adamant Nature
 EVs: 172 Atk / 84 Def / 252 SpD
+Adamant Nature
+Ability: Regenerator
 Moves: Thousand Arrows, U-Turn, Sacred Fire/Bolt Strike
 Signature Move: Daredevil
-Signature Move Effects: Flying type, Physical, 70 BP, Power doubles if the user goes first.
+	- Flying Type, Physical, 70 BP, 100% Accuracy, 10 PP and Power doubles if the user goes first.
+Notes: idk
+Rank: N/A.
 
 Insist
 (Ludicolo)
 @ Playnium Z
 	- Allows user to use Exiled From All Others.
-		- Exiled From All Others: Water type, Special, Z-Move, 140 BP, Boosts all stats by one (except evasion).
-Ability: Crippling Depression
-	- Primordial Sea + Rain Dish + Swift Swim Effects.
-Timid Nature
+		- Exiled From All Others: Water Type, Special, 140 BP, boosts all stats by 1 (except Evasion and Accuracy) and Z-Move.
 EVs: 252 SpA / 252 Spe / 4 HP
+Timid Nature
+Ability: Crippling Depression
+	- Primordial Sea, Rain Dish and Swift Swim.
 Moves: Giga Drain, Focus Blast, Freeze-Dry
 Signature Move: Aqua Subscribe
-Signature Move Effects: Water, Special, +1 priority, 90 BP, Boosts own SpA and Spe by one stage.
+	- Water Type, Special, 90 BP, 100% Accuracy, 15 PP and boosts own SpA and Spe by 1 stage and +1 priority.
+Notes: Fast Rain Abuser with priority.
+Rank: S.
 
 HiroZ
 (Genesect)
