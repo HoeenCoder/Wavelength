@@ -4,8 +4,8 @@ HoeenHero
 EVs: 252 SpA / 252 Spe / 4 HP
 Modest Nature
 Ability: Programmer's Domain
-	- Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
-Moves: Scald/Hydro Pump, Giga Drain, Ice Beam
+    - Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
+Moves: Scald/Hydro Pump, Giga Drain and Ice Beam.
 Signature Move: Scripting
 	- Psychic type, Status, 10 PP, Confuses target, Rain Dance and boosts the user's SpA by 2 stages and SpD for 1 stage.
 Notes: N/A.
@@ -17,7 +17,7 @@ Mystifi
 EVs: 252 HP / 252 Def / 4 SpD
 Bold Nature
 Ability: Analytic
-Moves: Cosmic Power/Calm Mind, Soft-Boiled, Stored Power
+Moves: Cosmic Power/Calm Mind, Soft-Boiled and Stored Power.
 Signature Move: Mystic Mirage
 	- Fairy Type, Status, 10 PP and boosts the user's Def, SpA, and SpD by 1 stage.
 Notes: idk
@@ -29,7 +29,7 @@ Gligars
 EVs: 172 Atk / 84 Def / 252 SpD
 Adamant Nature
 Ability: Regenerator
-Moves: Thousand Arrows, U-Turn, Sacred Fire/Bolt Strike
+Moves: Thousand Arrows, U-Turn and Sacred Fire/Bolt Strike.
 Signature Move: Daredevil
 	- Flying Type, Physical, 70 BP, 100% Accuracy, 10 PP and Power doubles if the user goes first.
 Notes: idk
@@ -44,223 +44,261 @@ EVs: 252 SpA / 252 Spe / 4 HP
 Timid Nature
 Ability: Crippling Depression
 	- Primordial Sea, Rain Dish and Swift Swim.
-Moves: Giga Drain, Focus Blast, Freeze-Dry
+Moves: Giga Drain, Focus Blast and Freeze-Dry.
 Signature Move: Aqua Subscribe
-	- Water Type, Special, 90 BP, 100% Accuracy, 15 PP and boosts own SpA and Spe by 1 stage and +1 priority.
+	- Water Type, Special, 90 BP, 100% Accuracy, 15 PP and boosts own SpA and Spe by 1 stage and +1 Priority.
 Notes: Fast Rain Abuser with priority.
 Rank: S.
 
 HiroZ
 (Genesect)
 @ Choice Scarf
-Ability: Download
-Hasty Nature
 EVs: 252 Atk / 4 SpA / 252 Spe
-Moves: Explosion, Ice Beam, U-Turn
+Hasty Nature
+Ability: Download
+Moves: Explosion, Ice Beam and U-Turn.
 Signature Move: Crystallized Ukaku
-Signature Move Effects: Dark type, Special, 140 BP, 30% chance to badly poison it's target.
+	- Dark Type, Special, 140 BP, 100% Accuracy, 10 PP and 30% chance to badly poison the target.
+Notes: N/A.
+Rank: N/A.
 
 Kraken Mare
 (Gardevoir-Mega)
 @ Focus Sash
-Ability: Kraken's Boosts
-	- No Guard + Moody
 EVs: 248 HP / 8 Def / 252 SpA
 Modest Nature
-Moves: Moonblast, Calm Mind, Psychic
-Special Move: Revenge of Kraken Mare
-Special Move Effects: Water Type, Special, 77,000 BP, Always selfdestructs after usage, +5 priority, Always hits.
+Ability: Kraken's Boosts
+    - No Guard and Moody.
+Moves: Moonblast, Calm Mind and Psychic.
+Signature Move: Revenge of Kraken Mare
+	- Water Type, Special, 77,000 BP, Always hits, Self-Destruct and +5 Priority.
+Notes: N/A.
+Rank: N/A.
 
 Opple
 (Dragonite)
 @ Weakness Policy
-Ability: Multiscale
-Adamant Nature
 EVs: 252 Atk / 4 HP / 252 Spe
-Moves: Dragon Claw, Fire Punch, Waterfall
-Special Move: Ancient Orb
-Special Move Effects: Dragon type, Status, Boosts user's Attack and Speed by one stage, and heals the user by 1/4th maximum health.
+Adamant Nature
+Ability: Multiscale
+Moves: Dragon Claw, Fire Punch and Waterfall.
+Signature Move: Ancient Orb
+	- Dragon Type, Status, Boosts user's Attack and Speed by 1 stage and heals the user by 1/4th of its max HP.
+Notes: N/A.
+Rank: N/A.
 
 Desokoro
 (Gyarados)
 @ Leftovers
-Ability: Wave Call
-    - If either the user is statused or its HP is below 1/2 of its maximum hp, the user's Water type moves get boosted by 2x.
-Adamant Nature
 EVs: 252 Atk / 4 HP / 252 Spe
-Moves: Dragon Dance, Bounce, Substitute
-Special Move: Tsunami Crash
-Special Move Effects: Water Type, Physical, 150 BP, 35% chance to flinch target.
+Adamant Nature
+Ability: Wave Call
+    - If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves get boosted by 2x.
+Moves: Dragon Dance, Bounce and Substitute.
+Signature Move: Tsunami Crash
+	- Water Type, Physical, 150 BP, 5 PP and 35% chance to flinch the target.
+Notes: N/A.
+Rank: N/A.
 
 BDH93
 (Dunsparce)
 @ King's Rock
-Ability: Serene Grace
-Naughty Nature
 EVs: 252 Atk / 4 Def / 252 HP
-Moves: Roost, Coil, Rock Slide, Glare, Body Slam
-Special Move: Getting Trolled
-Special Move Effects: 40 BP, Physical, Normal Type, 30% chance to paralyze, confuse, or flinch the target.
+Naughty Nature
+Ability: Serene Grace
+Moves: Roost, Coil, Rock Slide, Glare and Body Slam.
+Signature Move: Getting Trolled
+	- Normal Type, Physical, 40 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target.
+Notes: N/A.
+Rank: N/A.
 
 Ashley the Pikachu
 (Pikachu-Cosplay)
 @ Light Ball
 Ability: Primal Surge
-	- Sets permanent Electric Terrain, doubles speed.
+    - Sets permanent Electric Terrain and doubles speed.
 Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Thunderbolt, Surf, Hidden Power Ice
-Special Move: Rocket Punch
-Special Move Effects: Fire Type, Special, 100 BP, +1 priority
+Moves: Thunderbolt, Surf and HP Ice.
+Signature Move: Rocket Punch
+	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +1 Priority.
+Notes: N/A.
+Rank: N/A.
 
 Clue
 (Magnezone)
 @ Choice Specs
-Ability: Levitate
-Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Volt Switch/Thunderbolt, Aura Sphere, Hidden Power Ice
-Special Move: Mechanical Dysfunction
-Special Move Effects: Electric type, Special, 110 BP, 90% accuracy, 50% chance to paralyze.
+Modest Nature
+Ability: Levitate
+Moves: Volt Switch/Thunderbolt, Aura Sphere and Hidden Power Ice.
+Signature Move: Mechanical Dysfunction
+	- Electric Type, Special, 110 BP, 90% accuracy, 8 PP and 50% chance to paralyze.
+Notes: N/A.
+Rank: N/A.
 
 ducktown
 (Golduck)
 @ Leftovers
-Ability: Cloud Nine
-Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Scald, Ice Beam, Psychic
-Special Move: Duck Power
-Special Move Effects: Water type, Status, Sets Rain Dance, Boosts Special Attack and Special Defense by 8 stages.
+Modest Nature
+Ability: Cloud Nine
+Moves: Scald, Ice Beam and Psychic.
+Signature Move: Duck Power
+	- Water Type, Status, 5 PP, Rain Dance and boosts SpA and SpD by 8 stages.
+Notes: N/A.
+Rank: N/A.
 
 Serperiorater
 (Serperior)
 @ Leftovers
-Ability: Sturdy
-Timid Nature
 EVs: 252 SpA / 4 SpD / 252 Spe
-Moves: Aura Sphere, Dark Pulse, Psychic
-Special Move: Saber Strike
-Special Move Effects: Grass type, Special, 140 BP, Boosts user's Special Attack by two stages and heals user by 1/5 max HP.
+Timid Nature
+Ability: Sturdy
+Moves: Aura Sphere, Dark Pulse and Psychic.
+Signature Move: Saber Strike
+	- Grass Type, Special, 140 BP, 10 PP, Boosts user's SpA by 2 stages and heals user by 1/5th of its max HP.
+Notes: N/A.
+Rank: N/A.
 
 Vulcaron
 (Murkrow)
 @ Eviolite
-Ability: Prankster
-Impish Nature
 EVs: 252 HP / 4 SpD / 252 Def
-Moves: Thunder Wave, Mean Look, Confuse Ray
-Special Move: Troll
-Special Move Effects: Dark type, Status, Confuses target, Boosts user's Evasion by one stage and heals user by 6/20 of its max HP.
+Impish Nature
+Ability: Prankster
+Moves: Thunder Wave, Mean Look and Confuse Ray.
+Signature Move: Troll
+	- Dark Type, Status, 10 PP, Confuses target, Boosts user's Evasion by 1 stage and heals user by 6/20th of its max HP.
+Notes: N/A.
+Rank: N/A.
 
 SpaceGazer
 (Registeel)
 @ Weakness Policy
-Ability: No Guard
-Adamant Nature
 EVs: 252 Atk / 4 HP / 252 SpD
-Moves: Zap Cannon, Iron Head, Stone Edge
-Special Move: Spacial Blast
-Special Move Effects: Fairy type, Physical, 150 BP, 60% chance to burn target.
+Adamant Nature
+Ability: No Guard
+Moves: Zap Cannon, Iron Head and Stone Edge.
+Signature Move: Spacial Blast
+	- Fairy Type, Physical, 150 BP, 10 PP and 60% chance to burn the target.
+Notes: N/A.
+Rank: N/A.
 
 Spacial Bot
 (Regirock)
 @ Leftovers
-Ability: Wonder Guard
-Adamant Nature
 EVs: 252 Atk / 4 HP / 252 SpD
-Moves: Stone Edge, Earthquake, Iron Head/Explosion
-Special Move: Ancient Ritual
-Special Move Effects: Rock type, Status, Boosts user's Attack by one stage and Speed by two stages.
+Adamant Nature
+Ability: Wonder Guard
+Moves: Stone Edge, Earthquake and Iron Head/Explosion.
+Signature Move: Ancient Ritual
+	- Rock Type, Status, 10 PP and boosts user's Attack by 1 stage and Speed by 2 stages.
+Notes: N/A.
+Rank: N/A.
 
 SG Bot
 (Regice)
 @ Leftovers
-Ability: Flash Fire
-Modest Nature
 EVs: 252 SpA / 4 HP / 252 SpD
-Moves: Ice Beam, Ancient Power, Thunderbolt
-Special Move: Frostbite
-Special Move Effects: Ice Type, Special, 100 BP, 60% chance to freeze target.
+Modest Nature
+Ability: Flash Fire
+Moves: Ice Beam, Ancient Power and Thunderbolt.
+Signature Move: Frostbite
+	- Ice Type, Special, 100 BP, 10 PP and 60% chance to freeze the target.
+Notes: N/A.
+Rank: N/A.
 
 Admewn
 (Mew)
 @ Expert Belt
-Ability: Protean
-Timid Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Energy Ball, Oblivion Wing, Shadow Ball
-Special Move: Mewtation
-Special Move Effects: Transforms into a Dark type, Status.
+Timid Nature
+Ability: Protean
+Moves: Energy Ball, Oblivion Wing and Shadow Ball.
+Signature Move: Mewtation
+	- Dark Type, Status, 10 PP and transforms user into a Dark Type.
+Notes: N/A.
+Rank: N/A.
 
 Almighty Bronzong
 (Bronzong)
 @ Leftovers
-Ability: Conflict of Interest
-	- Uses Magnet Rise upon entry, Ghost + Dark + Fire moves do 0.5x damage to user, Burn damage is halved.
-Sassy Nature
 EVs: 252 HP / 88 SpD / 168 Def
-Moves: Gyro Ball, Toxic, Confuse Ray, Earthquake
-Special Move: Blast Furnace
-Special Move Effects: Fire Type, Status, Boosts user's Defense by one stage, Heals user by 7/20 of its max HP.
+Sassy Nature
+Ability: Conflict of Interest
+    - Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.5x damage to user and burn damage is halved.
+Moves: Gyro Ball, Toxic, Confuse Ray and Earthquake.
+Signature Move: Blast Furnace
+	- Fire Type, Status, 10 PP, Boosts user's Defense by 1 stage and heals user by 7/20th of its max HP.
+Notes: N/A.
+Rank: N/A.
 
 Auction
 (Aegislash)
 @ Leftovers
-Ability: Water Absorb
-Adamant Nature
 EVs: 248 HP / 8 SpD / 252 Atk
-Moves: Swords Dance, Sacred Sword, Shadow Sneak, King's Shield
-Special Move: Zeo-Bash
-Special Move Effects: Steel Type, Physical, 90 BP.
+Adamant Nature
+Ability: Water Absorb
+Moves: Swords Dance, Sacred Sword, Shadow Sneak and King's Shield.
+Signature Move: Zeo-Bash
+	- Steel Type, Physical, 90 BP and 15 PP.
+Notes: N/A.
+Rank: N/A.
 
 Ranfen
 (Flygon)
 @ Focus Sash
-Ability: DesertDragon
-	- Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by +2.
-Adamant Nature
 EVs: 252 Atk / 4 HP / 252 Spe
-Moves: Stone Edge, Dragon Claw, Earthquake
-Special Move: Out Ripper
-Special Move Effects: Dragon type, Physical, 100 BP, High crit ratio.
+Adamant Nature
+Ability: DesertDragon
+    - Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by 2 stages.
+Moves: Stone Edge, Dragon Claw and Earthquake.
+Signature Move: Out Ripper
+	- Dragon Type, Physical, 100 BP, 10 PP and high crit ratio.
+Notes: N/A.
+Rank: N/A.
 
 The Run
 (Volcanion)
 @ Life Orb
-Ability: Protean
-Timid Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Fire Blast, Steam Eruption, Recover
-Special Move: Vapor Boost
-Special Move Effects: Ice Type, Status, Boosts user's Special Attack by 2 stages.
+Timid Nature
+Ability: Protean
+Moves: Fire Blast, Steam Eruption and Recover.
+Signature Move: Vapor Boost
+	- Ice Type, Status, 5 PP and boosts user's Special Attack by 2 stages.
+Notes: N/A.
+Rank: N/A.
 
 CelestialTater
 (Armaldo)
 @ White Herb
-Ability: Unburden
-Adamant Nature
 EVs: 252 HP / 128 Atk / 128 Spe
-Moves: Megahorn, Stone Edge, Drain Punch
-Special Move: Shell Break
-Special Move Effects: Water Type, Status, +1 priority, Boosts user's Attack, Speed, Special Attack by 2 stage, its Accuracy by 1 stage, and lowers its Defense and Special Defense by 1 stage.
+Adamant Nature
+Ability: Unburden
+Moves: Megahorn, Stone Edge and Drain Punch.
+Signature Move: Shell Break
+	- Water Type, Status, 5 PP, Boosts user's Attack, Speed and SpA by 2 stages and Accuracy by 1 stage and lowers its Defense and SpD by 1 stage.
 
 Mimiroppu
 (Lopunny)
 @ Lopunnite
-Ability: Limber
-Jolly Nature
 EVs: 252 Atk / 4 Def / 252 Spe
-Moves: Fake Out, Return, High Jump Kick
-Special Attack: Charm Up
-Special Attack Effects: Normal Type, Status, Infatuates target, Boosts own Attack by one stage.
+Jolly Nature
+Ability: Limber
+Moves: Fake Out, Return and High Jump Kick.
+Signature Move: Charm Up
+	- Normal Type, Status, 10 PP, Infatuates the target and boosts user's Attack by 1 stage.
 
 Hurricane'd
 (Tomohawk)
 @ Rocky Helmet
-Ability: Gale Wings
-Bold Nature
 EVs: 252 SpA / 4 HP / 252 Spe
-Moves: Aura Sphere, Taunt, Hurricane
-Special Attack: Rainbust Orb
-Special Attack Effects: Water Type, Status, Sets weather to Rain Dance, Boosts user's Special Attack and Defense by two stages.
+Bold Nature
+Ability: Gale Wings
+Moves: Aura Sphere, Taunt and Hurricane.
+Signature Move: Rainbust Orb
+	- Water Type, Status, 10 PP, Rain Dance and boosts user's Special Attack and Defense by two stages.
+Notes: N/A.
+Rank: N/A.
