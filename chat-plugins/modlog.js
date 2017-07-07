@@ -72,17 +72,20 @@ const PM = exports.PM = new ModlogManager({
 	isChatBased: true,
 });
 
-if (!process.send) {
-	PM.spawn();
-}
-
 if (process.send && module === process.mainModule) {
 	global.Config = require('../config/config');
+	process.on('uncaughtException', err => {
+		if (Config.crashguard) {
+			require('../crashlogger')(err, 'A modlog child process');
+		}
+	});
 	global.Dex = require('../sim/dex');
 	global.toId = Dex.getId;
 	process.on('message', message => PM.onMessageDownstream(message));
 	process.on('disconnect', () => process.exit());
 	require('../repl').start('modlog', cmd => eval(cmd));
+} else {
+	PM.spawn();
 }
 
 class SortedLimitedLengthList {
@@ -120,7 +123,7 @@ class SortedLimitedLengthList {
 function checkRipgrepAvailability() {
 	if (Config.ripgrepmodlog === undefined) {
 		try {
-			execFileSync('rg', ['--version'], {cwd: path.normalize(`${__dirname}/../${LOG_PATH}`)});
+			execFileSync('rg', ['--version'], {cwd: path.normalize(`${__dirname}/../`)});
 			Config.ripgrepmodlog = true;
 		} catch (error) {
 			Config.ripgrepmodlog = false;
@@ -144,6 +147,7 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 			fileNameList.push(`modlog_${rooms[i]}.txt`);
 		}
 	}
+	fileNameList = fileNameList.map(filename => `${LOG_PATH}${filename}`);
 
 	let regexString;
 	if (!searchString) {
@@ -161,7 +165,6 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 		if (checkAllRooms) fileNameList = [LOG_PATH];
 		runRipgrepModlog(fileNameList, regexString, results);
 	} else {
-		fileNameList = fileNameList.map(filename => `${LOG_PATH}${filename}`);
 		const searchStringRegex = new RegExp(regexString, 'i');
 		for (let i = 0; i < fileNameList.length; i++) {
 			await checkRoomModlog(fileNameList[i], searchStringRegex, results);
@@ -185,7 +188,7 @@ async function checkRoomModlog(path, regex, results) {
 function runRipgrepModlog(paths, regexString, results) {
 	let stdout;
 	try {
-		stdout = execFileSync('rg', ['-i', '-e', regexString, '--no-filename', '--no-line-number', ...paths], {cwd: path.normalize(`${__dirname}/../${LOG_PATH}`)});
+		stdout = execFileSync('rg', ['-i', '-e', regexString, '--no-filename', '--no-line-number', ...paths], {cwd: path.normalize(`${__dirname}/../`)});
 	} catch (error) {
 		return results;
 	}

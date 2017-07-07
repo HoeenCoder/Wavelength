@@ -41,6 +41,7 @@ exports.BattleAliases = {
 	"godlygift": "[Gen 7] Godly Gift",
 	"dancerability": "[Gen 7] Dancerability",
 
+<<<<<<< HEAD
 	// temporary aliases for gen 6 formats (for bots to stay working)
 	"outheorymon": "[Gen 6] OU Theorymon",
 	"gennextou": "[Gen 6] Gen-NEXT OU",
@@ -73,6 +74,8 @@ exports.BattleAliases = {
 	"rssb": "[Gen 1] Retro Super Staff Bros",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
+=======
+>>>>>>> ac1a48cc9089ad178966d3a90059dd0b40a8a3fd
 	// mega evos
 	"maero": "Aerodactyl-Mega",
 	"megaaero": "Aerodactyl-Mega",
@@ -686,6 +689,7 @@ exports.BattleAliases = {
 	"oceanic": "Oceanic Operetta",
 	"sar": "Sinister Arrow Raid",
 	"sssss": "Soul-Stealing 7-Star Strike",
+	"soulstealingsevenstarstrike": "Soul-Stealing 7-Star Strike",
 	"stoked": "Stoked Sparksurfer",
 	"zbug": "Savage Spin-Out",
 	"zdark": "Black Hole Eclipse",
