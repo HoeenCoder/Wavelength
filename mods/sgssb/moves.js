@@ -19,7 +19,7 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Geomancy", source);
+			this.add('-anim', source, "Dark Void", source);
 			this.add('-anim', source, "Psychic", source);
 			this.add('-anim', source, "Extreme Speed", target);
 		},
