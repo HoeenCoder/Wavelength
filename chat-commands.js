@@ -2025,8 +2025,7 @@ exports.commands = {
 	deauth: function (target, room, user) {
 		return this.parse('/demote ' + target + ', deauth');
 	},
-	
-	gdeauth: 'globaldeauth',
+
 	deglobalvoice: 'globaldeauth',
 	deglobalauth: 'globaldeauth',
 	globaldevoice: 'globaldeauth',
