@@ -590,7 +590,7 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Gligars
-	Daredevil: {
+	daredevil: {
 		accuracy: 100,
 		basePower: 70,
 		basePowerCallback: function (pokemon, target, move) {

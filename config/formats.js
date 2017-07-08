@@ -498,7 +498,6 @@ exports.Formats = [
 	},
 	{
 		name: "[Gen 7] Type Illusion",
-		section: "SpacialGaze Metagames",
 		mod: "gen7",
 		ruleset: ['[Gen 7] OU'],
 		banlist: ["Shedinja"],
@@ -1173,7 +1172,7 @@ exports.Formats = [
 			}
 			if (name === 'taintedfairy' && !pokemon.illusion) {
 				this.add('-start', pokemon, 'typechange', 'Dark/Fairy');
-				pokemon.types = ["Dragon", "Fairy"];
+				pokemon.types = ["Dark", "Fairy"];
 			}
 			if (name === 'pixieshield' && !pokemon.illusion) {
 				this.add('-start', pokemon, 'typechange', 'Steel/Fairy');
@@ -1844,7 +1843,7 @@ exports.Formats = [
 			}
 			if (name === 'taintedfairy' && !pokemon.illusion) {
 				this.add('-start', pokemon, 'typechange', 'Dark/Fairy');
-				pokemon.types = ["Dragon", "Fairy"];
+				pokemon.types = ["Dark", "Fairy"];
 			}
 			if (name === 'pixieshield' && !pokemon.illusion) {
 				this.add('-start', pokemon, 'typechange', 'Steel/Fairy');
