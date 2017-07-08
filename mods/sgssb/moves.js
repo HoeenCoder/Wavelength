@@ -2,26 +2,30 @@
 
 exports.BattleMovedex = {
 	// The Run
-	vaporboost: {
-		category: "Status",
-		id: "vaporboost",
+	timespacerush: {
+		category: "Special",
+		id: "timespacerush",
 		isNonstandard: true,
-		name: "Vapor Boost",
+		name: "Time-Space Rush",
+		accuracy: 90,
+		basePower: 130,
 		pp: 5,
 		priority: 0,
 		self: {
 			boosts: {
-				spa: 2,
+				spa: 1,
+				spe: -1,
 			},
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Geomancy", source);
-			this.add('-anim', source, "Haze", source);
+			this.add('-anim', source, "Psychic", source);
+			this.add('-anim', source, "Extreme Speed", target);
 		},
 		secondary: false,
 		target: "Normal",
-		type: "Ice",
+		type: "Psychic",
 	},
 	// HoeenHero
 	scripting: {

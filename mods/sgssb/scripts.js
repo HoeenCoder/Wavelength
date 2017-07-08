@@ -39,21 +39,38 @@ exports.BattleScripts = {
 				},
 				nature: 'Bold',
 			},
+			'~Kraken Mare': {
+				species: 'Gardevoir-Mega',
+				ability: 'krakensboost',
+				shiny: true,
+				item: 'Focus Sash',
+				gender: 'F',
+				moves: ['Moonblast', 'Calm Mind', 'Psychic',
+				],
+				signatureMove: 'Revenge of Kraken Mare',
+				evs: {
+					hp: 248,
+					spa: 252,
+					def: 8,
+				},
+				nature: 'Modest',
+			},
 
 			// Global Leaders:
-			'&HiroZ': {
-				species: 'Genesect',
-				ability: 'Download',
-				item: 'Choice Scarf',
-				moves: ['U-turn', 'Ice Beam', 'Explosion',
+
+			'&C733937 123': {
+				species: 'Tyranitar',
+				ability: 'Bulletproof',
+				item: 'Safety Goggles',
+				gender: 'M',
+				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
 				],
-				signatureMove: 'Crystallized Ukaku',
+				signatureMove: 'Lightshot Giga-Lance',
 				evs: {
+					hp: 252,
 					atk: 252,
-					spe: 252,
-					spa: 4,
 				},
-				nature: 'Hasty',
+				nature: 'Adamant',
 			},
 			'&Opple': {
 				species: 'Dragonite',
@@ -70,37 +87,8 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
-			'&Kraken Mare': {
-				species: 'Gardevoir-Mega',
-				ability: 'krakensboost',
-				shiny: true,
-				item: 'Focus Sash',
-				gender: 'F',
-				moves: ['Moonblast', 'Calm Mind', 'Psychic',
-				],
-				signatureMove: 'Revenge of Kraken Mare',
-				evs: {
-					hp: 248,
-					spa: 252,
-					def: 8,
-				},
-				nature: 'Modest',
-			},
 			// Global Moderators:
-			'@C733937 123': {
-				species: 'Tyranitar',
-				ability: 'Bulletproof',
-				item: 'Safety Goggles',
-				gender: 'M',
-				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
-				],
-				signatureMove: 'Lightshot Giga-Lance',
-				evs: {
-					hp: 252,
-					atk: 252,
-				},
-				nature: 'Adamant',
-			},
+			
 			'@Desokoro': {
 				species: 'Gyarados',
 				ability: 'Wave Call',
@@ -211,21 +199,6 @@ exports.BattleScripts = {
 				},
 				nature: 'Timid',
 			},
-			'%Vulcaron': {
-				species: 'Murkrow',
-				ability: 'Prankster',
-				item: 'Eviolite',
-				gender: 'M',
-				moves: ['Thunder Wave', 'Mean Look', 'Confuse Ray',
-				],
-				signatureMove: 'Troll',
-				evs: {
-					hp: 252,
-					def: 252,
-					spd: 4,
-				},
-				nature: 'Impish',
-			},
 			// Former Bots
 			'*SpaceGazer': {
 				species: 'Registeel',
@@ -300,6 +273,20 @@ exports.BattleScripts = {
 				},
 				nature: 'Sassy',
 			},
+			'+HiroZ': {
+				species: 'Genesect',
+				ability: 'Download',
+				item: 'Choice Scarf',
+				moves: ['U-turn', 'Ice Beam', 'Explosion',
+				],
+				signatureMove: 'Crystallized Ukaku',
+				evs: {
+					atk: 252,
+					spe: 252,
+					spa: 4,
+				},
+				nature: 'Hasty',
+			},
 			'+Auction': {
 				species: 'Aegislash',
 				ability: 'Water Absorb',
@@ -330,12 +317,12 @@ exports.BattleScripts = {
 				nature: 'Adamant',
 			},
 			'+The Run': {
-				species: 'Volcanion',
-				ability: 'Protean',
-				item: 'Life Orb',
-				moves: ['Fire Blast', 'Steam Eruption', 'Recover',
+				species: 'Deoxys-Speed',
+				ability: 'Prism Armor',
+				item: 'TwistedSpoon',
+				moves: ['Psychic', 'Protect', 'Aura Sphere',
 				],
-				signatureMove: 'Vapor Boost',
+				signatureMove: 'Time-Space Rush',
 				evs: {
 					spa: 252,
 					spe: 252,
@@ -357,6 +344,21 @@ exports.BattleScripts = {
 					hp: 252,
 				},
 				nature: 'Adamant',
+			},
+			'+Vulcaron': {
+				species: 'Murkrow',
+				ability: 'Prankster',
+				item: 'Eviolite',
+				gender: 'M',
+				moves: ['Thunder Wave', 'Mean Look', 'Confuse Ray',
+				],
+				signatureMove: 'Troll',
+				evs: {
+					hp: 252,
+					def: 252,
+					spd: 4,
+				},
+				nature: 'Impish',
 			},
 			'+Gligars': {
 				species: "Gligar",
