@@ -4,10 +4,12 @@ exports.BattleMovedex = {
 	// The Run
 	timespacerush: {
 		category: "Special",
+		desc: "This move can bypass protect, however using this move will boost Special Attack by 1 and lower Speed by 1.",
+		shortDesc: "This move can bypass protect, however using this move will boost Special Attack by 1 and lower Speed by 1.",
 		id: "timespacerush",
 		isNonstandard: true,
 		name: "Time-Space Rush",
-		accuracy: 90,
+		accuracy: 85,
 		basePower: 130,
 		pp: 5,
 		priority: 0,
