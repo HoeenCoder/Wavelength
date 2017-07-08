@@ -78,7 +78,7 @@ exports.BattleStatuses = {
 			this.add('c', '~HoeenHero', 'Do I have to? I\'m in the middle of programming.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Hoeenhero', 'I can\'t battle now, i\'m too busy.');
+			this.add('c', '~HoeenHero', 'I can\'t battle now, i\'m too busy.');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');
@@ -205,15 +205,15 @@ exports.BattleStatuses = {
 	spacialbot: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Spacial Bot', '``Bot rebooting...``');
-			this.add('c', '%Spacial Bot', '``Rebooting complete. Engaging in battle.``');
+			this.add('c', '*Spacial Bot', '``Bot rebooting...``');
+			this.add('c', '*Spacial Bot', '``Rebooting complete. Engaging in battle.``');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '+The Run', '.battleswitchout');
-			this.add('c', '%Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
+			this.add('c', '*Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
+			this.add('c', '*Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
 		},
 	},
 	auction: {

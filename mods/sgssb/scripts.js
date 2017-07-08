@@ -55,9 +55,7 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
-
 			// Global Leaders:
-
 			'&C733937 123': {
 				species: 'Tyranitar',
 				ability: 'Bulletproof',
@@ -88,7 +86,6 @@ exports.BattleScripts = {
 				nature: 'Adamant',
 			},
 			// Global Moderators:
-			
 			'@Desokoro': {
 				species: 'Gyarados',
 				ability: 'Wave Call',
