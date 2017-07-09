@@ -7,7 +7,7 @@ Ability: Programmer's Domain
     - Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
 Moves: Scald/Hydro Pump, Giga Drain and Ice Beam.
 Signature Move: Scripting
-	- Psychic type, Status, 10 PP, Confuses target, Rain Dance and boosts the user's SpA by 2 stages and SpD for 1 stage.
+	- Psychic type, Status, 10 PP, Confuses target, and boosts the user's SpA by 2 stages and SpD for 1 stage.
 Notes: N/A.
 Rank: N/A.
 
@@ -39,7 +39,7 @@ Insist
 (Ludicolo)
 @ Playnium Z
 	- Allows user to use Exiled From All Others.
-		- Exiled From All Others: Water Type, Special, 140 BP, boosts all stats by 1 (except Evasion and Accuracy) and Z-Move.
+		- Exiled From All Others: Water Type, Special, 150 BP, Z-Move.
 EVs: 252 SpA / 252 Spe / 4 HP
 Timid Nature
 Ability: Crippling Depression
@@ -217,7 +217,7 @@ Timid Nature
 Ability: Protean
 Moves: Energy Ball, Oblivion Wing and Shadow Ball.
 Signature Move: Mewtation
-	- Dark Type, Status, 10 PP and transforms user into a Dark Type.
+	- Dark Type, Special, 90 BP, 10 PP and transforms user into a Dark Type.
 Notes: N/A.
 Rank: N/A.
 
@@ -260,14 +260,14 @@ Notes: N/A.
 Rank: N/A.
 
 The Run
-(Deoxys-Speed)
-@ TwistedSpoon
+(Volcanion)
+@ Life Orb
 EVs: 252 SpA / 4 HP / 252 Spe
 Timid Nature
 Ability: Protean
-Moves: Psychic, Aura Sphere, and Protect.
-Signature Move: Time-Space Rush
-	- Psychic Type, Special, 130 BP, 85% accuracy, 5 PP and boosts user's Special Attack by 1 stage and lowers Speed by 1 stage, Bypasses Protect.
+Moves: Fire Blast, Steam Eruption and Recover.
+Signature Move: Vapor Boost
+	- Ice Type, Status, 5 PP and boosts user's Special Attack by 2 stages.
 Notes: N/A.
 Rank: N/A.
 
@@ -280,8 +280,6 @@ Ability: Unburden
 Moves: Megahorn, Stone Edge and Drain Punch.
 Signature Move: Shell Break
 	- Water Type, Status, 5 PP, Boosts user's Attack, Speed and SpA by 2 stages and Accuracy by 1 stage and lowers its Defense and SpD by 1 stage.
-Notes: N/A.
-Rank: N/A.
 
 Mimiroppu
 (Lopunny)
@@ -292,8 +290,6 @@ Ability: Limber
 Moves: Fake Out, Return and High Jump Kick.
 Signature Move: Charm Up
 	- Normal Type, Status, 10 PP, Infatuates the target and boosts user's Attack by 1 stage.
-Notes: N/A.
-Rank: N/A.
 
 Hurricane'd
 (Tomohawk)

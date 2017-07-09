@@ -41,7 +41,7 @@ exports.BattleScripts = {
 			},
 			'~Kraken Mare': {
 				species: 'Gardevoir-Mega',
-				ability: 'krakensboost',
+				ability: 'Kraken\'s Boost',
 				shiny: true,
 				item: 'Focus Sash',
 				gender: 'F',
@@ -376,7 +376,7 @@ exports.BattleScripts = {
 				ability: 'Limber',
 				item: 'Lopunnite',
 				gender: 'F',
-				moves: ['Fake out', 'Return', 'High Jump Kick',
+				moves: ['Fake Out', 'Return', 'High Jump Kick',
 				 ],
 				signatureMove: 'Charm Up',
 				evs: {
