@@ -135,21 +135,6 @@ exports.BattleScripts = {
 				nature: 'Modest',
 			},
 			// Global Drivers:
-			'%Clue': {
-				species: 'Magnezone',
-				ability: 'Levitate',
-				item: 'Choice Specs',
-				moves: [
-					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
-				],
-				signatureMove: 'Mechanical Dysfunction',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
 			'%ducktown': {
 				species: 'Golduck',
 				ability: 'Cloud Nine',
@@ -298,6 +283,21 @@ exports.BattleScripts = {
 					hp: 248,
 				},
 				nature: 'Adamant',
+			},
+			'+Clue': {
+				species: 'Magnezone',
+				ability: 'Levitate',
+				item: 'Choice Specs',
+				moves: [
+					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
+				],
+				signatureMove: 'Mechanical Dysfunction',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: 'Modest',
 			},
 			'+Ranfen': {
 				species: 'Flygon',

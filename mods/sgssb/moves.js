@@ -311,10 +311,12 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
+			this.add('-anim', source, "Focus Energy", source);
 			this.add('-anim', source, "Head Smash", target);
 		},
 		accuracy: 100,
 		desc: "No additional effects",
+		zMovePower: 150,
 		target: "normal",
 		type: "Steel",
 	},
@@ -358,7 +360,8 @@ exports.BattleMovedex = {
 		desc: "Boosts user's Atk by 1 stage, and Spe by 2 stages",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Stone Edge", source);
+			this.add('-anim', source, "Geomancy", source);
 		},
 		target: "normal",
 		type: "Rock",
@@ -409,17 +412,16 @@ exports.BattleMovedex = {
 	},
 	// Admewn
 	mewtation: {
-		category: "Special",
+		category: "Status",
 		id: "mewtation",
 		accuracy: true,
 		isNonstandard: true,
 		name: "Mewtation",
 		pp: 10,
-		basePower: 90,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Transform", target);
+			this.add('-anim', source, "Transform", source);
 		},
 		desc: "No additional effects",
 		target: "normal",
@@ -437,7 +439,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Breath", target);
+			this.add('-anim', source, "Blue Flare", source);
+			this.add('-anim', source, "Recover", source);
+			this.add('-anim', source, "Precipice Blades", target);
 		},
 		desc: "High Crit Ratio",
 		target: "normal",
