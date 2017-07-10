@@ -6036,7 +6036,7 @@ exports.BattleFormatsData = {
 		eventPokemon: [
 			{"generation": 7, "level": 50, "gender": "F", "isHidden": true, "moves":["babydolleyes", "brutalswing", "superpower", "bind"], "pokeball": "cherishball"},
 		],
-		tier: "BL2",
+		tier: "RU",
 	},
 	bounsweet: {
 		tier: "LC",
@@ -6360,7 +6360,7 @@ exports.BattleFormatsData = {
 			{"generation": 7, "level": 65, "moves":["counter", "hammerarm", "lunge", "dynamicpunch"]},
 		],
 		eventOnly: true,
-		tier: "UU",
+		tier: "BL",
 	},
 	pheromosa: {
 		randomBattleMoves: ["highjumpkick", "uturn", "icebeam", "poisonjab", "bugbuzz"],
