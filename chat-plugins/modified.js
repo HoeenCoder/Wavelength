@@ -416,7 +416,7 @@ exports.commands = {
 		if (statusLen > 14) return this.sendReply("Your away status should be short and to-the-point, not a dissertation on why you are away.");
 
 		if (user.isAway) {
-			let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/);
+			let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/); // eslint-disable-line no-useless-escape
 			if (statusIdx > -1) newName = newName.substr(0, statusIdx);
 			if (user.name.substr(-statusLen) === status) return this.sendReply("Your away status is already set to \"" + target + "\".");
 		}
@@ -444,7 +444,7 @@ exports.commands = {
 		user.isAway = false;
 
 		let newName = user.name;
-		let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/);
+		let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/); // eslint-disable-line no-useless-escape
 		if (statusIdx < 0) {
 			user.isAway = false;
 			if (user.can('mute', null, room)) this.add("|raw|-- " + SG.nameColor(user.userid, true) + " is no longer away.");

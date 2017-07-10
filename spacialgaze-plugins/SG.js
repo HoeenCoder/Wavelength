@@ -57,6 +57,8 @@ SG.regdate = function (target, callback) {
 	});
 };
 
+/* eslint-disable no-useless-escape */
+
 SG.parseMessage = function (message) {
 	if (message.substr(0, 5) === "/html") {
 		message = message.substr(5);
@@ -75,6 +77,8 @@ SG.parseMessage = function (message) {
 	message = Autolinker.link(message, {stripPrefix: false, phone: false, twitter: false});
 	return message;
 };
+
+/* eslint-enable no-useless-escape */
 
 SG.randomString = function (length) {
 	return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);

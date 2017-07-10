@@ -114,7 +114,7 @@ function validate(me, targetUser, quiet) {
 }
 
 function buildMenu(userid) {
-	if (!SG.ssb[userid]) return '<span style="color:red"><b>Error: </b>User \"' + userid + '\" not found in ssb.</span>';
+	if (!SG.ssb[userid]) return '<span style="color:red"><b>Error: </b>User "' + userid + '" not found in ssb.</span>';
 	let speciesName = toId(SG.ssb[userid].species);
 	/*if (speciesName.substring(0, 8) === 'oricorio') {
 	  speciesName = 'oricorio-' + toId(speciesName.substring(8));

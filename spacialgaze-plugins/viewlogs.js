@@ -194,7 +194,7 @@ function generateTable(array, command) {
 }
 
 function escapeRegExp(s) {
-	return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // eslint-disable-line no-useless-escape
 }
 
 function parseMessage(message, user) {

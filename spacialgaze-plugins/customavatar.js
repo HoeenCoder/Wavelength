@@ -69,7 +69,7 @@ exports.commands = {
 
 			downloadImage(avatarUrl, name, ext);
 			this.sendReply("|raw|" + name + "'s avatar was successfully set. Avatar:<br /><img src='" + avatarUrl + "' width='80' height='80'>");
-			if (Users(name)) Users(name).popup("|html|" + SG.nameColor(user.name, true) + " set your custom avatar.<br /><center><img src='" + avatarUrl + "' width='80' height='80'></center><br /> Refresh your page if you don\'t see it.");
+			if (Users(name)) Users(name).popup("|html|" + SG.nameColor(user.name, true) + " set your custom avatar.<br /><center><img src='" + avatarUrl + "' width='80' height='80'></center><br /> Refresh your page if you don't see it.");
 		},
 
 		remove: 'delete',

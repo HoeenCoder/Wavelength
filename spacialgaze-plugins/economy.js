@@ -255,7 +255,7 @@ exports.commands = {
 		let lines = fs.readFileSync('logs/transactions.log', 'utf8').split('\n').reverse();
 		let output = '';
 		let count = 0;
-		let regex = new RegExp(target.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "gi");
+		let regex = new RegExp(target.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "gi"); // eslint-disable-line no-useless-escape
 
 		if (word) {
 			output += 'Displaying last 50 lines containing "' + target + '":\n';
