@@ -168,16 +168,17 @@ exports.commands = {
 			"- " + SG.nameColor('Desokoro', true) + " (Server Host)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + SG.nameColor('Opple', true) + " (Policy and Media)<br />" +
-			"- " + SG.nameColor('Kraken Mare', true) + " (Development)<br />" +
-			"- " + SG.nameColor('HiroZ', true) + " (Policy)<br />" +
-			"- " + SG.nameColor('Ashley the Pikachu', true) + " (CSS, Spriting)<br />" +
+			"- " + SG.nameColor('Kraken Mare', true) + " (Policy Admin, Development)<br />" +
+			"- " + SG.nameColor('Opple', true) + " (Policy Leader, Media Leader)<br />" +
+			"- " + SG.nameColor('C733937 123', true) + " (Policy Leader)<br />" +
+			"- " + SG.nameColor('Ashley the Pikachu', true) + " (CSS, Spriting, Digimon Project)<br />" +
 			"- " + SG.nameColor('Insist', true) + " (Development)<br />" +
 			"- " + SG.nameColor('VXN', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + SG.nameColor('The Run', true) + " (Former Server Owner, Development)<br />" +
 			"- " + SG.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
+		    	"- " + SG.nameColor('HiroZ', true) + " (Former Policy Leader)<br />" +
 			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
