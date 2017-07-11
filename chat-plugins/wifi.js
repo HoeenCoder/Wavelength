@@ -428,7 +428,7 @@ class GtsGiveaway {
 	stopDeposits() {
 		this.noDeposits = true;
 
-		this.room.send(`<p style="text-align:center;font-size:11pt">More Pokémon have been deposited than there are prizes in this giveaway and new deposits will not be accepted. If you have already deposited a Pokémon, please be patient, and do not withdraw your Pokémon.</p>`);
+		this.room.send(`|html|<p style="text-align:center;font-size:11pt">More Pokémon have been deposited than there are prizes in this giveaway and new deposits will not be accepted. If you have already deposited a Pokémon, please be patient, and do not withdraw your Pokémon.</p>`);
 		this.changeUhtml(this.generateWindow());
 	}
 
@@ -441,7 +441,7 @@ class GtsGiveaway {
 			this.clearTimer();
 			this.changeUhtml(`<p style="text-align:center;font-size:13pt;font-weight:bold;">The GTS giveaway has finished.</p>`);
 			this.room.modlog(`${this.giver.name} has finished their GTS giveaway for "${this.summary}"`);
-			this.send(`<p style="text-align:center;font-size:11pt">The GTS giveaway for a "<strong>${Chat.escapeHTML(this.summary)}</strong>" has finished.</p>`);
+			this.send(`<p style="text-align:center;font-size:11pt">The GTS giveaway for a "<strong>${Chat.escapeHTML(this.lookfor)}</strong>" has finished.</p>`);
 		}
 		delete this.room.gtsga;
 	}
