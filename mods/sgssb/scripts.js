@@ -3,6 +3,7 @@
 
 exports.BattleScripts = {
 	randomSeasonalRegStaffTeam: function (side) {
+		let userid = toId(side.name);
 		let team = [];
 		let variant = this.random(2);
 		let sets = {
