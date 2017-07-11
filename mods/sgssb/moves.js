@@ -426,7 +426,7 @@ exports.BattleMovedex = {
 		self: {
 			boosts: {
 				evasion: 1,
-			},	
+			},
 		},
 		priority: 0,
 		onPrepareHit: function (target, source) {
