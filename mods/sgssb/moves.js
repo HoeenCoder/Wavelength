@@ -98,10 +98,12 @@ exports.BattleMovedex = {
 			},
 			heal: [7, 20],
 		},
-		desc: "Boosts user's Defense by 1 stage, Heals 7/20 of maximum health",
+		desc: "Boosts user's Defense by 1 stage, Heals 35% of maximum health",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Iron Defense", source);
+			this.add('-anim', source, "Fire Blast", source);
+			this.add('-anim', source, "Surf", source);
+			this.add('-anim', source, "Recover", source);
 		},
 		drain: [7, 20], //35%
 		target: "normal",
@@ -337,7 +339,8 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Morning Sun", source);
+			this.add('-anim', source, "Agility", source);
 		},
 		desc: "Raises user's Attack and Speed by 1 stage, and heals health by 5/20 maximum HP",
 		target: "normal",
