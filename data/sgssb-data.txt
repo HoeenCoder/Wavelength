@@ -264,7 +264,7 @@ The Run
 @ TwistedSpoon
 EVs: 252 SpA / 4 HP / 252 Spe
 Timid Nature
-Ability: Armor
+Ability: Prism Armor
 Moves: Psychic, Aura Sphere, and Protect.
 Signature Move: Time-Space Rush
 	- Psychic Type, Special, 130 BP, 85% accuracy, 5 PP and boosts user's Special Attack by 1 stage and lowers Speed by 1 stage, Bypasses Protect.
