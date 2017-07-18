@@ -181,6 +181,20 @@ exports.BattleScripts = {
 				},
 				nature: 'Timid',
 			},
+			'%Gligars': {
+				species: "Gligar",
+				ability: "Regenerator",
+				item: "Eviolite",
+				gender: "M",
+				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
+				signatureMove: "Daredevil",
+				evs: {
+					atk: 172,
+					def: 84,
+					spd: 252,
+				},
+				nature: "Adamant",
+			},
 			// Former Bots
 			'*SpaceGazer': {
 				species: 'Registeel',
@@ -356,20 +370,6 @@ exports.BattleScripts = {
 					spd: 4,
 				},
 				nature: 'Impish',
-			},
-			'+Gligars': {
-				species: "Gligar",
-				ability: "Regenerator",
-				item: "Eviolite",
-				gender: "M",
-				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
-				signatureMove: "Daredevil",
-				evs: {
-					atk: 172,
-					def: 84,
-					spd: 252,
-				},
-				nature: "Adamant",
 			},
 			'+Mimiroppu': {
 				species: 'Lopunny',

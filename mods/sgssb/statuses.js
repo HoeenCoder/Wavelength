@@ -242,13 +242,13 @@ exports.BattleStatuses = {
 	gligars: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+Gligars', 'Smokin\'!');
+			this.add('c', '%Gligars', 'Smokin\'!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
+			this.add('c', '%Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Gligars', 'Look, ma! I\'m roadkill!');
+			this.add('c', '%Gligars', 'Look, ma! I\'m roadkill!');
 		},
 	},
 	insist: {
