@@ -134,6 +134,22 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
+			'@Insist': {
+				species: "Ludicolo",
+				ability: "Crippling Depression",
+				item: "Playnium Z",
+				gender: "M",
+				shiny: true,
+				moves: ['freezedry', 'gigadrain', 'focusblast'],
+				baseSignatureMove: "aquasubscribe",
+				signatureMove: "Aqua Subscribe",
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: "Timid",
+			},
 			// Global Drivers:
 			'%ducktown': {
 				species: 'Golduck',
@@ -149,22 +165,6 @@ exports.BattleScripts = {
 					hp: 4,
 				},
 				nature: 'Modest',
-			},
-			'%Insist': {
-				species: "Ludicolo",
-				ability: "Crippling Depression",
-				item: "Playnium Z",
-				gender: "M",
-				shiny: true,
-				moves: ['freezedry', 'gigadrain', 'focusblast'],
-				baseSignatureMove: "aquasubscribe",
-				signatureMove: "Aqua Subscribe",
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: "Timid",
 			},
 			'%Serperiorater': {
 				species: 'Serperior',

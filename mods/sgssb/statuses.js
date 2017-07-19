@@ -254,13 +254,13 @@ exports.BattleStatuses = {
 	insist: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Insist', 'I __insist__ you just forfeit right now.');
+			this.add('c', '@Insist', 'I __insist__ you just forfeit right now.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Insist', 'I don\'t just run away from my problems!');
+			this.add('c', '@Insist', 'I don\'t just run away from my problems!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
 		},
 	},
 };
