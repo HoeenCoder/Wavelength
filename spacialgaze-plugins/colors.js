@@ -65,7 +65,7 @@ exports.commands = {
 			if (toId(target[0]).length > 19) return this.errorReply("Usernames are not this long...");
 			this.sendReply("|raw|You have given <b><font color=" + target[1] + ">" + Chat.escapeHTML(target[0]) + "</font></b> a custom color.");
 			this.privateModCommand("(" + target[0] + " has recieved custom color: '" + target[1] + "' from " + user.name + ".)");
-			Monitor.log(target[0] + " has recieved custom color: '" + target[1] + "' from " + user.name + ".");
+			Monitor.adminLog(target[0] + " has recieved custom color: '" + target[1] + "' from " + user.name + ".");
 			customColors[toId(target[0])] = target[1];
 			updateColor();
 		},
@@ -77,7 +77,7 @@ exports.commands = {
 			updateColor();
 			this.sendReply("You removed " + target + "'s custom color.");
 			this.privateModCommand("(" + target + "'s custom color was removed by " + user.name + ".)");
-			Monitor.log(target + "'s custom color was removed by " + user.name + ".");
+			Monitor.adminLog(target + "'s custom color was removed by " + user.name + ".");
 			if (Users(target) && Users(target).connected) Users(target).popup(user.name + " removed your custom color.");
 			return;
 		},
