@@ -3,6 +3,7 @@
 
 exports.BattleScripts = {
 	randomSeasonalRegStaffTeam: function (side) {
+		let userid = toId(side.name);
 		let team = [];
 		let variant = this.random(2);
 		let sets = {
@@ -412,6 +413,21 @@ exports.BattleScripts = {
 		// Generate the team randomly.
 		let pool = Object.keys(sets);
 		for (let i = 0; i < 6; i++) {
+			if (i === 1) {
+				let monIds = pool.slice(0, 6).map(function (p) {
+					return toId(p);
+				});
+				let monName;
+				for (let mon in sets) {
+					if (toId(mon) === userid) {
+						monName = mon;
+						break;
+					}
+				}
+				if (monIds.indexOf(userid) === -1 && monName) {
+					pool[2] = monName;
+				}
+			}
 			let name = this.sampleNoReplace(pool);
 			let set = sets[name];
 			set.level = 100;
