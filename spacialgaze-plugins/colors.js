@@ -64,8 +64,8 @@ exports.commands = {
 			if (!target[1]) return this.parse('/help customcolor');
 			if (toId(target[0]).length > 19) return this.errorReply("Usernames are not this long...");
 			this.sendReply("|raw|You have given <b><font color=" + target[1] + ">" + Chat.escapeHTML(target[0]) + "</font></b> a custom color.");
-			this.privateModCommand("(" + target[0] + " has recieved custom color: '" + target[1] + "' from " + user.name + ".)");
-			Monitor.adminLog(target[0] + " has recieved custom color: '" + target[1] + "' from " + user.name + ".");
+			this.privateModCommand("(" + target[0] + " has received custom color: '" + target[1] + "' from " + user.name + ".)");
+			Monitor.adminLog(target[0] + " has received custom color: '" + target[1] + "' from " + user.name + ".");
 			customColors[toId(target[0])] = target[1];
 			updateColor();
 		},
