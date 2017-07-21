@@ -135,6 +135,22 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
+			'@Insist': {
+				species: "Ludicolo",
+				ability: "Crippling Depression",
+				item: "Playnium Z",
+				gender: "M",
+				shiny: true,
+				moves: ['freezedry', 'gigadrain', 'focusblast'],
+				baseSignatureMove: "aquasubscribe",
+				signatureMove: "Aqua Subscribe",
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: "Timid",
+			},
 			// Global Drivers:
 			'%ducktown': {
 				species: 'Golduck',
@@ -151,22 +167,6 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
-			'%Insist': {
-				species: "Ludicolo",
-				ability: "Crippling Depression",
-				item: "Playnium Z",
-				gender: "M",
-				shiny: true,
-				moves: ['freezedry', 'gigadrain', 'focusblast'],
-				baseSignatureMove: "aquasubscribe",
-				signatureMove: "Aqua Subscribe",
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: "Timid",
-			},
 			'%Serperiorater': {
 				species: 'Serperior',
 				ability: 'Sturdy',
@@ -181,6 +181,20 @@ exports.BattleScripts = {
 					spd: 4,
 				},
 				nature: 'Timid',
+			},
+			'%Gligars': {
+				species: "Gligar",
+				ability: "Regenerator",
+				item: "Eviolite",
+				gender: "M",
+				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
+				signatureMove: "Daredevil",
+				evs: {
+					atk: 172,
+					def: 84,
+					spd: 252,
+				},
+				nature: "Adamant",
 			},
 			// Former Bots
 			'*SpaceGazer': {
@@ -358,20 +372,6 @@ exports.BattleScripts = {
 				},
 				nature: 'Impish',
 			},
-			'+Gligars': {
-				species: "Gligar",
-				ability: "Regenerator",
-				item: "Eviolite",
-				gender: "M",
-				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
-				signatureMove: "Daredevil",
-				evs: {
-					atk: 172,
-					def: 84,
-					spd: 252,
-				},
-				nature: "Adamant",
-			},
 			'+Mimiroppu': {
 				species: 'Lopunny',
 				ability: 'Limber',
@@ -411,7 +411,8 @@ exports.BattleScripts = {
 		}
 
 		// Generate the team randomly.
-		let pool = Object.keys(sets);
+		let pool = Dex.shuffle(Object.keys(sets));
+		let levels = 100;
 		for (let i = 0; i < 6; i++) {
 			if (i === 1) {
 				let monIds = pool.slice(0, 6).map(function (p) {
@@ -428,47 +429,25 @@ exports.BattleScripts = {
 					pool[2] = monName;
 				}
 			}
-			let name = this.sampleNoReplace(pool);
-			let set = sets[name];
+			let rank = pool[i].charAt(0);
+			let set = sets[pool[i]];
 			set.level = 100;
-			set.name = name;
+			set.name = pool[i];
 			if (!set.ivs) {
-				set.ivs = {
-					hp: 31,
-					atk: 31,
-					def: 31,
-					spa: 31,
-					spd: 31,
-					spe: 31,
-				};
+				set.ivs = {hp:31, atk:31, def:31, spa:31, spd:31, spe:31};
 			} else {
-				for (let iv in {
-					hp: 31,
-					atk: 31,
-					def: 31,
-					spa: 31,
-					spd: 31,
-					spe: 31,
-				}) {
-					set.ivs[iv] = iv in set.ivs ? set.ivs[iv] : 31;
+				for (let iv in {hp:31, atk:31, def:31, spa:31, spd:31, spe:31}) {
+					set.ivs[iv] = set.ivs[iv] ? set.ivs[iv] : 31;
 				}
 			}
-			// Assuming the hardcoded set evs are all legal.
-			if (!set.evs) {
-				set.evs = {
-					hp: 84,
-					atk: 84,
-					def: 84,
-					spa: 84,
-					spd: 84,
-					spe: 84,
-				};
-			}
+			// Assuming the hardcoded set evs are all legal. LOLOLOLOLOL
+			if (!set.evs) set.evs = {hp:84, atk:84, def:84, spa:84, spd:84, spe:84};
 			set.moves = [this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves)].concat(set.signatureMove);
 			team.push(set);
 		}
 		return team;
 	},
+
 	//Deny Terrain setting if Ashley is active.
 	setTerrain: function (status, source, sourceEffect) {
 		status = this.getEffect(status);
