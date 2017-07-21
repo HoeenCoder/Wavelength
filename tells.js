@@ -169,4 +169,4 @@ exports.getTellTime = function (time) {
 
 // clear old messages every two hours
 exports.pruneOldTimer = setInterval(pruneOld, 1000 * 60 * 60 * 2,
-        Config.tellsexpiryage || 1000 * 60 * 60 * 24 * 7);
+	Config.tellsexpiryage || 1000 * 60 * 60 * 24 * 7);

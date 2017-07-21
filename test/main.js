@@ -2,9 +2,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const Module = require('module');
-const mock = require('mock-fs-require-fix');
-require('geoip-lite-country');
 
 const noop = () => {};
 
@@ -33,25 +30,6 @@ before('initialization', function () {
 
 	// Don't create a REPL
 	require('../repl').start = noop;
-
-	// `watchFile` is unsupported and throws with mock-fs
-	Object.defineProperty(fs, 'watchFile', {
-		get: function () {return noop;},
-		set: noop,
-	});
-
-	// Sandbox file system: it's possible for a production server to be running in the same directory.
-	// And using a sandbox is safer anyway.
-	mock({
-		'config': {},
-		'chat-plugins': getDirTypedContentsSync('chat-plugins', 'file'),
-		'spacialgaze-plugins': getDirTypedContentsSync('spacialgaze-plugins', 'file'),
-		'mods': getDirTypedContentsSync('mods', 'dir'),
-		'logs': {
-			'chat': {}, 'ladderip': {}, 'modlog': {}, 'repl': {},
-			'lastbattle.txt': '0',
-		},
-	});
 
 	// Start the server.
 	require('../app');

@@ -27,13 +27,13 @@ exports.BattleStatuses = {
 	clue: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Clue', 'glhf');
+			this.add('c', '+Clue', 'glhf');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Clue', 'lmfao brb');
+			this.add('c', '+Clue', 'lmfao brb');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Clue', 'yeah so I\'mma go get some food see you later');
+			this.add('c', '+Clue', 'yeah so I\'mma go get some food see you later');
 		},
 	},
 	ashleythepikachu: {
@@ -242,25 +242,25 @@ exports.BattleStatuses = {
 	gligars: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+Gligars', 'Smokin\'!');
+			this.add('c', '%Gligars', 'Smokin\'!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
+			this.add('c', '%Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Gligars', 'Look, ma! I\'m roadkill!');
+			this.add('c', '%Gligars', 'Look, ma! I\'m roadkill!');
 		},
 	},
 	insist: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Insist', 'I __insist__ you just forfeit right now.');
+			this.add('c', '@Insist', 'I __insist__ you just forfeit right now.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Insist', 'I don\'t just run away from my problems!');
+			this.add('c', '@Insist', 'I don\'t just run away from my problems!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
 		},
 	},
 };

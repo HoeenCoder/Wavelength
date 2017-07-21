@@ -98,10 +98,12 @@ exports.BattleMovedex = {
 			},
 			heal: [7, 20],
 		},
-		desc: "Boosts user's Defense by 1 stage, Heals 7/20 of maximum health",
+		desc: "Boosts user's Defense by 1 stage, Heals 35% of maximum health",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Iron Defense", source);
+			this.add('-anim', source, "Fire Blast", source);
+			this.add('-anim', source, "Surf", source);
+			this.add('-anim', source, "Recover", source);
 		},
 		drain: [7, 20], //35%
 		target: "normal",
@@ -235,7 +237,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		id: "gettingtrolled",
 		isNonstandard: true,
-		basePower: 40,
+		basePower: 90,
 		name: "Getting Trolled",
 		pp: 20,
 		secondary: {
@@ -311,10 +313,12 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
+			this.add('-anim', source, "Focus Energy", source);
 			this.add('-anim', source, "Head Smash", target);
 		},
 		accuracy: 100,
 		desc: "No additional effects",
+		zMovePower: 150,
 		target: "normal",
 		type: "Steel",
 	},
@@ -335,7 +339,8 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Morning Sun", source);
+			this.add('-anim', source, "Agility", source);
 		},
 		desc: "Raises user's Attack and Speed by 1 stage, and heals health by 5/20 maximum HP",
 		target: "normal",
@@ -358,7 +363,8 @@ exports.BattleMovedex = {
 		desc: "Boosts user's Atk by 1 stage, and Spe by 2 stages",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Stone Edge", source);
+			this.add('-anim', source, "Geomancy", source);
 		},
 		target: "normal",
 		type: "Rock",
@@ -409,19 +415,28 @@ exports.BattleMovedex = {
 	},
 	// Admewn
 	mewtation: {
-		category: "Special",
+		category: "Status",
 		id: "mewtation",
 		accuracy: true,
 		isNonstandard: true,
 		name: "Mewtation",
 		pp: 10,
-		basePower: 90,
+		status: 'tox',
+		secondary: false,
+		self: {
+			boosts: {
+				evasion: 1,
+			},
+		},
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Transform", target);
+			this.add('-anim', source, "Agility", source);
+			this.add('-anim', source, "Psychic", target);
+			this.add('-anim', source, "Night Shade", target);
 		},
-		desc: "No additional effects",
+		desc: "Boosts evasion by 1 and badly poisons target.",
+		shortDesc: "Boosts evasion by 1 and badly poisons target.",
 		target: "normal",
 		type: "Dark",
 	},
@@ -437,7 +452,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Breath", target);
+			this.add('-anim', source, "Blue Flare", source);
+			this.add('-anim', source, "Recover", source);
+			this.add('-anim', source, "Precipice Blades", target);
 		},
 		desc: "High Crit Ratio",
 		target: "normal",

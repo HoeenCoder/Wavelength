@@ -134,38 +134,7 @@ exports.BattleScripts = {
 				},
 				nature: 'Modest',
 			},
-			// Global Drivers:
-			'%Clue': {
-				species: 'Magnezone',
-				ability: 'Levitate',
-				item: 'Choice Specs',
-				moves: [
-					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
-				],
-				signatureMove: 'Mechanical Dysfunction',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
-			'%ducktown': {
-				species: 'Golduck',
-				ability: 'Cloud Nine',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Scald', 'Ice Beam', 'Psychic',
-				],
-				signatureMove: 'Duck Power',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
-			'%Insist': {
+			'@Insist': {
 				species: "Ludicolo",
 				ability: "Crippling Depression",
 				item: "Playnium Z",
@@ -181,6 +150,22 @@ exports.BattleScripts = {
 				},
 				nature: "Timid",
 			},
+			// Global Drivers:
+			'%ducktown': {
+				species: 'Golduck',
+				ability: 'Cloud Nine',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['Scald', 'Ice Beam', 'Psychic',
+				],
+				signatureMove: 'Duck Power',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: 'Modest',
+			},
 			'%Serperiorater': {
 				species: 'Serperior',
 				ability: 'Sturdy',
@@ -195,6 +180,20 @@ exports.BattleScripts = {
 					spd: 4,
 				},
 				nature: 'Timid',
+			},
+			'%Gligars': {
+				species: "Gligar",
+				ability: "Regenerator",
+				item: "Eviolite",
+				gender: "M",
+				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
+				signatureMove: "Daredevil",
+				evs: {
+					atk: 172,
+					def: 84,
+					spd: 252,
+				},
+				nature: "Adamant",
 			},
 			// Former Bots
 			'*SpaceGazer': {
@@ -299,6 +298,21 @@ exports.BattleScripts = {
 				},
 				nature: 'Adamant',
 			},
+			'+Clue': {
+				species: 'Magnezone',
+				ability: 'Levitate',
+				item: 'Choice Specs',
+				moves: [
+					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
+				],
+				signatureMove: 'Mechanical Dysfunction',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: 'Modest',
+			},
 			'+Ranfen': {
 				species: 'Flygon',
 				ability: 'DesertDragon',
@@ -356,20 +370,6 @@ exports.BattleScripts = {
 					spd: 4,
 				},
 				nature: 'Impish',
-			},
-			'+Gligars': {
-				species: "Gligar",
-				ability: "Regenerator",
-				item: "Eviolite",
-				gender: "M",
-				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
-				signatureMove: "Daredevil",
-				evs: {
-					atk: 172,
-					def: 84,
-					spd: 252,
-				},
-				nature: "Adamant",
 			},
 			'+Mimiroppu': {
 				species: 'Lopunny',

@@ -598,6 +598,13 @@ class CommandContext {
 				return false;
 			}
 
+			if (Users.ShadowBan.checkBanned(this.user)) {
+				Users.ShadowBan.addMessage(this.user, "To " + this.room.id, message);
+				this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
+				this.parse('/' + this.message.substr(1));
+				return false;
+			}
+
 			// broadcast cooldown
 			let broadcastMessage = message.toLowerCase().replace(/[^a-z0-9\s!,]/g, '');
 
@@ -953,8 +960,8 @@ Chat.uncacheTree = function (root) {
 			if (require.cache[uncache[i]]) {
 				newuncache.push.apply(newuncache,
 					require.cache[uncache[i]].children
-					.filter(cachedModule => !cachedModule.id.endsWith('.node'))
-					.map(cachedModule => cachedModule.id)
+						.filter(cachedModule => !cachedModule.id.endsWith('.node'))
+						.map(cachedModule => cachedModule.id)
 				);
 				delete require.cache[uncache[i]];
 			}
