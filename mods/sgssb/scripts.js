@@ -412,7 +412,6 @@ exports.BattleScripts = {
 
 		// Generate the team randomly.
 		let pool = Dex.shuffle(Object.keys(sets));
-		let levels = 100;
 		for (let i = 0; i < 6; i++) {
 			if (i === 1) {
 				let monIds = pool.slice(0, 6).map(function (p) {
@@ -429,7 +428,6 @@ exports.BattleScripts = {
 					pool[2] = monName;
 				}
 			}
-			let rank = pool[i].charAt(0);
 			let set = sets[pool[i]];
 			set.level = 100;
 			set.name = pool[i];
