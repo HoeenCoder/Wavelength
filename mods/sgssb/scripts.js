@@ -388,7 +388,7 @@ exports.BattleScripts = {
 				nature: 'Jolly',
 			},
 			//Former Staff + Regs
-			'+Hurricane\'d': {
+			' Hurricane\'d': {
 				species: 'Tomohawk',
 				ability: 'Gale Wings',
 				item: 'Rocky Helmet',
