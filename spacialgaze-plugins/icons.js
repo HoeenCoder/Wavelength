@@ -58,8 +58,7 @@ exports.commands = {
 			if (toId(target[0]).length > 19) return this.errorReply("Usernames are not this long...");
 			if (icons[toId(target[0])]) return this.errorReply("This user already has a custom userlist icon.  Do /icon delete [user] and then set their new icon.");
 			this.sendReply("|raw|You have given " + SG.nameColor(target[0], true) + " an icon.");
-			//(remove?) Rooms('staff').add('|raw|' + SG.nameColor((target[0])) + ' has received an icon from ' + SG.nameColor(user.name), true).update();
-			Monitor.adminLog(target[0] + ' has received an icon from ' + user.name);
+			Rooms('upperstaff').add('|raw|' + SG.nameColor((target[0])) + ' has received an icon from ' + SG.nameColor(user.name), true).update();
 			this.privateModCommand("|raw|(" + target[0] + " has recieved icon: <img src='" + target[1] + "' width='32' height='32'> from " + user.name + ".)");
 			if (Users(target[0]) && Users(target[0]).connected) Users(target[0]).popup("|html|" + SG.nameColor(user.name, true) + " has set your userlist icon to: <img src='" + target[1] + "' width='32' height='32'><br><center>Refresh, If you don't see it.</center>");
 			icons[toId(target[0])] = target[1];
@@ -73,8 +72,7 @@ exports.commands = {
 			delete icons[toId(target)];
 			updateIcons();
 			this.sendReply("You removed " + target + "'s icon.");
-			// (Should i remove this?) Rooms('staff').add('|raw|' + SG.nameColor(user.name, true) + " removed " + target + "'s icon.").update();
-			Monitor.adminLog(user.name + " removed " + target + "'s icon.");
+			Rooms('upperstaff').add('|raw|' + SG.nameColor(user.name, true) + " removed " + target + "'s icon.").update();
 			this.privateModCommand("(" + target + "'s icon was removed by " + user.name + ".)");
 			if (Users(target) && Users(target).connected) Users(target).popup("|html|" + SG.nameColor(user.name, true) + " has removed your userlist icon.");
 		},
