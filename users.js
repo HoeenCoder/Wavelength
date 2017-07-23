@@ -391,6 +391,7 @@ class User {
 		this.chatQueue = null;
 		this.chatQueueTimeout = null;
 		this.lastChatMessage = 0;
+		this.lastCommand = '';
 
 		// for the anti-spamming mechanism
 		this.lastMessage = ``;
