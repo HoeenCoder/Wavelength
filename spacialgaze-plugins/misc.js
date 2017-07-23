@@ -450,6 +450,7 @@ exports.commands = {
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
 		if (Db.disabledScrolls.has(target)) return this.errorReply(`${Rooms(target).title} has roomintro scroll disabled.`);
 		Db.disabledScrolls.set(target, true);
+		monitor.adminLog(user.name + ` has disabled the roomintro scroll bar for ${Rooms(target).title}.`);
 	},
 
 	disableintroscrollhelp: ["/disableintroscroll [room] - Disables scroll bar preset in the room's roomintro."],
@@ -460,6 +461,7 @@ exports.commands = {
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
 		if (!Db.disabledScrolls.has(target)) return this.errorReply(`${Rooms(target).title} has roomintro scroll enabled.`);
 		Db.disabledScrolls.remove(target);
+		monitor.adminLog(user.name + ` has enabled the roomintro scroll bar for ${Rooms(target).title}.`);
 	},
 	enableintroscrollhelp: ["/enableintroscroll [room] - Enables scroll bar preset in the room's roomintro."],
 
