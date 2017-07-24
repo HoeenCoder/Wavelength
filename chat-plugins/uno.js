@@ -304,12 +304,6 @@ class UNOgame extends Rooms.RoomGame {
 		});
 	}
 
-<<<<<<< HEAD
-		this.timer = setTimeout(() => {
-			this.sendToRoom(`|html|${SG.nameColor(player.name, true, true)} has been automatically disqualified.`);
-			this.eliminate(this.currentPlayer);
-		}, this.maxTime * 1000);
-=======
 	nextTurn(starting) {
 		this.onAwaitUno()
 			.then(() => {
@@ -324,11 +318,10 @@ class UNOgame extends Rooms.RoomGame {
 				player.sendDisplay();
 
 				this.timer = setTimeout(() => {
-					this.sendToRoom(`${player.name} has been automatically disqualified.`);
+					this.sendToRoom(`${SG.nameColor(player.name, true, true)} has been automatically disqualified.`);
 					this.eliminate(this.currentPlayer);
 				}, this.maxTime * 1000);
 			});
->>>>>>> b91c3cff905de36ceb6aac4aefb8b387d734bd41
 	}
 
 	onNextPlayer() {
@@ -493,11 +486,7 @@ class UNOgame extends Rooms.RoomGame {
 	onUno(user, unoId) {
 		// uno id makes spamming /uno uno impossible
 		if (this.unoId !== unoId || user.userid !== this.awaitUno) return false;
-<<<<<<< HEAD
-		this.sendToRoom(`|raw|<strong>UNO!</strong> ${SG.nameColor(user.name, true, true)} is down to their last card!`);
-=======
-		this.sendToRoom(Chat.html`|raw|<strong>UNO!</strong> ${user.name} is down to their last card!`);
->>>>>>> b91c3cff905de36ceb6aac4aefb8b387d734bd41
+		this.sendToRoom(Chat.html`|raw|<strong>UNO!</strong> ${SG.nameColor(user.name, true, true)} is down to their last card!`);
 		delete this.awaitUno;
 		delete this.unoId;
 	}
@@ -521,8 +510,7 @@ class UNOgame extends Rooms.RoomGame {
 	}
 
 	onWin(player) {
-<<<<<<< HEAD
-		this.sendToRoom(`|raw|<div class="broadcast-green">Congratulations to ${player.name} for winning the game of UNO!</div>`, true);
+		this.sendToRoom(Chat.html`|raw|<div class="broadcast-green">Congratulations to ${player.name} for winning the game of UNO!</div>`, true);
 		let targetUserid = toId(player.name);
 		let prize = 2;
 		prize += Math.floor(this.playerCount / 5);
@@ -541,9 +529,6 @@ class UNOgame extends Rooms.RoomGame {
 				if (Users(this.players[i].gameBoost)) Users(this.players[i]).gameBoost = false;
 			}
 		}
-=======
-		this.sendToRoom(Chat.html`|raw|<div class="broadcast-green">Congratulations to ${player.name} for winning the game of UNO!</div>`, true);
->>>>>>> b91c3cff905de36ceb6aac4aefb8b387d734bd41
 		this.destroy();
 	}
 
