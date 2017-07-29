@@ -78,7 +78,7 @@ exports.BattleStatuses = {
 			this.add('c', '~HoeenHero', 'Do I have to? I\'m in the middle of programming.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~HoeenHero', 'I can\'t battle now, i\'m too busy.');
+			this.add('c', '~HoeenHero', 'I can\'t battle now, I\'m too busy.');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');

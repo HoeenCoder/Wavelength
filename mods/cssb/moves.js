@@ -654,6 +654,31 @@ exports.BattleMovedex = {
 		type: "Ice",
 		zMovePower: 210,
 	},
+	//Lionyx
+	stellarimpact: {
+		accuracy: 100,
+		basePower: 95,
+		category: "Special",
+		id: "stellarimpact",
+		name: "Stellar Impact",
+		pp: 5,
+		priority: 0,
+		flags: {contact:1},
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					def: 1,
+					spd: 1,
+					spe: 1,
+				},
+			},
+		},
+		desc: "95 BP, Dark type & +1 Def, +1 SpD, & +1 Spe",
+		target: "normal",
+		type: "Dark",
+		zMovePower: 200,
+	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
 	/*spacialblast: {
