@@ -92,12 +92,10 @@ exports.BattleMovedex = {
 		name: "Blast Furnace",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				def: 1,
-			},
-			heal: [7, 20],
+		boosts: {
+			def: 1,
 		},
+		heal: [7, 20],
 		desc: "Boosts user's Defense by 1 stage, Heals 35% of maximum health",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -106,7 +104,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Recover", source);
 		},
 		drain: [7, 20], //35%
-		target: "normal",
+		target: "self",
 		type: "Fire",
 	},
 	// HiroZ
@@ -261,12 +259,10 @@ exports.BattleMovedex = {
 		id: "mysticmirage",
 		isNonstandard: true,
 		name: "Mystic Mirage",
-		self: {
-			boosts: {
-				def: 1,
-				spa: 1,
-				spd: 1,
-			},
+		boosts: {
+			def: 1,
+			spa: 1,
+			spd: 1,
 		},
 		desc: "Boosts user's Defense, SpA, and SpD by 1 stage",
 		pp: 10,
@@ -330,20 +326,18 @@ exports.BattleMovedex = {
 		name: "Ancient Orb",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				spe: 1,
-				atk: 1,
-			},
-			heal: [5, 20],
+		boosts: {
+			spe: 1,
+			atk: 1,
 		},
+		heal: [5, 20],
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Morning Sun", source);
 			this.add('-anim', source, "Agility", source);
 		},
 		desc: "Raises user's Attack and Speed by 1 stage, and heals health by 5/20 maximum HP",
-		target: "normal",
+		target: "self",
 		type: "Dragon",
 	},
 	// Spacial Bot
@@ -354,11 +348,9 @@ exports.BattleMovedex = {
 		name: "Ancient Ritual",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				spe: 2,
-				atk: 1,
-			},
+		boosts: {
+			spe: 2,
+			atk: 1,
 		},
 		desc: "Boosts user's Atk by 1 stage, and Spe by 2 stages",
 		onPrepareHit: function (target, source) {
@@ -366,7 +358,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Stone Edge", source);
 			this.add('-anim', source, "Geomancy", source);
 		},
-		target: "normal",
+		target: "self",
 		type: "Rock",
 	},
 	// ducktown
@@ -377,11 +369,9 @@ exports.BattleMovedex = {
 		name: "Duck Power",
 		pp: 5,
 		priority: 0,
-		self: {
-			boosts: {
-				spa: 8,
-				spd: 8,
-			},
+		boosts: {
+			spa: 8,
+			spd: 8,
 		},
 		desc: "Boosts user's SpA and SpD by 8 stages, and sets Rain Dance",
 		onPrepareHit: function (target, source) {
@@ -389,7 +379,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Calm Mind", source);
 		},
 		weather: 'raindance',
-		target: "normal",
+		target: "self",
 		type: "Water",
 	},
 	// Hurricane'd
@@ -421,7 +411,6 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Mewtation",
 		pp: 10,
-		status: 'tox',
 		secondary: false,
 		self: {
 			boosts: {
@@ -434,6 +423,9 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Agility", source);
 			this.add('-anim', source, "Psychic", target);
 			this.add('-anim', source, "Night Shade", target);
+		},
+		onHit: function (target, source) {
+			target.trySetStatus('tox', source);
 		},
 		desc: "Boosts evasion by 1 and badly poisons target.",
 		shortDesc: "Boosts evasion by 1 and badly poisons target.",
