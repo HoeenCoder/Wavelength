@@ -19,7 +19,7 @@ Bold Nature
 Ability: Analytic
 Moves: Cosmic Power/Calm Mind, Soft-Boiled and Stored Power.
 Signature Move: Mystic Mirage
-	- Fairy Type, Status, 10 PP and boosts the user's Def, SpA, and SpD by 1 stage.
+	- Fairy Type, Status, 10 PP and boosts the user's Def, SpA, and SpD by 3 stages.
 Notes: idk
 Rank: N/A.
 
@@ -230,7 +230,7 @@ Ability: Conflict of Interest
     - Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.5x damage to user and burn damage is halved.
 Moves: Gyro Ball, Toxic, Confuse Ray and Earthquake.
 Signature Move: Blast Furnace
-	- Fire Type, Status, 10 PP, Boosts user's Defense by 1 stage and heals user by 7/20th of its max HP.
+	- Fire Type, Status, 10 PP, Boosts user's Defense and Special Defense by 1 stage and heals user by 7/20th of its max HP.
 Notes: N/A.
 Rank: N/A.
 

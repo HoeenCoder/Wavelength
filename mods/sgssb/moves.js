@@ -94,9 +94,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		boosts: {
 			def: 1,
+			spd: 1,
 		},
 		heal: [7, 20],
-		desc: "Boosts user's Defense by 1 stage, Heals 35% of maximum health",
+		desc: "Boosts user's Defense and Special Defense by 1 stage, Heals 35% of maximum health",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Fire Blast", source);
@@ -260,11 +261,11 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Mystic Mirage",
 		boosts: {
-			def: 1,
-			spa: 1,
-			spd: 1,
+			def: 3,
+			spa: 3,
+			spd: 3,
 		},
-		desc: "Boosts user's Defense, SpA, and SpD by 1 stage",
+		desc: "Boosts user's Defense, SpA, and SpD by 3 stages.",
 		pp: 10,
 		priority: 0,
 		onHit: function (target, source) {
