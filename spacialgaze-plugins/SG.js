@@ -98,7 +98,6 @@ SG.reloadCSS = function () {
 //Daily Rewards System for SpacialGaze by Lord Haji
 SG.giveDailyReward = function (user) {
 	if (!user) return false;
-	let ips = user.connections[0].ips;
 	let reward = 0;
 	for (let ip in user.ips) {
 		let cur = Db.DailyBonus.get(ip, [1, Date.now()]);
