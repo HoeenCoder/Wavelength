@@ -96,41 +96,22 @@ SG.reloadCSS = function () {
 };
 
 //Daily Rewards System for SpacialGaze by Lord Haji
-SG.giveDailyReward = function (userid, user) {
-	if (!user || !userid) return false;
-	userid = toId(userid);
-	if (!Db.DailyBonus.has(userid)) {
-		Db.DailyBonus.set(userid, [1, Date.now()]);
-		return false;
+SG.giveDailyReward = function (user) {
+	if (!user) return false;
+	let ips = user.connections[0].ips;
+	let reward = 0;
+	for (let ip in user.ips) {
+		let cur = Db.DailyBonus.get(ip, [1, Date.now()]);
+		if (cur[0] < reward || !reward) reward = cur[0];
 	}
-	let lastTime = Db.DailyBonus.get(userid)[1];
-	// Alt check
-	let alts = Object.keys(user.prevNames).map(a => {return toId(a);});
-	let longestWait = 0;
-	for (let i = 0; i < alts.length; i++) {
-		let cur = Db.DailyBonus.get(alts[i]);
-		if (!cur) {
-			alts.splice(i, 1);
-			i--;
-			continue;
-		}
-		if ((Date.now() - cur[1]) < 86400000 && cur[1] > longestWait) longestWait = cur[1];
+	// Loop again to set the ips values
+	for (let ip in user.ips) {
+		Db.DailyBonus.set(ip, [(reward + 1 < 8 ? reward + 1 : 1), Date.now()]);
 	}
-	if (longestWait > lastTime) lastTime = longestWait;
-	alts.push(userid);
-	if ((Date.now() - lastTime) < 86400000) {
-		for (let i = 0; i < alts.length; i++) {
-			Db.DailyBonus.set(alts[i], [Db.DailyBonus.get(alts[i])[0], lastTime]);
-		}
-		return false;
+	if (reward !== 0) {
+		Economy.writeMoney(user.userid, reward);
+		user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
 	}
-	for (let i = 0; i < alts.length; i++) {
-		if ((Date.now() - lastTime) >= 127800000 || Db.DailyBonus.get(alts[i])[0] <= 8) Db.DailyBonus.set(alts[i], [1, Date.now()]);
-	}
-	let reward = Db.DailyBonus.get(userid)[0];
-	Economy.writeMoney(userid, reward);
-	for (let i = 0; i < alts.length; i++) Db.DailyBonus.set(alts[i], [(Db.DailyBonus.get(alts[i])[0] + 1), Date.now()]);
-	user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + reward + ' Days.</center>');
 };
 
 // last two functions needed to make sure SG.regdate() fully works

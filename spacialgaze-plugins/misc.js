@@ -426,9 +426,10 @@ exports.commands = {
 	bonus: 'dailybonus',
 	checkbonus: 'dailybonus',
 	dailybonus: function (target, room, user) {
-		let nextBonus = Date.now() - Db.DailyBonus.get(user.userid, [1, Date.now()])[1];
-		if ((86400000 - nextBonus) <= 0) return SG.giveDailyReward(user.userid, user);
-		return this.sendReply('Your next bonus is ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 8 ? 7 : Db.DailyBonus.get(user.userid, [1, Date.now()])[0]) + ' ' + (Db.DailyBonus.get(user.userid, [1, Date.now()])[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
+		let obj = Db.DailyBonus.get(user.latestIp, [1, Date.now()]);
+		let nextBonus = Date.now() - obj[1];
+		if ((86400000 - nextBonus) <= 0) return SG.giveDailyReward(user);
+		return this.sendReply('Your next bonus is ' + obj[0] + ' ' + (obj[0] === 1 ? currencyName : currencyPlural) + ' in ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
 	},
 
 	etour: function (target, room, user) {
