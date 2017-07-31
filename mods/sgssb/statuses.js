@@ -263,4 +263,13 @@ exports.BattleStatuses = {
 			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
 		},
 	},
+	celestialtater: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+CelestialTater', 'this potato gonna rek you m8');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+CelestialTater', 'Heck');
+		},
+	},
 };
