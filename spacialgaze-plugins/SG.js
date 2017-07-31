@@ -98,19 +98,20 @@ SG.reloadCSS = function () {
 //Daily Rewards System for SpacialGaze by Lord Haji
 SG.giveDailyReward = function (user) {
 	if (!user) return false;
-	let reward = 0;
+	let reward = 0, time = Date.now(), give = true;
 	for (let ip in user.ips) {
 		let cur = Db.DailyBonus.get(ip, [1, Date.now()]);
 		if (cur[0] < reward || !reward) reward = cur[0];
+		if (cur[1] < time) time = cur[1];
 	}
+	if (Date.now() - time < 86400000) return;
+	if (Date.now() - time > 172800000) reward = 1;
 	// Loop again to set the ips values
 	for (let ip in user.ips) {
 		Db.DailyBonus.set(ip, [(reward + 1 < 8 ? reward + 1 : 1), Date.now()]);
 	}
-	if (reward !== 0) {
-		Economy.writeMoney(user.userid, reward);
-		user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
-	}
+	Economy.writeMoney(user.userid, reward);
+	user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
 };
 
 // last two functions needed to make sure SG.regdate() fully works
