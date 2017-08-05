@@ -8,7 +8,7 @@ const fs = require('fs');
 let writeJSON = true;
 let noRead = false;
 let shopItems = ['Custom Symbol', 'Custom Avatar', 'Custom Color', 'Custom Title', 'Custom Icon'];
-const eventLeaders = ['krakenmare', 'celestialtater'];
+const eventLeaders = ['krakenmare', 'celestialtater', 'insist'];
 const expiresIn = 5; //false = never, otherwise specify a number of days. Vouchers will expire this number of days from creation.
 
 class Voucher {
