@@ -3,7 +3,7 @@
 const RandomTeams = require('../../data/random-teams');
 
 class RandomSeasonalRegStaffTeams extends RandomTeams {
-	randomSeasonalRegStaffTeam () {
+	randomSeasonalRegStaffTeam() {
 		let team = [];
 		let variant = this.random(2);
 		let sets = {

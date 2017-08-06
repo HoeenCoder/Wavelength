@@ -3,7 +3,7 @@
 const RandomTeams = require('../../data/random-teams');
 
 class RandomPmdTeams extends RandomTeams {
-	randomPmdTeam () {
+	randomPmdTeam() {
 		let team = [];
 		let sets = {
 			'Pikachu': {

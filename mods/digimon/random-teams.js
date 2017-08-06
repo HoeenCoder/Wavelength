@@ -11,7 +11,7 @@
 const RandomTeams = require('../../data/random-teams');
 
 class RandomDigimonTeams extends RandomTeams {
-	randomDigimonTeam () {
+	randomDigimonTeam() {
 		let team = [];
 		let sets = {
 			"Botamon": {

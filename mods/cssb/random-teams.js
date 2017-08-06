@@ -14,7 +14,7 @@ function extend(obj, src) {
 let SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
 
 class RandomCustomSSBTeams extends RandomTeams {
-	randomCustomSSBTeam () {
+	randomCustomSSBTeam() {
 		//let SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
 		let team = [];
 		let variant = this.random(2);

@@ -3,10 +3,9 @@
 const RandomTeams = require('../../data/random-teams');
 
 class RandomRetroStaffTeams extends RandomTeams {
-    randomRetroStaffTeam (side) {
+	randomRetroStaffTeam(side) {
 		let team = [];
 		//var variant = this.random(2);
-
 		let sets = {
 			//Admins
 			'~Legit Button': {
