@@ -1,15 +1,17 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *  Digimon Showdown                                             *
  *  Created By:                                                  *
- *  Insist + Ashley the Pikachu + Stellation + AlfaStorm		 *
+ *  Insist + Ashley the Pikachu + Stellation + AlfaStorm	 *
  *  Special Thanks to:                                           *
  *  HoeenCoder (Assisted with Mechanics)                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 'use strict';
 
-exports.BattleScripts = {
-	randomDigimonTeam: function (side) {
+const RandomTeams = require('../../data/random-teams');
+
+class RandomDigimonTeams extends RandomTeams {
+	randomDigimonTeam () {
 		let team = [];
 		let sets = {
 			"Botamon": {
@@ -469,5 +471,7 @@ exports.BattleScripts = {
 			team.push(set);
 		}
 		return team;
-	},
-};
+	}
+}
+
+module.exports = RandomDigimonTeams;

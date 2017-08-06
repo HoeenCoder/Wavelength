@@ -1,5 +1,7 @@
 'use strict';
 
+const RandomTeams = require('../../data/random-teams');
+
 const fs = require('fs');
 
 function extend(obj, src) {
@@ -11,101 +13,12 @@ function extend(obj, src) {
 
 let SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
 
-exports.BattleScripts = {
-	randomCustomSSBTeam: function (side) {
+class RandomCustomSSBTeams extends RandomTeams {
+	randomCustomSSBTeam () {
 		//let SGSSB = JSON.parse(fs.readFileSync('config/ssb.json', 'utf-8'));
 		let team = [];
 		let variant = this.random(2);
 
-		//Save these incase we decide to readd base sets
-		/*var baseSets = {
-			'Zarel': {
-				species: 'Meloetta',
-				ability: 'Serene Grace',
-				item: '',
-				gender: 'F',
-				moves: ['lunardance', 'fierydance', 'perishsong', 'petaldance', 'quiverdance'],
-				signatureMove: "Relic Song Dance",
-				evs: {
-					hp: 4,
-					atk: 252,
-					spa: 252
-				},
-				nature: 'Quiet',
-			},
-			'Joim': {
-				species: 'Zapdos',
-				ability: 'Tinted Lens',
-				item: 'Life Orb',
-				gender: 'M',
-				shiny: true,
-				moves: ['thunderbolt', 'hurricane', 'quiverdance'],
-				signatureMove: "Gaster Blaster",
-				evs: {
-					hp: 4,
-					spa: 252,
-					spe: 252
-				},
-				ivs: {
-					atk: 0
-				},
-				nature: 'Modest',
-			},
-			'*SpaceGazer': {
-				species: 'Registeel',
-				ability: 'No Guard',
-				item: 'Weakness Policy',
-				moves: ['Zap Cannon', 'Iron Head', 'Stone Edge'],
-				signatureMove: 'Spacial Blast',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4
-				},
-				nature: 'Adamant',
-			},
-			'*Spacial Bot': {
-				species: 'Regirock',
-				ability: 'Sturdy',
-				item: 'Leftovers',
-				moves: [
-					['Stone Edge', 'Earthquake'][this.random(2)], 'Explosion', 'Iron Head'
-				],
-				signatureMove: 'Ancient Ritual',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4
-				},
-				nature: 'Adamant',
-			},
-			'*SG Bot': {
-				species: 'Regice',
-				ability: 'Flash Fire',
-				item: 'Leftovers',
-				moves: ['Ice Beam', 'Ancient Power', 'Thunderbolt'],
-				signatureMove: 'Frostbite',
-				evs: {
-					spa: 252,
-					spd: 252,
-					hp: 4
-				},
-				nature: 'Adamant',
-			},
-			'‽Edles': {
-				species: 'Unown',
-				ability: 'Defiant',
-				item: 'Choice Specs',
-				moves: ['Hidden Power'],
-				signatureMove: 'Ad Blitz',
-				evs: {
-					spa: 252,
-					spd: 252,
-					hp: 4
-				},
-				nature: 'Modest',
-			}
-		};*/
 		//Parse player objects into sets.
 		let ssbSets = {};
 		for (let key in SGSSB) {
@@ -157,11 +70,11 @@ exports.BattleScripts = {
 		let pool = Object.keys(sets);
 		for (let i = 0; i < (Object.keys(sets).length < 6 ? Object.keys(sets).length : 6); i++) {
 			let name = this.sampleNoReplace(pool);
-			if (i === 1 && SGSSB[toId(side.name)] && SGSSB[toId(side.name)].active && sets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)) !== -1) {
+			/*if (i === 1 && SGSSB[toId(side.name)] && SGSSB[toId(side.name)].active && sets[(SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)] && pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name)) !== -1) {
 				pool.push(name); //re-add
 				name = pool[pool.indexOf((SGSSB[toId(side.name)].symbol + SGSSB[toId(side.name)].name))];
 				pool.splice(pool.indexOf(name), 1);
-			}
+			}*/
 			let set = sets[name];
 			set.name = name;
 			if (!set.level) set.level = 100;
@@ -203,5 +116,7 @@ exports.BattleScripts = {
 			team.push(set);
 		}
 		return team;
-	},
-};
+	}
+}
+
+module.exports = RandomCustomSSBTeams;

@@ -1,7 +1,9 @@
-"use strict";
+'use strict';
 
-exports.BattleScripts = {
-	randomPmdTeam: function (side) {
+const RandomTeams = require('../../data/random-teams');
+
+class RandomPmdTeams extends RandomTeams {
+	randomPmdTeam () {
 		let team = [];
 		let sets = {
 			'Pikachu': {
@@ -672,5 +674,7 @@ exports.BattleScripts = {
 			team.push(set);
 		}
 		return team;
-	},
-};
+	}
+}
+
+module.exports = RandomPmdTeams;
