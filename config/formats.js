@@ -74,11 +74,21 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
+		searchShow: false,
 		ruleset: ['[Gen 7] UU'],
 		banlist: ['UU', 'BL2'],
 	},
 	{
-		name: "[Gen 7] NU (beta)",
+		name: "[Gen 7] RU (suspect test)",
+		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3611512/\">RU Suspect Test</a>"],
+
+		mod: 'gen7',
+		challengeShow: false,
+		ruleset: ['[Gen 7] UU'],
+		banlist: ['UU', 'BL2'],
+	},
+	{
+		name: "[Gen 7] NU",
 		desc: [
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3606077/\">NU Metagame Discussion</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3607629/\">NU Viability Rankings</a>",
@@ -86,21 +96,26 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
+		searchShow: false,
 		ruleset: ['[Gen 7] RU'],
 		banlist: ['RU', 'BL3', 'Drought'],
 	},
 	{
-		name: "[Gen 7] PU (alpha)",
+		name: "[Gen 7] NU (suspect test)",
+		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3611511/\">NU Suspect Test</a>"],
 
 		mod: 'gen7',
-		ruleset: ['[Gen 7] NU (beta)'],
-		banlist: [
-			'Absol', 'Accelgor', 'Ambipom', 'Archeops', 'Aromatisse', 'Braviary', 'Clawitzer', 'Claydol', 'Cofagrigus', 'Cryogonal',
-			'Delphox', 'Dodrio', 'Drapion', 'Druddigon', 'Emboar', 'Garbodor', 'Golbat', 'Hitmonlee', 'Hitmontop', 'Houndoom',
-			'Incineroar', 'Jellicent', 'Komala', 'Machamp', 'Medicham', 'Meloetta', 'Minior', 'Mismagius', 'Omastar', 'Rhydon',
-			'Rotom-Base', 'Rotom-Mow', 'Sceptile', 'Scrafty', 'Seismitoad', 'Shuckle', 'Sigilyph', 'Slowbro', 'Slowking', 'Sneasel',
-			'Spiritomb', 'Steelix', 'Toxicroak', 'Uxie', 'Vaporeon', 'Vikavolt', 'Virizion', 'Vivillon', 'Whimsicott', 'Xatu',
-		],
+		challengeShow: false,
+		ruleset: ['[Gen 7] RU'],
+		banlist: ['RU', 'BL3', 'Drought'],
+	},
+	{
+		name: "[Gen 7] PU (beta)",
+		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3611417/\">PU Metagame Discussion</a>"],
+
+		mod: 'gen7',
+		ruleset: ['[Gen 7] NU'],
+		banlist: ['NU', 'BL4'],
 	},
 	{
 		name: "[Gen 7] LC",
@@ -1885,7 +1900,7 @@ exports.Formats = [
 			battle: 2,
 		},
 		ruleset: ['Gen 7] Doubles OU'],
-		banlist: ['Tapu Lele', 'Perish Song'],
+		banlist: ['Tapu Lele', 'Focus Sash', 'Perish Song'],
 	},
 	{
 		name: "[Gen 7] Typemons",
@@ -1927,7 +1942,6 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		searchShow: false,
 		teamLength: {
 			validate: [1, 3],
 			battle: 1,
@@ -1939,18 +1953,6 @@ exports.Formats = [
 			'Power Construct', 'Perish Song', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Chansey + Charm + Seismic Toss', 'Chansey + Charm + Psywave',
 			'Flash', 'Kinesis', 'Leaf Tornado', 'Mirror Shot', 'Mud Bomb', 'Mud-Slap', 'Muddy Water', 'Night Daze', 'Octazooka', 'Sand Attack', 'Smokescreen',
 		],
-	},
-	{
-		name: "[Gen 7] 1v1 (suspect test)",
-		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/posts/7443990/\">1v1 Suspect Test</a>"],
-
-		mod: 'gen7',
-		challengeShow: false,
-		teamLength: {
-			validate: [1, 3],
-			battle: 1,
-		},
-		ruleset: ['[Gen 7] 1v1'],
 	},
 	{
 		name: "[Gen 7] Monotype",

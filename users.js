@@ -1293,16 +1293,26 @@ class User {
 		}
 		return TeamValidator(formatid, customBanlist).prepTeam(this.team, this.locked || this.namelocked).then(result => this.finishPrepBattle(connection, result));
 	}
+
+	/**
+	 * Parses the result of a team validation and notifies the user.
+	 *
+	 * @param {Connection} connection - The connection from which the team validation was requested.
+	 * @param {string} result - The raw result received by the team validator.
+	 * @return {string|boolean} - The packed team if the validation was successful. False otherwise.
+	 */
 	finishPrepBattle(connection, result) {
 		if (result.charAt(0) !== '1') {
 			connection.popup(`Your team was rejected for the following reasons:\n\n- ` + result.slice(1).replace(/\n/g, `\n- `));
 			return false;
 		}
 
-		if (result.length > 1) {
-			this.team = result.slice(1);
+		if (this !== users.get(this.userid)) {
+			// TODO: User feedback.
+			return false;
 		}
-		return (this === users.get(this.userid));
+
+		return result.slice(1);
 	}
 	updateChallenges() {
 		let challengeTo = this.challengeTo;
@@ -1351,7 +1361,7 @@ class User {
 	cancelSearch(format) {
 		return Matchmaker.cancelSearch(this, format);
 	}
-	makeChallenge(user, format/*, isPrivate*/) {
+	makeChallenge(user, format, team/*, isPrivate*/) {
 		user = getUser(user);
 		if (!user || this.challengeTo) {
 			return false;
@@ -1370,7 +1380,7 @@ class User {
 			to: user.userid,
 			format: '' + (format || ''),
 			//isPrivate: !!isPrivate, // currently unused
-			team: this.team,
+			team: team,
 		};
 		this.lastChallenge = time;
 		this.challengeTo = challenge;
@@ -1401,7 +1411,7 @@ class User {
 		}
 		this.updateChallenges();
 	}
-	acceptChallengeFrom(user) {
+	acceptChallengeFrom(user, team) {
 		let userid = toId(user);
 		user = getUser(user);
 		if (!user || !user.challengeTo || user.challengeTo.to !== this.userid || !this.connected || !user.connected) {
@@ -1411,7 +1421,7 @@ class User {
 			}
 			return false;
 		}
-		Matchmaker.startBattle(this, user, user.challengeTo.format, this.team, user.challengeTo.team, {rated: false});
+		Matchmaker.startBattle(this, user, user.challengeTo.format, team, user.challengeTo.team, {rated: false});
 		delete this.challengesFrom[user.userid];
 		user.challengeTo = null;
 		this.updateChallenges();
