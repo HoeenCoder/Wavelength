@@ -741,7 +741,6 @@ class Tournament {
 		}
 
 		this.lastActionTimes.set(to, Date.now());
-<<<<<<< HEAD
 		this.pendingChallenges.set(from, {
 			to: to,
 			team: user.team,
@@ -756,12 +755,6 @@ class Tournament {
 		to.sendRoom('|tournament|update|' + JSON.stringify({
 			challenged: from.name,
 		}));
-=======
-		this.pendingChallenges.set(from, {to: to, team: validTeam});
-		this.pendingChallenges.set(to, {from: from, team: validTeam});
-		from.sendRoom('|tournament|update|' + JSON.stringify({challenging: to.name}));
-		to.sendRoom('|tournament|update|' + JSON.stringify({challenged: from.name}));
->>>>>>> d3c863c7dd3894961bdad7e9c0bb7da076e17568
 
 		this.isBracketInvalidated = true;
 		this.update();
