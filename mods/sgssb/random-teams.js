@@ -68,6 +68,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				evs: {
 					hp: 252,
 					atk: 252,
+					def: 4,
 				},
 				nature: 'Adamant',
 			},

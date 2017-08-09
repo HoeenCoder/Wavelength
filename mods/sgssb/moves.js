@@ -261,11 +261,11 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Mystic Mirage",
 		boosts: {
-			def: 3,
-			spa: 3,
-			spd: 3,
+			def: 2,
+			spa: 2,
+			spd: 2,
 		},
-		desc: "Boosts user's Defense, SpA, and SpD by 3 stages.",
+		desc: "Boosts user's Defense, SpA, and SpD by 2 stages.",
 		pp: 10,
 		priority: 0,
 		onHit: function (target, source) {
@@ -614,7 +614,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		category: "Special",
 		onHit: function (target, source, move) {
-			this.add('c|%Insist|Subscribe to http://youtube.com/DeathlyPlays');
+			this.add('c|@Insist|Subscribe to http://youtube.com/DeathlyPlays');
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -645,7 +645,7 @@ exports.BattleMovedex = {
 			protect: 1,
 		},
 		onHit: function (target, source, move) {
-			this.add('c|%Insist|Exiled from all others, we shall become greater than ever before.');
+			this.add('c|@Insist|Exiled from all others, we shall become greater than ever before.');
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');

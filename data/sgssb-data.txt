@@ -4,7 +4,7 @@ HoeenHero
 EVs: 252 SpA / 252 Spe / 4 HP
 Modest Nature
 Ability: Programmer's Domain
-    - Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
+	- Primordial Sea, Swift Swim, Adaptability, and Rain Dish.
 Moves: Scald/Hydro Pump, Giga Drain and Ice Beam.
 Signature Move: Scripting
 	- Psychic type, Status, 10 PP, Confuses target, and boosts the user's SpA by 2 stages and SpD for 1 stage.
@@ -19,7 +19,7 @@ Bold Nature
 Ability: Analytic
 Moves: Cosmic Power/Calm Mind, Soft-Boiled and Stored Power.
 Signature Move: Mystic Mirage
-	- Fairy Type, Status, 10 PP and boosts the user's Def, SpA, and SpD by 3 stages.
+	- Fairy Type, Status, 10 PP, and boosts the user's Def, SpA, and SpD by 2 stages.
 Notes: idk
 Rank: N/A.
 
@@ -31,7 +31,7 @@ Adamant Nature
 Ability: Regenerator
 Moves: Thousand Arrows, U-Turn and Sacred Fire/Bolt Strike.
 Signature Move: Daredevil
-	- Flying Type, Physical, 70 BP, 100% Accuracy, 10 PP and Power doubles if the user goes first.
+	- Flying Type, Physical, 70 BP, 100% Accuracy, 10 PP, and Power doubles if the user goes first.
 Notes: idk
 Rank: N/A.
 
@@ -50,28 +50,28 @@ Signature Move: Aqua Subscribe
 Notes: Fast Rain Abuser with priority.
 Rank: S.
 
-HiroZ
-(Genesect)
-@ Choice Scarf
-EVs: 252 Atk / 4 SpA / 252 Spe
-Hasty Nature
-Ability: Download
-Moves: Explosion, Ice Beam and U-Turn.
-Signature Move: Crystallized Ukaku
-	- Dark Type, Special, 140 BP, 100% Accuracy, 10 PP and 30% chance to badly poison the target.
-Notes: N/A.
-Rank: N/A.
-
 Kraken Mare
 (Gardevoir-Mega)
 @ Focus Sash
 EVs: 248 HP / 8 Def / 252 SpA
 Modest Nature
 Ability: Kraken's Boosts
-    - No Guard and Moody.
+	- No Guard and Moody.
 Moves: Moonblast, Calm Mind and Psychic.
 Signature Move: Revenge of Kraken Mare
 	- Water Type, Special, 77,000 BP, Always hits, Self-Destruct and +5 Priority.
+Notes: N/A.
+Rank: N/A.
+
+C733937 123
+(Tyranitar)
+@ Safety Googles
+EVs: 252 Atk / 4 Def / 252 HP
+Adamant Nature
+Ability: Bulletproof
+Moves: Assist, Beat Up, Sucker Punch, and Heavy Slam
+Signature Move: Lightshot Giga-Lance
+	- 150 BP, Rock type, Physical, 30% chance to boost all stats (except acc and eva), must recharge
 Notes: N/A.
 Rank: N/A.
 
@@ -93,7 +93,7 @@ Desokoro
 EVs: 252 Atk / 4 HP / 252 Spe
 Adamant Nature
 Ability: Wave Call
-    - If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves get boosted by 2x.
+	- If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves get boosted by 2x.
 Moves: Dragon Dance, Bounce and Substitute.
 Signature Move: Tsunami Crash
 	- Water Type, Physical, 150 BP, 5 PP and 35% chance to flinch the target.
@@ -116,13 +116,13 @@ Ashley the Pikachu
 (Pikachu-Cosplay)
 @ Light Ball
 Ability: Primal Surge
-    - Sets permanent Electric Terrain and doubles speed.
+	- Sets permanent Electric Terrain and doubles speed.
 Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
 Moves: Thunderbolt, Surf and HP Ice.
 Signature Move: Rocket Punch
 	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +1 Priority.
-Notes: N/A.
+Notes: Fast Special Sweeper.
 Rank: N/A.
 
 Clue
@@ -133,8 +133,8 @@ Modest Nature
 Ability: Levitate
 Moves: Volt Switch/Thunderbolt, Aura Sphere and Hidden Power Ice.
 Signature Move: Mechanical Dysfunction
-	- Electric Type, Special, 110 BP, 90% accuracy, 8 PP and 50% chance to paralyze.
-Notes: N/A.
+	- Electric Type, Special, 110 BP, 90% accuracy, 5 PP and 50% chance to paralyze.
+Notes: .
 Rank: N/A.
 
 ducktown
@@ -227,7 +227,7 @@ Almighty Bronzong
 EVs: 252 HP / 88 SpD / 168 Def
 Sassy Nature
 Ability: Conflict of Interest
-    - Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.5x damage to user and burn damage is halved.
+	- Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.5x damage to user and burn damage is halved.
 Moves: Gyro Ball, Toxic, Confuse Ray and Earthquake.
 Signature Move: Blast Furnace
 	- Fire Type, Status, 10 PP, Boosts user's Defense and Special Defense by 1 stage and heals user by 7/20th of its max HP.
@@ -252,7 +252,7 @@ Ranfen
 EVs: 252 Atk / 4 HP / 252 Spe
 Adamant Nature
 Ability: DesertDragon
-    - Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by 2 stages.
+	- Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by 2 stages.
 Moves: Stone Edge, Dragon Claw and Earthquake.
 Signature Move: Out Ripper
 	- Dragon Type, Physical, 100 BP, 10 PP and high crit ratio.
@@ -280,6 +280,8 @@ Ability: Unburden
 Moves: Megahorn, Stone Edge and Drain Punch.
 Signature Move: Shell Break
 	- Water Type, Status, 5 PP, Boosts user's Attack, Speed and SpA by 2 stages and Accuracy by 1 stage and lowers its Defense and SpD by 1 stage.
+Notes: Fast Physical Sweeper, extremely threatening if it gets a Shell Break up.
+Rank: A.
 
 Mimiroppu
 (Lopunny)
@@ -290,6 +292,20 @@ Ability: Limber
 Moves: Fake Out, Return and High Jump Kick.
 Signature Move: Charm Up
 	- Normal Type, Status, 10 PP, Infatuates the target and boosts user's Attack by 1 stage.
+Notes: Fast Physical Sweeper.
+Rank: N/A.
+
+HiroZ
+(Genesect)
+@ Choice Scarf
+EVs: 252 Atk / 4 SpA / 252 Spe
+Hasty Nature
+Ability: Download
+Moves: Explosion, Ice Beam and U-Turn.
+Signature Move: Crystallized Ukaku
+	- Dark Type, Special, 140 BP, 100% Accuracy, 10 PP and 30% chance to badly poison the target.
+Notes: N/A.
+Rank: N/A.
 
 Hurricane'd
 (Tomohawk)
