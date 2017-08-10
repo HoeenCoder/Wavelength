@@ -134,7 +134,7 @@ Ability: Levitate
 Moves: Volt Switch/Thunderbolt, Aura Sphere and Hidden Power Ice.
 Signature Move: Mechanical Dysfunction
 	- Electric Type, Special, 110 BP, 90% accuracy, 5 PP and 50% chance to paralyze.
-Notes: .
+Notes: Special Sweeper.
 Rank: N/A.
 
 ducktown
