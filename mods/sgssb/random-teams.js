@@ -377,7 +377,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Bold',
 			},
-			
 			// Former Bots
 			' SpaceGazer': {
 				species: 'Registeel',
