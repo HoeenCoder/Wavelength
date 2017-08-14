@@ -47,6 +47,7 @@ exports.BattleAliases = {
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
 	// mega evos
+	"fabio": "Ampharos-Mega",
 	"maero": "Aerodactyl-Mega",
 	"megaaero": "Aerodactyl-Mega",
 	"megabee": "Beedrill-Mega",
