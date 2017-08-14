@@ -192,4 +192,13 @@ exports.BattleAbilities = {
 			move.stab = 2;
 		},
 	},
+	//Stabby the Krabby
+	"readytostab": {
+		id: "readytostab",
+		name: "Ready to Stab",
+		desc: "Boosts user's Atk and Spe by 2 stages",
+		onStart: function (pokemon) {
+			this.boost({atk: 2, spe: 2});
+		},
+	},
 };

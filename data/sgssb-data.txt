@@ -87,6 +87,19 @@ Signature Move: Ancient Orb
 Notes: N/A.
 Rank: N/A.
 
+Stabby the Krabby
+(Krabby)
+@ Eviolite
+EVs: 6 HP / 252 Atk / 252 Spe
+Adament Nature
+Ability: Ready to Stab
+    -On entry, +2 Attack and Speed.
+Moves: Crabhammer, Swords Dance, Knock Off
+Signature Move: Stab Stab
+    -Steel Type, 100 BP, Always Hits, Attacks Twice, 25% chance to flinch.
+Notes: Stabby Stabby!
+Rank: N/A.
+
 Desokoro
 (Gyarados)
 @ Leftovers

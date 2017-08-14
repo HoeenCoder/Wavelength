@@ -63,13 +63,13 @@ exports.BattleStatuses = {
 	hurricaned: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
+			this.add('c', ' Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
+			this.add('c', ' Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
+			this.add('c', ' Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
 		},
 	},
 	hoeenhero: {
@@ -205,15 +205,15 @@ exports.BattleStatuses = {
 	spacialbot: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '*Spacial Bot', '``Bot rebooting...``');
-			this.add('c', '*Spacial Bot', '``Rebooting complete. Engaging in battle.``');
+			this.add('c', ' Spacial Bot', '``Bot rebooting...``');
+			this.add('c', ' Spacial Bot', '``Rebooting complete. Engaging in battle.``');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '+The Run', '.battleswitchout');
-			this.add('c', '*Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
+			this.add('c', ' Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '*Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
+			this.add('c', ' Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
 		},
 	},
 	auction: {
@@ -270,6 +270,18 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+CelestialTater', 'Heck');
+		},
+	},
+	stabbythekrabby: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '*Stabby the Krabby', 'Get ready to be stabbed!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '*Stabby the Krabby', 'Alright, I\'ll be back to stab you later. Got someone else to deal with first.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '*Stabby the Krabby', 'Impossible...');
 		},
 	},
 };

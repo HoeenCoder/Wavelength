@@ -87,6 +87,23 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+			//Global Bots
+			'*Stabby the Krabby': {
+				species: 'Krabby',
+				ability: 'Ready to Stab',
+				item: 'Eviolite',
+				gender: 'M',
+				moves: ['Crabhammer', 'Swords Dance', 'Knock Off',
+				],
+				baseSignatureMove: "stabstab",
+				signatureMove: 'Stab Stab',
+				evs: {
+					atk: 252,
+					spe: 252,
+					hp: 6,
+				},
+				nature: 'Adamant',
+			},
 			// Global Moderators:
 			'@Desokoro': {
 				species: 'Gyarados',
@@ -196,50 +213,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spd: 252,
 				},
 				nature: "Adamant",
-			},
-			// Former Bots
-			'*SpaceGazer': {
-				species: 'Registeel',
-				ability: 'No Guard',
-				item: 'Weakness Policy',
-				moves: ['Zap Cannon', 'Iron Head', 'Stone Edge',
-				],
-				signatureMove: 'Spacial Blast',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
-			'*Spacial Bot': {
-				species: 'Regirock',
-				ability: 'Wonder Guard',
-				item: 'Leftovers',
-				moves: [
-					['Stone Edge', 'Earthquake'][variant], 'Explosion', 'Iron Head',
-				],
-				signatureMove: 'Ancient Ritual',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
-			'*SG Bot': {
-				species: 'Regice',
-				ability: 'Flash Fire',
-				item: 'Leftovers',
-				moves: ['Ice Beam', 'Ancient Power', 'Thunderbolt',
-				],
-				signatureMove: 'Frostbite',
-				evs: {
-					spa: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
 			},
 			// Global Voices:
 			'+Admewn': {
@@ -403,6 +376,51 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 4,
 				},
 				nature: 'Bold',
+			},
+			
+			// Former Bots
+			' SpaceGazer': {
+				species: 'Registeel',
+				ability: 'No Guard',
+				item: 'Weakness Policy',
+				moves: ['Zap Cannon', 'Iron Head', 'Stone Edge',
+				],
+				signatureMove: 'Spacial Blast',
+				evs: {
+					atk: 252,
+					spd: 252,
+					hp: 4,
+				},
+				nature: 'Adamant',
+			},
+			' Spacial Bot': {
+				species: 'Regirock',
+				ability: 'Wonder Guard',
+				item: 'Leftovers',
+				moves: [
+					['Stone Edge', 'Earthquake'][variant], 'Explosion', 'Iron Head',
+				],
+				signatureMove: 'Ancient Ritual',
+				evs: {
+					atk: 252,
+					spd: 252,
+					hp: 4,
+				},
+				nature: 'Adamant',
+			},
+			' SG Bot': {
+				species: 'Regice',
+				ability: 'Flash Fire',
+				item: 'Leftovers',
+				moves: ['Ice Beam', 'Ancient Power', 'Thunderbolt',
+				],
+				signatureMove: 'Frostbite',
+				evs: {
+					spa: 252,
+					spd: 252,
+					hp: 4,
+				},
+				nature: 'Modest',
 			},
 		};
 		// convert moves to ids.
