@@ -9,6 +9,7 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Oran Berry",
 		pp: 0.625,
+		desc: "Restores 1/4 max HP.",
 		priority: 0,
 		flags: {
 			heal: 1,
@@ -44,7 +45,7 @@ exports.BattleMovedex = {
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 		},
-
+		desc: "Restores 1/10 max HP, raises Speed by two stages.",
 	},
 	//Blast Seed
 	blastseed: {
@@ -67,6 +68,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		desc: "No additional effects.",
 	},
 	//Gravelrock
 	gravelrock: {
@@ -88,6 +90,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Rock Blast", target);
 		},
+		desc: "Hits 4-7 times.",
 		secondary: false,
 		target: "normal",
 		type: "Rock",
@@ -111,6 +114,7 @@ exports.BattleMovedex = {
 		onHit: function (pokemon) {
 			pokemon.cureStatus();
 		},
+		desc: "Cures user of any status effects.",
 		secondary: false,
 		target: "self",
 		type: "Normal",
@@ -134,6 +138,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Stealth Rock", target);
 		},
+		desc: "Places Stealth Rocks on foe's field.",
 		secondary: false,
 		target: "foeSide",
 		type: "Ground",
@@ -165,6 +170,7 @@ exports.BattleMovedex = {
 				}
 			}
 		},
+		desc: "Removes some types of hazards.",
 		secondary: false,
 		target: "normal",
 		type: "Normal",
@@ -187,6 +193,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Bullet Seed", target);
 		},
+		desc: "Ignores Immunities, paralyzes target.",
 		status: 'par',
 		ignoreImmunity: true,
 		target: "normal",
@@ -211,6 +218,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bullet Seed", target);
 		},
 		volatileStatus: 'confusion',
+		desc: "Confuses target.",
 		secondary: false,
 		target: "normal",
 		type: "Normal",
@@ -237,6 +245,7 @@ exports.BattleMovedex = {
 			def: -1,
 			spd: -1,
 		},
+		desc: "Lowers target's Defense and Special Defense by one stage.",
 		target: "normal",
 		type: "Normal",
 	},
@@ -262,6 +271,7 @@ exports.BattleMovedex = {
 			atk: 1,
 			spa: 1,
 		},
+		desc: "Raises user's Attack and Special Attack by one stage.",
 		target: "self",
 		type: "Normal",
 	},
@@ -279,6 +289,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Rain Dance", target);
 		},
 		weather: 'Rain Dance',
+		desc: "Sets the weather to Rain Dance.",
 		secondary: false,
 		target: "all",
 		type: "Water",
@@ -296,6 +307,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Sunny Day", target);
 		},
+		desc: "Sets weather to Sunny Day.",
 		weather: 'Sunny Day',
 		secondary: false,
 		target: "all",
@@ -314,6 +326,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Sandstorm", target);
 		},
+		desc: "Sets weather to Sandstorm.",
 		weather: 'Sandstorm',
 		secondary: false,
 		target: "all",
@@ -332,6 +345,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Hail", target);
 		},
+		desc: "Sets weather to Hail.",
 		weather: 'Hail',
 		secondary: false,
 		target: "all",
@@ -354,6 +368,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Water Spout", target);
 		},
+		desc: "Ignores Immunities.",
 		ignoreImmunity: true,
 		secondary: false,
 		target: "normal",
@@ -372,6 +387,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Defog", target);
 		},
+		desc: "Ignores immunities, forces foe to switch.",
 		forceSwitch: true,
 		ignoreImmunity: true,
 		secondary: false,
@@ -391,6 +407,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Teleport", target);
 		},
+		desc: "Ignores Immunities, Copies stats and gives them to whatever the user swaps in.",
 		selfSwitch: 'copyvolatile',
 		ignoreImmunity: true,
 		secondary: false,
@@ -416,6 +433,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Pin Missle", target);
 		},
+		desc: "Hits 5-10 times.",
 		secondary: false,
 		target: "normal",
 		type: "Normal",
@@ -439,6 +457,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Flash Cannon", target);
 		},
+		desc: "Hits 4-7 times.",
 		secondary: false,
 		target: "normal",
 		type: "Steel",
@@ -462,6 +481,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Calm Mind", target);
 		},
+		desc: "Boosts user's Evasion by one stage.",
 		secondary: false,
 		target: "self",
 		type: "Psychic",
@@ -498,6 +518,7 @@ exports.BattleMovedex = {
 				}
 			},
 		},
+		desc: "Snatches a move, if the target's move has the Snatch flag.",
 		secondary: false,
 		pressureTarget: "foeSide",
 		target: "self",
@@ -522,6 +543,7 @@ exports.BattleMovedex = {
 			this.add('message', source.name + '\'s wonder orb let it use a ' + toUse + '!');
 			this.useMove(toUse, target);
 		},
+		desc: "Randomly chooses a PMD move.",
 		secondary: false,
 		target: "self",
 		type: "Fairy",
@@ -554,6 +576,7 @@ exports.BattleMovedex = {
 			spa: 1,
 			spd: 1,
 		},
+		desc: "Boosts user's Atk, Def, SpA, and SpD by one stage.",
 		secondary: false,
 		target: "self",
 		type: "Fairy",
@@ -574,6 +597,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bullet Seed", target);
 			this.add('-anim', target, "Rest", target);
 		},
+		desc: "Puts target to sleep.",
 		status: 'slp',
 		target: "normal",
 		type: "Normal",
@@ -592,6 +616,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Agility", source);
 		},
 		boosts: {spe: 2},
+		desc: "Boosts user's Speed by 2 stages.",
 		basePower: 0,
 		priority: 0,
 		secondary: false,
@@ -612,6 +637,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Smokescreen", target);
 		},
+		desc: "Lower's targets accuracy by one stage.",
 		boosts: {accuracy: -1},
 		priority: 0,
 		secondary: false,
@@ -640,6 +666,7 @@ exports.BattleMovedex = {
 		},
 		volatileStatus: "confusion",
 		target: "normal",
+		desc: "Confuses target, and employs the user in a substitute.",
 		type: "Grass",
 	},
 	//Slip Seed
@@ -677,6 +704,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		//Substitute
 		volatileStatus: 'Substitute',
+		desc: "Employs the user into a Substitute.",
 		secondary: false,
 		flags: {snatch: 1},
 		onPrepareHit: function (source) {
@@ -704,6 +732,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Roar", target);
 			this.add('-anim', source, "Dragon Tail", target);
 		},
+		desc: "Makes the target swap out.",
 		target: "normal",
 		type: "Normal",
 	},
@@ -738,6 +767,7 @@ exports.BattleMovedex = {
 			this.debug('20 bp');
 			return 20;
 		},
+		desc: "Does damage according to the target's weight, the more heavy more damage.",
 		category: "Special",
 		priority: 0,
 		accuracy: true,
@@ -757,6 +787,7 @@ exports.BattleMovedex = {
 				return false;
 			}
 		},
+		desc: "Makes the target transform into the user.",
 		accuracy: true,
 		flags: {snatch: 1},
 		priority: 0,
