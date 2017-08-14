@@ -100,7 +100,11 @@ SG.giveDailyReward = function (user) {
 	if (!user) return false;
 	let reward = 0, time = Date.now(), give = true;
 	for (let ip in user.ips) {
-		let cur = Db.DailyBonus.get(ip, [1, Date.now()]);
+		let cur = Db.DailyBonus.get(ip);
+		if (!cur) {
+			cur = [1, Date.now()];
+			Db.DailyBonus.set(ip, cur);
+		}
 		if (cur[0] < reward || !reward) reward = cur[0];
 		if (cur[1] < time) time = cur[1];
 	}
