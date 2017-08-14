@@ -654,4 +654,32 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Water",
 	},
+	//Stabby the Krabby
+	"stabstab": {
+		category: "Physical",
+		basePower: 100,
+		accuracy: true,
+		desc: 'Always hits, hits twice, 25% chance to flinch.',
+		id: "stabstab",
+		isViable: true,
+		isNonstandard: true,
+		name: "Stab Stab",
+		secondary: {
+			chance: 25,
+			volatileStatus: 'flinch',
+		},
+		onHit: function (target) {
+			this.add('c|*Stabby the Krabby|Stabby Stabby!');
+		},
+		pp: 5,
+		priority: 1,
+		multihit: [2, 2],
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Swords Dance", source);
+			this.add('-anim', source, "Sacred Sword", target);
+		},
+		target: "normal",
+		type: "Steel",
+	},
 };
