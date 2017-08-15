@@ -209,10 +209,10 @@ exports.commands = {
 			if (room.survey.hasReplied(user)) {
 				return room.survey.updateTo(user, false);
 			} else {
-				return this.errorReply('You can hide the results if you cant view them.');
+				return this.errorReply('You can\'t hide the results if you cant view them.');
 			}
 		},
-		hideresultshelp: ["/survey hideresults - Hide the results of the survey. You cant do this if you havent answered yet."],
+		hideresultshelp: ["/survey hideresults - Hide the results of the survey. You can't do this if you havent answered yet."],
 
 		display: function (target, room, user, connection, cmd, message) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
