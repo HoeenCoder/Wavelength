@@ -202,14 +202,14 @@ exports.commands = {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
 			return room.survey.blankanswer(user);
 		},
-		resultshelp: ["/survey results - View the results of the survey. You cant go back and answer if you havent already."],
+		resultshelp: ["/survey results - View the results of the survey. You can't go back and answer if you havent already."],
 
 		hideresults: function (target, room, user, connection, cmd, message) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
 			if (room.survey.hasReplied(user)) {
 				return room.survey.updateTo(user, false);
 			} else {
-				return this.errorReply('You can\'t hide the results if you cant view them.');
+				return this.errorReply('You can\'t hide the results if you can\'t view them.');
 			}
 		},
 		hideresultshelp: ["/survey hideresults - Hide the results of the survey. You can't do this if you havent answered yet."],
@@ -303,7 +303,7 @@ exports.commands = {
 		"Accepts the following commands:",
 		"/survey create [question] - Create a survey. Requires % @ # & ~",
 		"/survey answer [answer] - Answer a survey.",
-		"/survey results - View the results of the survey. You cant go back and answer if you havent already.",
+		"/survey results - View the results of the survey. You can't go back and answer if you havent already.",
 		"/survey display - Display the survey.",
 		"/survey remove [user] - Removes a users reply and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
 		"/survey end - Ends a survey and displays the results. Requires: % @ # & ~",
