@@ -78,7 +78,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] RU",
 		desc: [
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3609531/\">RU Metagame Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3611512/\">RU Metagame Discussion</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3602279/\">RU Viability Rankings</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3598090/\">RU Sample Teams</a>",
 		],
@@ -100,7 +100,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] NU",
 		desc: [
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3606077/\">NU Metagame Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3611511/\">NU Metagame Discussion</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3607629/\">NU Viability Rankings</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3606112/\">NU Sample Teams</a>",
 		],
@@ -282,8 +282,8 @@ exports.Formats = [
 			'Marowak-Alola', 'Marshadow', 'Milotic', 'Mimikyu', 'Muk-Alola', 'Ninetales-Alola', 'Oranguru', 'Pelipper', 'Pheromosa', 'Politoed',
 			'Porygon2', 'Rotom-Wash', 'Scrafty', 'Snorlax', 'Suicune', 'Sylveon', 'Tapu Bulu', 'Tapu Fini', 'Tapu Koko', 'Tapu Lele',
 			'Terrakion', 'Torkoal', 'Tyranitar', 'Venusaur', 'Volcanion', 'Volcarona', 'Weavile', 'Whimsicott', 'Zapdos', 'Zygarde-Base',
-			'Battle Bond', 'Aggronite', 'Altarianite', 'Ampharosite', 'Banettite', 'Blazikenite', 'Cameruptite', 'Charizardite Y', 'Galladite', 'Gardevoirite',
-			'Gengarite', 'Gyaradosite', 'Kangaskhanite', 'Lopunnite', 'Mawilite', 'Metagrossite', 'Salamencite', 'Sceptilite', 'Swampertite', 'Tyranitarite',
+			'Battle Bond', 'Aggronite', 'Altarianite', 'Ampharosite', 'Banettite', 'Blazikenite', 'Cameruptite', 'Charizardite Y', 'Diancite', 'Galladite', 'Gardevoirite',
+			'Gengarite', 'Gyaradosite', 'Kangaskhanite', 'Latiasite', 'Latiosite', 'Lopunnite', 'Mawilite', 'Metagrossite', 'Salamencite', 'Sceptilite', 'Swampertite', 'Tyranitarite',
 		],
 	},
 	{
@@ -1912,7 +1912,7 @@ exports.Formats = [
 		mod: 'gen7',
 		searchShow: false,
 		ruleset: ['[Gen 7] OU'],
-		banlist: [],
+		banlist: ['Serperior'],
 	},
 	{
 		section: "Other Metagames",
