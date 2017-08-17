@@ -21,9 +21,9 @@ exports.BattleItems = {
 		onEat: function (pokemon) {
 			let fakecheck = this.random(1000);
 			if (fakecheck <= 850) {
-				this.add('message', pokemon, '\'s belly felt full!');
+				this.add('message', 'Its belly felt full!');
 				this.heal(pokemon.maxhp / 2);
-				this.add('message', pokemon, '\'s IQ rose!');
+				this.add('message', 'Its IQ rose!');
 				this.boost({
 					spd: 2,
 				});
@@ -33,12 +33,12 @@ exports.BattleItems = {
 			} else {
 				this.add('message', 'Wait... Its a WANDER Gummi!');
 				this.heal(pokemon.maxhp / 100);
-				this.add('message', pokemon, 'Gained the blinker status!');
+				this.add('message', 'It gained the blinker status!');
 				this.boost({
 					accuracy: -6,
 				});
 			}
 		},
-		desc: "Either heals the user's max HP by 1/2, boosts the user's SpD and Def by 2 stages, or heals 100% of their health, but drops accuracy by six stages, when at 1/4 max HP or less, 1/2 if the user's ability is Gluttony. Single use.",
+		desc: "Either heals the user's max HP by 1/2, boosts the user's SpD and Def by 2 stages, or heals 1% of their health, but drops accuracy by six stages, when at 1/4 max HP or less, 1/2 if the user's ability is Gluttony. Single use.",
 	},
 };
