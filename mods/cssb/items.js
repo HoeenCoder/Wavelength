@@ -39,5 +39,6 @@ exports.BattleItems = {
 				});
 			}
 		},
+		desc: "Either heals the user's max HP by 1/2, boosts the user's SpD and Def by 2 stages, or heals 100% of their health, but drops accuracy by six stages, when at 1/4 max HP or less, 1/2 if the user's ability is Gluttony. Single use.",
 	},
 };
