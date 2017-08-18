@@ -14,6 +14,7 @@ exports.BattleAbilities = {
 				move.accuracy *= 1.1;
 			}
 		},
+		desc: "Status moves get +1 priority, Accuracy is boosted by 1.1x.",
 	},
 	poseidon: {
 		id: "poseidon",
@@ -53,6 +54,7 @@ exports.BattleAbilities = {
 				ability: this.getAbility('poseidon'),
 			});
 		},
+		desc: "On switch-in the user summons Heavy Rains, and moves without a chance to paralyze have a 30% chance to do so.",
 	},
 	server: {
 		id: "server",
@@ -67,6 +69,8 @@ exports.BattleAbilities = {
 			this.add('-start', target, 'ability: Server');
 			this.add('raw', '<span style="font-family: monospace;">./spacialgaze>node app.js<br/>NEW GLOBAL: global<br/>NEW CHATROOM: lobby<br/>NEW CHATROOM: staff<br/>Worker 1 now listening on 0.0.0.0:8000<br/>Test your server at http://localhost:8000<br/>_</span>');
 		},
+		desc: "Randomly boosts the user's Attack, Defense, Special Attack, Special Defense, or Speed when the user successfully lands a move.",
+		shortDesc: "When the user uses a move, one of its stats get a boost (except acc and eva).",
 	},
 	primalsurge: {
 		name: 'Primal Surge',
@@ -92,5 +96,6 @@ exports.BattleAbilities = {
 			}
 			this.setTerrain('');
 		},
+		desc: "Permanent Electric Terrain, unless user switches out. Speed is doubled.",
 	},
 };
