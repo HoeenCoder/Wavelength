@@ -2,7 +2,7 @@
 
 /********************************************
  *     EXP SYSTEM FOR POKEMON SHOWDOWN	    *
- *     	  By Volco and HoeenHero	        *
+ *     	  By Volco and HoeenHero	    *
  *        Modified by Insist                *
  ********************************************/
 
@@ -117,8 +117,7 @@ function addExp(user, room, amount) {
 				}
 				let newLevel = SG.level(user);
 				user.sendTo(room, '|html|<center><font size=4><b><i>Level Up!</i></b></font><br />' +
-				'You have reached level ' + newLevel + '.' + /*' This will award you:<br /><b> ' + reward + */ '</b></center>'
-			);
+				'You have reached level ' + newLevel + '.' + /*' This will award you:<br /><b> ' + reward + */ '</b></center>');
 			}
 		});
 	}
@@ -138,6 +137,45 @@ function level(user) {
 	}
 }
 SG.level = level;
+
+//Shamelessly ripped from economy
+function rankLadder(title, type, array, prop, group) {
+	let groupHeader = group || 'Username';
+	const ladderTitle = '<center><h4><u>' + title + '</u></h4></center>';
+	const thStyle = 'class="rankladder-headers default-td" style="background: -moz-linear-gradient(#576468, #323A3C); background: -webkit-linear-gradient(#576468, #323A3C); background: -o-linear-gradient(#576468, #323A3C); background: linear-gradient(#576468, #323A3C); box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const tableTop = '<div style="max-height: 310px; overflow-y: scroll;">' +
+		'<table style="width: 100%; border-collapse: collapse;">' +
+		'<tr>' +
+			'<th ' + thStyle + '>Rank</th>' +
+			'<th ' + thStyle + '>' + groupHeader + '</th>' +
+			'<th ' + thStyle + '>' + type + '</th>' +
+		'</tr>';
+	const tableBottom = '</table></div>';
+	const tdStyle = 'class="rankladder-tds default-td" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const first = 'class="first default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const second = 'class="second default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	const third = 'class="third default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
+	let midColumn;
+
+	let tableRows = '';
+
+	for (let i = 0; i < array.length; i++) {
+		if (i === 0) {
+			midColumn = '</td><td ' + first + '>';
+			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else if (i === 1) {
+			midColumn = '</td><td ' + second + '>';
+			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else if (i === 2) {
+			midColumn = '</td><td ' + third + '>';
+			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		} else {
+			midColumn = '</td><td ' + tdStyle + '>';
+			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+		}
+	}
+	return ladderTitle + tableTop + tableRows + tableBottom;
+}
 
 function nextLevel(user) {
 	let curExp = Db.exp.get(user, 0);
@@ -216,5 +254,20 @@ exports.commands = {
 		if (!this.can('root')) return false;
 		Db.expoff.set(user.userid, true);
 		this.sendReply("You are now exempt from exp");
+	},
+
+	'!xpladder': true,
+	expladder: 'xpladder',
+	xpladder: function (target, room, user) {
+		if (!target) target = 100;
+		target = Number(target);
+		if (isNaN(target)) target = 100;
+		if (!this.runBroadcast()) return;
+		let keys = Db.exp.keys().map(name => {
+			return {name: name, exp: Db.exp.get(name)};
+		});
+		if (!keys.length) return this.sendReplyBox("EXP ladder is empty.");
+		keys.sort(function (a, b) { return b.exp - a.exp; });
+		this.sendReplyBox(rankLadder('Exp Ladder', "EXP", keys.slice(0, target), 'exp') + '</div>');
 	},
 };
