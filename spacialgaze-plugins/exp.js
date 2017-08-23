@@ -2,7 +2,7 @@
 
 /********************************************
  *     EXP SYSTEM FOR POKEMON SHOWDOWN	    *
- *     	  By Volco and HoeenHero	        *
+ *     	  By Volco and HoeenHero	    *
  *        Modified by Insist                *
  ********************************************/
 
@@ -270,4 +270,8 @@ exports.commands = {
 		keys.sort(function (a, b) { return b.exp - a.exp; });
 		this.sendReplyBox(rankLadder('Exp Ladder', "EXP", keys.slice(0, target), 'exp') + '</div>');
 	},
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> a1dbf098e3c79c5bdb0348c65dc10acef82ea9d3
