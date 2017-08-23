@@ -237,20 +237,18 @@ exports.repl = true;
 exports.replsocketprefix = './logs/repl/';
 exports.replsocketmode = 0o600;
 
-<<<<<<< HEAD
+// disablehotpatchall - disables `/hotpatch all`. Generally speaking, there's a
+// pretty big need for /hotpatch all - convenience. The only advantage any hotpatch
+// forms other than all is lower RAM use (which is only a problem for Main because
+// Main is huge), and to do pinpoint hotpatching (like /nohotpatch).
+exports.disablehotpatchall = false;
+
 //github repo config
 exports.github = {
 	secret: "", // Your repo secret
 	port: "", // Desired port, must be unused and above 1000
 	rooms: [''], // Desired rooms
 };
-=======
-// disablehotpatchall - disables `/hotpatch all`. Generally speaking, there's a
-// pretty big need for /hotpatch all - convenience. The only advantage any hotpatch
-// forms other than all is lower RAM use (which is only a problem for Main because
-// Main is huge), and to do pinpoint hotpatching (like /nohotpatch).
-exports.disablehotpatchall = false;
->>>>>>> 74656f9d84f0ee2009da015b7ec1b899bd03285a
 
 // permissions and groups:
 //   Each entry in `grouplist' is a seperate group. Some of the members are "special"
