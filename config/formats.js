@@ -96,16 +96,6 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		searchShow: false,
-		ruleset: ['[Gen 7] RU'],
-		banlist: ['RU', 'BL3', 'Drought'],
-	},
-	{
-		name: "[Gen 7] NU (suspect test)",
-		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3611511/\">NU Suspect Test</a>"],
-
-		mod: 'gen7',
-		challengeShow: false,
 		ruleset: ['[Gen 7] RU'],
 		banlist: ['RU', 'BL3', 'Drought'],
 	},
@@ -1977,14 +1967,9 @@ exports.Formats = [
 			for (let i = 0; i < team.length; i++) {
 				let item = this.getItem(team[i].item);
 				if (!item) continue;
-				if (!(item in itemTable)) {
-					itemTable[item] = 1;
-				} else if (itemTable[item] < 2) {
-					itemTable[item]++;
-				} else {
-					if (item.megaStone) return ["You are limited to two of each Mega Stone.", "(You have more than two " + this.getItem(item).name + ")"];
-					if (item.id === 'blueorb' || item.id === 'redorb') return ["You are limited to two of each Primal Orb.", "(You have more than two " + this.getItem(item).name + ")"];
-				}
+				if (itemTable[item] && item.megaStone) return ["You are limited to one of each Mega Stone.", "(You have more than one " + this.getItem(item).name + ")"];
+				if (itemTable[item] && (item.id === 'blueorb' || item.id === 'redorb')) return ["You are limited to one of each Primal Orb.", "(You have more than one " + this.getItem(item).name + ")"];
+				itemTable[item] = true;
 			}
 		},
 		onValidateSet: function (set) {
