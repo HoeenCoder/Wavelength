@@ -237,14 +237,14 @@ exports.commands = {
 		Monitor.adminlog('[EXP Monitor] ' + user.name + ' has reset the XP of ' + target);
 		room.update();
 	},
-	
+
 	doublexp: 'doubleexp',
 	doubleexp: function (target, room, user) {
 		if (!this.can('roomowner')) return;
 		DOUBLE_XP = !DOUBLE_XP;
 		return this.sendReply('Double XP was turned ' + (DOUBLE_XP ? 'ON' : 'OFF') + '.');
 	},
-	
+
 	expon: function (target, room, user) {
 		if (!this.can('root')) return false;
 		Db.expoff.remove(user.userid);
