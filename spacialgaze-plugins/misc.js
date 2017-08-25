@@ -196,12 +196,13 @@ exports.commands = {
 
 		target = this.splitTarget(target);
 		let targetUser = this.targetUser;
+		if (target.length > 300) return this.errorReply("The reason is too long. It cannot exceed 300 characters.");
 		if (!targetUser || !targetUser.connected) return this.sendReply("User \"" + this.targetUsername + "\" not found.");
 		if (!this.can('mute', targetUser, room)) return false;
 		if (!room.users[targetUser.userid]) return this.errorReply("User \"" + this.targetUsername + "\" is not in this room.");
 
-		this.addModCommand(targetUser.name + " was kicked from the room by " + user.name + ".");
-		targetUser.popup("You were kicked from " + room.id + " by " + user.name + ".");
+		this.addModCommand(targetUser.name + " was kicked from the room by " + user.name + ". (" + target + ")");
+		targetUser.popup("You were kicked from " + room.id + " by " + user.name + ". (" + target + ")");
 		targetUser.leaveRoom(room.id);
 	},
 	kickhelp: ["/kick - Kick a user out of a room. Requires: % @ # & ~"],
