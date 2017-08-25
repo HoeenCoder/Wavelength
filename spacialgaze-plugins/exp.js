@@ -6,6 +6,7 @@
  */
 
 const DEFAULT_AMOUNT = 0;
+let DOUBLE_XP = false;
 
 function isExp(exp) {
 	let numExp = Number(exp);
@@ -51,6 +52,7 @@ function addExp(user, room, amount) {
 	if (!user || !room) return;
 	user = Users(toId(user));
 	if (Db.expoff.get(user.userid)) return false;
+	if (DOUBLE_XP) amount = amount * 2;
 	EXP.readExp(user.userid, totalExp => {
 		let oldLevel = SG.level(user.userid);
 		EXP.writeExp(user.userid, amount, newTotal => {
@@ -235,7 +237,14 @@ exports.commands = {
 		Monitor.adminlog('[EXP Monitor] ' + user.name + ' has reset the XP of ' + target);
 		room.update();
 	},
-
+	
+	doublexp: 'doubleexp',
+	doubleexp: function (target, room, user) {
+		if (!this.can('roomowner')) return;
+		DOUBLE_XP = !DOUBLE_XP;
+		return this.sendReply('Double XP was turned ' + (DOUBLE_XP ? 'ON' : 'OFF') + '.');
+	},
+	
 	expon: function (target, room, user) {
 		if (!this.can('root')) return false;
 		Db.expoff.remove(user.userid);
