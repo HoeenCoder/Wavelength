@@ -207,6 +207,9 @@ class CommandContext {
 		}
 
 		let commandHandler = this.splitCommand(message);
+		let giveExp = false;
+
+		let commandHandler = this.splitCommand(message);
 
 		if (typeof commandHandler === 'function') {
 			message = this.run(commandHandler);
@@ -235,6 +238,7 @@ class CommandContext {
 				}
 			}
 
+			if (Date.now() > (this.user.lastMessageTime + 10000)) giveExp = true;
 			message = this.canTalk(message);
 		}
 
@@ -294,6 +298,7 @@ class CommandContext {
 			}
 		}
 
+		if (giveExp) SG.addExp(this.user, this.room, 1);
 		this.update();
 
 		return message;
