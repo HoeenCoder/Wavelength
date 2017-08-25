@@ -209,8 +209,6 @@ class CommandContext {
 		let commandHandler = this.splitCommand(message);
 		let giveExp = false;
 
-		let commandHandler = this.splitCommand(message);
-
 		if (typeof commandHandler === 'function') {
 			message = this.run(commandHandler);
 		} else {
