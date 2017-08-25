@@ -951,8 +951,6 @@ class Tournament {
 		let wid = toId(winner);
 		let rid = toId(runnerUp);
 		let tourSize = this.generator.users.size;
-		
-		
 
 		if ((tourSize >= sizeRequiredToEarn) && this.room.isOfficial) {
 			let firstMoney = Math.round(tourSize / 4);

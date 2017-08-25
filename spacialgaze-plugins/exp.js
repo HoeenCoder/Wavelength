@@ -51,7 +51,6 @@ function addExp(user, room, amount) {
 	if (!user || !room) return;
 	user = Users(toId(user));
 	if (Db.expoff.get(user.userid)) return false;
-	let rewards = {};
 	EXP.readExp(user.userid, totalExp => {
 		let oldLevel = SG.level(user.userid);
 		EXP.writeExp(user.userid, amount, newTotal => {
