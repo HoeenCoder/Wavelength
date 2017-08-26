@@ -41,4 +41,19 @@ exports.BattleItems = {
 		},
 		desc: "Either heals the user's max HP by 1/2, boosts the user's SpD and Def by 2 stages, or heals 1% of their health, but drops accuracy by six stages, when at 1/4 max HP or less, 1/2 if the user's ability is Gluttony. Single use.",
 	},
+	// Gligars
+	"gravitysuit": {
+		id: "gravitysuit",
+		name: "Gravity Suit",
+		spritenum: 581,
+		fling: {
+			basePower: 30,
+		},
+		onStart: function (pokemon) {
+			this.useMove('Gravity', pokemon);
+			this.useMove('Trick Room', pokemon);
+		},
+		isNonStandard: true,
+		desc: "Uses Gravity and Trick Room on Switch-in.",
+	},
 };
