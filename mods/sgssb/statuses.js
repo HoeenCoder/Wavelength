@@ -63,13 +63,13 @@ exports.BattleStatuses = {
 	hurricaned: {
 		exists: true,
 		onStart: function () {
-			this.add('c', ' Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
+			this.add('c', '+Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', ' Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
+			this.add('c', '+Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', ' Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
+			this.add('c', '+Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
 		},
 	},
 	hoeenhero: {

@@ -73,7 +73,7 @@ exports.BattleAbilities = {
 				for (let j = 0; j < this.sides[i].active.length; j++) {
 					let target = this.sides[i].active[j];
 					if (target === pokemon) continue;
-					if (target && target.hp && target.hasAbility('primordialsea')) {
+					if (target && target.hp && target.hasAbility('primordialsea') || target && target.hp && target.hasAbility('programmersdomain') || target && target.hp && target.hasAbility('cripplingdepression')) {
 						this.weatherData.source = target;
 						return;
 					}
@@ -170,7 +170,7 @@ exports.BattleAbilities = {
 				for (let j = 0; j < this.sides[i].active.length; j++) {
 					let target = this.sides[i].active[j];
 					if (target === pokemon) continue;
-					if (target && target.hp && target.hasAbility('primordialsea')) {
+					if (target && target.hp && target.hasAbility('primordialsea') || target && target.hp && target.hasAbility('programmersdomain') || target && target.hp && target.hasAbility('cripplingdepression')) {
 						this.weatherData.source = target;
 						return;
 					}
