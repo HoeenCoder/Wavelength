@@ -15,7 +15,7 @@
 		"Config": false, "Monitor": false, "toId": false, "Dex": false, "LoginServer": false,
 		"Users": false, "Punishments": false, "Rooms": false, "Verifier": false, "Chat": false,
 		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false, "Ladders": false,
-                "SG": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false, "currencyPlural": false, "writeSSB": false
+                "SG": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false, "currencyPlural": false, "writeSSB": false, "Ontime": false
 	},
 	"extends": "eslint:recommended",
 	"rules": {
