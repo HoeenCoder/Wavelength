@@ -142,4 +142,22 @@ exports.BattleAbilities = {
 			}
 		},
 	},
+	// Gligars
+	finalfight: {
+		name: 'Final Fight',
+		id: 'finalfight',
+		onStart: function (pokemon) {
+			this.add('-ability', pokemon, 'Final Fight');
+		},
+		onModifyMove: function (move) {
+			move.ignoreAbility = true;
+		},
+		onAnyAccuracy: function (accuracy, target, source, move) {
+			if (move && (source === this.effectData.target || target === this.effectData.target)) {
+				return true;
+			}
+			return accuracy;
+		},
+		desc: "Mold Breaker + No Guard",
+	},
 };
