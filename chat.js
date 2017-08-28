@@ -961,18 +961,8 @@ Chat.CommandContext = CommandContext;
  * @param {Connection} connection - the connection the user sent the message from
  */
 Chat.parse = function (message, room, user, connection) {
-<<<<<<< HEAD
-	Chat.loadCommands();
-	let context = new CommandContext({
-		message,
-		room,
-		user,
-		connection,
-	});
-=======
 	Chat.loadPlugins();
 	let context = new CommandContext({message, room, user, connection});
->>>>>>> 74ff102794a0d2638031f7b293a81a4ea11d2d25
 
 	return context.parse();
 };
@@ -1038,7 +1028,8 @@ Chat.loadPlugins = function () {
 	}
 	for (let file of FS('spacialgaze-plugins').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'SG.js') continue;
-		Object.assign(commands, require('./spacialgaze-plugins/' + file).commands);
+		const spacialgazeplugin = require(`./spacialgaze-plugins/${file}`);
+		Object.assign(commands, spacialgazeplugin.commands);
 	}
 };
 
