@@ -23,10 +23,14 @@
   "engines": {
     "node": ">=7.7.0"
   },
-  "main": "app.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node app.js",
     "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ spacialgaze-plugins/ config/ data/ dev-tools/ mods/ sim/ tournaments/ test/ && mocha"
+=======
+    "start": "node pokemon-showdown",
+    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ config/ data/ dev-tools/ mods/ sim/ tournaments/ test/ && mocha"
+>>>>>>> 74ff102794a0d2638031f7b293a81a4ea11d2d25
   },
   "bin": "./pokemon-showdown",
   "homepage": "http://pokemonshowdown.com",

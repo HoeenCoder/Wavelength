@@ -579,7 +579,7 @@ exports.BattleAbilities = {
 		onStart: function (pokemon) {
 			this.add('-ability', pokemon, 'Dark Aura');
 		},
-		onAnyBasePower: function (target, source, move) {
+		onAnyBasePower: function (basePower, source, target, move) {
 			if (target === source || move.category === 'Status' || move.type !== 'Dark') return;
 			return this.chainModify([move.hasAuraBreak ? 0x0C00 : 0x1547, 0x1000]);
 		},
@@ -713,10 +713,10 @@ exports.BattleAbilities = {
 				return 0;
 			}
 		},
-		onEffectiveness: function (typeMod, type, move) {
+		onEffectiveness: function (typeMod, target, type, move) {
 			if (!this.activeTarget) return;
 			let pokemon = this.activeTarget;
-			if (pokemon.template.speciesid !== 'mimikyu' || pokemon.transformed) return;
+			if (pokemon.template.speciesid !== 'mimikyu' || pokemon.transformed || (pokemon.volatiles['substitute'] && !(move.flags['authentic'] || move.infiltrates))) return;
 			if (!pokemon.runImmunity(move.type)) return;
 			return 0;
 		},
@@ -884,7 +884,7 @@ exports.BattleAbilities = {
 		onStart: function (pokemon) {
 			this.add('-ability', pokemon, 'Fairy Aura');
 		},
-		onAnyBasePower: function (target, source, move) {
+		onAnyBasePower: function (basePower, source, target, move) {
 			if (target === source || move.category === 'Status' || move.type !== 'Fairy') return;
 			return this.chainModify([move.hasAuraBreak ? 0x0C00 : 0x1547, 0x1000]);
 		},
