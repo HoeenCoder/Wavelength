@@ -679,6 +679,39 @@ exports.BattleMovedex = {
 		type: "Dark",
 		zMovePower: 200,
 	},
+	// Insist
+	debugging: {
+		id: "debugging",
+		name: "Debugging",
+		priority: 1,
+		self: {
+			boosts: {
+				spa: 1,
+				spe: 1,
+			},
+		},
+		flags: {
+			protect: 1,
+			mirror: 1,
+		},
+		desc: "Boosts user's SpA and Spe by 1 stage.",
+		secondary: false,
+		category: "Special",
+		onHit: function (target, source, move) {
+			this.add('c|@Insist|``npm test``');
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Hydro Pump", target);
+		},
+		basePower: 90,
+		pp: 15,
+		accuracy: 100,
+		target: "normal",
+		type: "Water",
+		zMovePower: 140,
+		contestType: "Cool",
+	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
 	/*spacialblast: {
