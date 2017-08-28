@@ -159,19 +159,23 @@ exports.commands = {
 };
 
 function permissionCheck(user, room) {
-	if (!Rooms(room) && !user.can('roomowner')) {
-		return false;
+	if (Rooms(room)) {
+		room = Rooms(room);
+		if (room.auth && room.auth[user.userid] && room.auth[user.userid] !== '+') return true; // roomauth check
+		if (!user.can('lock')) return false;
+		let grouplist = ['+', '%', '@', '&', '~']; // hardcoded because permissions are hardcoded too
+		let minRank = '%';
+		if (room.isPrivate === true) minRank = '&';
+		if (room.isPrivate === 'hidden') minRank = '@';
+		if (room.modjoin && (grouplist.indexOf(room.modjoin) > grouplist.indexOf(minRank))) minRank = room.modjoin;
+		// Staff room overides
+		if (toId(room.title) === 'staff') minRank = '%';
+		if (toId(room.title) === 'upperstaff') minRank = '&';
+		if (grouplist.indexOf(user.group) < grouplist.indexOf(minRank)) return false;
+	} else {
+		if (room.startsWith('groupchat')) return true;
+		if (!user.can('hotpatch')) return false;
 	}
-	if (!user.can('lock') && !user.can('warn', null, Rooms(room))) {
-		return false;
-	}
-	if (Rooms(room) && Rooms(room).isPrivate && (!user.can('roomowner') && !user.can('warn', null, Rooms(room)))) {
-		return false;
-	}
-	if (Rooms(room) && Rooms(room).isPersonal && (!user.can('roomowner') && !user.can('warn', null, Rooms(room)))) {
-		return false;
-	}
-	if (toId(room) === 'upperstaff' && !user.can('roomowner')) return false;
 	return true;
 }
 
