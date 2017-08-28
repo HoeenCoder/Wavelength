@@ -193,12 +193,41 @@ exports.BattleAbilities = {
 		},
 	},
 	//Stabby the Krabby
-	"readytostab": {
+	readytostab: {
 		id: "readytostab",
 		name: "Ready to Stab",
 		desc: "Boosts user's Atk and Spe by 2 stages",
 		onStart: function (pokemon) {
 			this.boost({atk: 2, spe: 2});
 		},
+	},
+	//Charon Bot
+	nodebot: {
+		shortDesc: "On switch-in, this Pokemon's Attack and Speed are halved for 3 turns.",
+		onStart: function (pokemon) {
+			pokemon.addVolatile('nodebot');
+		},
+		onEnd: function (pokemon) {
+			delete pokemon.volatiles['nodebot'];
+			this.add('-end', pokemon, 'node bot', '[silent]');
+		},
+		effect: {
+			duration: 3,
+			onStart: function (target) {
+				this.add('-start', target, 'ability: node bot');
+			},
+			onModifyAtkPriority: 5,
+			onModifyAtk: function (atk, pokemon) {
+				return this.chainModify(0.5);
+			},
+			onModifySpe: function (spe, pokemon) {
+				return this.chainModify(0.5);
+			},
+			onEnd: function (target) {
+				this.add('-end', target, 'node bot');
+			},
+		},
+		id: "nodebot",
+		name: "node bot",
 	},
 };

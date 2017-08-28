@@ -91,13 +91,26 @@ Stabby the Krabby
 (Krabby)
 @ Eviolite
 EVs: 6 HP / 252 Atk / 252 Spe
-Adament Nature
+Adamant Nature
 Ability: Ready to Stab
-    -On entry, +2 Attack and Speed.
+    - On entry, +2 Attack and Speed.
 Moves: Crabhammer, Swords Dance, Knock Off
 Signature Move: Stab Stab
     -Steel Type, 100 BP, Always Hits, Attacks Twice, 25% chance to flinch.
 Notes: Stabby Stabby!
+Rank: N/A.
+
+Charon Bot
+(Regigigas)
+@ Life Orb
+EVs: 252 Atk / 4 HP / 252 Spe
+Adamant Nature
+Ability: node bot
+    - 3 turn Slow Start.
+Moves: Return, Knock Off, Zen Headbutt
+Signature Move: R U Regi
+    - Normal type, Physical, 60 BP, +2 priority, Drains 1/2 damage dealt.
+Notes: Physical Sweeper.
 Rank: N/A.
 
 Desokoro
@@ -218,7 +231,7 @@ Modest Nature
 Ability: Flash Fire
 Moves: Ice Beam, Ancient Power and Thunderbolt.
 Signature Move: Frostbite
-	- Ice Type, Special, 100 BP, 10 PP and 60% chance to freeze the target.
+	- Ice Type, Special, 100 BP, 10 PP and 60% chance to freeze the target, Supereffective against Water types.
 Notes: N/A.
 Rank: N/A.
 

@@ -481,14 +481,17 @@ exports.BattleMovedex = {
 		basePower: 100,
 		id: "frostbite",
 		isNonstandard: true,
-		name: "Frost Bite",
+		name: "Frostbite",
 		secondary: {
 			chance: 60,
 			status: 'frz',
 		},
-		desc: "60% chance to freeze",
+		desc: "60% chance to freeze, supereffective on Water.",
 		pp: 10,
 		priority: 0,
+		onEffectiveness: function (typeMod, type) {
+			if (type === 'Water') return 1;
+		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Blizzard", target);
@@ -681,5 +684,23 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+	},
+	"ruregi": {
+		id: "ruregi",
+		name: "R U Regi",
+		basePower: 60,
+		priority: 2,
+		desc: "Drains 1/3 of the damage dealt.",
+		category: "Physical",
+		drain: [1, 3],
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Quick Attack", target);
+		},
+		secondary: false,
+		pp: 10,
+		flags: {protect: 1, contact: 1, mirror: 1},
+		target: "normal",
+		type: "Fighting",
 	},
 };

@@ -95,7 +95,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				gender: 'M',
 				moves: ['Crabhammer', 'Swords Dance', 'Knock Off',
 				],
-				baseSignatureMove: "stabstab",
 				signatureMove: 'Stab Stab',
 				evs: {
 					atk: 252,
@@ -103,6 +102,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 6,
 				},
 				nature: 'Adamant',
+			},
+			"*Charon Bot": {
+				species: "Regigigas",
+				ability: "node bot",
+				item: "Life Orb",
+				gender: "F",
+				moves: ['Return', 'Knock Off', 'Bulk Up'],
+				signatureMove: "R U Regi",
+				evs: {
+					atk: 252,
+					hp: 4,
+					spe: 252,
+				},
+				nature: "Adamant",
 			},
 			// Global Moderators:
 			'@Desokoro': {
