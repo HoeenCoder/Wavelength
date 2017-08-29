@@ -674,7 +674,7 @@ exports.BattleMovedex = {
 				},
 			},
 		},
-		desc: "95 BP, Dark type & +1 Def, +1 SpD, & +1 Spe",
+		desc: "95 BP & +1 Def, +1 SpD, & +1 Spe",
 		target: "normal",
 		type: "Dark",
 		zMovePower: 200,
@@ -741,6 +741,33 @@ exports.BattleMovedex = {
 		target: "self",
 		zMoveEffect: "clearnegativeboost",
 		contestType: "Beautiful",
+	},
+	//megas4ever
+	"draconiandoomsday": {
+		accuracy: 95,
+		basePower: 100,
+		category: "Special",
+		desc: "Boosts the user's Defense, Special Attack, Special Defense, and Speed by one stage.",
+		shortDesc: "+1 Def, SpA, SpD, and Spe.",
+		id: "draconiandoomsday",
+		isViable: true,
+		name: "Draconian Doomsday",
+		pp: 5,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		self: {
+			boosts: {
+				def: 1,
+				spa: 1,
+				spd: 1,
+				spe: 1,
+			},
+		},
+		secondary: false,
+		target: "normal",
+		type: "Dragon",
+		zMovePower: 170,
+		contestType: "Cool",
 	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer

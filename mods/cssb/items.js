@@ -56,4 +56,28 @@ exports.BattleItems = {
 		isNonStandard: true,
 		desc: "Uses Gravity and Trick Room on Switch-in.",
 	},
+	//megas4ever
+	"spiritorb": {
+		id: "spiritorb",
+		name: "Spirit Orb",
+		spritenum: 459,
+		fling: {
+			basePower: 30,
+		},
+		onBasePowerPriority: 6,
+		onBasePower: function (basePower, user, target, move) {
+			if (move && (move.type === 'Psychic') {
+				return this.chainModify([0x1333, 0x1000]);
+			}
+		},
+		onModifySpAPriority: 1,
+		onModifySpA: function (spa) {
+			return this.chainModify(1.5);
+		},
+		onModifySpDPriority: 1,
+		onModifySpD: function (spd) {
+			return this.chainModify(1.5);
+		},
+		desc: "1.5x SpA & SpD + Psychic moves do 1.3x more.",
+	},
 };

@@ -160,4 +160,27 @@ exports.BattleAbilities = {
 		},
 		desc: "Mold Breaker + No Guard",
 	},
+	//megas4ever
+	"spiritascension": {
+		id: "spiritascension",
+		name: "Spirit Ascension",
+		onModifySpAPriority: 5,
+		onModifySpA: function (spa, pokemon) {
+			if (pokemon.status) {
+				return this.chainModify(1.5);
+			}
+		},
+		onModifySpDPriority: 5,
+		onModifySpD: function (spd, pokemon) {
+			if (pokemon.status) {
+				return this.chainModify(1.5);
+			}
+		},
+		onModifySpePriority: 5,
+		onModifySpe: function (spe, pokemon) {
+			if (pokemon.status) {
+				return this.chainModify(1.5);
+			}
+		},
+	},
 };
