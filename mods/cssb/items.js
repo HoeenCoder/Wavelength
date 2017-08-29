@@ -66,7 +66,7 @@ exports.BattleItems = {
 		},
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
-			if (move && (move.type === 'Psychic') {
+			if (move && (move.type === 'Psychic')) {
 				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
