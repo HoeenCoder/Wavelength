@@ -712,6 +712,36 @@ exports.BattleMovedex = {
 		zMovePower: 140,
 		contestType: "Cool",
 	},
+	//Diancie11
+	"botanicalgardens": {
+		basePower: 0,
+		pp: 10,
+		priority: 0,
+		id: "botanicalgardens",
+		name: "Botanical Gardens",
+		boosts: {
+			def: 1,
+			spa: 1,
+			spd: 1,
+		},
+		flags: {snatch: 1, heal: 1},
+		heal: [1, 2],
+		category: "Status",
+		onHit: function (source) {
+			if (source.hasType('Grass')) return false;
+			if (!source.addType('Grass')) return false;
+			this.add('-start', source, 'typeadd', 'Grass', '[from] move: Botanical Gardens');
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Leafage", target);
+		},
+		desc: "Heals the user by 1/2 max HP, boosts the user's Def, SpA & SpD by 1 stage, and adds Grass typing to the user.",
+		type: "Grass",
+		target: "self",
+		zMoveEffect: "clearnegativeboost",
+		contestType: "Beautiful",
+	},
 	//DEFAULT-MONS CUSTOM MOVES (Save incase or re-addition)
 	// SpaceGazer
 	/*spacialblast: {
