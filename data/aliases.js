@@ -41,6 +41,7 @@ exports.BattleAliases = {
 	"uber": "[Gen 7] Ubers",
 
 	//SpacialGaze
+	"digimon": "[Gen 7] Digimon Showdown",
 	"sgssb": "[Gen 7] Super Staff Bros",
 	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
