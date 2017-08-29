@@ -182,5 +182,6 @@ exports.BattleAbilities = {
 				return this.chainModify(1.5);
 			}
 		},
+		desc: "If the user is statused, their SpA, SpD, and Spe is multiplied by 1.5x.",
 	},
 };
