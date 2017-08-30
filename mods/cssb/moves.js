@@ -727,10 +727,10 @@ exports.BattleMovedex = {
 		flags: {snatch: 1, heal: 1},
 		heal: [1, 2],
 		category: "Status",
-		onHit: function (source) {
-			if (source.hasType('Grass')) return false;
-			if (!source.addType('Grass')) return false;
-			this.add('-start', source, 'typeadd', 'Grass', '[from] move: Botanical Gardens');
+		onAfterMove: function (target) {
+			if (target.hasType('Grass')) return false;
+			if (!target.addType('Grass')) return false;
+			this.add('-start', target, 'typeadd', 'Grass', '[from] move: Botanical Gardens');
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
