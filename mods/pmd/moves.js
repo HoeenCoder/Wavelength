@@ -8,7 +8,8 @@ exports.BattleMovedex = {
 		id: "oranberry",
 		isNonstandard: true,
 		name: "Oran Berry",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		desc: "Restores 1/4 max HP.",
 		priority: 0,
 		flags: {
@@ -30,7 +31,8 @@ exports.BattleMovedex = {
 		id: "apple",
 		isNonstandard: true,
 		name: "Apple",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			snatch: 1,
@@ -55,7 +57,8 @@ exports.BattleMovedex = {
 		id: "blastseed",
 		isNonstandard: true,
 		name: "Blast Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			protect: 1,
@@ -78,7 +81,8 @@ exports.BattleMovedex = {
 		id: "gravelrock",
 		isNonstandard: true,
 		name: "Gravelrock",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			protect: 1,
@@ -102,7 +106,8 @@ exports.BattleMovedex = {
 		id: "healseed",
 		isNonstandard: true,
 		name: "Heal Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			snatch: 1,
@@ -127,7 +132,8 @@ exports.BattleMovedex = {
 		id: "traporb",
 		isNonstandard: true,
 		name: "Trap Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			reflectable: 1,
@@ -151,7 +157,8 @@ exports.BattleMovedex = {
 		id: "trapbustorb",
 		isNonstandard: true,
 		name: "TrapBust Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -182,7 +189,8 @@ exports.BattleMovedex = {
 		id: "stunseed",
 		isNonstandard: true,
 		name: "Stun Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			authentic: 1,
@@ -206,7 +214,8 @@ exports.BattleMovedex = {
 		id: "totterseed",
 		isNonstandard: true,
 		name: "Totter Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			authentic: 1,
@@ -230,7 +239,8 @@ exports.BattleMovedex = {
 		id: "vileseed",
 		isNonstandard: true,
 		name: "Vile Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			authentic: 1,
@@ -256,7 +266,8 @@ exports.BattleMovedex = {
 		id: "violentseed",
 		isNonstandard: true,
 		name: "Violent Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			authentic: 1,
@@ -282,7 +293,8 @@ exports.BattleMovedex = {
 		id: "rainyorb",
 		isNonstandard: true,
 		name: "Rainy Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -301,7 +313,8 @@ exports.BattleMovedex = {
 		id: "sunnyorb",
 		isNonstandard: true,
 		name: "Sunny Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -320,7 +333,8 @@ exports.BattleMovedex = {
 		id: "sandyorb",
 		isNonstandard: true,
 		name: "Sandy Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -339,7 +353,8 @@ exports.BattleMovedex = {
 		id: "hailorb",
 		isNonstandard: true,
 		name: "Hail Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -359,7 +374,8 @@ exports.BattleMovedex = {
 		id: "oneshotorb",
 		isNonstandard: true,
 		name: "One Shot Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			protect: 1,
@@ -381,7 +397,8 @@ exports.BattleMovedex = {
 		id: "warporb",
 		isNonstandard: true,
 		name: "Warp Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: -6,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -401,7 +418,8 @@ exports.BattleMovedex = {
 		id: "escapeorb",
 		isNonstandard: true,
 		name: "Escape Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 1,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -422,7 +440,8 @@ exports.BattleMovedex = {
 		id: "stick",
 		isNonstandard: true,
 		name: "Stick",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			protect: 1,
@@ -446,7 +465,8 @@ exports.BattleMovedex = {
 		id: "ironthorn",
 		isNonstandard: true,
 		name: "Iron Thorn",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			protect: 1,
@@ -469,7 +489,8 @@ exports.BattleMovedex = {
 		id: "evasionorb",
 		isNonstandard: true,
 		name: "Evasion Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {
 			snatch: 1,
@@ -493,7 +514,8 @@ exports.BattleMovedex = {
 		id: "mugorb",
 		isNonstandard: true,
 		name: "Mug Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 4,
 		flags: {
 			authentic: 1,
@@ -531,7 +553,8 @@ exports.BattleMovedex = {
 		id: "wonderorb",
 		isNonstandard: true,
 		name: "Wonder Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -555,7 +578,8 @@ exports.BattleMovedex = {
 		id: "awakening",
 		isNonstandard: true,
 		name: "Awakening",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 6,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -589,7 +613,8 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Sleep Seed",
 		basePower: 0,
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {authentic: 1, bullet: 1, snatch: 1},
 		onPrepareHit: function (target, source) {
@@ -609,7 +634,8 @@ exports.BattleMovedex = {
 		accuracy: true,
 		category: "Status",
 		isNonstandard: true,
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		flags: {snatch: 1},
 		onPrepareHit: function (source) {
 			this.attrLastMove('[still]');
@@ -631,7 +657,8 @@ exports.BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		isNonstandard: true,
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		flags: {snatch: 1},
 		onPrepareHit: function (source, target) {
 			this.attrLastMove('[still]');
@@ -652,7 +679,8 @@ exports.BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		isNonstandard: true,
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		secondary: false,
 		flags: {snatch: 1},
@@ -678,7 +706,8 @@ exports.BattleMovedex = {
 		shortDesc: "Changes the self's type to Water.",
 		id: "slipseed",
 		name: "Slip Seed",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, reflectable: 1, mirror: 1, mystery: 1},
 		onHit: function (target) {
@@ -698,7 +727,8 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		id: "decoyorb",
 		name: "Decoy Orb",
 		priority: 0,
@@ -718,7 +748,8 @@ exports.BattleMovedex = {
 	pounceorb: {
 		accuracy: true,
 		basePower: 60,
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		category: "Special",
 		id: "pounceorb",
 		name: "Pounce Orb",
@@ -740,7 +771,8 @@ exports.BattleMovedex = {
 	sizebustorb: {
 		id: "sizebustorb",
 		name: "Sizebust Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
 			let targetWeight = target.getWeight();
@@ -779,7 +811,8 @@ exports.BattleMovedex = {
 	transferorb: {
 		id: "transferorb",
 		name: "Transfer Orb",
-		pp: 0.625,
+		pp: 1,
+		noPPBoosts: true,
 		basePower: 0,
 		//Makes target transfer into user
 		onHit: function (target, pokemon) {
