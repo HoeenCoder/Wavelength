@@ -660,7 +660,7 @@ exports.commands = {
 						if (cmd !== 'statsq') this.sendReply(target[1] + ' IV was set to ' + target[2] + '.');
 						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
 					} else {
-						return this.errorReply('Ivs can only be between 0 and 31.');
+						return this.errorReply('Make sure your IVs are between 0 and 31 and that you spelled the stat name correctly.');
 					}
 					//break;
 				case 'nature':
