@@ -18,14 +18,13 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Wrap", source);
 		},
 		pp: 10,
-		self: {
-			boosts: {
-				atk: 1,
-				spa: 1,
-				spe: 1,
-			},
+		boosts: {
+			atk: 1,
+			spa: 1,
+			spe: 1,
 		},
-		target: "Self",
+		zMoveEffect: 'heal',
+		target: "self",
 		type: "Normal",
 		desc: "Raises the user's Attack, Sp. Attack and Speed by 1.",
 	},
@@ -52,6 +51,7 @@ exports.BattleMovedex = {
 			chance: 50,
 			status: 'brn',
 		},
+		zMovePower: 140,
 		target: "normal",
 		type: "Fire",
 		desc: "Traps and damages the target for 4-5 turns and 50% chance to burn the target.",
@@ -77,8 +77,9 @@ exports.BattleMovedex = {
 		weather: 'raindance',
 		secondary: {
 			chance: 20,
-			volatileStatus: 'Flinch',
+			volatileStatus: 'flinch',
 		},
+		zMovePower: 110,
 		target: "normal",
 		type: "Water",
 		desc: "Summons Rain and has 20% chance to flinch the target.",
@@ -101,13 +102,12 @@ exports.BattleMovedex = {
 		onHit: function (target, pokemon, move) {
 			this.useMove('Aromatherapy', pokemon);
 		},
-		self: {
-			heal: [1, 2],
-		},
+		heal: [1, 2],
 		pp: 5,
 		priority: 0,
-		target: "Self",
+		target: "self",
 		type: "Grass",
+		zMoveEffect: 'heal',
 		desc: "Cures the user's party of all status conditions and heals the user by 25% of its max HP.",
 	},
 	//Electric
@@ -149,6 +149,7 @@ exports.BattleMovedex = {
 				spe: 1,
 			},
 		},
+		zMovePower: 120,
 		pp: 10,
 		priority: 0,
 		target: "normal",
@@ -177,6 +178,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		target: "normal",
 		type: "Ice",
+		zMoveEffect: 'heal',
 		desc: "Summons Hail and uses Blizzard.",
 	},
 	//Fighting
@@ -207,6 +209,7 @@ exports.BattleMovedex = {
 		priority: -1,
 		target: "normal",
 		type: "Fighting",
+		zMovePower: 250,
 		desc: "50% chance to paralyze the target and user cannot move next turn.",
 	},
 	//Poison
@@ -233,6 +236,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		target: "normal",
 		type: "Poison",
+		zMoveEffect: 'heal',
 		desc: "Badly poisons the target and lowers the foe's attack by 1.",
 	},
 	//Ground
@@ -254,10 +258,11 @@ exports.BattleMovedex = {
 		priority: 0,
 		secondary: {
 			chance: 15,
-			volatileStatus: 'Flinch',
+			volatileStatus: 'flinch',
 		},
 		target: "normal",
 		type: "Ground",
+		zMovePower: 190,
 		desc: "15% chance to flinch the target.",
 	},
 	//Flying
@@ -308,6 +313,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Flying",
+		zMoveEffect: 'heal',
 		desc: "Clears user and target side's hazards and sets the weather to clear skies.",
 	},
 	//Psychic
@@ -328,6 +334,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		target: "self",
 		type: "Psychic",
+		zMoveEffect: 'heal',
 		desc: "For 5 turns, damage to allies is halved and protects allies from priority attacks this turn.",
 	},
 	//Bug
@@ -358,6 +365,7 @@ exports.BattleMovedex = {
 		pp: 10,
 		target: "normal",
 		type: "Bug",
+		zMovePower: 180,
 		desc: "30% chance to raise the user's Attack and Speed by 1.",
 	},
 	//Rock
@@ -378,12 +386,13 @@ exports.BattleMovedex = {
 		},
 		secondary: {
 			chance: 30,
-			volatileStatus: 'Flinch',
+			volatileStatus: 'flinch',
 		},
 		pp: 10,
 		priority: 0,
 		target: "normal",
 		type: "Rock",
+		zMovePower: 195,
 		desc: "30% chance to flinch the target.",
 	},
 	//Ghost
@@ -405,12 +414,13 @@ exports.BattleMovedex = {
 		willCrit: true,
 		secondary: {
 			chance: 30,
-			volatileStatus: 'Flinch',
+			volatileStatus: 'flinch',
 		},
 		pp: 10,
 		priority: 0,
 		target: "normal",
 		type: "Ghost",
+		zMovePower: 160,
 		desc: "30% chance to flinch the target and always crits.",
 	},
 	//Dragon
@@ -445,6 +455,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		target: "normal",
 		type: "Dragon",
+		zMovePower: 220,
 		desc: "Lasts 2-3 turns, confuses the user afterwards and lowers the user's Attack by 2.",
 	},
 	//Dark
@@ -477,6 +488,7 @@ exports.BattleMovedex = {
 		priority: 1,
 		target: "normal",
 		type: "Dark",
+		zMovePower: 180,
 		desc: "1.5x damage if foe holds an item. Removes item.",
 	},
 	//Steel
@@ -505,6 +517,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		zMovePower: 210,
 		desc: "Traps Steel Types from choosing to switch.",
 	},
 	//Fairy
@@ -529,6 +542,7 @@ exports.BattleMovedex = {
 		},
 		pp: 10,
 		target: "normal",
+		zMovePower: 210,
 		type: "Fairy",
 		desc: "10% chance to paralyze the target.",
 	},
