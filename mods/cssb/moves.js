@@ -314,7 +314,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Flying",
 		zMoveEffect: 'heal',
-		desc: "Clears user and target side's hazards and sets the weather to clear skies.",
+		desc: "Clears user and target side's hazards and removes weather.",
 	},
 	//Psychic
 	psychicshield: {
@@ -335,7 +335,7 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Psychic",
 		zMoveEffect: 'heal',
-		desc: "For 5 turns, damage to allies is halved and protects allies from priority attacks this turn.",
+		desc: "Sets Light Screen and Reflect.",
 	},
 	//Bug
 	swarmcharge: {
@@ -366,6 +366,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Bug",
 		zMovePower: 180,
+		shortDesc: "30% chance to raise user's Atk & Spe by 1.",
 		desc: "30% chance to raise the user's Attack and Speed by 1.",
 	},
 	//Rock
