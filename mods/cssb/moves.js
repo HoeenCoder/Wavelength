@@ -727,6 +727,32 @@ exports.BattleMovedex = {
 		zMovePower: 140,
 		contestType: "Cool",
 	},
+	//Insist
+	"exiledfromallothers": {
+		id: "exiledfromallothers",
+		name: "Exiled From All Others",
+		basePower: 150,
+		accuracy: 100,
+		pp: 1,
+		noPPBoosts: true,
+		secondary: false,
+		category: "Special",
+		isNonStandard: true,
+		isZ: "playniumz",
+		priority: 1,
+		flags: {
+			protect: 1,
+		},
+		onHit: function (target, source, move) {
+			this.add('c|@Insist|Exiled from all others, we shall become greater than ever before.');
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Hydro Pump", target);
+		},
+		target: "normal",
+		type: "Water",
+	},
 	//Diancie11
 	"botanicalgardens": {
 		basePower: 0,
