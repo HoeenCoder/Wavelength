@@ -109,10 +109,11 @@ SG.giveDailyReward = function (user) {
 		if (cur[1] < time) time = cur[1];
 	}
 	if (Date.now() - time < 86400000) return;
-	if (Date.now() - time > 172800000) reward = 1;
+	reward++;
+	if (reward > 7 || Date.now() - time > 172800000) reward = 1;
 	// Loop again to set the ips values
 	for (let ip in user.ips) {
-		Db.DailyBonus.set(ip, [(reward + 1 < 8 ? reward + 1 : 1), Date.now()]);
+		Db.DailyBonus.set(ip, [reward, Date.now()]);
 	}
 	Economy.writeMoney(user.userid, reward);
 	user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
