@@ -15,9 +15,9 @@ function isExp(exp) {
 	if (numExp < 1) return "Cannot be less than one EXP.";
 	return numExp;
 }
-SG.isExp = isExp;
+WL.isExp = isExp;
 
-let EXP = SG.EXP = {
+let EXP = WL.EXP = {
 	readExp: function (userid, callback) {
 		userid = toId(userid);
 
@@ -54,9 +54,9 @@ function addExp(user, room, amount) {
 	if (Db.expoff.get(user.userid)) return false;
 	if (DOUBLE_XP) amount = amount * 2;
 	EXP.readExp(user.userid, totalExp => {
-		let oldLevel = SG.level(user.userid);
+		let oldLevel = WL.level(user.userid);
 		EXP.writeExp(user.userid, amount, newTotal => {
-			let level = SG.level(user.userid);
+			let level = WL.level(user.userid);
 			if (oldLevel < level) {
 				let reward = '';
 				switch (level) {
@@ -101,7 +101,7 @@ function addExp(user, room, amount) {
 					break;
 				case 40:
 					Economy.logTransaction(user.userid + ' received a chatroom for reaching level ' + level + '.');
-					SG.messageSeniorStaff(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
+					WL.messageSeniorStaff(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
 					Monitor.adminlog(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
 					reward = 'a Chatroom. To claim your chatroom, Contact a Leader (&) or Administrator (~).';
 					break;
@@ -115,7 +115,7 @@ function addExp(user, room, amount) {
 		});
 	});
 }
-SG.addExp = addExp;
+WL.addExp = addExp;
 
 function level(userid) {
 	userid = toId(userid);
@@ -130,7 +130,7 @@ function level(userid) {
 	}
 	return benchmarks.length;
 }
-SG.level = level;
+WL.level = level;
 
 function nextLevel(user) {
 	let curExp = Db.exp.get(user, 0);
@@ -144,7 +144,7 @@ function nextLevel(user) {
 	}
 	return "[Cannot level up]";
 }
-SG.nextLevel = nextLevel;
+WL.nextLevel = nextLevel;
 
 //Shamelessly ripped from economy
 function rankLadder(title, type, array, prop, group) {
@@ -170,16 +170,16 @@ function rankLadder(title, type, array, prop, group) {
 	for (let i = 0; i < array.length; i++) {
 		if (i === 0) {
 			midColumn = '</td><td ' + first + '>';
-			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else if (i === 1) {
 			midColumn = '</td><td ' + second + '>';
-			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else if (i === 2) {
 			midColumn = '</td><td ' + third + '>';
-			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else {
 			midColumn = '</td><td ' + tdStyle + '>';
-			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		}
 	}
 	return ladderTitle + tableTop + tableRows + tableBottom;
@@ -196,7 +196,7 @@ exports.commands = {
 		const targetId = toId(target);
 
 		EXP.readExp(targetId, exp => {
-			this.sendReplyBox('<b>' + SG.nameColor(targetId, true) + '</b> has ' + exp + ' exp and is level ' + SG.level(targetId) + ' and needs ' + SG.nextLevel(targetId) + ' to reach the next level.');
+			this.sendReplyBox('<b>' + WL.nameColor(targetId, true) + '</b> has ' + exp + ' exp and is level ' + WL.level(targetId) + ' and needs ' + WL.nextLevel(targetId) + ' to reach the next level.');
 		});
 	},
 
@@ -216,7 +216,7 @@ exports.commands = {
 		if (!Users.get(username)) return this.errorReply("The target user could not be found");
 
 
-		SG.addExp(uid, this.room, amount);
+		WL.addExp(uid, this.room, amount);
 		this.sendReply(uid + " has received " + amount + ((amount === 1) ? " exp." : " exp."));
 	},
 	giveexphelp: ["/giveexp [user], [amount] - Give a user a certain amount of exp."],
@@ -229,11 +229,11 @@ exports.commands = {
 		let targetUser = parts[0].toLowerCase().trim();
 		if (!this.can('roomowner')) return false;
 		if (cmd !== 'confirmresetexp') {
-			return this.popupReply('|html|<center><button name="send" value="/confirmresetexp ' + targetUser + '"style="background-color:red;height:300px;width:150px"><b><font color="white" size=3>Confirm XP reset of ' + SG.nameColor(targetUser, true) + '; this is only to be used in emergencies, cannot be undone!</font></b></button>');
+			return this.popupReply('|html|<center><button name="send" value="/confirmresetexp ' + targetUser + '"style="background-color:red;height:300px;width:150px"><b><font color="white" size=3>Confirm XP reset of ' + WL.nameColor(targetUser, true) + '; this is only to be used in emergencies, cannot be undone!</font></b></button>');
 		}
 		Db.exp.set(toId(target), 0);
 		if (Users.get(target)) Users.get(target).popup('Your XP was reset by an Administrator. This cannot be undone and nobody below the rank of Administrator can assist you or answer questions about this.');
-		user.popup("|html|You have reset the XP of " + SG.nameColor(targetUser, true) + ".");
+		user.popup("|html|You have reset the XP of " + WL.nameColor(targetUser, true) + ".");
 		Monitor.adminlog('[EXP Monitor] ' + user.name + ' has reset the XP of ' + target);
 		room.update();
 	},
