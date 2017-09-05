@@ -28,7 +28,7 @@ function updateIcons() {
 	let file = fs.readFileSync('config/custom.css', 'utf8').split('\n');
 	if (~file.indexOf('/* ICONS START */')) file.splice(file.indexOf('/* ICONS START */'), (file.indexOf('/* ICONS END */') - file.indexOf('/* ICONS START */')) + 1);
 	fs.writeFileSync('config/custom.css', file.join('\n') + newCss);
-	SG.reloadCSS();
+	WL.reloadCSS();
 }
 
 function generateCSS(name, icon) {
@@ -57,10 +57,10 @@ exports.commands = {
 			if (target.length !== 2) return this.parse('/help icon');
 			if (toId(target[0]).length > 19) return this.errorReply("Usernames are not this long...");
 			if (icons[toId(target[0])]) return this.errorReply("This user already has a custom userlist icon.  Do /icon delete [user] and then set their new icon.");
-			this.sendReply("|raw|You have given " + SG.nameColor(target[0], true) + " an icon.");
+			this.sendReply("|raw|You have given " + WL.nameColor(target[0], true) + " an icon.");
 			Monitor.adminlog(target[0] + " has received an icon from " + user.name + ".");
 			this.privateModCommand("|raw|(" + target[0] + " has recieved icon: <img src='" + target[1] + "' width='32' height='32'> from " + user.name + ".)");
-			if (Users(target[0]) && Users(target[0]).connected) Users(target[0]).popup("|html|" + SG.nameColor(user.name, true) + " has set your userlist icon to: <img src='" + target[1] + "' width='32' height='32'><br><center>Refresh, If you don't see it.</center>");
+			if (Users(target[0]) && Users(target[0]).connected) Users(target[0]).popup("|html|" + WL.nameColor(user.name, true) + " has set your userlist icon to: <img src='" + target[1] + "' width='32' height='32'><br><center>Refresh, If you don't see it.</center>");
 			icons[toId(target[0])] = target[1];
 			updateIcons();
 		},
@@ -74,7 +74,7 @@ exports.commands = {
 			this.sendReply("You removed " + target + "'s icon.");
 			Monitor.adminlog(user.name + " removed " + target + "'s icon.");
 			this.privateModCommand("(" + target + "'s icon was removed by " + user.name + ".)");
-			if (Users(target) && Users(target).connected) Users(target).popup("|html|" + SG.nameColor(user.name, true) + " has removed your userlist icon.");
+			if (Users(target) && Users(target).connected) Users(target).popup("|html|" + WL.nameColor(user.name, true) + " has removed your userlist icon.");
 		},
 	},
 	iconhelp: [
