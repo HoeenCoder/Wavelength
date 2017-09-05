@@ -1,7 +1,7 @@
 /**
  * Room Request System
  *
- * Programmed by HoeenHero for SpacialGaze
+ * Programmed by HoeenHero for Wavelength
  * @license MIT license
  */
 "use strict";
@@ -43,10 +43,10 @@ exports.commands = {
 			status: "pending",
 		};
 		if (cmd !== 'confirmrequestroom') {
-			return this.sendReplyBox(`<center><h3>Please confirm your room request</h3><br/><b>Room Name</b>: ${curRequest.name}<br/><b>Room Type</b>: ${curRequest.type}<br/><b>Description</b>:${curRequest.desc}<br/><button name="send" value="/confirmrequestroom ${curRequest.name}, ${curRequest.type}, ${curRequest.desc}" class="button">Yes, this is correct</button><button class="button" name="receive" value="|c|~SG Server|Request the room again, but with the changes you want to make to it.">No, I want to change something</button></center>`);
+			return this.sendReplyBox(`<center><h3>Please confirm your room request</h3><br/><b>Room Name</b>: ${curRequest.name}<br/><b>Room Type</b>: ${curRequest.type}<br/><b>Description</b>:${curRequest.desc}<br/><button name="send" value="/confirmrequestroom ${curRequest.name}, ${curRequest.type}, ${curRequest.desc}" class="button">Yes, this is correct</button><button class="button" name="receive" value="|c|~WL Server|Request the room again, but with the changes you want to make to it.">No, I want to change something</button></center>`);
 		}
 		Db.rooms.set(user.userid, curRequest);
-		SG.messageSeniorStaff(`/html ${user.name} has requested a room. <button class="button" name="send" value="/checkroomrequest ${user.userid}">Check request</button>`);
+		WL.messageSeniorStaff(`/html ${user.name} has requested a room. <button class="button" name="send" value="/checkroomrequest ${user.userid}">Check request</button>`);
 		return this.sendReply('Your room request has been sent to Upper Staff.');
 	},
 	requestroomhelp: ["/requestroom [name], [public|private], [why this room should be created] - Sends a room creation request to the Upper Staff. You cannot request another room for 2 weeks after your request is completed. Upper staff will most likely contact you for further information before the room is created. We reserve the right to reject any requests."],
