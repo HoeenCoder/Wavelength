@@ -1,5 +1,5 @@
 /*
-    Voucher System for SpacialGaze
+    Voucher System for Wavelength
     Coded by HoeenHero
 */
 'use strict';
@@ -17,8 +17,8 @@ class Voucher {
 		this.goodFor = voucher;
 		this.expires = (expires ? expires : (expiresIn !== false ? (expiresIn * 24 * 60 * 60 * 1000 + Date.now()) : null));
 		this.item = (item ? item : null); //item from shop / amount of currency
-		this.id = (id ? id : SG.vouchers.storageForVocuherIds);
-		if (!id) SG.vouchers.storageForVocuherIds++;
+		this.id = (id ? id : WL.vouchers.storageForVocuherIds);
+		if (!id) WL.vouchers.storageForVocuherIds++;
 	}
 
 	redeem() {
@@ -51,25 +51,25 @@ class Voucher {
 				if (user.tokens.avatar) return 'token';
 				user.tokens.avatar = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Avatar. Upper staff has been notified of your purchase and will contact you shortly.<br/>Inappropriate images may be denied; 80x80 is the optimal image resolution.<br/>');
-				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Avatar. Please contact this user to setup their Custom Avatar.");
+				//WL.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Avatar. Please contact this user to setup their Custom Avatar.");
 				break;
 			case 'customcolor':
 				if (user.tokens.color) return 'token';
 				user.tokens.color = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Name Color. Upper staff has been notified of your purchase and will contact you shortly.<br/>Colors must be easily visible on the website.<br/>');
-				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Color. Please contact this user to setup their Custom Color.");
+				//WL.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Color. Please contact this user to setup their Custom Color.");
 				break;
 			case 'customtitle':
 				if (user.tokens.title) return 'token';
 				user.tokens.title = true;
 				Users(this.userid).popup('|html|You have purchased a Custom Title. Upper staff has been notified of your purchase and will contact you shortly.');
-				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Title. Please contact this user to setup their Custom Color.");
+				//WL.messageSeniorStaff(Users(this.userid).name + " has purchased a Custom Title. Please contact this user to setup their Custom Color.");
 				break;
 			case 'customicon':
 				if (user.tokens.icon) return 'token';
 				user.tokens.icon = true;
 				Users(this.userid).popup('|html|You have purchased a Userlist Icon. Upper staff has been notified of your purchase and will contact you shortly.<br/>Inappropriate images may be denied; must be a 32x32 image.<br/>');
-				//SG.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlist Icon. Please contact this user to setup their Userlist Icon.");
+				//WL.messageSeniorStaff(Users(this.userid).name + " has purchased a Userlist Icon. Please contact this user to setup their Userlist Icon.");
 				break;
 			}
 			break;
@@ -98,7 +98,7 @@ class Voucher {
 
 function writeFile() {
 	if (!writeJSON) return false; //Prevent corruptions
-	fs.writeFile('config/vouchers.json', JSON.stringify(SG.vouchers));
+	fs.writeFile('config/vouchers.json', JSON.stringify(WL.vouchers));
 }
 
 //load JSON
@@ -108,7 +108,7 @@ try {
 	fs.writeFile('config/vouchers.json', "{}", function (err) {
 		if (err) {
 			console.error('Error while loading vouchers: ' + err);
-			SG.vouchers = {
+			WL.vouchers = {
 				storageForVocuherIds: -1,
 			};
 			writeJSON = false;
@@ -123,27 +123,27 @@ try {
 try {
 	if (!noRead) {
 		let raw = JSON.parse(fs.readFileSync('config/vouchers.json', 'utf8'));
-		SG.vouchers = {};
+		WL.vouchers = {};
 		for (let key in raw) {
 			if (key === 'storageForVocuherIds') {
-				SG.vouchers.storageForVocuherIds = raw[key];
+				WL.vouchers.storageForVocuherIds = raw[key];
 				continue;
 			}
-			SG.vouchers[key] = [];
+			WL.vouchers[key] = [];
 			for (let i = 0; i < raw[key].length; i++) {
 				let reVouch = new Voucher(raw[key][i].userid, raw[key][i].goodFor, raw[key][i].item, raw[key][i].expires, Number(raw[key][i].id));
-				SG.vouchers[key].push(reVouch);
+				WL.vouchers[key].push(reVouch);
 			}
 		}
-		if (!SG.vouchers.storageForVocuherIds) SG.vouchers.storageForVocuherIds = 1;
+		if (!WL.vouchers.storageForVocuherIds) WL.vouchers.storageForVocuherIds = 1;
 	} else {
-		SG.vouchers = {
+		WL.vouchers = {
 			storageForVocuherIds: 1,
 		};
 	}
 } catch (e) {
 	console.error('Error loading Vouchers: ' + e.stack);
-	SG.vouchers = {
+	WL.vouchers = {
 		storageForVocuherIds: -1,
 	};
 	writeJSON = false;
@@ -155,7 +155,7 @@ exports.commands = {
 	vouchers: 'voucher',
 	voucher: {
 		give: function (target, room, user, connection, cmd, message) {
-			if (SG.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
+			if (WL.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
 			if (!user.can('roomowner')) {
 				if (eventLeaders.indexOf(user.userid) === -1) return false;
 			}
@@ -163,7 +163,7 @@ exports.commands = {
 			if (!target[1]) return this.parse('/help voucher give');
 			let targetUser = Users(toId(target[0]));
 			if (!targetUser) return this.errorReply('User "' + target[0] + '" not found.');
-			if (!SG.vouchers[targetUser.userid]) SG.vouchers[targetUser.userid] = [];
+			if (!WL.vouchers[targetUser.userid]) WL.vouchers[targetUser.userid] = [];
 			let vouchers = ['currency', 'item', 'boostUno', 'boostTour', 'boostGame'];
 			let index = -1;
 			for (let i = 0; i < vouchers.length; i++) {
@@ -179,7 +179,7 @@ exports.commands = {
 					if (isNaN(Number(target[2]))) return this.errorReply('You need to give a number for the amount of ' + global.currencyPlural + ' to give.');
 					if (Number(target[2]) < 1 || Number(target[2]) > 50) return this.errorReply('You cannot create a voucher for less than 1 ' + global.currencyName + ' or more than 50 ' + global.currencyPlural + '.');
 					let voucher = new Voucher(targetUser.userid, vouchers[index], Number(target[2]));
-					SG.vouchers[targetUser.userid].push(voucher);
+					WL.vouchers[targetUser.userid].push(voucher);
 					targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currencyPlural) + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
 					writeFile();
 					Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for ' + toId(target[2]) + ' ' + (Number(target[2]) === 1 ? global.currencyName : global.currencyPlural) + '.');
@@ -195,7 +195,7 @@ exports.commands = {
 					}
 					if (shopIndex === -1) return this.errorReply('Invalid item. Use /help voucher give for a list of valid items.');
 					let voucher = new Voucher(targetUser.userid, vouchers[index], shopItems[shopIndex]);
-					SG.vouchers[targetUser.userid].push(voucher);
+					WL.vouchers[targetUser.userid].push(voucher);
 					targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for a ' + shopItems[shopIndex] + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
 					writeFile();
 					Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for a ' + shopItems[shopIndex] + '.');
@@ -204,7 +204,7 @@ exports.commands = {
 				}
 			} else {
 				let voucher = new Voucher(targetUser.userid, vouchers[index], null);
-				SG.vouchers[targetUser.userid].push(voucher);
+				WL.vouchers[targetUser.userid].push(voucher);
 				targetUser.popup('|html|' + Chat.escapeHTML(user.name) + ' has given you a voucher for a ' + vouchers[index] + '.<br/>To redeem your voucher use <button name="send" value="/voucher redeem ' + voucher.id + '">/voucher redeem</button>.<br/>' + (expiresIn ? 'Your voucher expires in ' + expiresIn + ' days.' : 'This voucher will not expire.'));
 				writeFile();
 				Economy.logTransaction(Chat.escapeHTML(targetUser.name) + ' has received a voucher from ' + Chat.escapeHTML(user.name) + ' for a ' + vouchers[index] + '.');
@@ -215,7 +215,7 @@ exports.commands = {
 		givehelp: ['/voucher give [user], [voucher], (item/amount) - Give a user a voucher. Valid vouchers are: currency, item, boostUno, boostTour, and boostGame. Valid items are Custom Symbol, Custom Avatar, Custom Title, Custom Icon, and Custom Color. Requires Server Event Leader, &, or ~.'],
 
 		take: function (target, room, user, connection, cmd, message) {
-			if (SG.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
+			if (WL.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
 			if (!user.can('roomowner')) {
 				if (eventLeaders.indexOf(user.userid) === -1) return false;
 			}
@@ -223,12 +223,12 @@ exports.commands = {
 			if (!target[1]) return this.parse('/help voucher take');
 			let targetUser = Users(toId(target[0]));
 			if (!targetUser) return this.errorReply('User ' + target[0] + ' not found.');
-			if (!SG.vouchers[targetUser.userid] || SG.vouchers[targetUser.userid].length === 0) return this.errorReply(targetUser.name + ' has no vouchers.');
+			if (!WL.vouchers[targetUser.userid] || WL.vouchers[targetUser.userid].length === 0) return this.errorReply(targetUser.name + ' has no vouchers.');
 			if (isNaN(Number(target[1]))) return this.errorReply('Ids must be a number.');
-			for (let key in SG.vouchers[targetUser.userid]) {
-				if (SG.vouchers[targetUser.userid][key].id === Number(target[1])) {
-					delete SG.vouchers[targetUser.userid][key];
-					SG.vouchers[targetUser.userid].splice(key, 1);
+			for (let key in WL.vouchers[targetUser.userid]) {
+				if (WL.vouchers[targetUser.userid][key].id === Number(target[1])) {
+					delete WL.vouchers[targetUser.userid][key];
+					WL.vouchers[targetUser.userid].splice(key, 1);
 					writeFile();
 					Economy.logTransaction(Chat.escapeHTML(user.name) + ' has taken a voucher from ' + Chat.escapeHTML(targetUser.name) + ':');
 					return this.sendReply('You have taken voucher ID ' + target[1] + ' from ' + targetUser.name + '.');
@@ -239,7 +239,7 @@ exports.commands = {
 		takehelp: ['/voucher take [user], [id] - Take a user\'s voucher away. Requires Server Event Leader, &, or ~'],
 
 		list: function (target, room, user, connection, cmd, message) {
-			if (SG.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
+			if (WL.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
 			if (!target) target = user.userid;
 			if (user.userid === toId(target)) {
 				if (!this.runBroadcast()) return;
@@ -249,8 +249,8 @@ exports.commands = {
 			if (targetUser.userid !== user.userid && !user.can('roomowner')) {
 				if (eventLeaders.indexOf(user.userid) === -1) return this.errorReply('You can only view your own vouchers.');
 			}
-			if (!SG.vouchers[targetUser.userid] || SG.vouchers[targetUser.userid].length === 0) return this.errorReply(targetUser.name + ' has no vouchers.');
-			let list = SG.vouchers[targetUser.userid];
+			if (!WL.vouchers[targetUser.userid] || WL.vouchers[targetUser.userid].length === 0) return this.errorReply(targetUser.name + ' has no vouchers.');
+			let list = WL.vouchers[targetUser.userid];
 			let output = '<table style="border: 1px solid black"><tr><th colspan="5" style="border: 1px solid black">' + targetUser.name + '\'s Vouchers</th></tr>';
 			output += '<tr><th style="border: 1px solid black">ID</th><th style="border: 1px solid black">Good For</th><th style="border: 1px solid black">Item/Amount</th><th style="border: 1px solid black">Expires</th><th style="border: 1px solid black">Redeem</th></tr>';
 			for (let i = 0; i < list.length; i++) {
@@ -263,24 +263,24 @@ exports.commands = {
 		listhelp: ['/voucher list (user) - List the vouchers of a user, requires Server Event Leader, &, or ~ for viewing vouchers for other users.'],
 
 		redeem: function (target, room, user, connection, cmd, message) {
-			if (SG.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
+			if (WL.storageForVocuherIds === -1) return this.errorReply('An error occured while loading vouchers. They cannot be used at this time.');
 			if (!target) return this.parse('/help voucher redeem');
 			target = Number(target);
 			if (isNaN(target)) return this.errorReply('Ids must be a number.');
-			if (!SG.vouchers[user.userid] || SG.vouchers[user.userid].length === 0) return this.errorReply('You have no vouchers.');
+			if (!WL.vouchers[user.userid] || WL.vouchers[user.userid].length === 0) return this.errorReply('You have no vouchers.');
 			let index = -1;
-			for (let i = 0; i < SG.vouchers[user.userid].length; i++) {
-				if (SG.vouchers[user.userid][i].id === target) {
+			for (let i = 0; i < WL.vouchers[user.userid].length; i++) {
+				if (WL.vouchers[user.userid][i].id === target) {
 					index = i;
 					break;
 				}
 			}
 			if (index === -1) return this.errorReply('You do not own voucher id ' + target + '.');
-			switch (SG.vouchers[user.userid][index].redeem()) {
+			switch (WL.vouchers[user.userid][index].redeem()) {
 			case true:
 				//Successfuly redeemed
-				delete SG.vouchers[user.userid][index];
-				SG.vouchers[user.userid].splice(index, 1);
+				delete WL.vouchers[user.userid][index];
+				WL.vouchers[user.userid].splice(index, 1);
 				writeFile();
 				return true;
 				//break;
@@ -289,16 +289,16 @@ exports.commands = {
 				return this.errorReply('An error occured while redeeming. Contact an Upper Staff member.');
 				//break;
 			case 'expired':
-				delete SG.vouchers[user.userid][index];
-				SG.vouchers[user.userid].splice(index, 1);
+				delete WL.vouchers[user.userid][index];
+				WL.vouchers[user.userid].splice(index, 1);
 				writeFile();
 				return this.errorReply('This voucher is expired.');
 				//break;
 			case 'active':
-				return this.sendReply('You already have an active ' + toId(SG.vouchers[user.userid][index].goodFor) + '.');
+				return this.sendReply('You already have an active ' + toId(WL.vouchers[user.userid][index].goodFor) + '.');
 				//break;
 			case 'token':
-				return this.sendReply('You already have a token for a ' + toId(SG.vouchers[user.userid][index].item) + '.');
+				return this.sendReply('You already have a token for a ' + toId(WL.vouchers[user.userid][index].item) + '.');
 				//break;
 			default:
 				return this.errorReply('Error.');
