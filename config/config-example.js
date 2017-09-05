@@ -422,7 +422,7 @@ exports.grouplist = [
 	{
 		name: 'Locked',
 		id: 'locked',
-		symbol: '‽',
+		symbol: '\u203d',
 		punishgroup: 'LOCK',
 	},
 	{
