@@ -53,7 +53,7 @@ exports.commands = {
 			if (ranks.includes(rank)) {
 				let name = Users.usergroups[u].substr(1);
 				if (!rankLists[rank]) rankLists[rank] = [];
-				if (name) rankLists[rank].push(SG.nameColor(name, (Users(name) && Users(name).connected)));
+				if (name) rankLists[rank].push(WL.nameColor(name, (Users(name) && Users(name).connected)));
 			}
 		}
 
@@ -88,7 +88,7 @@ exports.commands = {
 			(Config.groups[b] || {rank:0}).rank - (Config.groups[a] || {rank:0}).rank
 		).map(r => {
 			let roomRankList = rankLists[r].sort();
-			roomRankList = roomRankList.map(s => ((Users(s) && Users(s).connected) ? SG.nameColor(s, true) : SG.nameColor(s)));
+			roomRankList = roomRankList.map(s => ((Users(s) && Users(s).connected) ? WL.nameColor(s, true) : WL.nameColor(s)));
 			return (Config.groups[r] ? Chat.escapeHTML(Config.groups[r].name) + "s (" + Chat.escapeHTML(r) + ")" : r) + ":\n" + roomRankList.join(", ");
 		});
 
@@ -97,7 +97,7 @@ exports.commands = {
 			return;
 		}
 		if (targetRoom.founder) {
-			buffer.unshift((targetRoom.founder ? "Room Founder:\n" + ((Users(targetRoom.founder) && Users(targetRoom.founder).connected) ? SG.nameColor(targetRoom.founder, true) : SG.nameColor(targetRoom.founder)) : ''));
+			buffer.unshift((targetRoom.founder ? "Room Founder:\n" + ((Users(targetRoom.founder) && Users(targetRoom.founder).connected) ? WL.nameColor(targetRoom.founder, true) : WL.nameColor(targetRoom.founder)) : ''));
 		}
 		if (targetRoom !== room) buffer.unshift("" + targetRoom.title + " room auth:");
 		connection.send("|popup||html|" + buffer.join("\n\n") + userLookup);
@@ -127,7 +127,7 @@ exports.commands = {
 		room.founder = userid;
 		this.addModCommand(`${name} was appointed Room Founder by ${user.name}.`);
 		if (targetUser) {
-			targetUser.popup(`|html|You were appointed Room Founder by ${SG.nameColor(user.name, true)} in ${room.title}.`);
+			targetUser.popup(`|html|You were appointed Room Founder by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 			room.onUpdateIdentity(targetUser);
 		}
 		Rooms.global.writeChatRoomData();
@@ -174,7 +174,7 @@ exports.commands = {
 		room.auth[userid] = '#';
 		this.addModCommand(`${name} was appointed Room Owner by ${user.name}.`);
 		if (targetUser) {
-			targetUser.popup(`|html|You were appointed Room Owner by ${SG.nameColor(user.name, true)} in ${room.title}.`);
+			targetUser.popup(`|html|You were appointed Room Owner by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 			room.onUpdateIdentity(targetUser);
 		}
 		Rooms.global.writeChatRoomData();
@@ -259,13 +259,13 @@ exports.commands = {
 				targetUser.send(">" + room.id + "\n(You were demoted to Room " + groupName + " by " + user.name + ".)");
 			}
 			this.privateModCommand(`(${name} was demoted to Room ${groupName} by ${user.name}.)`);
-			if (needsPopup) targetUser.popup(`|html|You were demoted to Room ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
+			if (needsPopup) targetUser.popup(`|html|You were demoted to Room ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 		} else if (nextGroup === '#') {
 			this.addModCommand(`${'' + name} was promoted to ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`|html|You were promoted to ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
+			if (needsPopup) targetUser.popup(`|html|You were promoted to ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 		} else {
 			this.addModCommand(`${'' + name} was promoted to Room ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`|html|You were promoted to Room ${groupName} by ${SG.nameColor(user.name, true)} in ${room.title}.`);
+			if (needsPopup) targetUser.popup(`|html|You were promoted to Room ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 		}
 
 		if (targetUser) targetUser.updateIdentity(room.id);
@@ -431,7 +431,7 @@ exports.commands = {
 			targetUser.send("|nametaken||Your name conflicts with " + user.name + (user.name.substr(-1) === "s" ? "'" : "'s") + " new away status.");
 		}
 
-		if (user.can('mute', null, room)) this.add("|raw|-- " + SG.nameColor(user.name, true) + " is now " + target.toLowerCase() + ".");
+		if (user.can('mute', null, room)) this.add("|raw|-- " + WL.nameColor(user.name, true) + " is now " + target.toLowerCase() + ".");
 		if (user.can('lock')) this.parse('/hide');
 		user.forceRename(newName, user.registered);
 		user.updateIdentity();
@@ -447,7 +447,7 @@ exports.commands = {
 		let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/); // eslint-disable-line no-useless-escape
 		if (statusIdx < 0) {
 			user.isAway = false;
-			if (user.can('mute', null, room)) this.add("|raw|-- " + SG.nameColor(user.userid, true) + " is no longer away.");
+			if (user.can('mute', null, room)) this.add("|raw|-- " + WL.nameColor(user.userid, true) + " is no longer away.");
 			return false;
 		}
 
@@ -456,7 +456,7 @@ exports.commands = {
 		user.forceRename(newName, user.registered);
 		user.updateIdentity();
 		user.isAway = false;
-		if (user.can('mute', null, room)) this.add("|raw|-- " + SG.nameColor(user.userid, true) + " is no longer " + status.toLowerCase() + ".");
+		if (user.can('mute', null, room)) this.add("|raw|-- " + WL.nameColor(user.userid, true) + " is no longer " + status.toLowerCase() + ".");
 		if (user.can('lock')) this.parse('/show');
 	},
 	backhelp: ["/back - Sets a users away status back to normal."],
