@@ -33,7 +33,7 @@ function updateColor() {
 	let file = fs.readFileSync('config/custom.css', 'utf8').split('\n');
 	if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
 	fs.writeFileSync('config/custom.css', file.join('\n') + newCss);
-	SG.reloadCSS();
+	WL.reloadCSS();
 }
 
 function generateCSS(name, color) {
@@ -108,7 +108,7 @@ exports.commands = {
 	hex: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		let targetUser = (target ? target : user.name);
-		this.sendReplyBox('The hex code of ' + SG.nameColor(targetUser, true) + ' is: <font color="' + SG.hashColor(targetUser) + '"><b>' + SG.hashColor(targetUser) + '</b></font>');
+		this.sendReplyBox('The hex code of ' + WL.nameColor(targetUser, true) + ' is: <font color="' + WL.hashColor(targetUser) + '"><b>' + WL.hashColor(targetUser) + '</b></font>');
 	},
 };
 
