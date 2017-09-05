@@ -285,7 +285,7 @@ class CommandContext {
 		if (message && message !== true && typeof message.then !== 'function') {
 			if (this.pmTarget) {
 				let noEmotes = message;
-				let emoticons = SG.parseEmoticons(message);
+				let emoticons = WL.parseEmoticons(message);
 				if (emoticons) {
 					noEmotes = message;
 					message = "/html " + emoticons;
@@ -300,19 +300,19 @@ class CommandContext {
 				this.pmTarget.lastPM = this.user.userid;
 				this.user.lastPM = this.pmTarget.userid;
 			} else {
-				let emoticons = SG.parseEmoticons(message);
+				let emoticons = WL.parseEmoticons(message);
 				if (emoticons && !this.room.disableEmoticons) {
 					if (Users.ShadowBan.checkBanned(this.user)) {
 						Users.ShadowBan.addMessage(this.user, "To " + this.room.id, message);
-						if (!SG.ignoreEmotes[this.user.userid]) this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
-						if (SG.ignoreEmotes[this.user.userid]) this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
+						if (!WL.ignoreEmotes[this.user.userid]) this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
+						if (WL.ignoreEmotes[this.user.userid]) this.user.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
 						this.room.update();
 						return false;
 					}
 					for (let u in this.room.users) {
 						let curUser = Users(u);
 						if (!curUser || !curUser.connected) continue;
-						if (SG.ignoreEmotes[curUser.userid]) {
+						if (WL.ignoreEmotes[curUser.userid]) {
 							curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
 							continue;
 						}
@@ -334,7 +334,7 @@ class CommandContext {
 			}
 		}
 
-		if (this.user.registered && giveExp) SG.addExp(this.user.userid, this.room, 1);
+		if (this.user.registered && giveExp) WL.addExp(this.user.userid, this.room, 1);
 		this.update();
 
 		return message;
@@ -1031,7 +1031,7 @@ Chat.loadPlugins = function () {
 
 	// info always goes first so other plugins can shadow it
 	Object.assign(commands, require('./chat-plugins/info').commands);
-	Object.assign(commands, require('./spacialgaze-plugins/SG.js').commands);
+	Object.assign(commands, require('./wavelength-plugins/WL.js').commands);
 
 	for (let file of FS('chat-plugins/').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
@@ -1052,10 +1052,10 @@ Chat.loadPlugins = function () {
 			}
 		}
 	}
-	for (let file of FS('spacialgaze-plugins').readdirSync()) {
-		if (file.substr(-3) !== '.js' || file === 'SG.js') continue;
-		const spacialgazeplugin = require(`./spacialgaze-plugins/${file}`);
-		Object.assign(commands, spacialgazeplugin.commands);
+	for (let file of FS('wavelength-plugins').readdirSync()) {
+		if (file.substr(-3) !== '.js' || file === 'WL.js') continue;
+		const wavelengthplugin = require(`./wavelength-plugins/${file}`);
+		Object.assign(commands, wavelengthplugin.commands);
 	}
 };
 
