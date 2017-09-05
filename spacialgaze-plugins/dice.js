@@ -35,7 +35,7 @@ class Dice {
 		}, INACTIVE_END_TIME);
 
 		let buck = (this.bet === 1 ? 'buck' : 'bucks');
-		this.startMessage = '<div class="infobox"><b style="font-size: 14pt; color: #24678d"><center><span style="color: ' + SG.hashColor(starter) + '">' + Chat.escapeHTML(starter) + '</span> has started a game of dice for <span style = "color: green">' + amount + '</span> ' + buck + '!</center></b><br>' +
+		this.startMessage = '<div class="infobox"><b style="font-size: 14pt; color: #24678d"><center><span style="color: ' + WL.hashColor(starter) + '">' + Chat.escapeHTML(starter) + '</span> has started a game of dice for <span style = "color: green">' + amount + '</span> ' + buck + '!</center></b><br>' +
 			'<center><img style="margin-right: 30px;" src = "http://i.imgur.com/eywnpqX.png" width="80" height="80">' +
 			'<img style="transform:rotateY(180deg); margin-left: 30px;" src="http://i.imgur.com/eywnpqX.png" width="80" height="80"><br>' +
 			'<button name="send" value="/joindice">Click to join!</button></center>';
@@ -51,7 +51,7 @@ class Dice {
 			if (this.players.length >= 2) return self.errorReply("Two users have already joined this game of dice.");
 
 			this.players.push(user);
-			this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + SG.nameColor(user.name) + ' has joined the game!</center></div>').update();
+			this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + WL.nameColor(user.name) + ' has joined the game!</center></div>').update();
 			if (this.players.length === 2) this.play();
 		});
 	}
@@ -76,7 +76,7 @@ class Dice {
 					this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + this.players.map(user => SG.nameColor(user.name)) + ' has joined the game!</center>').update();
 					return;
 				}
-				let players = this.players.map(user => SG.nameColor(user.name)).join(' and ');
+				let players = this.players.map(user => WL.nameColor(user.name)).join(' and ');
 				this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + players + ' have joined the game!</center></div>').update();
 				let roll1, roll2;
 				do {
@@ -93,10 +93,10 @@ class Dice {
 					this.room.add('|uhtmlchange|' + this.room.diceCount + '|<div class="infobox"><center>' + players + ' have joined the game!<br /><br />' +
 						'The game has been started! Rolling the dice...<br />' +
 						'<img src = "' + diceImg(roll1) + '" align = "left" title = "' + Chat.escapeHTML(p1.name) + '\'s roll"><img src = "' + diceImg(roll2) + '" align = "right" title = "' + p2.name + '\'s roll"><br />' +
-						SG.nameColor(p1.name, true) + ' rolled ' + (roll1 + 1) + '!<br />' +
-						SG.nameColor(p2.name, true) + ' rolled ' + (roll2 + 1) + '!<br />' +
-						SG.nameColor(winner.name, true) + ' has won <b style="color:green">' + (this.bet - taxedAmt) + '</b> ' + buck + '!<br />' +
-						'Better luck next time, ' + SG.nameColor(loser.name) + '!'
+						WL.nameColor(p1.name, true) + ' rolled ' + (roll1 + 1) + '!<br />' +
+						WL.nameColor(p2.name, true) + ' rolled ' + (roll2 + 1) + '!<br />' +
+						WL.nameColor(winner.name, true) + ' has won <b style="color:green">' + (this.bet - taxedAmt) + '</b> ' + buck + '!<br />' +
+						'Better luck next time, ' + WL.nameColor(loser.name) + '!'
 					).update();
 					Economy.writeMoney(winner.userid, (this.bet - taxedAmt), () => {
 						Economy.writeMoney(loser.userid, -this.bet, () => {
