@@ -4,7 +4,7 @@
     coded by HoeenHero
     -----------------------
     THIS IS NOT THE SAME AS
-    THE PRIVATE SHOP ON WL
+THE PRIVATE SHOP ON WAVELENGTH
 ******************************/
 'use strict';
 
