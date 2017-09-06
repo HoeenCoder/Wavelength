@@ -768,7 +768,7 @@ class GlobalRoom {
 		if (time - this.lastReportedCrash < CRASH_REPORT_THROTTLE) {
 			const stackUS = (err ? Chat.escapeHTML(err.stack).split(`\n`).slice(0, 2).join(`.`) : ``);
 			const crashMessageUS = `**The server has crashed:** ${stackUS}`;
-			WL.messageSeniorStaff(crashMessageUS, '~WL Server');
+			WL.messageSeniorStaff(crashMessageUS, '~Wavelength Server');
 			return;
 		}
 		this.lastReportedCrash = time;
