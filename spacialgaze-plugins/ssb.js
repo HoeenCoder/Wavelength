@@ -9,7 +9,7 @@ let typeList = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting
 
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
-	fs.writeFile('config/ssb.json', JSON.stringify(SG.ssb));
+	fs.writeFile('config/ssb.json', JSON.stringify(WL.ssb));
 };
 
 //Shamlessly ripped from teambuilder client.
@@ -113,74 +113,74 @@ function validate(me, targetUser, quiet) {
 }
 
 function buildMenu(userid) {
-	if (!SG.ssb[userid]) return '<span style="color:red"><b>Error: </b>User "' + userid + '" not found in ssb.</span>';
-	let speciesName = toId(SG.ssb[userid].species);
+	if (!WL.ssb[userid]) return '<span style="color:red"><b>Error: </b>User "' + userid + '" not found in ssb.</span>';
+	let speciesName = toId(WL.ssb[userid].species);
 	/*if (speciesName.substring(0, 8) === 'oricorio') {
 	  speciesName = 'oricorio-' + toId(speciesName.substring(8));
 	}*/
-	let split = SG.ssb[userid].species.split('-');
+	let split = WL.ssb[userid].species.split('-');
 	if (split.length > 1) {
 		speciesName = toId(split[0]) + '-' + speciesName.substring(toId(split[0]).length);
 	}
 	let output = '';
-	output += '<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/' + (Dex.getTemplate(toId(SG.ssb[userid].species)).gen === 7 ? 'bw' : 'xydex') + '' + (SG.ssb[userid].shiny ? '-shiny' : '') + '/' + speciesName + '.png); background-position: -2px -3px; background-repeat: no-repeat;">';
-	output += '<div class="setcol setcol-icon"><div class="setcell-sprite"></div><div class="setcell setcell-pokemon"><label>Pokémon</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit species">' + SG.ssb[userid].species + '</button></div></div>';
-	output += '<div class="setcol setcol-details"><div class="setrow"><div class="setcell setcell-details"><label>Details</label><button class="textbox setdetails" tabindex="-1" name="send" value="/ssb edit details"><span class="detailcell detailcell-first"><label>Level</label>' + SG.ssb[userid].level + '</span><span class="detailcell"><label>Gender</label>' + (SG.ssb[userid].gender === 'random' ? '-' : SG.ssb[userid].gender) + '</span><span class="detailcell"><label>Happiness</label>' + SG.ssb[userid].happiness + '</span><span class="detailcell"><label>Shiny</label>' + (SG.ssb[userid].shiny ? 'Yes' : 'No') + '</span></button><span class="itemicon" style="background: none"></span></div></div><div class="setrow"><div class="setcell setcell-item"><label>Item</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit item">' + (SG.ssb[userid].item ? SG.ssb[userid].item : '') + '</button></div><div class="setcell setcell-ability"><label>Ability</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit ability">' + SG.ssb[userid].ability + '</button></div></div></div>';
-	output += '<div class="setcol setcol-moves"><div class="setcell"><label>Moves</label><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[0] ? SG.ssb[userid].movepool[0] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[1] ? SG.ssb[userid].movepool[1] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].movepool[2] ? SG.ssb[userid].movepool[2] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (SG.ssb[userid].cMove ? SG.ssb[userid].cMove : (SG.ssb[userid].movepool[3] ? SG.ssb[userid].movepool[3] : '')) + '</button></div></div>';
+	output += '<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/' + (Dex.getTemplate(toId(WL.ssb[userid].species)).gen === 7 ? 'bw' : 'xydex') + '' + (WL.ssb[userid].shiny ? '-shiny' : '') + '/' + speciesName + '.png); background-position: -2px -3px; background-repeat: no-repeat;">';
+	output += '<div class="setcol setcol-icon"><div class="setcell-sprite"></div><div class="setcell setcell-pokemon"><label>Pokémon</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit species">' + WL.ssb[userid].species + '</button></div></div>';
+	output += '<div class="setcol setcol-details"><div class="setrow"><div class="setcell setcell-details"><label>Details</label><button class="textbox setdetails" tabindex="-1" name="send" value="/ssb edit details"><span class="detailcell detailcell-first"><label>Level</label>' + WL.ssb[userid].level + '</span><span class="detailcell"><label>Gender</label>' + (WL.ssb[userid].gender === 'random' ? '-' : WL.ssb[userid].gender) + '</span><span class="detailcell"><label>Happiness</label>' + WL.ssb[userid].happiness + '</span><span class="detailcell"><label>Shiny</label>' + (WL.ssb[userid].shiny ? 'Yes' : 'No') + '</span></button><span class="itemicon" style="background: none"></span></div></div><div class="setrow"><div class="setcell setcell-item"><label>Item</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit item">' + (WL.ssb[userid].item ? WL.ssb[userid].item : '') + '</button></div><div class="setcell setcell-ability"><label>Ability</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit ability">' + WL.ssb[userid].ability + '</button></div></div></div>';
+	output += '<div class="setcol setcol-moves"><div class="setcell"><label>Moves</label><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (WL.ssb[userid].movepool[0] ? WL.ssb[userid].movepool[0] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (WL.ssb[userid].movepool[1] ? WL.ssb[userid].movepool[1] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (WL.ssb[userid].movepool[2] ? WL.ssb[userid].movepool[2] : '') + '</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">' + (WL.ssb[userid].cMove ? WL.ssb[userid].cMove : (WL.ssb[userid].movepool[3] ? WL.ssb[userid].movepool[3] : '')) + '</button></div></div>';
 	output += '<div class="setcol setcol-stats"><div class="setrow"><label>Stats</label><button class="textbox setstats" name="send" value="/ssb edit stats"><span class="statrow statrow-head"><label></label><span class="statgraph"></span> <em>EV</em></span>';
 	let statNames = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
 	let stats = {};
 	for (let i = 0; i < statNames.length; i++) {
 		stats[toId(statNames[i])] = getStat(toId(statNames[i]), {
-			species: SG.ssb[userid].species,
-			evs: SG.ssb[userid].evs,
-			ivs: SG.ssb[userid].ivs,
-			nature: SG.ssb[userid].nature,
-			level: SG.ssb[userid].level,
+			species: WL.ssb[userid].species,
+			evs: WL.ssb[userid].evs,
+			ivs: WL.ssb[userid].ivs,
+			nature: WL.ssb[userid].nature,
+			level: WL.ssb[userid].level,
 		});
-		let evBuf = '<em>' + (SG.ssb[userid].evs[toId(statNames[i])] === 0 ? '' : SG.ssb[userid].evs[toId(statNames[i])]) + '</em>';
-		if (Dex.getNature(SG.ssb[userid].nature).plus === toId(statNames[i])) {
+		let evBuf = '<em>' + (WL.ssb[userid].evs[toId(statNames[i])] === 0 ? '' : WL.ssb[userid].evs[toId(statNames[i])]) + '</em>';
+		if (Dex.getNature(WL.ssb[userid].nature).plus === toId(statNames[i])) {
 			evBuf += '<small>+</small>';
-		} else if (Dex.getNature(SG.ssb[userid].nature).minus === toId(statNames[i])) {
+		} else if (Dex.getNature(WL.ssb[userid].nature).minus === toId(statNames[i])) {
 			evBuf += '<small>&minus;</small>';
 		}
 		let width = stats[toId(statNames[i])] * 75 / 504;
 		if (statNames[i] === 'HP') width = stats[toId(statNames[i])] * 75 / 704;
 		if (width > 75) width = 75;
-		let color = Math.floor(SG.ssb[userid].evs[toId(statNames[i])] * 180 / 714);
+		let color = Math.floor(WL.ssb[userid].evs[toId(statNames[i])] * 180 / 714);
 		if (color > 360) color = 360;
 		output += '<span class="statrow"><label>' + statNames[i] + '</label> <span class="statgraph"><span style="width:' + width + 'px;background:hsl(' + color + ',40%,75%);"></span></span> ' + evBuf + '</span>';
 	}
 	output += '</div></div>';
 	//output += '<div class="setcol setcol-stats"><div class="setrow"><label>Stats</label><button class="textbox setstats" name="send" value="/ssb edit stats"><span class="statrow statrow-head"><label></label><span class="statgraph"></span><em>EV</em></span><span class="statrow"><label>HP</label><span class="statgraph"><span style="width:25.248579545454547px; background:hsl(59,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Atk</label><span class="statgraph"><span style="width:19.94047619047619px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Def</label><span class="statgraph"><span style="width:19.642857142857142px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>SpA</label><span class="statgraph"><span style="width:39.732142857142854px; background:hsl(67,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>SpD</label><span class="statgraph"><span style="width:19.791666666666668px; background:hsl(33,40%,75%);"></span></span><em>?</em></span><span class="statrow"><label>Spe</label><span class="statgraph"><span style="width:29.017857142857142px; background:hsl(49,40%,75%);"></span></span><em>?</em></span></button></div></div></div>';
-	output += '<div style="text-align:center"><button class="button" name="send" value="/ssb custom">Custom Move List</button> | <button class="button" name="send" value="/ssb toggle">' + (SG.ssb[userid].active ? 'Deactivate your pokemon' : 'Activate your pokemon') + '</button></div></div>';
+	output += '<div style="text-align:center"><button class="button" name="send" value="/ssb custom">Custom Move List</button> | <button class="button" name="send" value="/ssb toggle">' + (WL.ssb[userid].active ? 'Deactivate your pokemon' : 'Activate your pokemon') + '</button></div></div>';
 	return output;
 }
 
 function moveMenu(userid) {
 	let output = '';
 	output += '<div class="setchart" style="text-align:center"><h3><u>Move Menu</u></h3><div style="padding-bottom: 2px"><i>Current Moves:</i> ';
-	for (let i = 0; i < SG.ssb[userid].movepool.length; i++) {
-		if (SG.ssb[userid].movepool.length === 0) break;
-		output += ((i + 1 === SG.ssb[userid].movepool.length && !SG.ssb[userid].cMove) ? SG.ssb[userid].movepool[i] : SG.ssb[userid].movepool[i] + ', ');
+	for (let i = 0; i < WL.ssb[userid].movepool.length; i++) {
+		if (WL.ssb[userid].movepool.length === 0) break;
+		output += ((i + 1 === WL.ssb[userid].movepool.length && !WL.ssb[userid].cMove) ? WL.ssb[userid].movepool[i] : WL.ssb[userid].movepool[i] + ', ');
 	}
-	if (SG.ssb[userid].cMove) output += SG.ssb[userid].cMove;
-	output += '</div><div style="padding-bottom: 2px"><i>Custom-made Custom Move:</i> ' + (SG.ssb[userid].selfCustomMove ? SG.ssb[userid].selfCustomMove : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
-	output += '<button name="send" class="button" value="/ssb edit move help">Set Moves</button> | <button class="button" name="send" value="/ssb custom">Set a Custom Move</button> | <button name="send" class="button" value="/ssb edit moveq custom, ' + (SG.ssb[userid].selfCustomMove ? SG.ssb[userid].selfCustomMove : '') + '">Set Custom-made Custom Move</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
+	if (WL.ssb[userid].cMove) output += WL.ssb[userid].cMove;
+	output += '</div><div style="padding-bottom: 2px"><i>Custom-made Custom Move:</i> ' + (WL.ssb[userid].selfCustomMove ? WL.ssb[userid].selfCustomMove : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
+	output += '<button name="send" class="button" value="/ssb edit move help">Set Moves</button> | <button class="button" name="send" value="/ssb custom">Set a Custom Move</button> | <button name="send" class="button" value="/ssb edit moveq custom, ' + (WL.ssb[userid].selfCustomMove ? WL.ssb[userid].selfCustomMove : '') + '">Set Custom-made Custom Move</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
 	return output;
 }
 
 function itemMenu(userid) {
-	return '<div class="setchart" style="text-align:center"><h3><u>Item Menu</u></h3><div style="padding-bottom: 2px"><i>Current Item:</i> ' + (SG.ssb[userid].item ? SG.ssb[userid].item : 'None') + '</div><div style="padding-bottom: 2px"><i>Custom Item:</i> ' + (SG.ssb[userid].cItem ? SG.ssb[userid].cItem : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div><button name="send" class="button" value="/ssb edit item help">Set Item</button> | <button name="send" class="button" value="/ssb edit itemq reset">Reset Item</button> | <button name="send" class="button" value="/ssb edit itemq ' + (SG.ssb[userid].cItem ? SG.ssb[userid].cItem : 'help') + '">Set Custom Item</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
+	return '<div class="setchart" style="text-align:center"><h3><u>Item Menu</u></h3><div style="padding-bottom: 2px"><i>Current Item:</i> ' + (WL.ssb[userid].item ? WL.ssb[userid].item : 'None') + '</div><div style="padding-bottom: 2px"><i>Custom Item:</i> ' + (WL.ssb[userid].cItem ? WL.ssb[userid].cItem : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div><button name="send" class="button" value="/ssb edit item help">Set Item</button> | <button name="send" class="button" value="/ssb edit itemq reset">Reset Item</button> | <button name="send" class="button" value="/ssb edit itemq ' + (WL.ssb[userid].cItem ? WL.ssb[userid].cItem : 'help') + '">Set Custom Item</button> | <button name="send" class="button" value="/ssb edit main">Main Menu</button></div>';
 }
 
 function abilityMenu(userid) {
-	let output = '<div class="setchart" style="text-align:center"><h3><u>Ability Menu</u></h3><div style="padding-bottom: 2px"><i>Current Ability:</i> ' + SG.ssb[userid].ability + '</div><div style="padding-bottom: 2px"><i>Custom Ability:</i> ' + (SG.ssb[userid].cAbility ? SG.ssb[userid].cAbility : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
-	let pokemon = Dex.getTemplate(SG.ssb[userid].species);
+	let output = '<div class="setchart" style="text-align:center"><h3><u>Ability Menu</u></h3><div style="padding-bottom: 2px"><i>Current Ability:</i> ' + WL.ssb[userid].ability + '</div><div style="padding-bottom: 2px"><i>Custom Ability:</i> ' + (WL.ssb[userid].cAbility ? WL.ssb[userid].cAbility : '<button name="send" value="/shop" class="button">Purchase</button>') + '</div>';
+	let pokemon = Dex.getTemplate(WL.ssb[userid].species);
 	for (let i in pokemon.abilities) {
 		output += '<button name="send" value="/ssb edit abilityq ' + pokemon.abilities[i] + '" class="button">Set to ' + pokemon.abilities[i] + '</button> | ';
 	}
-	if (SG.ssb[userid].cAbility) output += '<button name="send" value="/ssb edit abilityq ' + SG.ssb[userid].cAbility + '" class="button">Set to ' + SG.ssb[userid].cAbility + '</button> | ';
+	if (WL.ssb[userid].cAbility) output += '<button name="send" value="/ssb edit abilityq ' + WL.ssb[userid].cAbility + '" class="button">Set to ' + WL.ssb[userid].cAbility + '</button> | ';
 	output += '<button name="send" value="/ssb edit main" class="button">Main Menu</button></div>';
 	return output;
 }
@@ -193,16 +193,16 @@ function statMenu(userid) {
 		output += '<tr><td><button class="button" name="send" value="/ssb edit statsq ev, ' + values[i] + ', 0">Set 0</button></td><th>' + values[i] + ': ' + SG.ssb[userid].evs[toId(values[i])] + '</th><td style="border-right:1px solid black"><button class="button" name="send" value="/ssb edit statsq ev, ' + values[i] + ', 252">Set 252</button></td>';
 		output += '<td style="border-left:1px solid black"><button class="button" name="send" value="/ssb edit statsq iv, ' + values[i] + ', 0">Set 0</button></td><th>' + values[i] + ': ' + SG.ssb[userid].ivs[toId(values[i])] + '</th><td><button class="button" name="send" value="/ssb edit statsq iv, ' + values[i] + ', 31">Set 31</button></td></tr>';
 	}
-	output += '<div style="float: right; display: inline-block; width: 40%"><b><u>Stat Menu</u></b><br/><br/><button class="button" name="send" value="/ssb edit stats help">Set EVs or IVs to a custom value</button><br/><br/><i>Current Nature:</i> ' + SG.ssb[userid].nature + '<br/><br/><button class="button" name="send" value="/ssb edit stats nature help">Set Nature</button><br/><br/><button class="button" name="send" value="/ssb edit main">Main Menu</button></div></div>';
+	output += '<div style="float: right; display: inline-block; width: 40%"><b><u>Stat Menu</u></b><br/><br/><button class="button" name="send" value="/ssb edit stats help">Set EVs or IVs to a custom value</button><br/><br/><i>Current Nature:</i> ' + WL.ssb[userid].nature + '<br/><br/><button class="button" name="send" value="/ssb edit stats nature help">Set Nature</button><br/><br/><button class="button" name="send" value="/ssb edit main">Main Menu</button></div></div>';
 	return output;
 }
 
 function detailMenu(userid) {
 	let output = '<div class="setchart" style="text-align:center; height:140px"><h3><u>Details Menu</u></h3>';
-	output += '<i>Level: </i>' + SG.ssb[userid].level + ' | <button name="send" value="/ssb edit detailsq level, 1" class="button">Set to 1</button> <button name="send" value="/ssb edit detailsq level, 50" class="button">Set to 50</button> <button class="button" name="send" value="/ssb edit detailsq level, 100">Set to 100</button><br/>';
-	output += '<i>Gender: </i>' + SG.ssb[userid].gender + ' | <button name="send" value="/ssb edit detailsq gender, male" class="button">Set to Male</button> <button name="send" value="/ssb edit detailsq gender, female" class="button">Set to Female</button> <button class="button" name="send" value="/ssb edit detailsq gender, random">Set to Random</button> <button name="send" value="/ssb edit detailsq gender, genderless" class="button">Set to Genderless</button><br/>';
-	output += '<i>Happiness: </i>' + SG.ssb[userid].happiness + ' | <button name="send" value="/ssb edit details happiness, 0" class="button">Set to 0</button> <button class="button" name="send" value="/ssb edit details happiness, 255">Set to 255</button> <button name="send" value="/ssb edit details happiness" class="button">Set to custom value</button><br/>';
-	output += '<i>Shiny?:</i> | ' + (SG.ssb[userid].canShiny ? '<button name="send" value="/ssb edit details shiny" class="button">Toggle Shiny</button>' : '<button name="send" value="/shop" class="button">Purchase</button>') + ' | <i>Custom Symbol: </i>' + (SG.ssb[userid].cSymbol ? ('' + SG.ssb[userid].symbol + ' <button class="button" name="send" value="/ssb edit details symbol">Change</button>') : '<button class="button" name="send value="/shop">Purchase</button>') + ' | <button class="button" name="send" value="/ssb edit main">Main Menu</button></div>';
+	output += '<i>Level: </i>' + WL.ssb[userid].level + ' | <button name="send" value="/ssb edit detailsq level, 1" class="button">Set to 1</button> <button name="send" value="/ssb edit detailsq level, 50" class="button">Set to 50</button> <button class="button" name="send" value="/ssb edit detailsq level, 100">Set to 100</button><br/>';
+	output += '<i>Gender: </i>' + WL.ssb[userid].gender + ' | <button name="send" value="/ssb edit detailsq gender, male" class="button">Set to Male</button> <button name="send" value="/ssb edit detailsq gender, female" class="button">Set to Female</button> <button class="button" name="send" value="/ssb edit detailsq gender, random">Set to Random</button> <button name="send" value="/ssb edit detailsq gender, genderless" class="button">Set to Genderless</button><br/>';
+	output += '<i>Happiness: </i>' + WL.ssb[userid].happiness + ' | <button name="send" value="/ssb edit details happiness, 0" class="button">Set to 0</button> <button class="button" name="send" value="/ssb edit details happiness, 255">Set to 255</button> <button name="send" value="/ssb edit details happiness" class="button">Set to custom value</button><br/>';
+	output += '<i>Shiny?:</i> | ' + (WL.ssb[userid].canShiny ? '<button name="send" value="/ssb edit details shiny" class="button">Toggle Shiny</button>' : '<button name="send" value="/shop" class="button">Purchase</button>') + ' | <i>Custom Symbol: </i>' + (WL.ssb[userid].cSymbol ? ('' + WL.ssb[userid].symbol + ' <button class="button" name="send" value="/ssb edit details symbol">Change</button>') : '<button class="button" name="send value="/shop">Purchase</button>') + ' | <button class="button" name="send" value="/ssb edit main">Main Menu</button></div>';
 	return output;
 }
 
@@ -493,20 +493,20 @@ try {
 try {
 	if (!noRead) {
 		let raw = JSON.parse(fs.readFileSync('config/ssb.json', 'utf8'));
-		SG.ssb = global.ssb = {};
+		WL.ssb = global.ssb = {};
 		//parse JSON back into the SSB class.
 		for (let key in raw) {
-			SG.ssb[key] = new SSB(raw[key].userid, raw[key].name);
-			for (let key2 in SG.ssb[key]) {
-				SG.ssb[key][key2] = raw[key][key2];
+			WL.ssb[key] = new SSB(raw[key].userid, raw[key].name);
+			for (let key2 in WL.ssb[key]) {
+				WL.ssb[key][key2] = raw[key][key2];
 			}
 		}
 	} else {
-		SG.ssb = global.ssb = {};
+		WL.ssb = global.ssb = {};
 	}
 } catch (e) {
 	console.error('Error loading SSBFFA: ' + e.stack);
-	SG.ssb = global.ssb = {};
+	WL.ssb = global.ssb = {};
 	ssbWrite = false;
 }
 
@@ -517,12 +517,12 @@ exports.commands = {
 			'': function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				targetUser.updateName(user.name);
 				if (cmd === '') {
 					return user.sendTo(room, '|uhtml|ssb' + user.userid + '|' + buildMenu(user.userid));
@@ -534,12 +534,12 @@ exports.commands = {
 			species: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				if (toId(target) === '') return this.sendReply('/ssb edit species [species] - change the species of your SSB pokemon.');
 				let active = targetUser.active;
 				if (!targetUser.setSpecies(target)) {
@@ -555,12 +555,12 @@ exports.commands = {
 			move: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				target = target.split(',');
 				if (!toId(target[0])) return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + moveMenu(user.userid));
 				if (toId(target[0]) === 'help') return this.sendReply('/ssb edit move [set|remove|custom], [move name] - Set or remove moves. Maximum of 4 moves (3 regular + 1 custom OR 4 regular).');
@@ -607,12 +607,12 @@ exports.commands = {
 			stats: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				//temp
 				if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + statMenu(user.userid));
 				if (toId(target) === 'help') return this.sendReply('/ssb edit stats [ev|iv|nature], [stat|nature], (value) - Set your pokemon\'s evs, ivs, or nature.');
@@ -679,12 +679,12 @@ exports.commands = {
 			ability: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + abilityMenu(user.userid));
 				if (toId(target) === 'help') return this.sendReply('/ssb edit ability [ability] - Set your pokemon\'s ability.');
 				if (targetUser.setAbility(target)) {
@@ -699,12 +699,12 @@ exports.commands = {
 			item: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + itemMenu(user.userid));
 				if (toId(target) === 'help') return this.sendReply('/ssb edit item [item] - Set your pokemon\'s item.');
 				if (toId(target) === 'reset') {
@@ -725,12 +725,12 @@ exports.commands = {
 			details: function (target, room, user, connection, cmd, message) {
 				if (!user.named) return this.errorReply('You must choose a name first.');
 				if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-				if (!SG.ssb[user.userid]) {
+				if (!WL.ssb[user.userid]) {
 					this.sendReply('Could not find your SSB pokemon, creating a new one...');
-					SG.ssb[user.userid] = new SSB(user.userid, user.name);
+					WL.ssb[user.userid] = new SSB(user.userid, user.name);
 					writeSSB();
 				}
-				let targetUser = SG.ssb[user.userid];
+				let targetUser = WL.ssb[user.userid];
 				if (toId(target) === '') return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + detailMenu(user.userid));
 				if (toId(target) === 'help') return this.sendReply('/ssb edit details [level|gender|happiness|shiny], (argument) - edit your pokemon\'s details.');
 				target = target.split(',');
@@ -797,13 +797,13 @@ exports.commands = {
 		toggle: function (target, room, user, connection, cmd, message) {
 			if (!user.named) return this.errorReply('You must choose a name first.');
 			if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-			if (!SG.ssb[user.userid]) {
+			if (!WL.ssb[user.userid]) {
 				this.sendReply('Could not find your SSB pokemon, creating a new one...');
-				SG.ssb[user.userid] = new SSB(user.userid, user.name);
+				WL.ssb[user.userid] = new SSB(user.userid, user.name);
 				writeSSB();
 				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
-			let targetUser = SG.ssb[user.userid];
+			let targetUser = WL.ssb[user.userid];
 			if (targetUser.activate()) {
 				if (targetUser.active) {
 					writeSSB();
@@ -823,9 +823,9 @@ exports.commands = {
 		custom: function (target, room, user, connection, cmd, message) {
 			if (!user.named) return this.errorReply('You must choose a name first.');
 			if (user.locked) return this.errorReply('You cannot edit you SSB pokemon while locked.');
-			if (!SG.ssb[user.userid]) {
+			if (!WL.ssb[user.userid]) {
 				this.sendReply('Could not find your SSB pokemon, creating a new one...');
-				SG.ssb[user.userid] = new SSB(user.userid, user.name);
+				WL.ssb[user.userid] = new SSB(user.userid, user.name);
 				writeSSB();
 			}
 			return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + customMenu());
@@ -840,25 +840,25 @@ exports.commands = {
 				let output = '<div style="max-height: 300px; overflow: scroll; width: 100%"><table><tr><th style="border: 1px solid black">Name</th><th style="border: 1px solid black">Item</th><th style="border: 1px solid black">Status</th>';
 				if (toId(target[1]) === 'all') {
 					output += '<th style="border: 1px solid black">Options</th><tr/>';
-					for (let i in SG.ssb) {
-						for (let j in SG.ssb[i].bought) {
-							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[i].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
-							output += '<tr><td style="border: 1px solid black">' + SG.ssb[i].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (SG.ssb[i].bought[j] ? (SG.ssb[i].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td><td style="border: 1px solid black">' + buttons + '</td></tr>';
+					for (let i in WL.ssb) {
+						for (let j in WL.ssb[i].bought) {
+							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + WL.ssb[i].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[i].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[i].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
+							output += '<tr><td style="border: 1px solid black">' + WL.ssb[i].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (WL.ssb[i].bought[j] ? (WL.ssb[i].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td><td style="border: 1px solid black">' + buttons + '</td></tr>';
 						}
 					}
 				} else {
 					target[1] = toId(target[1]);
-					if (!SG.ssb[target[1]]) return this.errorReply(target[1] + ' does not have a SSBFFA pokemon yet.');
+					if (!WL.ssb[target[1]]) return this.errorReply(target[1] + ' does not have a SSBFFA pokemon yet.');
 					if (user.can('roomowner')) {
 						output += '<th style="border: 1px solid black">Options</th><tr/>';
-						for (let j in SG.ssb[target[1]].bought) {
-							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + SG.ssb[target[1]].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[target[1]].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + SG.ssb[target[1]].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
-							output += '<tr><td style="border: 1px solid black">' + SG.ssb[target[1]].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (SG.ssb[target[1]].bought[j] ? (SG.ssb[target[1]].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td><td style="border: 1px solid black">' + buttons + '</td></tr>';
+						for (let j in WL.ssb[target[1]].bought) {
+							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
+							output += '<tr><td style="border: 1px solid black">' + WL.ssb[target[1]].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (WL.ssb[target[1]].bought[j] ? (WL.ssb[target[1]].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td><td style="border: 1px solid black">' + buttons + '</td></tr>';
 						}
 					} else {
 						output += '</tr>';
-						for (let j in SG.ssb[target[1]].bought) {
-							output += '<tr><td style="border: 1px solid black">' + SG.ssb[target[1]].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (SG.ssb[target[1]].bought[j] ? (SG.ssb[target[1]].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td></tr>';
+						for (let j in WL.ssb[target[1]].bought) {
+							output += '<tr><td style="border: 1px solid black">' + WL.ssb[target[1]].name + '</td><td style="border: 1px solid black">' + j + '</td><td style="border: 1px solid black">' + (WL.ssb[target[1]].bought[j] ? (WL.ssb[target[1]].bought[j] === 'complete' ? 'Complete' : 'Pending') : 'Removed') + '</td></tr>';
 						}
 					}
 				}
@@ -870,25 +870,25 @@ exports.commands = {
 				target[1] = toId(target[1]);
 				target[2] = target[2].trim();
 				target[3] = toId(target[3]);
-				if (!SG.ssb[target[1]]) return this.errorReply(target[1] + ' does not have a SSBFFA pokemon yet.');
-				if (SG.ssb[target[1]].bought[target[2]] === undefined) return this.parse('/help ssb log');
+				if (!WL.ssb[target[1]]) return this.errorReply(target[1] + ' does not have a SSBFFA pokemon yet.');
+				if (WL.ssb[target[1]].bought[target[2]] === undefined) return this.parse('/help ssb log');
 				switch (target[3]) {
 				case 'complete':
-					if (SG.ssb[target[1]].bought[target[2]] === target[3]) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already ' + target[3] + '.');
-					SG.ssb[target[1]].bought[target[2]] = 'complete';
+					if (WL.ssb[target[1]].bought[target[2]] === target[3]) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already ' + target[3] + '.');
+					WL.ssb[target[1]].bought[target[2]] = 'complete';
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was marked as complete.');
 					//break;
 				case 'pending':
-					if (SG.ssb[target[1]].bought[target[2]] === true) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already ' + target[3] + '.');
-					SG.ssb[target[1]].bought[target[2]] = true;
+					if (WL.ssb[target[1]].bought[target[2]] === true) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already ' + target[3] + '.');
+					WL.ssb[target[1]].bought[target[2]] = true;
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was marked as pending.');
 					//break;
 				case 'remove':
-					if (SG.ssb[target[1]].bought[target[2]] === false) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already removed.');
+					if (WL.ssb[target[1]].bought[target[2]] === false) return this.errorReply(target[1] + '\'s ' + target[2] + ' is already removed.');
 					if (!target[4] || toId(target[4]) !== 'force') return this.sendReply('WARNING. If you remove this purchase the user will not be able to use their ' + target[2] + ' and the user will not be refunded (unless you provide it). If you are sure you want to do this, run: /ssb log mark, ' + target[1] + ', ' + target[2] + ', ' + target[3] + ', force');
-					SG.ssb[target[1]].bought[target[2]] = false;
+					WL.ssb[target[1]].bought[target[2]] = false;
 					writeSSB();
 					return this.sendReply(target[1] + '\'s ' + target[2] + ' was removed.');
 					//break;
@@ -909,7 +909,7 @@ exports.commands = {
 		validate: function (target, room, user, connection, cmd, message) {
 			if (!this.can('roomowner')) return;
 			if (!target && toId(cmd) !== 'validateall') return this.parse('/help ssb validate');
-			let targetUser = SG.ssb[toId(target)];
+			let targetUser = WL.ssb[toId(target)];
 			if (!targetUser && toId(cmd) !== 'validateall') return this.errorReply(target + ' does not have a SSBFFA pokemon yet.');
 			//Start validation.
 			if (toId(cmd) !== 'validateall') {
@@ -924,13 +924,13 @@ exports.commands = {
 					return this.sendReply('Done! This pokemon is valid');
 				}
 			} else {
-				for (let key in SG.ssb) {
-					let valid = validate(this, SG.ssb[key], true);
+				for (let key in WL.ssb) {
+					let valid = validate(this, WL.ssb[key], true);
 					if (!valid) {
-						SG.ssb[key].active = false;
-						if (Users(toId(SG.ssb[key].name))) Users(toId(SG.ssb[key].name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+						WL.ssb[key].active = false;
+						if (Users(toId(WL.ssb[key].name))) Users(toId(WL.ssb[key].name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
 						writeSSB();
-						this.errorReply(SG.ssb[key].name + '\'s pokemon was invalid. Invalid parts have been reset and this pokemon was deactivated.');
+						this.errorReply(WL.ssb[key].name + '\'s pokemon was invalid. Invalid parts have been reset and this pokemon was deactivated.');
 					}
 				}
 				return this.sendReply('All SSBFFA pokemon have been validated.');

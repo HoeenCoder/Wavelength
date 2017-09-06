@@ -6,7 +6,7 @@ exports.commands = {
 		if (!this.can('roomowner')) return false;
 		if (!this.canTalk()) return this.errorReply("You cannot do this while unable to speak.");
 		return this.sendReplyBox(
-			'<b><u><font color="#008ae6">SpacialGaze\'s Leader Commands:</u></b></font><br /><br />' +
+			'<b><u><font color="#008ae6">Wavelength\'s Leader Commands:</u></b></font><br /><br />' +
 			'<font size = 1><b>/lockip [IP]</b> - locks a particular IP address from the server. Exisiting users on the IP will not be locked. <br />' +
 			'<b>/banip [IP] OR /unbanip</b> - bans a particular IP address from the server. Exisiting users on the IP will not be banned. <br />' +
 			'<b>/globalvoice [username] OR /globaldevoice</b> - promotes/demotes a user to or from Global Voice <br />' +
@@ -53,8 +53,8 @@ exports.commands = {
 			'<b>/takecurrency [user], [amount]</b> - removes a special amount of Stardust from a user (needs a reason) <br />' +
 			'<b>/moneylog [number]</b> - to view the last x lines <br />' +
 			'<b>/moneylog [text]</b> - to search for text <br />' +
-			'<b>/pmall [message]</b> - sends a pm to all users connected to SG <br />' +
-			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to SG <br />' +
+			'<b>/pmall [message]</b> - sends a pm to all users connected to Wavelength <br />' +
+			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to Wavelength <br />' +
 			'<b>/greendeclare [message] or /reddeclare [message]</b> - Anonymously announces a message in a room <br />' +
 			'<b>/roomrequests - Manage room requests, use /help roomrequests for more info. <br />' +
 			'<b>/checkroomrequest [user] - Check a room request <br />' +

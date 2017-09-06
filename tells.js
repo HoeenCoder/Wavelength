@@ -98,7 +98,7 @@ exports.sendTell = function (userid, user) {
 			if (Tells.outbox[ips[ip]] <= 0) delete Tells.outbox[ips[ip]];
 		}
 		let timeStr = Tells.getTellTime(tellsToSend[i].time);
-		buffer += '<div class="chat"><font color="gray">[' + timeStr + ' ago]</font> ' + SG.nameColor(toId(tellsToSend[i].sender), true) + ':</font></b> ' + Chat.escapeHTML(tellsToSend[i].msg.replace(/\|/g, '&#124;')) + '</div>';
+		buffer += '<div class="chat"><font color="gray">[' + timeStr + ' ago]</font> ' + WL.nameColor(toId(tellsToSend[i].sender), true) + ':</font></b> ' + Chat.escapeHTML(tellsToSend[i].msg.replace(/\|/g, '&#124;')) + '</div>';
 	}
 	user.send(buffer);
 	delete Tells.inbox[userid];

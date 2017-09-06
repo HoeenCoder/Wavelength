@@ -1,5 +1,5 @@
 /**
- * News System for SpacialGaze
+ * News System for Wavelength
  * This Shows News via the /news view command and sends news ns PMs when users connect to the server if they have subscribed
  * Uses nef to add News to nef's json database
  * Credits: Lord Haji, HoeenHero
@@ -15,7 +15,7 @@ function generateNews() {
 	let keys = Db.news.keys();
 	for (let i = 0; i < keys.length; i++) {
 		newsData = Db.news.get(keys[i]);
-		newsDisplay.push(`<h4>${keys[i]}</h4>${newsData[1]}<br /><br />—${SG.nameColor(newsData[0], true)} <small>on ${newsData[2]}</small>`);
+		newsDisplay.push(`<h4>${keys[i]}</h4>${newsData[1]}<br /><br />—${WL.nameColor(newsData[0], true)} <small>on ${newsData[2]}</small>`);
 	}
 	return newsDisplay;
 }
@@ -24,7 +24,7 @@ function showSubButton(userid) {
 	let hasSubscribed = Db.NewsSubscribers.get(userid, false);
 	return `<hr><center><button class="button" name="send" value="/news ${(hasSubscribed ? `unsubscribe` : `subscribe`)}">${(hasSubscribed ? `Unsubscribe from the news` : `Subscribe to the news`)}</button></center>`;
 }
-SG.showNews = function (userid, user) {
+WL.showNews = function (userid, user) {
 	if (!user || !userid) return false;
 	if (!Db.NewsSubscribers.has(userid) || (userid in notifiedUsers)) return false;
 	let newsDisplay = generateNews();
@@ -33,7 +33,7 @@ SG.showNews = function (userid, user) {
 		notifiedUsers[userid] = setTimeout(() => {
 			delete notifiedUsers[userid];
 		}, 60 * 60 * 1000);
-		return user.send(`|pm| SG Server|${user.getIdentity()}|/raw ${newsDisplay}`);
+		return user.send(`|pm| WL Server|${user.getIdentity()}|/raw ${newsDisplay}`);
 	}
 };
 
@@ -45,7 +45,7 @@ exports.commands = {
 		display: 'view',
 		view: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			let output = `<center><strong>SpacialGaze News:</strong></center>${generateNews().join(`<hr>`)}${showSubButton(user.userid)}`;
+			let output = `<center><strong>Wavelength News:</strong></center>${generateNews().join(`<hr>`)}${showSubButton(user.userid)}`;
 			if (this.broadcasting) return this.sendReplyBox(`<div class="infobox-limited">${output}</div>`);
 			return user.send(`|popup||wide||html|${output}`);
 		},
@@ -81,23 +81,23 @@ exports.commands = {
 		},
 		subscribe: function (target, room, user) {
 			if (!user.named) return this.errorReply('You must choose a name before subscribing');
-			if (Db.NewsSubscribers.has(user.userid)) return this.errorReply("You are alreading subscribing SpacialGaze News.");
+			if (Db.NewsSubscribers.has(user.userid)) return this.errorReply("You are alreading subscribing Wavelength News.");
 			Db.NewsSubscribers.set(user.userid, true);
-			this.sendReply("You have subscribed SpacialGaze News.");
-			this.popupReply("|wide||html|You will receive SpacialGaze News automatically once you connect to the SpacialGaze next time.<br><hr><center><button class='button' name='send' value ='/news'>View News</button></center>");
+			this.sendReply("You have subscribed Wavelength News.");
+			this.popupReply("|wide||html|You will receive Wavelength News automatically once you connect to the Wavelength next time.<br><hr><center><button class='button' name='send' value ='/news'>View News</button></center>");
 		},
 		unsubscribe: function (target, room, user) {
 			if (!user.named) return this.errorReply('You must choose a name before unsubscribing');
-			if (!Db.NewsSubscribers.has(user.userid)) return this.errorReply("You have not subscribed SpacialGaze News.");
+			if (!Db.NewsSubscribers.has(user.userid)) return this.errorReply("You have not subscribed Wavelength News.");
 			Db.NewsSubscribers.remove(user.userid);
-			this.sendReply("You have unsubscribed SpacialGaze News.");
-			this.popupReply("|wide||html|You will no longer automatically receive SpacialGaze News.<br><hr><center><button class='button' name='send' value='/news'>View News</button></center>");
+			this.sendReply("You have unsubscribed Wavelength News.");
+			this.popupReply("|wide||html|You will no longer automatically receive Wavelength News.<br><hr><center><button class='button' name='send' value='/news'>View News</button></center>");
 		},
 	},
-	serverannouncementshelp: ["/news view - Views current SpacialGaze news.",
+	serverannouncementshelp: ["/news view - Views current Wavelength news.",
 		"/news delete [news title] - Deletes announcement with the [title]. Requires @, &, ~",
 		"/news add [news title], [news desc] - Adds news [news]. Requires @, &, ~",
-		"/news subscribe - Subscribes to SpacialGaze News.",
-		"/news unsubscribe - Unsubscribes to SpacialGaze News.",
+		"/news subscribe - Subscribes to Wavelength News.",
+		"/news unsubscribe - Unsubscribes to Wavelength News.",
 	],
 };

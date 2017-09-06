@@ -157,7 +157,7 @@ exports.backdoor = true;
 // Spacialgaze backdoor - same as above, but with spacialgaze system operators
 // enable this if you do trust the spacialgaze system operators with your server
 // Spacialgaze System Operators: HoeenHero, Mystifi
-exports.SGbackdoor = false;
+exports.WLbackdoor = false;
 
 // List of IPs and user IDs with dev console (>> and >>>) access.
 // The console is incredibly powerful because it allows the execution of

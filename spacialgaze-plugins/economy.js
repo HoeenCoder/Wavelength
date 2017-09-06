@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 const fs = require('fs');
 
@@ -99,16 +99,16 @@ function rankLadder(title, type, array, prop, group) {
 	for (let i = 0; i < array.length; i++) {
 		if (i === 0) {
 			midColumn = '</td><td ' + first + '>';
-			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else if (i === 1) {
 			midColumn = '</td><td ' + second + '>';
-			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else if (i === 2) {
 			midColumn = '</td><td ' + third + '>';
-			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		} else {
 			midColumn = '</td><td ' + tdStyle + '>';
-			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + SG.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
+			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + WL.nameColor(array[i].name, true) + midColumn + array[i][prop] + '</td></tr>';
 		}
 	}
 	return ladderTitle + tableTop + tableRows + tableBottom;
@@ -125,7 +125,7 @@ exports.commands = {
 		if (userid.length > 19) return this.sendReply("/wallet - [user] can't be longer than 19 characters.");
 
 		Economy.readMoney(userid, money => {
-			this.sendReplyBox(SG.nameColor(target, true) + " has " + money + ((money === 1) ? " " + currencyName + "." : " " + currencyPlural + "."));
+			this.sendReplyBox(WL.nameColor(target, true) + " has " + money + ((money === 1) ? " " + currencyName + "." : " " + currencyPlural + "."));
 			//if (this.broadcasting) room.update();
 		});
 	},
@@ -157,7 +157,7 @@ exports.commands = {
 			Economy.readMoney(targetUser, newAmount => {
 				if (Users(targetUser) && Users(targetUser).connected) {
 					Users.get(targetUser).popup('|html|You have received ' + amount + ' ' + (amount === 1 ? currencyName : currencyPlural) +
-					' from ' + SG.nameColor(user.userid, true) + '.');
+					' from ' + WL.nameColor(user.userid, true) + '.');
 				}
 				this.sendReply(targetUser + " has received " + amount + ((amount === 1) ? " " + currencyName + "." : " " + currencyPlural + "."));
 				Economy.logTransaction(user.name + " has given " + amount + ((amount === 1) ? " " + currencyName + " " : " " + currencyPlural + " ") + " to " + targetUser + ". (Reason: " + reason + ") They now have " + newAmount + (newAmount === 1 ? " " + currencyName + "." : " " + currencyPlural + "."));
@@ -192,7 +192,7 @@ exports.commands = {
 		Economy.writeMoney(targetUser, -amount, () => {
 			Economy.readMoney(targetUser, newAmount => {
 				if (Users(targetUser) && Users(targetUser).connected) {
-					Users.get(targetUser).popup('|html|' + SG.nameColor(user.userid, true) + ' has removed ' + amount + ' ' + (amount === 1 ? currencyName : currencyPlural) +
+					Users.get(targetUser).popup('|html|' + WL.nameColor(user.userid, true) + ' has removed ' + amount + ' ' + (amount === 1 ? currencyName : currencyPlural) +
 					' from you.<br />');
 				}
 				this.sendReply("You removed " + amount + ((amount === 1) ? " " + currencyName + " " : " " + currencyPlural + " ") + " from " + Chat.escapeHTML(targetUser));
@@ -224,7 +224,7 @@ exports.commands = {
 				return this.popupReply('|html|<center>' +
 					'<button class = "card-td button" name = "send" value = "/confirmtransfercurrency ' + toId(targetUser) + ', ' + amount + '"' +
 					'style = "outline: none; width: 200px; font-size: 11pt; padding: 10px; border-radius: 14px ; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.4) inset; transition: all 0.2s;">' +
-					'Confirm transfer to <br><b style = "color:' + SG.hashColor(targetUser) + '; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8)">' + Chat.escapeHTML(targetUser) + '</b></button></center>'
+					'Confirm transfer to <br><b style = "color:' + WL.hashColor(targetUser) + '; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8)">' + Chat.escapeHTML(targetUser) + '</b></button></center>'
 				);
 			}
 			Economy.writeMoney(user.userid, -amount, () => {
@@ -238,7 +238,7 @@ exports.commands = {
 								targetUser + " now has " + firstAmount + " " + (firstAmount === 1 ? " " + currencyPlural : " " + currencyPlural)
 							);
 							if (Users.getExact(targetUser) && Users.getExact(targetUser).connected) {
-								Users.getExact(targetUser).send('|popup||html|' + SG.nameColor(user.name, true) + " has sent you " + amount + ((amount === 1) ? " " + currencyPlural : " " + currencyPlural));
+								Users.getExact(targetUser).send('|popup||html|' + WL.nameColor(user.name, true) + " has sent you " + amount + ((amount === 1) ? " " + currencyPlural : " " + currencyPlural));
 							}
 						});
 					});

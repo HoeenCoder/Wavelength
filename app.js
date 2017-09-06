@@ -88,7 +88,7 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
-global.SG = {};
+global.WL = {};
 
 global.Db = require('nef')(require('nef-fs')('config/db'));
 

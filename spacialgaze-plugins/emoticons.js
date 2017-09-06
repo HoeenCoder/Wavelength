@@ -7,9 +7,9 @@ This plugin allows you to use emoticons in both chat rooms (as long as they are 
 const fs = require('fs');
 let emoticons = {'feelsbd': 'http://i.imgur.com/TZvJ1lI.png'};
 let emoteRegex = new RegExp('feelsbd', 'g');
-SG.ignoreEmotes = {};
+WL.ignoreEmotes = {};
 try {
-	SG.ignoreEmotes = JSON.parse(fs.readFileSync('config/ignoreemotes.json', 'utf8'));
+	WL.ignoreEmotes = JSON.parse(fs.readFileSync('config/ignoreemotes.json', 'utf8'));
 } catch (e) {}
 
 function loadEmoticons() {
@@ -35,14 +35,14 @@ function saveEmoticons() {
 
 function parseEmoticons(message) {
 	if (emoteRegex.test(message)) {
-		message = SG.parseMessage(message).replace(emoteRegex, function (match) {
+		message = WL.parseMessage(message).replace(emoteRegex, function (match) {
 			return '<img src="' + emoticons[match] + '" title="' + match + '" height="40" width="40">';
 		});
 		return message;
 	}
 	return false;
 }
-SG.parseEmoticons = parseEmoticons;
+WL.parseEmoticons = parseEmoticons;
 
 exports.commands = {
 	blockemote: 'ignoreemotes',
@@ -77,9 +77,9 @@ exports.commands = {
 			emoticons[parts[1]] = parts[2];
 			saveEmoticons();
 			this.sendReply('|raw|The emoticon "' + Chat.escapeHTML(parts[1]) + '" has been added: <img src="' + parts[2] + '">');
-			Rooms('upperstaff').add('|raw|' + SG.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
+			Rooms('upperstaff').add('|raw|' + WL.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
 				'": <img width="40" height="40" src="' + parts[2] + '">').update();
-			SG.messageSeniorStaff('/html ' + SG.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
+			WL.messageSeniorStaff('/html ' + WL.nameColor(user.name, true) + ' has added the emote "' + Chat.escapeHTML(parts[1]) +
 				'": <img width="40" height="40" src="' + parts[2] + '">');
 			break;
 
@@ -117,16 +117,16 @@ exports.commands = {
 			break;
 
 		case 'ignore':
-			if (SG.ignoreEmotes[user.userid]) return this.errorReply("You are already ignoring emoticons.");
-			SG.ignoreEmotes[user.userid] = true;
-			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(SG.ignoreEmotes));
+			if (WL.ignoreEmotes[user.userid]) return this.errorReply("You are already ignoring emoticons.");
+			WL.ignoreEmotes[user.userid] = true;
+			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
 			this.sendReply("You are now ignoring emoticons.");
 			break;
 
 		case 'unignore':
-			if (!SG.ignoreEmotes[user.userid]) return this.errorReply("You aren't ignoring emoticons.");
-			delete SG.ignoreEmotes[user.userid];
-			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(SG.ignoreEmotes));
+			if (!WL.ignoreEmotes[user.userid]) return this.errorReply("You aren't ignoring emoticons.");
+			delete WL.ignoreEmotes[user.userid];
+			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
 			this.sendReply("You are no longer ignoring emoticons.");
 			break;
 
