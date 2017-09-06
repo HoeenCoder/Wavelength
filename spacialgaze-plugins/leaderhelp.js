@@ -53,8 +53,8 @@ exports.commands = {
 			'<b>/takecurrency [user], [amount]</b> - removes a special amount of Stardust from a user (needs a reason) <br />' +
 			'<b>/moneylog [number]</b> - to view the last x lines <br />' +
 			'<b>/moneylog [text]</b> - to search for text <br />' +
-			'<b>/pmall [message]</b> - sends a pm to all users connected to WL <br />' +
-			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to WL <br />' +
+			'<b>/pmall [message]</b> - sends a pm to all users connected to Wavelength <br />' +
+			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to Wavelength <br />' +
 			'<b>/greendeclare [message] or /reddeclare [message]</b> - Anonymously announces a message in a room <br />' +
 			'<b>/roomrequests - Manage room requests, use /help roomrequests for more info. <br />' +
 			'<b>/checkroomrequest [user] - Check a room request <br />' +
