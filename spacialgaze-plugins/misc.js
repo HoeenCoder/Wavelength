@@ -484,7 +484,7 @@ exports.commands = {
 		if (!target) return this.sendReply("/rmall [message] - Sends a pm to all users in the room.");
 		target = target.replace(/<(?:.|\n)*?>/gm, '');
 
-		let pmName = ' WL Server';
+		let pmName = ' Wavelength Server';
 
 		for (let i in room.users) {
 			let message = '|pm|' + pmName + '|' + room.users[i].getIdentity() + '| ' + target;
