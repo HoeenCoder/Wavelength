@@ -184,7 +184,7 @@ function MD5(e) {
 let colorCache = {};
 
 // hashColor function
-SG.hashColor = function (name) {
+WL.hashColor = function (name) {
 	name = toId(name);
 	if (customColors[name]) return customColors[name];
 	if (colorCache[name]) return colorCache[name];
