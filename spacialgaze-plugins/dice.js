@@ -73,7 +73,7 @@ class Dice {
 					user.sendTo(this.room, 'You have been removed from this game of dice, as you do not have enough money.');
 					other.sendTo(this.room, user.name + ' has been removed from this game of dice, as they do not have enough money. Wait for another user to join.');
 					this.players.splice(this.players.indexOf(user), 1);
-					this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + this.players.map(user => SG.nameColor(user.name)) + ' has joined the game!</center>').update();
+					this.room.add('|uhtmlchange|' + this.room.diceCount + '|' + this.startMessage + '<center>' + this.players.map(user => WL.nameColor(user.name)) + ' has joined the game!</center>').update();
 					return;
 				}
 				let players = this.players.map(user => WL.nameColor(user.name)).join(' and ');
