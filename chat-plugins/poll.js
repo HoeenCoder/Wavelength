@@ -495,7 +495,7 @@ exports.commands = {
 		"/poll display [poll id number] - Displays the poll. The poll id number is optional for this command and displays only the poll with the matching id number.",
 		"/poll end [poll id number] - Ends a poll and displays the results. The poll id number is optional for this command and ends only the poll with the matching id number. and Requires: % @ * # & ~",
 	],
-};
+}
 process.nextTick(() => {
 	Chat.multiLinePattern.register('/poll (new|create|htmlcreate) ');
 });
