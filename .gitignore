@@ -4,10 +4,10 @@
 /node_modules
 /eslint-cache
 /chat-plugins/private.js
-/spacialgaze-plugins/filter.js
-/spacialgaze-plugins/shop.js
-/spacialgaze-plugins/leagues.js
-/spacialgaze-plugins/auth2.js
+/wavelength-plugins/filter.js
+/wavelength-plugins/shop.js
+/wavelength-plugins/leagues.js
+/wavelength-plugins/auth2.js
 npm-debug.log
 .eslintcache
 

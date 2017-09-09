@@ -1031,7 +1031,7 @@ Chat.loadPlugins = function () {
 
 	// info always goes first so other plugins can shadow it
 	Object.assign(commands, require('./chat-plugins/info').commands);
-	Object.assign(commands, require('./spacialgaze-plugins/WL.js').commands);
+	Object.assign(commands, require('./wavelength-plugins/WL.js').commands);
 
 	for (let file of FS('chat-plugins/').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
