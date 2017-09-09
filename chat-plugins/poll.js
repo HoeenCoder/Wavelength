@@ -10,8 +10,7 @@ class Poll {
 	constructor(room, questionData, options) {
 		if (room.pollNumber) {
 			room.pollNumber++;
-		}
-		else {
+		} else {
 			room.pollNumber = 1;
 		}
 		this.room = room;
@@ -26,9 +25,9 @@ class Poll {
 			timeout: null,
 			timeoutMins: 0,
 			options: new Map(),
-		}, ];
+		}];
 		for (let i = 0; i < options.length; i++) {
-			this.pollArray[0].options.set(i + 1, { name: options[i], votes: 0 });
+			this.pollArray[0].options.set(i + 1, {name: options[i], votes: 0});
 		}
 	}
 
@@ -48,7 +47,7 @@ class Poll {
 	blankvote(user, number) {
 		let ip = user.latestIp;
 		let userid = user.userid;
-		
+
 		if (!(userid in this.pollArray[number].voters) || !(ip in this.pollArray[number].voterIps)) {
 			this.pollArray[number].voters[userid] = 0;
 			this.pollArray[number].voterIps[ip] = 0;
@@ -57,8 +56,6 @@ class Poll {
 	}
 
 	generateVotes(num) {
-		let pollArray = [];
-
 		let output = '<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Poll-' + this.pollArray[num].pollNum + '</span> <strong style="font-size:11pt">' + this.getQuestionMarkup(num) + '</strong></summary>';
 		this.pollArray[num].options.forEach((option, number) => {
 			output += '<div style="margin-top: 5px"><button class="button" style="text-align: left" value="/poll vote ' + number + ',' + this.pollArray[num].pollNum + '" name="send" title="Vote for ' + number + '. ' + Chat.escapeHTML(option.name) + '">' + number + '. <strong>' + this.getOptionMarkup(option, num) + '</strong></button></div>';
@@ -109,8 +106,7 @@ class Poll {
 			let user = this.room.users[i];
 			if (user.userid in this.pollArray[num].voters) {
 				user.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[num].pollNum + '|' + results[this.pollArray[num].voters[user.userid]]);
-			}
-			else if (user.latestIp in this.pollArray[num].voterIps) {
+			} else if (user.latestIp in this.pollArray[num].voterIps) {
 				user.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[num].pollNum + '|' + results[this.pollArray[num].voterIps[user.latestIp]]);
 			}
 		}
@@ -120,11 +116,9 @@ class Poll {
 		if (!connection) connection = user;
 		if (user.userid in this.pollArray[num].voters) {
 			connection.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[num].pollNum + '|' + this.generateResults(false, this.pollArray[num].voters[user.userid], num));
-		}
-		else if (user.latestIp in this.pollArray[num].voterIps) {
+		} else if (user.latestIp in this.pollArray[num].voterIps) {
 			connection.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[num].pollNum + '|' + this.generateResults(false, this.pollArray[num].voterIps[user.latestIp], num));
-		}
-		else {
+		} else {
 			connection.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[num].pollNum + '|' + this.generateVotes(num));
 		}
 	}
@@ -144,18 +138,16 @@ class Poll {
 			let results = [];
 
 			for (let i = 0; i <= this.pollArray[u].options.size; i++) {
-					results.push(this.generateResults(false, i, u));
+				results.push(this.generateResults(false, i, u));
 			}
 
 			for (let i in this.room.users) {
 				let thisUser = this.room.users[i];
 				if (thisUser.userid in this.pollArray[u].voters) {
 					thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + results[this.pollArray[u].voters[thisUser.userid]]);
-				}
-				else if (thisUser.latestIp in this.pollArray[u].voterIps) {
+				} else if (thisUser.latestIp in this.pollArray[u].voterIps) {
 					thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + results[this.pollArray[u].voterIps[thisUser.latestIp]]);
-				}
-				else {
+				} else {
 					thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + votes);
 				}
 			}
@@ -167,21 +159,19 @@ class Poll {
 		for (let u in this.pollArray) {
 			if (user.userid in this.pollArray[u].voters) {
 				connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + this.generateResults(false, this.pollArray[u].voters[user.userid], u));
-			}
-			else if (user.latestIp in this.pollArray[u].voterIps) {
+			} else if (user.latestIp in this.pollArray[u].voterIps) {
 				connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + this.generateResults(false, this.pollArray[u].voterIps[user.latestIp], u));
-			}
-			else {
+			} else {
 				connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[u].pollNum + '|' + this.generateVotes(u));
 			}
 		}
 	}
-	
+
 	displaySpecific(num) {
 		let votes = this.generateVotes(num);
 
 		let results = [];
-		
+
 		for (let i = 0; i <= this.pollArray[num].options.size; i++) {
 			results.push(this.generateResults(false, i, num));
 		}
@@ -190,11 +180,9 @@ class Poll {
 			let thisUser = this.room.users[i];
 			if (thisUser.userid in this.pollArray[num].voters) {
 				thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + results[this.pollArray[num].voters[thisUser.userid]]);
-			}
-			else if (thisUser.latestIp in this.pollArray[num].voterIps) {
+			} else if (thisUser.latestIp in this.pollArray[num].voterIps) {
 				thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + results[this.pollArray[num].voterIps[thisUser.latestIp]]);
-			}
-			else {
+			} else {
 				thisUser.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + votes);
 			}
 		}
@@ -204,11 +192,9 @@ class Poll {
 		if (!connection) connection = user;
 		if (user.userid in this.pollArray[num].voters) {
 			connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + this.generateResults(false, this.pollArray[num].voters[user.userid]));
-		}
-		else if (user.latestIp in this.pollArray[num].voterIps) {
+		} else if (user.latestIp in this.pollArray[num].voterIps) {
 			connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + this.generateResults(false, this.pollArray[num].voterIps[user.latestIp]));
-		}
-		else {
+		} else {
 			connection.sendTo(this.room, '|uhtml|poll' + this.pollArray[num].pollNum + '|' + this.generateVotes(num));
 		}
 	}
@@ -235,7 +221,7 @@ exports.commands = {
 	poll: {
 		htmlcreate: 'new',
 		create: 'new',
-		new: function(target, room, user, connection, cmd, message) {
+		new: function (target, room, user, connection, cmd, message) {
 			if (!target) return this.parse('/help poll new');
 			if (target.length > 1024) return this.errorReply("Poll too long.");
 
@@ -243,14 +229,11 @@ exports.commands = {
 			let separator = '';
 			if (target.includes('\n')) {
 				separator = '\n';
-			}
-			else if (target.includes('|')) {
+			} else if (target.includes('|')) {
 				separator = '|';
-			}
-			else if (target.includes(',')) {
+			} else if (target.includes(',')) {
 				separator = ',';
-			}
-			else {
+			} else {
 				return this.errorReply("Not enough arguments for /poll new.");
 			}
 
@@ -269,9 +252,9 @@ exports.commands = {
 			if (options.length > 8) {
 				return this.errorReply("Too many options for poll (maximum is 8).");
 			}
-			if (room.poll && room.pollNumber) room.pollNumber++
-				if (room.poll && room.poll.pollArray[0] && room.poll.pollArray[1] && room.poll.pollArray[2] && room.poll.pollArray[3] && !room.poll.pollArray[4]) {
-					room.poll.pollArray[4] = {
+			if (room.poll && room.pollNumber) room.pollNumber++;
+			if (room.poll && room.poll.pollArray[0] && room.poll.pollArray[1] && room.poll.pollArray[2] && room.poll.pollArray[3] && !room.poll.pollArray[4]) {
+				room.poll.pollArray[4] = {
 					room: room,
 					pollNum: room.pollNumber,
 					question: params[0],
@@ -282,14 +265,14 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				}
+				};
 				for (let i = 0; i < options.length; i++) {
-					room.poll.pollArray[4].options.set(i + 1, { name: options[i], votes: 0 });
+					room.poll.pollArray[4].options.set(i + 1, {name: options[i], votes: 0});
 				}
 				room.poll.displaySpecific(4);
 			}
 			if (room.poll && room.poll.pollArray[0] && room.poll.pollArray[1] && room.poll.pollArray[2] && !room.poll.pollArray[3]) {
-					room.poll.pollArray[3] = {
+				room.poll.pollArray[3] = {
 					room: room,
 					pollNum: room.pollNumber,
 					question: params[0],
@@ -300,15 +283,15 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				}
+				};
 				for (let i = 0; i < options.length; i++) {
-					room.poll.pollArray[3].options.set(i + 1, { name: options[i], votes: 0 });
+					room.poll.pollArray[3].options.set(i + 1, {name: options[i], votes: 0});
 				}
 				room.poll.displaySpecific(3);
 			}
-			
+
 			if (room.poll && room.poll.pollArray[0] && room.poll.pollArray[1] && !room.poll.pollArray[2]) {
-					room.poll.pollArray[2] = {
+				room.poll.pollArray[2] = {
 					room: room,
 					pollNum: room.pollNumber,
 					question: params[0],
@@ -319,15 +302,15 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				}
+				};
 				for (let i = 0; i < options.length; i++) {
-					room.poll.pollArray[2].options.set(i + 1, { name: options[i], votes: 0 });
+					room.poll.pollArray[2].options.set(i + 1, {name: options[i], votes: 0});
 				}
 				room.poll.displaySpecific(2);
 			}
-				
+
 			if (room.poll && room.poll.pollArray[0] && !room.poll.pollArray[1]) {
-					room.poll.pollArray[1] = {
+				room.poll.pollArray[1] = {
 					room: room,
 					pollNum: room.pollNumber,
 					question: params[0],
@@ -338,15 +321,15 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				}
+				};
 				for (let i = 0; i < options.length; i++) {
-					room.poll.pollArray[1].options.set(i + 1, { name: options[i], votes: 0 });
+					room.poll.pollArray[1].options.set(i + 1, {name: options[i], votes: 0});
 				}
 				room.poll.displaySpecific(1);
 			}
-			
+
 			if (room.poll && !room.poll.pollArray[0]) {
-					room.poll.pollArray[0] = {
+				room.poll.pollArray[0] = {
 					room: room,
 					pollNum: room.pollNumber,
 					question: params[0],
@@ -357,14 +340,14 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				}
+				};
 				for (let i = 0; i < options.length; i++) {
-					if (room.poll && room.poll.pollArray[0] && Object.keys(room.poll.pollArray[0].options.entries().next()) && (!room.poll.pollArray[0].options.entries().next().value || room.poll.pollArray[0].options.entries().next().value.length < 8)) room.poll.pollArray[0].options.set(i + 1, { name: options[i], votes: 0 });
+					if (room.poll && room.poll.pollArray[0] && Object.keys(room.poll.pollArray[0].options.entries().next()) && (!room.poll.pollArray[0].options.entries().next().value || room.poll.pollArray[0].options.entries().next().value.length < 8)) room.poll.pollArray[0].options.set(i + 1, {name: options[i], votes: 0});
 				}
 				room.poll.displaySpecific(0);
 			}
-			if (!room.poll) { 
-				room.poll = new Poll(room, { source: params[0], supportHTML: supportHTML }, options);
+			if (!room.poll) {
+				room.poll = new Poll(room, {source: params[0], supportHTML: supportHTML}, options);
 				room.poll.display();
 			}
 
@@ -373,7 +356,7 @@ exports.commands = {
 		},
 		newhelp: ["/poll create [question], [option1], [option2], [...] - Creates a poll. Allows up to 5 polls at once. Requires: % @ * # & ~"],
 
-		vote: function(target, room, user) {
+		vote: function (target, room, user) {
 			if (!room.poll) return this.errorReply("There is no poll running in this room.");
 			let targets = target.split(',');
 			if (!targets[1]) return this.parse('/help poll vote');
@@ -394,7 +377,7 @@ exports.commands = {
 		},
 		votehelp: ["/poll vote [option number], [poll number] - Votes for option [number] on poll [poll number]."],
 
-		timer: function(target, room, user) {
+		timer: function (target, room, user) {
 			if (!room.poll) return this.errorReply("There is no poll running in this room.");
 			let targets = target.split(",");
 			for (let u = 0; u < targets.length; u++) targets[u] = targets[u].trim();
@@ -419,20 +402,18 @@ exports.commands = {
 				}, (timeout * 60000));
 				room.add("The poll timer was turned on: the poll will end in " + timeout + " minute(s).");
 				return this.privateModCommand("(The poll timer for poll " + room.poll.pollArray[num].pollNum + " was set to " + timeout + " minute(s) by " + user.name + ".)");
-			}
-			else {
+			} else {
 				if (!this.runBroadcast()) return;
 				if (room.poll.pollArray[num].timeout) {
 					return this.sendReply("The poll timer is on and will end in " + room.poll.pollArray[num].timeoutMins + " minute(s).");
-				}
-				else {
+				} else {
 					return this.sendReply("The poll timer is off.");
 				}
 			}
 		},
 		timerhelp: ["/poll timer [minutes], [poll id number] - Sets the poll to automatically end after [minutes] minutes. Requires: % @ * # & ~", "/poll timer clear - Clears the poll's timer. Requires: % @ * # & ~"],
 
-		results: function(target, room, user) {
+		results: function (target, room, user) {
 			if (!room.poll) return this.errorReply("There is no poll running in this room.");
 			let num = room.poll.obtain(parseInt(target));
 			if (!num) return this.errorReply("Not a poll number!");
@@ -442,7 +423,7 @@ exports.commands = {
 
 		close: 'end',
 		stop: 'end',
-		end: function(target, room, user) {
+		end: function (target, room, user) {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return;
 			if (!room.poll) return this.errorReply("There is no poll running in this room.");
@@ -458,15 +439,15 @@ exports.commands = {
 		endhelp: ["/poll end [poll id number] - Ends a poll and displays the results. Requires: % @ * # & ~"],
 
 		show: 'display',
-		display: function(target, room, user, connection) {
+		display: function (target, room, user, connection) {
 			if (!room.poll) return this.errorReply("There is no poll running in this room.");
 			if (!this.runBroadcast()) return;
 			room.update();
-			let num =  room.poll.obtain(parseInt(target));
+			let num = room.poll.obtain(parseInt(target));
 			if (num) {
 				if (this.broadcasting) {
 					room.poll.displayTo(user, connection);
-				} else { 
+				} else {
 					room.poll.displaySpecificTo(user, connection, num);
 				}
 			} else {
@@ -479,10 +460,10 @@ exports.commands = {
 		},
 		displayhelp: ["/poll display [poll id number] - Displays the poll. Id number is optional and only displays the poll with the id number."],
 
-		'': function(target, room, user) {
+		'': function (target, room, user) {
 			this.parse('/help poll');
 		},
-		
+	},
 
 	pollhelp: [
 		"/poll allows rooms to run their own polls. These polls are limited to one poll at a time per room.",
@@ -493,7 +474,7 @@ exports.commands = {
 		"/poll timer [minutes], [poll id number] - Sets the poll to automatically end after [minutes]. Requires: % @ * # & ~",
 		"/poll results, [poll id number] - Shows the results of the poll without voting. NOTE: you can't go back and vote after using this.",
 		"/poll display [poll id number] - Displays the poll. The poll id number is optional for this command and displays only the poll with the matching id number.",
-		"/poll end [poll id number] - Ends a poll and displays the results. The poll id number is optional for this command and ends only the poll with the matching id number. and Requires: % @ * # & ~"
+		"/poll end [poll id number] - Ends a poll and displays the results. The poll id number is optional for this command and ends only the poll with the matching id number. and Requires: % @ * # & ~",
 	],
 };
 process.nextTick(() => {
