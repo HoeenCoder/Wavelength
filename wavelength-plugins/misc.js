@@ -377,7 +377,7 @@ exports.commands = {
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'declare':
-			msg += '/html <center>' + SG.nameColor(user.name, true) + ' has redeemed a global declare token.<br/> Message: ' + target[1] + "<br/>";
+			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a global declare token.<br/> Message: ' + target[1] + "<br/>";
 			msg += '<button class="button" name="send" value="/globaldeclare ' + target[1] + '">Globally Declare the Message</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
