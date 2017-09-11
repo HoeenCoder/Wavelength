@@ -1,7 +1,7 @@
 /*
  * Poll chat plugin
  * By bumbadadabum and Zarel.
- * Redone by Bladicon and WGC for Collapsible Multi-Polls
+ * Redone by Bladicon and WGC for Collapsing Multi-Polls
  */
 
 'use strict';
