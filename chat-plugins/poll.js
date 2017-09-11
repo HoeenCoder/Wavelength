@@ -400,14 +400,14 @@ exports.commands = {
 					room.poll.end(num);
 					delete room.poll.pollArray[num];
 				}, (timeout * 60000));
-				room.add("The poll timer was turned on: the poll " + room.poll.pollArray[num].pollNum + " will end in " + timeout + " minute(s).");
+				room.add("The poll timer was turned on: the poll will end in " + timeout + " minute(s).");
 				return this.privateModCommand("(The poll timer for poll " + room.poll.pollArray[num].pollNum + " was set to " + timeout + " minute(s) by " + user.name + ".)");
 			} else {
 				if (!this.runBroadcast()) return;
 				if (room.poll.pollArray[num].timeout) {
-					return this.sendReply("The poll timer for " + room.poll.pollArray[num].pollNum + " is on and will end in " + room.poll.pollArray[num].timeoutMins + " minute(s).");
+					return this.sendReply("The poll timer is on and will end in " + room.poll.pollArray[num].timeoutMins + " minute(s).");
 				} else {
-					return this.sendReply("The poll timer for " + room.poll.pollArray[num].pollNum + " is off.");
+					return this.sendReply("The poll timer is off.");
 				}
 			}
 		},
@@ -466,10 +466,10 @@ exports.commands = {
 	},
 
 	pollhelp: [
-		"/poll allows rooms to run their own polls. These polls are limited to five polls at a time per room.",
+		"/poll allows rooms to run their own polls. These polls are limited to one poll at a time per room.",
 		"Accepts the following commands:",
-		"/poll create [question], [option1], [option2], [...] - Allows up to 5 polls at once per room. Creates a poll. Requires: % @ * # & ~",
-		"/poll htmlcreate [question], [option1], [option2], [...] - Allows up to 5 polls at once per room. Creates a poll, with HTML allowed in the question and options. Requires: # & ~",
+		"/poll create [question], [option1], [option2], [...] - Allows up to 5 polls at once. Creates a poll. Requires: % @ * # & ~",
+		"/poll htmlcreate [question], [option1], [option2], [...] - Allows up to 5 polls at once. Creates a poll, with HTML allowed in the question and options. Requires: # & ~",
 		"/poll vote [number], [poll id number] - Votes for option [number] in the poll [poll id number].",
 		"/poll timer [minutes], [poll id number] - Sets the poll to automatically end after [minutes]. Requires: % @ * # & ~",
 		"/poll results, [poll id number] - Shows the results of the poll without voting. NOTE: you can't go back and vote after using this.",
