@@ -874,7 +874,8 @@ exports.commands = {
 		if (room.dice || room.game) this.errorReply('There is already a game occurring in ' + room.id);
 		if (game == 1) this.parse ('/dice start 1');
 		else this.parse ('/uno create');
-	}
+	},
+	
     dice: {
 	    start: 'game',
 	    game: function (target, room, user) {
