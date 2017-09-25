@@ -13,17 +13,18 @@
   * 	 Drafts by: Execute      *
   *     Lottery by: panpawn      */
  
- 'use strict';
+'use strict';
 
 const moment = require('moment');
 const fs = require('fs');
-let path = require('path');
+const path = require('path');
+const INACTIVE_END_TIME = 1 * 60 * 1000; // 1 minute
+const TAX = 0;
 let greencss = 'background:#ccffcc;padding:10px;color:#006600;border:1px solid #006600; border-radius:6px;text-align:center;';
 let redcss = 'background:##ffb3b3;padding:10px;color:#ff3333;border:1px solid #ff3333;border-radius:6px;text-align:center;';
 let drafts = {};
 WL.lottery = {};
-const INACTIVE_END_TIME = 1 * 60 * 1000; // 1 minute
-const TAX = 0;
+
 
 function diceImg(num) {
 	switch (num) {
@@ -868,14 +869,14 @@ function saveLottery() {
 
 exports.commands = {
 	randomgame: function (target, room, user) {
-		let game = Math.floor(Math.random() * 2); //This will change as more games are added.
+		let game = Math.floor(Math.random() * 3); //This will change as more games are added.
 		if (room.id === 'lobby') return this.errorReply("Most games are not allowed in lobby. Try <<casino>>");
 		if (!user.can('broadcast', null, room) && room.id !== 'casino') return this.errorReply("You must be ranked + or higher in this room to start a game of dice outside the Casino.");
 		if (room.dice || room.game) this.errorReply('There is already a game occurring in ' + room.id);
-		if (game == 1) this.parse ('/dice start 1');
+		if (game === 1) this.parse('/dice start 1');
+		if (game === 2) this.parse('/lottery create, 1');
 		else this.parse ('/uno create');
 	},
-	
     dice: {
 	    start: 'game',
 	    game: function (target, room, user) {
@@ -1134,7 +1135,7 @@ exports.commands = {
 			output += `<div class="infobox" style="overflow-x: auto; white-space: nowrap; width: 100%"><img src=${cardImages['Black']['Wild'][0]} />&nbsp;&nbsp;<img src=${cardImages['Black']['Wild'][1]} />&nbsp;&nbsp;<img src=${cardImages['Black']['+4'][0]} />&nbsp;&nbsp;<img src=${cardImages['Black']['+4'][1]} />&nbsp;&nbsp;</div><br/>`;
 			output += '</div>';
 			this.sendReply('|raw|' + output);
-			
+		},
 		unohelp: [
 	    	"/uno create [player cap] - creates a new UNO game with an optional player cap (default player cap at 6). Use the command `createpublic` to force a public game or `createprivate` to force a private game. Requires: % @ * # & ~",
 	    	"/uno timer [amount] - sets an auto disqualification timer for `amount` seconds. Requires: % @ * # & ~",
@@ -1147,7 +1148,8 @@ exports.commands = {
 	    	"/uno suppress [on | off] - Toggles suppression of game messages.",
 	    	"/uno showcase - Displays all of the Pokémon Plays UNO! Cards.",
     	    ],
-		},
+	},
+		
 	draft: function (target, room, user) {
 		if (!target) return this.parse('/draft help');
 		let parts = target.split(',');
@@ -1292,10 +1294,7 @@ exports.commands = {
 				drafts[room].Nom(pkmn, user.userid, this);
 			}
 		},
-	},
 	
-	loto: 'lottery',
-	lotto: 'lottery',
 	lottery: function (target, room, user) {
 		let parts = target.split(',');
 		for (let u in parts) parts[u] = parts[u].trim();
