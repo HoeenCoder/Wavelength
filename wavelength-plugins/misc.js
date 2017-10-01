@@ -20,6 +20,7 @@ try {
 
 function getMonData(target) {
 	let returnData = null;
+	if (!monData) return  'Data not found';
 	monData.forEach(function (data) {
 		if (toId(data.split("\n")[0].split(" - ")[0] || " ") === target) {
 			returnData = data.split("\n").map(function (line) {
@@ -542,4 +543,33 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox("<a href=\"https://discord.gg/cwfAqdN\">The Official Wavelength Discord</a>");
 	},
+	
+	ac: 'autoconfirm',
+	autoconfirm: function (target, room, user) {
+		if (!this.can('lockdown')) return;
+		if (!target) return this.parse(`/help autoconfirm`);
+		let tarUser = Users(target);
+		if (!tarUser) return this.errorReply(`User "${target} not found.`);
+		if (tarUser.locked) return this.errorReply(`${tarUser.name} is locked and cannot be granted autoconfirmed status.`);
+		if (tarUser.autoconfirmed) return this.errorReply(`${tarUser.name} is already autoconfirmed.`);
+		let curType = Db.userType.get(tarUser.userid) || 0;
+		if (curType) {
+			switch (curType) {
+			case 3:
+				this.errorReply(`${tarUser.name} is a sysop and should already be autoconfirmed.`);
+				break;
+			case 4:
+				this.errorReply(`${tarUser.name} is already set as autoconfirmed on this server.`);
+			case 5:
+			case 6:
+				this.errorReply(`${tarUser.name} is ${(curType === 5 ? `permalocked on` : `permabanned from`)} this server and cannot be given autonconfirmed status.`);
+			}
+			return;
+		}
+		Db.userType.set(tarUser.userid, 4);
+		tarUser.autoconfirmed = tarUser.userid;
+		tarUser.popup(`|modal|${user.name} has granted you autoconfirmed status on this server only.`);
+		return this.sendReply(`${tarUser.name} is now autonconfirmed.`);
+	},
+	autoconfirmhelp: ['/autoconfirm user - Grants a user autoconfirmed status on this server only. Requires ~'],
 };

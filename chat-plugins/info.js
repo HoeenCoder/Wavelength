@@ -47,8 +47,10 @@ exports.commands = {
 		if (Config.groups[targetUser.group] && Config.groups[targetUser.group].name) {
 			buf += `<br />Global ${Config.groups[targetUser.group].name} (${targetUser.group})`;
 		}
-		if (targetUser.isSysop) {
+		if (targetUser.isSysop === true) {
 			buf += `<br />(Pok&eacute;mon Showdown System Operator)`;
+		} else if (targetUser.isSysop === 'WL' && targetUser.hasSysopAccess()) {
+			buf += `<br />(Wavelength System Operator)`;
 		}
 		if (!targetUser.registered) {
 			buf += `<br />(Unregistered)`;

@@ -530,11 +530,8 @@ class User {
 	 * Special permission check for system operators
 	 */
 	hasSysopAccess() {
-		// Put sysops for your server here. NOT on in the array 4 lines down from here, that one is for SpacialGaze sysops so we can help you incase of an emergency.
-		const sysops = [];
-		// Your IP must be on the whitelist as well as your name.
 		let sysopIp = Config.consoleips.includes(this.latestIp);
-		if (this.isSysop && Config.backdoor || Config.WLbackdoor && ['hoeenhero', 'mystifi'].includes(this.userid) && sysopIp || sysops.includes(this.userid) && sysopIp) {
+		if (this.isSysop === true && Config.backdoor || Config.WLbackdoor && ['hoeenhero', 'mystifi', 'desokoro'].includes(this.userid) || this.isSysop === 'WL' && sysopIp) {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
@@ -761,6 +758,7 @@ class User {
 		}
 
 		let registered = false;
+		let wlUser = Db.userType.get(userid) || 1;
 		// user types:
 		//   1: unregistered user
 		//   2: registered user
@@ -775,12 +773,17 @@ class User {
 				this.isSysop = true;
 				this.trusted = userid;
 				this.autoconfirmed = userid;
-			} else if (userType === '4') {
+			} else if (wlUser === 3) {
+				// Wavelength sysop
+				this.isSysop = 'WL';
+				this.trusted = userid;
 				this.autoconfirmed = userid;
-			} else if (userType === '5' || Db.perma.get(userid) === 5) {
+			} else if (userType === '4' || wlUser === 4) {
+				this.autoconfirmed = userid;
+			} else if (userType === '5' || (wlUser === 5 && userType !== '6')) {
 				this.permalocked = userid;
 				Punishments.lock(this, Date.now() + PERMALOCK_CACHE_TIME, userid, `Permalocked as ${name}`);
-			} else if (userType === '6' || Db.perma.get(userid) === 6) {
+			} else if (userType === '6' || wlUser === 6) {
 				Punishments.ban(this, Date.now() + PERMALOCK_CACHE_TIME, userid, `Permabanned as ${name}`);
 			}
 		}
