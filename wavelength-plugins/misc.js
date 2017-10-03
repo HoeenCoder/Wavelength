@@ -572,4 +572,15 @@ exports.commands = {
 		return this.sendReply(`${tarUser.name} is now autonconfirmed.`);
 	},
 	autoconfirmhelp: ['/autoconfirm user - Grants a user autoconfirmed status on this server only. Requires ~'],
+	
+	usercodes: function (target, room, user) {
+		if (!this.can('roomowner')) return;
+		let out = `<div style="max-height: 300px; overflow: scroll">`;
+		let keys = Db.userType.keys(), codes = {3: 'Wavelength Sysop', 4: 'Autoconfirmed', 5: 'Permalocked', 6: 'Permabanned'};
+		for (let i = 0; i < keys.length; i++) {
+			out += `<b>${keys[i]}</b>: ${codes[Db.userType.get(keys[i])]}${(i + 1) === keys.length ? `` : `,<br/>`}`;
+		}
+		out += `</div>`;
+		return this.sendReplyBox(out);
+	},
 };
