@@ -145,7 +145,7 @@ class PatternTester {
 	 * @param {string[]} elems
 	 */
 	register(...elems) {
-		for (let elem of elems) {
+		for (const elem of elems) {
 			this.elements.push(elem);
 			if (/^[^ ^$?|()[\]]+ $/.test(elem)) {
 				this.fastElements.add(this.fastNormalize(elem));
@@ -598,10 +598,10 @@ class CommandContext {
 	sendModCommand(data) {
 		this.room.sendModCommand(data);
 	}
-	privateModCommand(data) {
+	privateModCommand(data, logOnlyText) {
 		this.room.sendModCommand(data);
 		this.logEntry(data);
-		this.room.modlog(data);
+		this.room.modlog(data + (logOnlyText || ""));
 	}
 	globalModlog(action, user, text) {
 		let buf = "(" + this.room.id + ") " + action + ": ";
@@ -903,8 +903,7 @@ class CommandContext {
 		let tags = html.toLowerCase().match(/<\/?(div|a|button|b|strong|em|i|u|center|font|marquee|blink|details|summary|code|table|td|tr)\b/g);
 		if (tags) {
 			let stack = [];
-			for (let i = 0; i < tags.length; i++) {
-				let tag = tags[i];
+			for (const tag of tags) {
 				if (tag.charAt(1) === '/') {
 					if (!stack.length) {
 						this.errorReply("Extraneous </" + tag.substr(2) + "> without an opening tag.");
@@ -1033,7 +1032,7 @@ Chat.loadPlugins = function () {
 	Object.assign(commands, require('./chat-plugins/info').commands);
 	Object.assign(commands, require('./wavelength-plugins/WL.js').commands);
 
-	for (let file of FS('chat-plugins/').readdirSync()) {
+	for (const file of FS('chat-plugins/').readdirSync()) {
 		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
 		const plugin = require(`./chat-plugins/${file}`);
 
@@ -1197,9 +1196,9 @@ Chat.parseText = function (str) {
 			continue;
 		}
 
-		for (let f = 0; f < formattingResolvers.length; f++) {
-			let start = formattingResolvers[f].token;
-			let end = formattingResolvers[f].endToken || start;
+		for (const formattingResolver of formattingResolvers) {
+			let start = formattingResolver.token;
+			let end = formattingResolver.endToken || start;
 
 			if (stack.length && end.startsWith(token) && str.substr(i, end.length) === end && output[stack.length].replace(token, '').length) {
 				for (let j = stack.length - 1; j >= 0; j--) {
@@ -1211,7 +1210,7 @@ Chat.parseText = function (str) {
 						}
 
 						let str = output.pop();
-						let outstr = formattingResolvers[f].resolver(str.trim());
+						let outstr = formattingResolver.resolver(str.trim());
 						if (!outstr) outstr = `${start}${str}${end}`;
 						output[stack.length - 1] += outstr;
 						i += end.length;
@@ -1262,8 +1261,8 @@ Chat.getDataPokemonHTML = function (template, gen = 7) {
 	buf += '<span class="col pokemonnamecol" style="white-space:nowrap"><a href="https://pokemonshowdown.com/dex/pokemon/' + template.id + '" target="_blank">' + template.species + '</a></span> ';
 	buf += '<span class="col typecol">';
 	if (template.types) {
-		for (let i = 0; i < template.types.length; i++) {
-			buf += `<img src="https://play.pokemonshowdown.com/sprites/types/${template.types[i]}.png" alt="${template.types[i]}" height="14" width="32">`;
+		for (const type of template.types) {
+			buf += `<img src="https://play.pokemonshowdown.com/sprites/types/${type}.png" alt="${type}" height="14" width="32">`;
 		}
 	}
 	buf += '</span> ';

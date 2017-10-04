@@ -96,8 +96,7 @@ class Ladder {
 		}
 		let stream = FS(`config/ladders/${this.formatid}.tsv`).createWriteStream();
 		stream.write('Elo\tUsername\tW\tL\tT\tLast update\r\n');
-		for (let i = 0; i < this.loadedLadder.length; i++) {
-			let row = this.loadedLadder[i];
+		for (let row of this.loadedLadder) {
 			stream.write(row.slice(1).join('\t') + '\r\n');
 		}
 		stream.end();
@@ -273,7 +272,7 @@ class Ladder {
 				this.save();
 
 				if (!room.battle) {
-					console.log(`room expired before ladder update was received`);
+					Monitor.warn(`room expired before ladder update was received`);
 					return;
 				}
 

@@ -353,14 +353,12 @@ class Trivia extends Rooms.RoomGame {
 	}
 	// Formats the player list for display when using /trivia players.
 	formatPlayerList() {
-		return Object.keys(this.players)
-			.map(userid => {
-				let player = this.players[userid];
-				let username = player.name;
-				if (player.isAbsent) return `<span style="color: #444444">${username}</span>`;
-				return username;
-			})
-			.join(', ');
+		return Object.values(this.players)
+			.sort(function (p1, p2) {return p2.points - p1.points; })
+			.map(player => {
+				const usernamePoints = `${player.name} (${player.points})`;
+				return player.isAbsent ? `<span style="color: #444444">${usernamePoints}</span>` : usernamePoints;
+			}).join(', ');
 	}
 
 	// Kicks a player from the game, preventing them from joining it again
@@ -1005,8 +1003,10 @@ const commands = {
 	submit: 'add',
 	add: function (target, room, user, connection, cmd) {
 		if (room.id !== 'questionworkshop') return this.errorReply('This command can only be used in Question Workshop.');
-		if (cmd === 'add' && !this.can('mute', null, room) || !target) return false;
-		if (!this.canTalk()) return;
+		if ((cmd === 'add' && !this.can('mute', null, room)) ||
+			(cmd === 'submit' && !this.can('broadcast', null, room)) ||
+			!target) return false;
+		if (!this.canTalk()) return false;
 		target = target.split('|');
 		if (target.length !== 3) return this.errorReply("Invalid arguments specified. View /trivia help for more information.");
 
@@ -1051,7 +1051,7 @@ const commands = {
 		if (!user.can('mute', null, room)) this.sendReply(`Question '${target[1]}' was submitted for review.`);
 		this.privateModCommand(`(${user.name} submitted question '${target[1]}' for review.)`);
 	},
-	submithelp: ["/trivia submit [category] | [question] | [answer1], [answer2] ... [answern] - Add a question to the submission database for staff to review."],
+	submithelp: ["/trivia submit [category] | [question] | [answer1], [answer2] ... [answern] - Add a question to the submission database for staff to review. Requires: + % @ # & ~"],
 	addhelp: ["/trivia add [category] | [question] | [answer1], [answer2], ... [answern] - Add a question to the question database. Requires: % @ # & ~"],
 
 	review: function (target, room) {
@@ -1372,28 +1372,28 @@ const commands = {
 	ugmhelp: ["/trivia ugm [setting] - Enable or disable UGM mode. Requires: # & ~"],
 
 	bank: function (target, room, user) {
-		if (!room.game || room.game.title !== 'Weakest Link') return "This command can only be used for games of the Weakest Link.";
+		if (!room.game || room.game.title !== 'Weakest Link') return this.errorReply("This command can only be used for games of the Weakest Link.");
 		let res = room.game.onBank(user);
 		if (res) return this.sendReply(res);
 	},
 	bankhelp: ["/trivia bank - Bank during a game of the Weakest Link."],
 
 	decide: function (target, room, user) {
-		if (!room.game || room.game.title !== 'Weakest Link') return "This command can only be used for games of the Weakest Link.";
+		if (!room.game || room.game.title !== 'Weakest Link') return this.errorReply("This command can only be used for games of the Weakest Link.");
 		let res = room.game.decide(target, user);
 		if (res) return this.sendReply(res);
 	},
 	decidehelp: ["/trivia decide [user] - If voting ends in a tie, this is used to break the tie by the strongest player."],
 
 	vote: function (target, room, user) {
-		if (!room.game || room.game.title !== 'Weakest Link') return "This command can only be used for games of the Weakest Link.";
+		if (!room.game || room.game.title !== 'Weakest Link') return this.errorReply("This command can only be used for games of the Weakest Link.");
 		let res = room.game.vote(target, user);
 		if (res) return this.sendReply(res);
 	},
 	votehelp: ["/trivia vote [user] - Choose your vote of who to eliminate in the Weakest link"],
 
 	checkvotes: function (target, room, user) {
-		if (!room.game || room.game.title !== 'Weakest Link') return "This command can only be used for games of the Weakest Link.";
+		if (!room.game || room.game.title !== 'Weakest Link') return this.errorReply("This command can only be used for games of the Weakest Link.");
 		if (!this.can('broadcast', null, room)) return;
 		if (!this.runBroadcast()) return;
 		if (room.game.phase !== 'voting') return this.sendReplyBox("The game is not currently in the voting phase");

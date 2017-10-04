@@ -4,6 +4,7 @@
 /node_modules
 /eslint-cache
 /chat-plugins/private.js
+/chat-plugins/*-private.js
 /wavelength-plugins/filter.js
 /wavelength-plugins/shop.js
 /wavelength-plugins/leagues.js
