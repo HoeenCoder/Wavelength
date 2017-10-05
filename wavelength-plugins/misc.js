@@ -573,7 +573,7 @@ exports.commands = {
 		return this.sendReply(`${tarUser.name} is now autonconfirmed.`);
 	},
 	autoconfirmhelp: ['/autoconfirm user - Grants a user autoconfirmed status on this server only. Requires ~'],
-	
+
 	usercodes: function (target, room, user) {
 		if (!this.can('roomowner')) return;
 		let out = `<div style="max-height: 300px; overflow: scroll">`;
