@@ -1,4 +1,4 @@
-﻿Spacialgaze Server @ Pokémon Showdown
+Spacialgaze Server @ Pokémon Showdown
 ========================================================================
 
 Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repository][2] | [PS Dex repository][3]
@@ -8,7 +8,7 @@ Navigation: [Spacialgaze][1] | [PS Server repository][10] | [PS Client repositor
   [3]: https://github.com/Zarel/Pokemon-Showdown-Dex
   [10]: https://github.com/Zarel/Pokemon-Showdown
 
-[![Build Status](https://travis-ci.org/HoeenCoder/SpacialGaze.svg)](https://travis-ci.org/HoeenCoder/SpacialGaze)
+[![Build Status](https://travis-ci.org/HoeenCoder/SpacialGaze.svg?branch=master)](https://travis-ci.org/HoeenCoder/SpacialGaze)
 [![dependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze)
 [![devDependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/dev-status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze?type=dev)
 [![optionalDependencies Status](https://david-dm.org/HoeenCoder/SpacialGaze/optional-status.svg)](https://david-dm.org/HoeenCoder/SpacialGaze?type=optional)
@@ -30,9 +30,15 @@ You can use your own computer as a server, but for other people to connect to yo
 Installing
 ------------------------------------------------------------------------
 
-(Requires Node.js 6+)
+    ./pokemon-showdown
 
-Pokémon Showdown requires you to have [Node.js][6] installed, 6.x or later.
+(Requires Node.js 8+)
+
+
+Detailed installation instructions
+------------------------------------------------------------------------
+
+Pokémon Showdown requires you to have [Node.js][6] installed, 8.x or later (7.7 or later can work, but you might as well be on the latest stable).
 
 ```bash
 $ git clone https://github.com/HoeenCoder/SpacialGaze.git
@@ -100,8 +106,13 @@ This server is brought to you and maintained by the following people:
 
 Owners
 
-[HoeenCoder](https://github.com/HoeenCoder) | [Mystifi](https://github.com/Mystifi)
+- [HoeenCoder](https://github.com/HoeenCoder)
+- [Mystifi](https://github.com/Mystifi)
 
+Contributors
+
+- [Insist](https://github.com/DeathlyPlays)
+- [Gligars](https://github.com/Gligar)
 
 Special thanks
 

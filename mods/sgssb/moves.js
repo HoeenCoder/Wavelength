@@ -2,26 +2,32 @@
 
 exports.BattleMovedex = {
 	// The Run
-	vaporboost: {
-		category: "Status",
-		id: "vaporboost",
+	timespacerush: {
+		category: "Special",
+		desc: "This move can bypass protect, however using this move will boost Special Attack by 1 and lower Speed by 1.",
+		shortDesc: "Boosts SpA and lowers Spe by 1.",
+		id: "timespacerush",
 		isNonstandard: true,
-		name: "Vapor Boost",
+		name: "Time-Space Rush",
+		accuracy: 85,
+		basePower: 130,
 		pp: 5,
 		priority: 0,
 		self: {
 			boosts: {
-				spa: 2,
+				spa: 1,
+				spe: -1,
 			},
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Geomancy", source);
-			this.add('-anim', source, "Haze", source);
+			this.add('-anim', source, "Dark Void", source);
+			this.add('-anim', source, "Psychic", source);
+			this.add('-anim', source, "Extreme Speed", target);
 		},
 		secondary: false,
-		target: "Normal",
-		type: "Ice",
+		target: "normal",
+		type: "Psychic",
 	},
 	// HoeenHero
 	scripting: {
@@ -41,14 +47,14 @@ exports.BattleMovedex = {
 				spd: 1,
 			},
 		},
+		desc: "Confuses foe, Boosts user's SpA by 2 stages, and SpD by 1 stage",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('', '>>> let p=p2.pokemon.find(p => p.speciesid===\'ludicolo\'); battle.boost({spa:1,spe:1},p); battle.setWeather(\'raindance\', p); for(let i in p1.pokemon) if(p1.pokemon[i].isActive) { p1.pokemon[i].setStatus(\'confusion\'); break;}');
 			this.add('-anim', source, "Calm Mind", target);
 			this.add('-anim', source, "Geomancy", target);
 		},
-		weather: 'raindance',
-		target: "Normal",
+		target: "normal",
 		type: "Psychic",
 	},
 	// Vulcaron
@@ -62,6 +68,7 @@ exports.BattleMovedex = {
 			chance: 100,
 			volatileStatus: 'confusion',
 		},
+		desc: "Confuses foe, Raises user's Evasion by 1 stage, and heals by 6/20 of maximum health",
 		priority: 0,
 		self: {
 			boosts: {
@@ -74,7 +81,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Taunt", target);
 			this.add('-anim', source, "Double Team", source);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Dark",
 	},
 	// Almighty Bronzong
@@ -85,18 +92,20 @@ exports.BattleMovedex = {
 		name: "Blast Furnace",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				def: 1,
-			},
-			heal: [7, 20],
+		boosts: {
+			def: 1,
+			spd: 1,
 		},
+		heal: [7, 20],
+		desc: "Boosts user's Defense and Special Defense by 1 stage, Heals 35% of maximum health",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Iron Defense", source);
+			this.add('-anim', source, "Fire Blast", source);
+			this.add('-anim', source, "Surf", source);
+			this.add('-anim', source, "Recover", source);
 		},
 		drain: [7, 20], //35%
-		target: "Normal",
+		target: "self",
 		type: "Fire",
 	},
 	// HiroZ
@@ -109,38 +118,40 @@ exports.BattleMovedex = {
 		name: "Crystallized Ukaku",
 		pp: 10,
 		priority: 0,
-		target: "Normal",
+		target: "normal",
 		type: "Dark",
 		secondary: {
 			chance: 30,
-			volatileStatus: 'tox',
+			status: 'tox',
 		},
+		desc: "30% chance to badly poison",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Blizzard", target);
 		},
 	},
 	// Kraken Mare
-	megarage: {
+	revengeofkrakenmare: {
 		category: "Special",
-		basePower: 150,
-		id: "megarage",
+		accuracy: true,
+		basePower: 77000,
+		id: "revengeofkrakenmare",
 		isNonstandard: true,
-		name: "Mega Rage",
-		pp: 15,
-		priority: 0,
-		self: {
-			boosts: {
-				def: -1,
-				spd: -1,
-			},
-		},
+		name: "Revenge of Kraken Mare",
+		pp: 1,
+		noPPBoosts: true,
+		priority: 5,
+		selfdestruct: "always",
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Hyper Voice", source);
+			this.add('-anim', source, "Surf", target);
 		},
-		target: "Normal",
-		type: "Fairy",
+		desc: "Selfdestructs target.",
+		onHit: function (target, source, move) {
+			this.add('c|~Kraken Mare ☭|If I go down I\'m taking you with me!');
+		},
+		target: "normal",
+		type: "Water",
 	},
 	// C733937 123
 	lightshotgigalance: {
@@ -164,13 +175,14 @@ exports.BattleMovedex = {
 				},
 			},
 		},
+		desc: "30% chance to boost all stats (except acc and eva), must recharge",
 		pp: 15,
 		priority: 0,
 		onHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', target, "Sacred Sword", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Rock",
 	},
 	// Serperiorater
@@ -189,6 +201,7 @@ exports.BattleMovedex = {
 				heal: [1, 5],
 			},
 		},
+		desc: "Boosts user's SpA by 2 stages, and heals health by 1/5 maximum HP",
 		pp: 10,
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
@@ -196,30 +209,8 @@ exports.BattleMovedex = {
 			this.add('-anim', target, "Glare", target);
 			this.add('-anim', source, "Leaf Storm", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Grass",
-	},
-	// Hydrostatics
-	naturesfury: {
-		category: "Status",
-		id: "naturesfury",
-		isNonstandard: true,
-		name: "Nature's Fury",
-		pp: 10,
-		priority: 0,
-		self: {
-			boosts: {
-				spe: 1,
-				atk: 1,
-			},
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Sunny Day", target);
-		},
-		weather: 'sunnyday',
-		target: "Normal",
-		type: "Fire",
 	},
 	// Ashley the Pikachu
 	rocketpunch: {
@@ -230,8 +221,9 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Rocket Punch",
 		pp: 10,
+		desc: "No additional effects",
 		priority: 1,
-		target: "Normal",
+		target: "normal",
 		type: "Fire",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -244,7 +236,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		id: "gettingtrolled",
 		isNonstandard: true,
-		basePower: 40,
+		basePower: 90,
 		name: "Getting Trolled",
 		pp: 20,
 		secondary: {
@@ -253,12 +245,13 @@ exports.BattleMovedex = {
 			volatileStatus: ['flinch', 'confusion',
 			],
 		},
+		desc: "30% chance to paralyze, and/or flinch, or confuse foe.",
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Thrash", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Normal",
 	},
 	// Mystifi
@@ -267,13 +260,12 @@ exports.BattleMovedex = {
 		id: "mysticmirage",
 		isNonstandard: true,
 		name: "Mystic Mirage",
-		self: {
-			boosts: {
-				def: 1,
-				spa: 1,
-				spd: 1,
-			},
+		boosts: {
+			def: 2,
+			spa: 2,
+			spd: 2,
 		},
+		desc: "Boosts user's Defense, SpA, and SpD by 2 stages.",
 		pp: 10,
 		priority: 0,
 		onHit: function (target, source) {
@@ -293,6 +285,7 @@ exports.BattleMovedex = {
 		secondary: {
 			volatileStatus: 'attract',
 		},
+		desc: "Attempts to attract foe, and boosts user's Attack by one stage",
 		priority: 0,
 		self: {
 			boosts: {
@@ -303,7 +296,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Charm", source);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Normal",
 	},
 	// Auction
@@ -317,9 +310,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
+			this.add('-anim', source, "Focus Energy", source);
 			this.add('-anim', source, "Head Smash", target);
 		},
-		target: "Normal",
+		accuracy: 100,
+		desc: "No additional effects",
+		zMovePower: 150,
+		target: "normal",
 		type: "Steel",
 	},
 	// Opple
@@ -330,18 +327,18 @@ exports.BattleMovedex = {
 		name: "Ancient Orb",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				spe: 1,
-				atk: 1,
-			},
-			heal: [5, 20],
+		boosts: {
+			spe: 1,
+			atk: 1,
 		},
+		heal: [5, 20],
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Morning Sun", source);
+			this.add('-anim', source, "Agility", source);
 		},
-		target: "Normal",
+		desc: "Raises user's Attack and Speed by 1 stage, and heals health by 5/20 maximum HP",
+		target: "self",
 		type: "Dragon",
 	},
 	// Spacial Bot
@@ -352,17 +349,17 @@ exports.BattleMovedex = {
 		name: "Ancient Ritual",
 		pp: 10,
 		priority: 0,
-		self: {
-			boosts: {
-				spe: 2,
-				atk: 1,
-			},
+		boosts: {
+			spe: 2,
+			atk: 1,
 		},
+		desc: "Boosts user's Atk by 1 stage, and Spe by 2 stages",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragon Dance", source);
+			this.add('-anim', source, "Stone Edge", source);
+			this.add('-anim', source, "Geomancy", source);
 		},
-		target: "Normal",
+		target: "self",
 		type: "Rock",
 	},
 	// ducktown
@@ -373,18 +370,17 @@ exports.BattleMovedex = {
 		name: "Duck Power",
 		pp: 5,
 		priority: 0,
-		self: {
-			boosts: {
-				spa: 8,
-				spd: 8,
-			},
+		boosts: {
+			spa: 8,
+			spd: 8,
 		},
+		desc: "Boosts user's SpA and SpD by 8 stages, and sets Rain Dance",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Calm Mind", source);
 		},
 		weather: 'raindance',
-		target: "Normal",
+		target: "self",
 		type: "Water",
 	},
 	// Hurricane'd
@@ -403,43 +399,38 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Bulk Up", source);
 		},
+		desc: "Boosts user's SpA and Def by 2 stages, and then sets Rain Dance",
 		weather: 'raindance',
 		target: "self",
 		type: "Water",
-	},
-	// UmichBrendan
-	vacationtime: {
-		category: "Status",
-		id: "vacationtime",
-		isNonstandard: true,
-		name: "Vacation Time",
-		pp: 5,
-		priority: 0,
-		boosts: {
-			atk: 2,
-			spe: 1,
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Wish", source);
-			this.add('-anim', source, "Swords Dance", source);
-		},
-		target: "self",
-		type: "Normal",
 	},
 	// Admewn
 	mewtation: {
 		category: "Status",
 		id: "mewtation",
+		accuracy: true,
 		isNonstandard: true,
 		name: "Mewtation",
 		pp: 10,
+		secondary: false,
+		self: {
+			boosts: {
+				evasion: 1,
+			},
+		},
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Transform", target);
+			this.add('-anim', source, "Agility", source);
+			this.add('-anim', source, "Psychic", target);
+			this.add('-anim', source, "Night Shade", target);
 		},
-		target: "Normal",
+		onHit: function (target, source) {
+			target.trySetStatus('tox', source);
+		},
+		desc: "Boosts evasion by 1 and badly poisons target.",
+		shortDesc: "Boosts evasion by 1 and badly poisons target.",
+		target: "normal",
 		type: "Dark",
 	},
 	// Ranfen
@@ -454,30 +445,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dragonbreath", target);
+			this.add('-anim', source, "Blue Flare", source);
+			this.add('-anim', source, "Recover", source);
+			this.add('-anim', source, "Precipice Blades", target);
 		},
-		target: "Normal",
+		desc: "High Crit Ratio",
+		target: "normal",
 		type: "Dragon",
-	},
-	// Xavier1942
-	xavierhax: {
-		category: "Status",
-		id: "xavierhax",
-		isNonstandard: true,
-		name: "Xavier Hax",
-		pp: 8,
-		priority: 0,
-		boosts: {
-			spd: 1,
-			spa: 1,
-			def: 1,
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Calm Mind", source);
-		},
-		target: "self",
-		type: "Normal",
 	},
 	// SpaceGazer
 	spacialblast: {
@@ -490,6 +464,7 @@ exports.BattleMovedex = {
 			chance: 60,
 			status: 'brn',
 		},
+		desc: "60% chance to burn",
 		pp: 10,
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
@@ -497,7 +472,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Wish", source);
 			this.add('-anim', source, "Diamond Storm", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Fairy",
 	},
 	// SG Bot
@@ -506,22 +481,26 @@ exports.BattleMovedex = {
 		basePower: 100,
 		id: "frostbite",
 		isNonstandard: true,
-		name: "Frost Bite",
+		name: "Frostbite",
 		secondary: {
 			chance: 60,
 			status: 'frz',
 		},
+		desc: "60% chance to freeze, supereffective on Water.",
 		pp: 10,
 		priority: 0,
+		onEffectiveness: function (typeMod, type) {
+			if (type === 'Water') return 1;
+		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Blizzard", target);
 			this.add('-anim', target, "Bite", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Ice",
 	},
-	// Vacuo
+	// Clue
 	mechanicaldysfunction: {
 		category: "Special",
 		basePower: 110,
@@ -533,13 +512,14 @@ exports.BattleMovedex = {
 			chance: 50,
 			status: 'par',
 		},
-		pp: 8,
+		desc: "50% chance to paralyze",
+		pp: 5,
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Zap Cannon", target);
 		},
-		target: "Normal",
+		target: "normal",
 		type: "Electric",
 	},
 	// Desokoro
@@ -560,7 +540,8 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Water Pledge", source);
 			this.add('-anim', source, "Waterfall", target);
 		},
-		target: "Normal",
+		desc: "35% chance to flinch",
+		target: "normal",
 		type: "Water",
 	},
 	// CelestialTater
@@ -577,6 +558,7 @@ exports.BattleMovedex = {
 			spd: -1,
 			accuracy: 1,
 		},
+		desc: "Boosts SpA, Atk, Spe by 2 stages, Acc by 1 stage, Lowers Def and SpD by 1 stage",
 		pp: 5,
 		priority: 1,
 		onPrepareHit: function (target, source) {
@@ -586,26 +568,35 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Water",
 	},
-	// VXN
-	crash: {
-		accuracy: true,
-		category: "Status",
-		id: "crash",
-		inNonstandard: true,
-		name: "Crash",
-		pp: 5,
-		priority: 0,
-		onHit: function (pokemon) {
-			pokemon.faint();
-			this.add('raw|<div class=\"broadcast-red\"><b>The server has crashed:</b><br/>TypeError: Cannot read property \'Overpowered\' of undefined at CommandContext.meme (./SpacialGaze/spacialgaze-plugins/hoeenhero/spellcheck.js:420:69)</div>');
+	// Gligars
+	daredevil: {
+		accuracy: 100,
+		basePower: 70,
+		basePowerCallback: function (pokemon, target, move) {
+			if (this.willMove(target)) {
+				this.debug("Power doubled for going first");
+				return move.basePower * 2;
+			}
+			return move.basePower;
 		},
+		category: "Physical",
 		onPrepareHit: function (target, source) {
-			this.add('-anim', source, "Hex", source);
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Giga Impact", target);
 		},
-		flags: {},
+		desc: "Power doubles if the user goes first.",
+		shortDesc: "Power doubles if the user goes first.",
+		id: "daredevil",
+		isNonStandard: true,
+		name: "Daredevil",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
 		secondary: false,
-		target: "self",
-		type: "Dragon",
+		target: "normal",
+		type: "Flying",
+		zMovePower: 140,
+		contestType: "Cool",
 	},
 	// Insist
 	aquasubscribe: {
@@ -622,10 +613,11 @@ exports.BattleMovedex = {
 			protect: 1,
 			mirror: 1,
 		},
+		desc: "Boosts user's SpA and Spe by 1 stage",
 		secondary: false,
 		category: "Special",
 		onHit: function (target, source, move) {
-			this.add('c|+Insist|Subscribe to http://youtube.com/DeathlyPlays');
+			this.add('c|@Insist|Subscribe to http://youtube.com/DeathlyPlays');
 		},
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -638,5 +630,77 @@ exports.BattleMovedex = {
 		type: "Water",
 		zMovePower: 140,
 		contestType: "Cool",
+	},
+	//Insist
+	"exiledfromallothers": {
+		id: "exiledfromallothers",
+		name: "Exiled From All Others",
+		basePower: 150,
+		accuracy: 100,
+		pp: 1,
+		noPPBoosts: true,
+		secondary: false,
+		category: "Special",
+		isNonStandard: true,
+		isZ: "playniumz",
+		priority: 1,
+		flags: {
+			protect: 1,
+		},
+		onHit: function (target, source, move) {
+			this.add('c|@Insist|Exiled from all others, we shall become greater than ever before.');
+		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Hydro Pump", target);
+		},
+		target: "normal",
+		type: "Water",
+	},
+	//Stabby the Krabby
+	"stabstab": {
+		category: "Physical",
+		basePower: 100,
+		accuracy: true,
+		desc: 'Always hits, hits twice, 25% chance to flinch.',
+		id: "stabstab",
+		isViable: true,
+		isNonstandard: true,
+		name: "Stab Stab",
+		secondary: {
+			chance: 25,
+			volatileStatus: 'flinch',
+		},
+		onHit: function (target) {
+			this.add('c|*Stabby the Krabby|Stabby Stabby!');
+		},
+		pp: 5,
+		priority: 1,
+		multihit: [2, 2],
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Swords Dance", source);
+			this.add('-anim', source, "Sacred Sword", target);
+		},
+		target: "normal",
+		type: "Steel",
+	},
+	"ruregi": {
+		id: "ruregi",
+		name: "R U Regi",
+		basePower: 60,
+		priority: 2,
+		desc: "Drains 1/3 of the damage dealt.",
+		category: "Physical",
+		drain: [1, 3],
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Quick Attack", target);
+		},
+		secondary: false,
+		pp: 10,
+		flags: {protect: 1, contact: 1, mirror: 1},
+		target: "normal",
+		type: "Fighting",
 	},
 };

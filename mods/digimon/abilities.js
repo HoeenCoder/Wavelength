@@ -4,6 +4,7 @@ exports.BattleAbilities = {
 	"data": {
 		id: "data",
 		name: "Data",
+		desc: "If the target's ability is Vaccine the user's Attack is boosted by 1.2x, if the target's ability is Virus the user's Attack is weakened by 0.8x.",
 		onBasePowerPriority: 8,
 		onBasePower: function (basePower, attacker, move) {
 			if (attacker.ability) {
@@ -34,6 +35,7 @@ exports.BattleAbilities = {
 				}
 			}
 		},
+		desc: "If the target's ability is Virus the user's Attack is boosted by 1.2x, if the target's ability is Data the user's Attack is weakened by 0.8x.",
 	},
 	"virus": {
 		id: "virus",
@@ -51,5 +53,6 @@ exports.BattleAbilities = {
 				}
 			}
 		},
+		desc: "If the target's ability is Data the user's Attack is boosted by 1.2x, if the target's ability is Vaccine the user's Attack is weakened by 0.8x.",
 	},
 };

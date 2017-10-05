@@ -24,40 +24,28 @@ exports.BattleStatuses = {
 			this.add('c', '%Serperiorater', 'Dammit Benny, why ya gotta be that guy?');
 		},
 	},
-	vacuo: {
+	clue: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@Vacuo', 'glhf');
+			this.add('c', '+Clue', 'glhf');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@Vacuo', 'lmfao brb');
+			this.add('c', '+Clue', 'lmfao brb');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@Vacuo', 'yeah so I\'mma go get some food see you later');
+			this.add('c', '+Clue', 'yeah so I\'mma go get some food see you later');
 		},
 	},
 	ashleythepikachu: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Ashley the Pikachu', 'Pika-Pikachu');
+			this.add('c', '@Ashley the Pikachu', 'Pika-Pikachu');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Ashley the Pikachu', 'Pi-kaPika');
+			this.add('c', '@Ashley the Pikachu', 'Pi-kaPika');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Ashley the Pikachu', 'PikaPikaaaa');
-		},
-	},
-	umichbrendan: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+UmichBrendan', 'All right, time for a Umich sweep!');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+UmichBrendan', 'I\'m gonna hand this over to a friend, you\'re not worth the effort');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+UmichBrendan', 'I lost? How is that possible?');
+			this.add('c', '@Ashley the Pikachu', 'PikaPikaaaa');
 		},
 	},
 	ducktown: {
@@ -90,7 +78,7 @@ exports.BattleStatuses = {
 			this.add('c', '~HoeenHero', 'Do I have to? I\'m in the middle of programming.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Hoeenhero', 'I can\'t battle now, i\'m too busy.');
+			this.add('c', '~HoeenHero', 'I can\'t battle now, I\'m too busy.');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');
@@ -99,13 +87,13 @@ exports.BattleStatuses = {
 	hiroz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&HiroZ', 'Your wing isn\'t able to fly anywhere!');
+			this.add('c', '+HiroZ', 'Your wing isn\'t able to fly anywhere!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&HiroZ', 'Crawl like the insect you are, I\'ll be back!');
+			this.add('c', '+HiroZ', 'Crawl like the insect you are, I\'ll be back!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&HiroZ', 'Argh... scumbag...');
+			this.add('c', '+HiroZ', 'Argh... scumbag...');
 		},
 	},
 	admewn: {
@@ -123,13 +111,13 @@ exports.BattleStatuses = {
 	vulcaron: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Vulcaron', 'I will scorch you with 628 blue flames!!! ...I\'m really bad at this.');
+			this.add('c', '+Vulcaron', 'I will scorch you with 628 blue flames!!! ...I\'m really bad at this.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Vulcaron', 'I\'ll be back, I have a lot of free time');
+			this.add('c', '+Vulcaron', 'I\'ll be back, I have a lot of free time');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Vulcaron', 'The flames are dowsed.');
+			this.add('c', '+Vulcaron', 'The flames are dowsed.');
 		},
 	},
 	mystifi: {
@@ -146,13 +134,13 @@ exports.BattleStatuses = {
 	krakenmare: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&Kraken Mare', 'You can\'t touch the master of RAGE!');
+			this.add('c', '~Kraken Mare', 'Today, I prove Gardevoir as the best Pokmeon!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&Kraken Mare', 'I shall spare you today, young one!');
+			this.add('c', '~Kraken Mare', 'I shall spare you today, young one!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&Kraken Mare', 'The RAGE wasn\'t enough to overpower you!');
+			this.add('c', '~Kraken Mare', 'Even though I fall, I\'m sure I took a few down with me.');
 		},
 	},
 	almightybronzong: {
@@ -181,13 +169,13 @@ exports.BattleStatuses = {
 	mimiroppu: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@Mimiroppu', 'Mimiroppu, charm up~');
+			this.add('c', '+Mimiroppu', 'Mimiroppu, charm up~');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@Mimiroppu', 'I\'ll be back soon bitches');
+			this.add('c', '+Mimiroppu', 'I\'ll be back soon bitches');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@Mimiroppu', 'Sorry \'bout it...');
+			this.add('c', '+Mimiroppu', 'Sorry \'bout it...');
 		},
 	},
 	bdh93: {
@@ -205,39 +193,27 @@ exports.BattleStatuses = {
 	c733937123: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
+			this.add('c', '&C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
+			this.add('c', '&C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@C733937 123', 'What, I...got defeated by some lousy fighter like you??? Well...Good luck next time we fight for both of us....but why did I lose?');
+			this.add('c', '&C733937 123', 'What, I...got defeated by some lousy fighter like you??? Well...Good luck next time we fight for both of us....but why did I lose?');
 		},
 	},
 	spacialbot: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Spacial Bot', '``Bot rebooting...``');
-			this.add('c', '%Spacial Bot', '``Rebooting complete. Engaging in battle.``');
+			this.add('c', ' Spacial Bot', '``Bot rebooting...``');
+			this.add('c', ' Spacial Bot', '``Rebooting complete. Engaging in battle.``');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '+The Run', '.battleswitchout');
-			this.add('c', '%Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
+			this.add('c', ' Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
-		},
-	},
-	hydrostatics: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+Hydrostatics', 'Dare to fight me??');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+Hydrostatics', '/me has studies');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+Hydrostatics', 'Ok! It was a nice warm up for me! Let\'s battle for real the next time! ;)');
+			this.add('c', ' Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
 		},
 	},
 	auction: {
@@ -263,28 +239,49 @@ exports.BattleStatuses = {
 			this.add('c', '+Ranfen', 'No Fair flygon cant be beat D:');
 		},
 	},
-	xavier1942: {
+	gligars: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+Xavier1942', 'Behold, THE GREAT WALL OF...um...HAAAAAAX!');
+			this.add('c', '%Gligars', 'Smokin\'!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+Xavier1942', 'I\'ll be back, i have business to take care of *Runs away shouting "WEE WOO WEE WOO WEE WOO*');
+			this.add('c', '%Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Xavier1942', 'Nuuuuu! MY BEAUTIFUL WALL! ');
+			this.add('c', '%Gligars', 'Look, ma! I\'m roadkill!');
 		},
 	},
-	vxn: {
+	insist: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+VXN', 'Get ready for TRUE overpoweredness!');
+			this.add('c', '@Insist', 'I __insist__ you just forfeit right now.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+VXN', 'Gotta go, I\'ll have fun with you later...');
+			this.add('c', '@Insist', 'I don\'t just run away from my problems!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+VXN', 'w8 wut?');
+			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+		},
+	},
+	celestialtater: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+CelestialTater', 'this potato gonna rek you m8');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+CelestialTater', 'Heck');
+		},
+	},
+	stabbythekrabby: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '*Stabby the Krabby', 'Get ready to be stabbed!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '*Stabby the Krabby', 'Alright, I\'ll be back to stab you later. Got someone else to deal with first.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '*Stabby the Krabby', 'Impossible...');
 		},
 	},
 };

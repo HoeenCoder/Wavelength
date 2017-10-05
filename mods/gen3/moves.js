@@ -325,6 +325,10 @@ exports.BattleMovedex = {
 		inherit: true,
 		accuracy: 60,
 	},
+	ingrain: {
+		inherit: true,
+		desc: "The user has 1/16 of its maximum HP restored at the end of each turn, but it is prevented from switching out and other Pokemon cannot force the user to switch out. The user can still switch out if it uses Baton Pass, and the replacement will remain trapped and still receive the healing effect.",
+	},
 	jumpkick: {
 		inherit: true,
 		basePower: 70,
@@ -344,27 +348,6 @@ exports.BattleMovedex = {
 	megadrain: {
 		inherit: true,
 		pp: 10,
-	},
-	metronome: {
-		inherit: true,
-		onHit: function (target) {
-			let moves = [];
-			for (let i in exports.BattleMovedex) {
-				let move = exports.BattleMovedex[i];
-				if (i !== move.id) continue;
-				if (move.isNonstandard) continue;
-				let noMetronome = {
-					assist:1, counter:1, covet:1, destinybond:1, detect:1, endure:1, focuspunch:1, followme:1, helpinghand:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, protect:1, sketch:1, sleeptalk:1, snatch:1, struggle:1, thief:1, trick:1,
-				};
-				if (!noMetronome[move.id] && move.num < 355) {
-					moves.push(move.id);
-				}
-			}
-			let randomMove = '';
-			if (moves.length) randomMove = moves[this.random(moves.length)];
-			if (!randomMove) return false;
-			this.useMove(randomMove, target);
-		},
 	},
 	mirrorcoat: {
 		inherit: true,

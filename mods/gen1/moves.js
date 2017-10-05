@@ -8,6 +8,14 @@
 exports.BattleMovedex = {
 	acid: {
 		inherit: true,
+		desc: "Has a 33% chance to lower the target's Defense by 1 stage.",
+		shortDesc: "33% chance to lower the target's Defense by 1.",
+		secondary: {
+			chance: 33,
+			boosts: {
+				def: -1,
+			},
+		},
 		target: "normal",
 	},
 	amnesia: {
@@ -21,8 +29,10 @@ exports.BattleMovedex = {
 	},
 	aurorabeam: {
 		inherit: true,
+		desc: "Has a 33% chance to lower the target's Attack by 1 stage.",
+		shortDesc: "33% chance to lower the target's Attack by 1.",
 		secondary: {
-			chance: 10,
+			chance: 33,
 			boosts: {
 				atk: -1,
 			},
@@ -146,7 +156,26 @@ exports.BattleMovedex = {
 	},
 	bubble: {
 		inherit: true,
+		desc: "Has a 33% chance to lower the target's Speed by 1 stage.",
+		shortDesc: "33% chance to lower the target's Speed by 1.",
+		secondary: {
+			chance: 33,
+			boosts: {
+				spe: -1,
+			},
+		},
 		target: "normal",
+	},
+	bubblebeam: {
+		inherit: true,
+		desc: "Has a 33% chance to lower the target's Speed by 1 stage.",
+		shortDesc: "33% chance to lower the target's Speed by 1.",
+		secondary: {
+			chance: 33,
+			boosts: {
+				spe: -1,
+			},
+		},
 	},
 	clamp: {
 		inherit: true,
@@ -172,6 +201,17 @@ exports.BattleMovedex = {
 					target.volatiles['partiallytrapped'].duration = 2;
 				}
 			}
+		},
+	},
+	constrict: {
+		inherit: true,
+		desc: "Has a 33% chance to lower the target's Speed by 1 stage.",
+		shortDesc: "33% chance to lower the target's Speed by 1.",
+		secondary: {
+			chance: 33,
+			boosts: {
+				spe: -1,
+			},
 		},
 	},
 	conversion: {
@@ -207,6 +247,7 @@ exports.BattleMovedex = {
 	},
 	dig: {
 		inherit: true,
+		desc: "This attack charges on the first turn and executes on the second. On the first turn, the user avoids all attacks other than Bide and Swift.",
 		basePower: 100,
 		effect: {
 			duration: 2,
@@ -321,8 +362,7 @@ exports.BattleMovedex = {
 	},
 	fly: {
 		inherit: true,
-		desc: "Deals damage to target. This attack charges on the first turn and strikes on the second. The user cannot make a move between turns. (Field: Can be used to fly to a previously visited area.)",
-		shortDesc: "Flies up on first turn, then strikes the next turn.",
+		desc: "This attack charges on the first turn and executes on the second. On the first turn, the user avoids all attacks other than Bide and Swift.",
 		effect: {
 			duration: 2,
 			onLockMove: 'fly',
@@ -486,24 +526,7 @@ exports.BattleMovedex = {
 	},
 	metronome: {
 		inherit: true,
-		onHit: function (target) {
-			let moves = [];
-			for (let i in exports.BattleMovedex) {
-				let move = exports.BattleMovedex[i];
-				if (i !== move.id) continue;
-				if (move.isNonstandard) continue;
-				let noMetronome = {
-					metronome:1, struggle:1,
-				};
-				if (!noMetronome[move.id] && move.num <= 165) {
-					moves.push(move.id);
-				}
-			}
-			let randomMove = '';
-			if (moves.length) randomMove = moves[this.random(moves.length)];
-			if (!randomMove) return false;
-			this.useMove(randomMove, target);
-		},
+		noMetronome: {metronome:1, struggle:1},
 		secondary: false,
 		target: "self",
 		type: "Normal",
@@ -545,11 +568,15 @@ exports.BattleMovedex = {
 	},
 	nightshade: {
 		inherit: true,
+		desc: "Deals damage to the target equal to the user's level. This move can hit Normal-type Pokemon.",
+		shortDesc: "Damage = user's level. Can hit Normal types.",
 		ignoreImmunity: true,
 		basePower: 1,
 	},
 	poisonsting: {
 		inherit: true,
+		desc: "Has a 20% chance to poison the target.",
+		shortDesc: "20% chance to poison the target.",
 		secondary: {
 			chance: 20,
 			status: 'psn',
@@ -557,8 +584,8 @@ exports.BattleMovedex = {
 	},
 	psychic: {
 		inherit: true,
-		desc: "Deals damage to one target with a 30% chance to lower its Special by 1 stage.",
-		shortDesc: "30% chance to lower the target's Special by 1.",
+		desc: "Has a 33% chance to lower the target's Special by 1 stage.",
+		shortDesc: "33% chance to lower the target's Special by 1.",
 		secondary: {
 			chance: 33,
 			boosts: {
@@ -686,6 +713,8 @@ exports.BattleMovedex = {
 	},
 	seismictoss: {
 		inherit: true,
+		desc: "Deals damage to the target equal to the user's level. This move can hit Ghost-type Pokemon.",
+		shortDesc: "Damage = user's level. Can hit Ghost types.",
 		ignoreImmunity: true,
 		basePower: 1,
 	},
@@ -819,11 +848,15 @@ exports.BattleMovedex = {
 	},
 	superfang: {
 		inherit: true,
+		desc: "Deals damage to the target equal to half of its current HP, rounded down, but not less than 1 HP. This move can hit Ghost-type Pokemon.",
+		shortDesc: "Damage = 1/2 target's current HP. Hits Ghosts.",
 		ignoreImmunity: true,
 		basePower: 1,
 	},
 	thunder: {
 		inherit: true,
+		desc: "Has a 10% chance to paralyze the target.",
+		shortDesc: "10% chance to paralyze the target.",
 		secondary: {
 			chance: 10,
 			status: 'par',

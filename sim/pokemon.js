@@ -63,7 +63,7 @@ class Pokemon {
 		this.beingCalledBack = false;
 		this.isActive = false;
 		this.activeTurns = 0;
-		/** Has this pokemon's Start events run yet? */
+		/** Have this pokemon's Start events run yet? */
 		this.isStarted = false;
 		this.transformed = false;
 		this.duringMove = false;
@@ -78,7 +78,7 @@ class Pokemon {
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
-		this.exp = this.set.exp || SG.calcExp(this.speciesid, this.level);
+		this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
 		this.slot = (!slot && slot !== 0 ? this.side.pokemon.length - 1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
@@ -347,7 +347,7 @@ class Pokemon {
 			}
 			if (target.side.active.length > 1) {
 				if (!move.flags['charge'] || this.volatiles['twoturnmove'] ||
-						(move.id === 'solarbeam' && this.battle.isWeather(['sunnyday', 'desolateland'])) ||
+						(move.id.startsWith('solarb') && this.battle.isWeather(['sunnyday', 'desolateland'])) ||
 						(this.hasItem('powerherb') && move.id !== 'skydrop')) {
 					target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
 				}
@@ -1197,7 +1197,7 @@ class Pokemon {
 	}
 	isGrounded(negateImmunity) {
 		if ('gravity' in this.battle.pseudoWeather) return true;
-		if ('ingrain' in this.volatiles) return true;
+		if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
 		if ('smackdown' in this.volatiles) return true;
 		let item = (this.ignoringItem() ? '' : this.item);
 		if (item === 'ironball') return true;

@@ -58,11 +58,12 @@ class Effect {
 	/**
 	 * @param {AnyObject} data
 	 * @param {?AnyObject} [moreData]
+	 * @param {?AnyObject} [moreData2]
 	 */
-	constructor(data, moreData = null) {
+	constructor(data, moreData = null, moreData2 = null) {
 		/**
 		 * ID. This will be a lowercase version of the name with all the
-		 * alphanumeric characters removed. So, for instance, "Mr. Mime"
+		 * non-alphanumeric characters removed. So, for instance, "Mr. Mime"
 		 * becomes "mrmime", and "Basculin-Blue-Striped" becomes
 		 * "basculinbluestriped".
 		 * @type {string}
@@ -83,7 +84,7 @@ class Effect {
 		this.fullname = '';
 		/**
 		 * Effect type.
-		 * @type {'Effect' | 'Pokemon' | 'Move' | 'Item' | 'Ability' | 'Format' | 'Ruleset' | 'Weather' | 'Status'}
+		 * @type {'Effect' | 'Pokemon' | 'Move' | 'Item' | 'Ability' | 'Format' | 'Ruleset' | 'Weather' | 'Status' | 'Rule' | 'ValidatorRule'}
 		 */
 		this.effectType = 'Effect';
 		/**
@@ -112,6 +113,7 @@ class Effect {
 
 		Object.assign(this, data);
 		if (moreData) Object.assign(this, moreData);
+		if (moreData2) Object.assign(this, moreData2);
 		this.name = Tools.getString(this.name).trim();
 		this.fullname = Tools.getString(this.fullname) || this.name;
 		if (!this.id) this.id = toId(this.name); // Hidden Power hack
@@ -124,18 +126,103 @@ class Effect {
 	}
 }
 
+/**
+ * A RuleTable keeps track of the rules that a format has. The key can be:
+ * - '[ruleid]' the ID of a rule in effect
+ * - '-[thing]' or '-[category]:[thing]' ban a thing
+ * - '+[thing]' or '+[category]:[thing]' allow a thing (override a ban)
+ * [category] is one of: item, move, ability, species, basespecies
+ * @augments {Map<string, string>}
+ */
+// @ts-ignore TypeScript bug
+class RuleTable extends Map {
+	constructor() {
+		super();
+		/**
+		 * rule, source, limit, bans
+		 * @type {[string, string, number, string[]][]}
+		 */
+		this.complexBans = [];
+		/**
+		 * rule, source, limit, bans
+		 * @type {[string, string, number, string[]][]}
+		 */
+		this.complexTeamBans = [];
+	}
+	/**
+	 * @param {string} thing
+	 * @param {{[id: string]: true}} setHas
+	 * @return {string}
+	 */
+	check(thing, setHas) {
+		setHas[thing] = true;
+		return this.getReason(this.get('-' + thing));
+	}
+	/**
+	 * @param {string | undefined} source
+	 * @return {string}
+	 */
+	getReason(source) {
+		if (source === undefined) return '';
+		return source ? `banned by ${source}` : `banned`;
+	}
+}
+
 class Format extends Effect {
 	/**
 	 * @param {AnyObject} data
 	 * @param {?AnyObject} [moreData]
+	 * @param {?AnyObject} [moreData2]
 	 */
-	constructor(data, moreData = null) {
-		super(data, moreData);
+	constructor(data, moreData = null, moreData2 = null) {
+		super(data, moreData, moreData2);
 		/** @type {string} */
-		this.mod = Tools.getString(this.mod) || 'gen6';
-		/** @type {'Format', 'Ruleset'} */
+		this.mod = Tools.getString(this.mod) || 'gen7';
+		/**
+		 * Name of the team generator algorithm, if this format uses
+		 * random/fixed teams. null if players can bring teams.
+		 * @type {?string}
+		 */
+		this.team = this.team;
+		/** @type {'Format' | 'Ruleset' | 'Rule' | 'ValidatorRule'} */
 		// @ts-ignore
 		this.effectType = Tools.getString(this.effectType) || 'Format';
+		/**
+		 * Game type.
+		 * @type {'singles' | 'doubles' | 'triples'}
+		 */
+		this.gameType = this.gameType || 'singles';
+		/**
+		 * List of rule names.
+		 * @type {string[]}
+		 */
+		this.ruleset = this.ruleset || [];
+		/**
+		 * Base list of rule names as specified in "./config/formats.js".
+		 * Used in a custom format to correctly display the altered ruleset.
+		 * @type {string[]}
+		 */
+		this.baseRuleset = this.baseRuleset || [];
+		/**
+		 * List of banned effects.
+		 * @type {string[]}
+		 */
+		this.banlist = this.banlist || [];
+		/**
+		 * List of inherited banned effects to override.
+		 * @type {string[]}
+		 */
+		this.unbanlist = this.unbanlist || [];
+		/**
+		 * List of ruleset and banlist changes in a custom format.
+		 * @type {?string[]}
+		 */
+		this.customRules = this.customRules || null;
+		/**
+		 * Table of rule names and banned effects.
+		 * @type {?RuleTable}
+		 */
+		this.ruleTable = null;
 	}
 }
 
@@ -289,6 +376,14 @@ class Template extends Effect {
 		this.forme = this.forme || '';
 
 		/**
+		 * Other forms. List of names of cosmetic forms. These should have
+		 * `aliases.js` aliases to this entry, but not have their own
+		 * entry in `pokedex.js`.
+		 * @type {?string[]}
+		 */
+		this.otherForms = this.otherForms || null;
+
+		/**
 		 * Forme letter. One-letter version of the forme name. Usually the
 		 * first letter of the forme, but not always - e.g. Rotom-S is
 		 * Rotom-Fan because Rotom-F is Rotom-Frost.
@@ -304,10 +399,23 @@ class Template extends Effect {
 		this.spriteid = this.spriteid || (toId(this.baseSpecies) + (this.baseSpecies !== this.name ? '-' + toId(this.forme) : ''));
 
 		/**
+		 * Abilities
+		 * @type {{0: string, 1?: string, H?: string}}
+		 */
+		this.abilities = this.abilities || {0: ""};
+
+		/**
 		 * Pre-evolution. '' if nothing evolves into this Pokemon.
 		 * @type {string}
 		 */
 		this.prevo = this.prevo || '';
+
+		/**
+		 * Singles Tier. The Pokemon's location in the Smogon tier system.
+		 * Do not use for LC bans.
+		 * @type {string}
+		 */
+		this.tier = this.tier || '';
 
 		/**
 		 * Evolutions. Array because many Pokemon have multiple evolutions.
@@ -341,8 +449,8 @@ class Template extends Effect {
 		 */
 		this.genderRatio = this.genderRatio || (this.gender === 'M' ? {M:1, F:0} :
 			this.gender === 'F' ? {M:0, F:1} :
-			this.gender === 'N' ? {M:0, F:0} :
-			{M:0.5, F:0.5});
+				this.gender === 'N' ? {M:0, F:0} :
+					{M:0.5, F:0.5});
 
 		/**
 		 * Required item. Do not use this directly; see requiredItems.
@@ -395,11 +503,13 @@ class Template extends Effect {
  * @property {?1} bullet - Has no effect on Pokemon with the Ability Bulletproof.
  * @property {?1} charge - The user is unable to make a move between turns.
  * @property {?1} contact - Makes contact.
+ * @property {?1} dance - When used by a Pokemon, other Pokemon with the Ability Dancer can attempt to execute the same move.
  * @property {?1} defrost - Thaws the user if executed successfully while the user is frozen.
  * @property {?1} distance - Can target a Pokemon positioned anywhere in a Triple Battle.
  * @property {?1} gravity - Prevented from being executed or selected during Gravity's effect.
  * @property {?1} heal - Prevented from being executed or selected during Heal Block's effect.
  * @property {?1} mirror - Can be copied by Mirror Move.
+ * @property {?1} mystery - Unknown effect.
  * @property {?1} nonsky - Prevented from being executed or selected in a Sky Battle.
  * @property {?1} powder - Has no effect on Grass-type Pokemon, Pokemon with the Ability Overcoat, and Pokemon holding Safety Goggles.
  * @property {?1} protect - Blocked by Detect, Protect, Spiky Shield, and if not a Status move, King's Shield.
@@ -505,10 +615,9 @@ class Move extends Effect {
 exports.Tools = Tools;
 exports.Effect = Effect;
 exports.PureEffect = PureEffect;
+exports.RuleTable = RuleTable;
 exports.Format = Format;
 exports.Item = Item;
 exports.Template = Template;
 exports.Move = Move;
 exports.Ability = Ability;
-
-/** @typedef {{[k: string]: any}} AnyEffect */

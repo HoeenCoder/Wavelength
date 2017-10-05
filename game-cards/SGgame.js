@@ -92,9 +92,9 @@ class SGgame extends Console.Console {
 		for (let i in player.bag[menu]) {
 			if (player.bag[menu][i] > 0) {
 				if (item && item === i) {
-					output += '<button style="background: #0B9; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">' + SG.getItem(i).name + '</span><span style="float: right">' + player.bag[menu][i] + '</span></button>';
+					output += '<button style="background: #0B9; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">' + WL.getItem(i).name + '</span><span style="float: right">' + player.bag[menu][i] + '</span></button>';
 				} else {
-					output += '<button name="send" value="/sggame bag ' + menu + ', ' + i + '" style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">' + SG.getItem(i).name + '</span><span style="float: right">' + player.bag[menu][i] + '</span></button>';
+					output += '<button name="send" value="/sggame bag ' + menu + ', ' + i + '" style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">' + WL.getItem(i).name + '</span><span style="float: right">' + player.bag[menu][i] + '</span></button>';
 				}
 			}
 		}
@@ -161,7 +161,7 @@ class SGgame extends Console.Console {
 				let bg = user.pc[(box - 1)][count];
 				let species;
 				if (bg) species = (user.pc[(box - 1)][count].split('|')[1] ? user.pc[(box - 1)][count].split('|')[1] : user.pc[(box - 1)][count].split('|')[0]);
-				bg = (bg ? SG.getPokemonIcon(species) : 'background: none');
+				bg = (bg ? WL.getPokemonIcon(species) : 'background: none');
 				output += '<td style="width: 15%; height: 20%;"><button style="' + bg + '; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '"></button></td>';
 				count++;
 			}
@@ -216,7 +216,7 @@ class SGgame extends Console.Console {
 			// Show the users party
 			for (let i = 0; i < 6; i++) {
 				let bg = 'background: none';
-				if (user.party[i]) bg = SG.getPokemonIcon(user.party[i].species);
+				if (user.party[i]) bg = WL.getPokemonIcon(user.party[i].species);
 				output += '<button name="send" value="/sggame pc party|' + box + ', ' + i + '" style="' + bg + '; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px; margin-bottom: 0.4em;"></button> ';
 			}
 		}
@@ -241,7 +241,7 @@ class SGgame extends Console.Console {
 			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
 			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
-			let nextLevel = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel = SG.calcExp(pokemon.species, pokemon.level);
+			let nextLevel = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
 			output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress>';
 			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
@@ -283,7 +283,7 @@ class SGgame extends Console.Console {
 				pmon = player.party[i];
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(' + pmon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -297,7 +297,7 @@ class SGgame extends Console.Console {
 				pmon = player.party[i];
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(' + pmon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -319,7 +319,7 @@ class SGgame extends Console.Console {
 			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
 			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
-			let nextLevel2 = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel2 = SG.calcExp(pokemon.species, pokemon.level);
+			let nextLevel2 = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel2 = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel2) + '<br/>';
 			output += '<progress max="' + (nextLevel2 - curLevel2) + '" value="' + (pokemon.exp - curLevel2) + '"></progress></center></div>';
 			let move2 = null;
@@ -341,7 +341,7 @@ class SGgame extends Console.Console {
 				pmon2 = player.party[i];
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?') + '<br/>' + (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -355,7 +355,7 @@ class SGgame extends Console.Console {
 				pmon2 = player.party[i];
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?') + '<br/>' + (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -377,7 +377,7 @@ class SGgame extends Console.Console {
 			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
 			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
-			let nextLevel3 = SG.calcExp(pokemon.species, pokemon.level + 1), curLevel3 = SG.calcExp(pokemon.species, pokemon.level);
+			let nextLevel3 = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel3 = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel3) + '<br/>';
 			output += '<progress max="' + (nextLevel3 - curLevel3) + '" value="' + (pokemon.exp - curLevel3) + '"></progress>';
 			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
@@ -399,7 +399,7 @@ class SGgame extends Console.Console {
 				mon = player.party[i];
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(' + mon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -413,7 +413,7 @@ class SGgame extends Console.Console {
 				mon = player.party[i];
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + SG.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(' + mon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
@@ -595,7 +595,7 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newObj = new Player(user.userid, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				let newObj = new Player(user.userid, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newObj, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
@@ -610,7 +610,7 @@ exports.commands = {
 		if (user.console.queueAction) return;
 		if (user.console.curPane && user.console.curPane !== 'wild') return;
 		user.console.curPane = 'wild';
-		if (!Users('sgserver')) SG.makeCOM();
+		if (!Users('sgserver')) WL.makeCOM();
 		if (!toId(target)) {
 			for (let key of user.inRooms) {
 				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
@@ -618,8 +618,7 @@ exports.commands = {
 					return;
 				}
 			}
-			if (Monitor.countPokemonGeneration(connection.ip || connection.latestIp, connection)) return false;
-			Users('sgserver').wildTeams[user.userid] = SG.makeWildPokemon(false, SG.teamAverage(Db.players.get(user.userid).party));
+			Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
 			return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
 		} else {
 			if (!Users('sgserver')) return;
@@ -695,7 +694,7 @@ exports.commands = {
 				if (!temp.exists) throw new Error('Unable to evolve into non-existent pokemon: ' + action[2]);
 				if (pokemon.name === pokemon.species) obj.party[Number(action[1])].name = action[2];
 				obj.party[Number(action[1])].species = action[2];
-				obj.party[Number(action[1])].exp = SG.calcExp(action[2], pokemon.level);
+				obj.party[Number(action[1])].exp = WL.calcExp(action[2], pokemon.level);
 				let aSlot = '0';
 				for (let a in temp.abilities) {
 					if (toId(temp.abilities[a]) === obj.party[Number(action[1])].ability) {
@@ -711,7 +710,7 @@ exports.commands = {
 				}
 				if (user.console.shed && obj.party.length < 5 && obj.bag.pokeballs.pokeball > 0) {
 					obj.bag.pokeballs.pokeball--;
-					let shed = {species: 'shedinja', level: pokemon.level, exp: SG.calcExp('shedinja', pokemon.level), ot: obj.userid, ivs: pokemon.ivs, evs: pokemon.evs, nature: pokemon.nature, ability: "Wonder Guard", happiness: 70, pokeball: pokemon.pokeball};
+					let shed = {species: 'shedinja', level: pokemon.level, exp: WL.calcExp('shedinja', pokemon.level), ot: obj.userid, ivs: pokemon.ivs, evs: pokemon.evs, nature: pokemon.nature, ability: "Wonder Guard", happiness: 70, pokeball: pokemon.pokeball};
 					if (shed.evs) shed.evs.hp = 0;
 					if (pokemon.shiny) shed.shiny = true;
 					shed.moves = [];
@@ -773,7 +772,7 @@ exports.commands = {
 			let data = {};
 			let player = Db.players.get(user.userid);
 			if (!player) return this.errorReplay("You need to advance farther in the game first!");
-			let item = SG.getItem(target[1]);
+			let item = WL.getItem(target[1]);
 			if (target[0] && !player.bag[target[0]]) target[0] = 'items';
 			if (target[1] && player.bag[target[0]][target[1]] && !target[2]) {
 				if (!item) return this.parse('/sggame bag ' + target[0]);
@@ -809,7 +808,7 @@ exports.commands = {
 					if (!Dex.getItem(target[1]).exists && !item.use.triggerEvo) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 					let old = mon.item;
 					if (old) {
-						let slot = player.bag[SG.getItem(old).slot];
+						let slot = player.bag[WL.getItem(old).slot];
 						if (!slot[old]) slot[old] = 0;
 						slot[old]++;
 					}
@@ -841,7 +840,7 @@ exports.commands = {
 								let lvl = olvl += item.use.level;
 								if (lvl > 100) lvl = 100;
 								player.party[target[3]].level = lvl;
-								player.party[target[3]].exp = SG.calcExp(player.party[target[3]].species, lvl);
+								player.party[target[3]].exp = WL.calcExp(player.party[target[3]].species, lvl);
 								user.console.queue.push('text|' + player.party[target[3]].name + ' was elevated to level ' + player.party[target[3]].level + '!');
 								// New Moves
 								let baseSpecies = null;
@@ -861,7 +860,7 @@ exports.commands = {
 									}
 								}
 								// Evolution
-								let evos = SG.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations
+								let evos = WL.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations
 								if (evos) {
 									evos = evos.split('|');
 									if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
@@ -870,7 +869,7 @@ exports.commands = {
 									}
 									evos = evos[0];
 									//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
-									let take = SG.getEvoItem(evos);
+									let take = WL.getEvoItem(evos);
 									user.console.queue.push("evo|" + target[3] + "|" + evos + "|" + (take || ''));
 									canReturn = false;
 								}
@@ -891,7 +890,7 @@ exports.commands = {
 							// Evolution
 							// Hacky trigger change for trade evos till we add trading
 							let trigger = (item.id === 'linkcable' ? "trade" : "item");
-							let evos = SG.canEvolve(player.party[target[3]], trigger, user.userid, {location: null, item: item.id}); // TODO locations
+							let evos = WL.canEvolve(player.party[target[3]], trigger, user.userid, {location: null, item: item.id}); // TODO locations
 							if (evos) {
 								if (trigger === 'trade') {
 									let obj = Db.players.get(user.userid);
@@ -905,7 +904,7 @@ exports.commands = {
 								}
 								evos = evos[0];
 								//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
-								let take = SG.getEvoItem(evos);
+								let take = WL.getEvoItem(evos);
 								user.console.queue.push("evo|" + target[3] + "|" + evos + "|" + (take || ''));
 								let r = user.console.next(true);
 								return user.console.update((r[0] || user.console.curScreen[0]), (r[1] || user.console.curScreen[1]), (r[2] || user.console.curScreen[2]));
@@ -958,7 +957,7 @@ exports.commands = {
 			}
 			if (target[0] === 'take') {
 				if (!player.party[target[1]]) return this.parse('/sggame pokemon');
-				let item = SG.getItem(player.party[target[1]].item);
+				let item = WL.getItem(player.party[target[1]].item);
 				if (!item) return this.parse('/sggame pokemon summary, ' + target[1]);
 				if (!player.bag[item.slot][item.id]) player.bag[item.slot][item.id] = 0;
 				player.bag[item.slot][item.id]++;
@@ -1102,7 +1101,7 @@ exports.commands = {
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Dex.fastUnpackTeam(SG.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			let obj = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			Db.players.set(user.userid, obj);
 			user.console.lastNextAction = null;
 			if (user.lastCommand) delete user.lastCommand;

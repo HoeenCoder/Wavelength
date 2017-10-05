@@ -30,7 +30,7 @@ exports.BattleScripts = {
 
 				// On Gen 2 we check modifications here from moves and items
 				let statTable = {atk:'Atk', def:'Def', spa:'SpA', spd:'SpD', spe:'Spe'};
-				stat = this.battle.runEvent('Modify' + statTable[statName], this, null, null, stat);
+				stat = this.battle.runEvent('Modify' + statTable[statName], this, null, this.activeMove, stat);
 			}
 
 			if (!unmodified) {
@@ -359,7 +359,13 @@ exports.BattleScripts = {
 
 		// Happens after crit calculation
 		if (basePower) {
-			basePower = this.runEvent('BasePower', pokemon, target, move, basePower, true);
+			if (move.isSelfHit) {
+				move.type = move.baseMoveType;
+				basePower = this.runEvent('BasePower', pokemon, target, move, basePower, true);
+				move.type = '???';
+			} else {
+				basePower = this.runEvent('BasePower', pokemon, target, move, basePower, true);
+			}
 			if (move.basePowerModifier) {
 				basePower *= move.basePowerModifier;
 			}
@@ -494,11 +500,6 @@ exports.BattleScripts = {
 				this.debug('damage event failed');
 				return damage;
 			}
-			if (target.illusion && effect && effect.effectType === 'Move') {
-				this.debug('illusion cleared');
-				target.illusion = null;
-				this.add('replace', target, target.getDetails);
-			}
 		}
 		if (damage !== 0) damage = this.clampIntRange(damage, 1);
 		damage = target.damage(damage, source, effect);
@@ -533,313 +534,5 @@ exports.BattleScripts = {
 		}
 
 		return damage;
-	},
-	randomTeam: function (side) {
-		let pokemonLeft = 0;
-		let pokemon = [];
-
-		let handicapMons = {'magikarp':1, 'weedle':1, 'kakuna':1, 'caterpie':1, 'metapod':1, 'ditto':1};
-		let nuTiers = {'UU':1, 'BL':1, 'NFE':1, 'LC':1};
-		let uuTiers = {'NFE':1, 'UU':1, 'BL':1};
-
-		let n = 1;
-		let pokemonPool = [];
-		for (let id in this.data.FormatsData) {
-			// FIXME: Not ES-compliant
-			if (n++ > 251 || !this.data.FormatsData[id].randomBattleMoves) continue;
-			pokemonPool.push(id);
-		}
-
-		// Setup storage.
-		let typeCount = {};
-		let uberCount = 0;
-		let nuCount = 0;
-		let hasShitmon = false;
-
-		while (pokemonPool.length && pokemonLeft < 6) {
-			let template = this.getTemplate(this.sampleNoReplace(pokemonPool));
-			if (!template.exists) continue;
-
-			// Bias the tiers so you get less shitmons and only one of the two Ubers.
-			// If you have a shitmon, you're covered in OUs and Ubers if possible
-			let tier = template.tier;
-			switch (tier) {
-			case 'LC':
-				if (nuCount > 1 || hasShitmon) continue;
-				break;
-			case 'Uber':
-				// Unless you have one of the worst mons, in that case we allow luck to give you all Ubers.
-				if (uberCount >= 1 && !hasShitmon) continue;
-				break;
-			default:
-				if (uuTiers[tier] && (hasShitmon || (nuCount > 2 && this.random(2) >= 1))) continue;
-			}
-
-			// Limit 2 of any type. Diversity and minor weakness count.
-			// The second of a same type has halved chance of being added.
-			let types = template.types;
-			let skip = false;
-			for (let t = 0; t < types.length; t++) {
-				if (typeCount[types[t]] > 1 || (typeCount[types[t]] === 1 && this.random(2) >= 1)) {
-					skip = true;
-					break;
-				}
-			}
-			if (skip) continue;
-
-			// The set passes the limitations.
-			let set = this.randomSet(template, pokemon.length);
-			pokemon.push(set);
-
-			// Now let's increase the counters. First, the Pokémon left.
-			pokemonLeft++;
-
-			// Type counter.
-			for (let t = 0; t < types.length; t++) {
-				if (typeCount[types[t]]) {
-					typeCount[types[t]]++;
-				} else {
-					typeCount[types[t]] = 1;
-				}
-			}
-
-			// Increment type bias counters.
-			if (tier === 'Uber') {
-				uberCount++;
-			} else if (nuTiers[tier]) {
-				nuCount++;
-			}
-
-			// Is it a shitmon?
-			if (handicapMons[template.speciesid]) hasShitmon = true;
-		}
-
-		return pokemon;
-	},
-	// Random set generation for Gen 2 Random Battles.
-	randomSet: function (template, slot) {
-		if (slot === undefined) slot = 1;
-		template = this.getTemplate(template);
-		if (!template.exists) template = this.getTemplate('unown');
-
-		let movePool = template.randomBattleMoves.slice();
-		let moves = [];
-		let hasType = {};
-		hasType[template.types[0]] = true;
-		if (template.types[1]) hasType[template.types[1]] = true;
-		let hasMove = {};
-		let counter = {};
-		let setupType = '';
-		let item = 'leftovers';
-		let ivs = {hp: 30, atk: 30, def: 30, spa: 30, spd: 30, spe: 30};
-
-		// Moves that boost Attack:
-		let PhysicalSetup = {
-			swordsdance:1, sharpen:1,
-		};
-		// Moves which boost Special Attack:
-		let SpecialSetup = {
-			growth:1,
-		};
-
-		do {
-			// Keep track of all moves we have:
-			hasMove = {};
-			for (let k = 0; k < moves.length; k++) {
-				if (moves[k].substr(0, 11) === 'hiddenpower') {
-					hasMove['hiddenpower'] = true;
-				} else {
-					hasMove[moves[k]] = true;
-				}
-			}
-
-			// Choose next 4 moves from learnset/viable moves and add them to moves list:
-			while (moves.length < 4 && movePool.length) {
-				let moveid = this.sampleNoReplace(movePool);
-				if (moveid.substr(0, 11) === 'hiddenpower') {
-					if (hasMove['hiddenpower']) continue;
-					hasMove['hiddenpower'] = true;
-				} else {
-					hasMove[moveid] = true;
-				}
-				moves.push(moveid);
-			}
-
-			counter = {Physical: 0, Special: 0, Status: 0, physicalsetup: 0, specialsetup: 0};
-			for (let k = 0; k < moves.length; k++) {
-				let move = this.getMove(moves[k]);
-				let moveid = move.id;
-				if (!move.damage && !move.damageCallback) {
-					counter[move.category]++;
-				}
-				if (PhysicalSetup[moveid]) {
-					counter['physicalsetup']++;
-				}
-				if (SpecialSetup[moveid]) {
-					counter['specialsetup']++;
-				}
-			}
-
-			if (counter['specialsetup']) {
-				setupType = 'Special';
-			} else if (counter['physicalsetup']) {
-				setupType = 'Physical';
-			}
-
-			for (let k = 0; k < moves.length; k++) {
-				let moveid = moves[k];
-				let move = this.getMove(moveid);
-				let rejected = false;
-				if (moveid.substr(0, 11) === 'hiddenpower') {
-					// Check for hidden power DVs
-					let HPdvs = this.getType(move.type).HPdvs;
-					for (let dv in HPdvs) {
-						ivs[dv] = HPdvs[dv] * 2;
-					}
-					moveid = 'hiddenpower';
-				}
-				if (!template.essentialMove || moveid !== template.essentialMove) {
-					switch (moveid) {
-					// bad after setup
-					case 'seismictoss': case 'nightshade':
-						if (setupType) rejected = true;
-						break;
-					// bit redundant to have both
-					case 'flamethrower':
-						if (hasMove['fireblast']) rejected = true;
-						break;
-					case 'fireblast':
-						if (hasMove['flamethrower']) rejected = true;
-						break;
-					case 'icebeam':
-						if (hasMove['blizzard']) rejected = true;
-						break;
-					// Hydropump and surf are both valid options, just avoid one with eachother.
-					case 'hydropump':
-						if (hasMove['surf']) rejected = true;
-						break;
-					case 'surf':
-						if (hasMove['hydropump']) rejected = true;
-						break;
-					case 'petaldance': case 'solarbeam':
-						if (hasMove['megadrain'] || hasMove['razorleaf']) rejected = true;
-						break;
-					case 'megadrain':
-						if (hasMove['razorleaf']) rejected = true;
-						break;
-					case 'thunder':
-						if (hasMove['thunderbolt']) rejected = true;
-						break;
-					case 'thunderbolt':
-						if (hasMove['thunder']) rejected = true;
-						break;
-					case 'bonemerang':
-						if (hasMove['earthquake']) rejected = true;
-						break;
-					case 'rest':
-						if (hasMove['recover'] || hasMove['softboiled'] || hasMove['roar']) rejected = true;
-						break;
-					case 'softboiled':
-						if (hasMove['recover']) rejected = true;
-						break;
-					case 'sharpen':
-					case 'swordsdance':
-						if (counter['Special'] > counter['Physical'] || hasMove['slash'] || !counter['Physical'] || hasMove['growth']) rejected = true;
-						break;
-					case 'growth':
-						if (counter['Special'] < counter['Physical'] || hasMove['swordsdance'] || hasMove['amnesia']) rejected = true;
-						break;
-					case 'doubleedge':
-						if (hasMove['bodyslam']) rejected = true;
-						break;
-					case 'mimic':
-						if (hasMove['mirrormove']) rejected = true;
-						break;
-					case 'superfang':
-						if (hasMove['bodyslam']) rejected = true;
-						break;
-					case 'rockslide':
-						if (hasMove['earthquake'] && hasMove['bodyslam'] && hasMove['hyperbeam']) rejected = true;
-						break;
-					case 'bodyslam':
-						if (hasMove['thunderwave']) rejected = true;
-						break;
-					case 'megakick':
-						if (hasMove['bodyslam']) rejected = true;
-						break;
-					case 'eggbomb':
-						if (hasMove['hyperbeam']) rejected = true;
-						break;
-					case 'triattack':
-						if (hasMove['doubleedge']) rejected = true;
-						break;
-					case 'supersonic':
-						if (hasMove['confuseray']) rejected = true;
-						break;
-					case 'poisonpowder':
-						if (hasMove['toxic'] || counter['Status'] > 1) rejected = true;
-						break;
-					case 'stunspore':
-						if (hasMove['sleeppowder'] || counter['Status'] > 1) rejected = true;
-						break;
-					case 'sleeppowder':
-						if (hasMove['stunspore'] || counter['Status'] > 2) rejected = true;
-						break;
-					case 'toxic':
-						if (hasMove['sleeppowder'] || hasMove['stunspore'] || counter['Status'] > 1) rejected = true;
-						break;
-					} // End of switch for moveid
-				}
-				if (rejected && movePool.length) {
-					moves.splice(k, 1);
-					break;
-				}
-				counter[move.category]++;
-			} // End of for
-		} while (moves.length < 4 && movePool.length);
-
-		// Add specific items.
-		switch (template.species) {
-		case 'Cubone':
-		case 'Marowak':
-			item = 'thickclub';
-			ivs.atk = 26;
-			break;
-		case 'Pikachu':
-			item = 'lightball';
-			break;
-		case 'Ditto':
-			item = 'metalpowder';
-			break;
-		}
-
-		let levelScale = {
-			LC: 96,
-			NFE: 90,
-			UU: 85,
-			BL: 83,
-			OU: 79,
-			Uber: 74,
-		};
-		// Hollistic judgment.
-		let customScale = {
-			Caterpie: 99, Kakuna: 99, Magikarp: 99, Metapod: 99, Weedle: 99, Pichu: 99, Smoochum: 99,
-			Clefairy: 95, "Farfetch'd": 99, Igglybuff: 99, Jigglypuff: 99, Ditto: 99, Mewtwo: 70,
-			Dragonite: 85, Cloyster: 83, Staryu: 90,
-		};
-		let level = levelScale[template.tier] || 90;
-		if (customScale[template.name]) level = customScale[template.name];
-
-		return {
-			name: template.name,
-			moves: moves,
-			ability: 'None',
-			evs: {hp: 255, atk: 255, def: 255, spa: 255, spd: 255, spe: 255},
-			ivs: ivs,
-			item: item,
-			level: level,
-			shiny: false,
-			gender: template.gender ? template.gender : 'M',
-		};
 	},
 };
