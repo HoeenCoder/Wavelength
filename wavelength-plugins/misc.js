@@ -20,7 +20,7 @@ try {
 
 function getMonData(target) {
 	let returnData = null;
-	if (!monData) return  'Data not found';
+	if (!monData) return 'Data not found';
 	monData.forEach(function (data) {
 		if (toId(data.split("\n")[0].split(" - ")[0] || " ") === target) {
 			returnData = data.split("\n").map(function (line) {
@@ -543,7 +543,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox("<a href=\"https://discord.gg/cwfAqdN\">The Official Wavelength Discord</a>");
 	},
-	
+
 	ac: 'autoconfirm',
 	autoconfirm: function (target, room, user) {
 		if (!this.can('lockdown')) return;
@@ -560,6 +560,7 @@ exports.commands = {
 				break;
 			case 4:
 				this.errorReply(`${tarUser.name} is already set as autoconfirmed on this server.`);
+				break;
 			case 5:
 			case 6:
 				this.errorReply(`${tarUser.name} is ${(curType === 5 ? `permalocked on` : `permabanned from`)} this server and cannot be given autonconfirmed status.`);
