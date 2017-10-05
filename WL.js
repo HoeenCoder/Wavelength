@@ -124,7 +124,7 @@ exports.WL = {
 	* @param {String} type The type of action to take. (Currently supporting: "random")
 	* @return {Boolean}
 	*/
-	decideCOM: function (battle, side, type) {
+	/*decideCOM: function (battle, side, type) {
 		// Only works within a battle process
 		if (!battle || !side) return false;
 		if (!type) type = 'random';
@@ -154,7 +154,7 @@ exports.WL = {
 			}
 			//break;
 		}
-	},
+	},*/
 	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
 		if (!lvlBase) lvlBase = 10;
@@ -311,7 +311,7 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
-	throwPokeball: function (ball, pokemon) {
+	/*throwPokeball: function (ball, pokemon) {
 		if (!pokemon || !pokemon.species) return 0;
 		ball = toId(ball);
 		let ballRates = {pokeball: 1, greatball: 1.5, ultraball: 2};
@@ -350,7 +350,7 @@ exports.WL = {
 			if (Math.ceil(Math.random() * 65535) >= b) return i;
 		}
 		return true;
-	},
+	},*/
 	gameData: gameData,
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
@@ -398,7 +398,7 @@ exports.WL = {
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
 	},
-	getGain: function (userid, pokemon, foe, particpated) {
+	/*getGain: function (userid, pokemon, foe, particpated) {
 		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1), b = this.getBaseExp(foe.species);
 		return (((a * b * L) / (5 * s)) * (Math.pow((2 * L + 10), 2.5) / Math.pow((L + Lp + 10), 2.5)) + 1) * t * e * p;
 	},
@@ -415,8 +415,8 @@ exports.WL = {
 		}
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
-	},
-	getEvGain: function (pokemon) {
+	},*/
+	/*getEvGain: function (pokemon) {
 		if (!this.gameData[toId(pokemon.species)]) throw new Error(pokemon.species + " not found in pokemon.json");
 		if (this.gameData[toId(pokemon.species)].evDrops) return this.gameData[toId(pokemon.species)].evDrops;
 		if (!this.gameData[toId(pokemon.species)].inherit) throw new Error('Unable to find evDrops for ' + pokemon.species);
@@ -428,7 +428,7 @@ exports.WL = {
 		}
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
-	},
+	},*/
 	getEvoData: function (pokemon) {
 		pokemon = (pokemon.species ? toId(pokemon.species) : pokemon);
 		if (!this.gameData[toId(pokemon)]) throw new Error(pokemon + " not found in pokemon.json");
@@ -569,7 +569,7 @@ exports.WL = {
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
 	},
-	onFaint: function (userid, battle, faintData) {
+	/*onFaint: function (userid, battle, faintData) {
 		userid = toId(userid);
 		let out = userid + "]";
 		let active = null;
@@ -631,7 +631,7 @@ exports.WL = {
 			battle.add('');
 		}
 		return out;
-	},
+	},*/
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {
 		let base = pokemon;

@@ -9,7 +9,7 @@
 const Dex = require('./dex');
 const PRNG = require('./prng');
 const Sim = require('./');
-const WL = require('../WL.js').WL;
+const WL = require('./WL.js').WL;
 
 class Battle extends Dex.ModdedDex {
 	/**
