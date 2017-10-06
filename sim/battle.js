@@ -1392,7 +1392,7 @@ class Battle extends Dex.ModdedDex {
 
 		this.makeRequest('move');
 
-		if (Dex.getFormat(this.format).isWildEncounter) {
+		if (this.getFormat().isWildEncounter) {
 			let balls = ['pokeball', 'greatball', 'ultraball', 'masterball'];
 			let buttons = '';
 			for (let i = 0; i < balls.length; i++) {
@@ -1402,8 +1402,9 @@ class Battle extends Dex.ModdedDex {
 			this.add('');
 		 }
 
-		if (this.p1.name === 'SG Server' && Dex.getFormat(this.format).isWildEncounter) {
-			WL.decideCOM(this, "p1", "random");
+		// TODO support COM on both sides :p
+		if ((this.p1.name === 'SG Server' || this.p2.name === 'SG Server') && this.getFormat().isWildEncounter) {
+			WL.decideCOM(this, (this.p1.name === 'SG Server' ? "p1" : "p2"), "random");
 		}
 	}
 	start() {
@@ -2032,7 +2033,7 @@ class Battle extends Dex.ModdedDex {
 				faintData.target.isActive = false;
 				faintData.target.isStarted = false;
 				faintData.target.side.faintedThisTurn = true;
-				if (Dex.getFormat(this.format).useSGgame && !Dex.getFormat(this.format).noExp && ((faintData.source && faintData.source.side.name !== 'SG Server') || faintData.target.side.name === 'SG Server')) {
+				if (this.getFormat().useSGgame && !this.getFormat().noExp && ((faintData.source && faintData.source.side.name !== 'SG Server') || faintData.target.side.name === 'SG Server')) {
 					// Award Experience
 					// If the source of the KO is a falsey value, use the current foe for calculating EXP. This can happen with things such as sandstorm.
 					if (!faintData.source) faintData.source = this[faintData.target.side.foe.id].pokemon[0];
@@ -2328,6 +2329,7 @@ class Battle extends Dex.ModdedDex {
 				return true;
 			} else {
 				this.add('message', msgs[result]);
+				this.add('');
 			}
 			break;
 
@@ -2755,7 +2757,7 @@ class Battle extends Dex.ModdedDex {
 			let raw2 = data.slice(2).join('|').replace(/\f/g, '\n').split('|');
 			// [userid, itemid, party slot #, move slot (0-3) for PP]
 			let userid = toId(raw2[0]);
-			if (Dex.getFormat(this.format).useSGgame && Dex.getFormat(this.format).allowBag) {
+			if (this.getFormat().useSGgame && this.getFormat().allowBag) {
 				let side = (toId(this.p1.name) === userid ? "p1" : "p2");
 				let item = WL.getItem(raw2[1]);
 				let mon = null;

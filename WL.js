@@ -118,43 +118,6 @@ exports.WL = {
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
-	/**
-	* @param {Object} battle The battle object.
-	* @param {String} side The side that the COM is playing on. ("p1" or "p2")
-	* @param {String} type The type of action to take. (Currently supporting: "random")
-	* @return {Boolean}
-	*/
-	/*decideCOM: function (battle, side, type) {
-		// Only works within a battle process
-		if (!battle || !side) return false;
-		if (!type) type = 'random';
-		if (battle.ended) return false;
-		switch (type) {
-		case 'random':
-			if (battle[side].active[0].fainted) {
-				let choices = Dex.shuffle(battle[side].pokemon.slice(0));
-				for (let i = 0; i < choices.length; i++) {
-					if (choices[i].fainted) continue;
-					let idx = battle[side].pokemon.indexOf(choices[i]);
-					let data = [battle.id, 'choose', side];
-					data.push('switch ' + (idx + 1));
-					//data.push(battle.turn);
-					battle.receive(data);
-					return true;
-				}
-				//If it reaches here, it means were out of pokemon
-				return false;
-			} else {
-				let choice = Math.floor(Math.random() * battle[side].active[0].moves.length);
-				let data = [battle.id, 'choose', side];
-				data.push('move ' + (choice + 1));
-				//data.push(battle.turn);
-				battle.receive(data);
-				return true;
-			}
-			//break;
-		}
-	},*/
 	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
 		if (!lvlBase) lvlBase = 10;
@@ -311,46 +274,6 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
-	/*throwPokeball: function (ball, pokemon) {
-		if (!pokemon || !pokemon.species) return 0;
-		ball = toId(ball);
-		let ballRates = {pokeball: 1, greatball: 1.5, ultraball: 2};
-		if (ball === 'masterball') return true;
-		if (!ball || !(ball in ballRates)) ball = 'pokeball';
-		let statusBonus = 1;
-		switch (pokemon.status) {
-		case 'slp':
-		case 'frz':
-			statusBonus = 2;
-			break;
-		case 'par':
-		case 'brn':
-		case 'psn':
-		case 'tox':
-			statusBonus = 1.5;
-			break;
-		default:
-			statusBonus = 1;
-		}
-		let rate;
-		try {
-			rate = this.gameData[toId(pokemon.species)].rate;
-		} catch (e) {
-			if (this.gameData[toId(pokemon.baseSpecies)]) {
-				rate = this.gameData[toId(pokemon.baseSpecies)].rate;
-			} else {
-				console.log('Catch rate not found for ' + pokemon.species);
-				rate = 150;
-			}
-		}
-		let a = (((3 * pokemon.maxhp - 2 * pokemon.hp) * rate * ballRates[ball]) / (3 * pokemon.maxhp)) * statusBonus;
-		if (a >= 255) return true;
-		let b = 65536 / Math.pow(255 / a, 0.1875);
-		for (let i = 0; i < 4; i++) {
-			if (Math.ceil(Math.random() * 65535) >= b) return i;
-		}
-		return true;
-	},*/
 	gameData: gameData,
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
@@ -398,37 +321,6 @@ exports.WL = {
 		// If we reach here its an error
 		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
 	},
-	/*getGain: function (userid, pokemon, foe, particpated) {
-		let a = 1, t = (pokemon.ot === userid ? 1 : 1.5), e = (toId(pokemon.item) === 'luckyegg' ? 1.5 : 1), L = foe.level, Lp = pokemon.level, p = 1, s = (particpated ? 2 : 1), b = this.getBaseExp(foe.species);
-		return (((a * b * L) / (5 * s)) * (Math.pow((2 * L + 10), 2.5) / Math.pow((L + Lp + 10), 2.5)) + 1) * t * e * p;
-	},
-	getBaseExp: function (pokemon) {
-		pokemon = toId(pokemon);
-		if (!this.gameData[pokemon]) throw new Error(pokemon + " not found in pokemon.json");
-		if (this.gameData[pokemon].baseExp) return this.gameData[pokemon].baseExp;
-		if (!this.gameData[pokemon].inherit) throw new Error('Unable to find expType for ' + pokemon);
-		let curData = null;
-		for (let depth = 0; depth < 8; depth++) {
-			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon);
-			curData = this.gameData[(this.gameData[(curData ? curData.id : pokemon)].inherit)];
-			if (curData.baseExp) return curData.baseExp;
-		}
-		// If we reach here its an error
-		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
-	},*/
-	/*getEvGain: function (pokemon) {
-		if (!this.gameData[toId(pokemon.species)]) throw new Error(pokemon.species + " not found in pokemon.json");
-		if (this.gameData[toId(pokemon.species)].evDrops) return this.gameData[toId(pokemon.species)].evDrops;
-		if (!this.gameData[toId(pokemon.species)].inherit) throw new Error('Unable to find evDrops for ' + pokemon.species);
-		let curData = null;
-		for (let depth = 0; depth < 8; depth++) {
-			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon.species);
-			curData = this.gameData[(this.gameData[(curData ? curData.id : toId(pokemon.species))].inherit)];
-			if (curData.evDrops) return curData.evDrops;
-		}
-		// If we reach here its an error
-		throw new Error('MAXIMUM STACK LIMIT EXCEEDED');
-	},*/
 	getEvoData: function (pokemon) {
 		pokemon = (pokemon.species ? toId(pokemon.species) : pokemon);
 		if (!this.gameData[toId(pokemon)]) throw new Error(pokemon + " not found in pokemon.json");
@@ -461,7 +353,7 @@ exports.WL = {
 		if (!evoData || !evoData.evolvesTo) return false;
 		let evos = evoData.evolvesTo.split('|');
 		let time = new Date();
-		time = ((time.getHours >= 6 && time.getHours < 18) ? "day" : "night");
+		time = ((time.getHours() >= 6 && time.getHours() < 18) ? "day" : "night");
 		let valid = [];
 		for (let e = 0; e < evos.length; e++) {
 			evoData = this.getEvoData(evos[e]);
@@ -569,69 +461,6 @@ exports.WL = {
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
 	},
-	/*onFaint: function (userid, battle, faintData) {
-		userid = toId(userid);
-		let out = userid + "]";
-		let active = null;
-		let exp = faintData.source.side.battled[faintData.target.slot].map(mon => {
-			let pkmn = null;
-			for (let i = 0; i < faintData.source.side.pokemon.length; i++) {
-				if (faintData.source.side.pokemon[i].slot === mon) {
-					pkmn = faintData.source.side.pokemon[i];
-					break;
-				}
-			}
-			if (pkmn.slot !== faintData.source.slot) {
-				return {exp: this.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn};
-			} else {
-				active = {exp: this.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn};
-				return null;
-			}
-		});
-		exp.unshift(active);
-		while (exp.length) {
-			let cur = exp.shift();
-			if (!cur) continue;
-			let mon = cur.mon;
-			if (mon.fainted) continue;
-			// EXP
-			battle.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
-			out += mon.slot + "|" + cur.exp;
-			// Level Ups
-			let levelUps = 0;
-			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1))) {
-				battle.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
-				battle[faintData.source.side.id].pokemon[mon.slot].level++;
-				levelUps++;
-			}
-			battle[faintData.source.side.id].pokemon[mon.slot].exp += cur.exp;
-			out += "|" + levelUps;
-			// New Evs
-			let newEvs = this.getEvGain(faintData.target);
-			let totalEvs = 0, newCount = 0;
-			//totalEvs = 0, newCount = 0; // eslint-disable-line
-			for (let ev in newEvs) {
-				if (mon.set.evs[ev] >= 255) newEvs[ev] = 0;
-				totalEvs += mon.set.evs[ev];
-				newCount += newEvs[ev];
-			}
-			if (totalEvs >= 510) {
-				newEvs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
-			} else if (newCount + totalEvs > 510) {
-				// Apply as many evs as possible
-				for (let ev in newEvs) {
-					if (mon.set.evs[ev] + newEvs[ev] > 255 || totalEvs >= 510) newEvs[ev] = 0;
-					totalEvs += newEvs[ev];
-				}
-			}
-			out += "|";
-			for (let ev in newEvs) {
-				out += newEvs[ev] + (ev === 'spe' ? ']' : ',');
-			}
-			battle.add('');
-		}
-		return out;
-	},*/
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {
 		let base = pokemon;
