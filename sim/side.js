@@ -602,6 +602,10 @@ class Side {
 				if (this.active[0].volatiles['lockedmove']) return this.emitChoiceError(`You can't throw a pokeball right now.`);
 				if (this.foe.active[0].species === 'missingno') return this.emitChoiceError(`You can't catch an error. Contact an Administrator if you haven't already.`);
 				this.choosePokeball(data);
+			case 'useItem':
+				if (!this.battle.getFormat().useSGgame || !this.battle.getFormat().allowBag) return this.emitChoiceError(`You can't use an item from your bag here.`);
+				this.chooseUseItem(data);
+				break;
 			case 'default':
 				this.autoChoose();
 				break;
@@ -704,6 +708,29 @@ class Side {
 			ball: ball,
 			side: this,
 			target: this.foe.active[0],
+		});
+		
+		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
+		return true;
+	}
+	/**
+	 * Use an item from your bag
+	 */
+	chooseUseItem(data) {
+		data = data.split(" ");
+		let target = null;
+		for (let i = 0; i < this.pokemon.length; i++) {
+			if (this.pokemon[i].slot === parseInt(data[1], 10)) {
+				target = this.pokemon[i];
+				break;
+			}
+		}
+		this.choice.actions.push({
+			choice: 'useItem',
+			side: this,
+			item: WL.getItem(data[0]),
+			target: target || this.active[0], // TODO
+			move: parseInt(data[2], 10) || null,
 		});
 		
 		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;

@@ -828,8 +828,9 @@ exports.commands = {
 						}
 						if (item.use.noBattle) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 						if (item.use.isBall) return Chat.parse("/throwpokeball " + item.id, inBattle, user, user.connections[0]); // Shouldn't happen, but just in case
-						let toSend = user.userid + "|" + item.id + "|" + target[3] + (target[4] ? "|" + target[4] : '');
-						inBattle.battle.send('useitem', toSend.replace(/\n/g, '\f'));
+						inBattle.battle.choose(user, "useItem " + item.id + " " + target[3] + (target[4] ? " " + target[4] : ""));
+						//let toSend = user.userid + "|" + item.id + "|" + target[3] + (target[4] ? "|" + target[4] : '');
+						//inBattle.battle.send('useitem', toSend.replace(/\n/g, '\f'));
 					} else {
 						if (item.use.onlyBattle) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 						let hadEffect = false;

@@ -2084,6 +2084,7 @@ class Battle extends Dex.ModdedDex {
 				'beforeTurn': 100,
 				'beforeTurnMove': 99,
 				'pokeball': 98,
+				'useItem': 97,
 				'switch': 7,
 				'runUnnerve': 7.3,
 				'runSwitch': 7.2,
@@ -2329,6 +2330,71 @@ class Battle extends Dex.ModdedDex {
 				return true;
 			} else {
 				this.add('message', msgs[result]);
+				this.add('');
+			}
+			break;
+			
+		case 'useItem':
+			let hadEffect = false;
+			if (decision.item.use.healHP) {
+				let heal = 0;
+				if (typeof decision.item.use.healHP === 'string' && decision.item.use.healHP !== "true") {
+					heal = decision.target.maxhp * (Number(decision.item.use.healHP.substring(0, decision.item.use.healHP.length - 1)) * 0.01)
+				} else if (decision.item.use.healHP === "true") {
+					heal = decision.target.maxhp - decision.target.hp;
+				} else {
+					heal = decision.item.use.healHP;
+				}
+				if (decision.target.hp + heal > decision.target.maxhp) heal = decision.target.maxhp - decision.target.hp;
+				if (heal > 0) {
+					this.heal(heal, decision.target, null, {fullname: decision.item.name});
+					hadEffect = true;
+				}
+			}
+			if (decision.item.use.healStatus) {
+				if (decision.target.status || decision.target.volatiles['confusion']) {
+					if (decision.item.use.healStatus === "true") {
+						decision.target.cureStatus();
+						decision.target.removeVolatile('confusion');
+						hadEffect = true;
+					} else {
+						let canHeal = decision.item.use.healStatus.split('|');
+						if (canHeal.indexOf(decision.target.status) > -1) {
+							decision.target.cureStatus();
+							hadEffect = true;
+						}
+						if (canHeal.indexOf('confusion') > -1 && ('confusion' in decision.target.volatiles)) {
+							decision.target.removeVolatile('confusion');
+							hadEffect = true;
+						}
+					}
+				}
+			}
+			if (decision.item.use.healPP) {
+				let move = decision.target.moveset[decision.move];
+				if (move.pp < move.maxpp) {
+					move.pp += item.use.healPP;
+					if (move.pp > move.maxpp) move.pp = move.maxpp;
+					hadEffect = true;
+					this.add('', (decision.target.name || decision.target.species) + "'s " + move.id + " had its PP restored by " + decision.item.use.healPP + "!");
+				}
+			}
+			if (decision.item.use.revive) {
+				if (decision.target.fainted) {
+					delete decision.target.fainted;
+					delete decision.target.faintQueued;
+					decision.target.hp = (decision.item.use.revive === "true" || decision.item.use.revive === 100 ? decision.target.maxhp : (Math.round(decision.target.maxhp * decision.item.use.revive)));
+					if (decision.item.use.revive === "true") {
+						for (let m in mon.moveset) {
+							mon.moveset[m].pp = mon.moveset[m].maxpp;
+						}
+					}
+					hadEffect = true;
+				}
+			}
+			if (hadEffect) {
+				this.add('message', decision.side.name + " used a " + decision.item.name + "!");
+				this.send('takeitem', toId(decision.side.name) + "|" + decision.item.id + "|" + decision.target.slot);
 				this.add('');
 			}
 			break;
@@ -2750,85 +2816,6 @@ class Battle extends Dex.ModdedDex {
 				this.add('', '<<< error: ' + e.message);
 			}
 			/* eslint-enable no-eval, no-unused-vars */
-			break;
-		}
-
-		case 'useitem': {
-			let raw2 = data.slice(2).join('|').replace(/\f/g, '\n').split('|');
-			// [userid, itemid, party slot #, move slot (0-3) for PP]
-			let userid = toId(raw2[0]);
-			if (this.getFormat().useSGgame && this.getFormat().allowBag) {
-				let side = (toId(this.p1.name) === userid ? "p1" : "p2");
-				let item = WL.getItem(raw2[1]);
-				let mon = null;
-				for (let p in this[side].pokemon) {
-					if (this[side].pokemon[p].slot === parseInt(raw2[2])) mon = this[side].pokemon[p];
-				}
-				if (!mon) break;
-				let hadEffect = false;
-				if (item.use.healHP) {
-					let heal = 0;
-					if (typeof item.use.healHP === 'string' && item.use.healHP !== "true") {
-						heal = mon.maxhp * (Number(item.use.healHP.substring(0, item.use.healHP.length - 1)) * 0.01)
-					} else if (item.use.healHP === "true") {
-						heal = mon.maxhp - mon.hp;
-					} else {
-						heal = item.use.healHP;
-					}
-					if (mon.hp + heal > mon.maxhp) heal = mon.maxhp - mon.hp;
-					if (heal > 0) {
-						this.heal(heal, mon, null, {fullname: item.name});
-						hadEffect = true;
-					}
-				}
-				if (item.use.healStatus) {
-					if (mon.status || mon.volatiles['confusion']) {
-						if (item.use.healStatus === "true") {
-							mon.cureStatus();
-							mon.removeVolatile('confusion');
-							hadEffect = true;
-						} else {
-							let canHeal = item.use.healStatus.split('|');
-							if (canHeal.indexOf(mon.status) > -1) {
-								mon.cureStatus();
-								hadEffect = true;
-							}
-							if (canHeal.indexOf('confusion') > -1 && ('confusion' in mon.volatiles)) {
-								mon.removeVolatile('confusion');
-								hadEffect = true;
-							}
-						}
-					}
-				}
-				if (item.use.healPP) {
-					let move = mon.moveset[raw2[3]];
-					if (move.pp < move.maxpp) {
-						move.pp += item.use.healPP;
-						if (move.pp > move.maxpp) move.pp = move.maxpp;
-						hadEffect = true;
-						this.add('', (mon.name || mon.species) + "'s " + move.id + " had its PP restored by " + item.use.healPP + "!");
-					}
-				}
-				if (item.use.revive) {
-					if (mon.fainted) {
-						delete mon.fainted;
-						delete mon.faintQueued;
-						mon.hp = (item.use.revive === "true" || item.use.revive === 100 ? mon.maxhp : (Math.round(mon.maxhp * item.use.revive)));
-						if (item.use.revive === "true") {
-							for (let m in mon.moveset) {
-								mon.moveset[m].pp = mon.moveset[m].maxpp;
-							}
-						}
-						hadEffect = true;
-					}
-				}
-				if (hadEffect) {
-					this.add('message', this[side].name + " used a " + item.name + "!");
-					this.send('takeitem', userid + "|" + item.id + "|" + raw2[2]);
-					this[side].pokemon[0].addVolatile('mustrecharge');
-					if (this[(side === 'p1' ? 'p2' : 'p1')].choice.actions.length) this.commitDecisions();
-				}
-			}
 			break;
 		}
 
