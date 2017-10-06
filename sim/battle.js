@@ -2082,6 +2082,7 @@ class Battle extends Dex.ModdedDex {
 			let priorities = {
 				'beforeTurn': 100,
 				'beforeTurnMove': 99,
+				'pokeball': 98,
 				'switch': 7,
 				'runUnnerve': 7.3,
 				'runSwitch': 7.2,
@@ -2303,6 +2304,32 @@ class Battle extends Dex.ModdedDex {
 			// we return here because the update event would crash since there are no active pokemon yet
 			return;
 		}
+
+		case 'pokeball':
+			this.add('message', `${decision.side.name} threw a ${(decision.ball.charAt(0).toUpperCase() + decision.ball.slice(1))}!`);
+			let result = WL.throwPokeball(decision.ball, decision.target);
+			let count = result;
+			if (count === true) count = 3;
+			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appeared to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (decision.target.name || decision.target.species) + ' was caught!'];
+			for (count; count > 0; count--) {
+				this.add('message', '...');
+			}
+			this.send('takeitem', toId(decision.side.name) + '|' + decision.ball + '|' + decision.side.active[0].slot);
+			if (result === true) {
+				this.add('message', msgs[msgs.length - 1]);
+				// Giving the newly caught pokemon handled in the main process.
+				this.send('caught', toId(decision.side.name) + '|' + decision.ball);
+				if (this.getFormat().useSGgame && !this.getFormat().noExp && decision.side.name !== 'SG Server') {
+					// Award Experience
+					let out = WL.onFaint(toId(decision.side.name), this, {source: decision.side.active[0], target: decision.target});
+					this.send('updateExp', out.substring(0, out.length - 1));
+				}
+				this.win(decision.side);
+				return true;
+			} else {
+				this.add('message', msgs[result]);
+			}
+			break;
 
 		case 'pass':
 			if (!decision.priority || decision.priority <= 101) return;
@@ -2724,62 +2751,6 @@ class Battle extends Dex.ModdedDex {
 			break;
 		}
 
-		case 'pokeball': {
-			let raw = data.slice(2).join('|').replace(/\f/g, '\n');
-			///evalbattle battle.receive([battle.id, 'pokeball', "p2", "pokeball|HoeenHero", battle.turn]);
-			let target = raw.split('|')[0];
-			let user = raw.split('|')[1];
-			if (toId(this.format) !== 'gen7wildpokemonalpha') {
-				this.add('raw', '<span style="color:red">You can\'t throw a pokeball here!</span>');
-				break;
-			}
-			target = toId(target);
-			if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) {
-				this.add('raw', '<span style="color:red">Thats not a pokeball, or at least not one we support.</span>');
-				break;
-			}
-			let side = (toId(this.p1.name) === toId(user) ? "p1" : "p2");
-			let opp = (side === "p1" ? "p2" : "p1");
-			if (this[side].pokemon[0].volatiles['mustrecharge'] || this[side].pokemon[0].volatiles['lockedmove'] || this[side].pokemon[0].volatiles['rollout']) {
-				this.add('raw', '<span style="color:red">You can\'t throw a' + (this[side].pokemon[0].volatiles['mustrecharge'] ? 'nother' : '') + ' pokeball this turn.</span>');
-				break;
-			}
-			if (this[side].pokemon[0].fainted) {
-				this.add('raw', '<span style="color:red">You can\'t throw a pokeball right now.</span>');
-				break;
-			}
-			if (toId(this[opp].pokemon[0].species) === 'missingno') {
-				this.add('raw', '<span style="color:red">You can\'t catch an error! Report the error to an Administrator if you haven\'t already!</span>');
-				break;
-			}
-			this.add('message', user + ' threw a ' + (target.charAt(0).toUpperCase() + target.slice(1)) + '!');
-			let result = WL.throwPokeball(target, this[opp].pokemon[0]);
-			let count = result;
-			if (count === true) count = 3;
-			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appeared to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (this[opp].pokemon[0].name || this[opp].pokemon[0].species) + ' was caught!'];
-			for (count; count > 0; count--) {
-				this.add('message', '...');
-			}
-			this.send('takeitem', user + '|' + target + '|' + this[side].pokemon[0].slot);
-			if (result === true) {
-				this.add('message', msgs[msgs.length - 1]);
-				// Giving the newly caught pokemon handled in the main process.
-				this.send('caught', toId(user) + '|' + target);
-				if (Dex.getFormat(this.format).useSGgame && !Dex.getFormat(this.format).noExp && this[side].name !== 'SG Server') {
-					// Award Experience
-					let out = WL.onFaint(user, this, {source: this[side].pokemon[0], target: this[opp].pokemon[0]});
-					this.send('updateExp', out.substring(0, out.length - 1));
-				}
-				this.win(side);
-			} else {
-				this.add('message', msgs[result]);
-				this[side].pokemon[0].addVolatile('mustrecharge');
-				this.add('');
-				if (this[opp].choice.actions.length) this.commitDecisions();
-			}
-			break;
-		}
-		
 		case 'useitem': {
 			let raw2 = data.slice(2).join('|').replace(/\f/g, '\n').split('|');
 			// [userid, itemid, party slot #, move slot (0-3) for PP]

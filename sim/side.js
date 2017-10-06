@@ -596,6 +596,12 @@ class Side {
 				if (data) return this.emitChoiceError(`Unrecognized data after "pass": ${data}`);
 				this.choosePass();
 				break;
+			case 'pokeball':
+				if (!this.battle.getFormat().isWildEncounter) return this.emitChoiceError(`You can't throw a pokeball here.`);
+				if (!(data in {'pokeball': 1, 'greatball': 1, 'ultraball': 1, 'masterball': 1})) return this.emitChoiceError(`Thats not a pokeball, or at last not one we support.`);
+				if (this.active[0].volatiles['lockedmove']) return this.emitChoiceError(`You can't throw a pokeball right now.`);
+				if (this.foe.active[0].species === 'missingno') return this.emitChoiceError(`You can't catch an error. Contact an Administrator if you haven't already.`);
+				this.choosePokeball(data);
 			case 'default':
 				this.autoChoose();
 				break;
@@ -687,6 +693,20 @@ class Side {
 		} else if (this.currentRequest === 'move') {
 			while (!this.isChoiceDone()) this.chooseMove();
 		}
+		return true;
+	}
+	/**
+	 * Throw a pokeball
+	 */
+	choosePokeball(ball) {
+		this.choice.actions.push({
+			choice: 'pokeball',
+			ball: ball,
+			side: this,
+			target: this.foe.active[0],
+		});
+		
+		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
 		return true;
 	}
 

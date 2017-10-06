@@ -8,7 +8,7 @@ exports.WL = {
     /**
 	* @param {Object} battle The battle object.
 	* @param {String} side The side that the COM is playing on. ("p1" or "p2")
-	* @param {String} type The type of action to take. (Currently supporting: "random")
+	* @param {String} type The type of action to take. (Currently supporting: "random", "trainer")
 	* @return {Boolean}
 	*/
 	decideCOM: function (battle, side, type) {
@@ -18,28 +18,61 @@ exports.WL = {
 		if (battle.ended) return false;
 		switch (type) {
 		case 'random':
-			if (battle[side].active[0].fainted) {
-				let choices = Dex.shuffle(battle[side].pokemon.slice(0));
-				for (let i = 0; i < choices.length; i++) {
-					if (choices[i].fainted) continue;
-					let idx = battle[side].pokemon.indexOf(choices[i]);
-					let data = [battle.id, 'choose', side];
-					data.push('switch ' + (idx + 1));
-					//data.push(battle.turn);
-					battle.receive(data);
-					return true;
+			battle[side].choose('default');
+			break;
+		case 'trainer':
+			/*
+			moving: "move slot" (not 0 indexed)
+			switching: "switch slot" (not 0 indexed)
+			*/
+			// ATM just attacks as much as possible
+			switch (battle[side].currentRequest) {
+			case 'move':
+				let moves = battle.shuffle(battle[side].pokemon[0].moves.slice(0));
+				let best = {slot: 0, effectiveness: -3, noPP: 0};
+				for (let i = 0; i < moves.length; i++) {
+					let m = battle.getMove(moves[i]);
+					let noPP = false;
+					for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
+						if (battle[side].pokemon[0].baseMoveset[j].move === m.name) {
+							if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) noPP = true;
+						}
+					}
+					if (noPP) {
+						best.noPP++;
+						continue;
+					}
+					if (m.category === 'Status') continue;
+					let eff = battle.getEffectiveness(m.type, battle[(side === 'p1' ? 'p2' : 'p1')].pokemon[0].types);
+					if (eff > best.effectiveness) {
+						best.slot = (i + 1);
+						best.effectiveness = eff;
+					}
 				}
-				//If it reaches here, it means were out of pokemon
-				return false;
-			} else {
-				let choice = Math.floor(Math.random() * battle[side].active[0].moves.length);
-				let data = [battle.id, 'choose', side];
-				data.push('move ' + (choice + 1));
-				//data.push(battle.turn);
-				battle.receive(data);
-				return true;
+				if (best.noPP === moves.length) {
+					// Struggle
+					battle[side].choose('move 1');
+					break;
+				}
+				if (!best.slot) {
+					// Pick a status move
+					for (let i = 0; i < moves.length; i++) {
+						if (m.category === 'Status') {
+							best.slot = (i + 1);
+							break;
+						}
+					}
+				}
+				if (!best.slot) battle[side].choose('default');
+				battle[side].choose('move ' + best.slot);
+				break;
+			case 'switch':
+				// TODO
+				break;
+			default:
+				battle[side].choose('default');
 			}
-			//break;
+			break;
 		}
 	},
 	throwPokeball: function (ball, pokemon) {

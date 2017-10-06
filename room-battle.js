@@ -528,6 +528,7 @@ class Battle {
 		case 'score':
 			this.score = [parseInt(lines[2]), parseInt(lines[3])];
 			break;
+
 		case 'caught':
 			lines[2] = lines[2].split('|');
 			let curTeam = Db.players.get(lines[2][0]);

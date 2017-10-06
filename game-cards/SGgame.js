@@ -1127,7 +1127,8 @@ exports.commands = {
 		if (room.battle.ended) return this.errorReply('The battle has already ended.');
 		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You cant throw a pokeball because your not the trainer here!');
 		// Taking the pokeball is handled after throwing it in the battle process
-		let data = target + "|" + user.name;
-		room.battle.send('pokeball', data.replace(/\n/g, '\f'));
+		//let data = side + " pokeball " + target;
+		//room.battle.send('choose', data.replace(/\n/g, '\f'));
+		room.battle.choose(user, "pokeball " + target);
 	},
 };
