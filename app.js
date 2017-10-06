@@ -70,6 +70,8 @@ try {
 
 global.Config = require('./config/config');
 
+global.Monitor = require('./monitor');
+
 if (Config.watchconfig) {
 	let configPath = require.resolve('./config/config');
 	FS(configPath).onModify(() => {
@@ -77,9 +79,9 @@ if (Config.watchconfig) {
 			delete require.cache[configPath];
 			global.Config = require('./config/config');
 			if (global.Users) Users.cacheGroupData();
-			console.log('Reloaded config/config.js');
+			Monitor.notice('Reloaded config/config.js');
 		} catch (e) {
-			console.error(`Error reloading config/config.js: ${e.stack}`);
+			Monitor.adminlog(`Error reloading config/config.js: ${e.stack}`);
 		}
 	});
 }
@@ -133,35 +135,6 @@ if (Config.crashguard) {
 	});
 	process.on('unhandledRejection', err => {
 		throw err;
-	});
-	process.on('exit', code => {
-		let exitCodes = {
-			1: 'Uncaught Fatal Exception',
-			2: 'Misuse of shell builtins',
-			3: 'Internal JavaScript Parse Error',
-			4: 'Internal JavaScript Evaluation Failure',
-			5: 'Fatal Error',
-			6: 'Non-function Internal Exception Handler',
-			7: 'Internal Exception Handler Run-Time Failure',
-			8: 'Unused Error Code. Formerly used by nodejs. Sometimes indicate a uncaught exception',
-			9: 'Invalid Argument',
-			10: 'Internal JavaScript Run-Time Failure',
-			11: 'A sysadmin forced an emergency exit',
-			12: 'Invalid Debug Argument',
-			130: 'Control-C via Terminal or Command Prompt',
-		};
-		if (code !== 0) {
-			let exitInfo = 'Unused Error Code';
-			if (exitCodes[code]) {
-				exitInfo = exitCodes[code];
-			} else if (code > 128) {
-				exitInfo = 'Signal Exit';
-			}
-			console.log('');
-			console.error('WARNING: Process exiting with code ' + code);
-			console.error('Exit code details: ' + exitInfo + '.');
-			console.error('Refer to https://github.com/nodejs/node-v0.x-archive/blob/master/doc/api/process.markdown#exit-codes for more details. The process will now exit.');
-		}
 	});
 }
 
