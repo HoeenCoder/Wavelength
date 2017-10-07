@@ -57,6 +57,7 @@ exports.WL = {
 		});
 	},
 
+	/* eslint-disable no-useless-escape */
 	parseMessage: function (message) {
 		if (message.substr(0, 5) === "/html") {
 			message = message.substr(5);
@@ -75,6 +76,7 @@ exports.WL = {
 		message = Autolinker.link(message, {stripPrefix: false, phone: false, twitter: false});
 		return message;
 	},
+	/* eslint-enable no-useless-escape */
 
 	randomString: function (length) {
 		return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
@@ -125,11 +127,11 @@ exports.WL = {
 		pokemon = Dex.getTemplate(pokemon);
 		let baseSpecies = pokemon;
 		let forme = null;
-		if (pokemon.otherForms && (!exact || !exact.species)) {
+		if ((pokemon.otherForms && pokemon.id !== 'unown') && (!exact || !exact.species)) {
 			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
 			forme = formes[Math.floor(Math.random() * formes.length)];
 			pokemon = Dex.getTemplate(forme);
-		} else if (pokemon.otherForms && exact.species && exact.allowOtherFormes) {
+		} else if ((pokemon.otherForms && pokemon.id !== 'unown') && exact.species && exact.allowOtherFormes) {
 			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
 			forme = formes[Math.floor(Math.random() * formes.length)];
 			pokemon = Dex.getTemplate(forme);
@@ -141,7 +143,7 @@ exports.WL = {
 		}
 		let lvl = Math.round(Math.random() * (lvlBase - 5)) + 10; //-5 levels -> +5 levels. TODO base on location
 		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
-		lvl = (lvl < 1 ? lvl = 1 : (lvl > 9999 ? lvl = 9999 : lvl)); // Maybe limit to something more reasonable... But atm since its only used by the server, 9999 will work.
+		lvl = (lvl < 1 ? lvl = 1 : (lvl > 100 ? lvl = 100 : lvl));
 		if (lvl < pokemon.evoLevel) {
 			let depth = 0;
 			do {
@@ -264,10 +266,10 @@ exports.WL = {
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
 	makeComTeam: function (average, count) {
-		if (!average || isNaN(parseInt(average, 10))) average = 10;
-		if (typeof average !== 'number') average = parseInt(average, 10);
-		if (!count || isNaN(parseInt(count, 10))) count = 1;
-		if (typeof count !== 'number') count = parseInt(count, 10);
+		if (!average || isNaN(parseInt(average))) average = 10;
+		if (typeof average !== 'number') average = parseInt(average);
+		if (!count || isNaN(parseInt(count))) count = 1;
+		if (typeof count !== 'number') count = parseInt(count);
 		let numPokes = Math.ceil(Math.random() * 6) || 2;
 		average += ((count - numPokes) * 3);
 		let team = '';
@@ -325,7 +327,7 @@ exports.WL = {
 		if (!this.gameData[pokemon].inherit) throw new Error('Unable to find expType for ' + pokemon);
 		let curData = null;
 		for (let depth = 0; depth < 8; depth++) {
-			if (curData && !curData.inherit) throw new Error('Unable to find evDrops for ' + pokemon);
+			if (curData && !curData.inherit) throw new Error('Unable to find expType for ' + pokemon);
 			curData = this.gameData[(this.gameData[(curData ? curData.id : pokemon)].inherit)];
 			if (curData.expType) return curData.expType;
 		}
@@ -706,17 +708,19 @@ exports.WL = {
 	},
 	wildPokemon: [],
 	loadPokemon: function () {
+		this.wildPokemon = [];
 		let mons = Object.keys(Dex.data.Pokedex);
 		for (let i = 0; i < mons.length; i++) {
 			let poke = Dex.getTemplate(mons[i]);
-			if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP' || poke.tier === 'CAP LC') continue;
+			let banned = {illegal: 1, cap: 1, capnfe: 1, caplc: 1};
+			if (!poke.exists || toId(poke.tier) in banned) continue;
 			if (poke.forme) {
-				let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
 				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
 			}
 			this.wildPokemon.push(poke.id);
 		}
-	}
+	},
 };
 
 // last two functions needed to make sure WL.regdate() fully works

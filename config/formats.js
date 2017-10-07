@@ -1925,7 +1925,7 @@ exports.Formats = [
 		allowBag: true,
 		takeItems: true,
 		challengeShow: false,
-		
+
 		mod: 'sggame',
 		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],

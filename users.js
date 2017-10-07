@@ -1285,7 +1285,7 @@ class User {
 				return Promise.resolve(false);
 			}
 			for (let key of this.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && this.games.has(key) && Dex.getFormat(formatid).isWildEncounter) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && this.games.has(key)) {
 					connection.popup('Your already in a SGgame battle.');
 					return Promise.resolve(false);
 				}
@@ -1311,7 +1311,7 @@ class User {
 			connection.popup(`That format is not available.`);
 			return Promise.resolve(false);
 		}
-		
+
 		return TeamValidator(formatid).prepTeam(this.team, this.locked || this.namelocked).then(result => this.finishPrepBattle(connection, result));
 	}
 

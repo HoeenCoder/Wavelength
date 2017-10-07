@@ -1050,9 +1050,9 @@ exports.commands = {
 			if (user.console.queueAction) return;
 			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
 			if (toId(target) === 'close' && user.console.curPane === 'battle') {
-				Users('sgserver').wildTeams[user.userid] === null;
-				Users('sgserver').trainerTeams[user.userid] === null;
-				user.console.curPane === null;
+				Users('sgserver').wildTeams[user.userid] = null;
+				Users('sgserver').trainerTeams[user.userid] = null;
+				user.console.curPane = null;
 				return user.console.update();
 			}
 			if (user.console.curPane && user.console.curPane !== 'battle') return;
@@ -1094,33 +1094,12 @@ exports.commands = {
 					}
 					break;
 				case 'search':
+					user.console.curPane = null;
+					user.console.update();
 					this.parse('/search gen7sggameanythinggoes');
 					break;
 				}
 			}
-			/*if (!toId(target)) {
-				for (let key of user.inRooms) {
-					if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
-						user.console.curPane = null;
-						return;
-					}
-				}
-				Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
-				return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
-			} else {
-				if (!Users('sgserver')) return;
-				target = toId(target);
-				if (target === 'battle') {
-					if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/wild');
-					user.console.curPane = null;
-					user.console.update();
-					this.parse('/search gen7wildpokemonalpha');
-				} else {
-					Users('sgserver').wildTeams[user.userid] = null;
-					user.console.curPane = null;
-					user.console.update();
-				}
-			}*/
 		},
 	},
 	sggamehelp: function (target, room, user) {

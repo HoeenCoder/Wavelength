@@ -997,7 +997,6 @@ class Battle extends Dex.ModdedDex {
 		if (p2request) {
 			if (!this.supportCancel || !p1request) p2request.noCancel = true;
 			this.p2.emitRequest(p2request);
-			
 		} else {
 			this.p2.emitRequest({wait: true, side: this.p2.getData()});
 		}

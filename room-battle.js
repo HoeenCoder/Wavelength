@@ -600,7 +600,7 @@ class Battle {
 					let used = [];
 					for (let move in pokemon.learnset) {
 						for (let learned in pokemon.learnset[move]) {
-							if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
+							if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move] && gameObj.party[cur[0]].moves.indexOf(move) === -1) {
 								actions.push("learn|" + cur[0] + "|" + move);
 								used.push(move);
 								run = true;

@@ -15757,7 +15757,7 @@
 	},
 	"pikachuoriginal": {
 		"id": "pikachuoriginal",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -15765,7 +15765,7 @@
 	},
 	"pikachuhoenn": {
 		"id": "pikachuhoenn",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -15773,7 +15773,7 @@
 	},
 	"pikachusinnoh": {
 		"id": "pikachusinnoh",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -15781,7 +15781,7 @@
 	},
 	"pikachuunova": {
 		"id": "pikachuunova",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -15789,7 +15789,7 @@
 	},
 	"pikachukalos": {
 		"id": "pikachukalos",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -15797,7 +15797,7 @@
 	},
 	"pikachualola": {
 		"id": "pikachualola",
-		"inehrit": "pikachu",
+		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null

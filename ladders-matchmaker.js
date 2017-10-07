@@ -246,7 +246,7 @@ class Matchmaker {
 			});
 			return;
 		}
-		
+
 		// In order from longest waiting to shortest waiting
 		for (let search of formatTable.values()) {
 			const searcher = this.getSearcher(search, formatid);
