@@ -125,9 +125,7 @@ class Poll {
 
 	updateFor(user) {
 		for (let u in this.pollArray) {
-			if (user.userid in this.pollArray[u].voters) {
-				user.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[u].pollNum + '|' + this.generateResults(false, this.pollArray[u].voters[user.userid]));
-			}
+			if (user.userid in this.pollArray[u].voters) user.sendTo(this.room, '|uhtmlchange|poll' + this.pollArray[u].pollNum + '|' + this.generateResults(false, this.pollArray[u].voters[user.userid], u));
 		}
 	}
 

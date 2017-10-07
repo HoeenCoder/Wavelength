@@ -918,7 +918,7 @@ class User {
 		}
 
 		if (oldUser.isSysop) {
-			this.isSysop = true;
+			this.isSysop = (oldUser.isSysop === 'WL' ? 'WL' : true);
 			oldUser.isSysop = false;
 		}
 

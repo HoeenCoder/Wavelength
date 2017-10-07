@@ -408,7 +408,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Super Staff Bros",
 
-		mod: 'sgssb',
+		mod: 'wlssb',
 		team: 'randomSeasonalRegStaff',
 		ruleset: ['HP Percentage Mod', 'Cancel Mod', 'Sleep Clause Mod'],
 		onBegin: function () {
