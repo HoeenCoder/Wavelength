@@ -997,12 +997,18 @@ class Battle extends Dex.ModdedDex {
 		if (p2request) {
 			if (!this.supportCancel || !p1request) p2request.noCancel = true;
 			this.p2.emitRequest(p2request);
+			
 		} else {
 			this.p2.emitRequest({wait: true, side: this.p2.getData()});
 		}
 
 		if (this.p1.isChoiceDone() && this.p2.isChoiceDone()) {
 			throw new Error(`Choices are done immediately after a request`);
+		}
+		
+		if ((this.p1.name === 'SG Server' || this.p2.name === 'SG Server') && (this.getFormat().isWildEncounter || this.getFormat().isTrainerBattle) && !this[(this.p1.name === 'SG Server' ? "p1" : "p2")].isChoiceDone()) {
+			WL.decideCOM(this, (this.p1.name === 'SG Server' ? "p1" : "p2"), (this.getFormat().isWildEncounter ? "random" : "trainer"));
+			this.checkDecisions();
 		}
 	}
 	tie() {
@@ -1401,11 +1407,6 @@ class Battle extends Dex.ModdedDex {
 			this.add('raw', buttons);
 			this.add('');
 		 }
-
-		// TODO support COM on both sides :p
-		if ((this.p1.name === 'SG Server' || this.p2.name === 'SG Server') && this.getFormat().isWildEncounter) {
-			WL.decideCOM(this, (this.p1.name === 'SG Server' ? "p1" : "p2"), "random");
-		}
 	}
 	start() {
 		if (this.active) return;

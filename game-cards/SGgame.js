@@ -424,15 +424,25 @@ class SGgame extends Console.Console {
 		}
 		return output;
 	}
-	wild(pokemon) {
-		if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to preview a wild pokemon</b></div>';
-		if (typeof pokemon === 'string') pokemon = Dex.fastUnpackTeam(pokemon)[0];
+	battle(type, pokemon) {
 		let output = this.buildMap();
-		let sprite = Dex.getTemplate(pokemon.species).spriteid;
 		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
-		output += '<img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + (sprite || toId(pokemon.species)) + '.gif" alt="' + pokemon.species + '"/><br/>';
-		output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + (pokemon.gender || 'N') + ')<br/>';
-		output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/wild battle">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>') + ' <button class="button" name="send" value="/wild flee">Flee!</button></div>';
+		if (!type) {
+			output += '<h2>Battle</h2><button class="button" name="send" value="/sggame battle wild">Battle a wild pokemon</button><br/>';
+			output += '<button class="button" name="send" value="/sggame battle trainer">Battle a COM trainer</button><br/>';
+			output += '<button class="button" name="send" value="/sggame battle search">Battle other players on the SGgame Anything Goes ladder</button>';
+		} else if (type === 'wild') {
+			if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to battle.</b></div>';
+			if (typeof pokemon === 'string') pokemon = Dex.fastUnpackTeam(pokemon)[0];
+			let sprite = Dex.getTemplate(pokemon.species).spriteid;
+			output += '<img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + (sprite || toId(pokemon.species)) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + (pokemon.gender || 'N') + ')<br/>';
+			output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/sggame battle wild, confirm">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>') + ' <button class="button" name="send" value="/sggame battle wild, flee">Flee!</button>';
+		} else if (type === 'trainer') {
+			if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to battle.</b></div>';
+			output += '<br/><br/><b>SG Server would like to battle.<br/><br/><button class="button" name="send" value="/sggame battle trainer, confirm">Accept</button> <button class="button" name="send" value="/sggame battle trainer, reject">Reject</button>';
+		}
+		output += '</center></div>';
 		return output;
 	}
 	buildBase(addOn, data) {
@@ -583,7 +593,7 @@ exports.commands = {
 			}
 			user.console.queue.push('text|' + msg + '|hide');
 			user.console.callback = function () {
-				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				user.console.callback = null;
 			};
 			user.console.queue.push(`text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname.</button><br/>I'll leave you to it now.|callback`);
@@ -600,39 +610,9 @@ exports.commands = {
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.queue = ['text|Welcome back!<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
-			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/wild" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			this.parse('/sggame next');
-		}
-	},
-	wild: function (target, room, user, connection) {
-		if (user.console.queue.length) return;
-		if (user.console.queueAction) return;
-		if (user.console.curPane && user.console.curPane !== 'wild') return;
-		user.console.curPane = 'wild';
-		if (!Users('sgserver')) WL.makeCOM();
-		if (!toId(target)) {
-			for (let key of user.inRooms) {
-				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
-					user.console.curPane = null;
-					return;
-				}
-			}
-			Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
-			return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
-		} else {
-			if (!Users('sgserver')) return;
-			target = toId(target);
-			if (target === 'battle') {
-				if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/wild');
-				user.console.curPane = null;
-				user.console.update();
-				this.parse('/search gen7wildpokemonalpha');
-			} else {
-				Users('sgserver').wildTeams[user.userid] = null;
-				user.console.curPane = null;
-				user.console.update();
-			}
 		}
 	},
 	sggame: {
@@ -1064,6 +1044,83 @@ exports.commands = {
 		nicknamehelp: ["/sggame nickname [party slot], [new nickname] - Set a pokemon's nickname. The pokemon needs to be in your party, and party slot should be the number of the slot the pokemon is in (1-6)."],
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help sggame');
+		},
+		battle: function (target, room, user, connection) {
+			if (user.console.queue.length) return;
+			if (user.console.queueAction) return;
+			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
+			if (toId(target) === 'close' && user.console.curPane === 'battle') {
+				Users('sgserver').wildTeams[user.userid] === null;
+				Users('sgserver').trainerTeams[user.userid] === null;
+				user.console.curPane === null;
+				return user.console.update();
+			}
+			if (user.console.curPane && user.console.curPane !== 'battle') return;
+			user.console.curPane = 'battle';
+			if (!Users('sgserver')) WL.makeCOM();
+			if (!toId(target)) {
+				return user.console.update(null, user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+			} else {
+				target = target.split(',');
+				switch (toId(target[0])) {
+				case 'wild':
+					if (!target[1]) {
+						Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
+						return user.console.update(null, user.console.battle('wild', Users('sgserver').wildTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+					}
+					if (toId(target[1]) === 'confirm') {
+						if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/sggame battle wild');
+						user.console.curPane = null;
+						user.console.update();
+						this.parse('/search gen7wildpokemonalpha');
+					} else {
+						Users('sgserver').wildTeams[user.userid] = null;
+						user.console.update(null, user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+					}
+					break;
+				case 'trainer':
+					if (!target[1]) {
+						Users('sgserver').trainerTeams[user.userid] = WL.makeComTeam(WL.teamAverage(Db.players.get(user.userid).party), Db.players.get(user.userid).party.length);
+						return user.console.update(null, user.console.battle('trainer', Users('sgserver').trainerTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+					}
+					if (toId(target[1]) === 'confirm') {
+						if (!Users('sgserver').trainerTeams[user.userid]) return this.parse('/sggame battle trainer');
+						user.console.curPane = null;
+						user.console.update();
+						this.parse('/search gen7trainerbattlealpha');
+					} else {
+						Users('sgserver').trainerTeams[user.userid] = null;
+						user.console.update(null, user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+					}
+					break;
+				case 'search':
+					this.parse('/search gen7sggameanythinggoes');
+					break;
+				}
+			}
+			/*if (!toId(target)) {
+				for (let key of user.inRooms) {
+					if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+						user.console.curPane = null;
+						return;
+					}
+				}
+				Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
+				return user.console.update(null, user.console.wild(Users('sgserver').wildTeams[user.userid]), null);
+			} else {
+				if (!Users('sgserver')) return;
+				target = toId(target);
+				if (target === 'battle') {
+					if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/wild');
+					user.console.curPane = null;
+					user.console.update();
+					this.parse('/search gen7wildpokemonalpha');
+				} else {
+					Users('sgserver').wildTeams[user.userid] = null;
+					user.console.curPane = null;
+					user.console.update();
+				}
+			}*/
 		},
 	},
 	sggamehelp: function (target, room, user) {

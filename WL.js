@@ -5,9 +5,6 @@ let http = require('http');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
-let wildPokemon = [];
-let gameData = JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8'));
-let itemData = JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8'));
 
 exports.WL = {
 	nameColor: function (name, bold) {
@@ -115,14 +112,15 @@ exports.WL = {
 		user.connected = false; // Technically isnt connected
 		user.avatar = 167;
 		user.wildTeams = {}; // Object to store data from wild pokemon battles.
+		user.trainerTeams = {}; // Object to store data from trainer battles.
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
 	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
 		if (!lvlBase) lvlBase = 10;
-		if (wildPokemon.length <= 0) loadPokemon();
-		let pokemon = wildPokemon[Math.floor(Math.random() * wildPokemon.length)];
+		if (this.wildPokemon.length <= 0) this.loadPokemon();
+		let pokemon = this.wildPokemon[Math.floor(Math.random() * this.wildPokemon.length)];
 		if (exact && Dex.getTemplate(exact.species).exists) pokemon = exact.species;
 		pokemon = Dex.getTemplate(pokemon);
 		let baseSpecies = pokemon;
@@ -265,6 +263,19 @@ exports.WL = {
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
+	makeComTeam: function (average, count) {
+		if (!average || isNaN(parseInt(average, 10))) average = 10;
+		if (typeof average !== 'number') average = parseInt(average, 10);
+		if (!count || isNaN(parseInt(count, 10))) count = 1;
+		if (typeof count !== 'number') count = parseInt(count, 10);
+		let numPokes = Math.ceil(Math.random() * 6) || 2;
+		average += ((count - numPokes) * 3);
+		let team = '';
+		for (numPokes; numPokes > 0; numPokes--) {
+			team += this.makeWildPokemon(null, average) + (numPokes === 1 ? '' : ']');
+		}
+		return team;
+	},
 	teamAverage: function (team) {
 		if (typeof team === "string") team = Dex.fastUnpackTeam(team);
 		let avrg = 0;
@@ -274,7 +285,7 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
-	gameData: gameData,
+	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
 		let type = this.getEXPType(pokemon);
@@ -455,7 +466,7 @@ exports.WL = {
 		if (data.item) return data.item;
 		return false;
 	},
-	itemData: itemData,
+	itemData: JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8')),
 	getItem: function (id) {
 		id = toId(id);
 		if (!this.itemData[id]) return false;
@@ -693,6 +704,19 @@ exports.WL = {
 		let fainted = (pokemon && pokemon.fainted ? ';opacity:.4' : '');
 		return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-sheet.png?a1) no-repeat scroll -' + left + 'px -' + top + 'px' + fainted;
 	},
+	wildPokemon: [],
+	loadPokemon: function () {
+		let mons = Object.keys(Dex.data.Pokedex);
+		for (let i = 0; i < mons.length; i++) {
+			let poke = Dex.getTemplate(mons[i]);
+			if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP' || poke.tier === 'CAP LC') continue;
+			if (poke.forme) {
+				let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
+			}
+			this.wildPokemon.push(poke.id);
+		}
+	}
 };
 
 // last two functions needed to make sure WL.regdate() fully works
@@ -715,17 +739,4 @@ function showDailyRewardAni(userid) {
 		output += "<img src='http://i.imgur.com/ZItWCLB.png' width='16' height='16'> ";
 	}
 	return output;
-}
-
-function loadPokemon() {
-	let mons = Object.keys(Dex.data.Pokedex);
-	for (let i = 0; i < mons.length; i++) {
-		let poke = Dex.getTemplate(mons[i]);
-		if (!poke.exists || poke.tier === 'Illegal' || poke.tier === 'CAP') continue;
-		if (poke.forme) {
-			let allowedFormes = ['alola', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
-			if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
-		}
-		wildPokemon.push(poke.id);
-	}
 }

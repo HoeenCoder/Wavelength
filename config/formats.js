@@ -1904,7 +1904,7 @@ exports.Formats = [
 	},
 	{
 		name: "[Gen 7] Wild Pokemon (Alpha)",
-		desc: ["Wild Pok&eacute;mon battles for the SG game project. (WIP)"],
+		desc: ["Wild Pok&eacute;mon battles for the SG Game project. (WIP)"],
 		rated: false,
 		useSGgame: true,
 		isWildEncounter: true,
@@ -1912,6 +1912,20 @@ exports.Formats = [
 		takeItems: true,
 		challengeShow: false,
 
+		mod: 'sggame',
+		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+	{
+		name: "[Gen 7] Trainer Battle (Alpha)",
+		desc: ["Battles VS SG Server (our COM) using your team from the SG Game project. (WIP)"],
+		rated: false,
+		useSGgame: true,
+		isTrainerBattle: true,
+		allowBag: true,
+		takeItems: true,
+		challengeShow: false,
+		
 		mod: 'sggame',
 		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],

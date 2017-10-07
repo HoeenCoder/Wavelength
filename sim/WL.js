@@ -28,36 +28,31 @@ exports.WL = {
 			// ATM just attacks as much as possible
 			switch (battle[side].currentRequest) {
 			case 'move':
-				let moves = battle.shuffle(battle[side].pokemon[0].moves.slice(0));
+				let moves = battle[side].pokemon[0].moves.slice(0);
 				let best = {slot: 0, effectiveness: -3, noPP: 0};
-				for (let i = 0; i < moves.length; i++) {
-					let m = battle.getMove(moves[i]);
-					let noPP = false;
-					for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
-						if (battle[side].pokemon[0].baseMoveset[j].move === m.name) {
-							if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) noPP = true;
-						}
-					}
-					if (noPP) {
-						best.noPP++;
-						continue;
-					}
-					if (m.category === 'Status') continue;
-					let eff = battle.getEffectiveness(m.type, battle[(side === 'p1' ? 'p2' : 'p1')].pokemon[0].types);
-					if (eff > best.effectiveness) {
-						best.slot = (i + 1);
-						best.effectiveness = eff;
-					}
+				for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
+					if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) best.noPP++;;
 				}
 				if (best.noPP === moves.length) {
 					// Struggle
 					battle[side].choose('move 1');
-					break;
+					return true;
+				}
+				for (let i = 0; i < moves.length; i++) {
+					let m = battle.getMove(moves[i]);
+					if (m.category === 'Status') continue;
+					let eff = battle.getEffectiveness(m.type, battle[(side === 'p1' ? 'p2' : 'p1')].active[0].types);
+					if (eff > best.effectiveness) {
+						best.slot = (i + 1);
+						best.effectiveness = eff;
+					} else if (eff === best.effectiveness && battle.random(2) === 1) {
+						best.slot = (i + 1);
+					}
 				}
 				if (!best.slot) {
 					// Pick a status move
 					for (let i = 0; i < moves.length; i++) {
-						if (m.category === 'Status') {
+						if (battle.getMove(moves[i]).category === 'Status') {
 							best.slot = (i + 1);
 							break;
 						}
@@ -68,6 +63,7 @@ exports.WL = {
 				break;
 			case 'switch':
 				// TODO
+				battle[side].choose('default');
 				break;
 			default:
 				battle[side].choose('default');
@@ -207,7 +203,7 @@ exports.WL = {
 			if (pkmn.slot !== faintData.source.slot) {
 				return {exp: this.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn};
 			} else {
-				active = {exp: this.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn};
+				active = {exp: this.getGain(userid, pkmn, faintData.target, true), slot: pkmn.slot, mon: pkmn, active: true};
 				return null;
 			}
 		});
@@ -224,11 +220,11 @@ exports.WL = {
 			let levelUps = 0;
 			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1))) {
 				battle.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
-				battle[faintData.source.side.id].pokemon[mon.slot].level++;
 				mon.level++;
+				mon.set.level++;
 				levelUps++;
 			}
-			battle[faintData.source.side.id].pokemon[mon.slot].exp += cur.exp;
+			mon.exp += cur.exp;
 			out += "|" + levelUps;
 			// New Evs
 			let newEvs = this.getEvGain(faintData.target);
@@ -251,6 +247,19 @@ exports.WL = {
 			out += "|";
 			for (let ev in newEvs) {
 				out += newEvs[ev] + (ev === 'spe' ? ']' : ',');
+			}
+			// Update level & HP
+			const template = mon.template;
+			if (levelUps && cur.active) {
+				mon.formeChange(template);
+
+				mon.details = template.species + (mon.level === 100 ? '' : ', L' + mon.level) + (mon.gender === '' ? '' : ', ' + mon.gender) + (mon.set.shiny ? ', shiny' : '');
+				battle.add('detailschange', mon, mon.details);
+
+				const newHP = Math.floor(Math.floor(2 * template.baseStats['hp'] + mon.set.ivs['hp'] + Math.floor(mon.set.evs['hp'] / 4) + 100) * mon.level / 100 + 10);
+				mon.hp = newHP - (mon.maxhp - mon.hp);
+				mon.maxhp = newHP;
+				battle.add('-heal', mon, mon.getHealth, '[silent]');
 			}
 			battle.add('');
 		}
