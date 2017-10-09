@@ -573,8 +573,8 @@ class Battle {
 			let userid = data.shift();
 			let user = Users(userid);
 			let gameObj = Db.players.get(userid);
-			let run = false;
-			let actions = [];
+			let nMoves = [];
+			let nEvos = [];
 			for (let i = 0; i < data.length; i++) {
 				let cur = data[i].split('|');
 				cur[0] = Number(cur[0]);
@@ -592,21 +592,7 @@ class Battle {
 				}
 				if (olvl !== lvl) {
 					// New Moves
-					let baseSpecies = null;
-					if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
-					if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
-						pokemon.learnset = baseSpecies.learnset;
-					}
-					let used = [];
-					for (let move in pokemon.learnset) {
-						for (let learned in pokemon.learnset[move]) {
-							if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move] && gameObj.party[cur[0]].moves.indexOf(move) === -1) {
-								actions.push("learn|" + cur[0] + "|" + move);
-								used.push(move);
-								run = true;
-							}
-						}
-					}
+					nMoves = nMoves.concat(WL.getNewMoves(pokemon, olvl, lvl, gameObj.party[cur[0]].moves, cur[0]));
 					// Evolution
 					// Add the evo array onto the end of the move array
 					let evos = WL.canEvolve(gameObj.party[cur[0]], "level", userid, {location: null}); // TODO locations
@@ -619,17 +605,13 @@ class Battle {
 						evos = evos[0];
 						//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
 						let take = WL.getEvoItem(evos);
-						actions.push("evo|" + cur[0] + "|" + evos + "|" + (take || ''));
-						run = true;
+						nEvos.push("evo|" + cur[0] + "|" + evos + "|" + (take || ''));
 					}
 				}
 			}
 			Db.players.set(userid, gameObj);
-			actions.reverse();
-			for (let i = 0; i < actions.length; i++) {
-				user.console.queue.unshift(actions[i]);
-			}
-			if (run) {
+			user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
+			if (nMoves.length || nEvos.length) {
 				let r = user.console.next();
 				user.console.update(r[0], r[1], r[2]);
 			}

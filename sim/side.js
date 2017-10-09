@@ -223,6 +223,10 @@ class Side {
 	}
 	emitChoiceError(message) {
 		this.choice.error = message;
+		if (this.name === 'SG Server') {
+			// COM choose an invalid move, choose default
+			return this.choose('default');
+		}
 		this.battle.send('sideupdate', `${this.id}\n|error|[Invalid choice] ${message}`);
 		return false;
 	}

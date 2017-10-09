@@ -28,7 +28,7 @@ exports.WL = {
 			// ATM just attacks as much as possible
 			switch (battle[side].currentRequest) {
 			case 'move':
-				if (battle[side].active[0].volatiles['mustrecharge'] || battle[side].active[0].volatiles['lockedmove']) return battle[side].choose('move 1');
+				if (battle[side].active[0].volatiles['mustrecharge'] || battle[side].active[0].volatiles['lockedmove'] || battle[side].active[0].volatiles['bide'] || battle[side].active[0].volatiles['twoturnmove'] || battle[side].active[0].volatiles['rollout'] || battle[side].active[0].volatiles['iceball'] || battle[side].active[0].volatiles['uproar']) return battle[side].choose('default');
 				let moves = battle[side].pokemon[0].moves.slice(0);
 				let best = {slot: 0, effectiveness: -3, noPP: 0};
 				for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
@@ -42,6 +42,7 @@ exports.WL = {
 				for (let i = 0; i < moves.length; i++) {
 					let m = battle.getMove(moves[i]);
 					if (m.category === 'Status') continue;
+					if (m.disabled) continue;
 					let eff = battle.getEffectiveness(m.type, battle[(side === 'p1' ? 'p2' : 'p1')].active[0].types);
 					if (eff > best.effectiveness) {
 						best.slot = (i + 1);

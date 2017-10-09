@@ -141,7 +141,7 @@ exports.WL = {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
-		let lvl = Math.round(Math.random() * (lvlBase - 5)) + 10; //-5 levels -> +5 levels. TODO base on location
+		let lvl = Math.round(Math.random() * 10) + (lvlBase - 5); //-5 levels -> +5 levels. TODO base on location
 		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
 		lvl = (lvl < 1 ? lvl = 1 : (lvl > 100 ? lvl = 100 : lvl));
 		if (lvl < pokemon.evoLevel) {
@@ -473,6 +473,27 @@ exports.WL = {
 		id = toId(id);
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
+	},
+	getNewMoves: function (pokemon, olvl, lvl, curMoves, slot) {
+		if (!pokemon || olvl >= lvl) return [];
+		if (typeof pokemon === 'string') pokemon = Dex.getTemplate(pokemon);
+		if (!pokemon.exists) throw new Error('Can\'t get new moves for non-existant pokemon "' + pokemon.id + '"');
+		let moves = [];
+		let baseSpecies = null;
+		if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
+		if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
+			pokemon.learnset = baseSpecies.learnset;
+		}
+		let used = [];
+		for (let move in pokemon.learnset) {
+			for (let learned in pokemon.learnset[move]) {
+				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move] && curMoves.indexOf(move) === -1) {
+					moves.push("learn|" + slot + "|" + move);
+					used.push(move);
+				}
+			}
+		}
+		return moves;
 	},
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {

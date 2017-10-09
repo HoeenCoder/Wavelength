@@ -688,6 +688,11 @@ exports.commands = {
 				} else if (action[3] && obj.bag.items[action[3]] && obj.bag.items[action[3]] >= 1) {
 					obj.bag.items[action[3]]--;
 				}
+				let nMoves = WL.getNewMoves(Dex.getTemplate(pokemon.species), (pokemon.level - 1), pokemon.level, pokemon.moves, action[1]);
+				nMoves = nMoves.reverse();
+				for (let i = 0; i < nMoves.length; i++) {
+					user.console.queue.unshift(nMoves[i]);
+				} 
 				if (user.console.shed && obj.party.length < 5 && obj.bag.pokeballs.pokeball > 0) {
 					obj.bag.pokeballs.pokeball--;
 					let shed = {species: 'shedinja', level: pokemon.level, exp: WL.calcExp('shedinja', pokemon.level), ot: obj.userid, ivs: pokemon.ivs, evs: pokemon.evs, nature: pokemon.nature, ability: "Wonder Guard", happiness: 70, pokeball: pokemon.pokeball};
@@ -727,7 +732,12 @@ exports.commands = {
 				user.console.queueAction = null;
 				user.console.lastNextAction = null;
 				user.console.curPane = null;
-				return user.console.update();
+				if (user.console.queue.length) {
+					let r = user.console.next();
+					return user.console.update(r[0], r[1], r[2]);
+				} else {
+					return user.console.update();
+				}
 			}
 		},
 		bag: function (target, room, user, connection, cmd) {
@@ -809,8 +819,6 @@ exports.commands = {
 						if (item.use.noBattle) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 						if (item.use.isBall) return Chat.parse("/throwpokeball " + item.id, inBattle, user, user.connections[0]); // Shouldn't happen, but just in case
 						inBattle.battle.choose(user, "useItem " + item.id + " " + target[3] + (target[4] ? " " + target[4] : ""));
-						//let toSend = user.userid + "|" + item.id + "|" + target[3] + (target[4] ? "|" + target[4] : '');
-						//inBattle.battle.send('useitem', toSend.replace(/\n/g, '\f'));
 					} else {
 						if (item.use.onlyBattle) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 						let hadEffect = false;
@@ -824,21 +832,11 @@ exports.commands = {
 								player.party[target[3]].exp = WL.calcExp(player.party[target[3]].species, lvl);
 								user.console.queue.push('text|' + player.party[target[3]].name + ' was elevated to level ' + player.party[target[3]].level + '!');
 								// New Moves
-								let baseSpecies = null;
 								let canReturn = true;
-								if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
-								if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
-									pokemon.learnset = baseSpecies.learnset;
-								}
-								let used = [];
-								for (let move in pokemon.learnset) {
-									for (let learned in pokemon.learnset[move]) {
-										if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
-											user.console.queue.push("learn|" + target[3] + "|" + move);
-											canReturn = false;
-											used.push(move);
-										}
-									}
+								let nMoves = WL.getNewMoves(pokemon, olvl, lvl, player.party[target[3]].moves, target[3]);
+								if (nMoves.length) {
+									user.console.queue = user.console.queue.concat(nMoves);
+									canReturn = false;
 								}
 								// Evolution
 								let evos = WL.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations
@@ -1168,4 +1166,26 @@ exports.commands = {
 		//room.battle.send('choose', data.replace(/\n/g, '\f'));
 		room.battle.choose(user, "pokeball " + target);
 	},
+	gp: 'givepokeballs',
+	givepokeballs: function (target, room, user) {
+		// Allows mods+ to give more pokeballs during the alpha
+		if (!this.can('ban')) return;
+		target = target.split(',').map(part => {
+			return toId(part);
+		});
+		if (target.length < 3) return this.parse(`/help givepokeballs`);
+		let u = target[0] = Users(target[0]);
+		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
+		if (!(target[1] in {'pokeball': 1, 'greatball': 1, 'ultraball': 1, 'masterball': 1})) return this.parse(`/help givepokeballs`);
+		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may give masterballs.`);
+		target[2] = parseInt(target[2]);
+		if (isNaN(target[2]) || target[2] < 1 || target[2] > 100) return this.errorReply(`Pokeball amount must be a number between 1 and 100.`);
+		let p = Db.players.get(u.userid);
+		if (!p) return this.errorReply(`${u.userid} has not started SGgame and cannot be given pokeballs at this time.`);
+		if (!p.bag.pokeballs[target[1]]) p.bag.pokeballs[target[1]] = 0;
+		p.bag.pokeballs[target[1]] += target[2];
+		Db.players.set(u.userid, p);
+		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
+	},
+	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
 };

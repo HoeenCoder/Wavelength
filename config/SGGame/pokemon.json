@@ -16323,6 +16323,18 @@
 		"id": "cherrimsunshine",
 		"inherit": "cherrim"
 	},
+	"shelloseast": {
+		"id": "shelloseast",
+		"inherit": "shellos",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": "gastrodoneast"
+		}
+	},
+	"gastrodoneast": {
+		"id": "gastrodoneast",
+		"inherit": "gastrodon"
+	},
 	"shayminsky": {
 		"id": "shayminsky",
 		"inherit": "shaymin",
