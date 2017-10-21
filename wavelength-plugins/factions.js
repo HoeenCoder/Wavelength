@@ -146,9 +146,10 @@ function isFvFBattle(p1, p2, id, status, types, score) {
 					room.fvf.status[room.fvf.statusNumber] = false;
 				}
 				if (room.fvf.status[room.fvf.statusNumber]) {
-					room.fvf.status[room.fvf.statusNumber] = 2;
+					room.fvf.status[room.fvf.statusNumber] = room.fvf.statusNumber;
 					fvfDisplay(room);
 				} else {
+					room.fvf.status[room.fvf.statusNumber] = room.fvf.statusNumber;
 					fvfDisplay(room);
 					// end
 					let winner = room.fvf.factions[0].name;
@@ -177,11 +178,11 @@ function isFvFBattle(p1, p2, id, status, types, score) {
 				} else {
 					room.fvf.status[room.fvf.statusNumber] = false;
 				}
-
 				if (room.fvf.status[room.fvf.statusNumber]) {
-					room.fvf.status[room.fvf.statusNumber] = 2;
+					room.fvf.status[room.fvf.statusNumber] = room.fvf.statusNumber;
 					fvfDisplay(room);
 				} else {
+					room.fvf.status[room.fvf.statusNumber] = room.fvf.statusNumber;
 					fvfDisplay(room);
 					// end
 					let winner = room.fvf.factions[0].name;
