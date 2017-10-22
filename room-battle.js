@@ -362,6 +362,9 @@ class Battle {
 
 		this.send('init', this.format, this.rated ? '1' : '');
 		this.process.pendingTasks.set(room.id, this);
+		if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))] && Rooms(Rooms.global.FvF[toId(WL.getFaction(this.room.p1))].room).fvf.tier === this.format) {
+			WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), room.id, 'start');
+		}
 	}
 
 	send(...args) {
@@ -469,6 +472,13 @@ class Battle {
 
 		case 'winupdate':
 			this.room.push(lines.slice(3));
+			if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))]) {
+				if (this.format === Rooms(Rooms.global.FvF[toId(WL.getFaction(this.room.p1))].room).fvf.tier && lines[lines.length - 1].split('|')[1] === 'tie') {
+					WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), this.room.id, 'tie');
+				} else if (this.format === Rooms(Rooms.global.FvF[toId(WL.getFaction(this.room.p1))].room).fvf.tier && lines[lines.length - 1].split('|')[1] === 'win') {
+					WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), this.room.id, 'p-' + toId(lines[lines.length - 1].split('|')[2]));
+				}
+			}
 			this.started = true;
 			if (!this.ended) {
 				this.ended = true;
