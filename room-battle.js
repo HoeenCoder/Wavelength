@@ -13,24 +13,25 @@
 
 'use strict';
 
-/** 10 seconds */
-const TICK_TIME = 10 * 1000;
+const FS = require('./fs');
+const ProcessManager = require('./process-manager');
 
-// Timer constants: In seconds, should be multiple of ten
+/** 5 seconds */
+const TICK_TIME = 5;
+
+// Timer constants: In seconds, should be multiple of TICK_TIME
 const STARTING_TIME = 210;
 const MAX_TURN_TIME = 150;
 const STARTING_TIME_CHALLENGE = 280;
 const MAX_TURN_TIME_CHALLENGE = 300;
 
-const NOT_DISCONNECTED = 10;
-const DISCONNECTION_TICKS = 7;
+const NOT_DISCONNECTED = 100;
+const DISCONNECTION_TICKS = 13;
 
 // time after a player disabling the timer before they can re-enable it
 const TIMER_COOLDOWN = 20 * 1000;
 
 global.Config = require('./config/config');
-
-const ProcessManager = require('./process-manager');
 
 class SimulatorManager extends ProcessManager {
 	onMessageUpstream(message) {
@@ -157,7 +158,7 @@ class BattleTimer {
 		const isChallenge = (!battle.rated && !battle.room.tour);
 		this.settings = Object.assign({}, Dex.getFormat(battle.format).timer);
 		if (this.settings.perTurn === undefined) {
-			this.settings.perTurn = hasLongTurns ? 20 : 10;
+			this.settings.perTurn = hasLongTurns ? 25 : 10;
 		}
 		if (this.settings.starting === undefined) {
 			this.settings.starting = isChallenge ? STARTING_TIME_CHALLENGE : STARTING_TIME;
@@ -166,15 +167,15 @@ class BattleTimer {
 			this.settings.maxPerTurn = isChallenge ? MAX_TURN_TIME_CHALLENGE : MAX_TURN_TIME;
 		}
 		if (this.settings.maxPerTurn <= 0) this.settings.maxPerTurn = Infinity;
-		this.settings.perTurnTicks = Math.floor(this.settings.perTurn / 10);
-		this.settings.startingTicks = Math.ceil(this.settings.starting / 10);
-		this.settings.maxPerTurnTicks = Math.ceil(this.settings.maxPerTurn / 10);
-		this.settings.maxFirstTurnTicks = Math.ceil((this.settings.maxFirstTurn || 0) / 10);
+		this.settings.perTurnTicks = Math.floor(this.settings.perTurn / TICK_TIME);
+		this.settings.startingTicks = Math.ceil(this.settings.starting / TICK_TIME);
+		this.settings.maxPerTurnTicks = Math.ceil(this.settings.maxPerTurn / TICK_TIME);
+		this.settings.maxFirstTurnTicks = Math.ceil((this.settings.maxFirstTurn || 0) / TICK_TIME);
 
 		for (let slotNum = 0; slotNum < 2; slotNum++) {
 			this.ticksLeft.push(this.settings.startingTicks);
 			this.turnTicksLeft.push(-1);
-			this.dcTicksLeft.push(10);
+			this.dcTicksLeft.push(NOT_DISCONNECTED);
 		}
 	}
 	start(requester) {
@@ -232,9 +233,9 @@ class BattleTimer {
 			this.turnTicksLeft[slotNum] = Math.min(this.ticksLeft[slotNum], maxTurnTicks);
 
 			const ticksLeft = this.turnTicksLeft[slotNum];
-			if (player) player.sendRoom(`|inactive|Time left: ${ticksLeft * 10} sec this turn | ${this.ticksLeft[slotNum] * 10} sec total`);
+			if (player) player.sendRoom(`|inactive|Time left: ${ticksLeft * TICK_TIME} sec this turn | ${this.ticksLeft[slotNum] * TICK_TIME} sec total`);
 		}
-		this.timer = setTimeout(() => this.nextTick(), TICK_TIME);
+		this.timer = setTimeout(() => this.nextTick(), TICK_TIME * 1000);
 	}
 	nextTick() {
 		if (this.timer) clearTimeout(this.timer);
@@ -257,15 +258,15 @@ class BattleTimer {
 			if (ticksLeft < dcTicksLeft) dcTicksLeft = NOT_DISCONNECTED; // turn timer supersedes dc timer
 
 			if (dcTicksLeft <= 4) {
-				this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} has ${dcTicksLeft * 10} seconds to reconnect!`).update();
+				this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} has ${dcTicksLeft * TICK_TIME} seconds to reconnect!`).update();
 			}
 			if (dcTicksLeft !== NOT_DISCONNECTED) continue;
 			if (ticksLeft % 3 === 0 || ticksLeft <= 4) {
-				this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} has ${ticksLeft * 10} seconds left.`).update();
+				this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} has ${ticksLeft * TICK_TIME} seconds left.`).update();
 			}
 		}
 		if (!this.checkTimeout()) {
-			this.timer = setTimeout(() => this.nextTick(), TICK_TIME);
+			this.timer = setTimeout(() => this.nextTick(), TICK_TIME * 1000);
 		}
 	}
 	checkActivity() {
@@ -289,7 +290,7 @@ class BattleTimer {
 					let timeLeft = ``;
 					if (this.waitingForChoice(slot)) {
 						const ticksLeft = this.turnTicksLeft[slotNum];
-						timeLeft = ` and has ${ticksLeft * 10} seconds left`;
+						timeLeft = ` and has ${ticksLeft * TICK_TIME} seconds left`;
 					}
 					this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} reconnected${timeLeft}.`).update();
 				}
@@ -327,7 +328,7 @@ class Battle {
 		this.room = room;
 		this.title = format.name;
 		if (!this.title.endsWith(" Battle")) this.title += " Battle";
-		this.allowRenames = !options.rated;
+		this.allowRenames = (!options.rated && !options.tour);
 
 		this.format = formatid;
 		this.rated = options.rated;
@@ -341,6 +342,11 @@ class Battle {
 		this.p1 = null;
 		this.p2 = null;
 
+		/**
+		 * p1 and p2 may be null in unrated games, but playerNames retains
+		 * the most recent usernames in those slots, for use by various
+		 * functions that need names for the slots.
+		 */
 		this.playerNames = ["Player 1", "Player 2"];
 		/** {playerid: [rqid, request, isWait, choice]} */
 		this.requests = {
@@ -360,11 +366,19 @@ class Battle {
 			throw new Error(`Battle with ID ${room.id} already exists.`);
 		}
 
-		this.send('init', this.format, this.rated ? '1' : '');
+		let ratedMessage = '';
+		if (this.rated) {
+			ratedMessage = 'Rated battle';
+		} else if (this.room.tour) {
+			ratedMessage = 'Tournament battle';
+		}
+
+		this.send('init', this.format, ratedMessage);
 		this.process.pendingTasks.set(room.id, this);
 		if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))] && Rooms(Rooms.global.FvF[toId(WL.getFaction(this.room.p1))].room).fvf.tier === this.format) {
 			WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), room.id, 'start');
 		}
+		if (Config.forcetimer) this.timer.start();
 	}
 
 	send(...args) {
@@ -482,7 +496,7 @@ class Battle {
 			this.started = true;
 			if (!this.ended) {
 				this.ended = true;
-				this.room.win(lines[2]);
+				this.onEnd(lines[2]);
 				this.removeAllPlayers();
 			}
 			this.checkActive();
@@ -527,7 +541,92 @@ class Battle {
 		}
 		Monitor.activeIp = null;
 	}
+	async onEnd(winner) {
+		// Declare variables here in case we need them for non-rated battles logging.
+		let p1score = 0.5;
+		const winnerid = toId(winner);
 
+		// Check if the battle was rated to update the ladder, return its response, and log the battle.
+		if (this.room.rated) {
+			this.room.rated = false;
+			let p1 = this.p1;
+			let p2 = this.p2;
+
+			if (winnerid === p1.userid) {
+				p1score = 1;
+			} else if (winnerid === p2.userid) {
+				p1score = 0;
+			}
+
+			let p1name = p1.name;
+			let p2name = p2.name;
+
+			winner = Users.get(winnerid);
+			if (winner && !winner.registered) {
+				this.room.sendUser(winner, '|askreg|' + winner.userid);
+			}
+			const result = await Ladders(this.format).updateRating(p1name, p2name, p1score, this.room);
+			this.logBattle(...result);
+		} else if (Config.logchallenges) {
+			if (winnerid === this.room.p1.userid) {
+				p1score = 1;
+			} else if (winnerid === this.room.p2.userid) {
+				p1score = 0;
+			}
+			this.logBattle(p1score);
+		} else {
+			this.logData = null;
+		}
+		if (Config.autosavereplays) {
+			let uploader = Users.get(winnerid);
+			if (uploader && uploader.connections[0]) {
+				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
+			}
+		}
+		const parentGame = this.room.parent && this.room.parent.game;
+		if (parentGame && parentGame.onBattleWin) {
+			parentGame.onBattleWin(this.room, winnerid);
+		}
+		this.room.update();
+	}
+	async logBattle(p1score, p1rating, p2rating) {
+		if (Dex.getFormat(this.format).noLog) return;
+		let logData = this.logData;
+		if (!logData) return;
+		this.logData = null; // deallocate to save space
+		logData.log = Rooms.GameRoom.prototype.getLog.call(logData, 3); // replay log (exact damage)
+
+		// delete some redundant data
+		if (p1rating) {
+			delete p1rating.formatid;
+			delete p1rating.username;
+			delete p1rating.rpsigma;
+			delete p1rating.sigma;
+		}
+		if (p2rating) {
+			delete p2rating.formatid;
+			delete p2rating.username;
+			delete p2rating.rpsigma;
+			delete p2rating.sigma;
+		}
+
+		logData.p1rating = p1rating;
+		logData.p2rating = p2rating;
+		logData.endType = this.endType;
+		if (!p1rating) logData.ladderError = true;
+		const date = new Date();
+		logData.timestamp = '' + date;
+		logData.id = this.room.id;
+		logData.format = this.room.format;
+
+		const logsubfolder = Chat.toTimestamp(date).split(' ')[0];
+		const logfolder = logsubfolder.split('-', 2).join('-');
+		const tier = this.room.format.toLowerCase().replace(/[^a-z0-9]+/g, '');
+		const logpath = `logs/${logfolder}/${tier}/${logsubfolder}/`;
+		await FS(logpath).mkdirp();
+		await FS(logpath + this.room.id + '.log.json').write(JSON.stringify(logData));
+		//console.log(JSON.stringify(logData));
+	}
 	onConnect(user, connection) {
 		// this handles joining a battle in which a user is a participant,
 		// where the user has already identified before attempting to join
@@ -610,6 +709,9 @@ class Battle {
 	tie() {
 		this.send('tie');
 	}
+	tiebreak() {
+		this.send('tiebreak');
+	}
 	forfeit(user, message, side) {
 		if (this.ended || !this.started) return false;
 
@@ -642,7 +744,6 @@ class Battle {
 		let player = this.makePlayer(user, team);
 		if (!player) return false;
 		this.players[user.userid] = player;
-		this.playerNames[this.playerCount] = player.name;
 		this.playerCount++;
 		this.room.auth[user.userid] = '\u2606';
 		if (this.playerCount >= 2) {
@@ -660,12 +761,14 @@ class Battle {
 
 		let player = new BattlePlayer(user, this, slot);
 		this[slot] = player;
+		this.playerNames[slotNum] = player.name;
 
 		let message = '' + user.avatar;
 		if (!this.started) {
 			message += "\n" + team;
 		}
 		player.simSend('join', user.name, message);
+		if (this.started) this.onUpdateConnection(user);
 		if (this.p1 && this.p2) this.started = true;
 		return player;
 	}
@@ -749,7 +852,7 @@ if (process.send && module === process.mainModule) {
 			const id = data[0];
 			if (!Battles.has(id)) {
 				try {
-					const battle = Sim.construct(data[2], data[3], sendBattleMessage);
+					const battle = Sim.construct(data[2], !!data[3], sendBattleMessage);
 					battle.id = id;
 					Battles.set(id, battle);
 				} catch (err) {

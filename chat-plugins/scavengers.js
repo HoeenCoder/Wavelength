@@ -640,8 +640,8 @@ let commands = {
 	 * --------------
 	 * Individual game commands for each Scavenger Game
 	 */
-	 game: 'games',
-	 games: {
+	game: 'games',
+	games: {
 		knockoutgames: 'kogames',
 		kogames: function (target, room, user) {
 			if (room.id !== 'scavengers') return this.errorReply("Scavenger games can only be created in the scavengers room.");
@@ -812,7 +812,7 @@ let commands = {
 		if (!this.can('mute', null, room)) return false;
 		if (!room.game || !room.game.scavGame) return this.errorReply(`There is no scavenger game currently running.`);
 
-		let completed = room.game.scavParentGame ? room.game.game.completed : room.game.completed;
+		let completed = room.game.scavParentGame ? room.game.childGame.completed : room.game.completed;
 		if (!this.cmd.includes('force')) {
 			if (!completed.length) {
 				return this.errorReply('No one has finished the hunt yet.  Use /forceendhunt if you want to end the hunt and reveal the answers.');

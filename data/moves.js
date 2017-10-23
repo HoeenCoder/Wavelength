@@ -8530,7 +8530,7 @@ exports.BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		desc: "The user has 1/16 of its maximum HP restored at the end of each turn, but it is prevented from switching out and other Pokemon cannot force the user to switch out. The user can still switch out if it uses Baton Pass, Parting Shot, U-turn, or Volt Switch. If the user leaves the field using Baton Pass, the replacement will remain trapped and still receive the healing effect. During the effect, the user can be hit normally by Ground-type attacks and be affected by Spikes, Toxic Spikes, and Sticky Web, even if the user is a Flying type or has the Ability Levitate.",
-		shortDesc: "User recovers 1/16 max HP per turn. Traps user.",
+		shortDesc: "Traps/grounds user; heals 1/16 max HP per turn.",
 		id: "ingrain",
 		name: "Ingrain",
 		pp: 20,
@@ -10520,7 +10520,7 @@ exports.BattleMovedex = {
 			onTryAddVolatile: function (status, target, source, effect) {
 				if (!target.isGrounded() || target.isSemiInvulnerable()) return;
 				if (status.id === 'confusion') {
-					if (!effect.secondaries) this.add('-activate', target, 'move: Misty Terrain');
+					if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Misty Terrain');
 					return null;
 				}
 			},
@@ -13039,7 +13039,15 @@ exports.BattleMovedex = {
 		onHit: function (target, source) {
 			if (source.template && (source.template.num === 493 || source.template.num === 773)) return false;
 			this.add('-start', source, 'typechange', '[from] move: Reflect Type', '[of] ' + target);
-			source.types = target.getTypes(true);
+			let newBaseTypes = target.getTypes(true).filter(type => type !== '???');
+			if (!newBaseTypes.length) {
+				if (target.addedType) {
+					newBaseTypes = ['Normal'];
+				} else {
+					return false;
+				}
+			}
+			source.types = newBaseTypes;
 			source.addedType = target.addedType;
 			source.knownType = target.side === source.side && target.knownType;
 		},
@@ -13754,7 +13762,7 @@ exports.BattleMovedex = {
 			},
 			onTryAddVolatile: function (status, target, source, effect) {
 				if ((status.id === 'confusion' || status.id === 'yawn') && source && target !== source && effect && (!effect.infiltrates || target.side === source.side)) {
-					if (!effect.secondaries) this.add('-activate', target, 'move: Safeguard');
+					if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Safeguard');
 					return null;
 				}
 			},
