@@ -504,7 +504,7 @@ exports.commands = {
 			if (!factions[factionid] || (factions[factionid] && !factions[factionid].approved) || (factions[factionid] && factions[factionid].private)) return this.errorReply('That faction does not exist.');
 			if (getFaction(user.userid)) return this.errorReply('You\'re already in a faction!');
 			if (factions[factionid].bans.indexOf(user.userid) > -1) return this.errorReply("You are banned from this faction!");
-			let sortedRanks = Object.keys(factions[factionid].ranks).sort(function (a, b) {return factions[factionid].ranks[b].rank - factions[factionid].ranks[a].rank;});
+			let sortedRanks = Object.keys(factions[factionid].ranks).sort(function (a, b) { return factions[factionid].ranks[b].rank - factions[factionid].ranks[a].rank; });
 			let rank = sortedRanks.pop();
 			factions[factionid].users.push(user.userid);
 			factions[factionid].ranks[rank].users.push(user.userid);
@@ -556,7 +556,7 @@ exports.commands = {
 			if (!factions[factionid].invites.includes(user.userid)) return this.errorReply('You have no pending invites!');
 			if (getFaction(user.userid)) return this.errorReply('You\'re already in a faction!');
 
-			let sortedRanks = Object.keys(factions[factionid].ranks).sort(function (a, b) {return factions[factionid].ranks[b].rank - factions[factionid].ranks[a].rank;});
+			let sortedRanks = Object.keys(factions[factionid].ranks).sort(function (a, b) { return factions[factionid].ranks[b].rank - factions[factionid].ranks[a].rank; });
 			let rank = sortedRanks.pop();
 			factions[factionid].users.push(user.userid);
 			factions[factionid].ranks[rank].users.push(user.userid);
