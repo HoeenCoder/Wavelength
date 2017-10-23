@@ -128,11 +128,11 @@ exports.WL = {
 		let baseSpecies = pokemon;
 		let forme = null;
 		if ((pokemon.otherForms && pokemon.id !== 'unown') && (!exact || !exact.species)) {
-			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
+			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => { return toId(x); });
 			forme = formes[Math.floor(Math.random() * formes.length)];
 			pokemon = Dex.getTemplate(forme);
 		} else if ((pokemon.otherForms && pokemon.id !== 'unown') && exact.species && exact.allowOtherFormes) {
-			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => {return toId(x);});
+			let formes = pokemon.otherForms.concat(pokemon.baseSpecies).map(x => { return toId(x); });
 			forme = formes[Math.floor(Math.random() * formes.length)];
 			pokemon = Dex.getTemplate(forme);
 		}
@@ -194,7 +194,7 @@ exports.WL = {
 				}
 			}
 		}
-		raw = raw.sort(function (a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
+		raw = raw.sort(function (a, b) { return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2)); });
 		for (let i = 0; i < 4; i++) {
 			if (raw.length === 0) break;
 			let target = raw.pop();
@@ -295,9 +295,9 @@ exports.WL = {
 		switch (type) {
 		case 'erratic':
 			if (n <= 50) EXP = ((Math.pow(n, 3) * (100 - n))) / 50;
-			if (50 <= n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
-			if (68 <= n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
-			if (98 <= n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
+			if (50 <= n && n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
+			if (68 <= n && n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
+			if (98 <= n && n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
 			break;
 		case 'fast':
 			EXP = (4 * Math.pow(n, 3)) / 5;
@@ -313,8 +313,8 @@ exports.WL = {
 			break;
 		case 'fluctuating':
 			if (n <= 15) EXP = Math.pow(n, 3) * ((((n + 1) / 3) + 24) / 50);
-			if (15 <= n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
-			if (36 <= n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
+			if (15 <= n && n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
+			if (36 <= n && n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
 			break;
 		}
 		if (EXP < 0) return 0; // Experience underflow glitch

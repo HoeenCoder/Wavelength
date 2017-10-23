@@ -608,7 +608,7 @@ exports.commands = {
 			} catch (e) {
 				let newPlayer = new Player(user.userid, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newPlayer, Db.players.get(user.userid));
-				Db.players.set(user.userid, newObj);
+				Db.players.set(user.userid, newPlayer);
 			}
 			user.console.queue = ['text|Welcome back!<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
 			user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
@@ -693,7 +693,7 @@ exports.commands = {
 				nMoves = nMoves.reverse();
 				for (let i = 0; i < nMoves.length; i++) {
 					user.console.queue.unshift(nMoves[i]);
-				} 
+				}
 				if (user.console.shed && obj.party.length < 5 && obj.bag.pokeballs.pokeball > 0) {
 					obj.bag.pokeballs.pokeball--;
 					let shed = {species: 'shedinja', level: pokemon.level, exp: WL.calcExp('shedinja', pokemon.level), ot: obj.userid, ivs: pokemon.ivs, evs: pokemon.evs, nature: pokemon.nature, ability: "Wonder Guard", happiness: 70, pokeball: pokemon.pokeball};
@@ -710,7 +710,7 @@ exports.commands = {
 							}
 						}
 					}
-					raw = raw.sort(function (a, b) {return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2));});
+					raw = raw.sort(function (a, b) { return parseInt(a.lvl.substr(2)) - parseInt(b.lvl.substr(2)); });
 					for (let i = 0; i < 4; i++) {
 						if (raw.length === 0) break;
 						let tar = raw.pop();
