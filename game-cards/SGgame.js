@@ -490,12 +490,13 @@ class SGgame extends Console.Console {
 class Player {
 	constructor(user, starter) {
 		this.game = 'SGgame - Alpha';
+		this.version = user.console.version;
 		this.userid = user.userid;
 		this.poke = 0; // Currency
 		this.time = 0;
-		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1, linkcable: 5}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {}};
+		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1, linkcable: 5}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {alphaticket: 1}};
 		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
-		this.pc = [[], [], [], [], [], [], ["HoeenHero|ludicolo|||scald,gigadrain,icebeam,raindance|Jolly||M|20,30,23,3,30,28||50|255,,pokeball,117360,hoeenhero"], [], [], []];
+		this.pc = [[], [], [], [], [], [], [], [], [], []];
 		this.party = starter;
 		this.pokedex = {};
 		// More to come...
@@ -605,8 +606,8 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newObj = new Player(user.userid, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
-				Object.assign(newObj, Db.players.get(user.userid));
+				let newPlayer = new Player(user.userid, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				Object.assign(newPlayer, Db.players.get(user.userid));
 				Db.players.set(user.userid, newObj);
 			}
 			user.console.queue = ['text|Welcome back!<br/>Be sure to tell us if you like the game, have any suggestions, or find any issues!'];
@@ -769,7 +770,7 @@ exports.commands = {
 				if (inBattle) {
 					if (item.use && !item.use.noBattle) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 				} else {
-					if (Dex.getItem(target[1]).exists || item.use.triggerEvo) data.give = '/sggame bag ' + target[0] + ', ' + target[1] + ', give';
+					if (Dex.getItem(target[1]).exists || (item.use && item.use.triggerEvo)) data.give = '/sggame bag ' + target[0] + ', ' + target[1] + ', give';
 					if (item.use && !item.use.battleOnly) data.use = '/sggame bag ' + target[0] + ', ' + target[1] + ', use';
 					//data.toss = '/sggame bag ' + target[0] + ', ' + target[1] + ', toss';
 				}
@@ -1136,8 +1137,17 @@ exports.commands = {
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
-			let obj = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
-			Db.players.set(user.userid, obj);
+			let player = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
+			let oldPlayer = Db.players.get(user.userid);
+			if (oldPlayer && oldPlayer.bag.keyitems.alphaticket) {
+				console.log('EXISTING TICKETS: ' + oldPlayer.bag.keyitems.alphaticket);
+				player.bag.keyitems.alphaticket = oldPlayer.bag.keyitems.alphaticket;
+			}
+			if (oldPlayer && oldPlayer.version !== user.console.version && user.console.version.includes('Alpha')) {
+				player.bag.keyitems.alphaticket++;
+				console.log('NEW VERSION: ' + oldPlayer.version + ' -> ' + player.version);
+			}
+			Db.players.set(user.userid, player);
 			user.console.lastNextAction = null;
 			if (user.lastCommand) delete user.lastCommand;
 			this.parse('/sggame next');

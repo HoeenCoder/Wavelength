@@ -949,5 +949,10 @@
             "noBattle": true,
             "triggerEvo": true
         }
+    },
+     "alphaticket": {
+        "id": "alphaticket",
+        "name": "Alpha Ticket",
+        "slot": "keyitems"
     }
 }
