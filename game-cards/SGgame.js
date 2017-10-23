@@ -704,7 +704,7 @@ exports.commands = {
 					let mon = Dex.getTemplate('shedinja');
 					for (let move in mon.learnset) {
 						for (let learned in mon.learnset[move]) {
-							if (mon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(mon.learnset[move][learned].substr(2)) <= shed.level && !used[move]) {
+							if (mon.learnset[move][learned].substr(0, 2) === '7L' && parseInt(mon.learnset[move][learned].substr(2)) <= shed.level && !used[move]) {
 								raw.push({move: move, lvl: mon.learnset[move][learned]});
 								used.push(move);
 							}
@@ -1140,12 +1140,10 @@ exports.commands = {
 			let player = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {species: target, level: 10, ability: 0, ot: user.userid})));
 			let oldPlayer = Db.players.get(user.userid);
 			if (oldPlayer && oldPlayer.bag.keyitems.alphaticket) {
-				console.log('EXISTING TICKETS: ' + oldPlayer.bag.keyitems.alphaticket);
 				player.bag.keyitems.alphaticket = oldPlayer.bag.keyitems.alphaticket;
 			}
 			if (oldPlayer && oldPlayer.version !== user.console.version && user.console.version.includes('Alpha')) {
 				player.bag.keyitems.alphaticket++;
-				console.log('NEW VERSION: ' + oldPlayer.version + ' -> ' + player.version);
 			}
 			Db.players.set(user.userid, player);
 			user.console.lastNextAction = null;
@@ -1186,7 +1184,7 @@ exports.commands = {
 		if (target.length < 3) return this.parse(`/help givepokeballs`);
 		let u = target[0] = Users(target[0]);
 		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
-		if (!(target[1] in {'pokeball': 1, 'greatball': 1, 'ultraball': 1, 'masterball': 1})) return this.parse(`/help givepokeballs`);
+		if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(target[1])) return this.parse(`/help givepokeballs`);
 		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may give masterballs.`);
 		target[2] = parseInt(target[2]);
 		if (isNaN(target[2]) || target[2] < 1 || target[2] > 100) return this.errorReply(`Pokeball amount must be a number between 1 and 100.`);

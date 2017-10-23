@@ -673,7 +673,7 @@ class Side {
 				break;
 			case 'pokeball':
 				if (!this.battle.getFormat().isWildEncounter) return this.emitChoiceError(`You can't throw a pokeball here.`);
-				if (!(data in {'pokeball': 1, 'greatball': 1, 'ultraball': 1, 'masterball': 1})) return this.emitChoiceError(`Thats not a pokeball, or at last not one we support.`);
+				if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(data)) return this.emitChoiceError(`Thats not a pokeball, or at last not one we support.`);
 				if (this.active[0].volatiles['lockedmove']) return this.emitChoiceError(`You can't throw a pokeball right now.`);
 				if (this.foe.active[0].species === 'Missingno.') return this.emitChoiceError(`You can't catch an error. Contact an Administrator if you haven't already.`);
 				this.choosePokeball(data);

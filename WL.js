@@ -188,7 +188,7 @@ exports.WL = {
 		}
 		for (let move in pokemon.learnset) {
 			for (let learned in pokemon.learnset[move]) {
-				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
+				if (pokemon.learnset[move][learned].substr(0, 2) === '7L' && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move]) {
 					raw.push({move: move, lvl: pokemon.learnset[move][learned]});
 					used.push(move);
 				}
@@ -357,7 +357,7 @@ exports.WL = {
 	 */
 	canEvolve: function (pokemon, trigger, userid, options) {
 		trigger = toId(trigger);
-		if (!(trigger in {'level': 1, 'item': 1, 'trade': 1})) return false;
+		if (!['level', 'item', 'trade'].includes(trigger)) return false;
 		if (!pokemon || typeof pokemon !== 'object' || !pokemon.species) return false;
 		if (!toId(userid)) return false;
 		if (pokemon.item === 'everstone') return false;
@@ -487,7 +487,7 @@ exports.WL = {
 		let used = [];
 		for (let move in pokemon.learnset) {
 			for (let learned in pokemon.learnset[move]) {
-				if (pokemon.learnset[move][learned].substr(0, 2) in {'7L': 1} && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move] && curMoves.indexOf(move) === -1) {
+				if (pokemon.learnset[move][learned].substr(0, 2) === '7L' && parseInt(pokemon.learnset[move][learned].substr(2)) > olvl && parseInt(pokemon.learnset[move][learned].substr(2)) <= lvl && !used[move] && curMoves.indexOf(move) === -1) {
 					moves.push("learn|" + slot + "|" + move);
 					used.push(move);
 				}
