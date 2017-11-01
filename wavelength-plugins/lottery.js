@@ -15,7 +15,7 @@ class Lottery {
 		this.costToJoin = 3;
 		this.room.add(`|uhtml|lottery-${this.lottoNumber}|<div class="broadcast-blue"><p style="font-size: 14pt; text-align: center">A new <strong>Lottery drawing</strong> is starting!</p><p style="font-size: 9pt; text-align: center"><button name="send" value="/lotto join">Join</button><br /><strong>DISCLAIMER: Joining costs ${this.costToJoin} ${currencyPlural}!!!!</strong></p></div>`, true);
 		this.timer = setTimeout(() => {
-			if (this.players.length < 1) {
+			if (this.players.length < 2) {
 				this.room.add('|uhtmlchange|lottery-' + this.lottoNumber + '|<div class="broadcast-red"><p style="text-align: center; font-size: 14pt>This Lottery drawing has ended due to lack of users.</p></div>');
 				return this.end();
 			}
@@ -38,8 +38,8 @@ class Lottery {
 	}
 
 	joinLottery(user) {
+		if (!this.players.includes(user)) return user.sendTo(this.room, `You are not currently in the Lottery drawing in this room..`);
 		Economy.readMoney(user.userid, money => {
-			if (this.players.includes(user)) return user.sendTo(this.room, "You have already joined this Lottery drawing.");
 			if (money < this.costToJoin) {
 				user.sendTo(this.room, 'You do not have enough ' + currencyPlural + ' to join.');
 				return;
@@ -97,8 +97,8 @@ exports.commands = {
 		start: function (target, room, user) {
 			if (!this.can('mute', null, room)) return;
 			if (!room.lottery) return this.sendReply("There is not any Lottery drawing available to be started.");
-			if (room.lottery.players.length < 1) return this.sendReply("You can't start a Lottery drawing without at least one user joining.");
-			this.privateModCommand(`(A new Lottery drawing has been started early.)`);
+			if (room.lottery.players.length < 2) return this.sendReply("You can't start a Lottery drawing without at least two users joining.");
+			this.privateModCommand(`(The Lottery drawing has been started early.)`);
 			room.lottery.drawWinner();
 		},
 		cancel: "end",
