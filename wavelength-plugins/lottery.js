@@ -27,7 +27,7 @@ class Lottery {
 		user.sendTo(this.room, '|uhtml|lottery-' + this.lottoNumber + '|<div class="broadcast-blue"><p style="text-align: center; font-size: 14pt>A Lottery Drawing has started looking for players!<hr /><br />For the price of 3 ' + currencyPlural + ', you can earn 5 ' + currencyPlural + ' plus one ' + currencyName + ' per user who joins.</p><br /><button name="send" value="/lottery join">Click here to join the Lottery</button></div>');
 	}
 
-	drawWinner(user) {
+	drawWinner() {
 		let winner = this.players[Math.floor(Math.random() * this.players.length)];
 		let basePrize = 5;
 		let lottoPrize = basePrize + this.players.length + this.costToJoin;
@@ -97,9 +97,9 @@ exports.commands = {
 		start: function (target, room, user) {
 			if (!this.can('mute', null, room)) return;
 			if (!room.lottery) return this.sendReply("There is not any Lottery drawing available to be started.");
-			if (room.lottery.playerCount < 1) return this.sendReply("You can't start a Lottery drawing without at least one user joining.");
+			if (room.lottery.players.length < 1) return this.sendReply("You can't start a Lottery drawing without at least one user joining.");
 			this.privateModCommand(`(A new Lottery drawing has been started early.)`);
-			room.lottery.drawWinner(user);
+			room.lottery.drawWinner();
 		},
 		cancel: "end",
 		end: function (target, room, user) {
@@ -109,4 +109,12 @@ exports.commands = {
 			room.lottery.end();
 		},
 	},
+	lotteryhelp: [
+		"Another alias for /lottery is /lotto.",
+		"/lottery new - Creates a new Lottery drawing. Must be a Room Driver or higher.",
+		"/lottery join - Join a Lottery drawing. Requires " + this.costToJoin + " " + moneyPlural + ".",
+		"/lottery leave - Leaves a Lottery drawing.",
+		"/lottery start - Forcefully starts a Lottery drawing (instead of starting automatically in 24 hours from creation). Must be a Room Driver or higher.",
+		"/lottery end - Forcefully ends a Lottery drawing. Must be a Room Driver or higher.",
+	],
 };
