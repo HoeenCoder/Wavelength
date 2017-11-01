@@ -55,7 +55,7 @@ class Lottery {
 
 	leaveLottery(user) {
 		Economy.writeMoney(user.userid, this.costToJoin, () => {
-			if (!this.players.include(user)) return user.sendTo(this.room, `You are not currently in the Lottery drawing in this room..`);
+			if (!this.players.includes(user)) return user.sendTo(this.room, `You are not currently in the Lottery drawing in this room..`);
 			Economy.logTransaction(user.userid + " has left the Lottery drawing, and has been refunded their " + this.costToJoin + " " + currencyPlural + ".");
 		});
 	}
