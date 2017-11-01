@@ -381,7 +381,7 @@ exports.commands = {
 			if (!target.includes['.jpg'] && target.includes['.png'] && target.includes['.gif']) return this.errorReply("Not an image link!");
 			factions[factionId].pendingAVI = target;
 			write();
-			Monitor.adminlog('|html| Faction ' + factionId + ' has requested a faction avatar <br /><img src="' + target + '" height="80" width="80"><br /><button name="send" value="/faction aa ' + factionId + ',' + factions[factionId].pendingAVI + '">Set it!</button> <button name="send" value="/faction da ' + factionId + '">Deny it!</button>');
+			if (Rooms('upperstaff')) Rooms('upperstaff').add('|html| Faction ' + factionId + ' has requested a faction avatar <br /><img src="' + target + '" height="80" width="80"><br /><button name="send" value="/faction aa ' + factionId + ',' + factions[factionId].pendingAVI + '">Set it!</button> <button name="send" value="/faction da ' + factionId + '">Deny it!</button>').update();
 			return this.sendReply('Upper Staff have been notified of your faction avatar request!');
 		},
 		aa: 'approveavatar',
