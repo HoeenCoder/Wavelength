@@ -302,10 +302,6 @@ function fvfDisplay(room) {
 }
 WL.fvfDisplay = fvfDisplay;
 
-function randomString(length) {
-	return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
-}
-
 function factionPM(message, faction) {
 	let factionid = toId(faction);
 	if (!factions[factionid]) return;
@@ -365,7 +361,7 @@ exports.commands = {
 				},
 			};
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)').update();
+			Monitor.adminlog('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)');
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
@@ -401,7 +397,7 @@ exports.commands = {
 			factions[factionId].avatar = factAvi;
 			delete factions[factionId].pendingAVI;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add(user.name + ' has set a faction avatar for ' + factions[factionId].name).update();
+			Monitor.adminlog(user.name + ' has set a faction avatar for ' + factions[factionId].name);
 			return this.sendReply('The faction avatar has been set for ' + factions[factionId].name);
 		},
 		da: 'denyavatar',
@@ -412,7 +408,7 @@ exports.commands = {
 			if (!factions[factionId].pendingAVI) return this.errorReply('That faction has no requested faction avatar!');
 			delete factions[factionId].pendingAVI;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add(user.name + ' has denied a faction avatar for ' + factions[factionId].name).update();
+			Monitor.adminlog(user.name + ' has denied a faction avatar for ' + factions[factionId].name);
 			return this.sendReply('The faction avatar has been denied for ' + factions[factionId].name);
 		},
 		pa: 'pendingavatars',
@@ -495,7 +491,7 @@ exports.commands = {
 			factions[toId(target)].approved = true;
 			factions[toId(target)].private = false;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('The faction ' + factions[toId(target)].name + ' has been approved by ' + user.name + '.').update();
+			Monitor.adminlog('The faction ' + factions[toId(target)].name + ' has been approved by ' + user.name + '.');
 			return user.popup("Faction approved!");
 		},
 		join: function (target, room, user) {
@@ -607,7 +603,7 @@ exports.commands = {
 			}
 			factions[factionid].users.splice(factions[factionid].users.indexOf(targetid), 1);
 			write();
-			if (Users(target) && Users(target).connected) Users(target).send("|popup||html|" + user.name + " has kicked you from the faction " + Chat.escapeHTML(factions[factionid].name) + ".");
+			if (Users(target) && Users(target).connected) Users(target).send("|popup||html|" + WL.nameColor(user.name) + " has kicked you from the faction " + Chat.escapeHTML(factions[factionid].name) + ".");
 			this.sendReply("You've kicked " + target + " from " + factions[factionid].name + ".");
 		},
 		ban: function (target, room, user) {
@@ -834,7 +830,7 @@ exports.commands = {
 			if (!toId(getFactionRank(user.userid)) !== 'noble' && toId(getFactionRank(user.userid)) !== 'owner') return this.errorReply("You don't have permission to start a faction vs faction.");
 			if (!user.can('ban', null, room)) return this.errorReply("You don't have permission to start a faction vs faction in that room.");
 
-			let fvfId = randomString(10);
+			let fvfId = WL.randomString(10);
 
 			Rooms.global.FvF[factionId] = {
 				challenging: targetFactionid,
