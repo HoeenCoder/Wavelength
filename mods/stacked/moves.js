@@ -4,15 +4,15 @@ exports.BattleMovedex = {
 		inherit: true,
 		effect: {
 			// this is a side condition
-			onStart: function(side) {
+			onStart: function (side) {
 				this.add('-sidestart', side, 'Spikes');
 				this.effectData.layers = 1;
 			},
-			onRestart: function(side) {
+			onRestart: function (side) {
 				this.add('-sidestart', side, 'Spikes');
 				this.effectData.layers++;
 			},
-			onSwitchIn: function(pokemon) {
+			onSwitchIn: function (pokemon) {
 				if (!pokemon.isGrounded()) return;
 				let damageAmounts = [0, 3, 4, 6, 12, 24]; // 1/8, 1/6, 1/4, 1/2, 1/1 to infinity...
 				if (this.effectData.layers > 5) this.effectData.layers = 5;
@@ -24,15 +24,15 @@ exports.BattleMovedex = {
 		inherit: true,
 		effect: {
 			// this is a side condition
-			onStart: function(side) {
+			onStart: function (side) {
 				this.add('-sidestart', side, 'move: Stealth Rock');
 				this.effectData.layers = 1;
 			},
-			onRestart: function(side) {
+			onRestart: function (side) {
 				this.add('-sidestart', side, 'move: Stealth Rock');
 				this.effectData.layers++;
 			},
-			onSwitchIn: function(pokemon) {
+			onSwitchIn: function (pokemon) {
 				let damageAmounts = [0, 3, 4, 6, 12, 24]; // 1/8, 1/6, 1/4, 1/2, 1/1 to infinity...
 				if (this.effectData.layers > 5) this.effectData.layers = 5;
 				let typeMod = this.clampIntRange(pokemon.runEffectiveness('Rock'), -6, 6);
@@ -43,15 +43,15 @@ exports.BattleMovedex = {
 	"stickyweb": {
 		inherit: true,
 		effect: {
-			onStart: function(side) {
+			onStart: function (side) {
 				this.add('-sidestart', side, 'move: Sticky Web');
 				this.effectData.layers = 1;
 			},
-			onRestart: function(side) {
+			onRestart: function (side) {
 				this.add('-sidestart', side, 'move: Sticky Web');
 				this.effectData.layers++;
 			},
-			onSwitchIn: function(pokemon) {
+			onSwitchIn: function (pokemon) {
 				if (!pokemon.isGrounded()) return;
 				this.add('-activate', pokemon, 'move: Sticky Web');
 				if (this.effectData.layers === 1) {
@@ -87,15 +87,15 @@ exports.BattleMovedex = {
 	"toxicspikes": {
 		inherit: true,
 		effect: {
-			onStart: function(side) {
+			onStart: function (side) {
 				this.add('-sidestart', side, 'move: Toxic Spikes');
 				this.effectData.layers = 1;
 			},
-			onRestart: function(side) {
+			onRestart: function (side) {
 				this.add('-sidestart', side, 'move: Toxic Spikes');
 				this.effectData.layers++;
 			},
-			onSwitchIn: function(pokemon) {
+			onSwitchIn: function (pokemon) {
 				if (!pokemon.isGrounded()) return;
 				if (!pokemon.runImmunity('Poison')) return;
 				if (pokemon.hasType('Poison')) {
