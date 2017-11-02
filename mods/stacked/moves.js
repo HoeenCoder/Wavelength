@@ -54,31 +54,7 @@ exports.BattleMovedex = {
 			onSwitchIn: function (pokemon) {
 				if (!pokemon.isGrounded()) return;
 				this.add('-activate', pokemon, 'move: Sticky Web');
-				if (this.effectData.layers === 1) {
-					this.boost({
-						spe: -1,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				} else if (this.effectData.layers === 2) {
-					this.boost({
-						spe: -2,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				} else if (this.effectData.layers === 3) {
-					this.boost({
-						spe: -3,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				} else if (this.effectData.layers === 4) {
-					this.boost({
-						spe: -4,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				} else if (this.effectData.layers === 5) {
-					this.boost({
-						spe: -5,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				} else {
-					this.boost({
-						spe: -6,
-					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-				}
+				this.boost({spe: (this.effectData.layers * -1)}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
 			},
 		},
 	},
