@@ -36,7 +36,7 @@ exports.BattleMovedex = {
 				let damageAmounts = [0, 3, 4, 6, 12, 24]; // 1/8, 1/6, 1/4, 1/2, 1/1 to infinity...
 				if (this.effectData.layers > 5) this.effectData.layers = 5;
 				let typeMod = this.clampIntRange(pokemon.runEffectiveness('Rock'), -6, 6);
-				this.damage(damageAmounts[this.effectData.layers] * (pokemon.maxhp * Math.pow(2, typeMod) / 8));
+				this.damage(damageAmounts[this.effectData.layers] * (pokemon.maxhp * Math.pow(2, typeMod) / 24));
 			},
 		},
 	},
