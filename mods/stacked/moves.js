@@ -78,7 +78,6 @@ exports.BattleMovedex = {
 					this.boost({
 						spe: -6,
 					}, pokemon, pokemon.side.foe.active[0], this.getMove('stickyweb'));
-
 				}
 			},
 		},
