@@ -333,9 +333,9 @@ exports.Formats = [
 	},
 
 	///////////////////////////////////////////////////////
-	// SpacialGaze Metagames
+	// Wavelength Metagames
 	{
-		section: 'Spacialgaze Metagames',
+		section: 'Wavelength Metagames',
 		column: 2,
 	},
 	{
@@ -1873,6 +1873,14 @@ exports.Formats = [
 		mod: 'gen7',
 		gameType: 'doubles',
 		ruleset: ['[Gen 7] Doubles OU', 'Same Type Clause'],
+	},
+	{
+		name: "[Gen 7] Stacked",
+		desc: [
+			"All hazards can be stackable and stacked infinitely. Coded by Lycanium Z.",
+		],
+		mod: 'stacked',
+		ruleset: ['[Gen 7] OU'],
 	},
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
