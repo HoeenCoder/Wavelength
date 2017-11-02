@@ -1877,8 +1877,9 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Coded by Lycanium Z.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperirorater. Coded by Lycanium Z.",
 		],
+
 		mod: 'stacked',
 		ruleset: ['[Gen 7] OU'],
 	},
