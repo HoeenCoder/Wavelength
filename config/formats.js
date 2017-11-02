@@ -484,7 +484,7 @@ exports.Formats = [
 
 		mod: 'cssb',
 		team: 'randomCustomSSB',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod', 'Mega Rayquaza Clause'],
 		onBegin: function () {
 			this.add("raw|<h2>Free for All!</h2>");
 			this.add("raw|<h3>3</h3>");
