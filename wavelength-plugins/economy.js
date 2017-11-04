@@ -77,7 +77,7 @@ let Economy = global.Economy = {
 	},
 };
 
-function rankLadder(title, type, array, prop, group) {
+global.rankLadder = function (title, type, array, prop, group) {
 	let groupHeader = group || 'Username';
 	const ladderTitle = '<center><h4><u>' + title + '</u></h4></center>';
 	const thStyle = 'class="rankladder-headers default-td" style="background: -moz-linear-gradient(#576468, #323A3C); background: -webkit-linear-gradient(#576468, #323A3C); background: -o-linear-gradient(#576468, #323A3C); background: linear-gradient(#576468, #323A3C); box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
@@ -113,7 +113,7 @@ function rankLadder(title, type, array, prop, group) {
 		}
 	}
 	return ladderTitle + tableTop + tableRows + tableBottom;
-}
+};
 
 exports.commands = {
 	'!wallet': true,

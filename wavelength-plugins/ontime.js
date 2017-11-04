@@ -45,4 +45,29 @@ exports.commands = {
 			this.sendReplyBox(WL.nameColor(userid, true) + '\'s total ontime is <b>' + displayTime(convertTime(totalOntime)) + '</b>.' + ' Currently not online.');
 		}
 	},
+	nolifeladder: 'ontimeladder',
+	mostonline: 'ontimeladder',
+	ontimeladder: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		let keys = Db.ontime.keys().map(name => {
+			let currentOntime = 0;
+			if (Ontime[name]) currentOntime = Date.now() - Ontime[name];
+			const totalOntime = Db.ontime.get(name, 0) + currentOntime;
+			return {
+				name: name,
+				time: totalOntime,
+			};
+		});
+		if (!keys.length) return this.sendReplyBox("Ontime ladder is empty.");
+		keys.sort(function (a, b) {
+			return b.time - a.time;
+		});
+		keys = keys.slice(0, 100).map(function (user) {
+			return {
+				name: user.name,
+				time: displayTime(convertTime(user.time)),
+			};
+		});
+		this.sendReplyBox(rankLadder('Ontime Ladder', 'Total Ontime', keys, 'time'));
+	},
 };
