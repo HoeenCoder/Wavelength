@@ -9,7 +9,8 @@
     "githubhook": "1.7.1",
     "nef": "^1.1.0",
     "nef-fs": "^1.0.0",
-    "request": "^2.74.0",
+    "request": "^2.83.0",
+    "request-image-size": "^2.1.0",
     "sockjs": "0.3.18"
   },
   "optionalDependencies": {

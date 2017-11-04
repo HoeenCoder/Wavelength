@@ -23,7 +23,7 @@ function NewItem(name, desc, price, isSSB) {
 
 function writeShop() {
 	if (!writeJSON) return false; //Prevent corruptions
-	fs.writeFile('config/eShop.json', JSON.stringify(WL.eShop));
+	fs.writeFile('config/eShop.json', JSON.stringify(WL.eShop), () => {});
 }
 
 function shopDisplay() {
@@ -96,7 +96,7 @@ try {
 
 //Usage notification
 try {
-	fs.accessSync('wavelength-plugins/shop.js', fs.F_OK);
+	fs.accessSync('wavelength-plugins/shop-private.js', fs.F_OK);
 	if (allowThisShop) console.warn('Since the normal shop is up the eShop has been disabled.');
 	allowThisShop = false;
 } catch (e) {

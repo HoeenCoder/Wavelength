@@ -17,7 +17,7 @@ const BANS = {
 
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
-	fs.writeFile('config/ssb.json', JSON.stringify(WL.ssb));
+	fs.writeFile('config/ssb.json', JSON.stringify(WL.ssb), () => {});
 };
 
 //Shamlessly ripped from teambuilder client.

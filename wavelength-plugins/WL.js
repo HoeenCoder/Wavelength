@@ -92,7 +92,7 @@ WL.reloadCSS = function () {
 		path: '/customcss.php?server=' + (Config.serverid || cssPath),
 		method: 'GET',
 	};
-	http.get(options);
+	http.get(options, () => {});
 };
 
 //Daily Rewards System for Wavelength by Lord Haji
