@@ -37,6 +37,7 @@ class Lottery {
 	}
 
 	joinLottery(user) {
+		if (this.players.includes(user.userid)) return user.sendTo(this.room, 'You have already joined the lottery');
 		Economy.readMoney(user.userid, money => {
 			if (money < this.costToJoin) {
 				user.sendTo(this.room, 'You do not have enough ' + currencyPlural + ' to join.');
