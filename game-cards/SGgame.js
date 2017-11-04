@@ -1196,4 +1196,10 @@ exports.commands = {
 		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
 	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
+	exportteam: function (target, room, user) {
+		// Allow users to save their SGgame teams to teambuilder
+		let player = Db.players.get(user.userid);
+		if (!player) return this.errorReply(`You need to start SGgame before doing this.`);
+		return this.sendReplyBox(`<b>Your SGgame party</b>:<br/><br/>${Dex.packTeam(player.party)}<br/><br/>Paste the above into the import team section in teambuilder.`);
+	},
 };
