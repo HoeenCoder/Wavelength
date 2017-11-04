@@ -49,47 +49,6 @@ function getFactionRank(user) {
 	}
 }
 
-// SHAMLESSLY RIPPED FROM ECONOMY.JS!
-
-function rankLadder(title, type, array, prop, group) {
-	let groupHeader = group || 'Username';
-	const ladderTitle = '<center><h4><u>' + title + '</u></h4></center>';
-	const thStyle = 'class="rankladder-headers default-td" style="background: -moz-linear-gradient(#576468, #323A3C); background: -webkit-linear-gradient(#576468, #323A3C); background: -o-linear-gradient(#576468, #323A3C); background: linear-gradient(#576468, #323A3C); box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
-	const tableTop = '<div style="max-height: 310px; overflow-y: scroll;">' +
-		'<table style="width: 100%; border-collapse: collapse;">' +
-		'<tr>' +
-			'<th ' + thStyle + '>Rank</th>' +
-			'<th ' + thStyle + '>' + groupHeader + '</th>' +
-			'<th ' + thStyle + '>' + type + '</th>' +
-		'</tr>';
-	const tableBottom = '</table></div>';
-	const tdStyle = 'class="rankladder-tds default-td" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
-	const first = 'class="first default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
-	const second = 'class="second default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
-	const third = 'class="third default-td important" style="box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.3) inset, 1px 1px 1px rgba(255, 255, 255, 0.7) inset;"';
-	let midColumn;
-
-	let tableRows = '';
-
-	for (let i = 0; i < array.length; i++) {
-		if (i === 0) {
-			midColumn = '</td><td ' + first + '>';
-			tableRows += '<tr><td ' + first + '>' + (i + 1) + midColumn + array[i].name + midColumn + array[i][prop] + '</td></tr>';
-		} else if (i === 1) {
-			midColumn = '</td><td ' + second + '>';
-			tableRows += '<tr><td ' + second + '>' + (i + 1) + midColumn + array[i].name + midColumn + array[i][prop] + '</td></tr>';
-		} else if (i === 2) {
-			midColumn = '</td><td ' + third + '>';
-			tableRows += '<tr><td ' + third + '>' + (i + 1) + midColumn + array[i].name + midColumn + array[i][prop] + '</td></tr>';
-		} else {
-			midColumn = '</td><td ' + tdStyle + '>';
-			tableRows += '<tr><td ' + tdStyle + '>' + (i + 1) + midColumn + array[i].name + midColumn + array[i][prop] + '</td></tr>';
-		}
-	}
-	return ladderTitle + tableTop + tableRows + tableBottom;
-}
-// END SHAMELESS ECONOMY.JS RIPPING!
-
 /****** General Faction Functions End ******/
 
 /****** Faction vs Faction Functions Start ******/
@@ -302,10 +261,6 @@ function fvfDisplay(room) {
 }
 WL.fvfDisplay = fvfDisplay;
 
-function randomString(length) {
-	return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
-}
-
 function factionPM(message, faction) {
 	let factionid = toId(faction);
 	if (!factions[factionid]) return;
@@ -365,7 +320,7 @@ exports.commands = {
 				},
 			};
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)').update();
+			Monitor.adminlog('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)');
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
@@ -401,7 +356,7 @@ exports.commands = {
 			factions[factionId].avatar = factAvi;
 			delete factions[factionId].pendingAVI;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add(user.name + ' has set a faction avatar for ' + factions[factionId].name).update();
+			Monitor.adminlog(user.name + ' has set a faction avatar for ' + factions[factionId].name);
 			return this.sendReply('The faction avatar has been set for ' + factions[factionId].name);
 		},
 		da: 'denyavatar',
@@ -412,7 +367,7 @@ exports.commands = {
 			if (!factions[factionId].pendingAVI) return this.errorReply('That faction has no requested faction avatar!');
 			delete factions[factionId].pendingAVI;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add(user.name + ' has denied a faction avatar for ' + factions[factionId].name).update();
+			Monitor.adminlog(user.name + ' has denied a faction avatar for ' + factions[factionId].name);
 			return this.sendReply('The faction avatar has been denied for ' + factions[factionId].name);
 		},
 		pa: 'pendingavatars',
@@ -495,7 +450,7 @@ exports.commands = {
 			factions[toId(target)].approved = true;
 			factions[toId(target)].private = false;
 			write();
-			if (Rooms('upperstaff')) Rooms('upperstaff').add('The faction ' + factions[toId(target)].name + ' has been approved by ' + user.name + '.').update();
+			Monitor.adminlog('The faction ' + factions[toId(target)].name + ' has been approved by ' + user.name + '.');
 			return user.popup("Faction approved!");
 		},
 		join: function (target, room, user) {
@@ -607,7 +562,7 @@ exports.commands = {
 			}
 			factions[factionid].users.splice(factions[factionid].users.indexOf(targetid), 1);
 			write();
-			if (Users(target) && Users(target).connected) Users(target).send("|popup||html|" + user.name + " has kicked you from the faction " + Chat.escapeHTML(factions[factionid].name) + ".");
+			if (Users(target) && Users(target).connected) Users(target).send("|popup||html|" + WL.nameColor(user.name) + " has kicked you from the faction " + Chat.escapeHTML(factions[factionid].name) + ".");
 			this.sendReply("You've kicked " + target + " from " + factions[factionid].name + ".");
 		},
 		ban: function (target, room, user) {
@@ -834,7 +789,7 @@ exports.commands = {
 			if (!toId(getFactionRank(user.userid)) !== 'noble' && toId(getFactionRank(user.userid)) !== 'owner') return this.errorReply("You don't have permission to start a faction vs faction.");
 			if (!user.can('ban', null, room)) return this.errorReply("You don't have permission to start a faction vs faction in that room.");
 
-			let fvfId = randomString(10);
+			let fvfId = WL.randomString(10);
 
 			Rooms.global.FvF[factionId] = {
 				challenging: targetFactionid,

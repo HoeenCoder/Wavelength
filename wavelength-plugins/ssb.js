@@ -7,9 +7,17 @@ const MAX_MOVEPOOL_SIZE = 4;
 let customMovepool = ['Stretch', 'Flame Tower', 'Rain Spear', 'Healing Herbs', 'Electro Drive', 'Hailstorm', 'Beat Down', 'Nuclear Waste', 'Terratremor', 'Ventilation', 'Psychic Shield', 'Swarm Charge', 'Rock Cannon', 'Spook', 'Imperial Rampage', 'Shadow Run', 'Magnorang', 'Majestic Dust']; //Add defual custom move names here.
 let typeList = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'];
 
+const BANS = {
+	moves: ['Baton Pass'],
+	abilities: ['Shadow Tag', 'Arena Trap', 'Power Construct'],
+	items: [],
+	pokemon: [],
+	tiers: ['Uber', 'AG'],
+};
+
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
-	fs.writeFile('config/ssb.json', JSON.stringify(WL.ssb));
+	fs.writeFile('config/ssb.json', JSON.stringify(WL.ssb), () => {});
 };
 
 //Shamlessly ripped from teambuilder client.
@@ -56,60 +64,6 @@ function getStat(stat, set, evOverride, natureOverride) {
 		val *= 0.9;
 	}
 	return Math.floor(val);
-}
-
-function validate(me, targetUser, quiet) {
-	let valid = true;
-	//species
-	let species = Dex.getTemplate(targetUser.species);
-	if (!species.exists || (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') || species.gen < 1 || species.tier === 'Uber' || species.battleOnly) {
-		valid = false;
-		if (!quiet) me.errorReply(targetUser.name + '\'s species was invalid.');
-		species = Dex.getTemplate('unown');
-		targetUser.species = species.species;
-		targetUser.ability = species.abilities['0']; //Force legal ability
-		targetUser.movepool = []; //force legal normal moves
-	}
-	if (species.tier === 'Uber') {
-		//Most are banned a few arent
-		if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') {
-			if (!quiet && valid) me.errorReply(targetUser.name + '\'s species was invalid.');
-			valid = false;
-			species = Dex.getTemplate('unown');
-			targetUser.species = species.species;
-			targetUser.ability = species.abilities['0']; //Force legal ability
-			targetUser.movepool = []; //force legal normal moves
-		}
-	}
-	//item
-	if (targetUser.item !== false && !targetUser.setItem(targetUser.item)) {
-		valid = false;
-		if (!quiet) me.errorReply(targetUser.name + '\'s item was invalid.');
-		targetUser.item = false;
-	}
-	//ability
-	if (!targetUser.setAbility(targetUser.ability)) {
-		valid = false;
-		if (!quiet) me.errorReply(targetUser.name + '\'s ability was invalid.');
-		targetUser.ability = Dex.getTemplate(targetUser.species).abilities[0]; //Default to first ability of species.
-	}
-	//moves
-	for (let i in targetUser.movepool) {
-		if (!Dex.mod('cssb').getMove(targetUser.movepool[i]).exists) {
-			valid = false;
-			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.movepool[i] + '" does not exist.');
-			targetUser.removeMove(targetUser.movepool[i]);
-		}
-	}
-	//Check customs to make sure the user can use them.
-	if (targetUser.cMove) {
-		if (customMovepool.map(i => { return toId(i); }).indexOf(toId(targetUser.cMove)) === -1 && (toId(targetUser.selfCustomMove) !== toId(targetUser.cMove) || !targetUser.bought.cMove)) {
-			valid = false;
-			if (!quiet) me.errorReply(targetUser.name + '\'s move "' + targetUser.cMove + '" is a self-made custom move exclusive to another user.');
-			targetUser.cMove = false;
-		}
-	}
-	return valid;
 }
 
 function buildMenu(userid) {
@@ -254,6 +208,7 @@ class SSB {
 		this.nature = 'Serious';
 		this.active = false; //If true, this pokemon can appear in the tier.
 	}
+
 	setSpecies(species) {
 		let speciesId = toId(species);
 		let speciesNum = parseInt(speciesId);
@@ -272,26 +227,26 @@ class SSB {
 		if (!species.learnset && species.id !== 'oricoriosensu' && species.id !== 'oricoriopau' && species.id !== 'oricoriopompom') return false;
 		if (species.gen < 1) return false;
 		if (species.battleOnly) return false;
-		if (species.tier === 'Uber' || species.tier === 'Bank-Uber') {
-			//Most are banned a few arent
-			if (species.id !== 'aegislash' && species.id !== 'blaziken' && species.id !== 'greninja') return false;
-		}
+		if (BANS.tiers.includes(species.tier)) return false;
 		this.species = species.species;
-		this.ability = species.abilities['0']; //Force legal ability
-		this.movepool = []; //force legal normal moves
-		for (let i in this.evs) this.evs[i] = 0; //Reset
-		for (let j in this.ivs) this.ivs[j] = 31; //Reset
-		this.level = 100; //Reset
-		this.happiness = 255; //Reset
-		this.nature = 'Serious'; //Rest
-		this.item = false; //Reset
-		this.cMove = false; //Reset
-		this.active = false; //0 moves, so cannot be active.
-		return true; //Success!
+		// Reset everything
+		this.ability = species.abilities['0'];
+		this.movepool = [];
+		for (let i in this.evs) this.evs[i] = 0;
+		for (let j in this.ivs) this.ivs[j] = 31;
+		this.level = 100;
+		this.happiness = 255;
+		this.nature = 'Serious';
+		this.item = false;
+		this.cMove = false;
+		this.active = false;
+		return true;
 	}
+
 	updateName(name) {
 		this.name = name;
 	}
+
 	setGender(gender) {
 		switch (toId(gender)) {
 		case 'm':
@@ -319,6 +274,7 @@ class SSB {
 		}
 		return true;
 	}
+
 	setSymbol(symbol) {
 		if (!this.cSymbol) return false;
 		if (symbol === ' ' || !symbol) {
@@ -338,21 +294,25 @@ class SSB {
 		this.symbol = symbol;
 		return true;
 	}
+
 	setShiny() {
 		if (!this.canShiny) return false;
 		this.shiny = !this.shiny;
 		return true;
 	}
+
 	setHappiness(lvl) {
 		if (lvl < 0 || lvl > 255) return false;
 		this.happiness = lvl;
 		return true;
 	}
+
 	setLevel(lvl) {
 		if (lvl < 1 || lvl > 100) return false;
 		this.level = lvl;
 		return true;
 	}
+
 	setItem(item) {
 		item = Dex.getItem(toId(item));
 		if (!item.exists) {
@@ -364,11 +324,11 @@ class SSB {
 				return false;
 			}
 		} else {
-			if (item.id === 'mawilite' || item.id === 'salamencite' || item.id === 'gengarite' || item.id === 'kangaskhanite' || item.id === 'lucarionite' || item.id === 'blazikenite') return false;
 			this.item = item.name;
 		}
 		return true;
 	}
+
 	setAbility(ability) {
 		ability = Dex.getAbility(toId(ability));
 		if (!ability.exists) {
@@ -389,15 +349,11 @@ class SSB {
 			return false;
 		}
 	}
+
 	addMove(move) {
 		move = Dex.getMove(toId(move));
 		if (!move.exists) return false; //Only normal moves here.
 		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return false;
-		/*let learnpool = [];
-		for(let i in Tools.getTemplate(this.species).learnset) {
-		  learnpool.push(i);
-		}
-		if (learnpool.indexOf(move.id) === -1) return false;*/
 		if (TeamValidator('gen7ou').checkLearnset(move, this.species, {
 			set: {},
 		})) return false;
@@ -405,6 +361,7 @@ class SSB {
 		this.movepool.push(move.name);
 		return true;
 	}
+
 	removeMove(move) {
 		move = Dex.getMove(toId(move));
 		if (move.exists) {
@@ -419,6 +376,7 @@ class SSB {
 			return true;
 		}
 	}
+
 	setCustomMove(move) {
 		move = toId(move);
 		let customIds = customMovepool.map(move => { return toId(move); });
@@ -434,6 +392,7 @@ class SSB {
 		this.cMove = customMovepool[customIds.indexOf(move)];
 		return true;
 	}
+
 	setEvs(ev, value) {
 		ev = toId(ev);
 		value = parseInt(value);
@@ -449,6 +408,7 @@ class SSB {
 		this.evs[ev] = value;
 		return true;
 	}
+
 	setIvs(iv, value) {
 		iv = toId(iv);
 		value = parseInt(value);
@@ -458,19 +418,139 @@ class SSB {
 		this.ivs[iv] = value;
 		return true;
 	}
+
 	setNature(nature) {
 		nature = Dex.getNature(toId(nature));
 		if (!nature.exists) return false;
 		this.nature = nature.name;
 		return true;
 	}
-	activate() {
-		if (this.species && (this.movepool.length > 0 || this.cMove) && this.ability) {
+
+	activate(user) {
+		let valid = this.validate();
+		if (valid.length === 0) {
 			this.active = !this.active;
 			return true;
 		}
 		this.active = false;
+		user.popup(`|modal|Your SSBFFA pokemon was rejected for the following reasons:\n${valid.join('\n')}`);
 		return false;
+	}
+
+	validate() {
+		let dex = Dex.mod('cssb');
+		let msg = [];
+		// Species
+		let pokemon = dex.getTemplate(this.species);
+		if (!pokemon.exists) {
+			msg.push(`The pokemon ${this.species} does not exist.`);
+			this.setSpecies('Unown');
+			this.active = false;
+			return msg;
+		}
+		if (BANS.pokemon.includes(pokemon.species) || BANS.tiers.includes(pokemon.tier)) {
+			msg.push((BANS.pokemon.includes(pokemon.species) ? `${pokemon.species} is banned.` : `${pokemon.species} is in ${pokemon.tier} which is banned.`));
+			this.setSpecies('Unown');
+			this.active = false;
+			return msg;
+		}
+		// Ability
+		let ability = dex.getAbility(this.ability);
+		if (!ability.exists || BANS.abilities.includes(this.ability) ||
+		(!Dex.getAbility(this.ability).exists && toId(this.cAbility) !== ability.id)) {
+			msg.push((!ability.exists ? `The ability ${ability.id} does not exist.` : (BANS.abilities.includes(this.ability) ? `The ability ${ability.name} is banned.` : `${ability.name} is not your custom ability.`)));
+			this.ability = pokemon.abilities[0];
+		}
+		// Item
+		let item = dex.getItem(this.item);
+		if (!item.exists || BANS.items.includes(this.item) ||
+		(!Dex.getItem(this.item).exists && toId(this.cItem !== item.id))) {
+			msg.push((!ability.exists ? `The item ${item.id} does not exist.` : (BANS.items.includes(this.item) ? `The item ${item.name} is banned.` : `${item.name} is not your custom item.`)));
+			this.item = '';
+		}
+		// Mega evolution check
+		if (item.megaStone && item.megaEvolves === pokemon.species) {
+			let mega = dex.getTemplate(item.megaStone);
+			if (BANS.pokemon.includes(mega.species) || BANS.tiers.includes(mega.tier)) {
+				msg.push((BANS.pokemon.includes(mega.species) ? `${mega.name} is banned.` : `${mega.name} is in ${mega.tier} which is banned.`));
+				this.item = '';
+			}
+		}
+		// Level, Symbol, Shiny, Gender, and Happiness
+		if (this.level < 1 || this.level > 100) {
+			this.level = (this.level < 0 ? 0 : 100);
+			msg.push(`${pokemon.species}'s level was invalid.`);
+		}
+		if (this.symbol !== ' ' && !this.cSymbol) this.symbol = ' ';
+		if (this.shiny && !this.canShiny) this.shiny = false;
+		if (!['M', 'F', 'N', 'random'].includes(this.gender)) this.gender = 'random';
+		if (this.happiness < 0 || this.happiness > 255) {
+			this.happiness = (this.happiness < 0 ? 0 : 255);
+			msg.push(`${pokemon.species}'s' happiness was invalid.`);
+		}
+		// Moves
+		let hasCustom = false;
+		for (let i = 0; i < this.movepool.length; i++) {
+			let move = dex.getMove(this.movepool[i]);
+			if (!move.exists) {
+				msg.push(`The move ${move.id} does not exist.`);
+				this.movepool.splice(i, 1);
+				i--;
+				continue;
+			}
+			if (!Dex.getMove(move.id).exists) {
+				// Custom move
+				if (hasCustom) {
+					msg.push(`${pokemon.species} has more than one custom move.`);
+					this.movepool.splice(i, 1);
+					i--;
+					continue;
+				}
+				if (!customMovepool.includes(move.name)) {
+					// Purchased custom move
+					if (toId(this.selfCustomMove) !== move.id) {
+						msg.push(`${pokemon.species}'s custom move ${move.name} is not your custom move.`);
+						this.movepool.splice(i, 1);
+						i--;
+						continue;
+					}
+				}
+				hasCustom = true;
+			} else {
+				// Standard move
+				if (TeamValidator('gen7ou').checkLearnset(move, pokemon.species, {
+					set: {},
+				})) {
+					msg.push(`${pokemon.species} cannot learn ${move.name}.`);
+					this.movepool.splice(i, 1);
+					i--;
+					continue;
+				}
+			}
+		}
+		// EVs
+		let edited = false;
+		let totalEvs = 0;
+		for (let ev in this.evs) {
+			if (this.evs[ev] < 0 || this.evs[ev] > 252) {
+				this.evs[ev] = (this.evs[ev] < 0 ? 0 : 252);
+				edited = true;
+			}
+			totalEvs += this.evs[ev];
+		}
+		if (totalEvs > 510) msg.push(`${pokemon.species} has more than 510 EVs.`);
+		if (edited) msg.push(`${pokemon.species}'s EVs were invalid.`);
+		edited = false;
+		// IVs
+		for (let iv in this.ivs) {
+			if (this.ivs[iv] < 0 || this.ivs[iv] > 31) {
+				this.ivs[iv] = (this.ivs[iv] < 0 ? 0 : 31);
+				edited = true;
+			}
+		}
+		if (edited) msg.push(`${pokemon.species}'s IVs were invalid.`);
+		if (msg.length) this.active = false;
+		return msg;
 	}
 }
 
@@ -804,7 +884,7 @@ exports.commands = {
 				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
 			let targetUser = WL.ssb[user.userid];
-			if (targetUser.activate()) {
+			if (targetUser.activate(user)) {
 				if (targetUser.active) {
 					writeSSB();
 					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
@@ -814,8 +894,6 @@ exports.commands = {
 					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
 					return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once the server restarts.');
 				}
-			} else {
-				return this.errorReply('Could not activate your pokemon, all pokemon must have at least 1 move.');
 			}
 		},
 		custommoves: 'custom',
@@ -914,10 +992,9 @@ exports.commands = {
 			//Start validation.
 			if (toId(cmd) !== 'validateall') {
 				this.sendReply('Validating ' + targetUser.name + '\'s SSBFFA pokemon...');
-				let valid = validate(this, targetUser, false);
-				if (!valid) {
-					targetUser.active = false;
-					if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+				let valid = targetUser.validate();
+				if (valid.length) {
+					if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup(`Your SSBFFA pokemon was deactivated for the following reasons:\n${valid.join('\n')}`);
 					writeSSB();
 					return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
 				} else {
@@ -925,10 +1002,9 @@ exports.commands = {
 				}
 			} else {
 				for (let key in WL.ssb) {
-					let valid = validate(this, WL.ssb[key], true);
-					if (!valid) {
-						WL.ssb[key].active = false;
-						if (Users(toId(WL.ssb[key].name))) Users(toId(WL.ssb[key].name)).popup('Your SSBFFA pokemon was deactivated because it is invalid.');
+					let valid = WL.ssb[key].validate();
+					if (valid.length) {
+						if (Users(toId(WL.ssb[key].name))) Users(toId(WL.ssb[key].name)).popup(`Your SSBFFA pokemon was deactivated for the following reasons:\n${valid.join('\n')}`);
 						writeSSB();
 						this.errorReply(WL.ssb[key].name + '\'s pokemon was invalid. Invalid parts have been reset and this pokemon was deactivated.');
 					}
@@ -936,7 +1012,7 @@ exports.commands = {
 				return this.sendReply('All SSBFFA pokemon have been validated.');
 			}
 		},
-		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set ti to its default value. Requires: &, ~'],
+		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set it to its default value. Requires: &, ~'],
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help ssb');
 		},

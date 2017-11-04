@@ -6,15 +6,15 @@ if (!room) {
 	Rooms.global.addChatRoom(ROOM_NAME);
 	room = Rooms.get(toId(ROOM_NAME));
 
-	room.isPrivate = true;
+	room.isPrivate = 'hidden';
 	room.staffRoom = true;
-	room.staffAutojoin = true;
+	//room.staffAutojoin = true;
 	room.addedUsers = {};
 
 	if (room.chatRoomData) {
-		room.chatRoomData.isPrivate = true;
+		room.chatRoomData.isPrivate = 'hidden';
 		room.chatRoomData.staffRoom = true;
-		room.chatRoomData.staffAutojoin = true;
+		//room.chatRoomData.staffAutojoin = true;
 		room.chatRoomData.addedUsers = room.addedUsers;
 
 		Rooms.global.writeChatRoomData();

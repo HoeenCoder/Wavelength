@@ -333,9 +333,9 @@ exports.Formats = [
 	},
 
 	///////////////////////////////////////////////////////
-	// SpacialGaze Metagames
+	// Wavelength Metagames
 	{
-		section: 'Spacialgaze Metagames',
+		section: 'Wavelength Metagames',
 		column: 2,
 	},
 	{
@@ -484,7 +484,7 @@ exports.Formats = [
 
 		mod: 'cssb',
 		team: 'randomCustomSSB',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod', 'Mega Rayquaza Clause'],
 		onBegin: function () {
 			this.add("raw|<h2>Free for All!</h2>");
 			this.add("raw|<h3>3</h3>");
@@ -1873,6 +1873,15 @@ exports.Formats = [
 		mod: 'gen7',
 		gameType: 'doubles',
 		ruleset: ['[Gen 7] Doubles OU', 'Same Type Clause'],
+	},
+	{
+		name: "[Gen 7] Stacked",
+		desc: [
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperirorater. Coded by Lycanium Z.",
+		],
+
+		mod: 'stacked',
+		ruleset: ['[Gen 7] OU'],
 	},
 
 	// SGgame Formats

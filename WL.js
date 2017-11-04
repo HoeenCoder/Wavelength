@@ -90,7 +90,7 @@ exports.WL = {
 			path: '/customcss.php?server=' + (Config.serverid || cssPath),
 			method: 'GET',
 		};
-		http.get(options);
+		http.get(options, () => {});
 	},
 
 	giveDailyReward: function (userid, user) {
