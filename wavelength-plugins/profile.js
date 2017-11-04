@@ -315,7 +315,7 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
-				profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
+				if (WL.getFaction(toId(username))) profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><strong>EXP Level:</strong></font> ' + WL.level(toId(username)) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
