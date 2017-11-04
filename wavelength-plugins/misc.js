@@ -30,7 +30,6 @@ function getMonData(target) {
 	});
 	return returnData;
 }
-const https = require('https');
 
 function clearRoom(room) {
 	let len = (room.log && room.log.length) || 0;
@@ -80,7 +79,7 @@ exports.commands = {
 			'<hr>' +
 			'<b>Global Moderators (@)</b> - Normally if there are multiple spammers, Global Mods can be contacted to resolve the issue.  <br />' +
 			'<hr>' +
-			'<b>Global Leaders (&)</b> - Its best to contact a Leader if there are any issues with Global Auth or Room Owners. It is up to the Leaders to make the final decision of any situation reported. At the same time, they also handle requests on appointing Room Owners and creating/deregistering a room. <br />' +
+			'<b>Global Leaders (&)</b> - Its best to contact a Leader if there are any issues with Global Auth or Room Owners. It is up to the Leaders to make the final decision of any situation reported. At the same time, they also handle requests on appointing Room Owners and creating/deleting a room. <br />' +
 			'<hr>' +
 			'<b>Administrators (~)</b> - Administrators are to be contacted if there is a serious issue. This may include sexual harrassment and/or abuse of power from Room Owners as well as Global Staff. Its also important to contact Administrators if there are any bugs within the server system that need to be looked at.  <br />'
 		);
@@ -104,6 +103,10 @@ exports.commands = {
 
 		for (let u in rooms) {
 			let curRoom = Rooms(rooms[u]);
+			if (curRoom.modjoin) {
+				if (Config.groupsranking.indexOf(curRoom.modjoin) > Config.groupsranking.indexOf(user.group)) continue;
+			}
+			if (curRoom.isPrivate === true && !user.can('roomowner')) continue;
 			if (curRoom.type === 'battle') {
 				battleRooms.push('<a href="/' + curRoom.id + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 			}
@@ -124,7 +127,7 @@ exports.commands = {
 			if (curRoom.type !== 'battle') nonOfficial.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + curRoom.title + '</a> (' + curRoom.userCount + ')');
 		}
 
-		if (!user.can('roomowner')) return this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' '));
+		if (!user.can('lock')) return this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' '));
 		this.sendReplyBox(header + official.join(' ') + nonOfficial.join(' ') + privateRoom.join(' ') + (groupChats.length > 1 ? groupChats.join(' ') : '') + (battleRooms.length > 1 ? battleRooms.join(' ') : ''));
 	},
 
@@ -161,26 +164,30 @@ exports.commands = {
 	showhelp: ["/show - Displays user's global rank. Requires: & ~"],
 
 	credits: function (target, room, user) {
-		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>SpacialGaze Credits</b></u></font><br />" +
+		let popup = "|html|" + "<font size=5 color=#0066ff><u><b>Wavelength Credits</b></u></font><br />" +
 			"<br />" +
 			"<u><b>Server Maintainers:</u></b><br />" +
-			"- " + WL.nameColor('Mystifi', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + WL.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Development)<br />" +
-			"- " + WL.nameColor('Desokoro', true) + " (Server Host)<br />" +
+			"- " + WL.nameColor('Desokoro', true) + " (Owner, Sysadmin, Policy Admin, Server Host)<br />" +
+			"- " + WL.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
+			"- " + WL.nameColor('Mystifi', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
-			"- " + WL.nameColor('Kraken Mare', true) + " (Policy Admin, Development)<br />" +
-			"- " + WL.nameColor('Opple', true) + " (Policy Leader, Media Leader)<br />" +
-			"- " + WL.nameColor('C733937 123', true) + " (Policy Leader)<br />" +
-			"- " + WL.nameColor('Ashley the Pikachu', true) + " (CSS, Spriting, Digimon Project)<br />" +
+			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
+			"- " + WL.nameColor('Kraken Mare', true) + " (Community Admin, Development)<br />" +
+			"- " + WL.nameColor('MechSteelix', true) + " (Policy Leader)<br/>" +
+			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
+			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
+			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
+			"<br />" +
+			"<u><b>Contributors:</b></u><br />" +
+			"- " + WL.nameColor('Arrays', true) + " (Development)<br />" +
+			"- " + WL.nameColor('Ashley the Pikachu', true) + " (Spriting, Digimon Project)<br />" +
 			"- " + WL.nameColor('Insist', true) + " (Development)<br />" +
-			"- " + WL.nameColor('Gligars', true) + " (Development)<br />" +
+			"- " + WL.nameColor('Lycanium Z', true) + " (Development)<br />" +
+			"- " + WL.nameColor('wgc', true) + " (Development)<br />" +
 			"<br />" +
-			"<u><b>Retired Staff:</b></u><br />" +
-			"- " + WL.nameColor('The Run', true) + " (Former Server Owner, Development)<br />" +
-			"- " + WL.nameColor('Vulcaron', true) + " (Former Policy Leader)<br />" +
-			"- " + WL.nameColor('HiroZ', true) + " (Former Policy Leader)<br />" +
-			"<br />" +
+			/*"<u><b>Retired Staff:</b></u><br />" +
+			"<br />" +*/
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
 			"- Our Regular Users<br />";
@@ -507,36 +514,6 @@ exports.commands = {
 		Users.get(userid).joinRoom(roomid);
 	},
 	forcejoinhelp: ["/forcejoin [target], [room] - Forces a user to join a room"],
-
-	//Credits to OCPU for this run play function
-	'!dub': true,
-	dub: 'dubtrack',
-	music: 'dubtrack',
-	radio: 'dubtrack',
-	dubtrackfm: 'dubtrack',
-	dubtrack: function (target, room, user) {
-		if (!this.runBroadcast()) return;
-		let nowPlaying = "";
-		let options = {
-			host: 'api.dubtrack.fm',
-			port: 443,
-			path: '/room/lavender-radio-tower',
-			method: 'GET',
-		};
-		https.get(options, res => {
-			let data = '';
-			res.on('data', chunk => {
-				data += chunk;
-			}).on('end', () => {
-				if (data.charAt(0) === '{') {
-					data = JSON.parse(data);
-					if (data['data'] && data['data']['currentSong']) nowPlaying = "<br /><b>Now Playing:</b> " + Chat.escapeHTML(data['data']['currentSong'].name);
-				}
-				this.sendReplyBox('Join our dubtrack.fm room <a href="https://www.dubtrack.fm/join/lavender-radio-tower">here!</a>' + nowPlaying);
-				room.update();
-			});
-		});
-	},
 
 	'!discord': true,
 	discord: function () {

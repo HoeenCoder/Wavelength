@@ -21,6 +21,7 @@ let Economy = global.Economy = {
 	readMoney: function (userid, callback) {
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
+		if (userid.substring(0, 5) === 'guest') return 0;
 
 		let amount = Db.currency.get(userid, DEFAULT_AMOUNT);
 		if (callback && typeof callback === 'function') {
@@ -43,6 +44,7 @@ let Economy = global.Economy = {
 	writeMoney: function (userid, amount, callback) {
 		// In case someone forgot to turn `userid` into an actual ID...
 		userid = toId(userid);
+		if (userid.substring(0, 5) === 'guest') return;
 
 		// In case someone forgot to make sure `amount` was a Number...
 		amount = Number(amount);
@@ -60,10 +62,9 @@ let Economy = global.Economy = {
 		}
 	},
 	writeMoneyArr: function (users, amount) {
-		this.writeMoney(users[0], amount, () => {
-			users.splice(0, 1);
-			if (users.length > 0) this.writeMoneyArr(users, amount);
-		});
+		for (let i = 0; i < users.length; i++) {
+			this.writeMoney(users[i], amount);
+		}
 	},
 	logTransaction: function (message) {
 		if (!message) return false;
