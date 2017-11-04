@@ -29,9 +29,8 @@ class Lottery {
 
 	drawWinner() {
 		let winner = this.players[Math.floor(Math.random() * this.players.length)];
-		let basePrize = 5;
-		let lottoPrize = basePrize + this.players.length + this.costToJoin;
-		this.room.add(`|html|<div class="infobox"><center><strong>Congratulations</strong> ${WL.nameColor(Users(winner), true)}!!! You have won the reward of ${lottoPrize} ${currencyPlural}</center></div>`);
+		let lottoPrize = 5 + this.players.length + this.costToJoin;
+		this.room.add(`|html|<div class="infobox"><center><strong>Congratulations</strong> ${WL.nameColor(winner, true)}!!! You have won the reward of ${lottoPrize} ${currencyPlural}</center></div>`);
 		Economy.writeMoney(winner, lottoPrize);
 		Economy.logTransaction(`${winner} has won the Lottery prize of ${lottoPrize} ${currencyPlural}`);
 		this.end();
@@ -48,19 +47,22 @@ class Lottery {
 					Economy.logTransaction(user.name + " entered a Lottery drawing for " + this.costToJoin + " " + currencyPlural + ".");
 				});
 			});
-			this.players.push(user);
+			this.players.push(user.userid);
+			user.sendTo(this.room, 'You have joined the lottery.');
 		});
 	}
 
 	leaveLottery(user) {
-		if (!this.players.includes(user)) return user.sendTo(this.room, `You are not currently in the Lottery drawing in this room..`);
+		if (!this.players.includes(user.userid)) return user.sendTo(this.room, `You are not currently in the Lottery drawing in this room..`);
 		Economy.writeMoney(user.userid, this.costToJoin, () => {
+			this.players.splice(this.players.indexOf(user.userid), 1);
+			user.sendTo(this.room, 'You have left the lottery and have been refunded ' + this.costToJoin + '.');
 			Economy.logTransaction(user.userid + " has left the Lottery drawing, and has been refunded their " + this.costToJoin + " " + currencyPlural + ".");
 		});
 	}
 
 	end() {
-		this.room.add(`|uhtmlchange|lottery-${this.lottoNumber}|<div class="infobox">This Lottery Drawing has ended.</div>`, true);
+		this.room.add(`|uhtmlchange|lottery-${this.lottoNumber}|<div class="infobox">This Lottery Drawing has ended.</div>`).update();
 		clearTimeout(this.timer);
 		delete this.room.lottery;
 	}
