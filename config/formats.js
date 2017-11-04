@@ -357,7 +357,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Random Metronome Battle",
 		desc: ["&bullet; Metronome battles format: 6v6 singles, Only move allowed is metronome, all healing items/abilities are banned, Ubers (and mega rayquaza) are banned, immunites dont exist in this format (ex normal is not very effective on ghost instead of x0)"],
-		ruleset: ['[Gen 7] Random Battle'],
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 		team: 'random',
 		mod: 'gen7',
 		onBegin: function () {
