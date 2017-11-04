@@ -230,4 +230,36 @@ exports.BattleAbilities = {
 		id: "nodebot",
 		name: "node bot",
 	},
+
+	//In Tandem with Lycanium Z's Wreck Havoc Move
+	virus: {
+		shortDesc: "Transforms the pokemon to unown and other odd effects. Gain ability on contact with a pokemon with ability virus.",
+		id: "virus",
+		name: "Virus",
+		onAfterDamage: function (damage, target, source, move) {
+			if (source && source !== target && move && move.flags['contact']) {
+				let oldAbility = source.setAbility('virus', source, 'virus', true);
+				if (oldAbility) {
+					this.add('-activate', target, 'ability: Virus', this.getAbility(oldAbility).name, '[of] ' + source);
+				}
+			}
+		},
+		onStart: function (source, effect) {
+			this.add('-activate', source, 'ability: Virus');
+			let template = this.getTemplate('Unown');
+			source.formeChange(template);
+			source.baseTemplate = template;
+			source.ability = "virus";
+			source.details = template.species + (source.level === 100 ? '' : ', L' + source.level) + (source.gender === '' ? '' : ', ' + source.gender) + (source.set.shiny ? ', shiny' : '');
+			this.add('detailschange', source, source.details);
+			source.addVolatile('flinch');
+		},
+		onBeforeMove: function (pokemon) {
+			this.useMove('pound', pokemon);
+			return false;
+		},
+		onSwitchOut: function (pokemon) {
+			this.damage(pokemon.maxhp);
+		},
+	},
 };

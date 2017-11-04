@@ -239,28 +239,32 @@ exports.BattleStatuses = {
 			this.add('c', '+Ranfen', 'No Fair flygon cant be beat D:');
 		},
 	},
-	gligars: {
+	lycaniumz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Gligars', 'Smokin\'!');
+			this.add('c', '%Lycanium Z', 'Hi. Im that random guy noone thinks about');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
+			this.add('c', '%Autograph', 'brb gonna change alts');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Gligars', 'Look, ma! I\'m roadkill!');
+			this.add('c', '%Bellhop', 'lol im dead. Back to alt hunting');
 		},
 	},
 	insist: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@Insist', 'I __insist__ you just forfeit right now.');
+			this.add('c', '+Insist', 'I __insist__ you just forfeit right now.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@Insist', 'I don\'t just run away from my problems!');
+			this.add('c', '+Insist', 'I don\'t just run away from my problems!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+			this.add('c', '+Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+		},
+		onSourceFaint: function (pokemon) {
+			this.add('c', '+Insist', 'How to win the game 101:');
+			this.addRaw('<ol><li>Use my signature move</li><li>GG</li></ol>');
 		},
 	},
 	celestialtater: {

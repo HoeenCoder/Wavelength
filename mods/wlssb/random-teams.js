@@ -166,22 +166,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'@Insist': {
-				species: "Ludicolo",
-				ability: "Crippling Depression",
-				item: "Playnium Z",
-				gender: "M",
-				shiny: true,
-				moves: ['freezedry', 'gigadrain', 'focusblast'],
-				baseSignatureMove: "aquasubscribe",
-				signatureMove: "Aqua Subscribe",
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: "Timid",
-			},
 			// Global Drivers:
 			'%ducktown': {
 				species: 'Golduck',
@@ -213,19 +197,19 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-			'%Gligars': {
-				species: "Gligar",
-				ability: "Regenerator",
-				item: "Eviolite",
+			'%Lycanium Z': {
+				species: "Lycanroc",
+				ability: "Snow Warning",
+				item: "Not the Lycanium Z i swear",
 				gender: "M",
-				moves: ['Thousand Arrows', 'U-Turn', ['Sacred Fire', 'Bolt Strike'][variant]],
-				signatureMove: "Daredevil",
+				moves: ['Diamond Storm', 'Earthquake', 'Aurora Veil'],
+				signatureMove: "Alt Storm",
 				evs: {
-					atk: 172,
-					def: 84,
-					spd: 252,
+					atk: 252,
+					def: 4,
+					spe: 252,
 				},
-				nature: "Adamant",
+				nature: "Jolly",
 			},
 			// Global Voices:
 			'+Admewn': {
@@ -388,6 +372,22 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 4,
 				},
 				nature: 'Bold',
+			},
+			'+Insist': {
+				species: "Ludicolo",
+				ability: "Crippling Depression",
+				item: "Playnium Z",
+				gender: "M",
+				shiny: true,
+				moves: ['freezedry', 'gigadrain', 'focusblast'],
+				baseSignatureMove: "aquasubscribe",
+				signatureMove: "Aqua Subscribe",
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 4,
+				},
+				nature: "Timid",
 			},
 			// Former Bots
 			' SpaceGazer': {
