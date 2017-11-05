@@ -359,7 +359,7 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	altstorm: {
+	altswap: {
 		accuracy: 100,
 		basePower: 30,
 		category: "Physical",
@@ -368,9 +368,9 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Uproar", target);
 		},
 		desc: "Hits 3-5 times. Confuses the target after.",
-		id: "altstorm",
+		id: "altswap",
 		isNonStandard: true,
-		name: "Alt Storm",
+		name: "Alt Swap",
 		pp: 10,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
@@ -383,32 +383,6 @@ exports.BattleMovedex = {
 		type: "Rock",
 		zMovePower: 100,
 		contestType: "Cool",
-	},
-	// Lycanium Z
-	wreakhavoc: {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		id: "wreakhavoc",
-		isNonstandard: true,
-		name: "Wreak Havoc",
-		shortDesc: "Changes the pokemon's ability to Virus.",
-		pp: 1,
-		isZ: "notthelycaniumziswear",
-		noPPBoosts: true,
-		priority: 0,
-		flags: {authentic: 1},
-		onHit: function (pokemon) {
-			let oldAbility = pokemon.setAbility('virus');
-			if (oldAbility) {
-				this.add('-ability', pokemon, 'Virus', '[from] move: Wreak Havoc');
-				return;
-			}
-			return false;
-		},
-		secondary: false,
-		target: "normal",
-		type: "Fairy",
 	},
 	//Stabby the Krabby
 	"stabstab": {
