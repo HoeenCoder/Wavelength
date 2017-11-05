@@ -1,34 +1,6 @@
 "use strict";
 
 exports.BattleMovedex = {
-	// The Run
-	timespacerush: {
-		category: "Special",
-		desc: "This move can bypass protect, however using this move will boost Special Attack by 1 and lower Speed by 1.",
-		shortDesc: "Boosts SpA and lowers Spe by 1.",
-		id: "timespacerush",
-		isNonstandard: true,
-		name: "Time-Space Rush",
-		accuracy: 85,
-		basePower: 130,
-		pp: 5,
-		priority: 0,
-		self: {
-			boosts: {
-				spa: 1,
-				spe: -1,
-			},
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Dark Void", source);
-			this.add('-anim', source, "Psychic", source);
-			this.add('-anim', source, "Extreme Speed", target);
-		},
-		secondary: false,
-		target: "normal",
-		type: "Psychic",
-	},
 	// HoeenHero
 	scripting: {
 		category: "Status",
@@ -56,33 +28,6 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
-	},
-	// Vulcaron
-	troll: {
-		category: "Status",
-		id: "troll",
-		isNonstandard: true,
-		name: "Troll",
-		pp: 10,
-		secondary: {
-			chance: 100,
-			volatileStatus: 'confusion',
-		},
-		desc: "Confuses foe, Raises user's Evasion by 1 stage, and heals by 6/20 of maximum health",
-		priority: 0,
-		self: {
-			boosts: {
-				evasion: 1,
-			},
-			heal: [6, 20],
-		},
-		onHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Taunt", target);
-			this.add('-anim', source, "Double Team", source);
-		},
-		target: "normal",
-		type: "Dark",
 	},
 	// Almighty Bronzong
 	blastfurnace: {
@@ -275,30 +220,6 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Fairy",
 	},
-	// Mimiroppu
-	charmup: {
-		category: "Status",
-		id: "charmup",
-		isNonstandard: true,
-		name: "Charm Up",
-		pp: 10,
-		secondary: {
-			volatileStatus: 'attract',
-		},
-		desc: "Attempts to attract foe, and boosts user's Attack by one stage",
-		priority: 0,
-		self: {
-			boosts: {
-				atk: 1,
-			},
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Charm", source);
-		},
-		target: "normal",
-		type: "Normal",
-	},
 	// Auction
 	zeobash: {
 		category: "Physical",
@@ -341,27 +262,6 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Dragon",
 	},
-	// Spacial Bot
-	ancientritual: {
-		category: "Status",
-		id: "ancientritual",
-		isNonstandard: true,
-		name: "Ancient Ritual",
-		pp: 10,
-		priority: 0,
-		boosts: {
-			spe: 2,
-			atk: 1,
-		},
-		desc: "Boosts user's Atk by 1 stage, and Spe by 2 stages",
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Stone Edge", source);
-			this.add('-anim', source, "Geomancy", source);
-		},
-		target: "self",
-		type: "Rock",
-	},
 	// ducktown
 	duckpower: {
 		category: "Status",
@@ -379,27 +279,6 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Calm Mind", source);
 		},
-		weather: 'raindance',
-		target: "self",
-		type: "Water",
-	},
-	// Hurricane'd
-	rainbustorb: {
-		category: "Status",
-		id: "rainbustorb",
-		isNonstandard: true,
-		name: "Rainbust Orb",
-		pp: 10,
-		priority: 0,
-		boosts: {
-			spa: 2,
-			def: 2,
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Bulk Up", source);
-		},
-		desc: "Boosts user's SpA and Def by 2 stages, and then sets Rain Dance",
 		weather: 'raindance',
 		target: "self",
 		type: "Water",
@@ -432,95 +311,6 @@ exports.BattleMovedex = {
 		shortDesc: "Boosts evasion by 1 and badly poisons target.",
 		target: "normal",
 		type: "Dark",
-	},
-	// Ranfen
-	outripper: {
-		category: "Physical",
-		id: "outripper",
-		basePower: 100,
-		isNonstandard: true,
-		name: "Out Ripper",
-		pp: 10,
-		critRatio: 2,
-		priority: 0,
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Blue Flare", source);
-			this.add('-anim', source, "Recover", source);
-			this.add('-anim', source, "Precipice Blades", target);
-		},
-		desc: "High Crit Ratio",
-		target: "normal",
-		type: "Dragon",
-	},
-	// SpaceGazer
-	spacialblast: {
-		category: "Physical",
-		basePower: 150,
-		id: "spacialblast",
-		isNonstandard: true,
-		name: "Spacial Blast",
-		secondary: {
-			chance: 60,
-			status: 'brn',
-		},
-		desc: "60% chance to burn",
-		pp: 10,
-		priority: 0,
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Wish", source);
-			this.add('-anim', source, "Diamond Storm", target);
-		},
-		target: "normal",
-		type: "Fairy",
-	},
-	// SG Bot
-	frostbite: {
-		category: "Special",
-		basePower: 100,
-		id: "frostbite",
-		isNonstandard: true,
-		name: "Frostbite",
-		secondary: {
-			chance: 60,
-			status: 'frz',
-		},
-		desc: "60% chance to freeze, supereffective on Water.",
-		pp: 10,
-		priority: 0,
-		onEffectiveness: function (typeMod, type) {
-			if (type === 'Water') return 1;
-		},
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Blizzard", target);
-			this.add('-anim', target, "Bite", target);
-		},
-		target: "normal",
-		type: "Ice",
-	},
-	// Clue
-	mechanicaldysfunction: {
-		category: "Special",
-		basePower: 110,
-		accuracy: 90,
-		id: "mechanicaldysfunction",
-		isNonstandard: true,
-		name: "Mechanical Dysfunction",
-		secondary: {
-			chance: 50,
-			status: 'par',
-		},
-		desc: "50% chance to paralyze",
-		pp: 5,
-		priority: 0,
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Zap Cannon", target);
-		},
-		target: "normal",
-		type: "Electric",
 	},
 	// Desokoro
 	tsunamicrash: {
@@ -620,65 +410,6 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Fairy",
 	},
-	// Insist
-	aquasubscribe: {
-		id: "aquasubscribe",
-		name: "Aqua Subscribe",
-		priority: 1,
-		self: {
-			boosts: {
-				spa: 1,
-				spe: 1,
-			},
-		},
-		flags: {
-			protect: 1,
-			mirror: 1,
-		},
-		desc: "Boosts user's SpA and Spe by 1 stage",
-		secondary: false,
-		category: "Special",
-		onHit: function (target, source, move) {
-			this.add('c|+Insist|Subscribe to http://youtube.com/DeathlyPlays');
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Hydro Pump", target);
-		},
-		basePower: 90,
-		pp: 15,
-		accuracy: 100,
-		target: "normal",
-		type: "Water",
-		zMovePower: 140,
-		contestType: "Cool",
-	},
-	//Insist
-	"exiledfromallothers": {
-		id: "exiledfromallothers",
-		name: "Exiled From All Others",
-		basePower: 150,
-		accuracy: 100,
-		pp: 1,
-		noPPBoosts: true,
-		secondary: false,
-		category: "Special",
-		isNonStandard: true,
-		isZ: "playniumz",
-		priority: 1,
-		flags: {
-			protect: 1,
-		},
-		onHit: function (target, source, move) {
-			this.add('c|+Insist|Exiled from all others, we shall become greater than ever before.');
-		},
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Hydro Pump", target);
-		},
-		target: "normal",
-		type: "Water",
-	},
 	//Stabby the Krabby
 	"stabstab": {
 		category: "Physical",
@@ -706,23 +437,5 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
-	},
-	"ruregi": {
-		id: "ruregi",
-		name: "R U Regi",
-		basePower: 60,
-		priority: 2,
-		desc: "Drains 1/3 of the damage dealt.",
-		category: "Physical",
-		drain: [1, 3],
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Quick Attack", target);
-		},
-		secondary: false,
-		pp: 10,
-		flags: {protect: 1, contact: 1, mirror: 1},
-		target: "normal",
-		type: "Fighting",
 	},
 };
