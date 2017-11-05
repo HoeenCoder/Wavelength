@@ -441,41 +441,6 @@ exports.Formats = [
 		},
 	},
 	{
-		name: "[Gen 1] Retro Super Staff Bros",
-		desc: ["Happy B-Day Johto/Regional/SpacialGaze! Celebrate with this mashup of old staff!"],
-
-		mod: 'retrossb',
-		team: 'randomRetroStaff',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-		onBegin: function () {
-			this.add("raw|Retro Super Staff Bros. <b>Return of the old staff!!!!</b>");
-
-			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
-			for (let i = 0, len = allPokemon.length; i < len; i++) {
-				let pokemon = allPokemon[i];
-				let last = pokemon.moves.length - 1;
-				if (pokemon.moves[last] && !pokemon.set.noCustom) {
-					pokemon.moves[last] = toId(pokemon.set.signatureMove);
-					pokemon.moveset[last].move = pokemon.set.signatureMove;
-					pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
-				}
-			}
-		},
-		onSwitchInPriority: 1,
-		onSwitchIn: function (pokemon) {
-			let name = toId(pokemon.illusion ? pokemon.illusion.name : pokemon.name);
-			if (name === 'hoeenkid') this.add('c|&HoeenKid|One day I will be a Hero!');
-			//if (name === 'opple') this.add('c|@Opple|Default Message');
-			if (name === 'supersonicx') this.add('c|~supersonicx|I am the best pokemon here!');
-		},
-		onFaint: function (pokemon, source, effect) {
-			let name = toId(pokemon.name);
-			if (name === 'hoeenkid') this.add('c|&HoeenKid|But not today...');
-			//if (name === 'opple') this.add('c|@Opple|Default Message');
-			if (name === 'supersonicx') this.add('c|~supersonicx|I\'m reporting you for cheating!');
-		},
-	},
-	{
 		name: "[Gen 7] Super Staff Bros Free For All",
 		desc: ['Duke it out with other users custom made pokemon.',
 			'Make your own as well! Get started with <button class="button" name="send" value="/ssb edit">/ssb edit</button>.',
@@ -1887,7 +1852,7 @@ exports.Formats = [
 	///////////////////////////////////////////////////////////////////
 	{
 		section: "OM of the Month",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 7] Ultimate Z",
@@ -1913,7 +1878,7 @@ exports.Formats = [
 	},
 	{
 		section: "Other Metagames",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 7] Balanced Hackmons",
@@ -2106,7 +2071,7 @@ exports.Formats = [
 
 	{
 		section: "Randomized Metas",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 6] Battle Factory",
@@ -2171,7 +2136,7 @@ exports.Formats = [
 
 	{
 		section: "RoA Spotlight",
-		column: 3,
+		column: 4,
 	},
 	{
 		name: "[Gen 4] Doubles OU",
@@ -2187,7 +2152,7 @@ exports.Formats = [
 
 	{
 		section: "ORAS Singles",
-		column: 3,
+		column: 4,
 	},
 	{
 		name: "[Gen 6] OU",
@@ -2517,7 +2482,7 @@ exports.Formats = [
 
 	{
 		section: "BW2 Singles",
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 5] OU",
@@ -2624,7 +2589,7 @@ exports.Formats = [
 
 	{
 		section: 'BW2 Doubles',
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 5] Doubles OU",
@@ -2674,7 +2639,7 @@ exports.Formats = [
 
 	{
 		section: "Past Generations",
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 4] OU",
