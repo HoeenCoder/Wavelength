@@ -204,10 +204,10 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 			'%Lycanium Z': {
 				species: "Lycanroc",
-				ability: "Snow Warning",
-				item: "Not the Lycanium Z i swear",
+				ability: "Metamorphosis",
+				item: "Life Orb",
 				gender: "M",
-				moves: ['Diamond Storm', 'Earthquake', 'Aurora Veil'],
+				moves: ['Accelerock', 'Earthquake', 'Hyper fang'],
 				signatureMove: "Alt Storm",
 				evs: {
 					atk: 252,
