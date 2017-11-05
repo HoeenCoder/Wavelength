@@ -216,7 +216,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Jolly",
 			},
-			// wgc and Arrays soon
+			'%Arrays': {
+				species: 'Conkeldurr',
+				ability: 'Shadow Fist',
+				item: 'Assualt Vest',
+				gender: 'M',
+				moves: ['Drain Punch', 'Ice Punch', 'Mach Punch'],
+				signatureMove: 'Invisible Punch',
+				evs: {
+					hp: 252,
+					atk: 252,
+					def: 4,
+				},
+				nature: 'Adamant',
+			},
+			// wgc soon
 
 			// Global Voices:
 			'+ducktown': {
