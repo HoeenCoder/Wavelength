@@ -412,4 +412,22 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Steel",
 	},
+	// Arrays
+	"invisiblepunch": {
+		id: "invisiblepunch",
+		name: "Invisible Punch",
+		desc: "Heals 1/4 of the damage dealt.",
+		basePower: 90,
+		accuracy: 100,
+		drain: [1, 4],
+		pp: 10,
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Shadow punch", target);
+		},
+		secondary: false,
+		flags: {protect: 1, contact: 1, mirror: 1, punch: 1},
+		target: "normal",
+		type: "Ghost",
+	},
 };
