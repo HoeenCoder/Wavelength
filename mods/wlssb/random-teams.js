@@ -56,22 +56,24 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			// Global Leaders:
-			'&C733937 123': {
-				species: 'Tyranitar',
-				ability: 'Bulletproof',
-				item: 'Safety Goggles',
+			'~Desokoro': {
+				species: 'Gyarados',
+				ability: 'Wave Call',
+				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
+				moves: ['Substitute', 'Dragon Dance', 'Bounce',
 				],
-				signatureMove: 'Lightshot Giga-Lance',
+				signatureMove: 'Tsunami Crash',
 				evs: {
-					hp: 252,
 					atk: 252,
-					def: 4,
+					spe: 252,
+					hp: 4,
 				},
 				nature: 'Adamant',
 			},
+			//Mosmero and Persion soon
+
+			// Global Leaders:
 			'&Opple': {
 				species: 'Dragonite',
 				ability: 'Multiscale',
@@ -87,6 +89,8 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+			//Cubs and MechSteelix soon
+
 			//Global Bots
 			'*Stabby the Krabby': {
 				species: 'Krabby',
@@ -103,36 +107,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			"*Charon Bot": {
-				species: "Regigigas",
-				ability: "node bot",
-				item: "Life Orb",
-				gender: "F",
-				moves: ['Return', 'Knock Off', 'Bulk Up'],
-				signatureMove: "R U Regi",
-				evs: {
-					atk: 252,
-					hp: 4,
-					spe: 252,
-				},
-				nature: "Adamant",
-			},
 			// Global Moderators:
-			'@Desokoro': {
-				species: 'Gyarados',
-				ability: 'Wave Call',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Substitute', 'Dragon Dance', 'Bounce',
-				],
-				signatureMove: 'Tsunami Crash',
-				evs: {
-					atk: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
 			'@BDH93': {
 				species: 'Dunsparce',
 				ability: 'Serene Grace',
@@ -166,22 +141,52 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			// Global Drivers:
-			'%ducktown': {
-				species: 'Golduck',
-				ability: 'Cloud Nine',
-				item: 'Leftovers',
+			'@C733937 123': {
+				species: 'Tyranitar',
+				ability: 'Bulletproof',
+				item: 'Safety Goggles',
 				gender: 'M',
-				moves: ['Scald', 'Ice Beam', 'Psychic',
+				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
 				],
-				signatureMove: 'Duck Power',
+				signatureMove: 'Lightshot Giga-Lance',
+				evs: {
+					hp: 252,
+					atk: 252,
+					def: 4,
+				},
+				nature: 'Adamant',
+			},
+			'@Admewn': {
+				species: 'Mew',
+				ability: 'Protean',
+				item: 'Expert Belt',
+				moves: ['Earth Power', 'Oblivion Wing', 'Shadow Ball',
+				],
+				signatureMove: 'Mewtation',
 				evs: {
 					spa: 252,
 					spe: 252,
 					hp: 4,
 				},
-				nature: 'Modest',
+				nature: 'Timid',
 			},
+			'@HiroZ': {
+				species: 'Genesect',
+				ability: 'Download',
+				item: 'Choice Scarf',
+				moves: ['U-turn', 'Ice Beam', 'Explosion',
+				],
+				signatureMove: 'Crystallized Ukaku',
+				evs: {
+					atk: 252,
+					spe: 252,
+					spa: 4,
+				},
+				nature: 'Hasty',
+			},
+			//TheRittz Soon
+
+			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
 				ability: 'Sturdy',
@@ -211,20 +216,23 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Jolly",
 			},
+			// wgc and Arrays soon
+
 			// Global Voices:
-			'+Admewn': {
-				species: 'Mew',
-				ability: 'Protean',
-				item: 'Expert Belt',
-				moves: ['Earth Power', 'Oblivion Wing', 'Shadow Ball',
+			'+ducktown': {
+				species: 'Golduck',
+				ability: 'Cloud Nine',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['Scald', 'Ice Beam', 'Psychic',
 				],
-				signatureMove: 'Mewtation',
+				signatureMove: 'Duck Power',
 				evs: {
 					spa: 252,
 					spe: 252,
 					hp: 4,
 				},
-				nature: 'Timid',
+				nature: 'Modest',
 			},
 			'+Almighty Bronzong': {
 				species: 'Bronzong',
@@ -241,20 +249,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Sassy',
 			},
-			'+HiroZ': {
-				species: 'Genesect',
-				ability: 'Download',
-				item: 'Choice Scarf',
-				moves: ['U-turn', 'Ice Beam', 'Explosion',
-				],
-				signatureMove: 'Crystallized Ukaku',
-				evs: {
-					atk: 252,
-					spe: 252,
-					spa: 4,
-				},
-				nature: 'Hasty',
-			},
 			'+Auction': {
 				species: 'Aegislash',
 				ability: 'Water Absorb',
@@ -269,49 +263,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 248,
 				},
 				nature: 'Adamant',
-			},
-			'+Clue': {
-				species: 'Magnezone',
-				ability: 'Levitate',
-				item: 'Choice Specs',
-				moves: [
-					['Volt Switch', 'Thunderbolt'][this.random(2)], 'Hidden Power Ice', 'Aura Sphere',
-				],
-				signatureMove: 'Mechanical Dysfunction',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
-			'+Ranfen': {
-				species: 'Flygon',
-				ability: 'DesertDragon',
-				item: 'Focus Sash',
-				moves: ['Stone Edge', 'Dragon Claw', 'Earthquake',
-				],
-				signatureMove: 'Out Ripper',
-				evs: {
-					atk: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
-			'+The Run': {
-				species: 'Deoxys-Speed',
-				ability: 'Prism Armor',
-				item: 'TwistedSpoon',
-				moves: ['Psychic', 'Protect', 'Aura Sphere',
-				],
-				signatureMove: 'Time-Space Rush',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Timid',
 			},
 			'+CelestialTater': {
 				species: 'Armaldo',
@@ -328,111 +279,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'+Vulcaron': {
-				species: 'Murkrow',
-				ability: 'Prankster',
-				item: 'Eviolite',
-				gender: 'M',
-				moves: ['Thunder Wave', 'Mean Look', 'Confuse Ray',
-				],
-				signatureMove: 'Troll',
-				evs: {
-					hp: 252,
-					def: 252,
-					spd: 4,
-				},
-				nature: 'Impish',
-			},
-			'+Mimiroppu': {
-				species: 'Lopunny',
-				ability: 'Limber',
-				item: 'Lopunnite',
-				gender: 'F',
-				moves: ['Fake Out', 'Return', 'High Jump Kick',
-				 ],
-				signatureMove: 'Charm Up',
-				evs: {
-					atk: 252,
-					spe: 252,
-					def: 4,
-				},
-				nature: 'Jolly',
-			},
-			'+Hurricane\'d': {
-				species: 'Tomohawk',
-				ability: 'Gale Wings',
-				item: 'Rocky Helmet',
-				gender: 'M',
-				moves: ['Aura Sphere', 'Taunt', 'Hurricane',
-				],
-				signatureMove: 'Rainbust Orb',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Bold',
-			},
-			'+Insist': {
-				species: "Ludicolo",
-				ability: "Crippling Depression",
-				item: "Playnium Z",
-				gender: "M",
-				shiny: true,
-				moves: ['freezedry', 'gigadrain', 'focusblast'],
-				baseSignatureMove: "aquasubscribe",
-				signatureMove: "Aqua Subscribe",
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: "Timid",
-			},
-			// Former Bots
-			' SpaceGazer': {
-				species: 'Registeel',
-				ability: 'No Guard',
-				item: 'Weakness Policy',
-				moves: ['Zap Cannon', 'Iron Head', 'Stone Edge',
-				],
-				signatureMove: 'Spacial Blast',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
-			' Spacial Bot': {
-				species: 'Regirock',
-				ability: 'Wonder Guard',
-				item: 'Leftovers',
-				moves: [
-					['Stone Edge', 'Earthquake'][variant], 'Explosion', 'Iron Head',
-				],
-				signatureMove: 'Ancient Ritual',
-				evs: {
-					atk: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Adamant',
-			},
-			' SG Bot': {
-				species: 'Regice',
-				ability: 'Flash Fire',
-				item: 'Leftovers',
-				moves: ['Ice Beam', 'Ancient Power', 'Thunderbolt',
-				],
-				signatureMove: 'Frostbite',
-				evs: {
-					spa: 252,
-					spd: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
-			},
+			//xcmr soon
 		};
 		// convert moves to ids.
 		for (let k in sets) {
