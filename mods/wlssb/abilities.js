@@ -178,4 +178,18 @@ exports.BattleAbilities = {
 			this.damage(pokemon.maxhp);
 		},
 	},
+	//Serperiorater
+	unnamable: {
+		id: "unnamable",
+		name: "Unnamable",
+		desc: "Boosts user's SpA by 1 stage and attacks that are super effective against the target do 1.2x damage.",
+		onStart: function (pokemon) {
+			this.boost({spa: 1});
+		},
+		onModifyDamage: function (damage, source, target, move) {
+			if (move && move.typeMod > 0) {
+				return this.chainModify([0x1333, 0x1000]);
+			}
+		},
+	},
 };
