@@ -189,7 +189,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
-				ability: 'Sturdy',
+				ability: 'Unnamable',
 				item: 'Leftovers',
 				gender: 'M',
 				moves: ['Psychic', 'Aura Sphere', 'Dark Pulse',
