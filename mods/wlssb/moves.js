@@ -380,7 +380,7 @@ exports.BattleMovedex = {
 			volatileStatus: 'confusion',
 		},
 		target: "normal",
-		type: "Fairy",
+		type: "Rock",
 		zMovePower: 100,
 		contestType: "Cool",
 	},
