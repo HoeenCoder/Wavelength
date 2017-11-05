@@ -148,34 +148,39 @@ exports.BattleAbilities = {
 		},
 	},
 	//In Tandem with Lycanium Z's Wreck Havoc Move
-	virus: {
-		shortDesc: "Transforms the pokemon to unown and other odd effects. Gain ability on contact with a pokemon with ability virus.",
-		id: "virus",
-		name: "Virus",
-		onAfterDamage: function (damage, target, source, move) {
-			if (source && source !== target && move && move.flags['contact']) {
-				let oldAbility = source.setAbility('virus', source, 'virus', true);
-				if (oldAbility) {
-					this.add('-activate', target, 'ability: Virus', this.getAbility(oldAbility).name, '[of] ' + source);
-				}
+	metamorphosis: {
+		shortDesc: "Too Lazy RN",
+		id: "metamorphosis",
+		name: "Metamorphosis",
+		onBeforeFaint: function (pokemon, source) {
+			if (pokemon.template.speciesid === 'lycanroc') {
+				this.add('-activate', pokemon, 'ability: Metamorphosis');
+				let template = this.getTemplate('Lycanroc-Midnight');
+				pokemon.formeChange(template);
+				pokemon.baseTemplate = template;
+				pokemon.details = template.species + (pokemon.level === 100 ? '' : ', L' + pokemon.level) + (pokemon.gender === '' ? '' : ', ' + pokemon.gender) + (pokemon.set.shiny ? ', shiny' : '');
+				this.add('detailschange', pokemon, pokemon.details);
+				if (pokemon.hasType('Ghost')) return false;
+				if (!pokemon.addType('Ghost')) return false;
+				this.add('-start', pokemon, 'typeadd', 'Ghost');
+				this.heal(pokemon.maxhp);
+				pokemon.fainted = false;
 			}
 		},
-		onStart: function (source, effect) {
-			this.add('-activate', source, 'ability: Virus');
-			let template = this.getTemplate('Unown');
-			source.formeChange(template);
-			source.baseTemplate = template;
-			source.ability = "virus";
-			source.details = template.species + (source.level === 100 ? '' : ', L' + source.level) + (source.gender === '' ? '' : ', ' + source.gender) + (source.set.shiny ? ', shiny' : '');
-			this.add('detailschange', source, source.details);
-			source.addVolatile('flinch');
+		onModifyMovePriority: -1,
+		onModifyMove: function (move, pokemon, source) {
+			if (move.type === 'Normal' && !(move.id in {judgment:1, multiattack:1, naturalgift:1, revelationdance:1, technoblast:1, weatherball:1}) && !(move.isZ && move.category !== 'Status')) {
+				if (pokemon.template.speciesid === 'lycanroc-dusk') {
+					move.type = 'ghost';
+				} else {
+					move.type = 'fire';
+				}
+				move.typeBoosted = true;
+			}
 		},
-		onBeforeMove: function (pokemon) {
-			this.useMove('pound', pokemon);
-			return false;
-		},
-		onSwitchOut: function (pokemon) {
-			this.damage(pokemon.maxhp);
+		onBasePowerPriority: 8,
+		onBasePower: function (basePower, pokemon, target, move) {
+			if (move.typeBoosted) return this.chainModify([0x1333, 0x1000]);
 		},
 	},
 	//Serperiorater
