@@ -208,7 +208,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				item: "Life Orb",
 				gender: "M",
 				moves: ['Accelerock', 'Earthquake', 'Hyper fang'],
-				signatureMove: "Alt Storm",
+				signatureMove: "Alt Swap",
 				evs: {
 					atk: 252,
 					def: 4,
