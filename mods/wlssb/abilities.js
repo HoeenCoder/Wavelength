@@ -197,4 +197,21 @@ exports.BattleAbilities = {
 			}
 		},
 	},
+	// Arrays
+	shadowfist: {
+		shortDesc: "On switch-in, This pokemon is a ghost/fighting type.",
+		onStart: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', 'Fighting/Ghost');
+			pokemon.types = ["Fighting", "Ghost"];
+		},
+		onBasePowerPriority: 8,
+		onBasePower: function (basePower, attacker, defender, move) {
+			if (move.flags['punch']) {
+				return this.chainModify([0x1333, 0x1000]);
+			}
+		},
+		id: "shadowfist",
+		name: "Shadow Fist",
+	},
+
 };
