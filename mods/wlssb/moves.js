@@ -380,7 +380,7 @@ exports.BattleMovedex = {
 			volatileStatus: 'confusion',
 		},
 		target: "normal",
-		type: "Rock",
+		type: "Normal",
 		zMovePower: 100,
 		contestType: "Cool",
 	},
@@ -421,13 +421,247 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		drain: [1, 4],
 		pp: 10,
+		category: "Physical",
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Shadow punch", target);
+		},
+		onHit: function (target, source, move) {
+			this.add('c|%Arrays|A punch from the world of code! Sadly it\'s forced to be spooky because code doesn\'t actually exist in the real world!');
 		},
 		secondary: false,
 		flags: {protect: 1, contact: 1, mirror: 1, punch: 1},
 		target: "normal",
 		type: "Ghost",
+	},
+	//Mosmero
+	mosmerobeam: {
+		category: "Special",
+		accuracy: 80,
+		basePower: 130,
+		id: "mosmerobeam",
+		isViable: true,
+		isNonstandard: true,
+		name: "Mosmero Beam",
+		pp: 10,
+		noPPBoosts: true,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 30,
+			onHit: function (target, source) {
+				let result = this.random(4);
+				if (result === 0) {
+					target.trySetStatus('brn', source);
+				} else if (result === 1) {
+					target.trySetStatus('par', source);
+				} else {
+					target.trySetStatus('frz', source);
+				}
+			},
+			volatileStatus: ['flinch', 'confusion'],
+		},
+		onHit: function (target, source, move) {
+			this.add('c|~Mosmero|I protec, but I also attac.');
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Protect", source);
+			this.add('-anim', source, "Hyper Beam", target);
+		},
+		target: "Normal",
+		type: "Ghost",
+	},
+	//CubsFan38
+	penguinsshower: {
+		category: "Special",
+		accuracy: 95,
+		basePower: 120,
+		id: "penguinsshower",
+		isViable: true,
+		isNonstandard: true,
+		name: "Penguin's Shower",
+		pp: 6.25,
+		noPPBoosts: true,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 50,
+			status: 'frz',
+		},
+		onHit: function (target, source, move) {
+			this.add('c|&CubsFan38|You\'re really gonna let a penguin beat you?');
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Blizzard", target);
+			this.add('-anim', target, "Tail Whip", target);
+		},
+		target: "Normal",
+		type: "Ice",
+	},
+	//MechSteelix
+	deepsleep:{
+		category: "Status",
+		id: "deepsleep",
+		isNonstandard: true,
+		name: "Deep Sleep",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		onHit: function (target) {
+			if (target.hp >= target.maxhp) return false;
+			if (!target.setStatus('slp')) return false;
+			target.statusData.time = 3;
+			target.statusData.startTime = 3;
+			this.heal(target.maxhp); //Aeshetic only as the healing happens after you fall asleep in-game
+			this.add('-status', target, 'slp', '[from] move: Deep Sleep');
+			this.add('c|&MechSteelix|Witness my true power!');
+			this.add('-anim', target, "Protect", target);
+		},
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					spd: 3,
+				},
+			},
+		},
+		target: "self",
+		type: "Steel",
+	},
+	//TheRittz
+	everlastingannoyingness: {
+		category: "Special",
+		basePower: 0,
+		damageCallback: function (pokemon, target) {
+			return this.clampIntRange(Math.floor(target.maxhp / 10), 1);
+		},
+		id: "everlastingannoyingness",
+		isViable: true,
+		isNonstandard: true,
+		name: "Everlasting Annoyingness",
+		pp: 5,
+		noPPBoosts: true,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		volatileStatus: 'partiallytrapped',
+		secondary: {
+			chance: 100,
+			self: {
+				volatileStatus: 'aquaring',
+				effect: {
+					onStart: function (pokemon) {
+						this.add('-start', pokemon, 'Everlasting Annoyingness');
+					},
+					onResidualOrder: 6,
+					onResidual: function (pokemon) {
+						this.heal(pokemon.maxhp / 16);
+					},
+				},
+			},
+		},
+		self: {
+			volatileStatus: 'ingrain',
+			effect: {
+				onStart: function (pokemon) {
+					this.add('-start', pokemon, 'move: Everlasting Annoyingness');
+				},
+				onResidualOrder: 7,
+				onResidual: function (pokemon) {
+					this.heal(pokemon.maxhp / 16);
+				},
+				onTrapPokemon: function (pokemon) {
+					pokemon.tryTrap();
+				},
+				onDragOut: function (pokemon) {
+					this.add('-activate', pokemon, 'move: Everlasting Annoyingness');
+					return null;
+				},
+			},
+		},
+		onHit: function (target) {
+			this.add('c|@TheRittz|Feel the annoyingness!');
+		},
+		drain: [1, 1],
+		multihit: [2, 5],
+		target: "normal",
+		type: "Grass",
+	},
+	//Tsunami Prince
+	overpower: {
+		category: "Status",
+		accuracy: 100,
+		basePower: 0,
+		id: "overpower",
+		isViable: true,
+		isNonstandard: true,
+		name: "Overpower",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1},
+		status: 'slp',
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					atk: 1,
+					def: 1,
+					spa: 1,
+					spd: 1,
+					spe: 1,
+				},
+			},
+		},
+		onHit: function (target) {
+			this.add('c|~Tsunami Prince|Witness my true power, my true strength, the feeling of fear, and your team\'s demise.');
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Dark Void", target);
+			this.add('-anim', source, "Future Sight", target);
+			this.add('-anim', source, "Psycho Boost", source);
+		},
+		target: "normal",
+		type: "Dark",
+		zMoveEffect: "heal",
+	},
+	//xcmr
+	kittycrush: {
+		category: "Physical",
+		accuracy: 95,
+		basePower: 95,
+		id: "kittycrush",
+		isViable: true,
+		isNonstandard: true,
+		name: "Kitty Crush",
+		pp: 5,
+		noPPBoosts: true,
+		priority: 1,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					def: 1,
+					spd: 1,
+				},
+			},
+		},
+		onHit: function (target) {
+			this.add('c|+xcmr|The calc says this should kill.');
+		},
+		onEffectiveness: function (typeMod, type) {
+			if (type === 'Rock') return 0;
+			if (type === 'Steel') return 0;
+			if (type === 'Ghost') return 0;
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Bulk Up", source);
+			this.add('-anim', source, "Crush Claw", target);
+		},
+		target: "normal",
+		type: "Normal",
 	},
 };

@@ -157,13 +157,13 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Lycanium Z', 'Hi. Im that random guy noone thinks about');
+			this.add('c', '%Lycanium Z', 'hey did u know that if you have a polkadot bow ur hp can go liek below zero? its crazy man');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Autograph', 'brb gonna change alts');
+			this.add('c', '%Lycanium Z', 'lol brb');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Bellhop', 'lol im dead. Back to alt hunting');
+			this.add('c', '%Lycanium Z', 'ew u took off my polkadot bow. I kinda need that to be viable yaknow');
 		},
 	},
 	celestialtater: {
@@ -185,6 +185,87 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '*Stabby the Krabby', 'Impossible...');
+		},
+	},
+	arrays: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '%Arrays', 'The code bracket is here! (Arrays)');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '%Arrays', 'I don\'t know how but i\'ve learned to run!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '%Arrays', 'How does one beat up code? It\'s not able to be touched by physical means!');
+		},
+	},
+	mosmero: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '~Mosmero', 'Hey, it\'s me, the Mos!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '~Mosmero', 'And with that, it was me, the Mos.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '~Mosmero', 'Can\'t you come up with something creative for once, Vacuo?');
+		},
+	},
+	cubsfan38: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '&CubsFan38', 'Your favorite penguin has arrived to battle!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
+		},
+	},
+	mechsteelix: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '&MechSteelix', 'Tell me, does a player such as yourself experience true fear?');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '&MechSteelix', 'What just happened?');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '&MechSteelix', 'Forget my life.. always surrounded by bumbling baboons.');
+		},
+	},
+	therittz: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '@TheRittz', 'Greetings!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '@TheRittz', '__fled from the scene__');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '@TheRittz', '__fled from the scene__');
+		},
+	},
+	tsunamiprince: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '~Tsunami Prince', 'You think I came for the battle, when it\'s really your soul I want.');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '~Tsunami Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '~Tsunami Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+		},
+	},
+	xcmr: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+xcmr', 'Hey man, go easy please.');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '+xcmr', 'Someone else take the damage, I\'m weak!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+xcmr', 'What!? That was a high roll!');
 		},
 	},
 };

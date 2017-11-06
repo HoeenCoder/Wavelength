@@ -71,7 +71,36 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			//Mosmero and Persion soon
+			'~Mosmero': {
+				species: 'Gastly',
+				ability: 'Mosmic Power',
+				item: 'Life Orb',
+				gender: '',
+				moves: ['Shadow Ball', 'Sludge Bomb', 'Giga Drain',
+				],
+				signatureMove: 'Mosmero Beam',
+				evs: {
+					hp: 4,
+					spa: 252,
+					spe: 252,
+				},
+				nature: 'Modest',
+			},
+			'~Tsunami Prince': {
+				species: 'Darkrai',
+				ability: 'Death Boost',
+				item: 'Darkiniumz',
+				gender: 'M',
+				moves: ['Nightmare', 'Dark Pulse', 'Shadow Ball',
+				],
+				signatureMove: 'Overpower',
+				evs: {
+					spa: 252,
+					spe: 252,
+					hp: 6,
+				},
+				nature: 'Timid',
+			},
 
 			// Global Leaders:
 			'&Opple': {
@@ -89,7 +118,36 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			//Cubs and MechSteelix soon
+			'&MechSteelix': {
+				species: 'Steelix-Mega',
+				ability: 'Sandbox',
+				item: 'Lum Berry',
+				gender: 'M',
+				moves: ['Curse', 'Sleep Talk', 'Earthquake',
+				],
+				signatureMove: 'Deep Sleep',
+				evs: {
+					hp: 252,
+					atk: 4,
+					def: 252,
+				},
+				nature: 'Impish',
+			},
+			'&CubsFan38': {
+				species: 'Mamoswine',
+				ability: 'Chilly Penguinn',
+				item: 'Life Orb',
+				gender: 'M',
+				moves: ['Ice Shard', 'Knock Off', 'Earthquake',
+				],
+				signatureMove: 'Penguin\'s Shower',
+				evs: {
+					hp: 4,
+					atk: 252,
+					spe: 252,
+				},
+				nature: 'Jolly',
+			},
 
 			//Global Bots
 			'*Stabby the Krabby': {
@@ -184,7 +242,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Hasty',
 			},
-			//TheRittz Soon
+			'@TheRittz': {
+				species: 'Venusaur-Mega',
+				ability: 'Paradoxical Prowess',
+				item: 'Black Sludge',
+				gender: 'M',
+				moves: ['Substitute', 'Leech Seed', 'Toxic',
+				],
+				signatureMove: 'Everlasting Annoyingness',
+				evs: {
+					hp: 252,
+					def: 128,
+					spd: 128,
+				},
+				nature: 'Calm',
+			},
 
 			// Global Drivers:
 			'%Serperiorater': {
@@ -204,10 +276,10 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 			'%Lycanium Z': {
 				species: "Lycanroc",
-				ability: "Metamorphosis",
-				item: "Life Orb",
+				ability: "Scrappy",
+				item: "Polkadot Bow",
 				gender: "M",
-				moves: ['Accelerock', 'Earthquake', 'Hyper fang'],
+				moves: ['Reversal', 'Head Smash', 'Earthquake'],
 				signatureMove: "Alt Swap",
 				evs: {
 					atk: 252,
@@ -293,7 +365,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			//xcmr soon
+			'+xcmr': {
+				species: 'Meowth',
+				ability: 'Feline Fury',
+				item: 'Eviolite',
+				gender: 'M',
+				moves: ['U-turn', 'Fake Out', 'Knock Off',
+				],
+				signatureMove: 'Kitty Crush',
+				evs: {
+					atk: 252,
+					spd: 4,
+					spe: 252,
+				},
+				nature: 'Jolly',
+			},
 		};
 		// convert moves to ids.
 		for (let k in sets) {

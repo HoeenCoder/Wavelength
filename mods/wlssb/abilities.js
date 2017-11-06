@@ -147,42 +147,6 @@ exports.BattleAbilities = {
 			this.boost({atk: 2, spe: 2});
 		},
 	},
-	//In Tandem with Lycanium Z's Wreck Havoc Move
-	metamorphosis: {
-		shortDesc: "Too Lazy RN",
-		id: "metamorphosis",
-		name: "Metamorphosis",
-		onBeforeFaint: function (pokemon, source) {
-			if (pokemon.template.speciesid === 'lycanroc') {
-				this.add('-activate', pokemon, 'ability: Metamorphosis');
-				let template = this.getTemplate('Lycanroc-Midnight');
-				pokemon.formeChange(template);
-				pokemon.baseTemplate = template;
-				pokemon.details = template.species + (pokemon.level === 100 ? '' : ', L' + pokemon.level) + (pokemon.gender === '' ? '' : ', ' + pokemon.gender) + (pokemon.set.shiny ? ', shiny' : '');
-				this.add('detailschange', pokemon, pokemon.details);
-				if (pokemon.hasType('Ghost')) return false;
-				if (!pokemon.addType('Ghost')) return false;
-				this.add('-start', pokemon, 'typeadd', 'Ghost');
-				this.heal(pokemon.maxhp);
-				pokemon.fainted = false;
-			}
-		},
-		onModifyMovePriority: -1,
-		onModifyMove: function (move, pokemon, source) {
-			if (move.type === 'Normal' && !(move.id in {judgment:1, multiattack:1, naturalgift:1, revelationdance:1, technoblast:1, weatherball:1}) && !(move.isZ && move.category !== 'Status')) {
-				if (pokemon.template.speciesid === 'lycanroc-dusk') {
-					move.type = 'ghost';
-				} else {
-					move.type = 'fire';
-				}
-				move.typeBoosted = true;
-			}
-		},
-		onBasePowerPriority: 8,
-		onBasePower: function (basePower, pokemon, target, move) {
-			if (move.typeBoosted) return this.chainModify([0x1333, 0x1000]);
-		},
-	},
 	//Serperiorater
 	unnamable: {
 		id: "unnamable",
@@ -213,5 +177,108 @@ exports.BattleAbilities = {
 		id: "shadowfist",
 		name: "Shadow Fist",
 	},
-
+	//MechSteelix
+	sandbox: {
+		id: "sandbox",
+		name: "Sandbox",
+		desc: "Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.",
+		onStart: function (pokemon) {
+			this.useMove('trickroom', pokemon);
+			this.useMove('reflect', pokemon);
+			this.useMove('lightscreen', pokemon);
+			this.useMove('gravity', pokemon);
+			this.setWeather('sandstorm');
+		},
+	},
+	//TheRittz
+	paradoxicalprowess: {
+		id: "paradoxicalprowess",
+		name: " Paradoxical Prowess",
+		desc: "Sets up Safeguard, Lucky Chant, has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Rock Solid, and has same effects of Oblivious",
+		//Magic Guard
+		onDamage: function (damage, target, source, effect) {
+			if (effect.effectType !== 'Move') {
+				return false;
+			}
+		},
+		//Sticky Hold
+		onTakeItem: function (item, pokemon, source) {
+			if (this.suppressingAttackEvents() && pokemon !== this.activePokemon || !pokemon.hp || pokemon.item === 'stickybarb') return;
+			if ((source && source !== pokemon) || this.activeMove.id === 'knockoff') {
+				this.add('-activate', pokemon, 'ability: Paradoxical Prowess');
+				return false;
+			}
+		},
+		//Oblivious
+		onUpdate: function (pokemon) {
+			if (pokemon.volatiles['attract']) {
+				this.add('-activate', pokemon, 'ability: Paradoxical Prowess');
+				pokemon.removeVolatile('attract');
+				this.add('-end', pokemon, 'move: Attract', '[from] ability: Paradoxical Prowess');
+			}
+			if (pokemon.volatiles['taunt']) {
+				this.add('-activate', pokemon, 'ability: Paradoxical Prowess');
+				pokemon.removeVolatile('taunt');
+				// Taunt's volatile already sends the -end message when removed
+			}
+		},
+		onImmunity: function (type, pokemon) {
+			if (type === 'attract') return false;
+		},
+		onTryHit: function (pokemon, target, move) {
+			if (move.id === 'attract' || move.id === 'captivate' || move.id === 'taunt') {
+				this.add('-immune', pokemon, '[msg]', '[from] ability: Paradoxical Prowess');
+				return null;
+			}
+		},
+		//Solid Rock
+		onSourceModifyDamage: function (damage, source, target, move) {
+			if (move.typeMod > 0) {
+				this.debug('Paradoxical Prowess neutralize');
+				return this.chainModify(0.75);
+			}
+		},
+	},
+	//Tsunami Prince
+	deathboost: {
+		id: "deathboost",
+		name: "Death Boost",
+		desc: "Simple + Puts foe to sleep on entry.",
+		onStart: function (pokemon) {
+			this.useMove('spore', pokemon);
+		},
+		onBoost: function (boost, target, source, effect) {
+			if (effect && effect.id === 'zpower') return;
+			for (let i in boost) {
+				boost[i] *= 2;
+			}
+		},
+	},
+	//xcmr
+	felinefury: {
+		id: "felinefury",
+		name: "Feline Fury",
+		desc: "+3 Attack on switch in.",
+		onStart: function (pokemon) {
+			this.boost({atk: 3});
+		},
+		onModifyMovePriority: -5,
+		onModifyMove: function (move) {
+			if (!move.ignoreImmunity) move.ignoreImmunity = {};
+			if (move.ignoreImmunity !== true) {
+				move.ignoreImmunity['Fighting'] = true;
+				move.ignoreImmunity['Normal'] = true;
+			}
+		},
+	},
+	//Mosmero
+	mosmicpower: {
+		id: "mosmicpower",
+		name: "Mosmic Power",
+		desc: "Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.",
+		onStart: function (pokemon) {
+			this.boost({spa: 3, spe: 3});
+			this.useMove('magnetrise', pokemon);
+		},
+	},
 };
