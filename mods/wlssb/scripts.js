@@ -48,9 +48,9 @@ exports.BattleScripts = {
 				d += this.hp;
 				if (this.item === 'polkadotbow' && this.species === 'Lycanroc') {
 					return this.hp;
-				}
-				else
+				} else { 
 					this.faint(source, effect);
+				}
 			}
 			return d;
 		},
