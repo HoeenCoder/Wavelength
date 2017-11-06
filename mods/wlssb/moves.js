@@ -359,31 +359,48 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	altswap: {
+	"finishthem": {
 		accuracy: 100,
-		basePower: 30,
+		basePower: 1,
 		category: "Physical",
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Uproar", target);
-		},
-		desc: "Hits 3-5 times. Confuses the target after.",
-		id: "altswap",
-		isNonStandard: true,
-		name: "Alt Swap",
-		pp: 10,
-		priority: 0,
+		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
+		id: "finishthem",
+		name: "finishthem",
+		pp: 5,
 		flags: {protect: 1, mirror: 1},
-		multihit: [3, 5],
-		secondary: {
-			chance: 100,
-			volatileStatus: 'confusion',
+		secondary: false,
+		priority: -3,
+		onModifyMove: function (move, target) {
+			move.basePower = target.maxhp;
 		},
-		recoil: [9, 10],
+		beforeTurnCallback: function (pokemon) {
+			pokemon.addVolatile('finishthem');
+		},
+		beforeMoveCallback: function (pokemon) {
+			if (pokemon.volatiles['finishthem'] && pokemon.volatiles['finishthem'].lostFocus) {
+				this.add('cant', pokemon, 'FINISH THEM', 'FINISH THEM');
+				return true;
+			} else {
+				if (this.random(10) === 1) {
+					this.boost({atk: -1, def: -1, spa: -1, spd: -1, spe: -1});
+				}
+			}
+		},
+		effect: {
+			duration: 1,
+			onStart: function (pokemon) {
+				this.add('-singleturn', pokemon, 'move: FINISH THEM');
+			},
+			onHit: function (pokemon, source, move) {
+				if (move.category !== 'Status') {
+					pokemon.volatiles['finishthem'].lostFocus = true;
+				}
+			},
+		},
 		target: "normal",
-		type: "Normal",
-		zMovePower: 100,
-		contestType: "Cool",
+		type: "Rock",
+		zMovePower: 180,
+		contestType: "Tough",
 	},
 	//Stabby the Krabby
 	"stabstab": {
