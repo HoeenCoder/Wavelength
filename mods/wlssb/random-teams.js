@@ -279,7 +279,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: "Scrappy",
 				item: "Polkadot Bow",
 				gender: "M",
-				moves: ['Reversal', 'Head Smash', 'Earthquake'],
+				moves: ['Submission', 'Head Smash', 'Earthquake'],
 				signatureMove: "Alt Swap",
 				evs: {
 					atk: 252,
