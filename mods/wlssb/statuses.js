@@ -157,10 +157,7 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Lycanium Z', 'hey did u know that if you have a polkadot bow ur hp can go liek below zero? its crazy man');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'lol brb');
+			this.add('c', '%Lycanium Z', 'hey did u know that if you have a polkadot bow ur recoil damage can liek heal u? its crazy man');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '%Lycanium Z', 'ew u took off my polkadot bow. I kinda need that to be viable yaknow');
