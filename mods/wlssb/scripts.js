@@ -35,6 +35,7 @@ exports.BattleScripts = {
 		}
 		return true;
 	},
+	//Polkadot Bow Memes (Code stolen from Spandan and the Benjamin Butterfree Metagame <3)
 	pokemon: {
 		damage(d, source, effect) {
 			if (!this.hp) return 0;
