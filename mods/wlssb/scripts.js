@@ -35,24 +35,13 @@ exports.BattleScripts = {
 		}
 		return true;
 	},
-	//Polkadot Bow Memes (Code stolen from Spandan and the Benjamin Butterfree Metagame <3)
-	pokemon: {
-		damage(d, source, effect) {
-			if (!this.hp) return 0;
-			if (d < 1 && d > 0) d = 1;
-			d = Math.floor(d);
-			if (isNaN(d)) return 0;
-			if (d <= 0) return 0;
-			this.hp -= d;
-			if (this.hp <= 0) {
-				d += this.hp;
-				if (this.item === 'polkadotbow' && this.species === 'Lycanroc') {
-					return this.hp;
-				} else {
-					this.faint(source, effect);
-				}
-			}
-			return d;
-		},
+	//Polkadot Bow Memes
+	tryMoveHit: function (target, pokemon, move, moveData, isSecondary, isSelf) {
+		if (move.recoil && move.totalDamage) {
+			this.damage(this.clampIntRange(this.calcRecoilDamage(move.totalDamage, move) * -1), pokemon, target, 'recoil');
+		}
+		if (move.struggleRecoil) {
+			this.directDamage(this.clampIntRange((Math.round(pokemon.maxhp / 4) * -1), 1), pokemon, pokemon, {id: 'strugglerecoil'});
+		}
 	},
 };
