@@ -37,11 +37,20 @@ exports.BattleScripts = {
 	},
 	//Polkadot Bow Memes
 	tryMoveHit: function (target, pokemon, move, moveData, isSecondary, isSelf) {
-		if (move.recoil && move.totalDamage) {
-			this.damage(this.clampIntRange(this.calcRecoilDamage(move.totalDamage, move) * -1), pokemon, target, 'recoil');
-		}
-		if (move.struggleRecoil) {
-			this.directDamage(this.clampIntRange((Math.round(pokemon.maxhp / 4) * -1), 1), pokemon, pokemon, {id: 'strugglerecoil'});
+		if (this.item === 'polkadotbow' && this.species === 'Lycanroc') {
+			if (move.recoil && move.totalDamage) {
+				this.damage(this.clampIntRange(this.calcRecoilDamage(move.totalDamage, move) * -1), pokemon, target, 'recoil');
+			}
+			if (move.struggleRecoil) {
+				this.directDamage(this.clampIntRange((Math.round(pokemon.maxhp / 4) * -1), 1), pokemon, pokemon, {id: 'strugglerecoil'});
+			} 
+		} else {
+			if (move.recoil && move.totalDamage) {
+				this.damage(this.calcRecoilDamage(move.totalDamage, move), pokemon, target, 'recoil');
+			}
+			if (move.struggleRecoil) {
+				this.directDamage(this.clampIntRange(Math.round(pokemon.maxhp / 4), 1), pokemon, pokemon, {id: 'strugglerecoil'});
+			}
 		}
 	},
 };
