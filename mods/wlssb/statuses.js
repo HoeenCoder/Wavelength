@@ -1,5 +1,17 @@
 'use strict';
 exports.BattleStatuses = {
+	desokoro: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '~Desokoro', 'The divine one has arrived to give you a smackdown of epic proportions.');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '~Desokoro', 'I\'ll be back!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '~Desokoro', 'You may have vanquished me today, but beware of the future. I shall not be gone long.');
+		},
+	},
 	serperiorater: {
 		exists: true,
 		onStart: function () {
