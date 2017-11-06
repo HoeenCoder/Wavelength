@@ -379,7 +379,7 @@ exports.BattleMovedex = {
 			chance: 100,
 			volatileStatus: 'confusion',
 		},
-		recoil: [9,10],
+		recoil: [9, 10],
 		target: "normal",
 		type: "Normal",
 		zMovePower: 100,
