@@ -156,11 +156,11 @@ exports.BattleStatuses = {
 	},
 	lycaniumz: {
 		exists: true,
-		onStart: function () {
-			this.add('c', '%Lycanium Z', 'hey did u know that if you have a polkadot bow ur recoil damage can liek heal u? its crazy man');
+		onStart: function (pokemon) {
+			this.add('c', '%Lycanium Z', 'I dont play for fun i play to win');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'ew u took off my polkadot bow. I kinda need that to be viable yaknow');
+			this.add('c', '%Lycanium Z', 'bah i lost. hoeenhero pls buf <3');
 		},
 	},
 	celestialtater: {
