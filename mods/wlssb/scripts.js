@@ -43,7 +43,7 @@ exports.BattleScripts = {
 			}
 			if (move.struggleRecoil) {
 				this.directDamage(this.clampIntRange((Math.round(pokemon.maxhp / 4) * -1), 1), pokemon, pokemon, {id: 'strugglerecoil'});
-			} 
+			}
 		} else {
 			if (move.recoil && move.totalDamage) {
 				this.damage(this.calcRecoilDamage(move.totalDamage, move), pokemon, target, 'recoil');
