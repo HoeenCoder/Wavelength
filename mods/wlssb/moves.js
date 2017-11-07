@@ -372,6 +372,12 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		secondary: false,
 		priority: -3,
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Extreme Evoboost", source);
+			this.add('-anim', source, "Fusion Flare", target);
+			this.add('-anim', source, "Splintered Stormshards", target);
+		},
 		onModifyMove: function (move, target) {
 			move.damage = target.maxhp;
 		},
