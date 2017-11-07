@@ -317,11 +317,15 @@ exports.BattleMovedex = {
 		category: "Physical",
 		basePower: 150,
 		id: "tsunamicrash",
+		isViable: true,
 		isNonstandard: true,
 		name: "Tsunami Crash",
 		secondary: {
 			chance: 35,
 			volatileStatus: 'flinch',
+		},
+		onHit: function (target) {
+			this.add('c|~Desokoro|You best hope the waves I ride have mercy on your soul!');
 		},
 		pp: 5,
 		priority: 0,
@@ -330,8 +334,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Water Pledge", source);
 			this.add('-anim', source, "Waterfall", target);
 		},
-		desc: "35% chance to flinch",
-		target: "normal",
+		target: "Normal",
 		type: "Water",
 	},
 	// CelestialTater
