@@ -61,6 +61,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Wave Call',
 				item: 'Leftovers',
 				gender: 'M',
+				shiny: true,
 				moves: ['Substitute', 'Dragon Dance', 'Bounce',
 				],
 				signatureMove: 'Tsunami Crash',
