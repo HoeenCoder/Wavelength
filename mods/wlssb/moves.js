@@ -361,7 +361,8 @@ exports.BattleMovedex = {
 	// Lycanium Z
 	"finishthem": {
 		accuracy: 100,
-		basePower: 1,
+		basePower: 0,
+		damage: '1',
 		category: "Physical",
 		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
 		id: "finishthem",
@@ -372,7 +373,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		priority: -3,
 		onModifyMove: function (move, target) {
-			move.basePower = target.maxhp;
+			move.damage = target.maxhp;
 		},
 		beforeTurnCallback: function (pokemon) {
 			pokemon.addVolatile('finishthem');
