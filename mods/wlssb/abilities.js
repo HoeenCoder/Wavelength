@@ -50,16 +50,44 @@ exports.BattleAbilities = {
 			}
 		},
 	},
+	//Desokoro
 	wavecall: {
+		id: "wavecall",
+		name: "Wave Call",
 		desc: "Water Attacks damage is 2x if the user is status'ed or HP is less than 1/2",
+		onStart: function (pokemon) {
+			pokemon.addVolatile('wavecall');
+		},
+		onEnd: function (pokemon) {
+			delete pokemon.volatiles['wavecall'];
+			this.add('-end', pokemon, 'Wave Call', '[silent]');
+		},
+		effect: {
+			duration: 3,
+			onStart: function (target) {
+				this.add('-start', target, 'ability: Wave Call');
+			},
+			onSourceModifyDamage: function (damage, source, target, move) {
+				if (target !== source && move.type === 'Electric') {
+					return this.chainModify(0.1);
+				}
+			},
+			onEnd: function (target) {
+				this.add('-end', target, 'Wave Call');
+			},
+		},
 		onModifyAtkPriority: 5,
 		onModifyAtk: function (atk, pokemon, move, attacker) {
 			if (pokemon.status && move.type === 'Water' || move.type === 'Water' && attacker.hp <= attacker.maxhp / 2) {
 				return this.chainModify(2);
 			}
 		},
-		id: "wavecall",
-		name: "Wave Call",
+		onModifySpePriority: 5,
+		onModifySpe: function (spe, pokemon, move, attacker) {
+			if (pokemon.status || attacker.hp <= attacker.maxhp / 2) {
+				return this.chainModify(2);
+			}
+		},
 	},
 	//Kraken Mare
 	krakensboost: {
