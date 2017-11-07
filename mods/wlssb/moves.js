@@ -362,7 +362,7 @@ exports.BattleMovedex = {
 	"finishthem": {
 		accuracy: 100,
 		basePower: 0,
-		damage: '1',
+		damage: 1,
 		category: "Physical",
 		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
 		id: "finishthem",
