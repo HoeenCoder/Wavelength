@@ -366,7 +366,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
 		id: "finishthem",
-		name: "FINSIHTHEM",
+		name: "FINISHTHEM",
 		pp: 5,
 		noPPBoosts: true,
 		flags: {protect: 1, mirror: 1},
