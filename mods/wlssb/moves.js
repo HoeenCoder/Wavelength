@@ -542,7 +542,7 @@ exports.BattleMovedex = {
 			target.statusData.startTime = 3;
 			this.heal(target.maxhp); //Aeshetic only as the healing happens after you fall asleep in-game
 			this.add('-status', target, 'slp', '[from] move: Deep Sleep');
-			this.add('c|&MechSteelix|Witness my true power!');
+			this.add('c|&iSteelX|Witness my true power!');
 			this.add('-anim', target, "Protect", target);
 		},
 		secondary: {
