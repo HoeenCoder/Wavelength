@@ -9,7 +9,7 @@ let typeList = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting
 
 const BANS = {
 	moves: ['Baton Pass'],
-	abilities: ['Shadow Tag', 'Arena Trap', 'Power Construct'],
+	abilities: ['Shadow Tag', 'Arena Trap', 'Power Construct', 'Moody'],
 	items: [],
 	pokemon: [],
 	tiers: ['Uber', 'AG'],
@@ -526,6 +526,7 @@ class SSB {
 					i--;
 					continue;
 				}
+				if (move.ohko) return false;
 			}
 		}
 		// EVs
