@@ -317,11 +317,15 @@ exports.BattleMovedex = {
 		category: "Physical",
 		basePower: 150,
 		id: "tsunamicrash",
+		isViable: true,
 		isNonstandard: true,
 		name: "Tsunami Crash",
 		secondary: {
 			chance: 35,
 			volatileStatus: 'flinch',
+		},
+		onHit: function (target) {
+			this.add('c|~Desokoro|You best hope the waves I ride have mercy on your soul!');
 		},
 		pp: 5,
 		priority: 0,
@@ -330,8 +334,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Water Pledge", source);
 			this.add('-anim', source, "Waterfall", target);
 		},
-		desc: "35% chance to flinch",
-		target: "normal",
+		target: "Normal",
 		type: "Water",
 	},
 	// CelestialTater
@@ -361,18 +364,25 @@ exports.BattleMovedex = {
 	// Lycanium Z
 	"finishthem": {
 		accuracy: 100,
-		basePower: 1,
+		basePower: 0,
+		damage: 1,
 		category: "Physical",
 		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
 		id: "finishthem",
-		name: "FINSIHTHEM",
+		name: "FINISH THEM",
 		pp: 5,
 		noPPBoosts: true,
 		flags: {protect: 1, mirror: 1},
 		secondary: false,
 		priority: -3,
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Extreme Evoboost", source);
+			this.add('-anim', source, "Fusion Flare", target);
+			this.add('-anim', source, "Splintered Stormshards", target);
+		},
 		onModifyMove: function (move, target) {
-			move.basePower = target.maxhp;
+			move.damage = target.maxhp;
 		},
 		beforeTurnCallback: function (pokemon) {
 			pokemon.addVolatile('finishthem');
@@ -535,7 +545,7 @@ exports.BattleMovedex = {
 			target.statusData.startTime = 3;
 			this.heal(target.maxhp); //Aeshetic only as the healing happens after you fall asleep in-game
 			this.add('-status', target, 'slp', '[from] move: Deep Sleep');
-			this.add('c|&MechSteelix|Witness my true power!');
+			this.add('c|&iSteelX|Witness my true power!');
 			this.add('-anim', target, "Protect", target);
 		},
 		secondary: {

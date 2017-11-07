@@ -61,6 +61,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Wave Call',
 				item: 'Leftovers',
 				gender: 'M',
+				shiny: true,
 				moves: ['Substitute', 'Dragon Dance', 'Bounce',
 				],
 				signatureMove: 'Tsunami Crash',
@@ -118,7 +119,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'&MechSteelix': {
+			'&iSteelX': {
 				species: 'Steelix-Mega',
 				ability: 'Sandbox',
 				item: 'Lum Berry',
