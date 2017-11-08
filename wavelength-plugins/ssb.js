@@ -526,7 +526,12 @@ class SSB {
 					i--;
 					continue;
 				}
-				if (move.ohko) return false;
+				if (BANS.includes(move.name) || move.ohko) {
+					msg.push(`The move ${move.name} is banned from SSBFFA.`);
+					this.movepool.splice(i, 1);
+					i--;
+					continue;
+				}
 			}
 		}
 		// EVs
