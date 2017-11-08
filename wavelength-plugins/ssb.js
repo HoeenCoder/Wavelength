@@ -427,13 +427,14 @@ class SSB {
 	}
 
 	activate(user) {
+		if (!user) return false;
 		let valid = this.validate();
 		if (valid.length === 0) {
 			this.active = !this.active;
 			return true;
 		}
 		this.active = false;
-		user.popup(`|modal|Your SSBFFA pokemon was rejected for the following reasons:\n${valid.join('\n')}`);
+		if (user.connected) user.popup(`|modal|Your SSBFFA pokemon was rejected for the following reasons:\n${valid.join('\n')}`);
 		return false;
 	}
 
@@ -462,18 +463,20 @@ class SSB {
 			this.ability = pokemon.abilities[0];
 		}
 		// Item
-		let item = dex.getItem(this.item);
-		if (!item.exists || BANS.items.includes(this.item) ||
-		(!Dex.getItem(this.item).exists && toId(this.cItem !== item.id))) {
-			msg.push((!ability.exists ? `The item ${item.id} does not exist.` : (BANS.items.includes(this.item) ? `The item ${item.name} is banned.` : `${item.name} is not your custom item.`)));
-			this.item = '';
-		}
-		// Mega evolution check
-		if (item.megaStone && item.megaEvolves === pokemon.species) {
-			let mega = dex.getTemplate(item.megaStone);
-			if (BANS.pokemon.includes(mega.species) || BANS.tiers.includes(mega.tier)) {
-				msg.push((BANS.pokemon.includes(mega.species) ? `${mega.name} is banned.` : `${mega.name} is in ${mega.tier} which is banned.`));
+		if (toId(this.item)) {
+			let item = dex.getItem(this.item);
+			if (!item.exists || BANS.items.includes(this.item) ||
+			(!Dex.getItem(this.item).exists && toId(this.cItem !== item.id))) {
+				msg.push((!ability.exists ? `The item ${item.id} does not exist.` : (BANS.items.includes(this.item) ? `The item ${item.name} is banned.` : `${item.name} is not your custom item.`)));
 				this.item = '';
+			}
+			// Mega evolution check
+			if (item.megaStone && item.megaEvolves === pokemon.species) {
+				let mega = dex.getTemplate(item.megaStone);
+				if (BANS.pokemon.includes(mega.species) || BANS.tiers.includes(mega.tier)) {
+					msg.push((BANS.pokemon.includes(mega.species) ? `${mega.name} is banned.` : `${mega.name} is in ${mega.tier} which is banned.`));
+					this.item = '';
+				}
 			}
 		}
 		// Level, Symbol, Shiny, Gender, and Happiness
@@ -489,35 +492,15 @@ class SSB {
 			msg.push(`${pokemon.species}'s' happiness was invalid.`);
 		}
 		// Moves
-		let hasCustom = false;
-		for (let i = 0; i < this.movepool.length; i++) {
-			let move = dex.getMove(this.movepool[i]);
-			if (!move.exists) {
-				msg.push(`The move ${move.id} does not exist.`);
-				this.movepool.splice(i, 1);
-				i--;
-				continue;
-			}
-			if (!Dex.getMove(move.id).exists) {
-				// Custom move
-				if (hasCustom) {
-					msg.push(`${pokemon.species} has more than one custom move.`);
+		if (this.movepool.length) {
+			for (let i = 0; i < this.movepool.length; i++) {
+				let move = dex.getMove(this.movepool[i]);
+				if (!move.exists) {
+					msg.push(`The move ${move.id} does not exist.`);
 					this.movepool.splice(i, 1);
 					i--;
 					continue;
 				}
-				if (!customMovepool.includes(move.name)) {
-					// Purchased custom move
-					if (toId(this.selfCustomMove) !== move.id) {
-						msg.push(`${pokemon.species}'s custom move ${move.name} is not your custom move.`);
-						this.movepool.splice(i, 1);
-						i--;
-						continue;
-					}
-				}
-				hasCustom = true;
-			} else {
-				// Standard move
 				if (TeamValidator('gen7ou').checkLearnset(move, pokemon.species, {
 					set: {},
 				})) {
@@ -531,6 +514,20 @@ class SSB {
 					this.movepool.splice(i, 1);
 					i--;
 					continue;
+				}
+			}
+		}
+		// Custom move
+		if (this.cMove) {
+			let move = dex.getMove(this.cMove);
+			if (!move.exists || Dex.getMove(move.id).exists) {
+				msg.push(`${move.name} is not a custom move.`);
+				this.cMove = '';
+			} else if (!customMovepool.includes(move.name)) {
+				// Purchased custom move
+				if (toId(this.selfCustomMove) !== move.id) {
+					msg.push(`${pokemon.species}'s custom move ${move.name} is not your custom move.`);
+					this.cMove = '';
 				}
 			}
 		}
