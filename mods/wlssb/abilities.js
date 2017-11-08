@@ -309,4 +309,16 @@ exports.BattleAbilities = {
 			this.useMove('magnetrise', pokemon);
 		},
 	},
+	// Cubsfan38
+	nightowl: {
+		id: "nightowl",
+		name: "Night Owl",
+		desc: "Boosts user's Attack and Speed by 2 stages on switch in if the opponent is a ghost or dark type.",
+		onStart: function (pokemon) {
+			let targets = pokemon.side.foe.active;
+			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
+				this.boost({atk: 2, spe: 2});
+			},
+		},
+	},
 };
