@@ -205,7 +205,7 @@ exports.BattleAbilities = {
 		id: "shadowfist",
 		name: "Shadow Fist",
 	},
-	//MechSteelix
+	// iSteelX
 	sandbox: {
 		id: "sandbox",
 		name: "Sandbox",
