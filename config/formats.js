@@ -457,6 +457,10 @@ exports.Formats = [
 			this.add("raw|<h3>1</h3>");
 			this.add("raw|<h1>BATTLE!</h1>");
 		},
+		onSwitchInPriority: 1,
+		onSwitchIn: function (pokemon) {
+			if (!pokemon.template.isMega) pokemon.canMegaEvo = this.canMegaEvo(pokemon);
+		},
 	},
 	{
 		name: "[Gen 7] Digimon Showdown",
