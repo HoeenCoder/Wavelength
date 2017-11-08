@@ -509,32 +509,32 @@ exports.BattleMovedex = {
 		type: "Ghost",
 	},
 	//CubsFan38
-	penguinsshower: {
-		category: "Special",
-		accuracy: 95,
-		basePower: 120,
-		id: "penguinsshower",
+	moonlightescape: {
+		category: "Physical",
+		accuracy: 100,
+		basePower: 150,
+		id: "moonlightescape",
 		isViable: true,
 		isNonstandard: true,
-		name: "Penguin's Shower",
-		pp: 6.25,
+		name: "Moonlight Escape",
+		pp: 10,
 		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		secondary: {
-			chance: 50,
-			status: 'frz',
+			chance: 100,
+			self: {
+				boosts: {spe: 1},
+			},
 		},
-		onHit: function (target, source, move) {
-			this.add('c|&CubsFan38|You\'re really gonna let a penguin beat you?');
-		},
+		drain: [1, 2],
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Blizzard", target);
-			this.add('-anim', target, "Tail Whip", target);
+			this.add('-anim', source, "Moonlight", target);
+			this.add('-anim', target, "Shadow Sneak", target);
 		},
 		target: "Normal",
-		type: "Ice",
+		type: "Dark",
 	},
 	// iSteelX
 	deepsleep:{
