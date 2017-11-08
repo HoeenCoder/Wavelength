@@ -373,7 +373,18 @@ exports.BattleMovedex = {
 		pp: 5,
 		noPPBoosts: true,
 		flags: {protect: 1, mirror: 1},
-		secondary: false,
+		secondary: {
+			chance: 10,
+			self: {
+				boosts: {
+					atk: -1,
+					def: -1,
+					spa: -1,
+					spd: -1,
+					spe: -1,
+				},
+			},
+		},
 		priority: -3,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -391,10 +402,6 @@ exports.BattleMovedex = {
 			if (pokemon.volatiles['finishthem'] && pokemon.volatiles['finishthem'].lostFocus) {
 				this.add('cant', pokemon, 'FINISH THEM', 'FINISH THEM');
 				return true;
-			} else {
-				if (this.random(10) === 1) {
-					this.boost({atk: -1, def: -1, spa: -1, spd: -1, spe: -1});
-				}
 			}
 		},
 		effect: {
@@ -529,7 +536,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Ice",
 	},
-	//MechSteelix
+	// iSteelX
 	deepsleep:{
 		category: "Status",
 		id: "deepsleep",
