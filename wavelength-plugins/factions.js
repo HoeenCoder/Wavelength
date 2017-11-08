@@ -730,7 +730,7 @@ exports.commands = {
 		'': 'help',
 		help: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			return this.sendReply("|raw|<div class=\"infobox\">" +
+			return this.sendReplyBox(
 				"Faction Help Commands: <br/> " +
 				"/faction create (name), (description), (tag[4 char]) - Creates a faction. <br/>" +
 				"/faction delete (name)  - Deletes a faction. <br/>" +
@@ -754,7 +754,7 @@ exports.commands = {
 				"/faction avatar (image)  - requests a faction avatar for your faction profile. Must be faction owner to use. <br />" +
 				"/faction approveavatar (faction), (the requested avatar) - approves a factions avatar.  You must be a global leader or higher to use this! <br />" +
 				"/faction denyavatar (faction) - denys a factions avatar.  You must be a global leader or higher to use this! <br />" +
-				"/faction pendingavatars - shows pending faction avatars. (`/faction pa` for short) You must be a global leader or higher to use this! <br />" +
+				"/faction pendingavatars - shows pending faction avatars. (<code>/faction pa</code> for short) You must be a global leader or higher to use this! <br />" +
 				"/faction pending - displays a list of pending factions waiting for approval. You must be a global leader or higher to use this! <br/>" +
 				"</div>"
 			);
