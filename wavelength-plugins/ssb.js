@@ -526,7 +526,7 @@ class SSB {
 					i--;
 					continue;
 				}
-				if (BANS.includes(move.name) || move.ohko) {
+				if (BANS.moves.includes(move.name) || move.ohko) {
 					msg.push(`The move ${move.name} is banned from SSBFFA.`);
 					this.movepool.splice(i, 1);
 					i--;
