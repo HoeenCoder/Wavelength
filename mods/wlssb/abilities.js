@@ -318,7 +318,7 @@ exports.BattleAbilities = {
 			let targets = pokemon.side.foe.active;
 			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
 				this.boost({atk: 2, spe: 2});
-			},
+			}
 		},
 	},
 };
