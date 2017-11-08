@@ -261,16 +261,16 @@ Notes: Quite a nice wall, especially effective while Sandbox is active. Gets qui
 Rank: TBD
 
 CubsFan38
-(Mamoswine)
-@ Life Orb
-EVs: 4 HP / 252 Atk / 252 Spe
+(Rowlet)
+@ Eviolite
+EVs: 252 Attack / 4 SpD / 252 Spe
 Jolly Nature
-Ability: Chilly Penguinn
-    -If it by a ice type move, +1 stage to all stats.
-Moves: Ice Shard, Knock Off, Earthquake
-Signature Move: Penguin's Shower
-    -120 power, 10 pp, 95% accuracy, 50% chance to freeze opponent
-Notes: Can do a good amount of damage to some of the strongest in this meta.
+Ability: Night Owl
+	- Raises Attack and Speed by 2 if against a Ghost/Dark type Pokemon
+Moves: Leaf Blade, Brave Bird, Swords Dance
+Signature Move: Moonlight Escape
+- Dark Type, Physical , 150 BP, 10 PP, Boosts users Speed by 1 stage and heals half of their max HP.
+Notes: idk
 Rank: TBD
 
 TheRittz
