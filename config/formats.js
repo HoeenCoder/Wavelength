@@ -1864,7 +1864,7 @@ exports.Formats = [
 		ruleset: ['[Gen 7] OU'],
 		onSwitchIn: function (pokemon) {
 			this.add('-start', pokemon, 'typechange', pokemon.types[0] + (pokemon.types[1] ? '/' + pokemon.types[1] : ''));
-		}
+		},
 	},
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
