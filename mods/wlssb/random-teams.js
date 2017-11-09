@@ -135,15 +135,15 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Impish',
 			},
 			'&CubsFan38': {
-				species: 'Mamoswine',
-				ability: 'Chilly Penguinn',
-				item: 'Life Orb',
+				species: 'Rowlet',
+				ability: 'Night Owl',
+				item: 'Eviolite',
 				gender: 'M',
-				moves: ['Ice Shard', 'Knock Off', 'Earthquake',
+				moves: ['Leaf Blade', 'Brave Bird', 'Swords Dance',
 				],
-				signatureMove: 'Penguin\'s Shower',
+				signatureMove: 'Moonlight Escape',
 				evs: {
-					hp: 4,
+					spd: 4,
 					atk: 252,
 					spe: 252,
 				},
@@ -303,7 +303,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			// wgc soon
+			'%wgc': {
+				species: 'Gengar',
+				ability: 'Levitate',
+				item: 'Spooky Plate',
+				gender: 'M',
+				moves: ['Moongeist Beam', 'Sludge Wave', 'Secret Sword'],
+				signatureMove: 'Haze Reborn',
+				evs: {
+					spe: 252,
+					spa: 252,
+					def: 4,
+				},
+				nature: 'Timid',
+			},
 
 			// Global Voices:
 			'+ducktown': {

@@ -205,7 +205,7 @@ exports.BattleAbilities = {
 		id: "shadowfist",
 		name: "Shadow Fist",
 	},
-	//MechSteelix
+	// iSteelX
 	sandbox: {
 		id: "sandbox",
 		name: "Sandbox",
@@ -307,6 +307,24 @@ exports.BattleAbilities = {
 		onStart: function (pokemon) {
 			this.boost({spa: 3, spe: 3});
 			this.useMove('magnetrise', pokemon);
+		},
+	},
+	// Cubsfan38
+	nightowl: {
+		id: "nightowl",
+		name: "Night Owl",
+		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
+		onModifyAtk: function (atk, pokemon) {
+			let target = pokemon.side.foe.active[0];
+			if (target.hasType('Ghost') || target.hasType('Dark')) {
+				return this.chainModify(2);
+			}
+		},
+		onModifySpe: function (spe, pokemon) {
+			let target = pokemon.side.foe.active[0];
+			if (target.hasType('Ghost') || target.hasType('Dark')) {
+				return this.chainModify(2);
+			}
 		},
 	},
 };

@@ -373,7 +373,18 @@ exports.BattleMovedex = {
 		pp: 5,
 		noPPBoosts: true,
 		flags: {protect: 1, mirror: 1},
-		secondary: false,
+		secondary: {
+			chance: 10,
+			self: {
+				boosts: {
+					atk: -1,
+					def: -1,
+					spa: -1,
+					spd: -1,
+					spe: -1,
+				},
+			},
+		},
 		priority: -3,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -391,10 +402,6 @@ exports.BattleMovedex = {
 			if (pokemon.volatiles['finishthem'] && pokemon.volatiles['finishthem'].lostFocus) {
 				this.add('cant', pokemon, 'FINISH THEM', 'FINISH THEM');
 				return true;
-			} else {
-				if (this.random(10) === 1) {
-					this.boost({atk: -1, def: -1, spa: -1, spd: -1, spe: -1});
-				}
 			}
 		},
 		effect: {
@@ -498,38 +505,39 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Protect", source);
 			this.add('-anim', source, "Hyper Beam", target);
 		},
+		desc: "30% chance to either burn, freeze or paralyze the opponent",
 		target: "Normal",
 		type: "Ghost",
 	},
 	//CubsFan38
-	penguinsshower: {
-		category: "Special",
-		accuracy: 95,
-		basePower: 120,
-		id: "penguinsshower",
+	moonlightescape: {
+		category: "Physical",
+		accuracy: 100,
+		basePower: 150,
+		id: "moonlightescape",
 		isViable: true,
 		isNonstandard: true,
-		name: "Penguin's Shower",
-		pp: 6.25,
+		name: "Moonlight Escape",
+		pp: 10,
 		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
+		desc: "Boosts Speed by 1.",
 		secondary: {
-			chance: 50,
-			status: 'frz',
-		},
-		onHit: function (target, source, move) {
-			this.add('c|&CubsFan38|You\'re really gonna let a penguin beat you?');
+			chance: 100,
+			self: {
+				boosts: {spe: 1},
+			},
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Blizzard", target);
-			this.add('-anim', target, "Tail Whip", target);
+			this.add('-anim', source, "Moonlight", target);
+			this.add('-anim', target, "Shadow Sneak", target);
 		},
 		target: "Normal",
-		type: "Ice",
+		type: "Dark",
 	},
-	//MechSteelix
+	// iSteelX
 	deepsleep:{
 		category: "Status",
 		id: "deepsleep",
@@ -692,5 +700,40 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+	},
+	//wgc
+	"hazereborn": {
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		desc: "Inverts the target's stat stages and a 40% chance to freeze.",
+		id: "hazereborn",
+		name: "Haze Reborn",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, mystery: 1},
+		onHit: function (target) {
+			let success = false;
+			for (let i in target.boosts) {
+				if (target.boosts[i] === 0) continue;
+				target.boosts[i] = -target.boosts[i];
+				success = true;
+			}
+			if (!success) return false;
+			this.add('-invertboost', target, '[from] move: Haze Reborn');
+		},
+		secondary: {
+			chance: 40,
+			status: 'frz',
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Glaciate", source);
+			this.add('-anim', source, "Dark Void", target);
+		},
+		target: "normal",
+		type: "Ice",
+		zMoveBoost: {spa: 1},
+		contestType: "Clever",
 	},
 };

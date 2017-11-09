@@ -277,4 +277,12 @@ exports.BattleStatuses = {
 			this.add('c', '+xcmr', 'What!? That was a high roll!');
 		},
 	},
+	wgc: {
+		exists: true,
+		onSourceFaint: function (target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.boost({spa:1}, source);
+			}
+		},
+	},
 };
