@@ -300,4 +300,16 @@ Notes: Soild counter to most with its Scrappy and Kitty Crush combo.
 Rank: TBD
 
 wgc
-Hey wgc if you are reading this please code your staffmon or ask someone to pls ty <3 ~Lycanium Z
+(Gengar)
+@ Sppoky Plate
+EVs: 252 SpA / 4 Def / 252 Spe
+Timid Nature
+Ability: Levitate
+Innate Ability: Spooky Setup
+	- Boosts Special attack by 1 stage if it faints an opponent
+Moves: Moongeist Beam, Sludge Wave and Sacred Sword.
+Signature Move: Haze Reborn
+	- Ice Type, 20 PP, Inverts Targets stat changes. 40% chance to freeze.
+Notes: N/A.
+Rank: N/A.
+
