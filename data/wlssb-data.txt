@@ -269,7 +269,7 @@ Ability: Night Owl
 	- Raises Attack and Speed by 2 if against a Ghost/Dark type Pokemon
 Moves: Leaf Blade, Brave Bird, Swords Dance
 Signature Move: Moonlight Escape
-- Dark Type, Physical , 150 BP, 10 PP, Boosts users Speed by 1 stage and heals half of their max HP.
+- Dark Type, Physical , 150 BP, 10 PP.
 Notes: idk
 Rank: TBD
 
