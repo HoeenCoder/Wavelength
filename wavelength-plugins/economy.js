@@ -177,7 +177,6 @@ exports.commands = {
 		for (let u in splitTarget) splitTarget[u] = splitTarget[u].trim();
 
 		let targetUser = splitTarget[0];
-		if (toId(targetUser) === user.userid) return this.errorReply("You cannot transfer stardust to yourself.");
 		if (toId(targetUser).length < 1) return this.sendReply("/" + cmd + " - [user] may not be blank.");
 		if (toId(targetUser).length > 19) return this.sendReply("/" + cmd + " - [user] can't be longer than 19 characters");
 
