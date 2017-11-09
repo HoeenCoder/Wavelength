@@ -315,14 +315,14 @@ exports.BattleAbilities = {
 		name: "Night Owl",
 		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
 		onModifyAtk: function (atk, pokemon) {
-			let targets = pokemon.side.foe.active;
-			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
+			let hoeenhero = pokemon.side.foe.active[0];
+			if (hoeenhero.hasType('Ghost') || hoeenhero.hasType('Dark')) {
 				return this.chainModify(2);
 			}
 		},
 		onModifySpe: function (spe, pokemon) {
-			let targets = pokemon.side.foe.active;
-			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
+			let hoeenhero = pokemon.side.foe.active[0];
+			if (hoeenhero.hasType('Ghost') || hoeenhero.hasType('Dark')) {
 				return this.chainModify(2);
 			}
 		},
