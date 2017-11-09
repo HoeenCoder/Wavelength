@@ -363,7 +363,7 @@ exports.BattleItems = {
 		onHit: function (target, source, move) {
 			if (move && move.typeMod > 0) {
 				if (target.eatItem()) {
-					if (pokemon.hasAbility('gluttony')) this.heal(pokemon.maxhp / 2);
+					if (target.hasAbility('gluttony')) this.heal(target.maxhp / 2);
 					this.heal(target.maxhp / 2);
 				}
 			}
@@ -609,7 +609,7 @@ exports.BattleItems = {
 		onAfterDamage: function (damage, target, source, move) {
 			if (source && source !== target && move && move.category === 'Special') {
 				if (target.eatItem()) {
-					if (pokemon.hasAbility('gluttony')) this.damage(source.maxhp / 8, source, target);
+					if (target.hasAbility('gluttony')) this.damage(source.maxhp / 8, source, target);
 					this.damage(source.maxhp / 8, source, target);
 				}
 			}
