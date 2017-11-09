@@ -25,7 +25,10 @@ exports.commands = {
 			'<b>/unnamelock [user]</b> - Unnamelocks the user. Requires: % @ * & ~ <br />' +
 			'<b>/hidetext [user]</b> - Removes a locked or banned user\'s messages from chat (includes users banned from the room). Requires: % (global only), @ * # & ~ <br />' +
 			'<b>/hidealtstext [user]</b> - Removes a locked or banned user\'s messages, and their alternate account\'s messages from the chat (includes users banned from the room).  Requires: % (global only), @ * # & ~ <br />' +
-			'<b>/survey create [question]</b> - Create a survey. Requires % @ # & ~ <br />' +
+			'<b>/roomlist</b> - displays the list of rooms and the total amount of users connected on the server. What rooms you see change can increase with your rank.<br />' +
+			'<b>/hide [rank]</b> - Hides user\'s global rank to specified rank. [none/+/%/@/&/~] You can\'t hide as a higher rank than your own.<br />' +
+			'<b>/show</b> - Displays your global rank <br />' +
+		    	'<b>/survey create [question]</b> - Create a survey. Requires % @ # & ~ <br />' +
 			'<b>/survey results</b> - View the results of the survey. You can\'t go back and answer if you havent already. <br />' +
 			'<b>/survey display</b> - Display the survey. <br />' +
 			'<b>/survey remove [user]</b> - Removes a users reply and prevents them from sending in a new one for this survey. Requires: % @ # & ~ <br />' +
@@ -124,13 +127,7 @@ exports.commands = {
 			'<b>/emote ignore</b> - Ignores emoticons in chat messages<br />' +
 			'<b>/emote unignore</b> - Unignores emoticons in chat messages <br />' +
 			'<b>/emote help</b> - Displays the help command.<br />' +
-			'<b>/voucher give [user], [voucher], (item/amount)</b> - Give a user a voucher.<br />' +
-			'<b>/voucher take [user], [id]</b> - Take a user\'s voucher away.<br />' +
-			'<b>/voucher list (user)</b> - List the vouchers of a user.<br />' +
 			'<b>/clearall</b> - clears the entire chat of a room (use it only if needed)<br />' +
-			'<b>/roomlist</b> - displays the list of public/private/official/battle rooms and the total amount of users connected on the server<br />' +
-			'<b>/hide [rank]</b> - Hides user\'s global rank to specified rank. [none/+/%/@/&]<br />' +
-			'<b>/show</b> - Displays your global rank <br />' +
 			'<b>/givecurrency [user], [amount]</b> - gives a special amount of Stardust to a user (needs a reason) <br />' +
 			'<b>/takecurrency [user], [amount]</b> - removes a special amount of Stardust from a user (needs a reason) <br />' +
 			'<b>/moneylog [number]</b> - to view the last x lines <br />' +
