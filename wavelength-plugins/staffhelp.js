@@ -68,7 +68,7 @@ exports.commands = {
 			'<b>/tour announce/announcements [on|off]</b> - Enables/disables tournament announcements for the current room. <br />' +
 			'<b>/tour banuser/unbanuser [user]</b> - Bans/unbans a user from joining tournaments in this room. Lasts 2 weeks. <br />' +
 			'</details>';
-			if (user.can('ban')) out += '<details><summary>Global Moderator Commands (@)</summary>' +
+		if { (user.can('ban')) out += '<details><summary>Global Moderator Commands (@)</summary>' +
 			'<b>/globalban OR /gban [user], [reason]</b> - kicks user from all rooms and bans user\'s ip address with reason <br />' +
 			'<b>/globalunban [user]</b> - unbans a user from the server <br />' +
 			'<b>/roomban [user], [reason]</b> - Bans the user from the room you are in. Requires: @ # & ~ <br />' +
@@ -81,7 +81,7 @@ exports.commands = {
 			'<b>/unmarkshared [ip]</b> - Unmarks a shared IP address. Requires @, &, ~ <br />' +
 			'<b>As well as all the commands listed above <br />' +
 			'</details>';
-			if (user.can('roomowner')) out += '<details><summary>Global Leader Commands (&)</summary>' +
+		    if { (user.can('roomowner')) out += '<details><summary>Global Leader Commands (&)</summary>' +
 			'<b>/lockip [IP]</b> - locks a particular IP address from the server. Exisiting users on the IP will not be locked. <br />' +
 			'<b>/banip [IP] OR /unbanip</b> - bans a particular IP address from the server. Exisiting users on the IP will not be banned. <br />' +
 			'<b>/globalvoice [username] OR /globaldevoice</b> - promotes/demotes a user to or from Global Voice <br />' +
@@ -145,7 +145,7 @@ exports.commands = {
 			'<b>/poll htmlcreate [question], [option1], [option2], [...]</b> - Allows up to 5 polls at once per room. Creates a poll, with HTML allowed in the question and options. Requires: # & ~ <br />' +
 			'<b>As well as all the commands listed above <br />' +
 			'</details>';
-			if (user.can('lockdown')) out += '<details><summary>Global Administrator Commands (~)</summary>' +
+		if { (user.can('lockdown')) out += '<details><summary>Global Administrator Commands (~)</summary>' +
 			'<b>/autolockdown</b> - Sets the server to automatically use /kill once all battles have finished after the server is locked down. <br />' +
 			'<b>/prelockdown</b> - Prevents new tournaments from being created in preperation for a server restart. <br />' +
 			'<b>/lockdown</b> - Locks the server down, preventing new battles from starting so the server can be restarted. <br />' +
@@ -179,6 +179,6 @@ exports.commands = {
 			'<b>/hotpatch all</b> - hot-patches chat, tournaments, formats, login server, punishments, and dnsbl <br />' +
 			'<b>As well as all commands listed above <br />' +
 			'</details>';
-			return this.sendReplyBox(out);
+		return this.sendReplyBox(out);
 	},
 };
