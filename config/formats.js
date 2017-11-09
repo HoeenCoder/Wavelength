@@ -341,8 +341,8 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Metronome Battle",
 		desc: ["&bullet; Metronome battles format: 6v6 singles, Only move allowed is metronome, all healing items/abilities are banned, Ubers (and mega rayquaza) are banned, immunites dont exist in this format (ex normal is not very effective on ghost instead of x0)"],
-		ruleset: ['[Gen 7] OU'],
-		banlist: ['Aguav Berry', 'Assault Vest', 'Berry Juice', 'Cheek Pouch', 'Dry Skin', 'Ice Body', 'Poison Heal', 'Regenerator', 'Volt Absorb', 'Water Absorb', 'Rain Dish', 'Black Sludge', 'Enigma Berry', 'Figy Berry', 'Iapapa Berry', 'Mago Berry', 'Oran Berry', 'Shell Bell', 'Sitrus Berry', 'Wiki Berry', 'Leftovers'],
+		ruleset: ['Pokemon', 'Standard'],
+		banlist: ['Uber', 'Arena Trap', 'Power Construct', 'Shadow Tag', 'Baton Pass', 'Aguav Berry', 'Assault Vest', 'Berry Juice', 'Cheek Pouch', 'Dry Skin', 'Ice Body', 'Poison Heal', 'Regenerator', 'Volt Absorb', 'Water Absorb', 'Rain Dish', 'Black Sludge', 'Enigma Berry', 'Figy Berry', 'Iapapa Berry', 'Mago Berry', 'Oran Berry', 'Shell Bell', 'Sitrus Berry', 'Wiki Berry', 'Leftovers'],
 		mod: 'metronome',
 		onValidateSet: function (set) {
 			if (set.moves.length !== 1 || toId(set.moves[0]) !== 'metronome') {
@@ -357,7 +357,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Random Metronome Battle",
 		desc: ["&bullet; Metronome battles format: 6v6 singles, Only move allowed is metronome, all healing items/abilities are banned, Ubers (and mega rayquaza) are banned, immunites dont exist in this format (ex normal is not very effective on ghost instead of x0)"],
-		ruleset: ['[Gen 7] OU'],
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 		team: 'random',
 		mod: 'gen7',
 		onBegin: function () {
@@ -441,41 +441,6 @@ exports.Formats = [
 		},
 	},
 	{
-		name: "[Gen 1] Retro Super Staff Bros",
-		desc: ["Happy B-Day Johto/Regional/SpacialGaze! Celebrate with this mashup of old staff!"],
-
-		mod: 'retrossb',
-		team: 'randomRetroStaff',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-		onBegin: function () {
-			this.add("raw|Retro Super Staff Bros. <b>Return of the old staff!!!!</b>");
-
-			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
-			for (let i = 0, len = allPokemon.length; i < len; i++) {
-				let pokemon = allPokemon[i];
-				let last = pokemon.moves.length - 1;
-				if (pokemon.moves[last] && !pokemon.set.noCustom) {
-					pokemon.moves[last] = toId(pokemon.set.signatureMove);
-					pokemon.moveset[last].move = pokemon.set.signatureMove;
-					pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
-				}
-			}
-		},
-		onSwitchInPriority: 1,
-		onSwitchIn: function (pokemon) {
-			let name = toId(pokemon.illusion ? pokemon.illusion.name : pokemon.name);
-			if (name === 'hoeenkid') this.add('c|&HoeenKid|One day I will be a Hero!');
-			//if (name === 'opple') this.add('c|@Opple|Default Message');
-			if (name === 'supersonicx') this.add('c|~supersonicx|I am the best pokemon here!');
-		},
-		onFaint: function (pokemon, source, effect) {
-			let name = toId(pokemon.name);
-			if (name === 'hoeenkid') this.add('c|&HoeenKid|But not today...');
-			//if (name === 'opple') this.add('c|@Opple|Default Message');
-			if (name === 'supersonicx') this.add('c|~supersonicx|I\'m reporting you for cheating!');
-		},
-	},
-	{
 		name: "[Gen 7] Super Staff Bros Free For All",
 		desc: ['Duke it out with other users custom made pokemon.',
 			'Make your own as well! Get started with <button class="button" name="send" value="/ssb edit">/ssb edit</button>.',
@@ -491,6 +456,10 @@ exports.Formats = [
 			this.add("raw|<h3>2</h3>");
 			this.add("raw|<h3>1</h3>");
 			this.add("raw|<h1>BATTLE!</h1>");
+		},
+		onSwitchInPriority: 1,
+		onSwitchIn: function (pokemon) {
+			if (!pokemon.template.isMega) pokemon.canMegaEvo = this.canMegaEvo(pokemon);
 		},
 	},
 	{
@@ -1883,6 +1852,20 @@ exports.Formats = [
 		mod: 'stacked',
 		ruleset: ['[Gen 7] OU'],
 	},
+	{
+		name: "[Gen 7] TsuMeta (BETA)",
+		desc: [
+			"&bullet; <a href=\"http://tsunamips.weebly.com/tsumeta.html\">TsuMeta Information</a>",
+		],
+		section: "Tsunami Metagames",
+		column: 2,
+
+		mod: 'tsumeta',
+		ruleset: ['[Gen 7] OU'],
+		onSwitchIn: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', pokemon.types[0] + (pokemon.types[1] ? '/' + pokemon.types[1] : ''));
+		},
+	},
 
 	// SGgame Formats
 	////////////////////////////////////////////////////////////////////
@@ -1934,7 +1917,7 @@ exports.Formats = [
 	///////////////////////////////////////////////////////////////////
 	{
 		section: "OM of the Month",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 7] Ultimate Z",
@@ -1960,7 +1943,7 @@ exports.Formats = [
 	},
 	{
 		section: "Other Metagames",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 7] Balanced Hackmons",
@@ -2153,7 +2136,7 @@ exports.Formats = [
 
 	{
 		section: "Randomized Metas",
-		column: 2,
+		column: 3,
 	},
 	{
 		name: "[Gen 6] Battle Factory",
@@ -2218,7 +2201,7 @@ exports.Formats = [
 
 	{
 		section: "RoA Spotlight",
-		column: 3,
+		column: 4,
 	},
 	{
 		name: "[Gen 4] Doubles OU",
@@ -2234,7 +2217,7 @@ exports.Formats = [
 
 	{
 		section: "ORAS Singles",
-		column: 3,
+		column: 4,
 	},
 	{
 		name: "[Gen 6] OU",
@@ -2564,7 +2547,7 @@ exports.Formats = [
 
 	{
 		section: "BW2 Singles",
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 5] OU",
@@ -2671,7 +2654,7 @@ exports.Formats = [
 
 	{
 		section: 'BW2 Doubles',
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 5] Doubles OU",
@@ -2721,7 +2704,7 @@ exports.Formats = [
 
 	{
 		section: "Past Generations",
-		column: 4,
+		column: 5,
 	},
 	{
 		name: "[Gen 4] OU",

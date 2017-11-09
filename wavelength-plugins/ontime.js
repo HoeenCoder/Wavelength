@@ -33,7 +33,7 @@ exports.commands = {
 		const currentOntime = Ontime[userid] ? Date.now() - Ontime[userid] : 0;
 		const totalOntime = Db.ontime.get(userid, 0) + currentOntime;
 
-		if (!totalOntime) return this.sendReplyBox(userid + " has never been online on this server.");
+		if (!totalOntime) return this.sendReplyBox(WL.nameColor(userid, true) + " has never been online on this server.");
 		const isConnected = Users.get(userid) && Users.get(userid).connected;
 
 		// happens when a user opens 2 tabs and closes one of them, removing them from the Ontime object

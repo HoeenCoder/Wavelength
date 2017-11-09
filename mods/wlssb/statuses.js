@@ -1,15 +1,15 @@
 'use strict';
 exports.BattleStatuses = {
-	therun: {
+	desokoro: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+The Run', 'Are you fast enough?');
+			this.add('c', '~Desokoro', 'The divine one has arrived to give you a smackdown of epic proportions.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+The Run', 'I\'ll be back faster than the speed of light');
+			this.add('c', '~Desokoro', 'I\'ll be back!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+The Run', 'So much for being faster...');
+			this.add('c', '~Desokoro', 'You may have vanquished me today, but beware of the future. I shall not be gone long.');
 		},
 	},
 	serperiorater: {
@@ -22,18 +22,6 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '%Serperiorater', 'Dammit Benny, why ya gotta be that guy?');
-		},
-	},
-	clue: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+Clue', 'glhf');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+Clue', 'lmfao brb');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+Clue', 'yeah so I\'mma go get some food see you later');
 		},
 	},
 	ashleythepikachu: {
@@ -51,25 +39,13 @@ exports.BattleStatuses = {
 	ducktown: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%ducktown', 'Beware! You are entering a town of ducks!');
+			this.add('c', '+ducktown', 'Beware! You are entering a town of ducks!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%ducktown', 'My other ducks will come attack you!');
+			this.add('c', '+ducktown', 'My other ducks will come attack you!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%ducktown', 'Quack Quack Quaaaaaa...');
-		},
-	},
-	hurricaned: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+Hurricane\'d', 'Ay lmao it\'s ya boi. CAP is the best tier, so let me show you.');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+Hurricane\'d', 'Ay ya boi is gettin outta here. Later asshat');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+Hurricane\'d', 'You did this because I like CAP didn\'t you. I bet you like OU as well. You\'re tier-ist');
+			this.add('c', '+ducktown', 'Quack Quack Quaaaaaa...');
 		},
 	},
 	hoeenhero: {
@@ -87,37 +63,25 @@ exports.BattleStatuses = {
 	hiroz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+HiroZ', 'Your wing isn\'t able to fly anywhere!');
+			this.add('c', '@HiroZ', 'Your wing isn\'t able to fly anywhere!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+HiroZ', 'Crawl like the insect you are, I\'ll be back!');
+			this.add('c', '@HiroZ', 'Crawl like the insect you are, I\'ll be back!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+HiroZ', 'Argh... scumbag...');
+			this.add('c', '@HiroZ', 'Argh... scumbag...');
 		},
 	},
 	admewn: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+Admewn', 'This battle will be amewsing :]');
+			this.add('c', '@Admewn', 'This battle will be amewsing :]');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '+Admewn', 'Brb, I\'ll be mewting someone :]');
+			this.add('c', '@Admewn', 'Brb, I\'ll be mewting someone :]');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Admewn', 'Turn off the mewsic! I\'m out!');
-		},
-	},
-	vulcaron: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+Vulcaron', 'I will scorch you with 628 blue flames!!! ...I\'m really bad at this.');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+Vulcaron', 'I\'ll be back, I have a lot of free time');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+Vulcaron', 'The flames are dowsed.');
+			this.add('c', '@Admewn', 'Turn off the mewsic! I\'m out!');
 		},
 	},
 	mystifi: {
@@ -166,18 +130,6 @@ exports.BattleStatuses = {
 			this.add('c', '&Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
 		},
 	},
-	mimiroppu: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+Mimiroppu', 'Mimiroppu, charm up~');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+Mimiroppu', 'I\'ll be back soon bitches');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+Mimiroppu', 'Sorry \'bout it...');
-		},
-	},
 	bdh93: {
 		exists: true,
 		onStart: function () {
@@ -193,27 +145,13 @@ exports.BattleStatuses = {
 	c733937123: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
+			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
+			this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&C733937 123', 'What, I...got defeated by some lousy fighter like you??? Well...Good luck next time we fight for both of us....but why did I lose?');
-		},
-	},
-	spacialbot: {
-		exists: true,
-		onStart: function () {
-			this.add('c', ' Spacial Bot', '``Bot rebooting...``');
-			this.add('c', ' Spacial Bot', '``Rebooting complete. Engaging in battle.``');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+The Run', '.battleswitchout');
-			this.add('c', ' Spacial Bot', '``var returnMessage = alert("Will return with more power.")``');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', ' Spacial Bot', 'I blame my creator for my loss. ``process.exit(1)``');
+			this.add('c', '@C733937 123', 'What, I...got defeated by some lousy fighter like you??? Well...Good luck next time we fight for both of us....but why did I lose?');
 		},
 	},
 	auction: {
@@ -228,39 +166,13 @@ exports.BattleStatuses = {
 			this.add('c', '+Auction', 'Ya know, I think I should\'ve gotten __burn everything__ as my ability ;_;');
 		},
 	},
-	ranfen: {
+	lycaniumz: {
 		exists: true,
-		onStart: function () {
-			this.add('c', '+Ranfen', 'Watch Out Ice mons!');
-		},
-		onSwitchOut: function (pokemon) {
+		onStart: function (pokemon) {
+			this.add('c', '%Lycanium Z', 'I dont play for fun i play to win');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+Ranfen', 'No Fair flygon cant be beat D:');
-		},
-	},
-	gligars: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '%Gligars', 'Smokin\'!');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '%Gligars', 'Gotta go. I gotta pick up more of that green stuff, ya know what I\'m sayin\'?');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '%Gligars', 'Look, ma! I\'m roadkill!');
-		},
-	},
-	insist: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '@Insist', 'I __insist__ you just forfeit right now.');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '@Insist', 'I don\'t just run away from my problems!');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '@Insist', 'I\'m gonna go report you to HoeenNub real quick for hax0ring');
+			this.add('c', '%Lycanium Z', 'bah i lost. hoeenhero pls buf <3');
 		},
 	},
 	celestialtater: {
@@ -282,6 +194,95 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '*Stabby the Krabby', 'Impossible...');
+		},
+	},
+	arrays: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '%Arrays', 'The code bracket is here! (Arrays)');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '%Arrays', 'I don\'t know how but i\'ve learned to run!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '%Arrays', 'How does one beat up code? It\'s not able to be touched by physical means!');
+		},
+	},
+	mosmero: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '~Mosmero', 'Hey, it\'s me, the Mos!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '~Mosmero', 'And with that, it was me, the Mos.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '~Mosmero', 'Can\'t you come up with something creative for once, Vacuo?');
+		},
+	},
+	cubsfan38: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '&CubsFan38', 'Your favorite penguin has arrived to battle!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
+		},
+	},
+	isteelx: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '&iSteelX', 'Tell me, does a player such as yourself experience true fear?');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '&iSteelX', 'What just happened?');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '&iSteelX', 'Forget my life.. always surrounded by bumbling baboons.');
+		},
+	},
+	therittz: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '@TheRittz', 'Greetings!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '@TheRittz', '__fled from the scene__');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '@TheRittz', '__fled from the scene__');
+		},
+	},
+	tsunamiprince: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '~Tsunami Prince', 'You think I came for the battle, when it\'s really your soul I want.');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '~Tsunami Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '~Tsunami Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+		},
+	},
+	xcmr: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+xcmr', 'Hey man, go easy please.');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '+xcmr', 'Someone else take the damage, I\'m weak!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+xcmr', 'What!? That was a high roll!');
+		},
+	},
+	wgc: {
+		exists: true,
+		onSourceFaint: function (target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.boost({spa:1}, source);
+			}
 		},
 	},
 };

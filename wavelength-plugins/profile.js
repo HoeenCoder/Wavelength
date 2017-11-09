@@ -310,16 +310,20 @@ exports.commands = {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
 				profile += showBadges(toId(username));
-				profile += '<img src="' + avatar + '" height="80" width="80" align="left">';
-				profile += '&nbsp;<font color="#24678d"><b>Name:</b></font> ' + WL.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
+				profile += '<div style="display: inline-block; width: 7em; second: nothing"><img src="' + avatar + '" height="80" width="80" align="left"></div>';
+				profile += '<div style="display: inline-block; float: Center">&nbsp;<font color="#24678d"><b>Name:</b></font> ' + WL.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
+				if (WL.getFaction(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
+				}
 				profile += '&nbsp;<font color="#24678d"><strong>EXP Level:</strong></font> ' + WL.level(toId(username)) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
 				}
+				profile += '&nbsp;</div>';
 				profile += '<br clear="all">';
 				self.sendReplyBox(profile);
 			});

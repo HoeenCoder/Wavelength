@@ -428,12 +428,12 @@ exports.commands = {
 			if (!factionId) return this.errorReply('You are not in a faction!');
 			if (toId(getFactionRank(user.userid)) !== 'owner') return false;
 			if (!factions[factionId].approved) return this.errorReply("Your faction is not approved!");
-			if (target === 'on' || target === 'true') {
+			if (this.meansYes(target)) {
 				if (factions[factionId].private) return this.errorReply('Faction is already private');
 				factions[factionId].private = true;
 				write();
 				return this.sendReply('Faction is now private!');
-			} else if (target === 'false' || target === 'off') {
+			} else if (this.meansNo(target)) {
 				if (!factions[factionId].private) return this.errorReply('Faction is not private already');
 				factions[factionId].private = false;
 				write();
@@ -501,7 +501,7 @@ exports.commands = {
 		},
 		unblockinvites: function (target, room, user) {
 			if (!Db.blockedinvites.get(user.userid)) return this.errorReply('You are currently not blocking faction invites!');
-			Db.blockedinvites.delete(user.userid);
+			Db.blockedinvites.remove(user.userid);
 			return this.sendReply('Faction  invites are now allowed!');
 		},
 		accept: function (target, room, user) {
@@ -673,7 +673,7 @@ exports.commands = {
 			factions[factionid].ranks[toId(rank)].users.push(targetUser.userid);
 			write();
 			rank = factions[factionid].ranks[toId(rank)].title;
-			targetUser.send("|popup||html|" + user.name + " has set your faction rank in " + Chat.escapeHTML(factions[factionid].name) + " to " + Chat.escapeHTML(rank) + ".");
+			targetUser.send("|popup||html|" + WL.nameColor(user.name) + " has set your faction rank in " + Chat.escapeHTML(factions[factionid].name) + " to " + Chat.escapeHTML(rank) + ".");
 			this.sendReply("You've set " + targetUser.name + "'s faction rank to " + rank + ".");
 		},
 		demote: function (target, room, user) {
@@ -708,7 +708,7 @@ exports.commands = {
 			factions[factionid].ranks[toId(rank)].users.splice(factions[factionid].ranks[toId(rank)].users.indexOf(toId(targetUser)), 1);
 			write();
 			if (Users(targetUser) && Users(targetUser).connected) {
-				Users(targetUser).send("|popup||html|" + user.name + " has removed you from the faction rank " + Chat.escapeHTML(rank) + " in " +
+				Users(targetUser).send("|popup||html|" + WL.nameColor(user.name) + " has removed you from the faction rank " + Chat.escapeHTML(rank) + " in " +
 				Chat.escapeHTML(factions[factionid].name) + ".");
 			}
 			this.sendReply("You've removed " + targetUser + " from the faction rank " + rank + ".");
@@ -730,7 +730,7 @@ exports.commands = {
 		'': 'help',
 		help: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			return this.sendReply("|raw|<div class=\"infobox\">" +
+			return this.sendReplyBox(
 				"Faction Help Commands: <br/> " +
 				"/faction create (name), (description), (tag[4 char]) - Creates a faction. <br/>" +
 				"/faction delete (name)  - Deletes a faction. <br/>" +
@@ -754,7 +754,7 @@ exports.commands = {
 				"/faction avatar (image)  - requests a faction avatar for your faction profile. Must be faction owner to use. <br />" +
 				"/faction approveavatar (faction), (the requested avatar) - approves a factions avatar.  You must be a global leader or higher to use this! <br />" +
 				"/faction denyavatar (faction) - denys a factions avatar.  You must be a global leader or higher to use this! <br />" +
-				"/faction pendingavatars - shows pending faction avatars. (`/faction pa` for short) You must be a global leader or higher to use this! <br />" +
+				"/faction pendingavatars - shows pending faction avatars. (<code>/faction pa</code> for short) You must be a global leader or higher to use this! <br />" +
 				"/faction pending - displays a list of pending factions waiting for approval. You must be a global leader or higher to use this! <br/>" +
 				"</div>"
 			);

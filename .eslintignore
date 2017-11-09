@@ -1,5 +1,5 @@
 tournaments/lib/
 logs/
 dev-tools/globals.js
-wavelength-plugins/shop.js
+wavelength-plugins/shop-private.js
 chat-plugins/private.js

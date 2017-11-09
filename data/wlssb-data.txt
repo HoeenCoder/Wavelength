@@ -11,6 +11,31 @@ Signature Move: Scripting
 Notes: N/A.
 Rank: N/A.
 
+Lycanium Z
+(Lycanroc-Midnight)
+@ Leftovers
+EVs: 252 HP / 252 Atk / 4 Def
+Adamant Nature
+Ability: Contrary
+Moves: Close Combat, Stone Edge and Ice Hammer.
+Signature Move: FINISH THEM
+	- Rock type, Physical, 5 PP, OHKOs the target as long as it hasnt taken direct damage before the move hits. %10 chance to lower all stats by 1.
+Notes: DO NOT SETUP, or switch, or do a random move that can miss, just dont risk anything in general.
+Rank: N/A.
+
+Arrays
+(Conkeldurr)
+@ Assault Vest
+EVs: 252 HP / 252 Atk / 4 Def
+Adamant Nature
+Ability: Shadow Fist
+	- Changes type to Ghost/Fighting + Iron Fist.
+Moves: Drain Fist, Ice Punch, Mach Punch.
+Signature Move: Invisible Punch
+	- Ghost type, Physical, 10 PP, 90 BP, Heals 1/4 damage dealt.
+Notes: N/A.
+Rank: N/A.
+
 Mystifi
 (Clefairy)
 @ Eviolite
@@ -22,33 +47,6 @@ Signature Move: Mystic Mirage
 	- Fairy Type, Status, 10 PP, and boosts the user's Def, SpA, and SpD by 2 stages.
 Notes: idk
 Rank: N/A.
-
-Gligars
-(Gligar)
-@ Eviolite
-EVs: 172 Atk / 84 Def / 252 SpD
-Adamant Nature
-Ability: Regenerator
-Moves: Thousand Arrows, U-Turn and Sacred Fire/Bolt Strike.
-Signature Move: Daredevil
-	- Flying Type, Physical, 70 BP, 100% Accuracy, 10 PP, and Power doubles if the user goes first.
-Notes: idk
-Rank: N/A.
-
-Insist
-(Ludicolo)
-@ Playnium Z
-	- Allows user to use Exiled From All Others.
-		- Exiled From All Others: Water Type, Special, 150 BP, Z-Move.
-EVs: 252 SpA / 252 Spe / 4 HP
-Timid Nature
-Ability: Crippling Depression
-	- Primordial Sea, Rain Dish and Swift Swim.
-Moves: Giga Drain, Focus Blast and Freeze-Dry.
-Signature Move: Aqua Subscribe
-	- Water Type, Special, 90 BP, 100% Accuracy, 15 PP and boosts own SpA and Spe by 1 stage and +1 Priority.
-Notes: Fast Rain Abuser with priority.
-Rank: S.
 
 Kraken Mare
 (Gardevoir-Mega)
@@ -100,31 +98,18 @@ Signature Move: Stab Stab
 Notes: Stabby Stabby!
 Rank: N/A.
 
-Charon Bot
-(Regigigas)
-@ Life Orb
-EVs: 252 Atk / 4 HP / 252 Spe
-Adamant Nature
-Ability: node bot
-    - 3 turn Slow Start.
-Moves: Return, Knock Off, Zen Headbutt
-Signature Move: R U Regi
-    - Normal type, Physical, 60 BP, +2 priority, Drains 1/2 damage dealt.
-Notes: Physical Sweeper.
-Rank: N/A.
-
 Desokoro
 (Gyarados)
 @ Leftovers
 EVs: 252 Atk / 4 HP / 252 Spe
 Adamant Nature
 Ability: Wave Call
-	- If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves get boosted by 2x.
+    -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage for two turns on switch in.
 Moves: Dragon Dance, Bounce and Substitute.
 Signature Move: Tsunami Crash
-	- Water Type, Physical, 150 BP, 5 PP and 35% chance to flinch the target.
-Notes: N/A.
-Rank: N/A.
+	-Water Type, Physical, 150 BP, 8 PP and 35% chance to flinch the target.
+Notes:Quite stronger with buffs to counter issues. Finally living up to what it should with Tsunami's owner's name on it.
+Rank: TBD
 
 BDH93
 (Dunsparce)
@@ -151,18 +136,6 @@ Signature Move: Rocket Punch
 Notes: Fast Special Sweeper.
 Rank: N/A.
 
-Clue
-(Magnezone)
-@ Choice Specs
-EVs: 252 SpA / 4 HP / 252 Spe
-Modest Nature
-Ability: Levitate
-Moves: Volt Switch/Thunderbolt, Aura Sphere and Hidden Power Ice.
-Signature Move: Mechanical Dysfunction
-	- Electric Type, Special, 110 BP, 90% accuracy, 5 PP and 50% chance to paralyze.
-Notes: Special Sweeper.
-Rank: N/A.
-
 ducktown
 (Golduck)
 @ Leftovers
@@ -184,54 +157,6 @@ Ability: Sturdy
 Moves: Aura Sphere, Dark Pulse and Psychic.
 Signature Move: Saber Strike
 	- Grass Type, Special, 140 BP, 10 PP, Boosts user's SpA by 2 stages and heals user by 1/5th of its max HP.
-Notes: N/A.
-Rank: N/A.
-
-Vulcaron
-(Murkrow)
-@ Eviolite
-EVs: 252 HP / 4 SpD / 252 Def
-Impish Nature
-Ability: Prankster
-Moves: Thunder Wave, Mean Look and Confuse Ray.
-Signature Move: Troll
-	- Dark Type, Status, 10 PP, Confuses target, Boosts user's Evasion by 1 stage and heals user by 6/20th of its max HP.
-Notes: N/A.
-Rank: N/A.
-
-SpaceGazer
-(Registeel)
-@ Weakness Policy
-EVs: 252 Atk / 4 HP / 252 SpD
-Adamant Nature
-Ability: No Guard
-Moves: Zap Cannon, Iron Head and Stone Edge.
-Signature Move: Spacial Blast
-	- Fairy Type, Physical, 150 BP, 10 PP and 60% chance to burn the target.
-Notes: N/A.
-Rank: N/A.
-
-Spacial Bot
-(Regirock)
-@ Leftovers
-EVs: 252 Atk / 4 HP / 252 SpD
-Adamant Nature
-Ability: Wonder Guard
-Moves: Stone Edge, Earthquake and Iron Head/Explosion.
-Signature Move: Ancient Ritual
-	- Rock Type, Status, 10 PP and boosts user's Attack by 1 stage and Speed by 2 stages.
-Notes: N/A.
-Rank: N/A.
-
-SG Bot
-(Regice)
-@ Leftovers
-EVs: 252 SpA / 4 HP / 252 SpD
-Modest Nature
-Ability: Flash Fire
-Moves: Ice Beam, Ancient Power and Thunderbolt.
-Signature Move: Frostbite
-	- Ice Type, Special, 100 BP, 10 PP and 60% chance to freeze the target, Supereffective against Water types.
 Notes: N/A.
 Rank: N/A.
 
@@ -272,31 +197,6 @@ Signature Move: Zeo-Bash
 Notes: N/A.
 Rank: N/A.
 
-Ranfen
-(Flygon)
-@ Focus Sash
-EVs: 252 Atk / 4 HP / 252 Spe
-Adamant Nature
-Ability: DesertDragon
-	- Upon KO'ing a Pokemon, this Pokemon's Attack and Speed get raised by 2 stages.
-Moves: Stone Edge, Dragon Claw and Earthquake.
-Signature Move: Out Ripper
-	- Dragon Type, Physical, 100 BP, 10 PP and high crit ratio.
-Notes: N/A.
-Rank: N/A.
-
-The Run
-(Deoxys-Speed)
-@ TwistedSpoon
-EVs: 252 SpA / 4 HP / 252 Spe
-Timid Nature
-Ability: Prism Armor
-Moves: Psychic, Aura Sphere, and Protect.
-Signature Move: Time-Space Rush
-	- Psychic Type, Special, 130 BP, 85% accuracy, 5 PP and boosts user's Special Attack by 1 stage and lowers Speed by 1 stage, Bypasses Protect.
-Notes: N/A.
-Rank: N/A.
-
 CelestialTater
 (Armaldo)
 @ White Herb
@@ -308,18 +208,6 @@ Signature Move: Shell Break
 	- Water Type, Status, 5 PP, Boosts user's Attack, Speed and SpA by 2 stages and Accuracy by 1 stage and lowers its Defense and SpD by 1 stage.
 Notes: Fast Physical Sweeper, extremely threatening if it gets a Shell Break up.
 Rank: A.
-
-Mimiroppu
-(Lopunny)
-@ Lopunnite
-EVs: 252 Atk / 4 Def / 252 Spe
-Jolly Nature
-Ability: Limber
-Moves: Fake Out, Return and High Jump Kick.
-Signature Move: Charm Up
-	- Normal Type, Status, 10 PP, Infatuates the target and boosts user's Attack by 1 stage.
-Notes: Fast Physical Sweeper.
-Rank: N/A.
 
 HiroZ
 (Genesect)
@@ -333,14 +221,95 @@ Signature Move: Crystallized Ukaku
 Notes: N/A.
 Rank: N/A.
 
-Hurricane'd
-(Tomohawk)
-@ Rocky Helmet
-EVs: 252 SpA / 4 HP / 252 Spe
-Bold Nature
-Ability: Gale Wings
-Moves: Aura Sphere, Taunt and Hurricane.
-Signature Move: Rainbust Orb
-	- Water Type, Status, 10 PP, Rain Dance and boosts user's Special Attack and Defense by two stages.
+Mosmero
+(Gastly)
+@ Life Orb
+EVs: 252 Spa / 252 Spe / 4 HP
+Modest Nature
+Ability: Mosmic Power
+    -Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.
+Moves: Shadow Ball, Sludge Bomb, Giga Drain
+Signature Move: Mosmero Beam
+	-Ghost type, 130 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
+Notes: Hit Quickly & you should be able to take down some enemies.
+Rank: TBD
+
+Tsunami Prince
+(Darkrai)
+@ Darkiniumz
+EVs: 252 SpA / 252 Spe / 6 HP
+Timid Nature
+Ability: Death Boost
+    -Simple + Also puts enemy pokemon to sleep.
+Moves: Nightmare, Dark Pulse, Shadow Ball
+Signature Move: Overpower
+	-Boosts all stats by 1 stage. Puts enemy to sleep.
+Notes: Usually can take care of most threats right away without using Overpower at all. Remember than Overpower will fail, if enemy is already asleep.
+Rank: TBD
+
+iSteelX
+(Steelix-Mega)
+@ Lum Berry
+Evs: 252 HP / 4 Atk / 252 Def
+Impish Nature
+Ability: Sandbox
+    -Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.
+Moves: Curse, Sleep Talk, Earthquake
+Signature Move: Deep Sleep
+    -Rest & +3 SpD boost.
+Notes: Quite a nice wall, especially effective while Sandbox is active. Gets quite weakened by the loss of Sandbox ability, but still can fight well.
+Rank: TBD
+
+CubsFan38
+(Rowlet)
+@ Eviolite
+EVs: 252 Attack / 4 SpD / 252 Spe
+Jolly Nature
+Ability: Night Owl
+	- Raises Attack and Speed by 2 if against a Ghost/Dark type Pokemon
+Moves: Leaf Blade, Brave Bird, Swords Dance
+Signature Move: Moonlight Escape
+- Dark Type, Physical , 150 BP, 10 PP, Boosts speed by 1.
+Notes: idk
+Rank: TBD
+
+TheRittz
+(Venusaur-Mega)
+@ Black Sludge
+EVs: 252 HP / 128 Def / 128 SpD
+Calm Nature
+Ability: Paradoxical Prowess
+    -Has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Solid Rock, and has same effects of Oblivious
+Moves: Substitute, Leech Seed, Toxic
+Signature Move: Everlasting Annoyingness
+    -Uses the move Ingrain & Special Bullet Seed move that drains 10% HP each hit (2-5 hits).
+Notes: Soild Staller. Feel the annoyingness! (Yes, its meant to spam that phrase. Have fun mate.)
+Rank: TBD
+
+xcmr
+(Meowth)
+@ Eviolite
+EVs 252 Atk / 4 SpD / 252 Spe
+Jolly Nature
+Ability: Feline Fury
+    -Scrappy & +3 Attack on switch in.
+Moves: U-turn, Fake Out, Knock Off,
+Signature Move: Kitty Crush
+    -Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 to both Def & SpD on use.
+Notes: Soild counter to most with its Scrappy and Kitty Crush combo.
+Rank: TBD
+
+wgc
+(Gengar)
+@ Spooky Plate
+EVs: 252 SpA / 4 Def / 252 Spe
+Timid Nature
+Ability: Levitate
+Innate Ability: Spooky Setup
+	- Boosts Special attack by 1 stage if it faints an opponent
+Moves: Moongeist Beam, Sludge Wave and Sacred Sword.
+Signature Move: Haze Reborn
+	- Ice Type, 20 PP, Inverts Targets stat changes. 40% chance to freeze.
 Notes: N/A.
 Rank: N/A.
+
