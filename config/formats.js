@@ -1857,7 +1857,6 @@ exports.Formats = [
 		desc: [
 			"&bullet; <a href=\"http://tsunamips.weebly.com/tsumeta.html\">TsuMeta Information</a>",
 		],
-		section: "Tsunami Metagames",
 		column: 2,
 
 		mod: 'tsumeta',
