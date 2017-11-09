@@ -301,7 +301,7 @@ Rank: TBD
 
 wgc
 (Gengar)
-@ Sppoky Plate
+@ Spooky Plate
 EVs: 252 SpA / 4 Def / 252 Spe
 Timid Nature
 Ability: Levitate
