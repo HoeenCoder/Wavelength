@@ -808,8 +808,6 @@ exports.BattleLearnsets = {
 		wildcharge: ["7M", "6M", "5M"],
 		yawn: ["7L13", "6L16", "5L8", "4L9", "3L11"],
 		zenheadbutt: ["6T", "5T", "4T"],
-		//custom
-		dragonrush: ["6M"],
 	}},
 	mantine: {learnset: {
 		acrobatics: ["7M", "6M", "5M"],
