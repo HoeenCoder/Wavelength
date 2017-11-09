@@ -28,7 +28,7 @@ exports.commands = {
 			'<b>/roomlist</b> - displays the list of rooms and the total amount of users connected on the server. What rooms you see change can increase with your rank.<br />' +
 			'<b>/hide [rank]</b> - Hides user\'s global rank to specified rank. [none/+/%/@/&/~] You can\'t hide as a higher rank than your own.<br />' +
 			'<b>/show</b> - Displays your global rank <br />' +
-		    	'<b>/survey create [question]</b> - Create a survey. Requires % @ # & ~ <br />' +
+			'<b>/survey create [question]</b> - Create a survey. Requires % @ # & ~ <br />' +
 			'<b>/survey results</b> - View the results of the survey. You can\'t go back and answer if you havent already. <br />' +
 			'<b>/survey display</b> - Display the survey. <br />' +
 			'<b>/survey remove [user]</b> - Removes a users reply and prevents them from sending in a new one for this survey. Requires: % @ # & ~ <br />' +
