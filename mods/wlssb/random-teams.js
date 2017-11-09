@@ -303,7 +303,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			// wgc soon
+			'%wgc': {
+				species: 'Gengar',
+				ability: 'Levitate',
+				item: 'Spooky Plate',
+				gender: 'M',
+				moves: ['Moongeist Beam', 'Sludge Wave', 'Secret Sword'],
+				signatureMove: 'Haze Reborn',
+				evs: {
+					spe: 252,
+					spa: 252,
+					def: 4,
+				},
+				nature: 'Timid',
+			},
 
 			// Global Voices:
 			'+ducktown': {
