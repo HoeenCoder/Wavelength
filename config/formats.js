@@ -1852,6 +1852,20 @@ exports.Formats = [
 		mod: 'stacked',
 		ruleset: ['[Gen 7] OU'],
 	},
+	{
+		name: "[Gen 7] TsuMeta (BETA)",
+		desc: [
+			"&bullet; <a href=\"http://tsunamips.weebly.com/tsumeta.html\">TsuMeta Information</a>",
+		],
+		section: "Tsunami Metagames",
+		column: 2,
+
+		mod: 'tsumeta',
+		ruleset: ['[Gen 7] OU'],
+		onSwitchIn: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', pokemon.types[0] + (pokemon.types[1] ? '/' + pokemon.types[1] : ''));
+		}
+	},
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
 	{
