@@ -313,11 +313,20 @@ exports.BattleAbilities = {
 	nightowl: {
 		id: "nightowl",
 		name: "Night Owl",
-		desc: "Boosts user's Attack and Speed by 2 stages on switch in if the opponent is a ghost or dark type.",
+		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
 		onStart: function (pokemon) {
+			
+		},
+		onModifyAtk: function (atk, pokemon) {
 			let targets = pokemon.side.foe.active;
 			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
-				this.boost({atk: 2, spe: 2});
+				return this.chainModify(2);
+			}
+		},
+		onModifySpe: function (spe, pokemon) {
+			let targets = pokemon.side.foe.active;
+			if (targets.hasType('Ghost') || targets.hasType('Dark')) {
+				return this.chainModify(2);
 			}
 		},
 	},
