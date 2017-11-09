@@ -505,6 +505,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Protect", source);
 			this.add('-anim', source, "Hyper Beam", target);
 		},
+		desc: "30% chance to either burn, freeze or paralyze the opponent",
 		target: "Normal",
 		type: "Ghost",
 	},
@@ -521,13 +522,13 @@ exports.BattleMovedex = {
 		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
+		desc: "Boosts Speed by 1.",
 		secondary: {
 			chance: 100,
 			self: {
 				boosts: {spe: 1},
 			},
 		},
-		drain: [1, 2],
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Moonlight", target);
