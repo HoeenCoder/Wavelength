@@ -13,7 +13,7 @@ exports.WL = {
 	// usage: WL.nameColor(user.name, true) for bold OR WL.nameColor(user.name, false) for non-bolded.
 
 	messageSeniorStaff: function (message, pmName, from) {
-		pmName = (pmName ? pmName : '~Upper Staff PM');
+		pmName = (pmName ? pmName : '~Wavelength Server');
 		from = (from ? ' (PM from ' + from + ')' : '');
 		Users.users.forEach(curUser => {
 			if (curUser.group === '~' || curUser.group === '&') {
