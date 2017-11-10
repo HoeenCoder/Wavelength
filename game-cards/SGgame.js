@@ -606,7 +606,7 @@ exports.commands = {
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newPlayer = new Player(user.userid, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
+				let newPlayer = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Mudkip", level: 10, ability: 0})));
 				Object.assign(newPlayer, Db.players.get(user.userid));
 				Db.players.set(user.userid, newPlayer);
 			}
