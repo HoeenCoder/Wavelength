@@ -17104,5 +17104,9 @@
 			"spd": 0,
 			"spe": 0
 		}
+	},
+	"magearnaoriginal": {
+		"id": "magearnaoriginal",
+		"inherit": "magearna"
 	}
 }
