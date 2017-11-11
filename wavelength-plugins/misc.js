@@ -311,7 +311,7 @@ exports.commands = {
 	repo: 'wavelengthrepo',
 	wavelengthrepo: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		this.sendReply(`|raw|<a href="https://github.com/HoeenCoder/Wavelenth">Wavelength's repo</a>`);
+		this.sendReply(`|raw|<a href="https://github.com/HoeenCoder/Wavelength">Wavelength's repo</a>`);
 	},
 	wavelengthrepohelp: ["/wavelengthrepo - Links to the Wavelength repository on Github."],
 
