@@ -1884,7 +1884,7 @@ exports.Formats = [
 		challengeShow: false,
 
 		mod: 'sggame',
-		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
+		ruleset: ['HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],
 	},
 	{
@@ -1904,9 +1904,22 @@ exports.Formats = [
 	{
 		name: "[Gen 7] [SGgame] Anything Goes",
 		desc: ["Anything Goes rules with the teams you build in SGgame."],
+		rated: false,
 		useSGgame: true,
 		noExp: true,
 
+		mod: 'sggame',
+		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+	{
+		name: "[Gen 7] [SGgame] Lvl 50 Anything Goes",
+		desc: ["Anything Goe rules with the teams you build in SGgame.",
+			"All pokemon are set to level 50 for the duration of the match."],
+		forcedLevel: 50,
+		useSGgame: true,
+		noExp: true,
+		
 		mod: 'sggame',
 		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],
