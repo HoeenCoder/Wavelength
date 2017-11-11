@@ -374,9 +374,9 @@ class ScavengerHunt extends Rooms.RoomGame {
 		}
 		Economy.writeMoney(targetUserid, prize, newAmount => {
 			if (Users(targetUserid) && Users(targetUserid).connected) {
-				Users.get(targetUserid).popup('You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' and ' + expPrize + ' Exp from getting ' + place + ' in scavengers.');
+				Users.get(targetUserid).popup('You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' and ' + expPrize + ' Exp from getting ' + place + ' ' + 'in scavengers.');
 			}
-			Economy.logTransaction(player.name + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from a game of UNO.');
+			Economy.logTransaction(player.name + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from the scavenger hunt.');
 		});
 		WL.addExp(player.name, this.room, expPrize);
 		if (this.parentGame) this.parentGame.onCompleteEvent(player);
