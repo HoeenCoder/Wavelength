@@ -352,7 +352,7 @@ class ScavengerHunt extends Rooms.RoomGame {
 		let time = Chat.toDurationString(now - this.startTime, {hhmmss: true});
 
 		let blitz = this.gameType === 'official' && now - this.startTime <= 60000;
-		
+
 		let prize = 1;
 		let expPrize = 5;
 
