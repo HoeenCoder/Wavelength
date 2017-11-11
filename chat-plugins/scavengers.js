@@ -346,6 +346,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 	onComplete(player) {
 		if (player.completed) return false;
 
+		let targetUserid = toId(player.name);
+
 		let now = Date.now();
 		let time = Chat.toDurationString(now - this.startTime, {hhmmss: true});
 
