@@ -1917,9 +1917,10 @@ exports.Formats = [
 		desc: ["Anything Goe rules with the teams you build in SGgame.",
 			"All pokemon are set to level 50 for the duration of the match."],
 		forcedLevel: 50,
+		maxForcedLevel: 50,
 		useSGgame: true,
 		noExp: true,
-		
+
 		mod: 'sggame',
 		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],
