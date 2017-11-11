@@ -290,7 +290,7 @@ exports.commands = {
 				if (factions[i].tag === tag) return this.errorReply('That faction tag exists already!');
 			}
 			if (getFaction(user.userid)) return this.errorReply('You are already in a faction!');
-			
+
 			let priv = false;
 			let approve = true;
 			if (!user.can('broadcast')) {
@@ -334,7 +334,7 @@ exports.commands = {
 			if (!target) return this.errorReply('/factions delete (name)');
 			if (!factions[toId(target)]) return this.errorReply('Doesn\'t exist!');
 			if (!this.can('declare') && factions[toId(target)].ranks['owner'].users.indexOf(user.userid) === -1) return false;
-			
+
 			delete factions[toId(target)];
 			write();
 			this.sendReply('Faction ' + toId(target) + ' has been deleted.');
@@ -720,7 +720,7 @@ exports.commands = {
 					hasOtherRanks = true;
 				}
 			}
-			if (!hasOtherRanks) factions[factionid].ranks['commoner'].users.push(toId(targetUser)); 
+			if (!hasOtherRanks) factions[factionid].ranks['commoner'].users.push(toId(targetUser));
 			factions[factionid].ranks[toId(rank)].users.splice(factions[factionid].ranks[toId(rank)].users.indexOf(toId(targetUser)), 1);
 			write();
 			if (Users(targetUser) && Users(targetUser).connected) {
