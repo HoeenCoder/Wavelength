@@ -1920,6 +1920,7 @@ exports.Formats = [
 		maxForcedLevel: 50,
 		useSGgame: true,
 		noExp: true,
+
 		mod: 'sggame',
 		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
 		banlist: ['CAP'],
