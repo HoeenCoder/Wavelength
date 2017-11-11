@@ -177,7 +177,7 @@ exports.commands = {
 			"- " + WL.nameColor('iSteekX', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
-			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
+			"- " + WL.nameColor('Wavelength Prince', true) + " (Community Admin)<br/>" +
 			"<br />" +
 			"<u><b>Contributors:</b></u><br />" +
 			"- " + WL.nameColor('Arrays', true) + " (Development)<br />" +

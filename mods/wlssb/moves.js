@@ -625,7 +625,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Grass",
 	},
-	//Tsunami Prince
+	//Wavelength Prince
 	overpower: {
 		category: "Status",
 		accuracy: 100,
@@ -651,7 +651,7 @@ exports.BattleMovedex = {
 			},
 		},
 		onHit: function (target) {
-			this.add('c|~Tsunami Prince|Witness my true power, my true strength, the feeling of fear, and your team\'s demise.');
+			this.add('c|~Wavelength Prince|Witness my true power, my true strength, the feeling of fear, and your team\'s demise.');
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
