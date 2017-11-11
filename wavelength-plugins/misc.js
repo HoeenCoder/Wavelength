@@ -121,8 +121,7 @@ exports.commands = {
 				}
 				if (curRoom.isPrivate) {
 					privateRoom.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
-					continue;
-				}
+					continue;				}
 			}
 			if (curRoom.type !== 'battle') nonOfficial.push('<a href="/' + toId(curRoom.title) + '" class="ilink">' + curRoom.title + '</a> (' + curRoom.userCount + ')');
 		}
@@ -174,7 +173,7 @@ exports.commands = {
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Kraken Mare', true) + " (Community Admin, Development)<br />" +
-			"- " + WL.nameColor('iSteekX', true) + " (Policy Leader)<br/>" +
+			"- " + WL.nameColor('iSteelX', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
