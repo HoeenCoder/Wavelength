@@ -253,16 +253,16 @@ exports.BattleStatuses = {
 			this.add('c', '@TheRittz', '__fled from the scene__');
 		},
 	},
-	tsunamiprince: {
+	wavelengthprince: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Tsunami Prince', 'You think I came for the battle, when it\'s really your soul I want.');
+			this.add('c', '~Wavelength Prince', 'You think I came for the battle, when it\'s really your soul I want.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Tsunami Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+			this.add('c', '~Wavelength Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '~Tsunami Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+			this.add('c', '~Wavelength Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
 		},
 	},
 	xcmr: {
