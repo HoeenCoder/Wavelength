@@ -508,6 +508,7 @@ class Battle {
 					let notCom = toId(this.room.p1.name);
 					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
 					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
 					/*setTimeout(() => {
 						this.room.destroy();
 					}, 10000);*/
