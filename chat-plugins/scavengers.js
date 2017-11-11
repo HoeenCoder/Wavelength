@@ -346,16 +346,39 @@ class ScavengerHunt extends Rooms.RoomGame {
 	onComplete(player) {
 		if (player.completed) return false;
 
+		let targetUserid = toId(player.name);
+
 		let now = Date.now();
 		let time = Chat.toDurationString(now - this.startTime, {hhmmss: true});
 
 		let blitz = this.gameType === 'official' && now - this.startTime <= 60000;
 
+		let prize = 1;
+		let expPrize = 5;
+
 		player.completed = true;
 		this.completed.push({name: player.name, time: time, blitz: blitz});
 		let place = formatOrder(this.completed.length);
+		let finishNum = this.completed.length;
 
 		this.announce(`<em>${Chat.escapeHTML(player.name)}</em> has finished the hunt in ${place} place! (${time}${(blitz ? " - BLITZ" : "")})`);
+		if (finishNum === 1) {
+			prize = 7;
+			expPrize = 25;
+		} else if (finishNum === 2) {
+			prize = 5;
+			expPrize = 15;
+		} else if (finishNum === 3) {
+			prize = 3;
+			expPrize = 10;
+		}
+		Economy.writeMoney(targetUserid, prize, newAmount => {
+			if (Users(targetUserid) && Users(targetUserid).connected) {
+				Users.get(targetUserid).popup('You have received ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' and ' + expPrize + ' Exp from getting ' + place + ' ' + 'in scavengers.');
+			}
+			Economy.logTransaction(player.name + ' has won ' + prize + ' ' + (prize === 1 ? global.currencyName : global.currencyPlural) + ' from the scavenger hunt.');
+		});
+		WL.addExp(player.name, this.room, expPrize);
 		if (this.parentGame) this.parentGame.onCompleteEvent(player);
 		player.destroy(); // remove from user.games;
 	}
