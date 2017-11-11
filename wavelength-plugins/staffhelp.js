@@ -143,6 +143,10 @@ exports.commands = {
 			'<b>/show</b> - Displays user\'s global rank. Requires: & ~ <br />' +
 			'<b>/hangman [enable/disable]</b> - Enables or disables hangman from being started in a room. Requires: # & ~ <br />' +
 			'<b>/poll htmlcreate [question], [option1], [option2], [...]</b> - Allows up to 5 polls at once per room. Creates a poll, with HTML allowed in the question and options. Requires: # & ~ <br />' +
+			'<b>/faction approveavatar [faction], [the requested avatar]</b> - approves a factions avatar.  You must be a global leader or higher to use this! <br />' +
+			'<b>/faction denyavatar [faction]</b> - denys a factions avatar.  You must be a global leader or higher to use this! <br />' +
+			'<b>/faction pendingavatars</b> - shows pending faction avatars. (<code>/faction pa</code> for short) You must be a global leader or higher to use this! <br />' +
+			'<b>/faction pending</b> - displays a list of pending factions waiting for approval. You must be a global leader or higher to use this! <br />' +
 			'<b>As well as all the commands listed above <br />' +
 			'</details>';
 		}
