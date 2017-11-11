@@ -359,7 +359,7 @@ class ScavengerHunt extends Rooms.RoomGame {
 		player.completed = true;
 		this.completed.push({name: player.name, time: time, blitz: blitz});
 		let place = formatOrder(this.completed.length);
-		let finishNum = this.completed.length
+		let finishNum = this.completed.length;
 
 		this.announce(`<em>${Chat.escapeHTML(player.name)}</em> has finished the hunt in ${place} place! (${time}${(blitz ? " - BLITZ" : "")})`);
 		if (finishNum === 1) {
