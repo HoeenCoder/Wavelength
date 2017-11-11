@@ -216,17 +216,24 @@ exports.WL = {
 			let mon = cur.mon;
 			if (mon.fainted) continue;
 			// EXP
-			battle.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
+			if (mon.level < 100) battle.add('message', (mon.name || mon.species) + " gained " + Math.round(cur.exp) + " Exp. Points!");
 			out += mon.slot + "|" + cur.exp;
 			// Level Ups
 			let levelUps = 0;
-			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1))) {
+			while ((cur.exp + mon.exp) >= this.calcExp(mon.species, (mon.level + 1)) && mon.level < 100) {
 				battle.add('message', (mon.name || mon.species) + " grew to level " + (mon.level + 1) + "!");
 				mon.level++;
 				mon.set.level++;
 				levelUps++;
 			}
-			mon.exp += cur.exp;
+			if (mon.level <= 100 && levelUps) {
+				// Force correct values just incase
+				mon.level = 100;
+				mon.set.level = 100;
+				mon.exp = this.calcExp(mon.species, 100);
+			} else {
+				mon.exp += cur.exp;
+			}
 			out += "|" + levelUps;
 			// New Evs
 			let newEvs = this.getEvGain(faintData.target);

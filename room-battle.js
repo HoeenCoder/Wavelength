@@ -607,6 +607,11 @@ class Battle {
 				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
 				gameObj.party[cur[0]].level += (isNaN(Number(cur[2])) ? 0 : Number(cur[2]));
 				let lvl = olvl + (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
+				if (lvl >= 100) {
+					lvl = 100;
+					gameObj.party[cur[0]].exp = WL.calcExp(pokemon.species, 100);
+					gameObj.party[cur[0]].level = 100;
+				}
 				let evs = cur[3].split(',');
 				if (!gameObj.party[cur[0]].evs) gameObj.party[cur[0]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 				let j = 0;

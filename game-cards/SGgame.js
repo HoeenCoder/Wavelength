@@ -241,9 +241,13 @@ class SGgame extends Console.Console {
 			output += '<b>Item</b>:' + (pokemon.item ? pokemon.item : 'None') + '<br/>';
 			output += '<b>OT</b>:' + pokemon.ot + '<br/>';
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
-			let nextLevel = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel = WL.calcExp(pokemon.species, pokemon.level);
+			let nextLevel = WL.calcExp(pokemon.species, (pokemon.level >= 100 ? 100 : pokemon.level + 1)), curLevel = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
-			output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress>';
+			if (pokemon.level >= 100) {
+				output += '<progress max="1" value="1"></progress>';
+			} else {
+				output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress>';
+			}
 			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
 			let move = null;
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
