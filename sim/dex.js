@@ -1136,7 +1136,6 @@ class ModdedDex {
 					spe: Number(evs[5]) || 0,
 				};
 			}
-			if (!set.evs) set.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 			i = j + 1;
 
 			// gender

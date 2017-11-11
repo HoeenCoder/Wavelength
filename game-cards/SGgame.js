@@ -597,7 +597,7 @@ exports.commands = {
 				user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				user.console.callback = null;
 			};
-			user.console.queue.push(`text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname.</button><br/>I'll leave you to it now.|callback`);
+			user.console.queue.push(`text|Nice choice! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/help sggame nickname">Click here for instructions on how to give it a nickname.</button><br/>I'll leave you to it now.|callback`, `text|VVV (Use the buttons bellow to interact) VVV`);
 			user.console.init();
 			this.parse('/sggame next');
 		} else {
@@ -1025,6 +1025,7 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (!target) return this.parse('/help sggame nickname');
 			target = target.split(',');
+			if (target.length !== 2) return this.parse('/help sggame nickname');
 			target[0] = Number(toId(target[0]));
 			if (isNaN(target[0])) return this.errorReply("[party slot] should be a number between 1 and 6.");
 			target[0] -= 1; // array offset
