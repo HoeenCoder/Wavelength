@@ -291,6 +291,13 @@ exports.commands = {
 			}
 			if (getFaction(user.userid)) return this.errorReply('You are already in a faction!');
 
+			let priv = false;
+			let approve = true;
+			if (!user.can('broadcast')) {
+				priv = true;
+				approve = false;
+			}
+
 			factions[toId(name)] = {
 				name: name,
 				id: toId(name),
@@ -302,8 +309,8 @@ exports.commands = {
 				bank: [],
 				invites: [],
 				bans: [],
-				private: true,
-				approved: false,
+				private: priv,
+				approved: approve,
 				ranks: {
 					'owner': {
 						title: 'Owner',
@@ -324,13 +331,22 @@ exports.commands = {
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
-			if (!this.can('declare')) return false;
 			if (!target) return this.errorReply('/factions delete (name)');
 			if (!factions[toId(target)]) return this.errorReply('Doesn\'t exist!');
+			if (!this.can('declare') && factions[toId(target)].ranks['owner'].users.indexOf(user.userid) === -1) return false;
 
 			delete factions[toId(target)];
 			write();
 			this.sendReply('Faction ' + toId(target) + ' has been deleted.');
+		},
+		desc: function (target, room, user) {
+			if (!getFaction(user.userid)) return this.errorReply('You are no in a faction.');
+			if (toId(getFactionRank(user.userid) !== 'owner')) return this.errorReply('You do not own this faction');
+			if (!target) return this.errorReply('Needs a target no more than 100 characters');
+			if (target.length > 100) return this.errorReply('Faction descriptions must be 100 characters or less!');
+			factions[toId(getFaction(user.userid))].desc = target;
+			write();
+			return this.sendReplyBox('Your faction description is now set to: <br /> ' + factions[toId(getFaction(user.userid))].desc + '.');
 		},
 		avatar: function (target, room, user) {
 			let factionId = toId(getFaction(user.userid));
@@ -704,7 +720,7 @@ exports.commands = {
 					hasOtherRanks = true;
 				}
 			}
-			if (!hasOtherRanks) return this.errorReply("That user has no other faction rank. Use '/faction kick " + targetUser + "' if you want to kick them from the faction.");
+			if (!hasOtherRanks) factions[factionid].ranks['commoner'].users.push(toId(targetUser));
 			factions[factionid].ranks[toId(rank)].users.splice(factions[factionid].ranks[toId(rank)].users.indexOf(toId(targetUser)), 1);
 			write();
 			if (Users(targetUser) && Users(targetUser).connected) {
