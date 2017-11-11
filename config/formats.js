@@ -485,9 +485,9 @@ exports.Formats = [
 			"If the Pok*eacute;mon in your first and second slot are opposite genders, they will",
 			"both get each other's egg moves in addition to their typical moveset.",
 		],
-		
+
 		mod: 'purebred',
-		ruleset: ['[Gen 7] OU',],
+		ruleset: ['[Gen 7] OU'],
 		banlist: ['Smeargle'],
 	},
 	{
