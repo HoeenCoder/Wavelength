@@ -110,7 +110,7 @@ exports.WL = {
 	},
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
-		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
+		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '127.0.0.1', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
 		user.connected = false; // Technically isnt connected
 		user.avatar = 167;
 		user.wildTeams = {}; // Object to store data from wild pokemon battles.
