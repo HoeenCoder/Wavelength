@@ -267,7 +267,7 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Tsunami Prince
+	//Wavelength Prince
 	deathboost: {
 		id: "deathboost",
 		name: "Death Boost",
