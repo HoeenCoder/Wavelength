@@ -634,10 +634,13 @@ class Battle {
 				}
 			}
 			Db.players.set(userid, gameObj);
-			user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
-			if (nMoves.length || nEvos.length) {
-				let r = user.console.next();
-				user.console.update(r[0], r[1], r[2]);
+			// FIXME figure out why user#console isnt defined here sometimes
+			if (user.console) {
+				user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
+				if (nMoves.length || nEvos.length) {
+					let r = user.console.next();
+					user.console.update(r[0], r[1], r[2]);
+				}
 			}
 			break;
 		}

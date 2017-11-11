@@ -1136,6 +1136,7 @@ class ModdedDex {
 					spe: Number(evs[5]) || 0,
 				};
 			}
+			if (!set.evs) set.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 			i = j + 1;
 
 			// gender
@@ -1158,6 +1159,7 @@ class ModdedDex {
 					spe: ivs[5] === '' ? 31 : Number(ivs[5]) || 0,
 				};
 			}
+			if (!set.ivs) set.ivs = {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31};
 			i = j + 1;
 
 			// shiny
