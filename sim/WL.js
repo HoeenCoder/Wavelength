@@ -226,7 +226,7 @@ exports.WL = {
 				mon.set.level++;
 				levelUps++;
 			}
-			if (mon.level <= 100 && levelUps) {
+			if (mon.level >= 100 && levelUps) {
 				// Force correct values just incase
 				mon.level = 100;
 				mon.set.level = 100;
