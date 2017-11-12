@@ -115,9 +115,11 @@ class SGgame extends Console.Console {
 		slot = Number(slot);
 		let user = Db.players.get(this.userid);
 		let pokemon;
+		const boxLimit = 30;
 		switch (action) {
 		case 'deposit':
 			if (user.party.length <= 1) break;
+			if (user.pc[(box - 1)].length >= boxLimit) break;
 			pokemon = user.party[slot];
 			user.boxPoke([pokemon], box);
 			user.party.splice(slot, 1);
@@ -544,8 +546,9 @@ class Player {
 	unBoxPoke(box, slot) {
 		box = Number(box);
 		slot = Number(slot);
-		if (!box || isNaN(box) || box > 30 || box <= 0 || this.pc[box - 1].length >= 30) return false;
+		if (!box || isNaN(box) || box > 30 || box <= 0 || this.pc[box - 1].length < 1) return false;
 		if ((!slot && slot !== 0) || isNaN(slot) || slot > 30 || slot < 0) return false;
+		if (!this.pc[box - 1][slot]) return false;
 		this.pc[box - 1].splice(slot, 1);
 		return true;
 	}
@@ -992,7 +995,7 @@ exports.commands = {
 			let box = (target[0].split('|')[0] === 'party' ? target[0].split('|')[1] : target[0]);
 			let orders = {};
 			if (target[0].split('|')[0] === 'party' && slot && Db.players.get(user.userid).party.length > 1 && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 6 && !target[2]) {
-				orders = {deposit: true, release: true, back: '/sggame pc ' + box};
+				orders = {deposit: (Db.players.get(user.userid).pc[Number(target[0].split('|')[1]) - 1].length < 30), release: true, back: '/sggame pc ' + box};
 			}
 			if (slot && !isNaN(Number(slot)) && Number(slot) > -1 && Number(slot) < 30 && Db.players.get(user.userid).pc[Number(box) - 1][Number(slot)] && !target[2] && target[0].split('|')[0] !== 'party') {
 				orders = {withdraw: (Db.players.get(user.userid).party.length < 6), release: true, back: '/sggame pc ' + box};
