@@ -800,6 +800,7 @@ class User {
 			this.destroy();
 			Rooms.global.checkAutojoin(user);
 			if (Config.loginfilter) Config.loginfilter(user, this, userType);
+			WL.giveDailyReward(user);
 			return true;
 		}
 

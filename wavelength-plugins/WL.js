@@ -97,7 +97,7 @@ WL.reloadCSS = function () {
 
 //Daily Rewards System for Wavelength by Lord Haji
 WL.giveDailyReward = function (user) {
-	if (!user) return false;
+	if (!user || !user.named) return false;
 	let reward = 0, time = Date.now();
 	for (let ip in user.ips) {
 		let cur = Db.DailyBonus.get(ip);
