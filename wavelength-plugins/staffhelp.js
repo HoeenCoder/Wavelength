@@ -135,14 +135,18 @@ exports.commands = {
 			'<b>/pmall [message]</b> - sends a pm to all users connected to Wavelength <br />' +
 			'<b>/pmallstaff [message] or /staffpm [message]</b> - sends a pm to all staff members connected to Wavelength <br />' +
 			'<b>/greendeclare [message] or /reddeclare [message]</b> - Anonymously announces a message in a room <br />' +
-			'<b>/roomrequests - Manage room requests, use /help roomrequests for more info. <br />' +
-			'<b>/checkroomrequest [user] - Check a room request <br />' +
+			'<b>/roomrequests</b> - Manage room requests, use /help roomrequests for more info. <br />' +
+			'<b>/checkroomrequest [user]</b> - Check a room request <br />' +
 			'<b>/hide</b> - Hides user\'s global rank. Requires: & ~ <br />' +
 			'<b>/tour on/enable [%|@]</b> - Enables allowing drivers or mods to start tournaments in the current room. <br />' +
 			'<b>/tour off/disable</b> - Disables allowing drivers and mods to start tournaments in the current room. <br />' +
 			'<b>/show</b> - Displays user\'s global rank. Requires: & ~ <br />' +
 			'<b>/hangman [enable/disable]</b> - Enables or disables hangman from being started in a room. Requires: # & ~ <br />' +
 			'<b>/poll htmlcreate [question], [option1], [option2], [...]</b> - Allows up to 5 polls at once per room. Creates a poll, with HTML allowed in the question and options. Requires: # & ~ <br />' +
+			'<b>/faction approveavatar [faction], [the requested avatar]</b> - approves a factions avatar. <br />' +
+			'<b>/faction denyavatar [faction]</b> - denys a factions avatar. <br />' +
+			'<b>/faction pendingavatars</b> - shows pending faction avatars. (<code>/faction pa</code> for short) <br />' +
+			'<b>/faction pending</b> - displays a list of pending factions waiting for approval. <br />' +
 			'<b>As well as all the commands listed above <br />' +
 			'</details>';
 		}

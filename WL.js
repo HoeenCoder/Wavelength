@@ -93,20 +93,27 @@ exports.WL = {
 		http.get(options, () => {});
 	},
 
-	giveDailyReward: function (userid, user) {
-		if (!user || !userid) return false;
-		userid = toId(userid);
-		if (!Db.DailyBonus.has(userid)) {
-			Db.DailyBonus.set(userid, [1, Date.now()]);
-			return false;
+	giveDailyReward: function (user) {
+		if (!user || !user.named) return false;
+		let reward = 0, time = Date.now();
+		for (let ip in user.ips) {
+			let cur = Db.DailyBonus.get(ip);
+			if (!cur) {
+				cur = [1, Date.now()];
+				Db.DailyBonus.set(ip, cur);
+			}
+			if (cur[0] < reward || !reward) reward = cur[0];
+			if (cur[1] < time) time = cur[1];
 		}
-		let lastTime = Db.DailyBonus.get(userid)[1];
-		if ((Date.now() - lastTime) < 86400000) return false;
-		if ((Date.now() - lastTime) >= 127800000) Db.DailyBonus.set(userid, [1, Date.now()]);
-		if (Db.DailyBonus.get(userid)[0] === 8) Db.DailyBonus.set(userid, [7, Date.now()]);
-		Economy.writeMoney(userid, Db.DailyBonus.get(userid)[0]);
-		user.send('|popup||wide||html| <center><u><b><font size="3">SpacialGaze Daily Bonus</font></b></u><br>You have been awarded ' + Db.DailyBonus.get(userid)[0] + ' Stardust.<br>' + showDailyRewardAni(userid) + '<br>Because you have connected to the server for the past ' + Db.DailyBonus.get(userid)[0] + ' Days.</center>');
-		Db.DailyBonus.set(userid, [(Db.DailyBonus.get(userid)[0] + 1), Date.now()]);
+		if (Date.now() - time < 86400000) return;
+		reward++;
+		if (reward > 7 || Date.now() - time > 172800000) reward = 1;
+		// Loop again to set the ips values
+		for (let ip in user.ips) {
+			Db.DailyBonus.set(ip, [reward, Date.now()]);
+		}
+		Economy.writeMoney(user.userid, reward);
+		user.send('|popup||wide||html| <center><u><b><font size="3">Wavelength Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
 	},
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!

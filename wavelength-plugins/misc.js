@@ -174,7 +174,7 @@ exports.commands = {
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Kraken Mare', true) + " (Community Admin, Development)<br />" +
-			"- " + WL.nameColor('iSteekX', true) + " (Policy Leader)<br/>" +
+			"- " + WL.nameColor('iSteelX', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Wavelength Prince', true) + " (Community Admin)<br/>" +
@@ -311,7 +311,7 @@ exports.commands = {
 	repo: 'wavelengthrepo',
 	wavelengthrepo: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		this.sendReply(`|raw|<a href="https://github.com/HoeenCoder/Wavelenth">Wavelength's repo</a>`);
+		this.sendReply(`|raw|<a href="https://github.com/HoeenCoder/Wavelength">Wavelength's repo</a>`);
 	},
 	wavelengthrepohelp: ["/wavelengthrepo - Links to the Wavelength repository on Github."],
 
