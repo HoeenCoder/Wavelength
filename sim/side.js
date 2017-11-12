@@ -788,6 +788,7 @@ class Side {
 	 * Throw a pokeball
 	 */
 	choosePokeball(ball) {
+		if (this.currentRequest !== 'move') return this.emitChoiceError('Cant throw pokeball: you can only do this as an alternative to moving.');
 		this.choice.actions.push({
 			choice: 'pokeball',
 			ball: ball,
@@ -802,6 +803,7 @@ class Side {
 	 * Use an item from your bag
 	 */
 	chooseUseItem(data) {
+		if (this.currentRequest !== 'move') return this.emitChoiceError('Cant use item: you can only do this as an alternative to moving.');
 		data = data.split(" ");
 		let target = null;
 		for (let i = 0; i < this.pokemon.length; i++) {
