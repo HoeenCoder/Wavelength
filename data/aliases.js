@@ -26,13 +26,16 @@ exports.BattleAliases = {
 	"bf": "[Gen 6] Battle Factory",
 	"gen6inverse": "[Gen 6] Inverse Battle",
 
-	//SpacialGaze
+	//Wavelength
 	"digimon": "[Gen 7] Digimon Showdown",
-	"sgssb": "[Gen 7] Super Staff Bros",
+	"wlssb": "[Gen 7] Super Staff Bros",
 	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
-	"rssb": "[Gen 1] Retro Super Staff Bros",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
+	"sggame": "[Gen 7] [SGGame] Anything Goes",
+	"sgag": "[Gen 7] [SGGame] Anything Goes",
+	"sgame": "[Gen 7] [SGGame] Anything Goes",
+	"sggameag": "[Gen 7] [SGGame] Anything Goes",
 
 	// mega evos
 	"fabio": "Ampharos-Mega",
