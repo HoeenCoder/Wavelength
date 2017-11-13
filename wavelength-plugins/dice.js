@@ -34,8 +34,8 @@ class Dice {
 			delete this.room.dice;
 		}, INACTIVE_END_TIME);
 
-		let buck = (this.bet === 1 ? 'buck' : 'bucks');
-		this.startMessage = '<div class="infobox"><b style="font-size: 14pt; color: #24678d"><center><span style="color: ' + WL.hashColor(starter) + '">' + Chat.escapeHTML(starter) + '</span> has started a game of dice for <span style = "color: green">' + amount + '</span> ' + buck + '!</center></b><br>' +
+		let buck = (this.bet === 1 ? currencyName : currencyPlural);
+		this.startMessage = '<div class="infobox"><b style="font-size: 14pt; color: #24678d"><center>' + WL.nameColor(starter, true) + ' has started a game of dice for <span style = "color: green">' + amount + '</span> ' + buck + '!</center></b><br>' +
 			'<center><img style="margin-right: 30px;" src = "http://i.imgur.com/eywnpqX.png" width="80" height="80">' +
 			'<img style="transform:rotateY(180deg); margin-left: 30px;" src="http://i.imgur.com/eywnpqX.png" width="80" height="80"><br>' +
 			'<button name="send" value="/joindice">Click to join!</button></center>';
@@ -64,7 +64,8 @@ class Dice {
 	}
 
 	play() {
-		let p1 = this.players[0], p2 = this.players[1];
+		let p1 = this.players[0],
+			p2 = this.players[1];
 		Economy.readMoney(p1.userid, money1 => {
 			Economy.readMoney(p2.userid, money2 => {
 				if (money1 < this.bet || money2 < this.bet) {
@@ -84,15 +85,15 @@ class Dice {
 					roll2 = Math.floor(Math.random() * 6);
 				} while (roll1 === roll2);
 				if (roll2 > roll1) this.players.reverse();
-				let winner = this.players[0], loser = this.players[1];
-
+				let winner = this.players[0],
+					loser = this.players[1];
 
 				let taxedAmt = Math.round(this.bet * TAX);
 				setTimeout(() => {
 					let buck = (this.bet === 1 ? 'buck' : 'bucks');
 					this.room.add('|uhtmlchange|' + this.room.diceCount + '|<div class="infobox"><center>' + players + ' have joined the game!<br /><br />' +
 						'The game has been started! Rolling the dice...<br />' +
-						'<img src = "' + diceImg(roll1) + '" align = "left" title = "' + Chat.escapeHTML(p1.name) + '\'s roll"><img src = "' + diceImg(roll2) + '" align = "right" title = "' + p2.name + '\'s roll"><br />' +
+						'<img src = "' + diceImg(roll1) + '" align = "left" title = "' + WL.nameColor(p1.name) + '\'s roll"><img src = "' + diceImg(roll2) + '" align = "right" title = "' + WL.nameColor(p2.name) + '\'s roll"><br />' +
 						WL.nameColor(p1.name, true) + ' rolled ' + (roll1 + 1) + '!<br />' +
 						WL.nameColor(p2.name, true) + ' rolled ' + (roll2 + 1) + '!<br />' +
 						WL.nameColor(winner.name, true) + ' has won <b style="color:green">' + (this.bet - taxedAmt) + '</b> ' + buck + '!<br />' +
@@ -102,8 +103,8 @@ class Dice {
 						Economy.writeMoney(loser.userid, -this.bet, () => {
 							Economy.readMoney(winner.userid, winnerMoney => {
 								Economy.readMoney(loser.userid, loserMoney => {
-									Economy.logDice(winner.userid + " has won a dice against " + loser.userid + ". They now have " + winnerMoney + (winnerMoney === 1 ? " buck." : " bucks."));
-									Economy.logDice(loser.userid + " has lost a dice against " + winner.userid + ". T hey now have " + loserMoney + (loserMoney === 1 ? " buck." : " bucks."));
+									Economy.logDice(winner.userid + " has won a dice against " + loser.userid + ". They now have " + winnerMoney + (winnerMoney === 1 ? " " + currencyName + "." : " " + currencyPlural + "."));
+									Economy.logDice(loser.userid + " has lost a dice against " + winner.userid + ". They now have " + loserMoney + (loserMoney === 1 ? " " + currencyName + "." : " " + currencyPlural + "."));
 									this.end();
 								});
 							});
@@ -125,15 +126,15 @@ exports.commands = {
 	startdice: 'dicegame',
 	dicegame: function (target, room, user) {
 		if (room.id === 'lobby') return this.errorReply("This command cannot be used in the Lobby.");
-		if (!user.can('broadcast', null, room) && room.id !== 'casino' && room.id !== 'coldfrontcasino') return this.errorReply("You must be ranked + or higher in this room to start a game of dice outside the Casino.");
-		if ((user.locked || room.isMuted(user)) && !user.can('bypassall')) return this.errorReply("You cannot use this command while unable to talk.");
+		if (!user.can('broadcast', null, room) && room.id !== 'casino') return this.errorReply("You must be ranked + or higher in this room to start a game of dice outside the Casino.");
+		if (!this.canTalk()) return;
 		if (room.dice) return this.errorReply("There is already a game of dice going on in this room.");
 
 		let amount = Number(target) || 1;
 		if (isNaN(target)) return this.errorReply('"' + target + '" isn\'t a valid number.');
-		if (target.includes('.') || amount < 1 || amount > 5000) return this.sendReply('The number of bucks must be between 1 and 5,000 and cannot contain a decimal.');
-		Economy.readMoney(user.userid, bucks => {
-			if (bucks < amount) return this.sendReply("You don't have " + amount + " " + (amount === 1 ? "buck" : "bucks") + ".");
+		if (target.includes('.') || amount < 1 || amount > 5000) return this.sendReply('The number of ' + currencyPlural + ' must be between 1 and 5,000 and cannot contain a decimal.');
+		Economy.readMoney(user.userid, money => {
+			if (money < amount) return this.sendReply("You don't have " + amount + " " + ((money === 1) ? " " + currencyName + "." : " " + currencyPlural + "."));
 			room.dice = new Dice(room, amount, user.name);
 			this.parse("/joindice");
 		});
@@ -142,7 +143,7 @@ exports.commands = {
 	dicejoin: 'joindice',
 	joindice: function (target, room, user) {
 		if (room.id === 'lobby') return this.errorReply("This command cannot be used in the Lobby.");
-		if ((user.locked || room.isMuted(user)) && !user.can('bypassall')) return this.sendReply("You cannot use this command while unable to talk.");
+		if (!this.canTalk()) return;
 		if (!room.dice) return this.errorReply('There is no game of dice going on in this room.');
 
 		room.dice.join(user, this);
@@ -159,7 +160,7 @@ exports.commands = {
 	diceend: 'enddice',
 	enddice: function (target, room, user) {
 		if (room.id === 'lobby') return this.errorReply("This command cannot be used in the Lobby.");
-		if ((user.locked || room.isMuted(user)) && !user.can('bypassall')) return this.sendReply("You cannot use this command while unable to talk.");
+		if (!this.canTalk()) return;
 		if (!room.dice) return this.errorReply('There is no game of dice going on in this room.');
 		if (!user.can('broadcast', null, room) && !room.dice.players.includes(user)) return this.errorReply("You must be ranked + or higher in this room to end a game of dice.");
 
