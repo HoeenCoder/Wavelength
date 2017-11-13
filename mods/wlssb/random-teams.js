@@ -102,7 +102,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-
 			// Global Leaders:
 			'&Opple': {
 				species: 'Dragonite',
@@ -258,7 +257,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Calm',
 			},
-
 			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
@@ -292,7 +290,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			'%Arrays': {
 				species: 'Conkeldurr',
 				ability: 'Shadow Fist',
-				item: 'Assualt Vest',
+				item: 'Assault Vest',
 				gender: 'M',
 				moves: ['Drain Punch', 'Ice Punch', 'Mach Punch'],
 				signatureMove: 'Invisible Punch',
