@@ -103,8 +103,8 @@ class Dice {
 						Economy.writeMoney(loser.userid, -this.bet, () => {
 							Economy.readMoney(winner.userid, winnerMoney => {
 								Economy.readMoney(loser.userid, loserMoney => {
-									Economy.logDice(winner.userid + " has won a dice against " + loser.userid + ". They now have " + winnerMoney + (winnerMoney === 1 ? " buck." : " bucks."));
-									Economy.logDice(loser.userid + " has lost a dice against " + winner.userid + ". They now have " + loserMoney + (loserMoney === 1 ? " buck." : " bucks."));
+									Economy.logDice(winner.userid + " has won a dice against " + loser.userid + ". They now have " + winnerMoney + (winnerMoney === 1 ? " " + currencyName + "." : " " + currencyPlural + "."));
+									Economy.logDice(loser.userid + " has lost a dice against " + winner.userid + ". They now have " + loserMoney + (loserMoney === 1 ? " " + currencyName + "." : " " + currencyPlural + "."));
 									this.end();
 								});
 							});
@@ -116,7 +116,7 @@ class Dice {
 	}
 
 	end(user) {
-		if (user) this.room.add('|uhtmlchange|' + this.room.diceCount + '|<div class = "infobox">(This game of dice has been forcibly ended by ' + WL.nameColor(user.name) + '.)</div>').update();
+		if (user) this.room.add('|uhtmlchange|' + this.room.diceCount + '|<div class = "infobox">(This game of dice has been forcibly ended by ' + Chat.escapeHTML(user.name) + '.)</div>').update();
 		clearTimeout(this.timer);
 		delete this.room.dice;
 	}
