@@ -1865,6 +1865,67 @@ exports.Formats = [
 			this.add('-start', pokemon, 'typechange', pokemon.types[0] + (pokemon.types[1] ? '/' + pokemon.types[1] : ''));
 		},
 	},
+
+	// SGgame Formats
+	////////////////////////////////////////////////////////////////////
+
+	{
+		section: "SG Game Formats",
+		column: 2,
+	},
+	{
+		name: "[Gen 7] Wild Pokemon (Alpha)",
+		desc: ["Wild Pok&eacute;mon battles for the SG Game project. (WIP)"],
+		rated: false,
+		useSGgame: true,
+		isWildEncounter: true,
+		allowBag: true,
+		takeItems: true,
+		challengeShow: false,
+
+		mod: 'sggame',
+		ruleset: ['HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+	{
+		name: "[Gen 7] Trainer Battle (Alpha)",
+		desc: ["Battles VS SG Server (our COM) using your team from the SG Game project. (WIP)"],
+		rated: false,
+		useSGgame: true,
+		isTrainerBattle: true,
+		allowBag: true,
+		takeItems: true,
+		challengeShow: false,
+
+		mod: 'sggame',
+		ruleset: ['Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+	{
+		name: "[Gen 7] [SGgame] Anything Goes",
+		desc: ["Anything Goes rules with the teams you build in SGgame."],
+		rated: false,
+		useSGgame: true,
+		noExp: true,
+
+		mod: 'sggame',
+		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+	{
+		name: "[Gen 7] [SGgame] Lvl 50 Anything Goes",
+		desc: ["Anything Goe rules with the teams you build in SGgame.",
+			"All pokemon are set to level 50 for the duration of the match."],
+		forcedLevel: 50,
+		maxForcedLevel: 50,
+		useSGgame: true,
+		noExp: true,
+
+		mod: 'sggame',
+		ruleset: ['Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
+		banlist: ['CAP'],
+	},
+
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
 	{

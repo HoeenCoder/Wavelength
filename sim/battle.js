@@ -11,6 +11,7 @@ const Data = require('./dex-data');
 const PRNG = require('./prng');
 const Side = require('./side');
 const Pokemon = require('./pokemon');
+const WL = require('./WL.js').WL;
 
 /**
  * An object representing a Pokemon that has fainted
@@ -1208,6 +1209,11 @@ class Battle extends Dex.ModdedDex {
 		if (this.p1.isChoiceDone() && this.p2.isChoiceDone()) {
 			throw new Error(`Choices are done immediately after a request`);
 		}
+		
+		if ((this.p1.name === 'SG Server' || this.p2.name === 'SG Server') && (this.getFormat().isWildEncounter || this.getFormat().isTrainerBattle) && !this[(this.p1.name === 'SG Server' ? "p1" : "p2")].isChoiceDone()) {
+			WL.decideCOM(this, (this.p1.name === 'SG Server' ? "p1" : "p2"), (this.getFormat().isWildEncounter ? "random" : "trainer"));
+			this.checkDecisions();
+		}
 	}
 
 	tiebreak() {
@@ -1332,6 +1338,9 @@ class Battle extends Dex.ModdedDex {
 		this.add('switch', pokemon, pokemon.getDetails);
 		this.insertQueue({pokemon: pokemon, choice: 'runUnnerve'});
 		this.insertQueue({pokemon: pokemon, choice: 'runSwitch'});
+		let foe = this[(side.id === 'p1' ? 'p2' : 'p1')].pokemon[0];
+		if (side.battled[foe.slot].indexOf(pokemon.slot) < 0) side.battled[foe.slot].push(pokemon.slot);
+		if (foe.side.battled[pokemon.slot].indexOf(foe.slot) < 0) foe.side.battled[pokemon.slot].push(foe.slot);
 	}
 
 	/**
@@ -1670,6 +1679,16 @@ class Battle extends Dex.ModdedDex {
 		this.add('turn', this.turn);
 
 		this.makeRequest('move');
+
+		if (this.getFormat().isWildEncounter) {
+			let balls = ['pokeball', 'greatball', 'ultraball', 'masterball'];
+			let buttons = '';
+			for (let i = 0; i < balls.length; i++) {
+				buttons += '<button name="send" value="/throwpokeball ' + balls[i] + '" style="background:transparent;border:none;"><img src="http://www.serebii.net/itemdex/sprites/pgl/' + balls[i] + '.png" width="30" height="30"></button>&nbsp;&nbsp;';
+			}
+			this.add('raw', buttons);
+			this.add('');
+		 }
 	}
 
 	start() {
@@ -2398,6 +2417,13 @@ class Battle extends Dex.ModdedDex {
 				faintData.target.isActive = false;
 				faintData.target.isStarted = false;
 				faintData.target.side.faintedThisTurn = true;
+				if (this.getFormat().useSGgame && !this.getFormat().noExp && ((faintData.source && faintData.source.side.name !== 'SG Server') || faintData.target.side.name === 'SG Server')) {
+					// Award Experience
+					// If the source of the KO is a falsey value, use the current foe for calculating EXP. This can happen with things such as sandstorm.
+					if (!faintData.source) faintData.source = this[faintData.target.side.foe.id].pokemon[0];
+					let out = WL.onFaint(faintData.source.side.name, this, faintData);
+					this.send('updateExp', out.substring(0, out.length - 1));
+				}
 			}
 		}
 
@@ -2446,6 +2472,8 @@ class Battle extends Dex.ModdedDex {
 			let priorities = {
 				'beforeTurn': 100,
 				'beforeTurnMove': 99,
+				'pokeball': 98,
+				'useItem': 97,
 				'switch': 7,
 				'runUnnerve': 7.3,
 				'runSwitch': 7.2,
@@ -2707,6 +2735,98 @@ class Battle extends Dex.ModdedDex {
 			// we return here because the update event would crash since there are no active pokemon yet
 			return;
 		}
+
+		case 'pokeball':
+			this.add('message', `${decision.side.name} threw a ${(decision.ball.charAt(0).toUpperCase() + decision.ball.slice(1))}!`);
+			let result = WL.throwPokeball(decision.ball, decision.target);
+			let count = result;
+			if (count === true) count = 3;
+			let msgs = ['Oh no! The pokemon broke free', 'Aww! It appeared to be caught!', 'Aargh! Almost had it!', 'Gah! It was so close too!', 'Gotcha! ' + (decision.target.name || decision.target.species) + ' was caught!'];
+			for (count; count > 0; count--) {
+				this.add('message', '...');
+			}
+			this.send('takeitem', toId(decision.side.name) + '|' + decision.ball + '|' + decision.side.active[0].slot);
+			if (result === true) {
+				this.add('message', msgs[msgs.length - 1]);
+				// Giving the newly caught pokemon handled in the main process.
+				this.send('caught', toId(decision.side.name) + '|' + decision.ball);
+				if (this.getFormat().useSGgame && !this.getFormat().noExp && decision.side.name !== 'SG Server') {
+					// Award Experience
+					let out = WL.onFaint(toId(decision.side.name), this, {source: decision.side.active[0], target: decision.target});
+					this.send('updateExp', out.substring(0, out.length - 1));
+				}
+				this.win(decision.side);
+				return true;
+			} else {
+				this.add('message', msgs[result]);
+				this.add('');
+			}
+			break;
+			
+		case 'useItem':
+			let hadEffect = false;
+			if (decision.item.use.healHP) {
+				let heal = 0;
+				if (typeof decision.item.use.healHP === 'string' && decision.item.use.healHP !== "true") {
+					heal = decision.target.maxhp * (Number(decision.item.use.healHP.substring(0, decision.item.use.healHP.length - 1)) * 0.01)
+				} else if (decision.item.use.healHP === "true") {
+					heal = decision.target.maxhp - decision.target.hp;
+				} else {
+					heal = decision.item.use.healHP;
+				}
+				if (decision.target.hp + heal > decision.target.maxhp) heal = decision.target.maxhp - decision.target.hp;
+				if (heal > 0) {
+					this.heal(heal, decision.target, null, {fullname: decision.item.name});
+					hadEffect = true;
+				}
+			}
+			if (decision.item.use.healStatus) {
+				if (decision.target.status || decision.target.volatiles['confusion']) {
+					if (decision.item.use.healStatus === "true") {
+						decision.target.cureStatus();
+						decision.target.removeVolatile('confusion');
+						hadEffect = true;
+					} else {
+						let canHeal = decision.item.use.healStatus.split('|');
+						if (canHeal.indexOf(decision.target.status) > -1) {
+							decision.target.cureStatus();
+							hadEffect = true;
+						}
+						if (canHeal.indexOf('confusion') > -1 && ('confusion' in decision.target.volatiles)) {
+							decision.target.removeVolatile('confusion');
+							hadEffect = true;
+						}
+					}
+				}
+			}
+			if (decision.item.use.healPP) {
+				let move = decision.target.moveset[decision.move];
+				if (move.pp < move.maxpp) {
+					move.pp += item.use.healPP;
+					if (move.pp > move.maxpp) move.pp = move.maxpp;
+					hadEffect = true;
+					this.add('', (decision.target.name || decision.target.species) + "'s " + move.id + " had its PP restored by " + decision.item.use.healPP + "!");
+				}
+			}
+			if (decision.item.use.revive) {
+				if (decision.target.fainted) {
+					delete decision.target.fainted;
+					delete decision.target.faintQueued;
+					decision.target.hp = (decision.item.use.revive === "true" || decision.item.use.revive === 100 ? decision.target.maxhp : (Math.round(decision.target.maxhp * decision.item.use.revive)));
+					if (decision.item.use.revive === "true") {
+						for (let m in mon.moveset) {
+							mon.moveset[m].pp = mon.moveset[m].maxpp;
+						}
+					}
+					hadEffect = true;
+				}
+			}
+			if (hadEffect) {
+				this.add('message', decision.side.name + " used a " + decision.item.name + "!");
+				this.send('takeitem', toId(decision.side.name) + "|" + decision.item.id + "|" + decision.target.slot);
+				this.add('');
+			}
+			break;
 
 		case 'pass':
 			if (!decision.priority || decision.priority <= 101) return;

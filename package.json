@@ -25,8 +25,8 @@
     "node": ">=7.7.0"
   },
   "scripts": {
-    "start": "node pokemon-showdown",
-    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ wavelength-plugins/ config/ data/ dev-tools/ mods/ sim/ tournaments/ test/ && mocha"
+    "start": "node app.js",
+    "test": "eslint --rulesdir=dev-tools/eslint --cache *.js chat-plugins/ wavelength-plugins/ game-cards/ config/ data/ dev-tools/ mods/ tournaments/ test/ && mocha"
   },
   "bin": "./pokemon-showdown",
   "homepage": "http://pokemonshowdown.com",

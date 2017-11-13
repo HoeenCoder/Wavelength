@@ -5,6 +5,7 @@ const assert = require('assert');
 describe('Team Validator features', function () {
 	describe('TeamValidator', function () {
 		it('should reject non-existent Pokemon', function () {
+			this.timeout(3000);
 			let team = [{species:'nonexistentPokemon', moves:['thunderbolt']}];
 			let illegal = TeamValidator('gen7customgame').validateTeam(team);
 			assert(illegal);

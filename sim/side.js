@@ -65,6 +65,7 @@ class Side {
 		this.sideConditions = {};
 
 		this.pokemonLeft = 0;
+		this.battled = [[], [], [], [], [], []];
 		this.faintedLastTurn = false;
 		this.faintedThisTurn = false;
 		/** @type {Choice} */
@@ -106,7 +107,7 @@ class Side {
 		this.team = team;
 		for (let i = 0; i < this.team.length && i < 24; i++) {
 			//console.log("NEW POKEMON: " + (this.team[i] ? this.team[i].name : '[unidentified]'));
-			this.pokemon.push(new Pokemon(this.team[i], this));
+			this.pokemon.push(new Pokemon(this.team[i], this, i));
 		}
 		this.pokemonLeft = this.pokemon.length;
 		for (let i = 0; i < this.pokemon.length; i++) {
@@ -266,6 +267,10 @@ class Side {
 	 */
 	emitChoiceError(message) {
 		this.choice.error = message;
+		if (this.name === 'SG Server') {
+			// COM choose an invalid move, choose default
+			return this.choose('default');
+		}
 		this.battle.send('sideupdate', `${this.id}\n|error|[Invalid choice] ${message}`);
 		return false;
 	}
@@ -666,6 +671,16 @@ class Side {
 				if (data) return this.emitChoiceError(`Unrecognized data after "pass": ${data}`);
 				this.choosePass();
 				break;
+			case 'pokeball':
+				if (!this.battle.getFormat().isWildEncounter) return this.emitChoiceError(`You can't throw a pokeball here.`);
+				if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(data)) return this.emitChoiceError(`Thats not a pokeball, or at last not one we support.`);
+				if (this.active[0].volatiles['lockedmove']) return this.emitChoiceError(`You can't throw a pokeball right now.`);
+				if (this.foe.active[0].species === 'Missingno.') return this.emitChoiceError(`You can't catch an error. Contact an Administrator if you haven't already.`);
+				this.choosePokeball(data);
+			case 'useItem':
+				if (!this.battle.getFormat().useSGgame || !this.battle.getFormat().allowBag) return this.emitChoiceError(`You can't use an item from your bag here.`);
+				this.chooseUseItem(data);
+				break;
 			case 'default':
 				this.autoChoose();
 				break;
@@ -767,6 +782,45 @@ class Side {
 		} else if (this.currentRequest === 'move') {
 			while (!this.isChoiceDone()) this.chooseMove();
 		}
+		return true;
+	}
+	/**
+	 * Throw a pokeball
+	 */
+	choosePokeball(ball) {
+		if (this.currentRequest !== 'move') return this.emitChoiceError('Cant throw pokeball: you can only do this as an alternative to moving.');
+		this.choice.actions.push({
+			choice: 'pokeball',
+			ball: ball,
+			side: this,
+			target: this.foe.active[0],
+		});
+		
+		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
+		return true;
+	}
+	/**
+	 * Use an item from your bag
+	 */
+	chooseUseItem(data) {
+		if (this.currentRequest !== 'move') return this.emitChoiceError('Cant use item: you can only do this as an alternative to moving.');
+		data = data.split(" ");
+		let target = null;
+		for (let i = 0; i < this.pokemon.length; i++) {
+			if (this.pokemon[i].slot === parseInt(data[1], 10)) {
+				target = this.pokemon[i];
+				break;
+			}
+		}
+		this.choice.actions.push({
+			choice: 'useItem',
+			side: this,
+			item: WL.getItem(data[0]),
+			target: target || this.active[0], // TODO
+			move: parseInt(data[2], 10) || null,
+		});
+		
+		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
 		return true;
 	}
 

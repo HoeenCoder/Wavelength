@@ -220,6 +220,34 @@ class Matchmaker {
 			return;
 		}
 
+		if (Dex.getFormat(formatid).isWildEncounter) {
+			formatTable.delete(user.userid);
+			if (!Users('sgserver')) WL.makeCOM();
+			let wildTeam = Users('sgserver').wildTeams[user.userid];
+			if (!wildTeam) return;
+			Rooms.createBattle(formatid, {
+				p1: Users('sgserver'),
+				p1team: wildTeam,
+				p2: user,
+				p2team: newSearch.team,
+				rated: false,
+			});
+			return;
+		} else if (Dex.getFormat(formatid).isTrainerBattle) {
+			formatTable.delete(user.userid);
+			if (!Users('sgserver')) WL.makeCOM();
+			let trainerTeam = Users('sgserver').trainerTeams[user.userid];
+			if (!trainerTeam) return;
+			Rooms.createBattle(formatid, {
+				p1: Users('sgserver'),
+				p1team: trainerTeam,
+				p2: user,
+				p2team: newSearch.team,
+				rated: false,
+			});
+			return;
+		}
+
 		// In order from longest waiting to shortest waiting
 		for (let search of formatTable.values()) {
 			const searcher = this.getSearcher(search, formatid);

@@ -631,9 +631,18 @@ class User {
 		for (let roomid of this.games) {
 			let game = Rooms(roomid).game;
 			if (!game || game.ended) continue; // should never happen
+			if (game.format && game.format === 'gen7wildpokemonalpha') {
+				this.popup(`You can't change your name right now because you're in the middle of a wild pokemon encounter.`);
+				return false;
+			}
 			if (game.allowRenames || !this.named) continue;
 			this.popup(`You can't change your name right now because you're in the middle of a rated game.`);
 			return false;
+		}
+		if (this.console) {
+			// Shutdown on rename
+			this.sendTo(this.console.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
+			delete this.console;
 		}
 
 		let challenge = '';
@@ -1272,6 +1281,25 @@ class User {
 			connection.popup(message);
 			return Promise.resolve(false);
 		}
+		if (Dex.getFormat(formatid).useSGgame) {
+			if (!this.console || this.console.gameId !== 'SGgame' || !Db.players.get(this.userid) || Db.players.get(this.userid).party.length <= 0) {
+				connection.popup('You need to start SGgame before you can play this format.');
+				return Promise.resolve(false);
+			}
+			for (let key of this.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && this.games.has(key)) {
+					connection.popup('Your already in a SGgame battle.');
+					return Promise.resolve(false);
+				}
+			}
+			if (Dex.getFormat(formatid).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+				if (type === 'challenge') {
+					connection.popup('You cannot challenge users to wild pokemon or trainer battles.');
+					return Promise.resolve(false);
+				}
+			}
+			this.team = Dex.packTeam(Db.players.get(this.userid).party);
+		}
 		let gameCount = this.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
 			return Promise.resolve(false);
@@ -1285,6 +1313,7 @@ class User {
 			connection.popup(`That format is not available.`);
 			return Promise.resolve(false);
 		}
+
 		return TeamValidator(formatid).prepTeam(this.team, this.locked || this.namelocked).then(result => this.finishPrepBattle(connection, result));
 	}
 
@@ -1549,6 +1578,7 @@ Users.pruneInactive = function (threshold) {
 	let now = Date.now();
 	users.forEach(user => {
 		if (user.connected) return;
+		if (user.userid === 'sgserver') return; // Dont delete the COM!
 		if ((now - user.lastConnected) > threshold) {
 			user.destroy();
 		}

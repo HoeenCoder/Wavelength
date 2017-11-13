@@ -234,7 +234,7 @@ Signature Move: Mosmero Beam
 Notes: Hit Quickly & you should be able to take down some enemies.
 Rank: TBD
 
-Tsunami Prince
+Wavelength Prince
 (Darkrai)
 @ Darkiniumz
 EVs: 252 SpA / 252 Spe / 6 HP

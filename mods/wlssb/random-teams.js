@@ -87,7 +87,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Tsunami Prince': {
+			'~Wavelength Prince': {
 				species: 'Darkrai',
 				ability: 'Death Boost',
 				item: 'Darkiniumz',
