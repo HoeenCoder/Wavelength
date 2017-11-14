@@ -1066,7 +1066,7 @@ Chat.loadPlugins = function () {
 		}
 	}
 	for (let file of FS('wavelength-plugins').readdirSync()) {
-		if (file.substr(-3) !== '.js' || file === 'WL.js') continue;
+		if (file.substr(-3) !== '.js') continue;
 		const wavelengthplugin = require(`./wavelength-plugins/${file}`);
 		Object.assign(commands, wavelengthplugin.commands);
 	}

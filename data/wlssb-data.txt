@@ -153,7 +153,8 @@ Serperiorater
 @ Leftovers
 EVs: 252 SpA / 4 SpD / 252 Spe
 Timid Nature
-Ability: Sturdy
+Ability: Unnamable
+	- Raises the user's Special Attack by one stage; Supereffective moves against the target deal 1.2x more damage.
 Moves: Aura Sphere, Dark Pulse and Psychic.
 Signature Move: Saber Strike
 	- Grass Type, Special, 140 BP, 10 PP, Boosts user's SpA by 2 stages and heals user by 1/5th of its max HP.
@@ -227,10 +228,10 @@ Mosmero
 EVs: 252 Spa / 252 Spe / 4 HP
 Modest Nature
 Ability: Mosmic Power
-    -Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.
+    - Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.
 Moves: Shadow Ball, Sludge Bomb, Giga Drain
 Signature Move: Mosmero Beam
-	-Ghost type, 130 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
+	- Ghost type, 130 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
 Notes: Hit Quickly & you should be able to take down some enemies.
 Rank: TBD
 
@@ -240,10 +241,10 @@ Wavelength Prince
 EVs: 252 SpA / 252 Spe / 6 HP
 Timid Nature
 Ability: Death Boost
-    -Simple + Also puts enemy pokemon to sleep.
+    - Simple + Also puts enemy pokemon to sleep.
 Moves: Nightmare, Dark Pulse, Shadow Ball
 Signature Move: Overpower
-	-Boosts all stats by 1 stage. Puts enemy to sleep.
+	- Boosts all stats by 1 stage. Puts enemy to sleep.
 Notes: Usually can take care of most threats right away without using Overpower at all. Remember than Overpower will fail, if enemy is already asleep.
 Rank: TBD
 
@@ -253,10 +254,10 @@ iSteelX
 Evs: 252 HP / 4 Atk / 252 Def
 Impish Nature
 Ability: Sandbox
-    -Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.
+    - Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.
 Moves: Curse, Sleep Talk, Earthquake
 Signature Move: Deep Sleep
-    -Rest & +3 SpD boost.
+    - Rest & +3 SpD boost.
 Notes: Quite a nice wall, especially effective while Sandbox is active. Gets quite weakened by the loss of Sandbox ability, but still can fight well.
 Rank: TBD
 
@@ -279,12 +280,12 @@ TheRittz
 EVs: 252 HP / 128 Def / 128 SpD
 Calm Nature
 Ability: Paradoxical Prowess
-    -Has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Solid Rock, and has same effects of Oblivious
+    - Has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Solid Rock, and has same effects of Oblivious
 Moves: Substitute, Leech Seed, Toxic
 Signature Move: Everlasting Annoyingness
-    -Uses the move Ingrain & Special Bullet Seed move that drains 10% HP each hit (2-5 hits).
-Notes: Soild Staller. Feel the annoyingness! (Yes, its meant to spam that phrase. Have fun mate.)
-Rank: TBD
+    - Uses the move Ingrain & Special Bullet Seed move that drains 10% HP each hit (2-5 hits).
+Notes: Heavily annoying stall this meta has very little to take on.
+Rank: S.
 
 xcmr
 (Meowth)
@@ -292,11 +293,11 @@ xcmr
 EVs 252 Atk / 4 SpD / 252 Spe
 Jolly Nature
 Ability: Feline Fury
-    -Scrappy & +3 Attack on switch in.
+    - Scrappy & +3 Attack on switch in.
 Moves: U-turn, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    -Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 to both Def & SpD on use.
-Notes: Soild counter to most with its Scrappy and Kitty Crush combo.
+    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 to both Def & SpD on use.
+Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: TBD
 
 wgc

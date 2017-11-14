@@ -2465,7 +2465,7 @@ exports.commands = {
 		if (!this.can('hotpatch')) return;
 
 		const lock = Monitor.hotpatchLock;
-		const hotpatches = ['chat', 'tournaments', 'formats', 'loginserver', 'punishments', 'dnsbl'];
+		const hotpatches = ['chat', 'tournaments', 'formats', 'loginserver', 'punishments', 'dnsbl', 'wavelength'];
 
 		try {
 			if (target === 'all') {
@@ -2549,6 +2549,13 @@ exports.commands = {
 			} else if (target === 'dnsbl' || target === 'datacenters') {
 				Dnsbl.loadDatacenters();
 				this.sendReply("Dnsbl has been hot-patched.");
+			} else if (target === 'wavelength') {
+				if (lock['wavelength']) return this.errorReply(`Hot-patching wavelength has been disabled by ${lock['wavelength'].by} (${lock['wavelength'].reason})`);
+
+				delete require.cache[require.resolve('./WL')];
+				// Dosent remove functions, only overwrites existing functions with fresh copies.
+				global.WL = Object.assign(WL, require('./WL').WL);
+				this.sendReply('The Wavelength global has been hotpatched.');
 			} else if (target.startsWith('disable')) {
 				this.sendReply("Disabling hot-patch has been moved to its own command:");
 				return this.parse('/help nohotpatch');

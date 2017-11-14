@@ -348,16 +348,16 @@ exports.commands = {
 				target = toPackName(target);
 				if (packs.indexOf(target) === -1) return this.parse(`/psgo shop`);
 				let userMoney = Economy.readMoney(user.userid);
-				if (userMoney < 5) return this.errorReply(`You need at least 5 ${global.currencyPlural} to buy a pack!`);
+				if (userMoney < 5) return this.errorReply(`You need at least 5 ${currencyPlural} to buy a pack!`);
 				Economy.writeMoney(user.userid, -5, () => {
 					Economy.readMoney(user.userid, amount => {
-						Economy.logTransaction(`${user.name} has purchased a ${target} pack for 5 ${global.currenyPlural}. They now have ${amount} ${(userMoney === 1 ? global.currencyName : global.currenyPlural)}`);
+						Economy.logTransaction(`${user.name} has purchased a ${target} pack for 5 ${currencyPlural}. They now have ${amount} ${(userMoney === 1 ? currencyName : currencyPlural)}`);
 					});
 				});
 				Db.userpacks.set(user.userid, Db.userpacks.get(user.userid, []).concat([target]));
 				return this.parse(`/psgo packs pending`);
 			},
-			buyhelp: ['/psgo shop buy [pack] - Cost 5 ' + global.currencyPlural + '  per pack.'],
+			buyhelp: ['/psgo shop buy [pack] - Cost 5 ' + currencyPlural + '  per pack.'],
 			// All packs are added by default.
 			'': 'display',
 			display: function (target, room, user) {
