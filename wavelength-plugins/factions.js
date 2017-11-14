@@ -285,7 +285,7 @@ exports.commands = {
 			if (desc.length > 100) return this.errorReply('Faction descriptions must be 100 characters or less!');
 			let tag = targets[2];
 			if (tag.length > 4) return this.errorReply('Faction tags must be 4 characters at most!');
-			if (factions[toId(name)]) return this.errorReply('That factions exists already!');
+			if (factions[toId(name)]) return this.errorReply('That faction exists already!');
 			for (let i = 0; i < factions.length; i++) {
 				if (factions[i].tag === tag) return this.errorReply('That faction tag exists already!');
 			}
@@ -999,17 +999,16 @@ exports.commands = {
 		'': 'help',
 		help: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			this.sendReply("|raw|<div class=\"infobox infobox-limited\">" +
-			"Faction vs Faction Commands:<br />" +
-			"/fvf challenge [faction], [mode (normal or quick)], [size (must be odd number)], [tier] - Challenges a faction to a Faction vs Faction in the current room.<br />" +
-			"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
-			"/fvf accept - Accepts a challenge from a faction.<br />" +
-			"/fvf deny - Denies a challenge from a faction.<br />" +
-			"/fvf invite [user] - Invites a faction member to join the Faction vs Faction.<br />" +
-			"/fvf join - Joins a Faction vs Faction. Must be invited with /fvf invite first.<br />" +
-			"/fvf leave - Leaves a Faction vs Faction after you join. May not be used once the Faction vs Faction starts.<br />" +
-			"/fvf end - Forcibly ends a Faction vs Faction." +
-			"</div>"
+			this.sendReplyBox(
+				"Faction vs Faction Commands:<br />" +
+				"/fvf challenge [faction], [mode (normal or quick)], [size (must be odd number)], [tier] - Challenges a faction to a Faction vs Faction in the current room.<br />" +
+				"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
+				"/fvf accept - Accepts a challenge from a faction.<br />" +
+				"/fvf deny - Denies a challenge from a faction.<br />" +
+				"/fvf invite [user] - Invites a faction member to join the Faction vs Faction.<br />" +
+				"/fvf join - Joins a Faction vs Faction. Must be invited with /fvf invite first.<br />" +
+				"/fvf leave - Leaves a Faction vs Faction after you join. May not be used once the Faction vs Faction starts.<br />" +
+				"/fvf end - Forcibly ends a Faction vs Faction."
 			);
 		},
 	},
