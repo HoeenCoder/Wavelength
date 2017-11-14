@@ -1002,8 +1002,4 @@ exports.commands = {
 		"/fvf leave - Leaves a Faction vs Faction after you join. May not be used once the Faction vs Faction starts.<br />" +
 		"/fvf end - Forcibly ends a Faction vs Faction.",
 	],
-
-	factionhelp: function (target, room, user) {
-		return this.parse('/faction help');
-	},
 };
