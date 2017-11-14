@@ -644,8 +644,7 @@ class Battle {
 			if (user.console) {
 				user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
 				if (nMoves.length || nEvos.length) {
-					let r = user.console.next();
-					user.console.update(r[0], r[1], r[2]);
+					user.console.update(...user.console.next());
 				}
 			}
 			break;
@@ -693,6 +692,10 @@ class Battle {
 			if (uploader && uploader.connections[0]) {
 				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
 			}
+		}
+		if (Dex.getFormat(this.format).useSGgame) {
+			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
+			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
 		}
 		const parentGame = this.room.parent && this.room.parent.game;
 		if (parentGame && parentGame.onBattleWin) {

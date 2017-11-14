@@ -954,5 +954,10 @@
         "id": "alphaticket",
         "name": "Alpha Ticket",
         "slot": "keyitems"
+    },
+    "recoveredgoods": {
+        "id": "recoveredgoods",
+        "name": "Recovered Goods",
+        "slot": "keyitems"
     }
 }

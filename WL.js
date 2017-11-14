@@ -127,6 +127,7 @@ exports.WL = {
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
+	locationData: require('./config/SGGame/locations.js').locations,
 	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
 		if (!lvlBase) lvlBase = 10;
