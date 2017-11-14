@@ -142,7 +142,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		let targetId = toId(target);
 		if (target || !target && this.broadcasting) {
-			targetId = user.userid;
+			if (!target) targetId = user.userid;
 			EXP.readExp(targetId, exp => {
 				this.sendReplyBox('<b>' + WL.nameColor(targetId, true) + '</b> has ' + exp + ' exp and is level ' + WL.level(targetId) + ' and needs ' + WL.nextLevel(targetId) + ' to reach the next level.');
 			});
