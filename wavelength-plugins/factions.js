@@ -743,6 +743,9 @@ exports.commands = {
 			output += "</table></center>";
 			this.sendReplyBox(output);
 		},
+		help: function (target, room, user) {
+			this.parse("/factionhelp");
+		},
 	},
 	factionhelp: [
 		"|raw|Faction Help Commands: <br/> " +
@@ -989,6 +992,9 @@ exports.commands = {
 			delete Rooms.global.FvF[targetFactionid];
 			delete Rooms.global.FvF[factionId];
 			delete targetRoom.fvf;
+		},
+		help: function (target, room, user) {
+			this.parse("/fvfhelp");
 		},
 	},
 	fvfhelp: [
