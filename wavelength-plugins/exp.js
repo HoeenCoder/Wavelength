@@ -8,6 +8,9 @@
 const DEFAULT_AMOUNT = 0;
 let DOUBLE_XP = false;
 
+const minLevelExp = 15;
+const multiply = 1.9;
+
 function isExp(exp) {
 	let numExp = Number(exp);
 	if (isNaN(exp)) return "Must be a number.";
@@ -120,29 +123,14 @@ WL.addExp = addExp;
 function level(userid) {
 	userid = toId(userid);
 	let curExp = Db.exp.get(userid, 0);
-	let benchmarks = [0, 40, 90, 165, 250, 400, 600, 810, 1250, 1740, 2450, 3300, 4400, 5550, 6740, 8120, 9630, 11370, 13290, 15520, 18050, 23000, 28000, 33720, 39900, 46440, 52690, 58000, 63600, 69250, 75070, 81170, 87470, 93970, 100810, 107890, 115270, 122960, 131080, 140000];
-	for (let i = 0; i < benchmarks.length; i++) {
-		if (curExp >= benchmarks[i]) {
-			continue;
-		} else {
-			return i;
-		}
-	}
-	return benchmarks.length;
+	return Math.floor(Math.pow(curExp / minLevelExp, 1 / multiply) + 1);
 }
 WL.level = level;
 
 function nextLevel(user) {
-	let curExp = Db.exp.get(user, 0);
-	let benchmarks = [0, 40, 90, 165, 250, 400, 600, 810, 1250, 1740, 2450, 3300, 4400, 5550, 6740, 8120, 9630, 11370, 13290, 15520, 18050, 23000, 28000, 33720, 39900, 46440, 52690, 58000, 63600, 69250, 75070, 81170, 87470, 93970, 100810, 107890, 115270, 122960, 131080, 140000];
-	for (let i = 0; i < benchmarks.length; i++) {
-		if (curExp >= benchmarks[i]) {
-			continue;
-		} else {
-			return benchmarks[i] - curExp + " exp";
-		}
-	}
-	return "[Cannot level up]";
+	let curExp = Db.exp.get(toId(user), 0);
+	let lvl = WL.level(toId(user));
+	return Math.floor(Math.pow(lvl, multiply) * minLevelExp) - curExp;
 }
 WL.nextLevel = nextLevel;
 
@@ -152,13 +140,27 @@ exports.commands = {
 	xp: 'exp',
 	exp: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		if (!target) target = user.name;
-
-		const targetId = toId(target);
-
-		EXP.readExp(targetId, exp => {
-			this.sendReplyBox('<b>' + WL.nameColor(targetId, true) + '</b> has ' + exp + ' exp and is level ' + WL.level(targetId) + ' and needs ' + WL.nextLevel(targetId) + ' to reach the next level.');
-		});
+		let targetId = toId(target);
+		if (target || !target && this.broadcasting) {
+			if (!target) targetId = user.userid;
+			EXP.readExp(targetId, exp => {
+				this.sendReplyBox('<b>' + WL.nameColor(targetId, true) + '</b> has ' + exp + ' exp and is level ' + WL.level(targetId) + ' and needs ' + WL.nextLevel(targetId) + ' to reach the next level.');
+			});
+		} else {
+			EXP.readExp(user.userid, exp => {
+				this.sendReplyBox("Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
+					"<br />All rewards have a 1 time use! <br /><br />" +
+					"Level 5 unlocks a free Custom Symbol. <br /><br />" +
+					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
+					"Level 15 unlocks a free Profile Title. <br /><br />" +
+					"Level 20 unlocks a free Custom Userlist Icon. <br /><br />" +
+					"Level 25 unlocks a free Emote. <br /><br />" +
+					"Level 30 unlocks a free Custom Color.  <br /><br />" +
+					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
+					"Level 40 unlocks a free chatroom. <br /><br />"
+				);
+			});
+		}
 	},
 
 	givexp: 'giveexp',
