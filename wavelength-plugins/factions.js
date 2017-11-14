@@ -743,39 +743,34 @@ exports.commands = {
 			output += "</table></center>";
 			this.sendReplyBox(output);
 		},
-		'': 'help',
-		help: function (target, room, user) {
-			if (!this.runBroadcast()) return;
-			return this.sendReplyBox(
-				"Faction Help Commands: <br/> " +
-				"/faction create (name), (description), (tag[4 char]) - Creates a faction. <br/>" +
-				"/faction delete (name)  - Deletes a faction. <br/>" +
-				"/faction list - List all factions on the server. <br/>" +
-				"/faction privatize - Privatize your faction. <br/>" +
-				"/faction profile (faction) - displays a faction's profile. If none specified then defaults to yours. If you are not in one you must specify one. <br/>" +
-				"/faction join (name) - Joins a non-private faction. <br/>" +
-				"/faction invite (name) - Invite a user to your faction. <br/>" +
-				"/faction blockinvites - Block invites from factions. <br/>" +
-				"/faction unblockinvites - Unblock invites from factions. <br/>" +
-				"/faction accept (faction) - Accept an invite from a faction. <br/>" +
-				"/faction decline (faction) - Decline an invite from a faction. <br/>" +
-				"/faction leave - Leave a faction. <br/>" +
-				"/faction bank atm - Shows a factions bank. <br/>" +
-				"/faction bank give faction, amount - Adds to a factions bank. <br/>" +
-				"/faction bank take faction, amount - Takes from a factions bank. <br/>" +
-				"/faction ban (name) - Ban a user from your faction. <br/>" +
-				"/faction unban (name) - Unban a user from your faction. <br/>" +
-				"/faction promote (user), (rank) - Promote a user in your faction. <br/>" +
-				"/faction demote (user), (rank) - Demote a user in your faction. <br/>" +
-				"/faction avatar (image)  - requests a faction avatar for your faction profile. Must be faction owner to use. <br />" +
-				"/faction approveavatar (faction), (the requested avatar) - approves a factions avatar.  You must be a global leader or higher to use this! <br />" +
-				"/faction denyavatar (faction) - denys a factions avatar.  You must be a global leader or higher to use this! <br />" +
-				"/faction pendingavatars - shows pending faction avatars. (<code>/faction pa</code> for short) You must be a global leader or higher to use this! <br />" +
-				"/faction pending - displays a list of pending factions waiting for approval. You must be a global leader or higher to use this! <br/>" +
-				"</div>"
-			);
-		},
 	},
+	factionhelp: [
+		"|raw|Faction Help Commands: <br/> " +
+		"/faction create (name), (description), (tag[4 char]) - Creates a faction. <br/>" +
+		"/faction delete (name)  - Deletes a faction. <br/>" +
+		"/faction list - List all factions on the server. <br/>" +
+		"/faction privatize - Privatize your faction. <br/>" +
+		"/faction profile (faction) - displays a faction's profile. If none specified then defaults to yours. If you are not in one you must specify one. <br/>" +
+		"/faction join (name) - Joins a non-private faction. <br/>" +
+		"/faction invite (name) - Invite a user to your faction. <br/>" +
+		"/faction blockinvites - Block invites from factions. <br/>" +
+		"/faction unblockinvites - Unblock invites from factions. <br/>" +
+		"/faction accept (faction) - Accept an invite from a faction. <br/>" +
+		"/faction decline (faction) - Decline an invite from a faction. <br/>" +
+		"/faction leave - Leave a faction. <br/>" +
+		"/faction bank atm - Shows a factions bank. <br/>" +
+		"/faction bank give faction, amount - Adds to a factions bank. <br/>" +
+		"/faction bank take faction, amount - Takes from a factions bank. <br/>" +
+		"/faction ban (name) - Ban a user from your faction. <br/>" +
+		"/faction unban (name) - Unban a user from your faction. <br/>" +
+		"/faction promote (user), (rank) - Promote a user in your faction. <br/>" +
+		"/faction demote (user), (rank) - Demote a user in your faction. <br/>" +
+		"/faction avatar (image)  - requests a faction avatar for your faction profile. Must be faction owner to use. <br />" +
+		"/faction approveavatar (faction), (the requested avatar) - approves a factions avatar.  You must be a global leader or higher to use this! <br />" +
+		"/faction denyavatar (faction) - denys a factions avatar.  You must be a global leader or higher to use this! <br />" +
+		"/faction pendingavatars - shows pending faction avatars. (<code>/faction pa</code> for short) You must be a global leader or higher to use this! <br />" +
+		"/faction pending - displays a list of pending factions waiting for approval. You must be a global leader or higher to use this!"
+	],
 	fvf: {
 		challenge: function (target, room, user) {
 			if (!target) return this.errorReply("Usage: /fvf challenge [faction], [mode], [size], [tier]");
@@ -995,23 +990,19 @@ exports.commands = {
 			delete Rooms.global.FvF[factionId];
 			delete targetRoom.fvf;
 		},
-
-		'': 'help',
-		help: function (target, room, user) {
-			if (!this.runBroadcast()) return;
-			this.sendReplyBox(
-				"Faction vs Faction Commands:<br />" +
-				"/fvf challenge [faction], [mode (normal or quick)], [size (must be odd number)], [tier] - Challenges a faction to a Faction vs Faction in the current room.<br />" +
-				"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
-				"/fvf accept - Accepts a challenge from a faction.<br />" +
-				"/fvf deny - Denies a challenge from a faction.<br />" +
-				"/fvf invite [user] - Invites a faction member to join the Faction vs Faction.<br />" +
-				"/fvf join - Joins a Faction vs Faction. Must be invited with /fvf invite first.<br />" +
-				"/fvf leave - Leaves a Faction vs Faction after you join. May not be used once the Faction vs Faction starts.<br />" +
-				"/fvf end - Forcibly ends a Faction vs Faction."
-			);
-		},
 	},
+	fvfhelp: [
+		"|raw|Faction vs Faction Commands:<br />" +
+		"/fvf challenge [faction], [mode (normal or quick)], [size (must be odd number)], [tier] - Challenges a faction to a Faction vs Faction in the current room.<br />" +
+		"(Quick mode lets players battle each other at the same time, normal mode limits it to one battle at a time.)<br />" +
+		"/fvf accept - Accepts a challenge from a faction.<br />" +
+		"/fvf deny - Denies a challenge from a faction.<br />" +
+		"/fvf invite [user] - Invites a faction member to join the Faction vs Faction.<br />" +
+		"/fvf join - Joins a Faction vs Faction. Must be invited with /fvf invite first.<br />" +
+		"/fvf leave - Leaves a Faction vs Faction after you join. May not be used once the Faction vs Faction starts.<br />" +
+		"/fvf end - Forcibly ends a Faction vs Faction.",
+	],
+
 	factionhelp: function (target, room, user) {
 		return this.parse('/faction help');
 	},
