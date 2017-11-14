@@ -244,20 +244,24 @@ exports.commands = {
 	},
 	pmallstaffhelp: ["/pmallstaff [message]"],
 
-	hc: function (room, user, cmd) {
+	hc: function (target, room, user) {
 		return this.parse('/hotpatch chat');
 	},
 
-	hf: function (room, user, cmd) {
+	hf: function (target, room, user) {
 		return this.parse('/hotpatch formats');
 	},
 
-	hb: function (room, user, cmd) {
+	hb: function (target, room, user) {
 		return this.parse('/hotpatch battles');
 	},
 
-	hv: function (room, user, cmd) {
+	hv: function (target, room, user) {
 		return this.parse('/hotpatch validator');
+	},
+
+	hw: function (target, room, user) {
+		return this.parse('/hotpatch wavelength');
 	},
 
 	'!regdate': true,
