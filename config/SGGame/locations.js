@@ -72,7 +72,7 @@ exports.locations = {
 			"0": {
 				"subTitle": "",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/LhQhKMj.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/MxvBu5l.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onBuilding": function (game, id, action) {
 					return pokemonCenter(game, id, action);
@@ -87,7 +87,7 @@ exports.locations = {
 			"1": {
 				"subTitle": "",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/qjiHqnW.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/V89bwNV.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"exits": {
 					"up": "mainisland|0",
@@ -99,7 +99,7 @@ exports.locations = {
 			"2": {
 				"subTitle": "",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/CUkNVM2.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/qkUTywK.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a pokemon? Ok, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
@@ -148,7 +148,7 @@ exports.locations = {
 			"3": {
 				"subTitle": "Marina",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/mO3j75t.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/BLBDRGJ.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onBuilding": function (game, id, action) {
 					// only one building here, no need to check id
@@ -175,7 +175,7 @@ exports.locations = {
 			"4": {
 				"subTitle": "Warehouses",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/HDNlLCr.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/Z12Bkvo.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>Thief</b>: No! The door to the warehouse is locked!<br/>I just hope I can get away before...', 'text|<b>Thief</b>: Yikes! I\'ve been found! Well, i\'m not going down without a fight.<br/>Bring it on!', 'callback');
