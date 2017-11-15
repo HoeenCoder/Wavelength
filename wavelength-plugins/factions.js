@@ -745,7 +745,7 @@ exports.commands = {
 		},
 		'': 'help',
 		help: function (target, room, user) {
-			this.parse("/factionhelp");
+			this.parse("/help faction");
 		},
 	},
 	factionhelp: [
@@ -996,7 +996,7 @@ exports.commands = {
 		},
 		'': 'help',
 		help: function (target, room, user) {
-			this.parse("/fvfhelp");
+			this.parse("/help fvf");
 		},
 	},
 	fvfhelp: [
