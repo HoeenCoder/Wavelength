@@ -743,6 +743,7 @@ exports.commands = {
 			output += "</table></center>";
 			this.sendReplyBox(output);
 		},
+		'': 'help',
 		help: function (target, room, user) {
 			this.parse("/factionhelp");
 		},
@@ -993,6 +994,7 @@ exports.commands = {
 			delete Rooms.global.FvF[factionId];
 			delete targetRoom.fvf;
 		},
+		'': 'help',
 		help: function (target, room, user) {
 			this.parse("/fvfhelp");
 		},
