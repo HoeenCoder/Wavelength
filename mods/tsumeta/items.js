@@ -799,6 +799,7 @@ exports.BattleItems = {
 				this.chainModify(1.2);
 			}
 		},
+		desc: "Holder's critical hit ratio is raised by 1 stage; holder's contact moves deal 1.2x more damage.",
 	},
 	"skyplate": {
 		inherit: true,
@@ -808,6 +809,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Sky Plate');
+			}
+		},
+		desc: "Holder's Flying-type attacks have 1.2x power. Judgment is Flying type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"toxicplate": {
 		inherit: true,
@@ -817,6 +836,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Toxic Plate');
+			}
+		},
+		desc: "Holder's Poison-type attacks have 1.2x power. Judgment is Poison type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"dracoplate": {
 		inherit: true,
@@ -826,6 +863,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Draco Plate');
+			}
+		},
+		desc: "Holder's Dragon-type attacks have 1.2x power. Judgment is Dragon type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"meadowplate": {
 		inherit: true,
@@ -835,6 +890,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Meadow Plate');
+			}
+		},
+		desc: "Holder's Grass-type attacks have 1.2x power. Judgment is Grass type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"ironplate": {
 		inherit: true,
@@ -844,6 +917,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Iron Plate');
+			}
+		},
+		desc: "Holder's Steel-type attacks have 1.2x power. Judgment is Steel type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"flameplate": {
 		inherit: true,
@@ -853,6 +944,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Flame Plate');
+			}
+		},
+		desc: "Holder's Fire-type attacks have 1.2x power. Judgment is Fire type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"pixieplate": {
 		inherit: true,
@@ -862,6 +971,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Pixie Plate');
+			}
+		},
+		desc: "Holder's Fairy-type attacks have 1.2x power. Judgment is Fairy type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"mindplate": {
 		inherit: true,
@@ -871,6 +998,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Mind Plate');
+			}
+		},
+		desc: "Holder's Psychic-type attacks have 1.2x power. Judgment is Psychic type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"insectplate": {
 		inherit: true,
@@ -880,6 +1025,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Insect Plate');
+			}
+		},
+		desc: "Holder's Bug-type attacks have 1.2x power. Judgment is Bug type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"icicleplate": {
 		inherit: true,
@@ -889,6 +1052,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Icicle Plate');
+			}
+		},
+		desc: "Holder's Ice-type attacks have 1.2x power. Judgment is Ice type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"fistplate": {
 		inherit: true,
@@ -898,6 +1079,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Fist Plate');
+			}
+		},
+		desc: "Holder's Fighting-type attacks have 1.2x power. Judgment is Fighting type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"earthplate": {
 		inherit: true,
@@ -907,6 +1106,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Earth Plate');
+			}
+		},
+		desc: "Holder's Ground-type attacks have 1.2x power. Judgment is Ground type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"dreadplate": {
 		inherit: true,
@@ -916,6 +1133,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Dread Plate');
+			}
+		},
+		desc: "Holder's Dark-type attacks have 1.2x power. Judgment is Dark type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"splashplate": {
 		inherit: true,
@@ -925,6 +1160,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Splash Plate');
+			}
+		},
+		desc: "Holder's Water-type attacks have 1.2x power. Judgment is Water type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"spookyplate": {
 		inherit: true,
@@ -934,6 +1187,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Spooky Plate');
+			}
+		},
+		desc: "Holder's Ghost-type attacks have 1.2x power. Judgment is Ghost type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"stoneplate": {
 		inherit: true,
@@ -943,6 +1214,24 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Stone Plate');
+			}
+		},
+		desc: "Holder's Rock-type attacks have 1.2x power. Judgment is Rock type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 	"zapplate": {
 		inherit: true,
@@ -952,5 +1241,23 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		onStart: function (pokemon) {
+			if (pokemon.baseTemplate.baseSpecies === 'Arceus' || pokemon.baseTemplate.baseSpecies === 'Dunsparce') {
+				let stats = [];
+				for (let stat in pokemon.boosts) {
+					if (stat !== 'accuracy' && stat !== 'evasion') {
+						stats.push(stat);
+					}
+				}
+				if (stats.length) {
+					let randomStat = stats[this.random(stats.length)];
+					let boost = {};
+					boost[randomStat] = 1.5;
+					return this.chainModify(boost);
+				}
+				this.add('-activate', pokemon, 'item: Zap Plate');
+			}
+		},
+		desc: "Holder's Electric-type attacks have 1.2x power. Judgment is Electric type. If the holder is an Arceus or a Dunsparce, this Pokemon has a random stat raised by one stage.",
 	},
 };
