@@ -1846,10 +1846,19 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperirorater. Coded by Lycanium Z.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Lycanium Z.",
 		],
 
 		mod: 'stacked',
+		ruleset: ['[Gen 7] OU'],
+	},
+	{
+		name: "[Gen 7] Weather Wars",
+		desc: [
+			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by Lycanium Z.",
+		],
+
+		mod: 'oldweather',
 		ruleset: ['[Gen 7] OU'],
 	},
 	{
