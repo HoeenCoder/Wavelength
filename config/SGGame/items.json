@@ -959,5 +959,905 @@
         "id": "recoveredgoods",
         "name": "Recovered Goods",
         "slot": "keyitems"
+    },
+    "tm01": {
+        "id": "tm01",
+        "name": "TM 01",
+        "move": "workup",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm02": {
+        "id": "tm02",
+        "name": "TM 02",
+        "move": "dragonclaw",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm03": {
+        "id": "tm03",
+        "name": "TM 03",
+        "move": "psyshock",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm04": {
+        "id": "tm04",
+        "name": "TM 04",
+        "move": "calmmind",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm05": {
+        "id": "tm05",
+        "name": "TM 05",
+        "move": "roar",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm06": {
+        "id": "tm06",
+        "name": "TM 06",
+        "move": "toxic",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm07": {
+        "id": "tm07",
+        "name": "TM 07",
+        "move": "hail",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm08": {
+        "id": "tm08",
+        "name": "TM 08",
+        "move": "bulkup",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm09": {
+        "id": "tm09",
+        "name": "TM 09",
+        "move": "venoshock",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm10": {
+        "id": "tm10",
+        "name": "TM 10",
+        "move": "hiddenpower",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm11": {
+        "id": "tm11",
+        "name": "TM 11",
+        "move": "sunnyday",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm12": {
+        "id": "tm12",
+        "name": "TM 12",
+        "move": "taunt",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm13": {
+        "id": "tm13",
+        "name": "TM 13",
+        "move": "icebeam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm14": {
+        "id": "tm14",
+        "name": "TM 14",
+        "move": "blizzard",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm15": {
+        "id": "tm15",
+        "name": "TM 15",
+        "move": "hyperbeam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm16": {
+        "id": "tm16",
+        "name": "TM 16",
+        "move": "lightscreen",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm17": {
+        "id": "tm17",
+        "name": "TM 17",
+        "move": "protect",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm18": {
+        "id": "tm18",
+        "name": "TM 18",
+        "move": "raindance",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm19": {
+        "id": "tm19",
+        "name": "TM 19",
+        "move": "roost",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm20": {
+        "id": "tm20",
+        "name": "TM 20",
+        "move": "safeguard",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm21": {
+        "id": "tm21",
+        "name": "TM 21",
+        "move": "frustration",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm22": {
+        "id": "tm22",
+        "name": "TM 22",
+        "move": "solarbeam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm23": {
+        "id": "tm23",
+        "name": "TM 23",
+        "move": "smackdown",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm24": {
+        "id": "tm24",
+        "name": "TM 24",
+        "move": "thunderbolt",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm25": {
+        "id": "tm25",
+        "name": "TM 25",
+        "move": "thunder",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm26": {
+        "id": "tm26",
+        "name": "TM 26",
+        "move": "earthquake",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm27": {
+        "id": "tm27",
+        "name": "TM 27",
+        "move": "return",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm28": {
+        "id": "tm28",
+        "name": "TM 28",
+        "move": "leechlife",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm29": {
+        "id": "tm29",
+        "name": "TM 29",
+        "move": "psychic",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm30": {
+        "id": "tm30",
+        "name": "TM 30",
+        "move": "shadowball",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm31": {
+        "id": "tm31",
+        "name": "TM 31",
+        "move": "brickbreak",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm32": {
+        "id": "tm32",
+        "name": "TM 32",
+        "move": "doubleteam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm33": {
+        "id": "tm33",
+        "name": "TM 33",
+        "move": "reflect",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm34": {
+        "id": "tm34",
+        "name": "TM 34",
+        "move": "sludgewave",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm35": {
+        "id": "tm35",
+        "name": "TM 35",
+        "move": "flamethrower",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm36": {
+        "id": "tm36",
+        "name": "TM 36",
+        "move": "sludgebomb",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm37": {
+        "id": "tm37",
+        "name": "TM 37",
+        "move": "sandstorm",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm38": {
+        "id": "tm38",
+        "name": "TM 38",
+        "move": "fireblast",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm39": {
+        "id": "tm39",
+        "name": "TM 39",
+        "move": "rocktomb",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm40": {
+        "id": "tm40",
+        "name": "TM 40",
+        "move": "aerialace",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm41": {
+        "id": "tm41",
+        "name": "TM 41",
+        "move": "torment",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm42": {
+        "id": "tm42",
+        "name": "TM 42",
+        "move": "facade",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm43": {
+        "id": "tm43",
+        "name": "TM 43",
+        "move": "flamecharge",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm44": {
+        "id": "tm44",
+        "name": "TM 44",
+        "move": "rest",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm45": {
+        "id": "tm45",
+        "name": "TM 45",
+        "move": "attract",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm46": {
+        "id": "tm46",
+        "name": "TM 46",
+        "move": "thief",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm47": {
+        "id": "tm47",
+        "name": "TM 47",
+        "move": "lowsweep",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm48": {
+        "id": "tm48",
+        "name": "TM 48",
+        "move": "round",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm49": {
+        "id": "tm49",
+        "name": "TM 49",
+        "move": "echoedvoice",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm50": {
+        "id": "tm50",
+        "name": "TM 50",
+        "move": "overheat",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm51": {
+        "id": "tm51",
+        "name": "TM 51",
+        "move": "steelwing",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm52": {
+        "id": "tm52",
+        "name": "TM 52",
+        "move": "focusblast",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm53": {
+        "id": "tm53",
+        "name": "TM 53",
+        "move": "energyball",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm54": {
+        "id": "tm54",
+        "name": "TM 54",
+        "move": "falseswipe",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm55": {
+        "id": "tm55",
+        "name": "TM 55",
+        "move": "scald",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm56": {
+        "id": "tm56",
+        "name": "TM 56",
+        "move": "fling",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm57": {
+        "id": "tm57",
+        "name": "TM 57",
+        "move": "chargebeam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm58": {
+        "id": "tm58",
+        "name": "TM 58",
+        "move": "skydrop",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm59": {
+        "id": "tm59",
+        "name": "TM 59",
+        "move": "brutalswing",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm60": {
+        "id": "tm60",
+        "name": "TM 60",
+        "move": "quash",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm61": {
+        "id": "tm61",
+        "name": "TM 61",
+        "move": "willowisp",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm62": {
+        "id": "tm62",
+        "name": "TM 62",
+        "move": "acrobatics",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm63": {
+        "id": "tm63",
+        "name": "TM 63",
+        "move": "embargo",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm64": {
+        "id": "tm64",
+        "name": "TM 64",
+        "move": "explosion",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm65": {
+        "id": "tm65",
+        "name": "TM 65",
+        "move": "shadowclaw",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm66": {
+        "id": "tm66",
+        "name": "TM 66",
+        "move": "payback",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm67": {
+        "id": "tm67",
+        "name": "TM 67",
+        "move": "smartstrike",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm68": {
+        "id": "tm68",
+        "name": "TM 68",
+        "move": "gigaimpact",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm69": {
+        "id": "tm69",
+        "name": "TM 69",
+        "move": "rockpolish",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm70": {
+        "id": "tm70",
+        "name": "TM 70",
+        "move": "auroraveil",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm71": {
+        "id": "tm71",
+        "name": "TM 71",
+        "move": "stoneedge",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm72": {
+        "id": "tm72",
+        "name": "TM 72",
+        "move": "voltswitch",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm73": {
+        "id": "tm73",
+        "name": "TM 73",
+        "move": "thunderwave",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm74": {
+        "id": "tm74",
+        "name": "TM 74",
+        "move": "gyroball",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm75": {
+        "id": "tm75",
+        "name": "TM 75",
+        "move": "swordsdance",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm76": {
+        "id": "tm76",
+        "name": "TM 76",
+        "move": "fly",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm77": {
+        "id": "tm77",
+        "name": "TM 77",
+        "move": "psychup",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm78": {
+        "id": "tm78",
+        "name": "TM 78",
+        "move": "bulldoze",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm79": {
+        "id": "tm79",
+        "name": "TM 79",
+        "move": "frostbreath",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm80": {
+        "id": "tm80",
+        "name": "TM 80",
+        "move": "rockslide",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm81": {
+        "id": "tm81",
+        "name": "TM 81",
+        "move": "xscissor",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm82": {
+        "id": "tm82",
+        "name": "TM 82",
+        "move": "dragontail",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm83": {
+        "id": "tm01",
+        "name": "TM 83",
+        "move": "infestation",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm84": {
+        "id": "tm84",
+        "name": "TM 84",
+        "move": "poisonjab",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm85": {
+        "id": "tm85",
+        "name": "TM 85",
+        "move": "dreameater",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm86": {
+        "id": "tm86",
+        "name": "TM 86",
+        "move": "grassknot",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm87": {
+        "id": "tm87",
+        "name": "TM 87",
+        "move": "swagger",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm88": {
+        "id": "tm88",
+        "name": "TM 88",
+        "move": "sleeptalk",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm89": {
+        "id": "tm89",
+        "name": "TM 89",
+        "move": "uturn",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm90": {
+        "id": "tm90",
+        "name": "TM 90",
+        "move": "substitue",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm91": {
+        "id": "tm91",
+        "name": "TM 91",
+        "move": "flashcannon",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm92": {
+        "id": "tm92",
+        "name": "TM 92",
+        "move": "trickroom",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm93": {
+        "id": "tm93",
+        "name": "TM 93",
+        "move": "wildcharge",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm94": {
+        "id": "tm94",
+        "name": "TM 94",
+        "move": "surf",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm95": {
+        "id": "tm95",
+        "name": "TM 95",
+        "move": "snarl",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm96": {
+        "id": "tm96",
+        "name": "TM 96",
+        "move": "naturepower",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm97": {
+        "id": "tm97",
+        "name": "TM 97",
+        "move": "darkpulse",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm98": {
+        "id": "tm98",
+        "name": "TM 98",
+        "move": "waterfall",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm99": {
+        "id": "tm99",
+        "name": "TM 99",
+        "move": "dazzlinggleam",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm100": {
+        "id": "tm100",
+        "name": "TM 100",
+        "move": "confide",
+        "use": {
+            "noBattle": true
+        },
+        "slot": "tms"
     }
 }
