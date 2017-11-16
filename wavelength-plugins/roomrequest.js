@@ -273,6 +273,6 @@ exports.commands = {
 		"/roomrequests blacklist, [user], (reason) - Bans a user from owning or requesting rooms. They will be automatically de-roomownered server wide as well.",
 		"/roomrequests unblacklist, [user] - Allow a user to request rooms and be a roomowner again.",
 		"/roomrequests viewblacklist, (user) - View the roomowner blacklist. If the user argument is provided, check to see if the user is roomowner banned.",
-		"/roomrequests [open|close] - Opens or closes room requests."
+		"/roomrequests [open|close] - Opens or closes room requests.",
 	],
 };
