@@ -15985,7 +15985,13 @@
 	},
 	"raichualola": {
 		"id": "raichualola",
-		"inherit": "raichu"
+		"inherit": "raichu",
+		"evolution": {
+			"trigger": "item",
+			"item": "thunderstone",
+			"evoMove": "psychic",
+			"evolvesTo": null
+		},
 	},
 	"sandshrewalola": {
 		"id": "sandshrewalola",
@@ -16120,7 +16126,13 @@
 	},
 	"exeggutoralola": {
 		"id": "exeggutoralola",
-		"inherit": "exeggutor"
+		"inherit": "exeggutor",
+		"evolution": {
+			"trigger": "item",
+			"item": "leafstone",
+			"evoMove": "dragonhammer",
+			"evolvesTo": null
+		},
 	},
 	"marowakalola": {
 		"id": "marowakalola",
