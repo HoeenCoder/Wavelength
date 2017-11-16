@@ -15991,7 +15991,7 @@
 			"item": "thunderstone",
 			"evoMove": "psychic",
 			"evolvesTo": null
-		},
+		}
 	},
 	"sandshrewalola": {
 		"id": "sandshrewalola",
@@ -16132,7 +16132,7 @@
 			"item": "leafstone",
 			"evoMove": "dragonhammer",
 			"evolvesTo": null
-		},
+		}
 	},
 	"marowakalola": {
 		"id": "marowakalola",
