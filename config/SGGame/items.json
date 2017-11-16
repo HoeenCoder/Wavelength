@@ -962,7 +962,7 @@
     },
     "tm01": {
         "id": "tm01",
-        "name": "TM 01",
+        "name": "TM 01 Work Up",
         "use": {
             "move": "workup",
             "noBattle": true
@@ -971,7 +971,7 @@
     },
     "tm02": {
         "id": "tm02",
-        "name": "TM 02",
+        "name": "TM 02 Dragon Claw",
         "use": {
             "move": "dragonclaw",
             "noBattle": true
@@ -980,7 +980,7 @@
     },
     "tm03": {
         "id": "tm03",
-        "name": "TM 03",
+        "name": "TM 03 Psyshock",
         "use": {
             "move": "psyshock",
             "noBattle": true
@@ -989,7 +989,7 @@
     },
     "tm04": {
         "id": "tm04",
-        "name": "TM 04",
+        "name": "TM 04 Calm Mind",
         "use": {
             "move": "calmmind",
             "noBattle": true
@@ -998,7 +998,7 @@
     },
     "tm05": {
         "id": "tm05",
-        "name": "TM 05",
+        "name": "TM 05 Roar",
         "use": {
             "move": "roar",
             "noBattle": true
@@ -1007,7 +1007,7 @@
     },
     "tm06": {
         "id": "tm06",
-        "name": "TM 06",
+        "name": "TM 06 Toxic",
         "use": {
             "move": "toxic",
             "noBattle": true
@@ -1016,7 +1016,7 @@
     },
     "tm07": {
         "id": "tm07",
-        "name": "TM 07",
+        "name": "TM 07 Hail",
         "use": {
             "move": "hail",
             "noBattle": true
@@ -1025,7 +1025,7 @@
     },
     "tm08": {
         "id": "tm08",
-        "name": "TM 08",
+        "name": "TM 08 Bulk Up",
         "use": {
             "move": "bulkup",
             "noBattle": true
@@ -1034,7 +1034,7 @@
     },
     "tm09": {
         "id": "tm09",
-        "name": "TM 09",
+        "name": "TM 09 Venoshock",
         "use": {
             "move": "venoshock",
             "noBattle": true
@@ -1043,7 +1043,7 @@
     },
     "tm10": {
         "id": "tm10",
-        "name": "TM 10",
+        "name": "TM 10 Hidden Power",
         "use": {
             "move": "hiddenpower",
             "noBattle": true
@@ -1052,7 +1052,7 @@
     },
     "tm11": {
         "id": "tm11",
-        "name": "TM 11",
+        "name": "TM 11 Sunny Day",
         "use": {
             "move": "sunnyday",
             "noBattle": true
@@ -1061,7 +1061,7 @@
     },
     "tm12": {
         "id": "tm12",
-        "name": "TM 12",
+        "name": "TM 12 Taunt",
         "use": {
             "move": "taunt",
             "noBattle": true
@@ -1070,7 +1070,7 @@
     },
     "tm13": {
         "id": "tm13",
-        "name": "TM 13",
+        "name": "TM 13 Ice Beam",
         "use": {
             "move": "icebeam",
             "noBattle": true
@@ -1079,7 +1079,7 @@
     },
     "tm14": {
         "id": "tm14",
-        "name": "TM 14",
+        "name": "TM 14 Blizzard",
         "use": {
             "move": "blizzard",
             "noBattle": true
@@ -1088,7 +1088,7 @@
     },
     "tm15": {
         "id": "tm15",
-        "name": "TM 15",
+        "name": "TM 15 Hyper Beam",
         "use": {
             "move": "hyperbeam",
             "noBattle": true
@@ -1097,7 +1097,7 @@
     },
     "tm16": {
         "id": "tm16",
-        "name": "TM 16",
+        "name": "TM 16 Light Screen",
         "use": {
             "move": "lightscreen",
             "noBattle": true
@@ -1106,7 +1106,7 @@
     },
     "tm17": {
         "id": "tm17",
-        "name": "TM 17",
+        "name": "TM 17 Protect",
         "use": {
             "move": "protect",
             "noBattle": true
@@ -1115,7 +1115,7 @@
     },
     "tm18": {
         "id": "tm18",
-        "name": "TM 18",
+        "name": "TM 18 Rain Dance",
         "use": {
             "move": "raindance",
             "noBattle": true
@@ -1124,7 +1124,7 @@
     },
     "tm19": {
         "id": "tm19",
-        "name": "TM 19",
+        "name": "TM 19 Roost",
         "use": {
             "move": "roost",
             "noBattle": true
@@ -1133,7 +1133,7 @@
     },
     "tm20": {
         "id": "tm20",
-        "name": "TM 20",
+        "name": "TM 20 Safeguard",
         "use": {
             "move": "safeguard",
             "noBattle": true
@@ -1142,7 +1142,7 @@
     },
     "tm21": {
         "id": "tm21",
-        "name": "TM 21",
+        "name": "TM 21 Frustration",
         "use": {
             "move": "frustration",
             "noBattle": true
@@ -1151,7 +1151,7 @@
     },
     "tm22": {
         "id": "tm22",
-        "name": "TM 22",
+        "name": "TM 22 Solar Beam",
         "use": {
             "move": "solarbeam",
             "noBattle": true
@@ -1160,7 +1160,7 @@
     },
     "tm23": {
         "id": "tm23",
-        "name": "TM 23",
+        "name": "TM 23 Smack Down",
         "use": {
             "move": "smackdown",
             "noBattle": true
@@ -1169,7 +1169,7 @@
     },
     "tm24": {
         "id": "tm24",
-        "name": "TM 24",
+        "name": "TM 24 Thunderbolt",
         "use": {
             "move": "thunderbolt",
             "noBattle": true
@@ -1178,7 +1178,7 @@
     },
     "tm25": {
         "id": "tm25",
-        "name": "TM 25",
+        "name": "TM 25 Thunder",
         "use": {
             "move": "thunder",
             "noBattle": true
@@ -1187,7 +1187,7 @@
     },
     "tm26": {
         "id": "tm26",
-        "name": "TM 26",
+        "name": "TM 26 Earthquake",
         "use": {
             "move": "earthquake",
             "noBattle": true
@@ -1196,7 +1196,7 @@
     },
     "tm27": {
         "id": "tm27",
-        "name": "TM 27",
+        "name": "TM 27 Return",
         "use": {
             "move": "return",
             "noBattle": true
@@ -1205,7 +1205,7 @@
     },
     "tm28": {
         "id": "tm28",
-        "name": "TM 28",
+        "name": "TM 28 Leech Life",
         "use": {
             "move": "leechlife",
             "noBattle": true
@@ -1214,7 +1214,7 @@
     },
     "tm29": {
         "id": "tm29",
-        "name": "TM 29",
+        "name": "TM 29 Psychic",
         "use": {
             "move": "psychic",
             "noBattle": true
@@ -1223,7 +1223,7 @@
     },
     "tm30": {
         "id": "tm30",
-        "name": "TM 30",
+        "name": "TM 30 Shadow Ball",
         "use": {
             "move": "shadowball",
             "noBattle": true
@@ -1232,7 +1232,7 @@
     },
     "tm31": {
         "id": "tm31",
-        "name": "TM 31",
+        "name": "TM 31 Brick Break",
         "use": {
             "move": "brickbreak",
             "noBattle": true
@@ -1241,7 +1241,7 @@
     },
     "tm32": {
         "id": "tm32",
-        "name": "TM 32",
+        "name": "TM 32 Double Team",
         "use": {
             "move": "doubleteam",
             "noBattle": true
@@ -1250,7 +1250,7 @@
     },
     "tm33": {
         "id": "tm33",
-        "name": "TM 33",
+        "name": "TM 33 Reflect",
         "use": {
             "move": "reflect",
             "noBattle": true
@@ -1259,7 +1259,7 @@
     },
     "tm34": {
         "id": "tm34",
-        "name": "TM 34",
+        "name": "TM 34 Sludge Wave",
         "use": {
             "move": "sludgewave",
             "noBattle": true
@@ -1268,7 +1268,7 @@
     },
     "tm35": {
         "id": "tm35",
-        "name": "TM 35",
+        "name": "TM 35 Flamethrower",
         "use": {
             "move": "flamethrower",
             "noBattle": true
@@ -1277,7 +1277,7 @@
     },
     "tm36": {
         "id": "tm36",
-        "name": "TM 36",
+        "name": "TM 36 Sludge Bomb",
         "use": {
             "move": "sludgebomb",
             "noBattle": true
@@ -1286,7 +1286,7 @@
     },
     "tm37": {
         "id": "tm37",
-        "name": "TM 37",
+        "name": "TM 37 Sandstorm",
         "use": {
             "move": "sandstorm",
             "noBattle": true
@@ -1295,7 +1295,7 @@
     },
     "tm38": {
         "id": "tm38",
-        "name": "TM 38",
+        "name": "TM 38 Fire Blast",
         "use": {
             "move": "fireblast",
             "noBattle": true
@@ -1304,7 +1304,7 @@
     },
     "tm39": {
         "id": "tm39",
-        "name": "TM 39",
+        "name": "TM 39 Rock Tomb",
         "use": {
             "move": "rocktomb",
             "noBattle": true
@@ -1313,7 +1313,7 @@
     },
     "tm40": {
         "id": "tm40",
-        "name": "TM 40",
+        "name": "TM 40 Aerial Ace",
         "use": {
             "move": "aerialace",
             "noBattle": true
@@ -1322,7 +1322,7 @@
     },
     "tm41": {
         "id": "tm41",
-        "name": "TM 41",
+        "name": "TM 41 Torment",
         "use": {
             "move": "torment",
             "noBattle": true
@@ -1331,7 +1331,7 @@
     },
     "tm42": {
         "id": "tm42",
-        "name": "TM 42",
+        "name": "TM 42 Facade",
         "use": {
             "move": "facade",
             "noBattle": true
@@ -1340,7 +1340,7 @@
     },
     "tm43": {
         "id": "tm43",
-        "name": "TM 43",
+        "name": "TM 43 Flame Charge",
         "use": {
             "move": "flamecharge",
             "noBattle": true
@@ -1349,7 +1349,7 @@
     },
     "tm44": {
         "id": "tm44",
-        "name": "TM 44",
+        "name": "TM 44 Rest",
         "use": {
             "move": "rest",
             "noBattle": true
@@ -1358,7 +1358,7 @@
     },
     "tm45": {
         "id": "tm45",
-        "name": "TM 45",
+        "name": "TM 45 Attract",
         "use": {
             "move": "attract",
             "noBattle": true
@@ -1367,7 +1367,7 @@
     },
     "tm46": {
         "id": "tm46",
-        "name": "TM 46",
+        "name": "TM 46 Thief",
         "use": {
             "move": "thief",
             "noBattle": true
@@ -1376,7 +1376,7 @@
     },
     "tm47": {
         "id": "tm47",
-        "name": "TM 47",
+        "name": "TM 47 Low Sweep",
         "use": {
             "move": "lowsweep",
             "noBattle": true
@@ -1385,7 +1385,7 @@
     },
     "tm48": {
         "id": "tm48",
-        "name": "TM 48",
+        "name": "TM 48 Round",
         "use": {
             "move": "round",
             "noBattle": true
@@ -1394,7 +1394,7 @@
     },
     "tm49": {
         "id": "tm49",
-        "name": "TM 49",
+        "name": "TM 49 Echoed Voice",
         "use": {
             "move": "echoedvoice",
             "noBattle": true
@@ -1403,7 +1403,7 @@
     },
     "tm50": {
         "id": "tm50",
-        "name": "TM 50",
+        "name": "TM 50 Overheat",
         "use": {
             "move": "overheat",
             "noBattle": true
@@ -1412,7 +1412,7 @@
     },
     "tm51": {
         "id": "tm51",
-        "name": "TM 51",
+        "name": "TM 51 Steel Wing",
         "use": {
             "move": "steelwing",
             "noBattle": true
@@ -1420,7 +1420,7 @@
         "slot": "tms"
     },
     "tm52": {
-        "id": "tm52",
+        "id": "tm52 Focus Blast",
         "name": "TM 52",
         "use": {
             "move": "focusblast",
@@ -1430,7 +1430,7 @@
     },
     "tm53": {
         "id": "tm53",
-        "name": "TM 53",
+        "name": "TM 53 Energy Ball",
         "use": {
             "move": "energyball",
             "noBattle": true
@@ -1439,7 +1439,7 @@
     },
     "tm54": {
         "id": "tm54",
-        "name": "TM 54",
+        "name": "TM 54 False Swipe",
         "use": {
             "move": "falseswipe",
             "noBattle": true
@@ -1448,7 +1448,7 @@
     },
     "tm55": {
         "id": "tm55",
-        "name": "TM 55",
+        "name": "TM 55 Scald",
         "use": {
             "move": "scald",
             "noBattle": true
@@ -1457,7 +1457,7 @@
     },
     "tm56": {
         "id": "tm56",
-        "name": "TM 56",
+        "name": "TM 56 Fling",
         "use": {
             "move": "fling",
             "noBattle": true
@@ -1466,7 +1466,7 @@
     },
     "tm57": {
         "id": "tm57",
-        "name": "TM 57",
+        "name": "TM 57 Charge Beam",
         "use": {
             "move": "chargebeam",
             "noBattle": true
@@ -1475,7 +1475,7 @@
     },
     "tm58": {
         "id": "tm58",
-        "name": "TM 58",
+        "name": "TM 58 Sky Drop",
         "use": {
             "move": "skydrop",
             "noBattle": true
@@ -1484,7 +1484,7 @@
     },
     "tm59": {
         "id": "tm59",
-        "name": "TM 59",
+        "name": "TM 59 Brutal Swing",
         "use": {
             "move": "brutalswing",
             "noBattle": true
@@ -1493,7 +1493,7 @@
     },
     "tm60": {
         "id": "tm60",
-        "name": "TM 60",
+        "name": "TM 60 Quash",
         "use": {
             "move": "quash",
             "noBattle": true
@@ -1502,7 +1502,7 @@
     },
     "tm61": {
         "id": "tm61",
-        "name": "TM 61",
+        "name": "TM 61 Will-O-Wisp",
         "use": {
             "move": "willowisp",
             "noBattle": true
@@ -1511,7 +1511,7 @@
     },
     "tm62": {
         "id": "tm62",
-        "name": "TM 62",
+        "name": "TM 62 Acrobatics",
         "use": {
             "move": "acrobatics",
             "noBattle": true
@@ -1520,7 +1520,7 @@
     },
     "tm63": {
         "id": "tm63",
-        "name": "TM 63",
+        "name": "TM 63 Embargo",
         "use": {
             "move": "embargo",
             "noBattle": true
@@ -1529,7 +1529,7 @@
     },
     "tm64": {
         "id": "tm64",
-        "name": "TM 64",
+        "name": "TM 64 Explosion",
         "use": {
             "move": "explosion",
             "noBattle": true
@@ -1538,7 +1538,7 @@
     },
     "tm65": {
         "id": "tm65",
-        "name": "TM 65",
+        "name": "TM 65 Shadow Claw",
         "use": {
             "move": "shadowclaw",
             "noBattle": true
@@ -1547,7 +1547,7 @@
     },
     "tm66": {
         "id": "tm66",
-        "name": "TM 66",
+        "name": "TM 66 Payback",
         "use": {
             "move": "payback",
             "noBattle": true
@@ -1556,7 +1556,7 @@
     },
     "tm67": {
         "id": "tm67",
-        "name": "TM 67",
+        "name": "TM 67 Smart Strike",
         "use": {
             "move": "smartstrike",
             "noBattle": true
@@ -1565,7 +1565,7 @@
     },
     "tm68": {
         "id": "tm68",
-        "name": "TM 68",
+        "name": "TM 68 Giga Impact",
         "use": {
             "move": "gigaimpact",
             "noBattle": true
@@ -1574,7 +1574,7 @@
     },
     "tm69": {
         "id": "tm69",
-        "name": "TM 69",
+        "name": "TM 69 Rock Polish",
         "use": {
             "move": "rockpolish",
             "noBattle": true
@@ -1583,7 +1583,7 @@
     },
     "tm70": {
         "id": "tm70",
-        "name": "TM 70",
+        "name": "TM 70 Aurora Veil",
         "use": {
             "move": "auroraveil",
             "noBattle": true
@@ -1592,7 +1592,7 @@
     },
     "tm71": {
         "id": "tm71",
-        "name": "TM 71",
+        "name": "TM 71 Stone Edge",
         "use": {
             "move": "stoneedge",
             "noBattle": true
@@ -1601,7 +1601,7 @@
     },
     "tm72": {
         "id": "tm72",
-        "name": "TM 72",
+        "name": "TM 72 Volt Switch",
         "use": {
             "move": "voltswitch",
             "noBattle": true
@@ -1610,7 +1610,7 @@
     },
     "tm73": {
         "id": "tm73",
-        "name": "TM 73",
+        "name": "TM 73 Thunder Wave",
         "use": {
             "move": "thunderwave",
             "noBattle": true
@@ -1619,7 +1619,7 @@
     },
     "tm74": {
         "id": "tm74",
-        "name": "TM 74",
+        "name": "TM 74 Gyro Ball",
         "use": {
             "move": "gyroball",
             "noBattle": true
@@ -1628,7 +1628,7 @@
     },
     "tm75": {
         "id": "tm75",
-        "name": "TM 75",
+        "name": "TM 75 Swords Dance",
         "use": {
             "move": "swordsdance",
             "noBattle": true
@@ -1637,7 +1637,7 @@
     },
     "tm76": {
         "id": "tm76",
-        "name": "TM 76",
+        "name": "TM 76 Fly",
         "use": {
             "move": "fly",
             "noBattle": true
@@ -1646,7 +1646,7 @@
     },
     "tm77": {
         "id": "tm77",
-        "name": "TM 77",
+        "name": "TM 77 Psych Up",
         "use": {
             "move": "psychup",
             "noBattle": true
@@ -1655,7 +1655,7 @@
     },
     "tm78": {
         "id": "tm78",
-        "name": "TM 78",
+        "name": "TM 78 Bulldoze",
         "use": {
             "move": "bulldoze",
             "noBattle": true
@@ -1664,7 +1664,7 @@
     },
     "tm79": {
         "id": "tm79",
-        "name": "TM 79",
+        "name": "TM 79 Frost Breath",
         "use": {
             "move": "frostbreath",
             "noBattle": true
@@ -1673,7 +1673,7 @@
     },
     "tm80": {
         "id": "tm80",
-        "name": "TM 80",
+        "name": "TM 80 Rock Slide",
         "use": {
             "move": "rockslide",
             "noBattle": true
@@ -1682,7 +1682,7 @@
     },
     "tm81": {
         "id": "tm81",
-        "name": "TM 81",
+        "name": "TM 81 X-Scissor",
         "use": {
             "move": "xscissor",
             "noBattle": true
@@ -1691,7 +1691,7 @@
     },
     "tm82": {
         "id": "tm82",
-        "name": "TM 82",
+        "name": "TM 82 Dragon Tail",
         "use": {
             "move": "dragontail",
             "noBattle": true
@@ -1700,7 +1700,7 @@
     },
     "tm83": {
         "id": "tm01",
-        "name": "TM 83",
+        "name": "TM 83 Infestation",
         "use": {
             "move": "infestation",
             "noBattle": true
@@ -1709,7 +1709,7 @@
     },
     "tm84": {
         "id": "tm84",
-        "name": "TM 84",
+        "name": "TM 84 Poison Jab",
         "use": {
             "move": "poisonjab",
             "noBattle": true
@@ -1718,7 +1718,7 @@
     },
     "tm85": {
         "id": "tm85",
-        "name": "TM 85",
+        "name": "TM 85 Dream Eater",
         "use": {
             "move": "dreameater",
             "noBattle": true
@@ -1727,7 +1727,7 @@
     },
     "tm86": {
         "id": "tm86",
-        "name": "TM 86",
+        "name": "TM 86 Grass Knot",
         "use": {
             "move": "grassknot",
             "noBattle": true
@@ -1736,7 +1736,7 @@
     },
     "tm87": {
         "id": "tm87",
-        "name": "TM 87",
+        "name": "TM 87 Swagger",
         "use": {
             "move": "swagger",
             "noBattle": true
@@ -1745,7 +1745,7 @@
     },
     "tm88": {
         "id": "tm88",
-        "name": "TM 88",
+        "name": "TM 88 Sleep Talk",
         "use": {
             "move": "sleeptalk",
             "noBattle": true
@@ -1754,7 +1754,7 @@
     },
     "tm89": {
         "id": "tm89",
-        "name": "TM 89",
+        "name": "TM 89 U-turn",
         "use": {
             "move": "uturn",
             "noBattle": true
@@ -1763,16 +1763,16 @@
     },
     "tm90": {
         "id": "tm90",
-        "name": "TM 90",
+        "name": "TM 90 Substitute",
         "use": {
-            "move": "substitue",
+            "move": "substitute",
             "noBattle": true
         },
         "slot": "tms"
     },
     "tm91": {
         "id": "tm91",
-        "name": "TM 91",
+        "name": "TM 91 Flash Cannon",
         "use": {
             "move": "flashcannon",
             "noBattle": true
@@ -1781,7 +1781,7 @@
     },
     "tm92": {
         "id": "tm92",
-        "name": "TM 92",
+        "name": "TM 92 Trick Room",
         "use": {
             "move": "trickroom",
             "noBattle": true
@@ -1790,7 +1790,7 @@
     },
     "tm93": {
         "id": "tm93",
-        "name": "TM 93",
+        "name": "TM 93 Wild Charge",
         "use": {
             "move": "wildcharge",
             "noBattle": true
@@ -1799,7 +1799,7 @@
     },
     "tm94": {
         "id": "tm94",
-        "name": "TM 94",
+        "name": "TM 94 Surf",
         "use": {
             "move": "surf",
             "noBattle": true
@@ -1808,7 +1808,7 @@
     },
     "tm95": {
         "id": "tm95",
-        "name": "TM 95",
+        "name": "TM 95 Snarl",
         "use": {
             "move": "snarl",
             "noBattle": true
@@ -1817,7 +1817,7 @@
     },
     "tm96": {
         "id": "tm96",
-        "name": "TM 96",
+        "name": "TM 96 Nature Power",
         "use": {
             "move": "naturepower",
             "noBattle": true
@@ -1826,7 +1826,7 @@
     },
     "tm97": {
         "id": "tm97",
-        "name": "TM 97",
+        "name": "TM 97 Dark Pulse",
         "use": {
             "move": "darkpulse",
             "noBattle": true
@@ -1835,7 +1835,7 @@
     },
     "tm98": {
         "id": "tm98",
-        "name": "TM 98",
+        "name": "TM 98 Waterfall",
         "use": {
             "move": "waterfall",
             "noBattle": true
@@ -1844,7 +1844,7 @@
     },
     "tm99": {
         "id": "tm99",
-        "name": "TM 99",
+        "name": "TM 99 Dazzling Gleam",
         "use": {
             "move": "dazzlinggleam",
             "noBattle": true
@@ -1853,7 +1853,7 @@
     },
     "tm100": {
         "id": "tm100",
-        "name": "TM 100",
+        "name": "TM 100 Confide",
         "use": {
             "move": "confide",
             "noBattle": true
