@@ -515,14 +515,8 @@ exports.WL = {
 		if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
 			pokemon.learnset = baseSpecies.learnset;
 		}
-		let used = [];
-		for (let move in pokemon.learnset) {
-			for (let learned in pokemon.learnset[move]) {
-				if (pokemon.learnset[move][learned].substr(0, 2) === '7M' && move === tm && !used[move] && curMoves.indexOf(move) === -1) {
-					moves.push("learn|" + slot + "|" + move);
-					used.push(move);
-				}
-			}
+		if (pokemon.learnset[tm] && curMoves.indexOf(tm) === -1) {
+			moves.push("learn|" + slot + "|" + tm);
 		}
 		return moves;
 	},
