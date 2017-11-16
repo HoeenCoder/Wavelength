@@ -1013,15 +1013,15 @@ exports.commands = {
 								return user.console.update(...user.console.next(canReturn));
 							}
 						}
-						if (item.move && target[3]) {
+						if (item.use.move) {
 							let pokemon = Dex.getTemplate(player.party[target[3]].species);
 							let canReturn = true;
-							let learnedMove = WL.getTmMoves(pokemon, item.move, player.party[target[3]].moves, target[3]);
+							let learnedMove = WL.getTmMoves(pokemon, item.use.move, player.party[target[3]].moves, target[3]);
 							if (learnedMove.length) {
 								user.console.queue = user.console.queue.concat(learnedMove);
 								canReturn = false;
 							} else {
-								user.console.queue.push('text|' + player.party[target[3]].name + ' is not compatible with ' + item.name + '\'s move ' + item.move + '.');
+								user.console.queue.push('text|' + player.party[target[3]].name + ' is not compatible with ' + item.name + '\'s move ' + item.use.move + '.');
 							}
 							if (!canReturn) {
 								user.console.curPane = null;
