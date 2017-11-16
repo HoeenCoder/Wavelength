@@ -43,7 +43,7 @@ exports.commands = {
 			paid: false,
 		};
 		if (cmd !== 'confirmrequestroom') {
-			return this.sendReplyBox(`<center><h3>Please confirm your room request</h3><br/><a href="http://ps-wavelength.proboards.com/thread/36/wavelength-server-faq?page=1&scrollTo=174"><b>If you haven't already, read Wavelength's policy on Room Requests</b></a><br/><br/><b>Room Name</b>: ${curRequest.name}<br/><b>Room Type</b>: ${curRequest.type}<br/><b>Description</b>:${curRequest.desc}<br/>${hasRoom ? `<b>Since you already have a room, this will cost 50 ${global.currencyPlural}.</b><br/>(If the request is rejected or canceled, you will be refunded.)<br/><br/>` : ``}<button name="send" value="/confirmrequestroom ${curRequest.name}, ${curRequest.type}, ${curRequest.desc}" class="button">Yes, this is correct</button><button class="button" name="receive" value="|c|~Wavelength Server|Request the room again, but with the changes you want to make to it.">No, I want to change something</button></center>`);
+			return this.sendReplyBox(`<center><h3>Please confirm your room request</h3><br/><a href="http://ps-wavelength.proboards.com/thread/36/wavelength-server-faq?page=1&scrollTo=174"><b>If you haven't already, read Wavelength's policy on Room Requests</b></a><br/><br/><b>Room Name</b>: ${curRequest.name}<br/><b>Room Type</b>: ${curRequest.type}<br/><b>Description</b>:${curRequest.desc}<br/>${hasRoom ? `<b>Since you already have a room, this will cost 50 ${global.currencyPlural}.</b><br/>(If the request is rejected or cancelled, you will be refunded.)<br/><br/>` : ``}<button name="send" value="/confirmrequestroom ${curRequest.name}, ${curRequest.type}, ${curRequest.desc}" class="button">Yes, this is correct</button><button class="button" name="receive" value="|c|~Wavelength Server|Request the room again, but with the changes you want to make to it.">No, I want to change something</button></center>`);
 		} else if (hasRoom) {
 			let funds = Economy.readMoney(user.userid);
 			if (funds < 50) return this.errorReply(`You need 50 ${global.currencyPlural} to get another chatroom`);
@@ -74,14 +74,14 @@ exports.commands = {
 		if (!user.autoconfirmed) return this.errorReply(`You must be autoconfirmed to request a room.`);
 		let curRequest = Db.rooms.get(user.userid, null);
 		if (!curRequest || curRequest.blacklisted) return this.errorReply(`${(target === user.userid ? "You don't " : target + " does not ")} have a pending room request.`);
-		if (curRequest.status !== "pending") return this.errorReply(`Your room request was already ${curRequest.status}, and cannot be canceled.`);
-		curRequest.status = "canceled";
+		if (curRequest.status !== "pending") return this.errorReply(`Your room request was already ${curRequest.status}, and cannot be cancelled.`);
+		curRequest.status = "cancelled";
 		curRequest.by = user.userid;
 		if (curRequest.paid) {
 			Economy.writeMoney(user.userid, 50);
-			Economy.logTransaction(`${toId(target)} canceled their paid room request, so they were refuned 50 ${global.currencyPlural}.`);
+			Economy.logTransaction(`${toId(target)} cancelled their paid room request, so they were refunded 50 ${global.currencyPlural}.`);
 		}
-		this.sendReply(`Your room request was canceled${curRequest.paid ? `, and you were refuned 50 ${global.currencyPlural}` : ``}.`);
+		this.sendReply(`Your room request was cancelled${curRequest.paid ? `, and you were refunded 50 ${global.currencyPlural}` : ``}.`);
 	},
 	checkroomrequesthelp: ["/checkroomrequest (username) - Check a users current room request. leave username blank to default to your request. Requires: &, ~ if username is not your username."],
 	roomrequests: function (target, room, user) {
@@ -153,7 +153,7 @@ exports.commands = {
 			req.by = user.userid;
 			if (req.paid) {
 				Economy.writeMoney(toId(target[1]), 50);
-				Economy.logTransaction(`${toId(target)}'s paid room request was rejected, so they were refuned 50 ${global.currencyPlural}.`);
+				Economy.logTransaction(`${toId(target)}'s paid room request was rejected, so they were refunded 50 ${global.currencyPlural}.`);
 			}
 			Db.rooms.set(toId(target[1]), req);
 			return this.sendReply(`You rejected the room request from ${target[1]}`);
@@ -165,7 +165,7 @@ exports.commands = {
 			if (req.blacklisted) return this.errorReply(`${target[1]} is banned from owning rooms. If you want to undo the blacklist do /roomrequests unblacklist, ${target[1]}`);
 			if (req.paid && req.status === "pending") {
 				Economy.writeMoney(toId(target[1]), 50);
-				Economy.logTransaction(`${toId(target)}'s paid room request was deleted, so they were refuned 50 ${global.currencyPlural}.`);
+				Economy.logTransaction(`${toId(target)}'s paid room request was deleted, so they were refunded 50 ${global.currencyPlural}.`);
 			}
 			Db.rooms.remove(toId(target[1]));
 			return this.sendReply(`You deleted the room request from ${target[1]}`);
@@ -217,7 +217,7 @@ exports.commands = {
 			});
 			if (demoted.length) Rooms.global.writeChatRoomData();
 			if (targetUser) targetUser.popup(`|html|<center>${user.name} has banned you from owning rooms. ${(target[2] ? `(${target[2].trim()})` : ``)}<br/>You have been automatcally demoted from room owner in ${demoted.join(', ')}.<br/>To appeal your room ownership blacklist, pm a leader or admin. ${Config.appealurl ? `<br/>Or you can <a href="${Config.appealurl}">appeal on forums</a>.` : ``}</center>`);
-			if (Rooms('upperstaff')) Monitor.adminlog(`${target[1]} was banned from owning rooms by ${user.name} ${(demoted.length ? `and demoted from # in ${demoted.join(', ')}` : ``)}. ${(target[2] ? `(${target[2].trim()})` : ``)}`);
+			Monitor.adminlog(`${target[1]} was banned from owning rooms by ${user.name} ${(demoted.length ? `and demoted from # in ${demoted.join(', ')}` : ``)}. ${(target[2] ? `(${target[2].trim()})` : ``)}`);
 			if (targetUser && targetUser.trusted) Monitor.log("[CrisisMonitor] Trusted user " + targetUser.name + (targetUser.trusted !== targetUser.userid ? " (" + targetUser.trusted + ")" : "") + " was banned from owning rooms by " + user.name + ", and should probably be demoted.");
 			this.globalModlog("ROOMOWNERBAN", (targetUser || target[1]), " by " + user.name + (target[2] ? ": " + target[2] : ""));
 			return this.sendReply(`${target[1]} was banned from owning rooms.`);
@@ -228,7 +228,7 @@ exports.commands = {
 			req = Db.rooms.get(target[1]);
 			if (!req || !req.blacklisted) return this.errorReply(`${target[1]} is not banned from owning rooms.`);
 			Db.rooms.remove(target[1]);
-			if (Rooms('upperstaff')) Monitor.adminlog(`${target[1]} was unbanned from owning rooms by ${user.name}.`);
+			Monitor.adminlog(`${target[1]} was unbanned from owning rooms by ${user.name}.`);
 			this.globalModlog("UNROOMOWNERBAN", target[1], " by " + user.name);
 			return this.sendReply(`${target[1]} is no longer banned from owning rooms.`);
 			//break;
@@ -263,14 +263,16 @@ exports.commands = {
 			return this.parse('/help roomrequests');
 		}
 	},
-	roomrequestshelp: ["/roomrequests - Manage room requests. Requires &, ~. Accepts the following arguments:",
-			   "/roomrequests view - View and manage all current room requests",
-			   "/roomrequests accept, [requester] - Accepts a room request and creates the room.",
-			   "/roomrequests reject, [requester] - Rejects a room request.",
-			   "/roomrequests modify, [requester], [name|type], [new name || public|hidden|secret] - Modify a room requests name or type.",
-			   "/roomrequests delete, [requester] - Deletes a room request, deleting a room request will not cause a cooldown period before the user can send another request.",
-			   "/roomrequests blacklist, [user], (reason) - Bans a user from owning or requesting rooms. They will be automatically de-roomownered server wide as well.",
-			   "/roomrequests unblacklist, [user] - Allow a user to request rooms and be a roomowner again.",
-			   "/roomrequests viewblacklist, (user) - View the roomowner blacklist. If the user argument is provided, check to see if the user is roomowner banned.",
-			   "/roomrequests [open|close] - Opens or closes room requests."],
+	roomrequestshelp: [
+		"/roomrequests - Manage room requests. Requires &, ~. Accepts the following arguments:",
+		"/roomrequests view - View and manage all current room requests",
+		"/roomrequests accept, [requester] - Accepts a room request and creates the room.",
+		"/roomrequests reject, [requester] - Rejects a room request.",
+		"/roomrequests modify, [requester], [name|type], [new name || public|hidden|secret] - Modify a room requests name or type.",
+		"/roomrequests delete, [requester] - Deletes a room request, deleting a room request will not cause a cooldown period before the user can send another request.",
+		"/roomrequests blacklist, [user], (reason) - Bans a user from owning or requesting rooms. They will be automatically de-roomownered server wide as well.",
+		"/roomrequests unblacklist, [user] - Allow a user to request rooms and be a roomowner again.",
+		"/roomrequests viewblacklist, (user) - View the roomowner blacklist. If the user argument is provided, check to see if the user is roomowner banned.",
+		"/roomrequests [open|close] - Opens or closes room requests."
+	],
 };
