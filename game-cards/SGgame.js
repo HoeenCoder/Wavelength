@@ -696,7 +696,7 @@ exports.commands = {
 				} else if (action[3] && obj.bag.items[action[3]] && obj.bag.items[action[3]] >= 1) {
 					obj.bag.items[action[3]]--;
 				}
-				let nMoves = WL.getNewMoves(Dex.getTemplate(pokemon.species), (pokemon.level - 1), pokemon.level, pokemon.moves, action[1]);
+				let nMoves = WL.getNewMoves(Dex.getTemplate(pokemon.species), (pokemon.level - 1), pokemon.level, pokemon.moves, action[1], true);
 				nMoves = nMoves.reverse();
 				for (let i = 0; i < nMoves.length; i++) {
 					user.console.queue.unshift(nMoves[i]);

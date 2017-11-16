@@ -459,6 +459,10 @@ exports.WL = {
 			case 'nincada':
 				// Falls through due to special rule
 				break;
+			case 'cosmoem':
+				// ATM: 50/50 for each forme
+				valid = valid.splice(Math.floor(Math.random() * valid.length), 1);
+				break;
 			default:
 				console.log('Multiple valid evolutions detected and unhandled. Base: ' + pokemon.species + '. Valid Evos: ' + valid.join('|'));
 			}
@@ -483,7 +487,7 @@ exports.WL = {
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
 	},
-	getNewMoves: function (pokemon, olvl, lvl, curMoves, slot) {
+	getNewMoves: function (pokemon, olvl, lvl, curMoves, slot, evo) {
 		if (!pokemon || olvl >= lvl) return [];
 		if (typeof pokemon === 'string') pokemon = Dex.getTemplate(pokemon);
 		if (!pokemon.exists) throw new Error('Can\'t get new moves for non-existant pokemon "' + pokemon.id + '"');
@@ -500,6 +504,15 @@ exports.WL = {
 					moves.push("learn|" + slot + "|" + move);
 					used.push(move);
 				}
+			}
+		}
+		if (evo) {
+			let eMoves = this.getEvoData(pokemon).evoMove;
+			if (!eMoves) return moves;
+			eMoves = eMoves.split('|');
+			for (let i = 0; i < eMoves.length; i++) {
+				if (used.indexOf(eMoves[i]) > -1 || curMoves.indexOf(eMoves[i]) > -1) continue;
+				moves.push("learn|" + slot + "|" + eMoves[i]);
 			}
 		}
 		return moves;
