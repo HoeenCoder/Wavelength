@@ -1171,6 +1171,7 @@ class ModdedDex {
 			j = buf.indexOf('|', i);
 			if (j < 0) return null;
 			if (i !== j) set.level = parseInt(buf.substring(i, j));
+			if (!set.level) set.level = 100;
 			i = j + 1;
 
 			// happiness
