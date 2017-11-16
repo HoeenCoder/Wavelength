@@ -1913,11 +1913,10 @@ exports.Formats = [
 		banlist: ['CAP'],
 	},
 	{
-		name: "[Gen 7] [SGgame] Lvl 50 Anything Goes",
+		name: "[Gen 7] [SGgame] Lvl 100 Anything Goes",
 		desc: ["Anything Goe rules with the teams you build in SGgame.",
-			"All pokemon are set to level 50 for the duration of the match."],
-		forcedLevel: 50,
-		maxForcedLevel: 50,
+			"All pokemon are set to level 100 for the duration of the match."],
+		forcedLevel: 100,
 		useSGgame: true,
 		noExp: true,
 
