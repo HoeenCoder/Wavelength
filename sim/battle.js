@@ -22,6 +22,22 @@ const WL = require('./WL.js').WL;
  * @property {Effect?} effect
  */
 
+/**
+ * An object representing a single action that can be chosen.
+ *
+ * @typedef {Object} Action
+ * @property {string} choice - a choice
+ * @property {Pokemon} [pokemon] - the pokemon making the choice
+ * @property {number} [targetLoc] - location of the target, relative to pokemon's side
+ * @property {string} [move] - a move to use
+ * @property {Pokemon} [target] - the target of the choice
+ * @property {number} [index] - the chosen index in team preview
+ * @property {number} [priority] - priority of the chosen index
+ * @property {Side} [side] - the pokemon's side
+ * @property {?boolean} [mega] - true if megaing or ultra bursting
+ * @property {?boolean} [zmove] - true if zmoving
+ */
+
 class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {string} formatid
@@ -2517,7 +2533,7 @@ class Battle extends Dex.ModdedDex {
 			}
 		}
 
-		let deferPriority = this.gen >= 7 && decision.mega && !decision.pokemon.template.isMega;
+		let deferPriority = this.gen >= 7 && decision.mega && decision.mega !== 'done';
 		if (decision.move) {
 			let target = null;
 
@@ -2987,6 +3003,7 @@ class Battle extends Dex.ModdedDex {
 			const moveIndex = this.queue.findIndex(queuedDecision => queuedDecision.pokemon === decision.pokemon && queuedDecision.choice === 'move');
 			if (moveIndex >= 0) {
 				const moveDecision = this.queue.splice(moveIndex, 1)[0];
+				moveDecision.mega = 'done';
 				this.insertQueue(moveDecision, true);
 			}
 			return false;

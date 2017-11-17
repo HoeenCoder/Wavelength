@@ -390,7 +390,6 @@ class CommandContext {
 		if (!commandHandler && !recursing) {
 			for (let g in Config.groups) {
 				let groupid = Config.groups[g].id;
-				target = toId(target);
 				if (cmd === groupid) {
 					return this.splitCommand(`/promote ${target}, ${g}`, true);
 				} else if (cmd === 'global' + groupid) {
@@ -399,6 +398,8 @@ class CommandContext {
 					return this.splitCommand(`/demote ${target}`, true);
 				} else if (cmd === 'room' + groupid) {
 					return this.splitCommand(`/roompromote ${target}, ${g}`, true);
+				} else if (cmd === 'forceroom' + groupid) {
+					return this.splitCommand(`/roompromote !!!${target}, ${g}`, true);
 				} else if (cmd === 'roomde' + groupid || cmd === 'deroom' + groupid || cmd === 'roomun' + groupid) {
 					return this.splitCommand(`/roomdemote ${target}`, true);
 				}
@@ -986,11 +987,13 @@ Chat.parse = function (message, room, user, connection) {
 	return context.parse();
 };
 
-Chat.sendPM = function (message, user, pmTarget) {
+Chat.sendPM = function (message, user, pmTarget, onlyRecipient = null) {
 	let noEmotes = message;
 	let emoticons = WL.parseEmoticons(message);
 	if (emoticons) message = "/html " + emoticons;
 	let buf = `|pm|${user.getIdentity()}|${pmTarget.getIdentity()}|${(WL.ignoreEmotes[user.userid] ? noEmotes : message)}`;
+	// TODO is onlyRecipient a user? If so we should check if they are ignoring emoticions.
+	if (onlyRecipient) return onlyRecipient.send(buf);
 	user.send(buf);
 	if (Users.ShadowBan.checkBanned(user)) {
 		Users.ShadowBan.addMessage(this.user, "Private to " + this.pmTarget.getIdentity(), noEmotes);
