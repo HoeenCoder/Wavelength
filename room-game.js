@@ -61,10 +61,11 @@ class RoomGamePlayer {
 // globally Rooms.RoomGame
 class RoomGame {
 	/**
-	 * @param {Room} room
+	 * @param {ChatRoom | GameRoom} room
 	 */
 	constructor(room) {
 		this.id = room.id;
+		/** @type {ChatRoom | GameRoom} */
 		this.room = room;
 		this.gameid = 'game';
 		this.title = 'Game';
@@ -76,7 +77,7 @@ class RoomGame {
 
 	destroy() {
 		this.room.game = null;
-		this.room = null;
+		this.room = /** @type {any} */ (null);
 		for (let i in this.players) {
 			this.players[i].destroy();
 		}
@@ -164,42 +165,23 @@ class RoomGame {
 	// connections, but a single PS user. Each tab can be in separate
 	// rooms.
 
-	// onJoin(user)
-	//   Called when a user joins a room. (i.e. when the user's first
-	//   connection joins)
-
-	// onRename(user, oldUserid, isJoining, isForceRenamed)
-	//   Called when a user in the game is renamed. `isJoining` is true
-	//   if the user was previously a guest, but now has a username.
-	//   Check `!user.named` for the case where a user previously had a
-	//   username but is now a guest. By default, updates a player's
-	//   name as long as allowRenames is set to true.
-
-	// onLeave(user)
-	//   Called when a user leaves the room. (i.e. when the user's last
-	//   connection leaves)
-
 	/**
-	 * Called each time a connection joins a room (after onJoin if
-	 * applicable). By default, this is also called when connection
-	 * is updated in some way (such as by changing user or renaming).
-	 * If you don't want this behavior, override onUpdateConnection
-	 * and/or onRename.
+	 * Called when a user joins a room. (i.e. when the user's first
+	 * connection joins)
+	 *
+	 * While connection is passed, it should not usually be used:
+	 * Any handling of connections should happen in onConnect.
 	 * @param {User} user
 	 * @param {Connection} connection
 	 */
-	onConnect(user, connection) {}
-
-	// onUpdateConnection(user, connection)
-	//   Called for each connection in a room that changes users by
-	//   merging into a different user. By default, runs the onConnect
-	//   handler.
-
-	// Player updates and an up-to-date report of what's going on in
-	// the game should be sent during `onConnect`. You should rarely
-	// need to handle the other events.
+	onJoin(user, connection) {}
 
 	/**
+	 * Called when a user in the game is renamed. `isJoining` is true
+	 * if the user was previously a guest, but now has a username.
+	 * Check `!user.named` for the case where a user previously had a
+	 * username but is now a guest. By default, updates a player's
+	 * name as long as allowRenames is set to true.
 	 * @param {User} user
 	 * @param {string} oldUserid
 	 * @param {boolean} isJoining
@@ -218,6 +200,30 @@ class RoomGame {
 	}
 
 	/**
+	 * Called when a user leaves the room. (i.e. when the user's last
+	 * connection leaves)
+	 * @param {User} user
+	 */
+	onLeave(user) {}
+
+	/**
+	 * Called each time a connection joins a room (after onJoin if
+	 * applicable). By default, this is also called when connection
+	 * is updated in some way (such as by changing user or renaming).
+	 * If you don't want this behavior, override onUpdateConnection
+	 * and/or onRename.
+	 * @param {User} user
+	 * @param {Connection} connection
+	 */
+	onConnect(user, connection) {}
+
+	/**
+	 * Called for each connection in a room that changes users by
+	 * merging into a different user. By default, runs the onConnect
+	 * handler.
+	 * Player updates and an up-to-date report of what's going on in
+	 * the game should be sent during `onConnect`. You should rarely
+	 * need to handle the other events.
 	 * @param {User} user
 	 * @param {Connection} connection
 	 */

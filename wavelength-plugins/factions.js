@@ -1,5 +1,5 @@
-/******************************  
-*         Factions            * 
+/******************************
+*         Factions            *
 *      Idea by Desokoro       *
 *  Coded by WGC and Bladicon  *
 *Credits to jd for League file*
