@@ -515,7 +515,7 @@ exports.WL = {
 		if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
 			pokemon.learnset = baseSpecies.learnset;
 		}
-		if (pokemon.learnset[tm] && curMoves.indexOf(tm) === -1) {
+		if (pokemon.learnset[tm] && pokemon.learnset[tm].includes('7M') && curMoves.indexOf(tm) === -1) {
 			moves.push("learn|" + slot + "|" + tm);
 		}
 		return moves;
