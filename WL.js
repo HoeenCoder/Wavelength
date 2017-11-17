@@ -440,7 +440,7 @@ exports.WL = {
 						}
 					}
 					if (!rem) continue;
-				} else if (pokemon.species === '') {
+				} else if (pokemon.species === 'rockruff') {
 					let now = new Date().getHours();
 					if (now !== 17 || pokemon.ability !== 'Own Tempo') continue;
 				}
