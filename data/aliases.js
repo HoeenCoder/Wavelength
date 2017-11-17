@@ -275,6 +275,7 @@ exports.BattleAliases = {
 	"lycanrocd": "Lycanroc-Dusk",
 	"necrozmadm": "Necrozma-Dusk-Mane",
 	"necrozmadw": "Necrozma-Dawn-Wings",
+	"necrozmau": "Necrozma-Ultra",
 	"ultranecrozma": "Necrozma-Ultra",
 	"ufop": "Pokestar UFO-2",
 	"ufopsychic": "Pokestar UFO-2",
@@ -326,6 +327,9 @@ exports.BattleAliases = {
 	"pokestarufoflying": "Pokestar UFO",
 	"ufof": "Pokestar UFO",
 	"ufoflying": "Pokestar UFO",
+
+	// event formes
+	"rockruffdusk": "Rockruff",
 
 	// cosmetic formes
 	"burmygrass": "Burmy",
