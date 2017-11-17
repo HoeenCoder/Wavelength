@@ -104,7 +104,14 @@ Chat.commands = undefined;
  * Load chat filters
  *********************************************************/
 Chat.filters = [];
-Chat.filter = function (message, user, room, connection, targetUser) {
+/**
+ * @param {string} message
+ * @param {User} user
+ * @param {ChatRoom} room
+ * @param {Connection} connection
+ * @param {User?} [targetUser]
+ */
+Chat.filter = function (message, user, room, connection, targetUser = null) {
 	// Chat filters can choose to:
 	// 1. return false OR null - to not send a user's message
 	// 2. return an altered string - to alter a user's message
@@ -162,6 +169,12 @@ Chat.hostfilters = [];
 Chat.hostfilter = function (host, user, connection) {
 	for (const filter of Chat.hostfilters) {
 		filter(host, user, connection);
+	}
+};
+Chat.loginfilters = [];
+Chat.loginfilter = function (user, oldUser, usertype) {
+	for (const filter of Chat.loginfilters) {
+		filter(user, oldUser, usertype);
 	}
 };
 
@@ -1023,6 +1036,7 @@ Chat.loadPlugins = function () {
 	if (Config.chatfilter) Chat.filters.push(Config.chatfilter);
 	if (Config.namefilter) Chat.namefilters.push(Config.namefilter);
 	if (Config.hostfilter) Chat.hostfilters.push(Config.hostfilter);
+	if (Config.loginfilter) Chat.loginfilters.push(Config.loginfilter);
 
 	// Install plug-in commands and chat filters
 
@@ -1042,6 +1056,7 @@ Chat.loadPlugins = function () {
 		if (plugin.chatfilter) Chat.filters.push(plugin.chatfilter);
 		if (plugin.namefilter) Chat.namefilters.push(plugin.namefilter);
 		if (plugin.hostfilter) Chat.hostfilters.push(plugin.hostfilter);
+		if (plugin.loginfilter) Chat.loginfilters.push(plugin.loginfilter);
 	}
 	for (let file of FS('wavelength-plugins').readdirSync()) {
 		if (file.substr(-3) !== '.js') continue;

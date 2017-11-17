@@ -781,16 +781,16 @@ class User {
 			if (user.namelocked) user.named = true;
 
 			Rooms.global.checkAutojoin(user);
-			if (Config.loginfilter) Config.loginfilter(user, this, userType);
 			WL.giveDailyReward(user);
+			Chat.loginfilter(user, this, userType);
 			return true;
 		}
 
 		// rename success
 		if (this.forceRename(name, registered)) {
 			Rooms.global.checkAutojoin(this);
-			if (Config.loginfilter) Config.loginfilter(this, null, userType);
 			WL.giveDailyReward(this);
+			Chat.loginfilter(this, null, userType);
 			return true;
 		}
 		return false;
