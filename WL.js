@@ -440,6 +440,9 @@ exports.WL = {
 						}
 					}
 					if (!rem) continue;
+				} else if (pokemon.species === '') {
+					let now = new Date().getHours();
+					if (now !== 17 || pokemon.ability !== 'Own Tempo') continue;
 				}
 			}
 			valid.push(evos[e]);
@@ -782,7 +785,7 @@ exports.WL = {
 			let banned = {illegal: 1, cap: 1, capnfe: 1, caplc: 1};
 			if (!poke.exists || toId(poke.tier) in banned) continue;
 			if (poke.forme) {
-				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'partner', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'dusk', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash', 'dawnwings', 'duskmane'];
 				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
 			}
 			this.wildPokemon.push(poke.id);

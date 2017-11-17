@@ -14688,7 +14688,7 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": null,
-			"evolvesTo": "lycanroc|lycanrocmidnight"
+			"evolvesTo": "lycanroc|lycanrocmidnight|lycanrocdusk"
 		},
 		"baseExp": 56,
 		"evDrops": {
@@ -15838,6 +15838,103 @@
 		},
 		"totalEvDrops": 3
 	},
+	"poipole": {
+		"expType": "slow",
+		"num": 803,
+		"rate": "20",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": "naganadel"
+		},
+		"baseExp": 114,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 0,
+			"spd": 1,
+			"spe": 0
+		},
+		"totalEvDrops": 1
+	},
+	"naganadel": {
+		"expType": "slow",
+		"num": 804,
+		"rate": "10",
+		"evolution": {
+			"trigger": "level",
+			"move": "dragonpulse",
+			"evoMove": "aircutter",
+			"evolvesTo": null
+		},
+		"baseExp": 114,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 3,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 3
+	},
+	"stakataka": {
+		"expType": "slow",
+		"num": 805,
+		"rate": "30",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		},
+		"baseExp": 114,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 3,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 3
+	},
+	"blacephalon": {
+		"expType": "slow",
+		"num": 806,
+		"rate": "30",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		},
+		"baseExp": 114,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 3,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 3
+	},
+	"zeraora": {
+		"expType": "slow",
+		"num": 807,
+		"rate": "3",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		},
+		"baseExp": 120,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 3
+		},
+		"totalEvDrops": 3
+	},
 	"venusaurmega": {
 		"id": "venusaurmega",
 		"inherit": "venusaur",
@@ -15977,6 +16074,14 @@
 	},
 	"pikachualola": {
 		"id": "pikachualola",
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachupartner": {
+		"id": "pikachupartner",
 		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
@@ -17136,6 +17241,16 @@
 		    "evolvesTo": null
 		}
 	},
+	"lycanrocdusk": {
+		"id": "lycanrocdusk",
+		"inherit": "lycanroc",
+		"evolution": {
+			"trigger": "level",
+			"level": 25,
+			"special": true,
+			"evolvesTo": null
+		}
+	},
 	"wishiwashischool": {
 		"id": "wishiwashischool",
 		"inherit": "wishiwashi",
@@ -17300,6 +17415,14 @@
 			"spd": 0,
 			"spe": 0
 		}
+	},
+	"necrozmaduskmane": {
+		"id": "necrozmaduskmane",
+		"inherit": "necrozma"
+	},
+	"necrozmadawnwings": {
+		"id": "necrozmadawnwings",
+		"inherit": "necrozma"
 	},
 	"magearnaoriginal": {
 		"id": "magearnaoriginal",
