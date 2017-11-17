@@ -15,8 +15,8 @@
 		"Config": false, "Monitor": false, "toId": false, "Dex": false, "LoginServer": false,
 		"Users": false, "Punishments": false, "Rooms": false, "Verifier": false, "Chat": false,
 		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false, "Ladders": false,
-        	"WL": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false, "currencyPlural": false,
-        	"writeSSB": false, "Ontime": false, "rankLadder": false, "Console": false
+        "TeamValidatorAsync": false, "WL": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false,
+        "currencyPlural": false, "writeSSB": false, "Ontime": false, "rankLadder": false, "Console": false,
 	},
 	"extends": "eslint:recommended",
 	"rules": {
@@ -93,7 +93,7 @@
 		"no-undef": ["error", {"typeof": true}],
 		"no-undefined": "off",
 		"no-unused-vars": ["warn", {"args": "none"}],
-		"no-use-before-define": ["error", {"functions": false, "classes": false}],
+		"no-use-before-define": ["error", {"functions": false, "classes": false, "variables": false}],
 
 		"callback-return": [2, ["callback", "cb", "done"]],
 		"no-mixed-requires": "error",
@@ -136,7 +136,7 @@
 		"no-new-object": "error",
 		"no-spaced-func": "error",
 		"no-ternary": "off",
-		"no-trailing-spaces": "error",
+		"no-trailing-spaces": ["error", {"ignoreComments": false}],
 		"no-underscore-dangle": "off",
 		"no-unneeded-ternary": "error",
 		"object-curly-spacing": ["error", "never"],

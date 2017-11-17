@@ -3,9 +3,9 @@
 const fs = require('fs');
 
 exports.WL = {
-    gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
-    itemData: JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8')),    
-    /**
+	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
+	itemData: JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8')),
+	/**
 	* @param {Object} battle The battle object.
 	* @param {String} side The side that the COM is playing on. ("p1" or "p2")
 	* @param {String} type The type of action to take. (Currently supporting: "random", "trainer")
@@ -32,7 +32,7 @@ exports.WL = {
 				let moves = battle[side].pokemon[0].moves.slice(0);
 				let best = {slot: 0, effectiveness: -3, noPP: 0};
 				for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
-					if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) best.noPP++;;
+					if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) best.noPP++;
 				}
 				if (best.noPP === moves.length) {
 					// Struggle
@@ -120,9 +120,9 @@ exports.WL = {
 		switch (type) {
 		case 'erratic':
 			if (n <= 50) EXP = ((Math.pow(n, 3) * (100 - n))) / 50;
-			if (50 <= n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
-			if (68 <= n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
-			if (98 <= n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
+			if (50 <= n && n <= 68) EXP = ((Math.pow(n, 3) * (150 - n))) / 100;
+			if (68 <= n && n <= 98) EXP = ((Math.pow(n, 3) * ((1911 - (10 * n)) / 3))) / 500;
+			if (98 <= n && n <= 100) EXP = ((Math.pow(n, 3) * (160 - n))) / 100;
 			break;
 		case 'fast':
 			EXP = (4 * Math.pow(n, 3)) / 5;
@@ -138,8 +138,8 @@ exports.WL = {
 			break;
 		case 'fluctuating':
 			if (n <= 15) EXP = Math.pow(n, 3) * ((((n + 1) / 3) + 24) / 50);
-			if (15 <= n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
-			if (36 <= n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
+			if (15 <= n && n <= 36) EXP = Math.pow(n, 3) * ((n + 14) / 50);
+			if (36 <= n && n <= 100) EXP = Math.pow(n, 3) * (((n / 2) + 32) / 50);
 			break;
 		}
 		if (EXP < 0) return 0; // Experience underflow glitch

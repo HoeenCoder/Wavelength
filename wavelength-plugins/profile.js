@@ -66,6 +66,13 @@ function showBadges(user) {
 	return '';
 }
 
+//Stored up here for a later chance to make the Last Active command
+function lastActive(user) {
+	if (!Users(user)) return false;
+	user = Users(user);
+	return (user && user.lastMessageTime ? Chat.toDurationString(Date.now() - user.lastMessageTime, {precision: true}) : "hasn't talked yet");
+}
+
 exports.commands = {
 	vip: {
 		give: function (target, room, user) {
@@ -275,6 +282,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		let self = this;
 		let targetUser = Users.get(target);
+		let online = (targetUser ? targetUser.connected : false);
 		let username = (targetUser ? targetUser.name : target);
 		let userid = (targetUser ? targetUser.userid : toId(target));
 		let avatar = (targetUser ? (isNaN(targetUser.avatar) ? "http://" + serverIp + ":" + Config.port + "/avatars/" + targetUser.avatar : "http://play.pokemonshowdown.com/sprites/trainers/" + targetUser.avatar + ".png") : (Config.customavatars[userid] ? "http://" + serverIp + ":" + Config.port + "/avatars/" + Config.customavatars[userid] : "http://play.pokemonshowdown.com/sprites/trainers/1.png"));
@@ -319,6 +327,9 @@ exports.commands = {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				}
 				profile += '&nbsp;<font color="#24678d"><strong>EXP Level:</strong></font> ' + WL.level(toId(username)) + '<br />';
+				if (online && lastActive(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Last Active:</strong></font> ' + lastActive(toId(username)) + '<br />';
+				}
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));

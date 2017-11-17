@@ -27,7 +27,7 @@ const fs = require('fs');
 
 /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
 
-class Path {
+class FSPath {
 	/**
 	 * @param {string} path
 	 */
@@ -35,16 +35,16 @@ class Path {
 		this.path = pathModule.resolve(__dirname, path);
 	}
 	parentDir() {
-		return new Path(pathModule.dirname(this.path));
+		return new FSPath(pathModule.dirname(this.path));
 	}
-	read(options = {}) {
+	read(/** @type {AnyObject | string} */ options = {}) {
 		return new Promise((resolve, reject) => {
 			fs.readFile(this.path, options, (err, data) => {
 				err ? reject(err) : resolve(data);
 			});
 		});
 	}
-	readSync(options = {}) {
+	readSync(/** @type {AnyObject | string} */ options = {}) {
 		return fs.readFileSync(this.path, options);
 	}
 	readTextIfExists() {
@@ -82,6 +82,66 @@ class Path {
 	writeSync(data, options = {}) {
 		if (Config.nofswriting) return;
 		return fs.writeFileSync(this.path, data, options);
+	}
+	/**
+	 * Writes to a new file before renaming to replace an old file. If
+	 * the process crashes while writing, the old file won't be lost.
+	 * Does not protect against simultaneous writing; use writeUpdate
+	 * for that.
+	 *
+	 * @param {string | Buffer} data
+	 * @param {Object} options
+	 */
+	async safeWrite(data, options = {}) {
+		await FS(this.path + '.NEW').write(data, options);
+		await FS(this.path + '.NEW').rename(this.path);
+	}
+	/**
+	 * @param {string | Buffer} data
+	 * @param {Object} options
+	 */
+	safeWriteSync(data, options = {}) {
+		FS(this.path + '.NEW').writeSync(data, options);
+		FS(this.path + '.NEW').renameSync(this.path);
+	}
+	/**
+	 * Safest way to update a file with in-memory state. Pass a callback
+	 * that fetches the data to be written. It will write an update,
+	 * avoiding race conditions. The callback may not necessarily be
+	 * called, if `writeUpdate` is called many times in a short period.
+	 *
+	 * `options.throttle`, if it exists, will make sure updates are not
+	 * written more than once every `options.throttle` milliseconds.
+	 *
+	 * No synchronous version because there's no risk of race conditions
+	 * with synchronous code; just use `safeWriteSync`.
+	 *
+	 * DO NOT do anything with the returned Promise; it's not meaningful.
+	 *
+	 * @param {() => string | Buffer} dataFetcher
+	 * @param {Object} options
+	 */
+	async writeUpdate(dataFetcher, options = {}) {
+		if (Config.nofswriting) return;
+		const pendingUpdate = FS.pendingUpdates.get(this.path);
+		if (pendingUpdate) {
+			pendingUpdate[1] = dataFetcher;
+			pendingUpdate[2] = options;
+			return;
+		}
+		let pendingFetcher = /** @type {(() => string | Buffer)?} */ (dataFetcher);
+		while (pendingFetcher) {
+			let updatePromise = this.safeWrite(pendingFetcher(), options);
+			FS.pendingUpdates.set(this.path, [updatePromise, null, options]);
+			await updatePromise;
+			if (options.throttle) {
+				await new Promise(resolve => setTimeout(resolve, options.throttle));
+			}
+			const pendingUpdate = FS.pendingUpdates.get(this.path);
+			if (!pendingUpdate) return;
+			[updatePromise, pendingFetcher, options] = pendingUpdate;
+		}
+		FS.pendingUpdates.delete(this.path);
 	}
 	/**
 	 * @param {string | Buffer} data
@@ -150,6 +210,9 @@ class Path {
 	readdirSync() {
 		return fs.readdirSync(this.path);
 	}
+	/**
+	 * @return {NodeJS.WritableStream}
+	 */
 	createWriteStream(options = {}) {
 		if (Config.nofswriting) {
 			const Writable = require('stream').Writable;
@@ -157,6 +220,9 @@ class Path {
 		}
 		return fs.createWriteStream(this.path, options);
 	}
+	/**
+	 * @return {NodeJS.WritableStream}
+	 */
 	createAppendStream(options = {}) {
 		if (Config.nofswriting) {
 			const Writable = require('stream').Writable;
@@ -276,7 +342,14 @@ class Path {
  * @param {string} path
  */
 function getFs(path) {
-	return new Path(path);
+	return new FSPath(path);
 }
 
-module.exports = getFs;
+const FS = Object.assign(getFs, {
+	/**
+	 * @type {Map<string, [Promise, (() => string | Buffer)?, Object]>}
+	 */
+	pendingUpdates: new Map(),
+});
+
+module.exports = FS;

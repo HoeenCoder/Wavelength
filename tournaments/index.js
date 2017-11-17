@@ -163,6 +163,7 @@ class Tournament {
 			this.inProgressMatches.forEach(match => {
 				if (match) {
 					delete match.room.tour;
+					delete match.room.parent;
 					match.room.addRaw("<div class=\"broadcast-red\"><b>The tournament was forcefully ended.</b><br />You can finish playing, but this battle is no longer considered a tournament battle.</div>");
 				}
 			});
@@ -901,13 +902,14 @@ class Tournament {
 			this.update();
 			return this.room.update();
 		}
-
-		let error = this.generator.setMatchResult([from, to], result, score);
-		if (error) {
-			// Should never happen
-			return this.room.add("Unexpected " + error + " from setMatchResult([" + room.p1.userid + ", " + room.p2.userid + "], " + result + ", " + score + ") in onBattleWin(" + room.id + ", " + winnerid + "). Please report this to an admin.").update();
+		if (!(this.disqualifiedUsers.get(from) || this.disqualifiedUsers.get(to))) {
+			// If a player was disqualified, handle the results there
+			let error = this.generator.setMatchResult([from, to], result, score);
+			if (error) {
+				// Should never happen
+				return this.room.add("Unexpected " + error + " from setMatchResult([" + room.p1.userid + ", " + room.p2.userid + "], " + result + ", " + score + ") in onBattleWin(" + room.id + ", " + winnerid + "). Please report this to an admin.").update();
+			}
 		}
-
 		this.room.add('|tournament|battleend|' + from.name + '|' + to.name + '|' + result + '|' + score.join(',') + '|success|' + room.id);
 
 		this.generator.setUserBusy(from, false);
@@ -1110,7 +1112,7 @@ let commands = {
 			if (Monitor.countPrepBattle(connection.ip, connection)) {
 				return;
 			}
-			TeamValidator(tournament.teambuilderFormat).prepTeam(user.team).then(result => {
+			TeamValidatorAsync(tournament.teambuilderFormat).validateTeam(user.team).then(result => {
 				if (result.charAt(0) === '1') {
 					connection.popup("Your team is valid for this tournament.");
 				} else {
@@ -1279,7 +1281,7 @@ let commands = {
 				return this.sendReply("Usage: " + cmd + " <on|minutes|off>");
 			}
 			let option = params[0].toLowerCase();
-			if (option === 'on' || option === 'true' || option === 'start') {
+			if (this.meansYes(option) || option === 'start') {
 				if (tournament.isTournamentStarted) {
 					return this.errorReply("The tournament has already started.");
 				} else if (!tournament.playerCap) {
@@ -1291,7 +1293,7 @@ let commands = {
 					this.privateModCommand("(The tournament was set to autostart when the player cap is reached by " + user.name + ")");
 				}
 			} else {
-				if (option === '0' || option === 'infinity' || option === 'off' || option === 'false' || option === 'stop' || option === 'remove') {
+				if (option === '0' || option === 'infinity' || this.meansNo(option) || option === 'stop' || option === 'remove') {
 					if (!tournament.autostartcap && tournament.autoStartTimeout === Infinity) return this.errorReply("The automatic tournament start timer is already off.");
 					params[0] = 'off';
 					tournament.autostartcap = false;
@@ -1360,13 +1362,13 @@ let commands = {
 			}
 
 			let option = params[0].toLowerCase();
-			if (option === 'on' || option === 'true' || option === 'allow' || option === 'allowed') {
+			if (this.meansYes(option) || option === 'allow' || option === 'allowed') {
 				if (tournament.scouting) return this.errorReply("Scouting for this tournament is already set to allowed.");
 				tournament.scouting = true;
 				tournament.modjoin = false;
 				this.room.add('|tournament|scouting|allow');
 				this.privateModCommand("(The tournament was set to allow scouting by " + user.name + ")");
-			} else if (option === 'off' || option === 'false' || option === 'disallow' || option === 'disallowed') {
+			} else if (this.meansNo(option) || option === 'disallow' || option === 'disallowed') {
 				if (!tournament.scouting) return this.errorReply("Scouting for this tournament is already disabled.");
 				tournament.scouting = false;
 				tournament.modjoin = true;
@@ -1387,12 +1389,12 @@ let commands = {
 			}
 
 			let option = params[0].toLowerCase();
-			if (option === 'on' || option === 'true' || option === 'allow' || option === 'allowed') {
+			if (this.meansYes(option) || option === 'allow' || option === 'allowed') {
 				if (tournament.modjoin) return this.errorReply("Modjoining is already allowed for this tournament.");
 				tournament.modjoin = true;
 				this.room.add('Modjoining is now allowed (Players can modjoin their tournament battles).');
 				this.privateModCommand("(The tournament was set to allow modjoin by " + user.name + ")");
-			} else if (option === 'off' || option === 'false' || option === 'disallow' || option === 'disallowed') {
+			} else if (this.meansNo(option) || option === 'disallow' || option === 'disallowed') {
 				if (!tournament.modjoin) return this.errorReply("Modjoining is already not allowed for this tournament.");
 				tournament.modjoin = false;
 				this.room.add('Modjoining is now banned (Players cannot modjoin their tournament battles).');
@@ -1403,11 +1405,11 @@ let commands = {
 		},
 		forcetimer: function (tournament, user, params, cmd) {
 			let option = params.length ? params[0].toLowerCase() : 'on';
-			if (option === 'on' || option === 'true') {
+			if (this.meansYes(option)) {
 				tournament.forceTimer = true;
 				this.room.add('Forcetimer is now on for the tournament.');
 				this.privateModCommand("(The timer was turned on for the tournament by " + user.name + ")");
-			} else if (option === 'off' || option === 'false' || option === 'stop') {
+			} else if (this.meansNo(option) || option === 'stop') {
 				tournament.forceTimer = false;
 				this.room.add('Forcetimer is now off for the tournament.');
 				this.privateModCommand("(The timer was turned off for the tournament by " + user.name + ")");
@@ -1484,7 +1486,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		})));
 	} else if (cmd === 'help') {
 		return this.parse('/help tournament');
-	} else if (cmd === 'on' || cmd === 'enable') {
+	} else if (this.meansYes(cmd)) {
 		if (!this.can('tournamentsmanagement', null, room)) return;
 		let rank = params[0];
 		if (rank && rank === '@') {
@@ -1506,7 +1508,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		} else {
 			return this.errorReply("Tournament enable setting not recognized.  Valid options include [%|@].");
 		}
-	} else if (cmd === 'off' || cmd === 'disable') {
+	} else if (this.meansNo(cmd)) {
 		if (!this.can('tournamentsmanagement', null, room)) return;
 		if (!room.toursEnabled) {
 			return this.errorReply("Tournaments are already disabled.");
@@ -1531,11 +1533,11 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		}
 
 		let option = params[0].toLowerCase();
-		if (option === 'on' || option === 'enable') {
+		if (this.meansYes(option)) {
 			if (room.tourAnnouncements) return this.errorReply("Tournament announcements are already enabled.");
 			room.tourAnnouncements = true;
 			this.privateModCommand("(Tournament announcements were enabled by " + user.name + ")");
-		} else if (option === 'off' || option === 'disable') {
+		} else if (this.meansNo(option)) {
 			if (!room.tourAnnouncements) return this.errorReply("Tournament announcements are already disabled.");
 			room.tourAnnouncements = false;
 			this.privateModCommand("(Tournament announcements were disabled by " + user.name + ")");

@@ -95,7 +95,7 @@ exports.BattleScripts = {
 			for (const side of this.sides) {
 				for (const currentPoke of side.active) {
 					if (!currentPoke || !currentPoke.hp || pokemon === currentPoke) continue;
-					if (currentPoke.hasAbility('dancer')) {
+					if (currentPoke.hasAbility('dancer') && !currentPoke.volatiles['twoturnmove']) {
 						dancers.push(currentPoke);
 					}
 				}
@@ -413,12 +413,12 @@ exports.BattleScripts = {
 
 		if (move.breaksProtect) {
 			let broke = false;
-			for (let i in {banefulbunker:1, kingsshield:1, protect:1, spikyshield:1}) {
-				if (target.removeVolatile(i)) broke = true;
+			for (const effectid of ['banefulbunker', 'kingsshield', 'protect', 'spikyshield']) {
+				if (target.removeVolatile(effectid)) broke = true;
 			}
 			if (this.gen >= 6 || target.side !== pokemon.side) {
-				for (let i in {craftyshield:1, matblock:1, quickguard:1, wideguard:1}) {
-					if (target.side.removeSideCondition(i)) broke = true;
+				for (const effectid of ['craftyshield', 'matblock', 'quickguard', 'wideguard']) {
+					if (target.side.removeSideCondition(effectid)) broke = true;
 				}
 			}
 			if (broke) {
@@ -706,7 +706,9 @@ exports.BattleScripts = {
 				if (this.canSwitch(target.side)) didSomething = true; // at least defer the fail message to later
 			}
 			if (moveData.selfSwitch) {
-				if (this.canSwitch(pokemon.side)) didSomething = true; // at least defer the fail message to later
+				// If the move is Parting Shot and it fails to change the target's stats in gen 7, didSomething will be null instead of false.
+				// Leaving didSomething as null will cause this function to return before setting the switch flag, preventing the switch.
+				if (this.canSwitch(pokemon.side) && (didSomething !== null || this.gen < 7)) didSomething = true; // at least defer the fail message to later
 			}
 			// Hit events
 			//   These are like the TryHit events, except we don't need a FieldHit event.
