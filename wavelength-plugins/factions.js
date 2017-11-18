@@ -735,6 +735,7 @@ exports.commands = {
 			for (let faction in factions) {
 				if (!factions[faction].approved) {
 					output += '<tr>';
+					output += '<td>' + Chat.escapeHTML(factions[faction].ranks['owner'].users) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].name) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].desc) + '</td>';
 					output += '<td><button name="send" value="/faction approve ' + faction + '">Approve ' + factions[faction].name + '</button></td>';
