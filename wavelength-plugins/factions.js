@@ -327,7 +327,7 @@ exports.commands = {
 				},
 			};
 			write();
-			Monitor.adminlog('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)');
+			Monitor.adminlog('Faction ' + name + ' was just created by ' + user.name + '! If you wish to approve this faction please use /faction approve (name)');
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
