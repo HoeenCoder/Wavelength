@@ -17103,6 +17103,14 @@
 		    "evolvesTo": "florgeswhite"
 		}
 	},
+	"floetteeternal": {
+		"id": "floetteeternal",
+		"inherit": "floette",
+		"evolution": {
+		    "trigger": null,
+		    "evolvesTo": null
+		}
+	},
 	"florgesyellow": {
 		"id": "florgesyellow",
 		"inherit": "florges"
