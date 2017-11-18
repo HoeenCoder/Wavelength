@@ -72,7 +72,7 @@ class SGgame extends Console.Console {
 			}
 			poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
 			this.queueAction = msg;
-			return ['background: linear-gradient(blue, white); color: #000;', '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', null];
+			return ['background: linear-gradient(blue, white); color: #000;', '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', null];
 			//break;
 		default:
 			console.log('Invalid type: ' + type + '. While running (console).next()');
@@ -236,7 +236,7 @@ class SGgame extends Console.Console {
 			if (!template.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -318,7 +318,7 @@ class SGgame extends Console.Console {
 			if (!template2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[0] + '.png" alt="' + template2.types[0] + '"/>' + (template2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[1] + '.png" alt="' + template2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -376,7 +376,7 @@ class SGgame extends Console.Console {
 			if (!tempalte2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[0] + '.png" alt="' + tempalte2.types[0] + '"/>' + (tempalte2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[1] + '.png" alt="' + tempalte2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -441,7 +441,7 @@ class SGgame extends Console.Console {
 			if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to battle.</b></div>';
 			if (typeof pokemon === 'string') pokemon = Dex.fastUnpackTeam(pokemon)[0];
 			let sprite = Dex.getTemplate(pokemon.species).spriteid;
-			output += '<img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + (sprite || toId(pokemon.species)) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + (sprite || toId(pokemon.species)) + '.gif" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + (pokemon.gender || 'N') + ')<br/>';
 			output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/sggame battle wild, confirm">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>') + ' <button class="button" name="send" value="/sggame battle wild, flee">Flee!</button>';
 		} else if (type === 'trainer') {
@@ -732,10 +732,10 @@ exports.commands = {
 					delete user.console.shed;
 				}
 				Db.players.set(user.userid, obj);
-				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + temp.spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Congratulations! Your ' + (pokemon.name === pokemon.species ? temp.prevo : pokemon.name) + ' evolved into ' + action[2] + '!<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + temp.spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Congratulations! Your ' + (pokemon.name === pokemon.species ? temp.prevo : pokemon.name) + ' evolved into ' + action[2] + '!<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
 			} else if (target === 'stop') {
 				if (user.console.shed) delete user.console.shed;
-				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(action[2]).spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Huh? ' + (pokemon.name || pokemon.species) + ' stopped evolving.<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(action[2]).spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Huh? ' + (pokemon.name || pokemon.species) + ' stopped evolving.<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
 			} else if (target === 'finish') {
 				user.console.queueAction = null;
 				user.console.lastNextAction = null;
