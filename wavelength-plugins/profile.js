@@ -430,8 +430,8 @@ exports.commands = {
 				if (Db.friendcodes.has(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
 				}
-				profile += '&nbsp;</div>';
 				profile += '&nbsp;' + song(toId(username)) + '';
+				profile += '&nbsp;</div>';
 				profile += '<br clear="all">';
 				self.sendReplyBox(profile);
 			});
