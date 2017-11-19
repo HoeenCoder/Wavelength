@@ -296,4 +296,14 @@ exports.BattleStatuses = {
 			this.add('c', '+bunnery5', 'One day, karma will get you back.');
 		},
 	},
+	priorityboost: {
+		onStart: function (target) {
+			this.add('-start', target, 'Priority Boost');
+		},
+		onModifyPriority: function (priority, pokemon, target, move) {
+			if (move.id === 'cosmicpower' || move.id === 'storedpower') {
+				return priority + 1;
+			}
+		},
+	},
 };
