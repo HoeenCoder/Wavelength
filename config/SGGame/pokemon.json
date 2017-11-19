@@ -17434,7 +17434,8 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		}
+		},
+    "totalEvDrops": 3
 	},
 	"necrozmadawnwings": {
 		"id": "necrozmadawnwings",
@@ -17446,7 +17447,8 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		}
+		},
+    "totalEvDrops": 3
 	},
   "necrozmaultra": {
     "id": "necrozmaultra",
