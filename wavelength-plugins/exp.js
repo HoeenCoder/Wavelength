@@ -108,6 +108,18 @@ function addExp(user, room, amount) {
 					Monitor.adminlog(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
 					reward = 'a Chatroom. To claim your chatroom, Contact a Leader (&) or Administrator (~).';
 					break;
+				case 45:
+					Economy.logTransaction(user.userid + ' received a profile background for reaching level ' + level + '.');
+					WL.messageSeniorStaff(user.userid + ' has earned a profile background for reaching level ' + level + '.');
+					Monitor.log(user.userid + ' has earned a profile background for reaching level ' + level + '!');
+					reward = 'a Profile Background. To claim your profile background, contact a Global Staff (% and up).');
+					break;
+				case 50:
+					Economy.logTransaction(user.userid + ' received profile music for reaching level ' + level + '.');
+					WL.messageSeniorStaff(user.userid + ' has earned profile music for reaching level ' + level + '.');
+					Monitor.log(user.userid + ' has earned profile music for reaching level ' + level + '!');
+					reward = 'Profile Music. To claim your profile music, contact a Global Staff (% and up).');
+					break;
 				default:
 					Economy.writeMoney(user.userid, Math.ceil(level * 0.5));
 					reward = Math.ceil(level * 0.5) + ' ' + (Math.ceil(level * 0.5) === 1 ? currencyName : currencyPlural) + '.';
