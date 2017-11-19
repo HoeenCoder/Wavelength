@@ -144,8 +144,9 @@ exports.BattleStatuses = {
 	},
 	c733937123: {
 		exists: true,
-		onStart: function () {
+		onStart: function (pokemon) {
 			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
+			this.useMove('psycheup', pokemon);
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
