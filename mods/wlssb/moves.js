@@ -426,22 +426,23 @@ exports.BattleMovedex = {
 	//Stabby the Krabby
 	"stabstab": {
 		category: "Physical",
-		basePower: 100,
+		basePower: 60,
 		accuracy: true,
-		desc: 'Always hits, hits twice, 25% chance to flinch.',
+		desc: 'Always hits, hits twice, 20% chance to flinch.',
 		id: "stabstab",
 		isViable: true,
+		flags: {protect: 1, contact: 1, mirror: 1},
 		isNonstandard: true,
 		name: "Stab Stab",
 		secondary: {
-			chance: 25,
+			chance: 20,
 			volatileStatus: 'flinch',
 		},
 		onHit: function (target) {
 			this.add('c|*Stabby the Krabby|Stabby Stabby!');
 		},
 		pp: 5,
-		priority: 1,
+		priority: 0.1,
 		multihit: [2, 2],
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
