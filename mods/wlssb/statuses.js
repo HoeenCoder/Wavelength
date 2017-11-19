@@ -165,6 +165,13 @@ exports.BattleStatuses = {
 		onFaint: function (pokemon) {
 			this.add('c', '+Auction', 'Ya know, I think I should\'ve gotten __burn everything__ as my ability ;_;');
 		},
+		onTryHit: function (target, source, move) {
+			if (target !== source && (move.type === 'Fire' || move.type === 'Water')) {
+				move.accuracy = true;
+				this.add('-immune', target, '[msg]', '[from] ability: Duality');
+				return null;
+			}
+		},
 	},
 	lycaniumz: {
 		exists: true,
