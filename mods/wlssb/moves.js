@@ -69,6 +69,7 @@ exports.BattleMovedex = {
 			chance: 30,
 			status: 'tox',
 		},
+		flags: {protect: 1, mirror: 1},
 		desc: "30% chance to badly poison",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -91,6 +92,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Surf", target);
 		},
+		flags: {protect: 1, mirror: 1},
 		desc: "Selfdestructs target.",
 		onHit: function (target, source, move) {
 			this.add('c|~Kraken Mare ☭|If I go down I\'m taking you with me!');
@@ -99,36 +101,56 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// C733937 123
-	lightshotgigalance: {
+	shatterbreak: {
 		category: "Physical",
-		basePower: 150,
-		id: "lightshotgigalance",
-		isNonstandard: true,
-		name: "Lightshot Giga-Lance",
-		self: {
-			volatileStatus: 'mustrecharge',
+		accuracy: 100,
+		basePower: 60,
+		basePowerCallback: function (pokemon, target, move) {
+			return move.basePower + 10 * pokemon.positiveBoosts();
 		},
-		secondary: {
-			chance: 30,
-			self: {
-				boosts: {
-					spa: 1,
-					spe: 1,
-					spd: 1,
-					atk: 1,
-					def: 1,
-				},
+		id: "shatterbreak",
+		isViable: true,
+		isNonstandard: true,
+		name: "Shatter Break",
+		pp: 12,
+		noPPBoosts: true,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: false,
+		onHit: function (target, pokemon) {
+			pokemon.addVolatile('shatterbreak');
+		},
+		effect: {
+			duration: 1,
+			onAfterMoveSecondarySelf: function (pokemon, target, move) {
+				if (!target || target.fainted || target.hp <= 0) {
+					let stats = [];
+					for (let stat in target.boosts) {
+						if (target.boosts[stat] < 6) {
+							stats.push(stat);
+						}
+					}
+					if (stats.length) {
+						let randomStat = stats[this.random(stats.length)];
+						let boost = {};
+						boost[randomStat] = 1;
+						this.boost(boost, pokemon, pokemon, move);
+					} else {
+						return false;
+					}
+				}
+				pokemon.removeVolatile('shatterbreak');
 			},
 		},
-		desc: "30% chance to boost all stats (except acc and eva), must recharge",
-		pp: 15,
-		priority: 0,
-		onHit: function (target, source, move) {
+		onEffectiveness: function (typeMod, type) {
+			if (type === 'Steel') return 1;
+		},
+		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', target, "Sacred Sword", target);
+			this.add('-anim', source, "Twinkle Tackle", source);
 		},
 		target: "normal",
-		type: "Rock",
+		type: "Fairy",
 	},
 	// Serperiorater
 	saberstrike: {
@@ -146,6 +168,7 @@ exports.BattleMovedex = {
 				heal: [1, 5],
 			},
 		},
+		flags: {protect: 1, mirror: 1},
 		desc: "Boosts user's SpA by 2 stages, and heals health by 1/5 maximum HP",
 		pp: 10,
 		priority: 0,
@@ -169,6 +192,7 @@ exports.BattleMovedex = {
 		desc: "No additional effects",
 		priority: 0.1,
 		target: "normal",
+		flags: {protect: 1, mirror: 1},
 		type: "Fire",
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
@@ -190,6 +214,7 @@ exports.BattleMovedex = {
 			volatileStatus: ['flinch', 'confusion',
 			],
 		},
+		flags: {protect: 1, mirror: 1, contact: 1},
 		desc: "30% chance to paralyze, and/or flinch, or confuse foe.",
 		priority: 0,
 		onPrepareHit: function (target, source) {
@@ -234,6 +259,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Fusion Flare", source);
 			this.add('-anim', source, "Head Smash", target);
 		},
+		flags: {protect: 1, mirror: 1, contact: 1},
 		secondary: {
 			chance: 40,
 			Status: 'brn',
@@ -307,6 +333,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Psychic", target);
 			this.add('-anim', source, "Night Shade", target);
 		},
+		flags: {protect: 1, mirror: 1, reflectable: 1, snatch: 1},
 		onHit: function (target, source) {
 			target.trySetStatus('tox', source);
 		},
@@ -331,6 +358,7 @@ exports.BattleMovedex = {
 			this.add('c|~Desokoro|You best hope the waves I ride have mercy on your soul!');
 		},
 		pp: 5,
+		flags: {protect: 1, mirror: 1, contact: 1},
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
@@ -427,8 +455,8 @@ exports.BattleMovedex = {
 	"stabstab": {
 		category: "Physical",
 		basePower: 60,
-		accuracy: true,
-		desc: 'Always hits, hits twice, 20% chance to flinch.',
+		accuracy: 100,
+		desc: 'hits twice, 20% chance to flinch.',
 		id: "stabstab",
 		isViable: true,
 		flags: {protect: 1, contact: 1, mirror: 1},
@@ -723,7 +751,7 @@ exports.BattleMovedex = {
 		pp: 6,
 		noPPBoosts: true,
 		priority: 0,
-		flags: {mirror: 1},
+		flags: {mirror: 1, protect: 1},
 		volatileStatus: 'leechseed',
 		effect: {
 			onStart: function (target) {
