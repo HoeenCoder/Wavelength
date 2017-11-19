@@ -1,6 +1,7 @@
 /config/*
 !/config/formats.js
 !/config/cards.json
+!/config/SGGame
 /logs/*
 /node_modules
 /eslint-cache
