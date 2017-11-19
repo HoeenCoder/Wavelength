@@ -17434,7 +17434,7 @@
 			"spa": 3,
 			"spd": 0,
 			"spe": 0
-		},
+		}
 	},
 	"necrozmadawnwings": {
 		"id": "necrozmadawnwings",
@@ -17446,11 +17446,11 @@
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
-		},
+		}
 	},
   "necrozmaultra": {
-    id: "necrozmaultra",
-    inherit: "necrozma",
+    "id": "necrozmaultra",
+    "inherit": "necrozma",
     "evDrops": {
 			"hp": 0,
 			"atk": 1,
@@ -17458,7 +17458,7 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 1
-		},
+		}
   },
 	"magearnaoriginal": {
 		"id": "magearnaoriginal",
