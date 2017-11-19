@@ -62,7 +62,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				item: 'Leftovers',
 				gender: 'M',
 				shiny: true,
-				moves: ['Substitute', 'Dragon Dance', 'Dragon Ascent',
+				moves: ['Substitute', 'Dragon Dance', 'Bounce',
 				],
 				signatureMove: 'Tsunami Crash',
 				evs: {
