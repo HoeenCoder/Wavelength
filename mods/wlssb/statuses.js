@@ -285,4 +285,15 @@ exports.BattleStatuses = {
 			}
 		},
 	},
+	bunnery5: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+bunnery5', 'LOL, you think you can win!');
+		},
+		onSwitchOut: function (pokemon) {
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+bunnery5', 'One day, karma will get you back.');
+		},
+	},
 };
