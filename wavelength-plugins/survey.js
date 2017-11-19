@@ -100,7 +100,7 @@ class Survey {
 		let icon = '<span style="border:1px solid #' + (ended ? '777;color:#555' : '6A6;color:#484') + ';border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> ' + (ended ? "Survey ended" : "Survey") + '</span>';
 		let output = '<div class="infobox"><p style="margin: 2px 0 5px 0">' + icon + ' <strong style="font-size:11pt">' + (this.allowHTML ? this.question : Chat.escapeHTML(this.question)) + '</strong></p>';
 		for (let i in this.repliers) {
-			if (this.repliers[i]) output += '<div>' + WL.nameColor(i, true) + ': <i>"' + this.repliers[i] + '"</i><div><br/>';
+			if (this.repliers[i]) output += '<div>' + WL.nameColor(i, true) + ': <i>"' + Chat.formatText(this.repliers[i]) + '"</i><div><br/>';
 		}
 		if (!ended) output += '<div style="margin-top: 7px; padding-left: 12px"><button value="/survey hideresults" class="button" name="send" title="Hide results - hide the results."><small>(Hide Results)</small></div>';
 		output += '</div>';
