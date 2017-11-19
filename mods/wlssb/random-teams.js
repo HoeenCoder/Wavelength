@@ -200,13 +200,13 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Modest',
 			},
 			'@C733937 123': {
-				species: 'Tyranitar',
-				ability: 'Bulletproof',
-				item: 'Safety Goggles',
+				species: 'Skuntank',
+				ability: 'Unaware',
+				item: 'Shuca Berry',
 				gender: 'M',
-				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
+				moves: ['Gunk Shot', 'Crunch', 'Sacred Fire',
 				],
-				signatureMove: 'Lightshot Giga-Lance',
+				signatureMove: 'Shatter Break',
 				evs: {
 					hp: 252,
 					atk: 252,
