@@ -133,7 +133,7 @@ exports.BattleMovedex = {
 	// Serperiorater
 	saberstrike: {
 		category: "Special",
-		basePower: 140,
+		basePower: 120,
 		id: "saberstrike",
 		isNonstandard: true,
 		name: "Saber Strike",
@@ -167,7 +167,7 @@ exports.BattleMovedex = {
 		name: "Rocket Punch",
 		pp: 10,
 		desc: "No additional effects",
-		priority: 1,
+		priority: 0.1,
 		target: "normal",
 		type: "Fire",
 		onPrepareHit: function (target, source) {
@@ -221,22 +221,25 @@ exports.BattleMovedex = {
 		type: "Fairy",
 	},
 	// Auction
-	zeobash: {
+	magnetflare: {
 		category: "Physical",
-		basePower: 90,
-		id: "zeobash",
+		basePower: 100,
+		id: "magnetflare",
 		isNonstandard: true,
-		name: "Zeo-Bash",
+		name: "Magnet Flare",
 		pp: 15,
 		priority: 0,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Focus Energy", source);
+			this.add('-anim', source, "Fusion Flare", source);
 			this.add('-anim', source, "Head Smash", target);
 		},
-		accuracy: 100,
-		desc: "No additional effects",
-		zMovePower: 150,
+		secondary: {
+			chance: 40,
+			Status: 'brn',
+		},
+		accuracy: 95,
+		desc: "40% chance burn",
 		target: "normal",
 		type: "Steel",
 	},
@@ -315,7 +318,7 @@ exports.BattleMovedex = {
 	// Desokoro
 	tsunamicrash: {
 		category: "Physical",
-		basePower: 150,
+		basePower: 135,
 		id: "tsunamicrash",
 		isViable: true,
 		isNonstandard: true,
@@ -735,5 +738,51 @@ exports.BattleMovedex = {
 		type: "Ice",
 		zMoveBoost: {spa: 1},
 		contestType: "Clever",
+	},
+	//bunnery5
+	bunneryhatesyouseed: {
+		category: "status",
+		id: "bunneryhatesyouseed",
+		name: "Bunnery Hates You Seed",
+		accuracy: 100,
+		basePower: 0,
+		isViable: true,
+		isNonstandard: true,
+		pp: 6,
+		noPPBoosts: true,
+		priority: 0,
+		flags: {mirror: 1},
+		volatileStatus: 'leechseed',
+		effect: {
+			onStart: function (target) {
+				this.add('-start', target, 'move: Leech Seed');
+			},
+			onResidualOrder: 8,
+			onResidual: function (pokemon) {
+				let target = this.effectData.source.side.active[pokemon.volatiles['leechseed'].sourcePosition];
+				if (!target || target.fainted || target.hp <= 0) {
+					this.debug('Nothing to leech into');
+					return;
+				}
+				let damage = this.damage(pokemon.maxhp / 8, pokemon, target);
+				if (damage) {
+					this.heal(damage, target, pokemon);
+				}
+			},
+		},
+		onTryHit: function (target) {
+			if (target.hasType('Grass')) {
+				this.add('-immune', target, '[msg]');
+				return null;
+			}
+		},
+		onHit: function (target) {
+			this.add('c|+bunnery5|People think they are good lol.');
+		},
+		self: {
+			volatileStatus: 'priorityboost',
+		},
+		target: "normal",
+		type: "Grass",
 	},
 };
