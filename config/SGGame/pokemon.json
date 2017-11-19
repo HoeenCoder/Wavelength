@@ -15841,12 +15841,12 @@
 	"poipole": {
 		"expType": "slow",
 		"num": 803,
-		"rate": "20",
+		"rate": "45",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": "naganadel"
 		},
-		"baseExp": 114,
+		"baseExp": 189,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -15860,14 +15860,14 @@
 	"naganadel": {
 		"expType": "slow",
 		"num": 804,
-		"rate": "10",
+		"rate": "45",
 		"evolution": {
 			"trigger": "level",
 			"move": "dragonpulse",
 			"evoMove": "aircutter",
 			"evolvesTo": null
 		},
-		"baseExp": 114,
+		"baseExp": 243,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -15886,7 +15886,7 @@
 			"trigger": null,
 			"evolvesTo": null
 		},
-		"baseExp": 114,
+		"baseExp": 257,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -15905,7 +15905,7 @@
 			"trigger": null,
 			"evolvesTo": null
 		},
-		"baseExp": 114,
+		"baseExp": 257,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -15924,7 +15924,7 @@
 			"trigger": null,
 			"evolvesTo": null
 		},
-		"baseExp": 120,
+		"baseExp": 270,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,
@@ -17426,12 +17426,43 @@
 	},
 	"necrozmaduskmane": {
 		"id": "necrozmaduskmane",
-		"inherit": "necrozma"
+		"inherit": "necrozma",
+    "evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 0,
+			"spa": 3,
+			"spd": 0,
+			"spe": 0
+		},
+    "totalEvDrops": 3
 	},
 	"necrozmadawnwings": {
 		"id": "necrozmadawnwings",
-		"inherit": "necrozma"
+		"inherit": "necrozma",
+    "evDrops": {
+			"hp": 0,
+			"atk": 3,
+			"def": 0,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+    "totalEvDrops": 3
 	},
+  "necrozmaultra": {
+    "id": "necrozmaultra",
+    "inherit": "necrozma",
+    "evDrops": {
+			"hp": 0,
+			"atk": 1,
+			"def": 0,
+			"spa": 1,
+			"spd": 0,
+			"spe": 1
+		},
+    "totalEvDrops": 3
+  },
 	"magearnaoriginal": {
 		"id": "magearnaoriginal",
 		"inherit": "magearna"
