@@ -119,6 +119,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	dev: {
 		give: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -164,6 +165,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	title: 'customtitle',
 	customtitle: {
 		set: 'give',
@@ -191,6 +193,7 @@ exports.commands = {
 			Monitor.adminlog(user.name + " set a custom title to " + userid + "'s profile.");
 			return this.sendReply("Title '" + title + "' and color '" + color + "' for " + userid + "'s custom title have been set.");
 		},
+
 		take: 'remove',
 		remove: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -210,6 +213,7 @@ exports.commands = {
 			Monitor.adminlog(user.name + " removed " + userid + "'s custom title.");
 			return this.sendReply(userid + "'s custom title and title color were removed from the server memory.");
 		},
+
 		'': 'help',
 		help: function (target, room, user) {
 			if (!user.autoconfirmed) return this.errorReply("You need to be autoconfirmed to use this command.");
@@ -224,6 +228,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	fc: 'friendcode',
 	friendcode: {
 		add: 'set',
@@ -242,6 +247,7 @@ exports.commands = {
 			Db.friendcodes.set(toId(user), fc);
 			return this.sendReply("Your friend code: " + fc + " has been saved to the server.");
 		},
+
 		remove: 'delete',
 		delete: function (target, room, user) {
 			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
@@ -258,6 +264,7 @@ exports.commands = {
 				return this.sendReply(userid + "'s friend code has been deleted from the server.");
 			}
 		},
+
 		'': 'help',
 		help: function (target, room, user) {
 			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
@@ -274,6 +281,82 @@ exports.commands = {
 			);
 		},
 	},
+
+	bg: 'background',
+	background: {
+		set: 'setbg',
+		setbackground: 'setbg',
+		setbg: function (target, room, user) {
+			if (!this.can('broadcast')) return false;
+			let parts = target.split(',');
+			if (!parts[1]) return this.parse('/backgroundhelp');
+			let targ = parts[0].toLowerCase().trim();
+			let link = parts[1].trim();
+			Db.backgrounds.set(targ, link);
+			this.sendReply('This user\'s background has been set to : ');
+			this.parse('/profile ' + targ);
+		},
+
+		removebg: 'deletebg',
+		remove: 'deletebg',
+		deletebackground: 'deletebg',
+		delete: 'deletebg',
+		deletebg: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let targ = target.toLowerCase();
+			if (!target) return this.parse('/backgroundhelp');
+			if (!Db.backgrounds.has(targ)) return this.errorReply('This user does not have a custom background.');
+			Db.backgrounds.remove(targ);
+			this.sendReply('This user\'s background has been deleted.');
+		},
+
+		'': 'help',
+		help: function (target, room, user) {
+			this.parse("/backgroundhelp");
+		},
+	},
+	backgroundhelp: [
+		"/bg set [user], [link] - Sets the user's profile background. Requires % and up.",
+		"/bg delete [user] - Removes the user's profile background. Requires % and up.",
+	],
+
+	music: {
+		add: "set",
+		give: "set",
+		set: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let parts = target.split(',');
+			let targ = parts[0].toLowerCase().trim();
+			if (!parts[2]) return this.errorReply('/musichelp');
+			let link = parts[1].trim();
+			let title = parts[2].trim();
+			Db.music.set([targ, 'link'], link);
+			Db.music.set([targ, 'title'], title);
+			this.sendReply(targ + '\'s song has been set to: ');
+			this.parse('/profile ' + targ);
+		},
+
+		take: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let targ = target.toLowerCase();
+			if (!target) return this.parse('/musichelp');
+			if (!Db.music.has(targ)) return this.errorReply('This user does not have any music on their profile.');
+			Db.music.remove(targ);
+			this.sendReply('This user\'s profile music has been deleted.');
+		},
+
+		'': 'help',
+		help: function (target, room, user) {
+			this.parse('/musichelp');
+		},
+	},
+	musichelp: [
+		"/music set [user], [link], [title of song] - Sets a user's profile music. Requires % and up.",
+		"/music take [user] - Removes a user's profile music. Requires % and up.",
+	],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
@@ -314,15 +397,28 @@ exports.commands = {
 			return '<img src="http://flags.fmcdn.net/data/flags/normal/' + ip.country.toLowerCase() + '.png" alt="' + ip.country + '" title="' + ip.country + '" width="20" height="10">';
 		}
 
+		function background(buddy) {
+			let bg = Db.backgrounds.get(buddy);
+			if (!Db.backgrounds.has(buddy)) return '<div>';
+			return '<div style="background:url(' + bg + ')">';
+		}
+
+		function song(fren) {
+			let song = Db.music.get([fren, 'link']);
+			let title = Db.music.get([fren, 'title']);
+			if (!Db.music.has(fren)) return '';
+			return '<acronym title="' + title + '"><br /><audio src="' + song + '" controls="" style="width:100%;"></audio></acronym>';
+		}
+
 		function showProfile() {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
-				profile += showBadges(toId(username));
+				profile += background(toId(username)) + showBadges(toId(username));
 				profile += '<div style="display: inline-block; width: 7em; second: nothing"><img src="' + avatar + '" height="80" width="80" align="left"></div>';
 				profile += '<div style="display: inline-block; float: Center">&nbsp;<font color="#24678d"><b>Name:</b></font> ' + WL.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
-				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
-				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
+				//profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>' + currencyPlural + ':</b></font> ' + currency + '<br />';
 				if (WL.getFaction(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				}
@@ -335,6 +431,7 @@ exports.commands = {
 					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
 				}
 				profile += '&nbsp;</div>';
+				profile += '&nbsp;' + song(toId(username)) + '';
 				profile += '<br clear="all">';
 				self.sendReplyBox(profile);
 			});
