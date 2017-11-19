@@ -586,12 +586,20 @@ exports.commands = {
 			user.console.update('background-color: #6688AA;', htm, null);
 		} else if (cmd === 'confirmresetalpha') {
 			// New Game
-			user.console.queue = ["text|Welcome to the world of Pokemon!<br/>I'm HoeenHero, the creator and main programmer of this project. (Click the star to continue)",
+			user.console.queue = [
+				"text|Welcome to the world of Pokemon!<br/>I'm HoeenHero, the creator and main programmer of this project. (Click the star to continue)",
 				"text|The developers have been working hard on this project, but we're still not even close to finished! We're only in " + user.console.version + ", after all!",
 				"text|Tell us what you think about it, and any ideas you come up with, too! We would love to hear them. Any help with the project is also appreciated; coding, spriting, or even just writing raw data when we need it.",
-				"text|Well, that's enough from me. Let's get you started!<br/>Pick a starter:"];
+				"text|Well, that's enough from me. Let's get you started!<br/>Pick a starter:",
+		];
 			let msg = '';
-			let starters = [['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'], ['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'], ['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'], ['Pikachu'], ['Eevee']];
+			let starters = [
+				['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'],
+				['Charmander', 'Cyndaquil', 'Torchic', 'Chimchar', 'Tepig', 'Fennekin', 'Litten'],
+				['Squirtle', 'Totodile', 'Mudkip', 'Piplup', 'Oshawott', 'Froakie', 'Popplio'],
+				['Pikachu'],
+				['Eevee'],
+			];
 			for (let i = 0; i < starters.length; i++) {
 				let color = (i === 0 ? 'green' : (i === 1 ? 'red' : (i === 2 ? 'blue' : (i === 3 ? '#E5DA2A' : '#B08257'))));
 				for (let j = 0; j < starters[i].length; j++) {
@@ -656,7 +664,7 @@ exports.commands = {
 				return this.parse('/sggame next');
 			} else {
 				// Attempt to forget the specified move, and learn action[2]
-				if (pokemon.moves.indexOf(toId(target)) === -1) return false; // The pokemon dosent know this move.
+				if (pokemon.moves.indexOf(toId(target)) === -1) return false; // The pokemon doesn't know this move.
 				let obj = Db.players.get(user.userid);
 				obj.party[Number(action[1])].moves.splice(pokemon.moves.indexOf(toId(target)), 1);
 				obj.party[Number(action[1])].moves.push(toId(action[2]));
@@ -801,7 +809,7 @@ exports.commands = {
 				if (target[2] === 'use' && !item.use) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]); // This item cannot be 'used'
 				let mon = player.party[target[3]];
 				if (!mon) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
-				if (!Db.players.get(user.userid).bag[item.slot][item.id]) return this.parse('/sggame bag ' + target[0]); // Dont have one to use
+				if (!Db.players.get(user.userid).bag[item.slot][item.id]) return this.parse('/sggame bag ' + target[0]); // Doesn't have one to use
 				if (target[2] === 'give' && !inBattle) {
 					if (!Dex.getItem(target[1]).exists && !item.use.triggerEvo) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 					let old = mon.item;
@@ -847,7 +855,7 @@ exports.commands = {
 									canReturn = false;
 								}
 								// Evolution
-								let evos = WL.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations
+								let evos = WL.canEvolve(player.party[target[3]], "level", user.userid, {location: null}); // TODO locations [V2]
 								if (evos) {
 									evos = evos.split('|');
 									if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
@@ -1055,7 +1063,7 @@ exports.commands = {
 		battle: function (target, room, user, connection) {
 			if (user.console.queue.length) return;
 			if (user.console.queueAction) return;
-			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
+			if (!Db.players.get(user.userid).party.length) return user.popup('You have no Pokemon to battle with!');
 			if (toId(target) === 'close' && user.console.curPane === 'battle') {
 				Users('sgserver').wildTeams[user.userid] = null;
 				Users('sgserver').trainerTeams[user.userid] = null;
@@ -1170,13 +1178,13 @@ exports.commands = {
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
 		if (room.battle.ended) return this.errorReply('The battle is already over, you can\'t throw a pokeball.');
 		target = toId(target);
-		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('Thats not a pokeball, or at least not one we support.');
+		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('That\'s not a pokeball, or at least not one we support.');
 		let obj = Db.players.get(user.userid);
 		if (!obj) return false;
 		if (!obj.bag.pokeballs[target]) return this.errorReply("You don't have any " + target + "'s");
 		let side = (toId(room.battle.p1.name) === toId(user) ? "p1" : "p2");
 		if (room.battle.ended) return this.errorReply('The battle has already ended.');
-		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You cant throw a pokeball because your not the trainer here!');
+		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You can\'t throw a pokeball because you\'re not the trainer here!');
 		// Taking the pokeball is handled after throwing it in the battle process
 		//let data = side + " pokeball " + target;
 		//room.battle.send('choose', data.replace(/\n/g, '\f'));
