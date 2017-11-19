@@ -160,7 +160,8 @@ exports.commands = {
 			});
 		} else {
 			EXP.readExp(user.userid, exp => {
-				this.sendReplyBox("Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
+				this.sendReplyBox(
+					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
 					"<br />All rewards have a 1 time use! <br /><br />" +
 					"Level 5 unlocks a free Custom Symbol. <br /><br />" +
 					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
@@ -169,7 +170,9 @@ exports.commands = {
 					"Level 25 unlocks a free Emote. <br /><br />" +
 					"Level 30 unlocks a free Custom Color.  <br /><br />" +
 					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
-					"Level 40 unlocks a free chatroom. <br /><br />"
+					"Level 40 unlocks a free Chatroom. <br /><br />" +
+					"Level 45 unlocks a free Profile Background. <br /><br />" +
+					"Level 50 unlocks a free Profile Song. <br /><br />"
 				);
 			});
 		}
