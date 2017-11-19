@@ -17458,7 +17458,8 @@
 			"spa": 1,
 			"spd": 0,
 			"spe": 1
-		}
+		},
+    "totalEvDrops": 3
   },
 	"magearnaoriginal": {
 		"id": "magearnaoriginal",
