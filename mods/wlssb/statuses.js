@@ -306,8 +306,16 @@ exports.BattleStatuses = {
 	priorityboost: {
 		onStart: function (target) {
 			this.add('-start', target, 'Priority Boost');
+			this.effectData.time = 8;
+		},
+		onEnd: function (target) {
+			this.add('-end', target, 'Priority Boost');
 		},
 		onModifyPriority: function (priority, pokemon, target, move) {
+			if (!pokemon.volatiles.priorityboost.time) {
+				pokemon.removeVolatile('priorityboost');
+				return;
+			}
 			if (move.id === 'cosmicpower' || move.id === 'storedpower') {
 				return priority + 1;
 			}
