@@ -322,9 +322,9 @@ exports.BattleAbilities = {
 	muscles: {
 		id: "muscles",
 		name: "Muscles",
-		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.",
+		desc: "+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.",
 		onStart: function (pokemon) {
-			this.boost({atk: -4, def: 4, spa:1, spd: 4});
+			this.boost({atk: -4, def: 2, spa:1, spd: 2});
 		},
 	},
 };
