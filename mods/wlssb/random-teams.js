@@ -349,12 +349,12 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 			'+Auction': {
 				species: 'Aegislash',
-				ability: 'Water Absorb',
+				ability: 'Stance Change',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Swords Dance', 'Sacred Sword', 'Shadow Sneak', 'Kings Shield',
+				moves: [['Swords Dance', 'Sacred Sword'][variant], 'Shadow Sneak', 'Kings Shield',
 				],
-				signatureMove: 'Zeo-Bash',
+				signatureMove: 'Magnet Flare',
 				evs: {
 					atk: 252,
 					spd: 8,
@@ -391,6 +391,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spe: 252,
 				},
 				nature: 'Jolly',
+			},
+			'+bunnery5' : {
+				species: 'Tympole',
+				ability: 'Muscles',
+				item: 'Salac Berry',
+				gender: 'M',
+				moves: ['storedpower', 'cosmicpower', 'hydropump'],
+				signatureMove: 'Bunnery Hates You Seed',
+				evs: {
+					def: 252,
+					spd: 252,
+					spe: 4,
+				},
+				nature: 'Timid',
 			},
 		};
 		// convert moves to ids.
