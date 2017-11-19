@@ -585,39 +585,10 @@ exports.BattleMovedex = {
 		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
-		volatileStatus: 'partiallytrapped',
 		secondary: {
 			chance: 100,
 			self: {
 				volatileStatus: 'aquaring',
-				effect: {
-					onStart: function (pokemon) {
-						this.add('-start', pokemon, 'Everlasting Annoyingness');
-					},
-					onResidualOrder: 6,
-					onResidual: function (pokemon) {
-						this.heal(pokemon.maxhp / 16);
-					},
-				},
-			},
-		},
-		self: {
-			volatileStatus: 'ingrain',
-			effect: {
-				onStart: function (pokemon) {
-					this.add('-start', pokemon, 'move: Everlasting Annoyingness');
-				},
-				onResidualOrder: 7,
-				onResidual: function (pokemon) {
-					this.heal(pokemon.maxhp / 16);
-				},
-				onTrapPokemon: function (pokemon) {
-					pokemon.tryTrap();
-				},
-				onDragOut: function (pokemon) {
-					this.add('-activate', pokemon, 'move: Everlasting Annoyingness');
-					return null;
-				},
 			},
 		},
 		onHit: function (target) {
