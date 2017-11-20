@@ -64,9 +64,10 @@ function addExp(user, room, amount) {
 				let reward = '';
 				switch (level) {
 				case 5:
-					Economy.logTransaction(user.userid + ' received a custom symbol for reaching level ' + level + '.');
-					user.canCustomSymbol = true;
-					reward = 'a Custom Symbol. To claim your custom symbol, use the command /customsymbol [symbol]';
+					Economy.logTransaction(user.userid + ' received a profile background and profile music for reaching level ' + level + '.');
+					WL.messageSeniorStaff(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '.');
+					Monitor.log(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '!');
+					reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a Global Staff (% and up).';
 					break;
 				case 10:
 					Economy.logTransaction(user.userid + ' received a custom avatar for reaching level ' + level + '.');
@@ -107,12 +108,6 @@ function addExp(user, room, amount) {
 					WL.messageSeniorStaff(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
 					Monitor.adminlog(user.userid + ' has earned a chatroom for reaching level ' + level + '!');
 					reward = 'a Chatroom. To claim your chatroom, Contact a Leader (&) or Administrator (~).';
-					break;
-				case 45:
-					Economy.logTransaction(user.userid + ' received a profile background for reaching level ' + level + '.');
-					WL.messageSeniorStaff(user.userid + ' has earned a profile background for reaching level ' + level + '.');
-					Monitor.log(user.userid + ' has earned a profile background for reaching level ' + level + '!');
-					reward = 'a Profile Background. To claim your profile background, contact a Global Staff (% and up).';
 					break;
 				case 50:
 					Economy.logTransaction(user.userid + ' received profile music for reaching level ' + level + '.');
@@ -163,16 +158,14 @@ exports.commands = {
 				this.sendReplyBox(
 					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
 					"<br />All rewards have a 1 time use! <br /><br />" +
-					"Level 5 unlocks a free Custom Symbol. <br /><br />" +
+					"Level 5 unlocks a free Profile Background and Song. <br /><br />" +
 					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
 					"Level 15 unlocks a free Profile Title. <br /><br />" +
 					"Level 20 unlocks a free Custom Userlist Icon. <br /><br />" +
 					"Level 25 unlocks a free Emote. <br /><br />" +
 					"Level 30 unlocks a free Custom Color.  <br /><br />" +
 					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
-					"Level 40 unlocks a free Chatroom. <br /><br />" +
-					"Level 45 unlocks a free Profile Background. <br /><br />" +
-					"Level 50 unlocks a free Profile Song. <br /><br />"
+					"Level 40 unlocks a free Chatroom. <br /><br />"
 				);
 			});
 		}
