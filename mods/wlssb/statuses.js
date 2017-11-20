@@ -145,8 +145,8 @@ exports.BattleStatuses = {
 	c733937123: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
-			this.useMove('psycheup', pokemon);
+			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Wavelength, I, C733937 123, shall defeat you.....hopefully.');
+			this.useMove('psychup', pokemon);
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
@@ -231,7 +231,7 @@ exports.BattleStatuses = {
 	cubsfan38: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&CubsFan38', 'Your favorite penguin has arrived to battle!');
+			this.add('c', '&CubsFan38', 'Your favorite Rowlet has arrived to battle!');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
