@@ -456,7 +456,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		basePower: 60,
 		accuracy: 100,
-		desc: 'hits twice, 20% chance to flinch.',
+		desc: 'Hits twice, 20% chance to flinch.',
 		id: "stabstab",
 		isViable: true,
 		flags: {protect: 1, contact: 1, mirror: 1},
