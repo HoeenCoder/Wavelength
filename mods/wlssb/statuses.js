@@ -144,8 +144,9 @@ exports.BattleStatuses = {
 	},
 	c733937123: {
 		exists: true,
-		onStart: function () {
-			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Spacial Bros, I, C733937 123, shall defeat you.....hopefully.');
+		onStart: function (pokemon) {
+			this.add('c', '@C733937 123', 'Hello opponent, Welcome to Wavelength, I, C733937 123, shall defeat you.....hopefully.');
+			this.useMove('psychup', pokemon);
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '@C733937 123', '*laughs* Now you have to defeat a stronger ally....and have to still face me later where I can have a better chance at *distorted voice* KiLlInG YoU To wIn!!!');
@@ -164,6 +165,13 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+Auction', 'Ya know, I think I should\'ve gotten __burn everything__ as my ability ;_;');
+		},
+		onTryHit: function (target, source, move) {
+			if (target !== source && (move.type === 'Fire' || move.type === 'Water')) {
+				move.accuracy = true;
+				this.add('-immune', target, '[msg]', '[from] ability: Duality');
+				return null;
+			}
 		},
 	},
 	lycaniumz: {
@@ -223,7 +231,7 @@ exports.BattleStatuses = {
 	cubsfan38: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&CubsFan38', 'Your favorite penguin has arrived to battle!');
+			this.add('c', '&CubsFan38', 'Your favorite Rowlet has arrived to battle!');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
@@ -282,6 +290,36 @@ exports.BattleStatuses = {
 		onSourceFaint: function (target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
 				this.boost({spa:1}, source);
+			}
+		},
+	},
+	bunnery5: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+bunnery5', 'LOL, you think you can win!');
+		},
+		onSwitchOut: function (pokemon) {
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+bunnery5', 'One day, karma will get you back.');
+		},
+	},
+	priorityboost: {
+		onStart: function (target) {
+			this.add('-start', target, 'Priority Boost');
+			this.effectData.time = 8;
+		},
+		onEnd: function (target) {
+			this.add('-end', target, 'Priority Boost');
+		},
+		onModifyPriority: function (priority, pokemon, target, move) {
+			pokemon.volatiles.priorityboost.time--;
+			if (!pokemon.volatiles.priorityboost.time) {
+				pokemon.removeVolatile('priorityboost');
+				return;
+			}
+			if (move.id === 'cosmicpower' || move.id === 'storedpower') {
+				return priority + 1;
 			}
 		},
 	},
