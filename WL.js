@@ -1,7 +1,7 @@
 'use strict';
 
 let fs = require('fs');
-let http = require('http');
+let https = require('https');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
@@ -31,17 +31,11 @@ exports.WL = {
 	regdate: function (target, callback) {
 		target = toId(target);
 		if (regdateCache[target]) return callback(regdateCache[target]);
-		let options = {
-			host: 'pokemonshowdown.com',
-			port: 80,
-			path: '/users/' + target + '.json',
-			method: 'GET',
-		};
-		http.get(options, function (res) {
+		let req = https.get('https://pokemonshowdown.com/users/' + target + '.json', res => {
 			let data = '';
-			res.on('data', function (chunk) {
+			res.on('data', chunk => {
 				data += chunk;
-			}).on('end', function () {
+			}).on('end', () => {
 				try {
 					data = JSON.parse(data);
 				} catch (e) {
@@ -60,6 +54,7 @@ exports.WL = {
 				callback((date === 0 ? false : date));
 			});
 		});
+		req.end();
 	},
 
 	/* eslint-disable no-useless-escape */
@@ -89,13 +84,8 @@ exports.WL = {
 
 	reloadCSS: function () {
 		const cssPath = 'wavelength'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
-		let options = {
-			host: 'play.pokemonshowdown.com',
-			port: 80,
-			path: '/customcss.php?server=' + (Config.serverid || cssPath),
-			method: 'GET',
-		};
-		http.get(options, () => {});
+		let req = https.get('https://play.pokemonshowdown.com/customcss.php?server=' + (Config.serverid || cssPath), () => {});
+		req.end();
 	},
 
 	//Daily Rewards System for Wavelength by Lord Haji
