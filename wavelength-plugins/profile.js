@@ -274,6 +274,41 @@ exports.commands = {
 			);
 		},
 	},
+
+	pokemon: {
+		add: "set",
+		set: function (target, room, user) {
+			let dex = Dex.data.Pokedex.species;
+			if (!target) return this.parse("/pokemonhelp");
+			let pkmn = target.toLowerCase().replace(' ', '');
+			if (!Dex.data.Pokedex[pkmn]) {
+				return this.errorReply('Not a Pokemon. Check your spelling?');
+			}
+			if (Db.pokemon.has(target)) return this.errorReply("This Pokemon is already listed as your favorite Pokemon on your profile.");
+			Db.pokemon.set(toId(user), target);
+			this.sendReply("You have successfully set your Pokemon onto your profile.");
+		},
+
+		del: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!target) {
+				if (!Db.pokemon.has(toId(user))) return this.errorReply("Your favorite Pokemon hasn't been set.");
+				Db.pokemon.remove(toId(user));
+				return this.sendReply("Your favorite Pokemon has been deleted from your profile.");
+			}
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse('/pokemonhelp');
+		},
+	},
+	pokemonhelp: [
+		"/pokemon set [Pokemon] - Sets your Favorite Pokemon.",
+		"/pokemon delete - Removes your Favorite Pokemon.",
+	],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
@@ -323,6 +358,9 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
+				if (Db.pokemon.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Favorite Pokemon:</strong></font> ' + Db.pokemon.get(toId(username)) + '<br />';
+				}
 				if (WL.getFaction(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				}
