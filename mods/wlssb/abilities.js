@@ -72,6 +72,11 @@ exports.BattleAbilities = {
 					return this.chainModify(0.1);
 				}
 			},
+			onModifyPriority: function (priority, pokemon, target, move) {
+				if (move.id === 'tsunamicrash') {
+					return priority + 0.1;
+				}
+			},
 			onEnd: function (target) {
 				this.add('-end', target, 'Wave Call');
 			},
