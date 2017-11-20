@@ -781,7 +781,7 @@ exports.commands = {
 			if (!target) {
 				// Pull up move selection menu to pick what to forget
 				user.console.curPane = 'learn'; // Force override any open pane
-				return user.console.update(this.buildCSS(), user.console.summary('learn', pokemon, action[2]), null);
+				return user.console.update(user.console.buildCSS(), user.console.summary('learn', pokemon, action[2]), null);
 			} else if (target === 'reject') {
 				// Cancel the move learning.
 				user.console.queueAction = null;
@@ -1012,6 +1012,25 @@ exports.commands = {
 								Db.players.set(user.userid, player);
 								return user.console.update(...user.console.next(canReturn));
 							}
+						}
+						if (item.use.move) {
+							let pokemon = Dex.getTemplate(player.party[target[3]].species);
+							let canReturn = true;
+							let learnedMove = WL.getTmMoves(pokemon, item.use.move, player.party[target[3]].moves, target[3]);
+							if (learnedMove.length) {
+								user.console.queue = user.console.queue.concat(learnedMove);
+								canReturn = false;
+							} else {
+								user.console.queue.push('text|' + player.party[target[3]].name + (player.party[target[3]].moves.includes(item.use.move) ? ' already knows ' : ' cannot learn ') + item.use.move + '.');
+							}
+							if (!canReturn) {
+								user.console.curPane = null;
+							} else {
+								let org = user.console.queue.shift();
+								org += '<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ' + target[0] + ', ' + target[1] + '">Return to bag</button>';
+								user.console.queue.unshift(org);
+							}
+							return user.console.update(...user.console.next(canReturn));
 						}
 						if (item.use.triggerEvo) {
 							// Evolution

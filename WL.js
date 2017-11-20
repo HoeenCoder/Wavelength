@@ -505,6 +505,21 @@ exports.WL = {
 		}
 		return moves;
 	},
+	getTmMoves: function (pokemon, tm, curMoves, slot) {
+		if (!pokemon) return [];
+		if (typeof pokemon === 'string') pokemon = Dex.getTemplate(pokemon);
+		if (!pokemon.exists) throw new Error('Can\'t get new moves for non-existant pokemon "' + pokemon.id + '"');
+		let moves = [];
+		let baseSpecies = null;
+		if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
+		if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
+			pokemon.learnset = baseSpecies.learnset;
+		}
+		if (pokemon.learnset[tm] && pokemon.learnset[tm].includes('7M') && curMoves.indexOf(tm) === -1) {
+			moves.push("learn|" + slot + "|" + tm);
+		}
+		return moves;
+	},
 	// Ripped from client, modified for SGgame
 	getPokemonIcon: function (pokemon) {
 		let base = pokemon;
