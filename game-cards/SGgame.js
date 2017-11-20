@@ -1021,7 +1021,7 @@ exports.commands = {
 								user.console.queue = user.console.queue.concat(learnedMove);
 								canReturn = false;
 							} else {
-								user.console.queue.push('text|' + player.party[target[3]].name + ' is not compatible with ' + item.name + '\'s move ' + item.use.move + '.');
+								user.console.queue.push('text|' + player.party[target[3]].name + (player.party[target[3]].moves.includes(item.use.move) ? ' already knows ' : ' cannot learn ') + item.use.move + '.');
 							}
 							if (!canReturn) {
 								user.console.curPane = null;
