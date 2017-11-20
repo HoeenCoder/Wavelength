@@ -279,11 +279,9 @@ exports.commands = {
 		add: "set",
 		set: function (target, room, user) {
 			if (!target) return this.parse("/pokemonhelp");
-			let pkmn = toId(target);
-			if (!Dex.data.Pokedex[pkmn]) {
-				return this.errorReply('Not a Pokemon. Check your spelling?');
-			}
-			Db.pokemon.set(toId(user), Dex.getTemplate(target));
+			let pkmn = Dex.getTemplate(target);
+			if (!pkmn.exists) return this.errorReply('Not a Pokemon. Check your spelling?');
+			Db.pokemon.set(user.userid, pkmn.species);
 			return this.sendReply("You have successfully set your Pokemon onto your profile.");
 		},
 
