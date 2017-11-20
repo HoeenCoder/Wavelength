@@ -313,6 +313,7 @@ exports.BattleStatuses = {
 			this.add('-end', target, 'Priority Boost');
 		},
 		onModifyPriority: function (priority, pokemon, target, move) {
+			pokemon.volatiles.priorityboost.time--;
 			if (!pokemon.volatiles.priorityboost.time) {
 				pokemon.removeVolatile('priorityboost');
 				return;
