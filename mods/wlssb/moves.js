@@ -666,7 +666,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Future Sight", target);
 			this.add('-anim', source, "Psycho Boost", source);
 		},
-		desc: "Lowers all stats by 1 and opponent falls asleep.",
+		desc: "Raises all stats by 1 and opponent falls asleep.",
 		target: "normal",
 		type: "Dark",
 		zMoveEffect: "heal",
