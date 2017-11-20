@@ -172,7 +172,7 @@ exports.BattleAbilities = {
 		name: "Ready to Stab",
 		desc: "Boosts user's Atk and Spe by 2 stages",
 		onStart: function (pokemon) {
-			this.boost({atk: 2, spe: 2});
+			this.boost({atk: 1, spe: 2});
 		},
 	},
 	//Serperiorater
@@ -212,8 +212,6 @@ exports.BattleAbilities = {
 		desc: "Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.",
 		onStart: function (pokemon) {
 			this.useMove('trickroom', pokemon);
-			this.useMove('reflect', pokemon);
-			this.useMove('lightscreen', pokemon);
 			this.useMove('gravity', pokemon);
 			this.setWeather('sandstorm');
 		},
@@ -222,7 +220,7 @@ exports.BattleAbilities = {
 	paradoxicalprowess: {
 		id: "paradoxicalprowess",
 		name: " Paradoxical Prowess",
-		desc: "Sets up Safeguard, Lucky Chant, has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Rock Solid, and has same effects of Oblivious",
+		desc: "Sets up Safeguard, Lucky Chant, has same effects of Magic Guard, has same effects of Sticky Hold, and has same effects of Oblivious",
 		//Magic Guard
 		onDamage: function (damage, target, source, effect) {
 			if (effect.effectType !== 'Move') {
@@ -259,13 +257,6 @@ exports.BattleAbilities = {
 				return null;
 			}
 		},
-		//Solid Rock
-		onSourceModifyDamage: function (damage, source, target, move) {
-			if (move.typeMod > 0) {
-				this.debug('Paradoxical Prowess neutralize');
-				return this.chainModify(0.75);
-			}
-		},
 	},
 	//Tsunami Prince
 	deathboost: {
@@ -273,7 +264,7 @@ exports.BattleAbilities = {
 		name: "Death Boost",
 		desc: "Simple + Puts foe to sleep on entry.",
 		onStart: function (pokemon) {
-			this.useMove('spore', pokemon);
+			this.useMove('darkvoid', pokemon);
 		},
 		onBoost: function (boost, target, source, effect) {
 			if (effect && effect.id === 'zpower') return;
@@ -303,9 +294,9 @@ exports.BattleAbilities = {
 	mosmicpower: {
 		id: "mosmicpower",
 		name: "Mosmic Power",
-		desc: "Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.",
+		desc: "Boosts user's Special and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.",
 		onStart: function (pokemon) {
-			this.boost({spa: 3, spe: 3});
+			this.boost({spa: 2, spe: 2});
 			this.useMove('magnetrise', pokemon);
 		},
 	},
@@ -325,6 +316,15 @@ exports.BattleAbilities = {
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
+		},
+	},
+	//bunnery5
+	muscles: {
+		id: "muscles",
+		name: "Muscles",
+		desc: "+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.",
+		onStart: function (pokemon) {
+			this.boost({atk: -4, def: 2, spa: 1, spd: 2});
 		},
 	},
 };
