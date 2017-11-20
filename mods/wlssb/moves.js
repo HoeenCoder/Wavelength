@@ -92,7 +92,7 @@ exports.BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Surf", target);
 		},
-		flags: {protect: 1, mirror: 1},
+		flags: {mirror: 1},
 		desc: "Selfdestructs target.",
 		onHit: function (target, source, move) {
 			this.add('c|~Kraken Mare ☭|If I go down I\'m taking you with me!');
@@ -110,6 +110,7 @@ exports.BattleMovedex = {
 		},
 		id: "shatterbreak",
 		isViable: true,
+		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko.",
 		isNonstandard: true,
 		name: "Shatter Break",
 		pp: 12,
@@ -147,7 +148,7 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Twinkle Tackle", source);
+			this.add('-anim', source, "Twinkle Tackle", target);
 		},
 		target: "normal",
 		type: "Fairy",
@@ -216,7 +217,7 @@ exports.BattleMovedex = {
 		},
 		flags: {protect: 1, mirror: 1, contact: 1},
 		desc: "30% chance to paralyze, and/or flinch, or confuse foe.",
-		priority: 0,
+		priority: 1,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Thrash", target);
@@ -360,6 +361,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		flags: {protect: 1, mirror: 1, contact: 1},
 		priority: 0,
+		desc: "35% chance flinch",
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Water Pledge", source);
@@ -398,7 +400,7 @@ exports.BattleMovedex = {
 		basePower: 0,
 		damage: 1,
 		category: "Physical",
-		desc: "OHKOs the target as long as it hasnt taken damage before the move hits. %10 chance to lower all stats by 1",
+		desc: "OHKOs the target if user didnt take damage. %10 chance to lower all stats by 1.",
 		id: "finishthem",
 		name: "FINISH THEM",
 		pp: 5,
@@ -485,7 +487,7 @@ exports.BattleMovedex = {
 		id: "invisiblepunch",
 		name: "Invisible Punch",
 		desc: "Heals 1/4 of the damage dealt.",
-		basePower: 90,
+		basePower: 100,
 		accuracy: 100,
 		drain: [1, 4],
 		pp: 10,
@@ -576,8 +578,9 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Deep Sleep",
 		pp: 10,
+		desc: "Rest + raises spd 2 stages. Asleep for 3 turns",
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
+		flags: {mirror: 1, snatch: 1},
 		onHit: function (target) {
 			if (target.hp >= target.maxhp) return false;
 			if (!target.setStatus('slp')) return false;
@@ -592,7 +595,7 @@ exports.BattleMovedex = {
 			chance: 100,
 			self: {
 				boosts: {
-					spd: 3,
+					spd: 2,
 				},
 			},
 		},
@@ -613,6 +616,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		noPPBoosts: true,
 		priority: 0,
+		desc: "Hits 2-5 times. heals damage dealt. user gains aqua ring.",
 		flags: {protect: 1, mirror: 1},
 		secondary: {
 			chance: 100,
@@ -662,6 +666,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Future Sight", target);
 			this.add('-anim', source, "Psycho Boost", source);
 		},
+		desc: "Lowers all stats by 1 and opponent falls asleep.",
 		target: "normal",
 		type: "Dark",
 		zMoveEffect: "heal",
@@ -679,15 +684,7 @@ exports.BattleMovedex = {
 		noPPBoosts: true,
 		priority: 1,
 		flags: {protect: 1, mirror: 1},
-		secondary: {
-			chance: 100,
-			self: {
-				boosts: {
-					def: 1,
-					spd: 1,
-				},
-			},
-		},
+		secondary: false,
 		onHit: function (target) {
 			this.add('c|+xcmr|The calc says this should kill.');
 		},
@@ -701,6 +698,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bulk Up", source);
 			this.add('-anim', source, "Crush Claw", target);
 		},
+		desc: "Rock, steel and ghost types dake normal damage.",
 		target: "normal",
 		type: "Normal",
 	},
@@ -741,12 +739,13 @@ exports.BattleMovedex = {
 	},
 	//bunnery5
 	bunneryhatesyouseed: {
-		category: "status",
+		category: "Status",
 		id: "bunneryhatesyouseed",
 		name: "Bunnery Hates You Seed",
 		accuracy: 100,
 		basePower: 0,
 		isViable: true,
+		desc: "Leech seed and gains priority boost for 7 turns.",
 		isNonstandard: true,
 		pp: 6,
 		noPPBoosts: true,
