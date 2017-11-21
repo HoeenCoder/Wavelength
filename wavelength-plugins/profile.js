@@ -288,7 +288,7 @@ exports.commands = {
 		del: "delete",
 		remove: "delete",
 		delete: function (target, room, user) {
-			if (!Db.pokemon.has(user.userid) return this.errorReply("Your favorite Pokemon hasn't been set.");
+			if (!Db.pokemon.has(user.userid)) return this.errorReply("Your favorite Pokemon hasn't been set.");
 			Db.pokemon.remove(user.userid);
 			return this.sendReply("Your favorite Pokemon has been deleted from your profile.");
 		},
