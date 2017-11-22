@@ -103,16 +103,16 @@ exports.BattleMovedex = {
 			}
 		},
 		onPrepareHit: function (pokemon, target, move, source) {
-			this.add('-message', "KM threw 4 " + move.bomb + "s!");
+			this.add('-message', "Callie threw 4 " + move.bomb + "s!");
 		},
 		onUseMoveMessage: function (target, source, move) {
 			let t = this.random(2);
 			if (t < 1) {
-				this.add('c|~Kraken Mare|♪Faces blush, a rush of ink!♪');
-				this.add('c|~Kraken Mare|♪Bombs explode, no time to think!♪');
+				this.add('c|~Callie (Agent 1)|♪Faces blush, a rush of ink!♪');
+				this.add('c|~Callie (Agent 1)|♪Bombs explode, no time to think!♪');
 			} else {
-				this.add('c|~Kraken Mare|♪Blushing faces covered in pink!♪');
-				this.add('c|~Kraken Mare|♪Rushing bombs, exploding ink!♪');
+				this.add('c|~Callie (Agent 1)|♪Blushing faces covered in pink!♪');
+				this.add('c|~Callie (Agent 1)|♪Rushing bombs, exploding ink!♪');
 			}
 		},
 		multihit: [1, 4],
