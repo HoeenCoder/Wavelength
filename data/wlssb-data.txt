@@ -92,10 +92,10 @@ Desokoro
 EVs: 252 Atk / 4 HP / 252 Spe
 Adamant Nature
 Ability: Wave Call
-    -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage for two turns on switch in.
+    -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage and wave call gain +0.1 priority for two turns on switch in.
 Moves: Dragon Dance, Bounce and Substitute.
 Signature Move: Tsunami Crash
-	-Water Type, Physical, 130 BP, 8 PP and 35% chance to flinch the target.
+	-Water Type, Physical, 135 BP, 8 PP and 35% chance to flinch the target.
 Notes: Quite stronger with buffs to counter issues. Finally living up to what it should with Tsunami's owner's name on it.
 Rank: N/A
 
