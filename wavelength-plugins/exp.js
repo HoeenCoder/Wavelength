@@ -66,7 +66,7 @@ function addExp(user, room, amount) {
 				case 5:
 					Economy.logTransaction(user.userid + ' received a profile background and profile music for reaching level ' + level + '.');
 					Monitor.log(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '!');
-					reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a Global Staff (% and up).';
+					reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a global staff member.';
 					break;
 				case 10:
 					Economy.logTransaction(user.userid + ' received a custom avatar for reaching level ' + level + '.');
