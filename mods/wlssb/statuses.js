@@ -112,26 +112,26 @@ exports.BattleStatuses = {
 			let msg = ['I told you to leave...|Now you leave me no choice...|Prepare to be rocked!', 'No one throws shade at my shades and gets away with it!', 'It\'s time to swab the deck and plunder the booty!', 'It\'s all about becoming one with the music!'][this.random(4)];
 			if (msg.split('|').length > 1) {
 				msg = msg.split('|');
-				for (let i = 0; i < msg.length; i++) this.add('c', '~Kraken Mare', msg[i]);
+				for (let i = 0; i < msg.length; i++) this.add('c', '~Callie (Agent 1)', msg[i]);
 			} else {
-				this.add('c', '~Kraken Mare', msg);
+				this.add('c', '~Callie (Agent 1)', msg);
 			}
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Kraken Mare', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
+			this.add('c', '~Callie (Agent 1)', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
 		},
 		onCriticalHit: function (source) {
 			let msg = ['EAT THAT!', 'Nailed it!', 'Got it!', 'Yeah! Let\'s ROCK!'][this.random(4)];
-			this.add('c', '~Kraken Mare', msg);
+			this.add('c', '~Callie (Agent 1)', msg);
 		},
 		onSourceFaint: function (target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				this.add('c', '~Kraken Mare', 'Thou ART defeated! HA!');
+				this.add('c', '~Callie (Agent 1)', 'Thou ART defeated! HA!');
 			}
 		},
 		onFaint: function () {
 			let msg = ['Ow! You got ink RIGHT in my eye!', 'I...I\'ll remember this!', 'Cross-fade to blaaaaaaaaaaack!', 'I should have bought more bombs...', 'Don\'t worry, Team Callie. I still love you all...'][this.random(5)];
-			this.add('c', '~Kraken Mare', msg);
+			this.add('c', '~Callie (Agent 1)', msg);
 		},
 	},
 	almightybronzong: {
