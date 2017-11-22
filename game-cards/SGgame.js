@@ -1203,8 +1203,7 @@ exports.commands = {
 		Db.players.set(u.userid, p);
 		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
-	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
-	
+	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],	
 	tp: 'takepokeballs',
 	takepokeballs: function (target, room, user) {
 		// Allows mods+ to give more pokeballs during the alpha
@@ -1216,7 +1215,7 @@ exports.commands = {
 		let u = target[0] = Users(target[0]);
 		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
 		 if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(target[1])) return this.parse(`/help takepokeballs`);
-		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may take masterballs.`); 
+		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may take masterballs.`);
 		target[2] = parseInt(target[2]);
 		if (isNaN(target[2]) || target[2] < 1 || target[2] > 100) return this.errorReply(`Pokeball amount must be a number between 1 and 100.`);
 		let p = Db.players.get(u.userid);
@@ -1254,9 +1253,8 @@ exports.commands = {
 		}
 		 this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.items[target[1]]} ${target[1]}'s.`);
 	},
-	givestonehelp: ['/help givestone [user], [stone name], [amount] - Give a user mega stone. Require global @ & ~'], 
-	
-	ts: 'takestone', 
+	givestonehelp: ['/help givestone [user], [stone name], [amount] - Give a user mega stone. Require global @ & ~'],
+	ts: 'takestone',
 	takestone: function(target, room, user) {
 		// Allows mod+ to take mega stones during the alpha
 		if (!this.can('ban')) return;
@@ -1283,10 +1281,9 @@ exports.commands = {
 	
 	stonelist: 'stoneslist', 
 	stoneslist: function(target, room, user) {
-		if (!this.can('talk')) return; 
-		this.sendReplyBox('<b><u>Available Mega Stones List:</u></b><br><a href="https://pastebin.com/gvsPjMk8">Mega Stones List.</a>'); 
+		if (!this.can('talk')) return;
+		this.sendReplyBox('<b><u>Available Mega Stones List:</u></b><br><a href="https://pastebin.com/gvsPjMk8">Mega Stones List.</a>');
 	},
-		
 	exportteam: function (target, room, user) {
 		// Allow users to save their SGgame teams to teambuilder
 		let player = Db.players.get(user.userid);
