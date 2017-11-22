@@ -333,7 +333,7 @@ Rank: N/A
 
 bunnery5
 (Tympole)
-@ Salac Berry
+@ Petaya Berry
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
