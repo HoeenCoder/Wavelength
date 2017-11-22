@@ -1204,6 +1204,83 @@ exports.commands = {
 		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
 	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
+	
+	tp: 'takepokeballs',
+	takepokeballs: function (target, room, user) {
+		// Allows mods+ to give more pokeballs during the alpha
+		if (!this.can('ban')) return;
+		target = target.split(',').map(part => {
+			return toId(part);
+		});
+		if (target.length < 3) return this.parse(`/help takepokeballs`);
+		let u = target[0] = Users(target[0]);
+		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
+		 if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(target[1])) return this.parse(`/help takepokeballs`);
+		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may take masterballs.`); 
+		target[2] = parseInt(target[2]);
+		if (isNaN(target[2]) || target[2] < 1 || target[2] > 100) return this.errorReply(`Pokeball amount must be a number between 1 and 100.`);
+		let p = Db.players.get(u.userid);
+		if (!p) return this.errorReply(`${u.userid} has not started SGgame and cannot be taken pokeballs at this time.`);
+		if (!p.bag.pokeballs[target[1]]) p.bag.pokeballs[target[1]] = 0;
+		p.bag.pokeballs[target[1]] -= target[2];
+		Db.players.set(u.userid, p);
+		if (Rooms.get('staff')) {
+		    Rooms.get('staff').add('|raw|<div class="broadcast-green"> ' + WL.nameColor(user.name, true) + ' has taken ' + target[1] + ' ' + target[2] + ' from ' + (u.userid) + '.').update();
+		}
+		this.sendReply(`${u.userid} has been taken ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
+	},
+	takepokeballshelp: ['/takepokeballs [user], [type], [amount] - Take a users pokeballs. Require global @ & ~.'],
+
+	gs: 'givestone',
+	givestone: function (target, room, user) {
+		// Allows mods+ to give mega stones during the alpha
+		if (!this.can('ban')) return;
+		target = target.split(',').map(part => {
+			return toId(part);
+		});
+		if (target.length < 3) return this.parse(`/help givestone`);
+		let u = target[0] = Users(target[0]);
+		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
+		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'stellixite', 'sharpendonite', 'sceptilite', 'salamencite', 'banettite', 'beedrillite', 'scizorite', 'slowbronite','charizarditex', 'charizarditey', 'redorb', 'tyranitarite', 'blueorb', 'lucarionite'].includes(target[1])) return this.parse(`/help givestone`);
+		target[2] = parseInt(target[2]);
+		if (isNaN(target[2]) || target[2] < 1 || target[2] > 11) return this.errorReply(`Stone amount must be 1.`);
+		let p = Db.players.get(u.userid);
+		if (!p) return this.errorReply(`${u.userid} has not started SGgame and cannot be given stone at this time.`);
+		if (!p.bag.items[target[1]]) p.bag.items[target[1]] = 0;
+		p.bag.items[target[1]] += target[2];
+		Db.players.set(u.userid, p);
+		if (Rooms.get('staff')) {
+		    Rooms.get('staff').add('|raw| <div class="broadcast-green">' + WL.nameColor(user.name, true) + ' has given  ' + target[1] + ' to ' + (u.userid) + '</div>').update();
+		}
+		 this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.items[target[1]]} ${target[1]}'s.`);
+	},
+	givestonehelp: ['/help givestone [user], [stone name], [amount] - Give a user mega stone. Require global @ & ~'], 
+	
+	ts: 'takestone', 
+	takestone: function(target, room, user) {
+		// Allows mod+ to take mega stones during the alpha
+		if (!this.can('ban')) return;
+		target = target.split(',').map(part => {
+			return toId(part);
+		});
+		if (target.length < 3) return this.parse(`/help givepokeballs`);
+		let u = target[0] = Users(target[0]);
+		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
+		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'steelixite', 'sharpendonite', 'sceptilite', 'slamencite', 'banettite', 'beedrillite', 'scizorite','slowbronite','redorb', 'blueorb', 'charizarditex', 'charizarditey', 'lucarionite'].includes(target[1])) return this.parse(`/help givepokeballs`);
+		target[2] = parseInt(target[2]);
+		if (isNaN(target[2]) || target[2] < 1 || target[2] > 1) return this.errorReply(`stone amount must be 1.`);
+		let p = Db.players.get(u.userid);
+		if (!p) return this.errorReply(`${u.userid} has not started SGgame and cannot be taken stone at this time.`);
+		if (!p.bag.items[target[1]]) p.bag.items[target[1]] = 0;
+		p.bag.items[target[1]] -= target[2];
+		Db.players.set(u.userid, p);
+		if (Rooms.get('staff')) {
+		    Rooms.get('staff').add('|raw| <div class="broadcast-green"> ' + WL.nameColor(user.name, true) + ' has taken ' + target[1] + ' from ' + (u.userid) + '.</div>').update();
+		}
+		 this.sendReply(`${u.userid} has been taken ${target[2]} ${target[1]}'s. They now have ${p.bag.items[target[1]]} ${target[1]}'s.`);
+	},
+	takestonehelp: ['/takestone [user], [stone name], [amount] - take a users mega stone. Require global @ & ~.'], 
+		
 	exportteam: function (target, room, user) {
 		// Allow users to save their SGgame teams to teambuilder
 		let player = Db.players.get(user.userid);
