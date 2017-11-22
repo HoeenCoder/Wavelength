@@ -112,7 +112,7 @@ exports.BattleStatuses = {
 			let t = this.random(4);
 			if (t < 1) {
 				this.add('c', '~Kraken Mare', 'I told you to leave...');
-				this.add('c', '~Kraken Mare', 'Now you leave me now choice..');
+				this.add('c', '~Kraken Mare', 'Now you leave me no choice..');
 				this.add('c', '~Kraken Mare', 'Prepare to be rocked!');
 			} else if (t < 2) {
 				this.add('c', '~Kraken Mare', 'No one throws shade at my shades and gets away with it!');
