@@ -317,7 +317,7 @@ Signature Move: Server Guardian
 Notes: Able to hit quick and hard from the start, but if you can, set up.
 Rank: N/A
 
-Kraken Mare
+Callie (Agent 1)
 (Malamar, Poison/Water Typing)
 @ Hypnoshades
     -Broken on hit by any move. Boosts physical moves by 1.5x. Also boosts freshness. Stay Fresh~!
