@@ -337,7 +337,7 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.
+    -+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
     -Leech Seed + Stored Power & Cosmic Power now have +1 Priority.
