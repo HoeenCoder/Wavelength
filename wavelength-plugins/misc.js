@@ -490,6 +490,7 @@ exports.commands = {
 		if (toId(target) === toId('deso')) return this.sendReplyBox(getMonData('desokoro'));
 		if (toId(target) === toId('des')) return this.sendReplyBox(getMonData('desokoro'));
 		if (toId(target) === toId('mos')) return this.sendReplyBox(getMonData('mosmero'));
+		if (toId(target) === toId('electricz')) return this.sendReplyBox(getMonData('mosmero'));
 		if (toId(target) === toId('prince')) return this.sendReplyBox(getMonData('wavelengthprince'));
 		if (toId(target) === toId('hh')) return this.sendReplyBox(getMonData('hoeenhero'));
 		if (toId(target) === toId('hiro')) return this.sendReplyBox(getMonData('hiroz'));
