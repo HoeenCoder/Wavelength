@@ -37,84 +37,9 @@ const FS = require('./fs');
 
 let Chat = module.exports;
 
-// Regex copied from the client
-const domainRegex = '[a-z0-9\\-]+(?:[.][a-z0-9\\-]+)*';
-const parenthesisRegex = '[(](?:[^\\s()<>&]|&amp;)*[)]';
-const linkRegex = new RegExp(
-	'(?:' +
-		'(?:' +
-			// When using www. or http://, allow any-length TLD (like .museum)
-			'(?:https?://|\\bwww[.])' + domainRegex +
-			'|\\b' + domainRegex + '[.]' +
-				// Allow a common TLD, or any 2-3 letter TLD followed by : or /
-				'(?:com?|org|net|edu|info|us|jp|[a-z]{2,3}(?=[:/]))' +
-		')' +
-		'(?:[:][0-9]+)?' +
-		'\\b' +
-		'(?:' +
-			'/' +
-			'(?:' +
-				'(?:' +
-					'[^\\s()&<>]|&amp;|&quot;' +
-					'|' + parenthesisRegex +
-				')*' +
-				// URLs usually don't end with punctuation, so don't allow
-				// punctuation symbols that probably aren't related to URL.
-				'(?:' +
-					'[^\\s`()\\[\\]{}\'".,!?;:&<>*_`^~\\\\]' +
-					'|' + parenthesisRegex +
-				')' +
-			')?' +
-		')?' +
-		'|[a-z0-9.]+\\b@' + domainRegex + '[.][a-z]{2,3}' +
-	')' +
-	'(?!.*&gt;)',
-	'ig'
-);
-const hyperlinkRegex = new RegExp(`(.+)&lt;(.+)&gt;`, 'i');
 // Matches U+FE0F and all Emoji_Presentation characters. More details on
 // http://www.unicode.org/Public/emoji/5.0/emoji-data.txt
 const emojiRegex = /[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55\uFE0F\u{1F004}\u{1F0CF}\u{1F18E}\u{1F191}-\u{1F19A}\u{1F1E6}-\u{1F1FF}\u{1F201}\u{1F21A}\u{1F22F}\u{1F232}-\u{1F236}\u{1F238}-\u{1F23A}\u{1F250}\u{1F251}\u{1F300}-\u{1F320}\u{1F32D}-\u{1F335}\u{1F337}-\u{1F37C}\u{1F37E}-\u{1F393}\u{1F3A0}-\u{1F3CA}\u{1F3CF}-\u{1F3D3}\u{1F3E0}-\u{1F3F0}\u{1F3F4}\u{1F3F8}-\u{1F43E}\u{1F440}\u{1F442}-\u{1F4FC}\u{1F4FF}-\u{1F53D}\u{1F54B}-\u{1F54E}\u{1F550}-\u{1F567}\u{1F57A}\u{1F595}\u{1F596}\u{1F5A4}\u{1F5FB}-\u{1F64F}\u{1F680}-\u{1F6C5}\u{1F6CC}\u{1F6D0}-\u{1F6D2}\u{1F6EB}\u{1F6EC}\u{1F6F4}-\u{1F6F8}\u{1F910}-\u{1F93A}\u{1F93C}-\u{1F93E}\u{1F940}-\u{1F945}\u{1F947}-\u{1F94C}\u{1F950}-\u{1F96B}\u{1F980}-\u{1F997}\u{1F9C0}\u{1F9D0}-\u{1F9E6}]/u;
-
-/** @typedef {{token: string, endToken?: string, resolver: (str: string) => string}} Resolver */
-/** @type {Resolver[]} */
-const formattingResolvers = [
-	{token: "**", resolver: str => `<b>${str}</b>`},
-	{token: "__", resolver: str => `<i>${str}</i>`},
-	{token: "``", resolver: str => `<code>${str}</code>`},
-	{token: "~~", resolver: str => `<s>${str}</s>`},
-	{token: "^^", resolver: str => `<sup>${str}</sup>`},
-	{token: "\\", resolver: str => `<sub>${str}</sub>`},
-	{token: "&lt;&lt;", endToken: "&gt;&gt;", resolver: str => str.replace(/[a-z0-9-]/g, '').length ? false : `&laquo;<a href="${str}" target="_blank">${str}</a>&raquo;`},
-	{token: "[[", endToken: "]]", resolver: str => {
-		let hl = hyperlinkRegex.exec(str);
-		if (hl) return `<a href="${hl[2].trim().replace(/^([a-z]*[^a-z:])/g, 'http://$1')}">${hl[1].trim()}</a>`;
-
-		let query = str;
-		let querystr = str;
-		let split = str.split(':');
-		if (split.length > 1) {
-			let opt = toId(split[0]);
-			query = split.slice(1).join(':').trim();
-
-			switch (opt) {
-			case 'wiki':
-			case 'wikipedia':
-				return `<a href="http://en.wikipedia.org/w/index.php?title=Special:Search&search=${encodeURIComponent(query)}" target="_blank">${querystr}</a>`;
-			case 'yt':
-			case 'youtube':
-				query += " site:youtube.com";
-				querystr = `yt: ${query}`;
-				break;
-			case 'pokemon':
-			case 'item':
-				return `<psicon title="${query}" ${opt}="${query}" />`;
-			}
-		}
-
-		return `<a href="http://www.google.com/search?ie=UTF-8&btnI&q=${encodeURIComponent(query)}" target="_blank">${querystr}</a>`;
-	}},
-];
 
 class PatternTester {
 	// This class sounds like a RegExp
@@ -179,7 +104,14 @@ Chat.commands = undefined;
  * Load chat filters
  *********************************************************/
 Chat.filters = [];
-Chat.filter = function (message, user, room, connection, targetUser) {
+/**
+ * @param {string} message
+ * @param {User} user
+ * @param {ChatRoom} room
+ * @param {Connection} connection
+ * @param {User?} [targetUser]
+ */
+Chat.filter = function (message, user, room, connection, targetUser = null) {
 	// Chat filters can choose to:
 	// 1. return false OR null - to not send a user's message
 	// 2. return an altered string - to alter a user's message
@@ -192,6 +124,58 @@ Chat.filter = function (message, user, room, connection, targetUser) {
 	}
 
 	return message;
+};
+Chat.namefilters = [];
+Chat.namefilter = function (name, user) {
+	if (!Config.disablebasicnamefilter) {
+		// whitelist
+		// \u00A1-\u00BF\u00D7\u00F7  Latin punctuation/symbols
+		// \u02B9-\u0362              basic combining accents
+		// \u2012-\u2027\u2030-\u205E Latin punctuation/symbols extended
+		// \u2050-\u205F              fractions extended
+		// \u2190-\u23FA\u2500-\u2BD1 misc symbols
+		// \u2E80-\u32FF              CJK symbols
+		// \u3400-\u9FFF              CJK
+		// \uF900-\uFAFF\uFE00-\uFE6F CJK extended
+		name = name.replace(/[^a-zA-Z0-9 /\\.~()<>^*%&=+$@#_'?!"\u00A1-\u00BF\u00D7\u00F7\u02B9-\u0362\u2012-\u2027\u2030-\u205E\u2050-\u205F\u2190-\u23FA\u2500-\u2BD1\u2E80-\u32FF\u3400-\u9FFF\uF900-\uFAFF\uFE00-\uFE6F-]+/g, '');
+
+		// blacklist
+		// \u00a1 upside-down exclamation mark (i)
+		// \u2580-\u2590 black bars
+		// \u25A0\u25Ac\u25AE\u25B0 black bars
+		// \u534d\u5350 swastika
+		// \u2a0d crossed integral (f)
+		name = name.replace(/[\u00a1\u2580-\u2590\u25A0\u25Ac\u25AE\u25B0\u2a0d\u534d\u5350]/g, '');
+		// e-mail address
+		if (name.includes('@') && name.includes('.')) return '';
+	}
+	name = name.replace(/^[^A-Za-z0-9]+/, ""); // remove symbols from start
+
+	// cut name length down to 18 chars
+	if (/[A-Za-z0-9]/.test(name.slice(18))) {
+		name = name.replace(/[^A-Za-z0-9]+/g, "");
+	} else {
+		name = name.slice(0, 18);
+	}
+
+	name = Dex.getName(name);
+	for (const filter of Chat.namefilters) {
+		name = filter(name, user);
+		if (!name) return '';
+	}
+	return name;
+};
+Chat.hostfilters = [];
+Chat.hostfilter = function (host, user, connection) {
+	for (const filter of Chat.hostfilters) {
+		filter(host, user, connection);
+	}
+};
+Chat.loginfilters = [];
+Chat.loginfilter = function (user, oldUser, usertype) {
+	for (const filter of Chat.loginfilters) {
+		filter(user, oldUser, usertype);
+	}
 };
 
 /*********************************************************
@@ -284,21 +268,7 @@ class CommandContext {
 
 		if (message && message !== true && typeof message.then !== 'function') {
 			if (this.pmTarget) {
-				let noEmotes = message;
-				let emoticons = WL.parseEmoticons(message);
-				if (emoticons) {
-					noEmotes = message;
-					message = "/html " + emoticons;
-				}
-				let buf = `|pm|${this.user.getIdentity()}|${this.pmTarget.getIdentity()}|${message}`;
-				this.user.send(buf);
-				if (Users.ShadowBan.checkBanned(this.user)) {
-					Users.ShadowBan.addMessage(this.user, "Private to " + this.pmTarget.getIdentity(), noEmotes);
-				} else {
-					if (this.pmTarget !== this.user) this.pmTarget.send(buf);
-				}
-				this.pmTarget.lastPM = this.user.userid;
-				this.user.lastPM = this.pmTarget.userid;
+				Chat.sendPM(message, this.user, this.pmTarget);
 			} else {
 				let emoticons = WL.parseEmoticons(message);
 				if (emoticons && !this.room.disableEmoticons) {
@@ -339,6 +309,7 @@ class CommandContext {
 
 		return message;
 	}
+
 	/**
 	 * @param {string} message
 	 * @param {boolean} recursing
@@ -419,7 +390,6 @@ class CommandContext {
 		if (!commandHandler && !recursing) {
 			for (let g in Config.groups) {
 				let groupid = Config.groups[g].id;
-				target = toId(target);
 				if (cmd === groupid) {
 					return this.splitCommand(`/promote ${target}, ${g}`, true);
 				} else if (cmd === 'global' + groupid) {
@@ -428,6 +398,8 @@ class CommandContext {
 					return this.splitCommand(`/demote ${target}`, true);
 				} else if (cmd === 'room' + groupid) {
 					return this.splitCommand(`/roompromote ${target}, ${g}`, true);
+				} else if (cmd === 'forceroom' + groupid) {
+					return this.splitCommand(`/roompromote !!!${target}, ${g}`, true);
 				} else if (cmd === 'roomde' + groupid || cmd === 'deroom' + groupid || cmd === 'roomun' + groupid) {
 					return this.splitCommand(`/roomdemote ${target}`, true);
 				}
@@ -603,16 +575,17 @@ class CommandContext {
 		this.logEntry(data);
 		this.room.modlog(data + (logOnlyText || ""));
 	}
-	globalModlog(action, user, text) {
-		let buf = "(" + this.room.id + ") " + action + ": ";
+	globalModlog(action, user, note) {
+		let buf = `(${this.room.id}) ${action}: `;
 		if (typeof user === 'string') {
-			buf += "[" + toId(user) + "]";
+			buf += `[${toId(user)}]`;
 		} else {
 			let userid = user.getLastId();
-			buf += "[" + userid + "]";
-			if (user.autoconfirmed && user.autoconfirmed !== userid) buf += " ac:[" + user.autoconfirmed + "]";
+			buf += `[${userid}]`;
+			if (user.autoconfirmed && user.autoconfirmed !== userid) buf += ` ac:[${user.autoconfirmed}]`;
+			buf += ` [${user.latestIp}]`;
 		}
-		buf += text;
+		buf += note;
 		Rooms.global.modlog(buf);
 	}
 	logEntry(data) {
@@ -791,6 +764,14 @@ class CommandContext {
 			if (/[\u239b-\u23b9]/.test(message)) {
 				this.errorReply("Your message contains banned characters.");
 				return false;
+			}
+
+			// If the corresponding config option is set, non-AC users cannot send links, except to staff.
+			if (Config.restrictLinks && !user.autoconfirmed && message.match(Chat.linkRegex)) {
+				if (!(targetUser && targetUser.can('lock'))) {
+					this.errorReply("Your account must be autoconfirmed to send links to other users, except for global staff.");
+					return false;
+				}
 			}
 
 			if (!this.checkFormat(room, user, message)) {
@@ -1006,6 +987,23 @@ Chat.parse = function (message, room, user, connection) {
 	return context.parse();
 };
 
+Chat.sendPM = function (message, user, pmTarget, onlyRecipient = null) {
+	let noEmotes = message;
+	let emoticons = WL.parseEmoticons(message);
+	if (emoticons) message = "/html " + emoticons;
+	let buf = `|pm|${user.getIdentity()}|${pmTarget.getIdentity()}|${(WL.ignoreEmotes[user.userid] ? noEmotes : message)}`;
+	// TODO is onlyRecipient a user? If so we should check if they are ignoring emoticions.
+	if (onlyRecipient) return onlyRecipient.send(buf);
+	user.send(buf);
+	if (Users.ShadowBan.checkBanned(user)) {
+		Users.ShadowBan.addMessage(this.user, "Private to " + this.pmTarget.getIdentity(), noEmotes);
+	} else if (pmTarget !== user) {
+		pmTarget.send(buf);
+	}
+	pmTarget.lastPM = user.userid;
+	user.lastPM = pmTarget.userid;
+};
+
 Chat.package = {};
 
 Chat.uncacheTree = function (root) {
@@ -1033,37 +1031,35 @@ Chat.loadPlugins = function () {
 		if (data) Chat.package = JSON.parse(data);
 	});
 
-	let baseCommands = Chat.baseCommands = require('./chat-commands').commands;
-	let commands = Chat.commands = Object.assign({}, baseCommands);
-	let chatfilters = Chat.filters;
+	// prevent TypeScript from resolving
+	const baseCommands = './chat-commands';
+	Chat.baseCommands = require(baseCommands).commands;
+	let commands = Chat.commands = Object.assign({}, Chat.baseCommands);
 
-	const baseFilter = Config.chatfilter;
-	if (baseFilter && typeof baseFilter === 'function') chatfilters.push(baseFilter);
+	if (Config.chatfilter) Chat.filters.push(Config.chatfilter);
+	if (Config.namefilter) Chat.namefilters.push(Config.namefilter);
+	if (Config.hostfilter) Chat.hostfilters.push(Config.hostfilter);
+	if (Config.loginfilter) Chat.loginfilters.push(Config.loginfilter);
 
 	// Install plug-in commands and chat filters
 
-	// info always goes first so other plugins can shadow it
-	Object.assign(commands, require('./chat-plugins/info').commands);
 	Object.assign(commands, require('./console.js').commands);
 
-	for (const file of FS('chat-plugins/').readdirSync()) {
-		if (file.substr(-3) !== '.js' || file === 'info.js') continue;
+	// info always goes first so other plugins can shadow it
+	let files = FS('chat-plugins/').readdirSync();
+	files = files.filter(file => file !== 'info.js');
+	files.unshift('info.js');
+
+	for (const file of files) {
+		if (file.substr(-3) !== '.js') continue;
 		const plugin = require(`./chat-plugins/${file}`);
 
 		Object.assign(commands, plugin.commands);
 
-		const filter = plugin.chatfilter;
-		if (filter) {
-			if (typeof filter !== 'function') {
-				require('./crashlogger')(new TypeError(`This chatfilter is not a function`), `Loading a chatfilter`, {
-					file: `File location: ../chat-plugins/${file}`,
-					filter: filter,
-					type: typeof filter,
-				});
-			} else {
-				chatfilters.push(filter);
-			}
-		}
+		if (plugin.chatfilter) Chat.filters.push(plugin.chatfilter);
+		if (plugin.namefilter) Chat.namefilters.push(plugin.namefilter);
+		if (plugin.hostfilter) Chat.hostfilters.push(plugin.hostfilter);
+		if (plugin.loginfilter) Chat.loginfilters.push(plugin.loginfilter);
 	}
 	for (let file of FS('wavelength-plugins').readdirSync()) {
 		if (file.substr(-3) !== '.js') continue;
@@ -1193,78 +1189,6 @@ Chat.toDurationString = function (number, options) {
 };
 
 /**
- * Takes a string and converts it to HTML by replacing standard chat formatting with the appropriate HTML tags.
- *
- * @param  {string} str
- * @return {string}
- */
-Chat.parseText = function (str) {
-	str = Chat.escapeHTML(str).replace(/&#x2f;/g, '/').replace(linkRegex, uri => `<a href=${uri.replace(/^([a-z]*[^a-z:])/g, 'http://$1')}>${uri}</a>`);
-
-	let output = [''];
-	let stack = [];
-
-	let parse = true;
-
-	let i = 0;
-	mainLoop: while (i < str.length) {
-		let token = str[i];
-
-		// Hardcoded parsing
-		if (parse && token === '`' && str.substr(i, 2) === '``') {
-			stack.push('``');
-			output.push('');
-			parse = false;
-			i += 2;
-			continue;
-		}
-
-		for (const formattingResolver of formattingResolvers) {
-			let start = formattingResolver.token;
-			let end = formattingResolver.endToken || start;
-
-			if (stack.length && end.startsWith(token) && str.substr(i, end.length) === end && output[stack.length].replace(token, '').length) {
-				for (let j = stack.length - 1; j >= 0; j--) {
-					if (stack[j] === start) {
-						parse = true;
-
-						while (stack.length > j + 1) {
-							output[stack.length - 1] += stack.pop() + output.pop();
-						}
-
-						let str = output.pop();
-						let outstr = formattingResolver.resolver(str.trim());
-						if (!outstr) outstr = `${start}${str}${end}`;
-						output[stack.length - 1] += outstr;
-						i += end.length;
-						stack.pop();
-						continue mainLoop;
-					}
-				}
-			}
-
-			if (parse && start.startsWith(token) && str.substr(i, start.length) === start) {
-				stack.push(start);
-				output.push('');
-				i += start.length;
-				continue mainLoop;
-			}
-		}
-
-		output[stack.length] += token;
-		i++;
-	}
-
-	while (stack.length) {
-		output[stack.length - 1] += stack.pop() + output.pop();
-	}
-
-	let result = output[0];
-
-	return result;
-};
-
-/**
  * Takes an array and turns it into a sentence string by adding commas and the word 'and' at the end
  *
  * @param  {array} array
@@ -1330,7 +1254,7 @@ Chat.getDataPokemonHTML = function (template, gen = 7) {
 Chat.getDataMoveHTML = function (move) {
 	if (typeof move === 'string') move = Object.assign({}, Dex.getMove(move));
 	let buf = `<ul class="utilichart"><li class="result">`;
-	buf += `<a data-entry="move|${move.name}"><span class="col movenamecol">${move.name}</span> `;
+	buf += `<span class="col movenamecol"><a href="https://pokemonshowdown.com/dex/moves/${move.id}">${move.name}</a></span> `;
 	buf += `<span class="col typecol"><img src="//play.pokemonshowdown.com/sprites/types/${move.type}.png" alt="${move.type}" width="32" height="14">`;
 	buf += `<img src="//play.pokemonshowdown.com/sprites/categories/${move.category}.png" alt="${move.category}" width="32" height="14"></span> `;
 	if (move.basePower) buf += `<span class="col labelcol"><em>Power</em><br>${typeof move.basePower === 'number' ? move.basePower : '—'}</span> `;
@@ -1339,24 +1263,27 @@ Chat.getDataMoveHTML = function (move) {
 	const pp = Math.floor(move.noPPBoosts ? basePP : basePP * 8 / 5);
 	buf += `<span class="col pplabelcol"><em>PP</em><br>${pp}</span> `;
 	buf += `<span class="col movedesccol">${move.shortDesc || move.desc}</span> `;
-	buf += `</a></li><li style="clear:both"></li></ul>`;
+	buf += `</li><li style="clear:both"></li></ul>`;
 	return buf;
 };
 
 Chat.getDataAbilityHTML = function (ability) {
 	if (typeof ability === 'string') ability = Object.assign({}, Dex.getAbility(ability));
 	let buf = `<ul class="utilichart"><li class="result">`;
-	buf += `<a data-entry="ability|${ability.name}"><span class="col namecol">${ability.name}</span> `;
+	buf += `<span class="col namecol"><a href="https://pokemonshowdown.com/dex/abilities/${ability.id}">${ability.name}</a></span> `;
 	buf += `<span class="col abilitydesccol">${ability.shortDesc || ability.desc}</span> `;
-	buf += `</a></li><li style="clear:both"></li></ul>`;
+	buf += `</li><li style="clear:both"></li></ul>`;
 	return buf;
 };
 
 Chat.getDataItemHTML = function (item) {
 	if (typeof item === 'string') item = Object.assign({}, Dex.getItem(item));
 	let buf = `<ul class="utilichart"><li class="result">`;
-	buf += `<a data-entry="item|${item.name}"><span class="col itemiconcol"><psicon item="${item.id}"></span> <span class="col namecol">${item.name}</span> `;
+	buf += `<span class="col itemiconcol"><psicon item="${item.id}"></span> <span class="col namecol"><a href="https://pokemonshowdown.com/dex/items/${item.id}">${item.name}</a></span> `;
 	buf += `<span class="col itemdesccol">${item.shortDesc || item.desc}</span> `;
-	buf += `</a></li><li style="clear:both"></li></ul>`;
+	buf += `</li><li style="clear:both"></li></ul>`;
 	return buf;
 };
+
+Chat.formatText = require('./chat-formatter').formatText;
+Chat.linkRegex = require('./chat-formatter').linkRegex;

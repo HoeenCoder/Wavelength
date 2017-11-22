@@ -9,7 +9,7 @@ let roomFaqs = {};
 try {
 	roomFaqs = require(ROOMFAQ_FILE);
 } catch (e) {
-	if (e.code !== 'MODULE_NOT_FOUND') throw e;
+	if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e;
 }
 if (!roomFaqs || typeof roomFaqs !== 'object') roomFaqs = {};
 
@@ -44,7 +44,7 @@ exports.commands = {
 		if (!roomFaqs[room.id]) roomFaqs[room.id] = {};
 		roomFaqs[room.id][topic] = text;
 		saveRoomFaqs();
-		this.sendReplyBox(Chat.parseText(text));
+		this.sendReplyBox(Chat.formatText(text));
 		this.privateModCommand(`(${user.name} added a FAQ for '${topic}')`);
 	},
 	removefaq: function (target, room, user) {
@@ -86,8 +86,15 @@ exports.commands = {
 		topic = getAlias(room.id, topic) || topic;
 
 		if (!this.runBroadcast()) return;
-		this.sendReplyBox(Chat.parseText(roomFaqs[room.id][topic]));
-		if (!this.broadcasting && user.can('declare', null, room)) this.sendReplyBox(`<code>/addfaq ${topic}, ${Chat.escapeHTML(roomFaqs[room.id][topic])}</code>`);
+		this.sendReplyBox(Chat.formatText(roomFaqs[room.id][topic]));
+		if (!this.broadcasting && user.can('declare', null, room)) {
+			let extra = `<code>/addfaq ${topic}, ${Chat.escapeHTML(roomFaqs[room.id][topic])}</code>`;
+			let aliases = Object.keys(roomFaqs[room.id]).filter(val => getAlias(room.id, val) === topic);
+			if (aliases.length) {
+				extra += `<br/><br/>Aliases: ${Object.keys(roomFaqs[room.id]).filter(val => getAlias(room.id, val) === topic).join(', ')}`;
+			}
+			this.sendReplyBox(extra);
+		}
 	},
 	roomfaqhelp: [
 		"/roomfaq - Shows the list of all available FAQ topics",

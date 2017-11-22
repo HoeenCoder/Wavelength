@@ -5,10 +5,10 @@
 
 exports.Formats = [
 
-	// SM Singles
+	// US/UM Singles
 	///////////////////////////////////////////////////////////////////
 	{
-		section: "SM Singles",
+		section: "US/UM Singles",
 	},
 	{
 		name: "[Gen 7] Random Battle",
@@ -56,7 +56,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] UU",
 		desc: [
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3616332/\">UU Metagame Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3618821/\">UU Metagame Discussion</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3613279/\">UU Viability Rankings</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3591880/\">UU Sample Teams</a>",
 		],
@@ -68,14 +68,14 @@ exports.Formats = [
 	{
 		name: "[Gen 7] RU",
 		desc: [
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3615711/\">RU Metagame Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3619225/\">RU Metagame Discussion</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3602279/\">RU Viability Rankings</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3598090/\">RU Sample Teams</a>",
 		],
 
 		mod: 'gen7',
 		ruleset: ['[Gen 7] UU'],
-		banlist: ['UU', 'BL2', 'Aurora Veil'],
+		banlist: ['UU', 'BL2', 'Kommonium Z', 'Aurora Veil'],
 	},
 	{
 		name: "[Gen 7] NU",
@@ -91,7 +91,11 @@ exports.Formats = [
 	},
 	{
 		name: "[Gen 7] PU",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/3614120/\">PU Metagame Discussion</a>"],
+		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3614120/\">PU Metagame Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3614892/\">PU Viability Rankings</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3614470/\">PU Sample Teams</a>",
+		],
 
 		mod: 'gen7',
 		ruleset: ['[Gen 7] NU'],
@@ -109,7 +113,10 @@ exports.Formats = [
 		mod: 'gen7',
 		maxLevel: 5,
 		ruleset: ['Pokemon', 'Standard', 'Swagger Clause', 'Team Preview', 'Little Cup'],
-		banlist: ['Cutiefly', 'Drifloon', 'Gligar', 'Gothita', 'Meditite', 'Misdreavus', 'Murkrow', 'Porygon', 'Scyther', 'Sneasel', 'Swirlix', 'Tangela', 'Vulpix-Base', 'Yanma', 'Eevium Z', 'Dragon Rage', 'Sonic Boom'],
+		banlist: [
+			'Cutiefly', 'Drifloon', 'Gligar', 'Gothita', 'Meditite', 'Misdreavus', 'Murkrow', 'Porygon', 'Scyther', 'Sneasel', 'Swirlix', 'Tangela', 'Vulpix-Base', 'Yanma',
+			'Eevium Z', 'Dragon Rage', 'Sonic Boom',
+		],
 	},
 	{
 		name: "[Gen 7] Monotype",
@@ -121,22 +128,13 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		searchShow: false,
 		ruleset: ['Pokemon', 'Standard', 'Swagger Clause', 'Same Type Clause', 'Team Preview'],
 		banlist: [
-			'Aegislash', 'Arceus', 'Blaziken', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Genesect', 'Giratina', 'Groudon', 'Ho-Oh', 'Hoopa-Unbound', 'Kartana', 'Kyogre', 'Kyurem-White',
-			'Lugia', 'Lunala', 'Magearna', 'Marshadow', 'Mewtwo', 'Palkia', 'Pheromosa', 'Rayquaza', 'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Tapu Lele', 'Xerneas', 'Yveltal', 'Zekrom', 'Zygarde',
-			'Battle Bond', 'Damp Rock', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Mawilite', 'Medichamite', 'Metagrossite', 'Salamencite', 'Smooth Rock', 'Terrain Extender', 'Baton Pass',
+			'Aegislash', 'Arceus', 'Blaziken', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Genesect', 'Giratina', 'Groudon', 'Ho-Oh', 'Hoopa-Unbound',
+			'Kartana', 'Kyogre', 'Kyurem-White', 'Lugia', 'Lunala', 'Magearna', 'Marshadow', 'Mewtwo', 'Necrozma-Dawn-Wings', 'Necrozma-Dusk-Mane',
+			'Palkia', 'Pheromosa', 'Rayquaza', 'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Tapu Lele', 'Xerneas', 'Yveltal', 'Zekrom', 'Zygarde',
+			'Battle Bond', 'Shadow Tag', 'Damp Rock', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Mawilite', 'Medichamite', 'Metagrossite', 'Salamencite', 'Smooth Rock', 'Terrain Extender', 'Baton Pass',
 		],
-	},
-	{
-		name: "[Gen 7] Monotype (suspect test)",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/3617517/\">Monotype Suspect Test</a>"],
-
-		mod: 'gen7',
-		challengeShow: false,
-		ruleset: ['[Gen 7] Monotype'],
-		banlist: ['Shadow Tag'],
 	},
 	{
 		name: "[Gen 7] Anything Goes",
@@ -190,8 +188,8 @@ exports.Formats = [
 		requirePentagon: true,
 	},
 	{
-		name: "[Gen 7] Battle Spot Special 6",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/3614104/\">Battle Spot Special</a>"],
+		name: "[Gen 7] Battle Spot Special 7",
+		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/3621403/\">Battle Spot Special: Season 7</a>"],
 
 		mod: 'gen7',
 		maxForcedLevel: 50,
@@ -199,10 +197,8 @@ exports.Formats = [
 			validate: [3, 6],
 			battle: 3,
 		},
-		ruleset: ['Pokemon', 'Standard GBU', 'Team Preview'],
-		banlist: ['Aegislash', 'Blaziken', 'Charizard', 'Ferrothorn', 'Garchomp', 'Gengar', 'Greninja', 'Gyarados', 'Hippowdon', 'Landorus',
-			'Landorus-Therian', 'Lucario', 'Mamoswine', 'Mimikyu', 'Porygon2', 'Salamence', 'Tapu Fini', 'Tapu Koko', 'Tapu Lele',
-		],
+		ruleset: ['Pokemon', 'Standard GBU', 'Alola Pokedex', 'Team Preview'],
+		banlist: ['Poipole', 'Naganadel', 'Stakataka', 'Blacephalon'],
 		requirePentagon: true,
 	},
 	{
@@ -222,11 +218,11 @@ exports.Formats = [
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
 
-	// SM Doubles
+	// US/UM Doubles
 	///////////////////////////////////////////////////////////////////
 
 	{
-		section: "SM Doubles",
+		section: "US/UM Doubles",
 	},
 	{
 		name: "[Gen 7] Random Doubles Battle",
@@ -239,7 +235,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Doubles OU",
 		desc: [
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3610992/\">Doubles OU Metagame Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3618612/\">Doubles OU Metagame Discussion</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3592903/\">Doubles OU Viability Rankings</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3590987/\">Doubles OU Sample Teams</a>",
 		],
@@ -247,8 +243,8 @@ exports.Formats = [
 		mod: 'gen7',
 		gameType: 'doubles',
 		ruleset: ['Pokemon', 'Standard Doubles', 'Swagger Clause', 'Team Preview'],
-		banlist: ['Arceus', 'Dialga', 'Giratina', 'Giratina-Origin', 'Groudon', 'Ho-Oh', 'Jirachi', 'Kyogre', 'Kyurem-White',
-			'Lugia', 'Lunala', 'Magearna', 'Mewtwo', 'Palkia', 'Rayquaza', 'Reshiram', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
+		banlist: ['Arceus', 'Dialga', 'Giratina', 'Giratina-Origin', 'Groudon', 'Ho-Oh', 'Jirachi', 'Kyogre', 'Kyurem-White', 'Lugia', 'Lunala',
+			'Magearna', 'Mewtwo', 'Necrozma-Dawn-Wings', 'Necrozma-Dusk-Mane', 'Palkia', 'Rayquaza', 'Reshiram', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
 			'Power Construct', 'Eevium Z', 'Kangaskhanite', 'Dark Void', 'Gravity ++ Grass Whistle', 'Gravity ++ Hypnosis', 'Gravity ++ Lovely Kiss', 'Gravity ++ Sing', 'Gravity ++ Sleep Powder',
 		],
 	},
@@ -268,13 +264,33 @@ exports.Formats = [
 		gameType: 'doubles',
 		ruleset: ['[Gen 7] Doubles OU'],
 		banlist: [
-			'Aegislash', 'Amoonguss', 'Arcanine', 'Bronzong', 'Celesteela', 'Deoxys-Attack', 'Diancie', 'Excadrill', 'Ferrothorn',
+			'Aegislash', 'Amoonguss', 'Arcanine', 'Blacephalon', 'Bronzong', 'Celesteela', 'Deoxys-Attack', 'Diancie', 'Excadrill', 'Ferrothorn',
 			'Garchomp', 'Gastrodon', 'Genesect', 'Heatran', 'Hoopa-Unbound', 'Jirachi', 'Kartana', 'Kingdra', 'Kyurem-Black',
-			'Landorus-Therian', 'Ludicolo', 'Marowak-Alola', 'Marshadow', 'Milotic', 'Mimikyu', 'Ninetales-Alola', 'Oranguru',
-			'Pelipper', 'Politoed', 'Porygon2', 'Scrafty', 'Snorlax', 'Suicune', 'Tapu Bulu', 'Tapu Fini', 'Tapu Koko',
+			'Landorus-Therian', 'Ludicolo', 'Lycanroc-Dusk', 'Marowak-Alola', 'Marshadow', 'Milotic', 'Mimikyu', 'Naganadel', 'Ninetales-Alola', 'Oranguru',
+			'Pelipper', 'Politoed', 'Porygon2', 'Scrafty', 'Snorlax', 'Stakataka', 'Suicune', 'Tapu Bulu', 'Tapu Fini', 'Tapu Koko',
 			'Tapu Lele', 'Tyranitar', 'Volcanion', 'Volcarona', 'Weavile', 'Whimsicott', 'Zapdos', 'Zygarde-Base',
 			'Charizardite Y', 'Diancite', 'Gardevoirite', 'Gengarite', 'Kangaskhanite', 'Mawilite', 'Metagrossite', 'Salamencite', 'Swampertite',
 		],
+	},
+	{
+		name: "[Gen 7] VGC 2018",
+
+		mod: 'gen7',
+		gameType: 'doubles',
+		forcedLevel: 50,
+		teamLength: {
+			validate: [4, 6],
+			battle: 4,
+		},
+		timer: {starting: 15 * 60 - 10, perTurn: 10, maxPerTurn: 60, maxFirstTurn: 90, timeoutAutoChoose: true},
+		ruleset: ['Pokemon', 'Species Clause', 'Nickname Clause', 'Item Clause', 'Team Preview', 'Cancel Mod'],
+		banlist: [
+			'Illegal', 'Unreleased', 'Mewtwo', 'Mew', 'Lugia', 'Ho-Oh', 'Celebi', 'Kyogre', 'Groudon', 'Rayquaza', 'Jirachi',
+			'Deoxys', 'Dialga', 'Palkia', 'Giratina', 'Phione', 'Manaphy', 'Darkrai', 'Shaymin', 'Arceus', 'Victini', 'Reshiram',
+			'Zekrom', 'Kyurem', 'Keldeo', 'Meloetta', 'Genesect', 'Xerneas', 'Yveltal', 'Zygarde', 'Diancie', 'Hoopa', 'Volcanion',
+			'Cosmog', 'Cosmoem', 'Solgaleo', 'Lunala', 'Necrozma', 'Magearna', 'Marshadow', 'Zeraora', 'Greninja-Ash',
+		],
+		requirePlus: true,
 	},
 	{
 		name: "[Gen 7] VGC 2017",
@@ -284,7 +300,7 @@ exports.Formats = [
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3590391/\">VGC 2017 Sample Teams</a>",
 		],
 
-		mod: 'gen7',
+		mod: 'vgc17',
 		gameType: 'doubles',
 		forcedLevel: 50,
 		teamLength: {
@@ -479,1361 +495,6 @@ exports.Formats = [
 		},
 	},
 	{
-		name: "[Gen 7] Type Illusion",
-		mod: "gen7",
-		ruleset: ['[Gen 7] OU'],
-		banlist: ["Shedinja"],
-		desc: [
-			"&bullet; Coded by flufi. Completed by Mewth",
-			"Type Illusion has finally left it's beta stage! Credit to Mewth for completing unfinished work.",
-			"Nickname a Pokemon a single typing and the Pokemon will change to that typing in battle.",
-			"To keep a Pokemon's default typing, don't give it a nickname.",
-			"&bullet; <a href=\"http://exiledps.boards.net/board/20/type-illusions\">Type Illusion Thread</a>",
-		],
-		onSwitchIn: function (pokemon) {
-			let name = toId(pokemon.name);
-			if (name === 'fire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire');
-				pokemon.types = ["Fire"];
-			}
-			if (name === 'electric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric');
-				pokemon.types = ["Electric"];
-			}
-			if (name === 'bug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug');
-				pokemon.types = ["Bug"];
-			}
-			if (name === 'water' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water');
-				pokemon.types = ["Water"];
-			}
-			if (name === 'grass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass');
-				pokemon.types = ["Grass"];
-			}
-			if (name === 'fighting' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fighting');
-				pokemon.types = ["Fighting"];
-			}
-			if (name === 'psychic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic');
-				pokemon.types = ["Psychic"];
-			}
-			if (name === 'fairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy');
-				pokemon.types = ["Fairy"];
-			}
-			if (name === 'ice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ice');
-				pokemon.types = ["Ice"];
-			}
-			if (name === 'dark' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark');
-				pokemon.types = ["Dark"];
-			}
-			if (name === 'ghost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost');
-				pokemon.types = ["Ghost"];
-			}
-			if (name === 'normal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal');
-				pokemon.types = ["Normal"];
-			}
-			if (name === 'flying' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying');
-				pokemon.types = ["Flying"];
-			}
-			if (name === 'ground' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground');
-				pokemon.types = ["Ground"];
-			}
-			if (name === 'rock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock');
-				pokemon.types = ["Rock"];
-			}
-			if (name === 'dragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon');
-				pokemon.types = ["Dragon"];
-			}
-			if (name === 'poison' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison');
-				pokemon.types = ["Poison"];
-			}
-			if (name === 'steel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel');
-				pokemon.types = ["Steel"];
-			}
-			if (name === 'basicfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fire');
-				pokemon.types = ["Normal", "Fire"];
-			}
-			if (name === 'basicwater' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Water');
-				pokemon.types = ["Normal", "Water"];
-			}
-			if (name === 'basicgrass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Grass');
-				pokemon.types = ["Normal", "Grass"];
-			}
-			if (name === 'basicghost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ghost');
-				pokemon.types = ["Normal", "Ghost"];
-			}
-			if (name === 'dewdrop' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Bug');
-				pokemon.types = ["Water", "Bug"];
-			}
-			if (name === 'basicelectric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Electric');
-				pokemon.types = ["Normal", "Electric"];
-			}
-			if (name === 'basicice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ice');
-				pokemon.types = ["Normal", "Ice"];
-			}
-			if (name === 'basicfighting' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fighting');
-				pokemon.types = ["Normal", "Fighting"];
-			}
-			if (name === 'basicpoison' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Poison');
-				pokemon.types = ["Normal", "Poison"];
-			}
-			if (name === 'basicground' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ground');
-				pokemon.types = ["Normal", "Ground"];
-			}
-			if (name === 'basicflying' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Flying');
-				pokemon.types = ["Normal", "Flying"];
-			}
-			if (name === 'basicpsychic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Psychic');
-				pokemon.types = ["Normal", "psychic"];
-			}
-			if (name === 'basicbug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Bug');
-				pokemon.types = ["Normal", "Bug"];
-			}
-			if (name === 'basicrock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Rock');
-				pokemon.types = ["Normal", "Rock"];
-			}
-			if (name === 'basicdragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Dragon');
-				pokemon.types = ["Normal", "Dragon"];
-			}
-			if (name === 'basicdark' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Dark');
-				pokemon.types = ["Normal", "Dark"];
-			}
-			if (name === 'basicsteel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Steel');
-				pokemon.types = ["Normal", "Steel"];
-			}
-			if (name === 'basicfairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fairy');
-				pokemon.types = ["Normal", "Fairy"];
-			}
-			if (name === 'liquor' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Water');
-				pokemon.types = ["Fire", "Water"];
-			}
-			if (name === 'plasma' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Electric');
-				pokemon.types = ["Fire", "Electric"];
-			}
-			if (name === 'forestfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Grass');
-				pokemon.types = ["Fire", "Grass"];
-			}
-			if (name === 'dryice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ice');
-				pokemon.types = ["Fire", "Ice"];
-			}
-			if (name === 'firefighter' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Fighting');
-				pokemon.types = ["Fire", "Fighting"];
-			}
-			if (name === 'smoke' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Poison');
-				pokemon.types = ["Fire", "Poison"];
-			}
-			if (name === 'lavaflow' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ground');
-				pokemon.types = ["Fire", "Ground"];
-			}
-			if (name === 'firetornado' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Flying');
-				pokemon.types = ["Fire", "Flying"];
-			}
-			if (name === 'firebending' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Psychic');
-				pokemon.types = ["Fire", "Psychic"];
-			}
-			if (name === 'firefly' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Bug');
-				pokemon.types = ["Fire", "Bug"];
-			}
-			if (name === 'volcano' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Rock');
-				pokemon.types = ["Fire", "Rock"];
-			}
-			if (name === 'candle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ghost');
-				pokemon.types = ["Fire", "Ghost"];
-			}
-			if (name === 'zodiac' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Dragon');
-				pokemon.types = ["Fire", "Dragon"];
-			}
-			if (name === 'nightfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Dark');
-				pokemon.types = ["Fire", "Dark"];
-			}
-			if (name === 'firerod' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Steel');
-				pokemon.types = ["Fire", "Steel"];
-			}
-			if (name === 'pixieflame' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Fairy');
-				pokemon.types = ["Fire", "Fairy"];
-			}
-			if (name === 'hydroelectric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Electric');
-				pokemon.types = ["Water", "Electric"];
-			}
-			if (name === 'growth' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Grass');
-				pokemon.types = ["Water", "Grass"];
-			}
-			if (name === 'frozenwater' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ice');
-				pokemon.types = ["Water", "Ice"];
-			}
-			if (name === 'watergun' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Fighting');
-				pokemon.types = ["Water", "Fighting"];
-			}
-			if (name === 'contaminate' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Poison');
-				pokemon.types = ["Water", "Poison"];
-			}
-			if (name === 'inlet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ground');
-				pokemon.types = ["Water", "Ground"];
-			}
-			if (name === 'clouds' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Flying');
-				pokemon.types = ["Water", "Flying"];
-			}
-			if (name === 'waterbending' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Psychic');
-				pokemon.types = ["Water", "Psychic"];
-			}
-			if (name === 'beachcave' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Rock');
-				pokemon.types = ["Water", "Rock"];
-			}
-			if (name === 'bermuda' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ghost');
-				pokemon.types = ["Water", "Ghost"];
-			}
-			if (name === 'reptile' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/dragon');
-				pokemon.types = ["Water", "Dragon"];
-			}
-			if (name === 'tides' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Dark');
-				pokemon.types = ["Water", "Dark"];
-			}
-			if (name === 'watertank' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Steel');
-				pokemon.types = ["Water", "Steel"];
-			}
-			if (name === 'elucia' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Fairy');
-				pokemon.types = ["Water", "Fairy"];
-			}
-			if (name === 'lawnmower' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Electric');
-				pokemon.types = ["Grass", "Electric"];
-			}
-			if (name === 'fridge' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ice');
-				pokemon.types = ["Electric", "Ice"];
-			}
-			if (name === 'winter' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ice');
-				pokemon.types = ["Grass", "Ice"];
-			}
-			if (name === 'grassrazor' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Fighting');
-				pokemon.types = ["Grass", "Fighting"];
-			}
-			if (name === 'toxicplants' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Poison');
-				pokemon.types = ["Grass", "Poison"];
-			}
-			if (name === 'roots' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ground');
-				pokemon.types = ["Grass", "Ground"];
-			}
-			if (name === 'chloropidae' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Flying');
-				pokemon.types = ["Grass", "Flying"];
-			}
-			if (name === 'icebreaker' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Psychic');
-				pokemon.types = ["Grass", "Psychic"];
-			}
-			if (name === 'arthropoda' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Bug');
-				pokemon.types = ["Grass", "Bug"];
-			}
-			if (name === 'weathering' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Rock');
-				pokemon.types = ["Grass", "Rock"];
-			}
-			if (name === 'spiritgrass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ghost');
-				pokemon.types = ["Grass", "Ghost"];
-			}
-			if (name === 'plantdragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Dragon');
-				pokemon.types = ["Grass", "Dragon"];
-			}
-			if (name === 'lunartwig' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Dark');
-				pokemon.types = ["Grass", "Dark"];
-			}
-			if (name === 'grassblade' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Steel');
-				pokemon.types = ["Grass", "Steel"];
-			}
-			if (name === 'fastfist' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Fighting');
-				pokemon.types = ["Electric", "Fighting"];
-			}
-			if (name === 'batteries' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Poison');
-				pokemon.types = ["Electric", "Poison"];
-			}
-			if (name === 'circuit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ground');
-				pokemon.types = ["Electric", "Ground"];
-			}
-			if (name === 'planes' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Flying');
-				pokemon.types = ["Electric", "Flying"];
-			}
-			if (name === 'lightbulb' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Psychic');
-				pokemon.types = ["Electric", "Psychic"];
-			}
-			if (name === 'glowworm' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Bug');
-				pokemon.types = ["Electric", "Bug"];
-			}
-			if (name === 'fulgurite' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Rock');
-				pokemon.types = ["Electric", "Rock"];
-			}
-			if (name === 'vampire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ghost');
-				pokemon.types = ["Electric", "Ghost"];
-			}
-			if (name === 'fabio' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Dragon');
-				pokemon.types = ["Electric", "Dragon"];
-			}
-			if (name === 'blacklightning' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Dark');
-				pokemon.types = ["Electric", "Dark"];
-			}
-			if (name === 'magnet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Steel');
-				pokemon.types = ["Electric", "Steel"];
-			}
-			if (name === 'sparx' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Fairy');
-				pokemon.types = ["Electric", "Fairy"];
-			}
-			if (name === 'vampillia' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fighting/Ice');
-				pokemon.types = ["Fighting", "Ice"];
-			}
-			if (name === 'icecream' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ice');
-				pokemon.types = ["Poison", "Ice"];
-			}
-			if (name === 'permafrost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Ice');
-				pokemon.types = ["Ground", "Ice"];
-			}
-			if (name === 'hail' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Ice');
-				pokemon.types = ["Flying", "Ice"];
-			}
-			if (name === 'cryokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Ice');
-				pokemon.types = ["Psychic", "Ice"];
-			}
-			if (name === 'gryllobattidae' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Ice');
-				pokemon.types = ["Bug", "Ice"];
-			}
-			if (name === 'pluto' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Ice');
-				pokemon.types = ["Rock", "Ice"];
-			}
-			if (name === 'yukionna' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Ice');
-				pokemon.types = ["Ghost", "Ice"];
-			}
-			if (name === 'wuji' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Ice');
-				pokemon.types = ["Dragon", "Ice"];
-			}
-			if (name === 'iceblade' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Ice');
-				pokemon.types = ["Steel", "Ice"];
-			}
-			if (name === 'lovix' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy/Ice');
-				pokemon.types = ["Fairy", "Ice"];
-			}
-			if (name === 'sick' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Fighting');
-				pokemon.types = ["Poison", "Fighting"];
-			}
-			if (name === 'war' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Fighting');
-				pokemon.types = ["Ground", "Fighting"];
-			}
-			if (name === 'aztec' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Fighting');
-				pokemon.types = ["Flying", "Fighting"];
-			}
-			if (name === 'rhinobeetle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Fighting');
-				pokemon.types = ["Bug", "Fighting"];
-			}
-			if (name === 'manipulation' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Fighting');
-				pokemon.types = ["Psychic", "Fighting"];
-			}
-			if (name === 'porthos' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Fighting');
-				pokemon.types = ["Rock", "Fighting"];
-			}
-			if (name === 'demon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Fighting');
-				pokemon.types = ["Ghost", "Fighting"];
-			}
-			if (name === 'cryptid' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Fighting');
-				pokemon.types = ["Dragon", "Fighting"];
-			}
-			if (name === 'hoodlum' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Fighting');
-				pokemon.types = ["Dark", "Fighting"];
-			}
-			if (name === 'anubis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Fighting');
-				pokemon.types = ["Steel", "Fighting"];
-			}
-			if (name === 'roughhouse' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy/Fighting');
-				pokemon.types = ["Fairy", "Fighting"];
-			}
-			if (name === 'toxicwaste' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ground');
-				pokemon.types = ["Poison", "Ground"];
-			}
-			if (name === 'bugspray' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Flying');
-				pokemon.types = ["Poison", "Flying"];
-			}
-			if (name === 'esoteric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Psychic');
-				pokemon.types = ["Poison", "Psychic"];
-			}
-			if (name === 'stinkbug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Bug');
-				pokemon.types = ["Poison", "Bug"];
-			}
-			if (name === 'cinnabar' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Rock');
-				pokemon.types = ["Poison", "Rock"];
-			}
-			if (name === 'witch' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ghost');
-				pokemon.types = ["Poison", "Ghost"];
-			}
-			if (name === 'tsardragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Dragon');
-				pokemon.types = ["Poison", "Dragon"];
-			}
-			if (name === 'skunk' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Dark');
-				pokemon.types = ["Poison", "Dark"];
-			}
-			if (name === 'lead' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Steel');
-				pokemon.types = ["Poison", "Steel"];
-			}
-			if (name === 'toxicpixie' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Fairy');
-				pokemon.types = ["Poison", "Fairy"];
-			}
-			if (name === 'sandstorm' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Flying');
-				pokemon.types = ["Ground", "Flying"];
-			}
-			if (name === 'terrakinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Psychic');
-				pokemon.types = ["Ground", "Psychic"];
-			}
-			if (name === 'cicada' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Bug');
-				pokemon.types = ["Ground", "Bug"];
-			}
-			if (name === 'geoterra' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Rock');
-				pokemon.types = ["Ground", "Rock"];
-			}
-			if (name === 'Sandghostle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Ghost');
-				pokemon.types = ["Ground", "Ghost"];
-			}
-			if (name === 'terradragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Dragon');
-				pokemon.types = ["Ground", "Dragon"];
-			}
-			if (name === 'krokadile' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Dark');
-				pokemon.types = ["Ground", "Dark"];
-			}
-			if (name === 'terrasteel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Steel');
-				pokemon.types = ["Ground", "Steel"];
-			}
-			if (name === 'terrapixie' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Fairy');
-				pokemon.types = ["Ground", "Fairy"];
-			}
-			if (name === 'aerokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Psychic');
-				pokemon.types = ["Flying", "Psychic"];
-			}
-			if (name === 'butterfly' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Bug');
-				pokemon.types = ["Flying", "Bug"];
-			}
-			if (name === 'pterodactyl' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Rock');
-				pokemon.types = ["Flying", "Rock"];
-			}
-			if (name === 'spirit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Ghost');
-				pokemon.types = ["Flying", "Ghost"];
-			}
-			if (name === 'draco' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Dragon');
-				pokemon.types = ["Flying", "Dragon"];
-			}
-			if (name === 'dogekiss' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Fairy');
-				pokemon.types = ["Flying", "Fairy"];
-			}
-			if (name === 'entomopathy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Bug');
-				pokemon.types = ["Psychic", "Bug"];
-			}
-			if (name === 'geokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Rock');
-				pokemon.types = ["Psychic", "Rock"];
-			}
-			if (name === 'ouijaboard' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Ghost');
-				pokemon.types = ["Psychic", "Ghost"];
-			}
-			if (name === 'dracokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Dragon');
-				pokemon.types = ["Psychic", "Dragon"];
-			}
-			if (name === 'umbrekinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Dark');
-				pokemon.types = ["Psychic", "Dark"];
-			}
-			if (name === 'ferrukinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Steel');
-				pokemon.types = ["Psychic", "Steel"];
-			}
-			if (name === 'pixkinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Fairy');
-				pokemon.types = ["Psychic", "Fairy"];
-			}
-			if (name === 'anomalocaris' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Rock');
-				pokemon.types = ["Bug", "Rock"];
-			}
-			if (name === 'discarded' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Ghost');
-				pokemon.types = ["Bug", "Ghost"];
-			}
-			if (name === 'antlion' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Dragon');
-				pokemon.types = ["Bug", "Dragon"];
-			}
-			if (name === 'bullet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Steel');
-				pokemon.types = ["Bug", "Steel"];
-			}
-			if (name === 'lasius' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Dark');
-				pokemon.types = ["Bug", "Dark"];
-			}
-			if (name === 'sweetant' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Fairy');
-				pokemon.types = ["Bug", "Fairy"];
-			}
-			if (name === 'geospirit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Ghost');
-				pokemon.types = ["Rock", "Ghost"];
-			}
-			if (name === 'trex' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Dragon');
-				pokemon.types = ["Rock", "Dragon"];
-			}
-			if (name === 'tlizard' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Dark');
-				pokemon.types = ["Rock", "Dark"];
-			}
-			if (name === 'shield' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Steel');
-				pokemon.types = ["Rock", "Steel"];
-			}
-			if (name === 'pixelrock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Fairy');
-				pokemon.types = ["Rock", "Fairy"];
-			}
-			if (name === 'draconic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Dragon');
-				pokemon.types = ["Ghost", "Dragon"];
-			}
-			if (name === 'souls' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Dark');
-				pokemon.types = ["Ghost", "Dark"];
-			}
-			if (name === 'mask' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Steel');
-				pokemon.types = ["Ghost", "Steel"];
-			}
-			if (name === 'fairydust' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Fairy');
-				pokemon.types = ["Ghost", "Fairy"];
-			}
-			if (name === 'yamata' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Dark');
-				pokemon.types = ["Dragon", "Dark"];
-			}
-			if (name === 'temporal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Steel');
-				pokemon.types = ["Dragon", "Steel"];
-			}
-			if (name === 'nicedragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Fairy');
-				pokemon.types = ["Dragon", "Fairy"];
-			}
-			if (name === 'taintedmetal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Steel');
-				pokemon.types = ["Dragon", "Steel"];
-			}
-			if (name === 'taintedfairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Fairy');
-				pokemon.types = ["Dark", "Fairy"];
-			}
-			if (name === 'pixieshield' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Fairy');
-				pokemon.types = ["Steel", "Fairy"];
-			}
-		},
-		onAfterMega: function (pokemon) {
-			let name = toId(pokemon.name);
-			if (name === 'fire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire');
-				pokemon.types = ["Fire"];
-			}
-			if (name === 'electric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric');
-				pokemon.types = ["Electric"];
-			}
-			if (name === 'bug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug');
-				pokemon.types = ["Bug"];
-			}
-			if (name === 'water' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water');
-				pokemon.types = ["Water"];
-			}
-			if (name === 'grass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass');
-				pokemon.types = ["Grass"];
-			}
-			if (name === 'fighting' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fighting');
-				pokemon.types = ["Fighting"];
-			}
-			if (name === 'psychic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic');
-				pokemon.types = ["Psychic"];
-			}
-			if (name === 'fairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy');
-				pokemon.types = ["Fairy"];
-			}
-			if (name === 'ice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ice');
-				pokemon.types = ["Ice"];
-			}
-			if (name === 'dark' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark');
-				pokemon.types = ["Dark"];
-			}
-			if (name === 'ghost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost');
-				pokemon.types = ["Ghost"];
-			}
-			if (name === 'normal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal');
-				pokemon.types = ["Normal"];
-			}
-			if (name === 'flying' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying');
-				pokemon.types = ["Flying"];
-			}
-			if (name === 'ground' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground');
-				pokemon.types = ["Ground"];
-			}
-			if (name === 'rock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock');
-				pokemon.types = ["Rock"];
-			}
-			if (name === 'dragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon');
-				pokemon.types = ["Dragon"];
-			}
-			if (name === 'poison' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison');
-				pokemon.types = ["Poison"];
-			}
-			if (name === 'steel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel');
-				pokemon.types = ["Steel"];
-			}
-			if (name === 'basicfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fire');
-				pokemon.types = ["Normal", "Fire"];
-			}
-			if (name === 'basicwater' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Water');
-				pokemon.types = ["Normal", "Water"];
-			}
-			if (name === 'basicgrass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Grass');
-				pokemon.types = ["Normal", "Grass"];
-			}
-			if (name === 'basicghost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ghost');
-				pokemon.types = ["Normal", "Ghost"];
-			}
-			if (name === 'dewdrop' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Bug');
-				pokemon.types = ["Water", "Bug"];
-			}
-			if (name === 'basicelectric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Electric');
-				pokemon.types = ["Normal", "Electric"];
-			}
-			if (name === 'basicice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ice');
-				pokemon.types = ["Normal", "Ice"];
-			}
-			if (name === 'basicfighting' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fighting');
-				pokemon.types = ["Normal", "Fighting"];
-			}
-			if (name === 'basicpoison' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Poison');
-				pokemon.types = ["Normal", "Poison"];
-			}
-			if (name === 'basicground' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Ground');
-				pokemon.types = ["Normal", "Ground"];
-			}
-			if (name === 'basicflying' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Flying');
-				pokemon.types = ["Normal", "Flying"];
-			}
-			if (name === 'basicpsychic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Psychic');
-				pokemon.types = ["Normal", "psychic"];
-			}
-			if (name === 'basicbug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Bug');
-				pokemon.types = ["Normal", "Bug"];
-			}
-			if (name === 'basicrock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Rock');
-				pokemon.types = ["Normal", "Rock"];
-			}
-			if (name === 'basicdragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Dragon');
-				pokemon.types = ["Normal", "Dragon"];
-			}
-			if (name === 'basicdark' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Dark');
-				pokemon.types = ["Normal", "Dark"];
-			}
-			if (name === 'basicsteel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Steel');
-				pokemon.types = ["Normal", "Steel"];
-			}
-			if (name === 'basicfairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Normal/Fairy');
-				pokemon.types = ["Normal", "Fairy"];
-			}
-			if (name === 'liquor' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Water');
-				pokemon.types = ["Fire", "Water"];
-			}
-			if (name === 'plasma' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Electric');
-				pokemon.types = ["Fire", "Electric"];
-			}
-			if (name === 'forestfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Grass');
-				pokemon.types = ["Fire", "Grass"];
-			}
-			if (name === 'dryice' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ice');
-				pokemon.types = ["Fire", "Ice"];
-			}
-			if (name === 'firefighter' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Fighting');
-				pokemon.types = ["Fire", "Fighting"];
-			}
-			if (name === 'smoke' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Poison');
-				pokemon.types = ["Fire", "Poison"];
-			}
-			if (name === 'lavaflow' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ground');
-				pokemon.types = ["Fire", "Ground"];
-			}
-			if (name === 'firetornado' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Flying');
-				pokemon.types = ["Fire", "Flying"];
-			}
-			if (name === 'firebending' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Psychic');
-				pokemon.types = ["Fire", "Psychic"];
-			}
-			if (name === 'firefly' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Bug');
-				pokemon.types = ["Fire", "Bug"];
-			}
-			if (name === 'volcano' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Rock');
-				pokemon.types = ["Fire", "Rock"];
-			}
-			if (name === 'candle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Ghost');
-				pokemon.types = ["Fire", "Ghost"];
-			}
-			if (name === 'zodiac' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Dragon');
-				pokemon.types = ["Fire", "Dragon"];
-			}
-			if (name === 'nightfire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Dark');
-				pokemon.types = ["Fire", "Dark"];
-			}
-			if (name === 'firerod' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Steel');
-				pokemon.types = ["Fire", "Steel"];
-			}
-			if (name === 'pixieflame' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fire/Fairy');
-				pokemon.types = ["Fire", "Fairy"];
-			}
-			if (name === 'hydroelectric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Electric');
-				pokemon.types = ["Water", "Electric"];
-			}
-			if (name === 'growth' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Grass');
-				pokemon.types = ["Water", "Grass"];
-			}
-			if (name === 'frozenwater' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ice');
-				pokemon.types = ["Water", "Ice"];
-			}
-			if (name === 'watergun' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Fighting');
-				pokemon.types = ["Water", "Fighting"];
-			}
-			if (name === 'contaminate' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Poison');
-				pokemon.types = ["Water", "Poison"];
-			}
-			if (name === 'inlet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ground');
-				pokemon.types = ["Water", "Ground"];
-			}
-			if (name === 'clouds' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Flying');
-				pokemon.types = ["Water", "Flying"];
-			}
-			if (name === 'waterbending' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Psychic');
-				pokemon.types = ["Water", "Psychic"];
-			}
-			if (name === 'beachcave' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Rock');
-				pokemon.types = ["Water", "Rock"];
-			}
-			if (name === 'bermuda' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Ghost');
-				pokemon.types = ["Water", "Ghost"];
-			}
-			if (name === 'reptile' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/dragon');
-				pokemon.types = ["Water", "Dragon"];
-			}
-			if (name === 'tides' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Dark');
-				pokemon.types = ["Water", "Dark"];
-			}
-			if (name === 'watertank' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Steel');
-				pokemon.types = ["Water", "Steel"];
-			}
-			if (name === 'elucia' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Water/Fairy');
-				pokemon.types = ["Water", "Fairy"];
-			}
-			if (name === 'lawnmower' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Electric');
-				pokemon.types = ["Grass", "Electric"];
-			}
-			if (name === 'fridge' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ice');
-				pokemon.types = ["Electric", "Ice"];
-			}
-			if (name === 'winter' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ice');
-				pokemon.types = ["Grass", "Ice"];
-			}
-			if (name === 'grassrazor' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Fighting');
-				pokemon.types = ["Grass", "Fighting"];
-			}
-			if (name === 'toxicplants' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Poison');
-				pokemon.types = ["Grass", "Poison"];
-			}
-			if (name === 'roots' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ground');
-				pokemon.types = ["Grass", "Ground"];
-			}
-			if (name === 'chloropidae' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Flying');
-				pokemon.types = ["Grass", "Flying"];
-			}
-			if (name === 'icebreaker' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Psychic');
-				pokemon.types = ["Grass", "Psychic"];
-			}
-			if (name === 'arthropoda' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Bug');
-				pokemon.types = ["Grass", "Bug"];
-			}
-			if (name === 'weathering' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Rock');
-				pokemon.types = ["Grass", "Rock"];
-			}
-			if (name === 'spiritgrass' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Ghost');
-				pokemon.types = ["Grass", "Ghost"];
-			}
-			if (name === 'plantdragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Dragon');
-				pokemon.types = ["Grass", "Dragon"];
-			}
-			if (name === 'lunartwig' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Dark');
-				pokemon.types = ["Grass", "Dark"];
-			}
-			if (name === 'grassblade' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Grass/Steel');
-				pokemon.types = ["Grass", "Steel"];
-			}
-			if (name === 'fastfist' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Fighting');
-				pokemon.types = ["Electric", "Fighting"];
-			}
-			if (name === 'batteries' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Poison');
-				pokemon.types = ["Electric", "Poison"];
-			}
-			if (name === 'circuit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ground');
-				pokemon.types = ["Electric", "Ground"];
-			}
-			if (name === 'planes' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Flying');
-				pokemon.types = ["Electric", "Flying"];
-			}
-			if (name === 'lightbulb' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Psychic');
-				pokemon.types = ["Electric", "Psychic"];
-			}
-			if (name === 'glowworm' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Bug');
-				pokemon.types = ["Electric", "Bug"];
-			}
-			if (name === 'fulgurite' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Rock');
-				pokemon.types = ["Electric", "Rock"];
-			}
-			if (name === 'vampire' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Ghost');
-				pokemon.types = ["Electric", "Ghost"];
-			}
-			if (name === 'fabio' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Dragon');
-				pokemon.types = ["Electric", "Dragon"];
-			}
-			if (name === 'blacklightning' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Dark');
-				pokemon.types = ["Electric", "Dark"];
-			}
-			if (name === 'magnet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Steel');
-				pokemon.types = ["Electric", "Steel"];
-			}
-			if (name === 'sparx' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Electric/Fairy');
-				pokemon.types = ["Electric", "Fairy"];
-			}
-			if (name === 'vampillia' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fighting/Ice');
-				pokemon.types = ["Fighting", "Ice"];
-			}
-			if (name === 'icecream' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ice');
-				pokemon.types = ["Poison", "Ice"];
-			}
-			if (name === 'permafrost' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Ice');
-				pokemon.types = ["Ground", "Ice"];
-			}
-			if (name === 'hail' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Ice');
-				pokemon.types = ["Flying", "Ice"];
-			}
-			if (name === 'cryokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Ice');
-				pokemon.types = ["Psychic", "Ice"];
-			}
-			if (name === 'gryllobattidae' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Ice');
-				pokemon.types = ["Bug", "Ice"];
-			}
-			if (name === 'pluto' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Ice');
-				pokemon.types = ["Rock", "Ice"];
-			}
-			if (name === 'yukionna' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Ice');
-				pokemon.types = ["Ghost", "Ice"];
-			}
-			if (name === 'wuji' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Ice');
-				pokemon.types = ["Dragon", "Ice"];
-			}
-			if (name === 'iceblade' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Ice');
-				pokemon.types = ["Steel", "Ice"];
-			}
-			if (name === 'lovix' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy/Ice');
-				pokemon.types = ["Fairy", "Ice"];
-			}
-			if (name === 'sick' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Fighting');
-				pokemon.types = ["Poison", "Fighting"];
-			}
-			if (name === 'war' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Fighting');
-				pokemon.types = ["Ground", "Fighting"];
-			}
-			if (name === 'aztec' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Fighting');
-				pokemon.types = ["Flying", "Fighting"];
-			}
-			if (name === 'rhinobeetle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Fighting');
-				pokemon.types = ["Bug", "Fighting"];
-			}
-			if (name === 'manipulation' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Fighting');
-				pokemon.types = ["Psychic", "Fighting"];
-			}
-			if (name === 'porthos' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Fighting');
-				pokemon.types = ["Rock", "Fighting"];
-			}
-			if (name === 'demon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Fighting');
-				pokemon.types = ["Ghost", "Fighting"];
-			}
-			if (name === 'cryptid' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Fighting');
-				pokemon.types = ["Dragon", "Fighting"];
-			}
-			if (name === 'hoodlum' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Fighting');
-				pokemon.types = ["Dark", "Fighting"];
-			}
-			if (name === 'anubis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Fighting');
-				pokemon.types = ["Steel", "Fighting"];
-			}
-			if (name === 'roughhouse' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Fairy/Fighting');
-				pokemon.types = ["Fairy", "Fighting"];
-			}
-			if (name === 'toxicwaste' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ground');
-				pokemon.types = ["Poison", "Ground"];
-			}
-			if (name === 'bugspray' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Flying');
-				pokemon.types = ["Poison", "Flying"];
-			}
-			if (name === 'esoteric' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Psychic');
-				pokemon.types = ["Poison", "Psychic"];
-			}
-			if (name === 'stinkbug' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Bug');
-				pokemon.types = ["Poison", "Bug"];
-			}
-			if (name === 'cinnabar' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Rock');
-				pokemon.types = ["Poison", "Rock"];
-			}
-			if (name === 'witch' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Ghost');
-				pokemon.types = ["Poison", "Ghost"];
-			}
-			if (name === 'tsardragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Dragon');
-				pokemon.types = ["Poison", "Dragon"];
-			}
-			if (name === 'skunk' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Dark');
-				pokemon.types = ["Poison", "Dark"];
-			}
-			if (name === 'lead' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Steel');
-				pokemon.types = ["Poison", "Steel"];
-			}
-			if (name === 'toxicpixie' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Poison/Fairy');
-				pokemon.types = ["Poison", "Fairy"];
-			}
-			if (name === 'sandstorm' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Flying');
-				pokemon.types = ["Ground", "Flying"];
-			}
-			if (name === 'terrakinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Psychic');
-				pokemon.types = ["Ground", "Psychic"];
-			}
-			if (name === 'cicada' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Bug');
-				pokemon.types = ["Ground", "Bug"];
-			}
-			if (name === 'geoterra' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Rock');
-				pokemon.types = ["Ground", "Rock"];
-			}
-			if (name === 'Sandghostle' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Ghost');
-				pokemon.types = ["Ground", "Ghost"];
-			}
-			if (name === 'terradragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Dragon');
-				pokemon.types = ["Ground", "Dragon"];
-			}
-			if (name === 'krokadile' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Dark');
-				pokemon.types = ["Ground", "Dark"];
-			}
-			if (name === 'terrasteel' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Steel');
-				pokemon.types = ["Ground", "Steel"];
-			}
-			if (name === 'terrapixie' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ground/Fairy');
-				pokemon.types = ["Ground", "Fairy"];
-			}
-			if (name === 'aerokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Psychic');
-				pokemon.types = ["Flying", "Psychic"];
-			}
-			if (name === 'butterfly' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Bug');
-				pokemon.types = ["Flying", "Bug"];
-			}
-			if (name === 'pterodactyl' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Rock');
-				pokemon.types = ["Flying", "Rock"];
-			}
-			if (name === 'spirit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Ghost');
-				pokemon.types = ["Flying", "Ghost"];
-			}
-			if (name === 'draco' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Dragon');
-				pokemon.types = ["Flying", "Dragon"];
-			}
-			if (name === 'dogekiss' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Flying/Fairy');
-				pokemon.types = ["Flying", "Fairy"];
-			}
-			if (name === 'entomopathy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Bug');
-				pokemon.types = ["Psychic", "Bug"];
-			}
-			if (name === 'geokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Rock');
-				pokemon.types = ["Psychic", "Rock"];
-			}
-			if (name === 'ouijaboard' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Ghost');
-				pokemon.types = ["Psychic", "Ghost"];
-			}
-			if (name === 'dracokinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Dragon');
-				pokemon.types = ["Psychic", "Dragon"];
-			}
-			if (name === 'umbrekinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Dark');
-				pokemon.types = ["Psychic", "Dark"];
-			}
-			if (name === 'ferrukinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Steel');
-				pokemon.types = ["Psychic", "Steel"];
-			}
-			if (name === 'pixkinesis' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Psychic/Fairy');
-				pokemon.types = ["Psychic", "Fairy"];
-			}
-			if (name === 'anomalocaris' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Rock');
-				pokemon.types = ["Bug", "Rock"];
-			}
-			if (name === 'discarded' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Ghost');
-				pokemon.types = ["Bug", "Ghost"];
-			}
-			if (name === 'antlion' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Dragon');
-				pokemon.types = ["Bug", "Dragon"];
-			}
-			if (name === 'bullet' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Steel');
-				pokemon.types = ["Bug", "Steel"];
-			}
-			if (name === 'lasius' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Dark');
-				pokemon.types = ["Bug", "Dark"];
-			}
-			if (name === 'sweetant' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Bug/Fairy');
-				pokemon.types = ["Bug", "Fairy"];
-			}
-			if (name === 'geospirit' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Ghost');
-				pokemon.types = ["Rock", "Ghost"];
-			}
-			if (name === 'trex' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Dragon');
-				pokemon.types = ["Rock", "Dragon"];
-			}
-			if (name === 'tlizard' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Dark');
-				pokemon.types = ["Rock", "Dark"];
-			}
-			if (name === 'shield' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Steel');
-				pokemon.types = ["Rock", "Steel"];
-			}
-			if (name === 'pixelrock' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Rock/Fairy');
-				pokemon.types = ["Rock", "Fairy"];
-			}
-			if (name === 'draconic' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Dragon');
-				pokemon.types = ["Ghost", "Dragon"];
-			}
-			if (name === 'souls' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Dark');
-				pokemon.types = ["Ghost", "Dark"];
-			}
-			if (name === 'mask' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Steel');
-				pokemon.types = ["Ghost", "Steel"];
-			}
-			if (name === 'fairydust' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Ghost/Fairy');
-				pokemon.types = ["Ghost", "Fairy"];
-			}
-			if (name === 'yamata' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Dark');
-				pokemon.types = ["Dragon", "Dark"];
-			}
-			if (name === 'temporal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Steel');
-				pokemon.types = ["Dragon", "Steel"];
-			}
-			if (name === 'nicedragon' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dragon/Fairy');
-				pokemon.types = ["Dragon", "Fairy"];
-			}
-			if (name === 'taintedmetal' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Steel');
-				pokemon.types = ["Dragon", "Steel"];
-			}
-			if (name === 'taintedfairy' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Dark/Fairy');
-				pokemon.types = ["Dark", "Fairy"];
-			}
-			if (name === 'pixieshield' && !pokemon.illusion) {
-				this.add('-start', pokemon, 'typechange', 'Steel/Fairy');
-				pokemon.types = ["Steel", "Fairy"];
-			}
-		},
-	},
-	{
 		name: "[Gen 7] Doubles Monotype",
 		desc: [
 			"All the Pok&eacute;mon on a team must share a type. The battle is fought in the Doubles Format. Banlist is the same as Doubles OU. Requested by Ashley the Pikachu. \"Coded\" by Gligars.",
@@ -1846,10 +507,19 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperirorater. Coded by Lycanium Z.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Lycanium Z.",
 		],
 
 		mod: 'stacked',
+		ruleset: ['[Gen 7] OU'],
+	},
+	{
+		name: "[Gen 7] Weather Wars",
+		desc: [
+			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by Lycanium Z.",
+		],
+
+		mod: 'oldweather',
 		ruleset: ['[Gen 7] OU'],
 	},
 	{
@@ -1913,11 +583,10 @@ exports.Formats = [
 		banlist: ['CAP'],
 	},
 	{
-		name: "[Gen 7] [SGgame] Lvl 50 Anything Goes",
+		name: "[Gen 7] [SGgame] Lvl 100 Anything Goes",
 		desc: ["Anything Goe rules with the teams you build in SGgame.",
-			"All pokemon are set to level 50 for the duration of the match."],
-		forcedLevel: 50,
-		maxForcedLevel: 50,
+			"All pokemon are set to level 100 for the duration of the match."],
+		forcedLevel: 100,
 		useSGgame: true,
 		noExp: true,
 
@@ -1933,26 +602,36 @@ exports.Formats = [
 		column: 3,
 	},
 	{
-		name: "[Gen 7] Ultimate Z",
+		name: "[Gen 7] Full Potential",
 		desc: [
-			"Use any type of Z-Crystal on any move and as many times per battle as desired.",
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3609393/\">Ultimate Z</a>",
+			"Moves use the Pok&eacute;mon's highest effective stat, barring HP, for damage calculation.",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3596777/\">Full Potential</a>",
 		],
 
-		mod: 'ultimatez',
-		ruleset: ['[Gen 7] OU'],
-		banlist: ['Kyurem-Black', 'Celebrate', 'Conversion', 'Happy Hour', 'Hold Hands'],
+		mod: 'fullpotential',
+		ruleset: ['[Gen 7] OU', 'Item Clause'],
+		banlist: ['Raichu-Alola', 'Shuckle', 'Tapu Koko', 'Chlorophyll', 'Sand Rush', 'Slush Rush', 'Speed Boost', 'Swift Swim', 'Unburden', 'Swampertite'],
 	},
 	{
-		name: "[Gen 6] Balanced Hackmons",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/dex/xy/formats/bh/\">ORAS Balanced Hackmons</a>"],
-
-		mod: 'gen6',
-		searchShow: false,
-		ruleset: ['Pokemon', 'Ability Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Endless Battle Clause', 'Team Preview', 'HP Percentage Mod', 'Cancel Mod'],
-		banlist: ['Groudon-Primal', 'Kyogre-Primal', 'Aerilate + Pixilate + Refrigerate > 1',
-			'Arena Trap', 'Huge Power', 'Moody', 'Parental Bond', 'Protean', 'Pure Power', 'Shadow Tag', 'Wonder Guard', 'Assist', 'Chatter',
+		name: "[Gen 7] Dual Wielding",
+		desc: [
+			"Pok&eacute;mon can forgo their Ability in order to use a second item.",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3608611//\">Dual Wielding</a>",
 		],
+
+		mod: 'dualwielding',
+		ruleset: ['[Gen 7] OU'],
+		banlist: ['Regigigas', 'Slaking'],
+		validateSet: function (set, teamHas) {
+			let dual = this.dex.getItem(set.ability);
+			if (!dual.exists) return this.validateSet(set, teamHas);
+			let item = this.dex.getItem(set.item);
+			let validator = new this.constructor(Dex.getFormat(this.format.id, ['Ignore Illegal Abilities']));
+			let problems = validator.validateSet(Object.assign({}, set, {ability: ''}), teamHas) || validator.validateSet(Object.assign({}, set, {ability: '', item: set.ability}, teamHas)) || [];
+			if (dual.id === item.id) problems.push(`You cannot have two of the same item on a Pokemon. (${set.name || set.species} has two of ${item.name})`);
+			if (item.isChoice && dual.isChoice) problems.push(`You cannot have two choice items on a Pokemon. (${set.name || set.species} has ${item.name} and ${dual.name})`);
+			return problems;
+	  },
 	},
 	{
 		section: "Other Metagames",
@@ -1988,10 +667,11 @@ exports.Formats = [
 		},
 		ruleset: ['Pokemon', 'Species Clause', 'Nickname Clause', 'Moody Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Swagger Clause', 'Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod', 'Team Preview'],
 		banlist: [
-			'Illegal', 'Unreleased', 'Arceus', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Deoxys-Defense', 'Dialga', 'Giratina', 'Groudon', 'Ho-Oh', 'Kyogre',
-			'Kyurem-White', 'Lugia', 'Lunala', 'Marshadow', 'Mewtwo', 'Palkia', 'Rayquaza', 'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
-			'Power Construct', 'Perish Song', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Chansey + Charm + Seismic Toss', 'Chansey + Charm + Psywave',
+			'Illegal', 'Unreleased', 'Arceus', 'Darkrai', 'Deoxys-Base', 'Deoxys-Attack', 'Deoxys-Defense', 'Dialga', 'Giratina', 'Groudon', 'Ho-Oh',
+			'Kyogre', 'Kyurem-White', 'Lugia', 'Lunala', 'Marshadow', 'Mewtwo', 'Necrozma-Dawn-Wings', 'Necrozma-Dusk-Mane', 'Palkia', 'Rayquaza',
+			'Reshiram', 'Shaymin-Sky', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom', 'Focus Sash', 'Kangaskhanite', 'Salamencite', 'Perish Song',
 			'Flash', 'Kinesis', 'Leaf Tornado', 'Mirror Shot', 'Mud Bomb', 'Mud-Slap', 'Muddy Water', 'Night Daze', 'Octazooka', 'Sand Attack', 'Smokescreen',
+			'Chansey + Charm + Seismic Toss', 'Chansey + Charm + Psywave',
 		],
 	},
 	{
@@ -2006,6 +686,11 @@ exports.Formats = [
 		mod: 'mixandmega',
 		ruleset: ['Pokemon', 'Standard', 'Mega Rayquaza Clause', 'Team Preview'],
 		banlist: ['Baton Pass', 'Electrify'],
+		bannedStones: ['Beedrillite', 'Blazikenite', 'Gengarite', 'Kangaskhanite', 'Mawilite', 'Medichamite', 'Ultranecrozium Z'],
+		cannotMega: [
+			'Arceus', 'Darkrai', 'Deoxys', 'Deoxys-Attack', 'Dialga', 'Dragonite', 'Giratina', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Lunala', 'Marshadow',
+			'Mewtwo', 'Necrozma-Dawn-Wings', 'Necrozma-Dusk-Mane', 'Palkia', 'Pheromosa', 'Rayquaza', 'Regigigas', 'Reshiram', 'Shaymin-Sky', 'Slaking', 'Solgaleo', 'Xerneas', 'Yveltal', 'Zekrom',
+		],
 		onValidateTeam: function (team) {
 			let itemTable = {};
 			for (let i = 0; i < team.length; i++) {
@@ -2016,14 +701,15 @@ exports.Formats = [
 				itemTable[item] = true;
 			}
 		},
-		onValidateSet: function (set) {
+		onValidateSet: function (set, format) {
 			let template = this.getTemplate(set.species || set.name);
 			let item = this.getItem(set.item);
-			if (!item.megaEvolves && item.id !== 'blueorb' && item.id !== 'redorb') return;
-			if (template.baseSpecies === item.megaEvolves || (template.baseSpecies === 'Groudon' && item.id === 'redorb') || (template.baseSpecies === 'Kyogre' && item.id === 'blueorb')) return;
+			if (!item.megaEvolves && item.id !== 'blueorb' && item.id !== 'redorb' && item.id !== 'ultranecroziumz') return;
+			if (template.baseSpecies === item.megaEvolves || (template.baseSpecies === 'Groudon' && item.id === 'redorb') || (template.baseSpecies === 'Kyogre' && item.id === 'blueorb') || (template.species.substr(0, 9) === 'Necrozma-' && item.id === 'ultranecroziumz')) return;
 			if (template.evos.length) return ["" + template.species + " is not allowed to hold " + item.name + " because it's not fully evolved."];
-			let uberStones = ['beedrillite', 'blazikenite', 'gengarite', 'kangaskhanite', 'mawilite', 'medichamite'];
-			if (template.tier === 'Uber' || set.ability === 'Power Construct' || uberStones.includes(item.id)) return ["" + template.species + " is not allowed to hold " + item.name + "."];
+			let uberStones = format.bannedStones || [];
+			let uberPokemon = format.cannotMega || [];
+			if (uberPokemon.includes(template.name) || set.ability === 'Power Construct' || uberStones.includes(item.name)) return ["" + template.species + " is not allowed to hold " + item.name + "."];
 		},
 		onBegin: function () {
 			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
@@ -2060,15 +746,16 @@ exports.Formats = [
 		],
 
 		mod: 'gen7',
-		ruleset: ['Pokemon', 'Standard', 'Ability Clause', 'Ignore Illegal Abilities', 'Team Preview'],
-		banlist: ['Arceus', 'Archeops', 'Blaziken', 'Darkrai', 'Deoxys', 'Dialga', 'Dragonite', 'Giratina', 'Groudon', 'Ho-Oh', 'Hoopa-Unbound',
-			'Kartana', 'Keldeo', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Lunala', 'Marshadow', 'Mewtwo', 'Palkia', 'Pheromosa',
-			'Rayquaza', 'Regigigas', 'Reshiram', 'Shaymin-Sky', 'Shedinja', 'Slaking', 'Solgaleo', 'Terrakion', 'Xerneas', 'Yveltal', 'Zekrom',
-			'Arena Trap', 'Power Construct', 'Shadow Tag', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Salamencite', 'Baton Pass',
+		ruleset: ['[Gen 7] OU', 'Ability Clause', 'Ignore Illegal Abilities'],
+		banlist: ['Archeops', 'Dragonite', 'Hoopa-Unbound', 'Kartana', 'Keldeo', 'Kyurem-Black', 'Regigigas', 'Shedinja', 'Slaking', 'Terrakion'],
+		unbanlist: ['Genesect', 'Landorus', 'Metagross-Mega'],
+		bannedAbilities: [
+			'Comatose', 'Contrary', 'Fluffy', 'Fur Coat', 'Huge Power', 'Illusion', 'Imposter', 'Innards Out',
+			'Parental Bond', 'Protean', 'Pure Power', 'Simple', 'Speed Boost', 'Stakeout', 'Water Bubble', 'Wonder Guard',
 		],
-		onValidateSet: function (set) {
-			let bannedAbilities = {'Arena Trap': 1, 'Comatose': 1, 'Contrary': 1, 'Fluffy': 1, 'Fur Coat': 1, 'Huge Power': 1, 'Illusion': 1, 'Imposter': 1, 'Innards Out': 1, 'Parental Bond': 1, 'Protean': 1, 'Pure Power': 1, 'Shadow Tag':1, 'Simple':1, 'Speed Boost': 1, 'Stakeout': 1, 'Water Bubble': 1, 'Wonder Guard': 1};
-			if (set.ability in bannedAbilities) {
+		onValidateSet: function (set, format) {
+			let bannedAbilities = format.bannedAbilities || [];
+			if (bannedAbilities.includes(set.ability)) {
 				let template = this.getTemplate(set.species || set.name);
 				let legalAbility = false;
 				for (let i in template.abilities) {
@@ -2079,44 +766,39 @@ exports.Formats = [
 		},
 	},
 	{
-		name: "[Gen 7] Sketchmons",
+		name: "[Gen 7] Camomons",
 		desc: [
-			"Pok&eacute;mon gain access to one Sketched move.",
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3587743/\">Sketchmons</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3606633/\">Sketchmons Resources</a>",
-			"&bullet; <a href=\"http://www.smogon.com/tiers/om/analyses/sketchmons/\">Sketchmons Analyses</a>",
+			"Pok&eacute;mon change type to match their first two moves.",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3598418/\">Camomons</a>",
 		],
-
 		mod: 'gen7',
-		searchShow: false,
-		ruleset: ['[Gen 7] OU', 'Allow One Sketch', 'Sketch Clause'],
-		banlist: ['Porygon-Z'],
-		noSketch: ['Belly Drum', 'Celebrate', 'Conversion', "Forest's Curse", 'Geomancy', 'Happy Hour', 'Hold Hands', 'Lovely Kiss', 'Purify', 'Quiver Dance', 'Shell Smash', 'Shift Gear', 'Sketch', 'Spore', 'Sticky Web', 'Trick-or-Treat'],
-	},
-	{
-		name: "[Gen 7] Sketchmons (suspect test)",
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/posts/7547342/\">Sketchmons Suspect Test</a>"],
-
-		mod: 'gen7',
-		challengeShow: false,
-		ruleset: ['[Gen 7] Sketchmons'],
-		banlist: [],
-		noSketch: ['Belly Drum', 'Celebrate', 'Conversion', "Forest's Curse", 'Geomancy', 'Happy Hour', 'Hold Hands', 'Lovely Kiss', 'Purify', 'Quiver Dance', 'Shell Smash', 'Shift Gear', 'Sketch', 'Spore', 'Sticky Web', 'Trick-or-Treat'],
-	},
-	{
-		name: "[Gen 7] Hidden Type",
-		desc: [
-			"Pok&eacute;mon have an added type determined by their IVs. Same as the Hidden Power type.",
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3591194/\">Hidden Type</a>",
-		],
-
-		mod: 'gen7',
-		searchShow: false,
 		ruleset: ['[Gen 7] OU'],
-		onModifyTemplate: function (template, pokemon) {
-			if (template.types.includes(pokemon.hpType)) return;
-			return Object.assign({addedType: pokemon.hpType}, template);
+		banlist: ['Shedinja'],
+		onModifyTemplate: function (template, target, source) {
+			if (source) return;
+			let types = [...new Set(target.baseMoveset.slice(0, 2).map(move => this.getMove(move.id).type))];
+			return Object.assign({}, template, {types: types});
 		},
+		onSwitchInPriority: 2,
+		onSwitchIn: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', pokemon.types.join('/'), '[silent]');
+		},
+		onAfterMega: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', pokemon.types.join('/'), '[silent]');
+		},
+	},
+	{
+		name: "[Gen 7] STABmons",
+		desc: [
+			"Pok&eacute;mon can use any move of their typing, in addition to the moves they can normally learn.",
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3587949/\">STABmons</a>",
+		],
+
+		mod: 'gen7',
+		searchShow: false,
+		ruleset: ['[Gen 7] OU', 'Ignore STAB Moves'],
+		banlist: ['Kartana', 'Komala', 'Kyurem-Black', 'Silvally', 'Tapu Koko', 'Tapu Lele', 'Aerodactylite', 'King\'s Rock', 'Metagrossite', 'Razor Fang'],
+		noLearn: ['Acupressure', 'Belly Drum', 'Chatter', 'Geomancy', 'Lovely Kiss', 'Shell Smash', 'Shift Gear', 'Thousand Arrows'],
 	},
 	{
 		name: "[Gen 7] 2v2 Doubles",
@@ -2174,6 +856,14 @@ exports.Formats = [
 		ruleset: ['Pokemon', 'Standard GBU', 'Team Preview'],
 	},
 	{
+		name: "[Gen 7] Monotype Random Battle",
+
+		mod: 'gen7',
+		team: 'random',
+		searchShow: false,
+		ruleset: ['Pokemon', 'Same Type Clause', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+	},
+	{
 		name: "[Gen 7] Challenge Cup 1v1",
 
 		mod: 'gen7',
@@ -2184,12 +874,16 @@ exports.Formats = [
 		ruleset: ['Pokemon', 'HP Percentage Mod', 'Cancel Mod', 'Team Preview'],
 	},
 	{
-		name: "[Gen 7] Monotype Random Battle",
+		name: "[Gen 7] Challenge Cup 2v2",
 
 		mod: 'gen7',
-		team: 'random',
+		team: 'randomCC',
+		gameType: 'doubles',
+		teamLength: {
+			battle: 2,
+		},
 		searchShow: false,
-		ruleset: ['Pokemon', 'Same Type Clause', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+		ruleset: ['Pokemon', 'HP Percentage Mod', 'Cancel Mod', 'Team Preview'],
 	},
 	{
 		name: "[Gen 7] Hackmons Cup",
@@ -2208,6 +902,57 @@ exports.Formats = [
 		searchShow: false,
 		ruleset: ['Pokemon', 'HP Percentage Mod', 'Cancel Mod'],
 	},
+	{
+		name: "[Gen 6] Random Battle",
+
+		mod: 'gen6',
+		team: 'random',
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+	},
+	{
+		name: "[Gen 5] Random Battle",
+
+		mod: 'gen5',
+		team: 'random',
+		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+	},
+	{
+		name: "[Gen 4] Random Battle",
+
+		mod: 'gen4',
+		team: 'random',
+		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+	},
+	{
+		name: "[Gen 3] Random Battle",
+
+		mod: 'gen3',
+		team: 'random',
+		ruleset: ['Pokemon', 'Standard'],
+	},
+	{
+		name: "[Gen 2] Random Battle",
+
+		mod: 'gen2',
+		team: 'random',
+		ruleset: ['Pokemon', 'Standard'],
+	},
+	{
+		name: "[Gen 1] Random Battle",
+
+		mod: 'gen1',
+		team: 'random',
+		ruleset: ['Pokemon', 'Standard'],
+	},
+	{
+		name: "[Gen 1] Challenge Cup",
+
+		mod: 'gen1',
+		team: 'randomCC',
+		searchShow: false,
+		challengeShow: false,
+		ruleset: ['Pokemon', 'HP Percentage Mod', 'Cancel Mod'],
+	},
 
 	// RoA Spotlight
 	///////////////////////////////////////////////////////////////////
@@ -2217,19 +962,25 @@ exports.Formats = [
 		column: 4,
 	},
 	{
-		name: "[Gen 4] Doubles OU",
+		name: "[Gen 5] PU",
+		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/posts/7326932/\">BW2 PU Discussion</a>"],
 
-		mod: 'gen4',
-		gameType: 'doubles',
-		ruleset: ['[Gen 4] OU'],
-		banlist: [],
+		mod: 'gen5',
+		ruleset: ['[Gen 5] NU'],
+		banlist: [
+			'RU', 'BL3', 'Alomomola', 'Ampharos', 'Armaldo', 'Basculin', 'Braviary', 'Cacturne', 'Camerupt', 'Carracosta', 'Charizard', 'Eelektross',
+			'Electabuzz', 'Exeggutor', 'Garbodor', 'Gardevoir', 'Golem', 'Golurk', 'Gorebyss', 'Gurdurr', 'Haunter', 'Jynx', 'Kadabra', 'Kangaskhan',
+			'Lickilicky', 'Liepard', 'Linoone', 'Ludicolo', 'Mandibuzz', 'Metang', 'Miltank', 'Misdreavus', 'Musharna', 'Piloswine', 'Pinsir', 'Primeape',
+			'Probopass', 'Regirock', 'Roselia', 'Rotom-Fan', 'Samurott', 'Sawk', 'Sawsbuck', 'Scolipede', 'Seismitoad', 'Serperior', 'Skuntank', 'Swellow',
+			'Tangela', 'Tauros', 'Torkoal', 'Wartortle', 'Zangoose', 'Drizzle', 'Drought', 'Sand Stream', 'Snow Warning', 'Prankster + Assist',
+		],
 	},
 
-	// ORAS Singles
+	// OR/AS Singles
 	///////////////////////////////////////////////////////////////////
 
 	{
-		section: "ORAS Singles",
+		section: "OR/AS Singles",
 		column: 4,
 	},
 	{
@@ -2372,13 +1123,6 @@ exports.Formats = [
 		banlist: ['Illegal', 'Unreleased'],
 	},
 	{
-		name: "[Gen 6] Random Battle",
-
-		mod: 'gen6',
-		team: 'random',
-		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-	},
-	{
 		name: "[Gen 6] Custom Game",
 
 		mod: 'gen6',
@@ -2391,11 +1135,11 @@ exports.Formats = [
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
 
-	// ORAS Doubles/Triples
+	// OR/AS Doubles/Triples
 	///////////////////////////////////////////////////////////////////
 
 	{
-		section: "ORAS Doubles/Triples",
+		section: "OR/AS Doubles/Triples",
 	},
 	{
 		name: "[Gen 6] Doubles OU",
@@ -2504,15 +1248,6 @@ exports.Formats = [
 		requirePentagon: true,
 	},
 	{
-		name: "[Gen 6] Random Doubles Battle",
-
-		mod: 'gen6',
-		gameType: 'doubles',
-		team: 'random',
-		searchShow: false,
-		ruleset: ['PotD', 'Pokemon', 'HP Percentage Mod', 'Cancel Mod'],
-	},
-	{
 		name: "[Gen 6] Doubles Custom Game",
 
 		mod: 'gen6',
@@ -2555,11 +1290,11 @@ exports.Formats = [
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
 
-	// BW2 Singles
+	// B2/W2 Singles
 	///////////////////////////////////////////////////////////////////
 
 	{
-		section: "BW2 Singles",
+		section: "B2/W2 Singles",
 		column: 5,
 	},
 	{
@@ -2642,14 +1377,6 @@ exports.Formats = [
 		banlist: ['Dark Void', 'Sky Drop'],
 	},
 	{
-		name: "[Gen 5] Random Battle",
-
-		mod: 'gen5',
-		searchShow: false,
-		team: 'random',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-	},
-	{
 		name: "[Gen 5] Custom Game",
 
 		mod: 'gen5',
@@ -2662,11 +1389,11 @@ exports.Formats = [
 		ruleset: ['Team Preview', 'Cancel Mod'],
 	},
 
-	// BW2 Doubles
+	// B2/W2 Doubles
 	///////////////////////////////////////////////////////////////////
 
 	{
-		section: 'BW2 Doubles',
+		section: 'B2/W2 Doubles',
 		column: 5,
 	},
 	{
@@ -2722,8 +1449,8 @@ exports.Formats = [
 	{
 		name: "[Gen 4] OU",
 		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3506147/\">DPP OU Metagame Discussion</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3551992/\">DPP OU Viability Ranking</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6431088/\">DPP Sample Teams</a>",
 		],
 
 		mod: 'gen4',
@@ -2733,8 +1460,8 @@ exports.Formats = [
 	{
 		name: "[Gen 4] Ubers",
 		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/posts/7433831/\">DPP Ubers Information &amp; Resources</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3505128/\">DPP Ubers Viability Ranking</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6446464/\">DPP Ubers Sample Teams</a>",
 		],
 
 		mod: 'gen4',
@@ -2744,8 +1471,8 @@ exports.Formats = [
 	{
 		name: "[Gen 4] UU",
 		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3532624/\">DPP UU Metagame Discussion</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3503638/\">DPP UU Viability Ranking</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6431088/\">DPP Sample Teams</a>",
 		],
 
 		mod: 'gen4',
@@ -2753,23 +1480,28 @@ exports.Formats = [
 		banlist: ['Uber', 'OU', 'BL'],
 	},
 	{
+		name: "[Gen 4] NU",
+		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3583742/\">DPP NU Metagame Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/posts/3512254/\">DPP NU Viability Ranking</a>",
+		],
+
+		mod: 'gen4',
+		searchShow: false,
+		ruleset: ['Pokemon', 'Standard'],
+		banlist: ['Uber', 'OU', 'BL', 'UU', 'BL2'],
+	},
+	{
 		name: "[Gen 4] LC",
 		desc: [
 			"&bullet; <a href=\"http://www.smogon.com/dp/articles/little_cup_guide\">DPP LC Guide</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6431088/\">DPP Sample Teams</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/posts/7336500/\">DPP LC Viability Ranking</a>",
 		],
 
 		mod: 'gen4',
 		maxLevel: 5,
 		ruleset: ['Pokemon', 'Standard', 'Little Cup'],
 		banlist: ['LC Uber', 'Misdreavus', 'Murkrow', 'Scyther', 'Sneasel', 'Tangela', 'Yanma', 'Berry Juice', 'Deep Sea Tooth', 'Dragon Rage', 'Sonic Boom'],
-	},
-	{
-		name: "[Gen 4] Random Battle",
-
-		mod: 'gen4',
-		team: 'random',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 	},
 	{
 		name: "[Gen 4] Custom Game",
@@ -2810,20 +1542,13 @@ exports.Formats = [
 	{
 		name: "[Gen 3] Ubers",
 		desc: [
+			"&bullet; <a href=\"http://www.smogon.com/forums/posts/7433832/\">ADV Ubers Information &amp; Resources</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3536426/\">ADV Ubers Viability Ranking</a>",
-			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6446466/\">ADV Ubers Sample Teams</a>",
 		],
 
 		mod: 'gen3',
 		ruleset: ['Pokemon', 'Standard'],
 		banlist: ['Wobbuffet + Leftovers'],
-	},
-	{
-		name: "[Gen 3] Random Battle",
-
-		mod: 'gen3',
-		team: 'random',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 	},
 	{
 		name: "[Gen 3] Custom Game",
@@ -2847,20 +1572,13 @@ exports.Formats = [
 	{
 		name: "[Gen 2] Ubers",
 		desc: [
-			"&bullet; <a href=\"http://www.smogon.com/forums/threads/3507552/\">GSC Ubers Discussion</a>",
+			"&bullet; <a href=\"http://www.smogon.com/forums/posts/7433879/\">GSC Ubers Information &amp; Resources</a>",
 			"&bullet; <a href=\"http://www.smogon.com/forums/posts/6431086/\">GSC Sample Teams</a>",
 		],
 
 		mod: 'gen2',
 		searchShow: false,
 		ruleset: ['Pokemon', 'Standard'],
-	},
-	{
-		name: "[Gen 2] Random Battle",
-
-		mod: 'gen2',
-		team: 'random',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 	},
 	{
 		name: "[Gen 2] Custom Game",
@@ -2902,22 +1620,6 @@ exports.Formats = [
 			'Nidoking + Fury Attack + Thrash', 'Exeggutor + Poison Powder + Stomp', 'Exeggutor + Sleep Powder + Stomp',
 			'Exeggutor + Stun Spore + Stomp', 'Jolteon + Focus Energy + Thunder Shock', 'Flareon + Focus Energy + Ember',
 		],
-	},
-	{
-		name: "[Gen 1] Random Battle",
-
-		mod: 'gen1',
-		team: 'random',
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
-	},
-	{
-		name: "[Gen 1] Challenge Cup",
-
-		mod: 'gen1',
-		team: 'randomCC',
-		searchShow: false,
-		challengeShow: false,
-		ruleset: ['Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
 	},
 	{
 		name: "[Gen 1] Stadium",

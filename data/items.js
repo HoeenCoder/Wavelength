@@ -1424,7 +1424,7 @@ exports.BattleItems = {
 		spritenum: 120,
 		isGem: true,
 		onSourceTryPrimaryHit: function (target, source, move) {
-			if (target === source || move.category === 'Status' || move.id in {firepledge:1, grasspledge:1, waterpledge:1}) return;
+			if (target === source || move.category === 'Status' || ['firepledge', 'grasspledge', 'waterpledge'].includes(move.id)) return;
 			if (move.type === 'Electric') {
 				if (source.useItem()) {
 					this.add('-enditem', source, 'Electric Gem', '[from] gem', '[move] ' + move.name);
@@ -1694,7 +1694,7 @@ exports.BattleItems = {
 		spritenum: 141,
 		isGem: true,
 		onSourceTryPrimaryHit: function (target, source, move) {
-			if (target === source || move.category === 'Status' || move.id in {firepledge:1, grasspledge:1, waterpledge:1}) return;
+			if (target === source || move.category === 'Status' || ['firepledge', 'grasspledge', 'waterpledge'].includes(move.id)) return;
 			if (move.type === 'Fire') {
 				if (source.useItem()) {
 					this.add('-enditem', source, 'Fire Gem', '[from] gem', '[move] ' + move.name);
@@ -2061,7 +2061,7 @@ exports.BattleItems = {
 		spritenum: 172,
 		isGem: true,
 		onSourceTryPrimaryHit: function (target, source, move) {
-			if (target === source || move.category === 'Status' || move.id in {firepledge:1, grasspledge:1, waterpledge:1}) return;
+			if (target === source || move.category === 'Status' || ['firepledge', 'grasspledge', 'waterpledge'].includes(move.id)) return;
 			if (move.type === 'Grass') {
 				if (source.useItem()) {
 					this.add('-enditem', source, 'Grass Gem', '[from] gem', '[move] ' + move.name);
@@ -2683,6 +2683,18 @@ exports.BattleItems = {
 		gen: 2,
 		desc: "Holder's attacks without a chance to flinch gain a 10% chance to flinch.",
 	},
+	"kommoniumz": {
+		id: "kommoniumz",
+		name: "Kommonium Z",
+		spritenum: 690,
+		onTakeItem: false,
+		zMove: "Clangorous Soulblaze",
+		zMoveFrom: "Clanging Scales",
+		zMoveUser: ["Kommo-o"],
+		num: 926,
+		gen: 7,
+		desc: "If held by a Kommo-o with Clanging Scales, it can use Clangorous Soulblaze.",
+	},
 	"laggingtail": {
 		id: "laggingtail",
 		name: "Lagging Tail",
@@ -3005,6 +3017,18 @@ exports.BattleItems = {
 		gen: 6,
 		desc: "Raises holder's Sp. Def by 1 stage if hit by a Water-type attack. Single use.",
 	},
+	"lunaliumz": {
+		id: "lunaliumz",
+		name: "Lunalium Z",
+		spritenum: 686,
+		onTakeItem: false,
+		zMove: "Menacing Moonraze Maelstrom",
+		zMoveFrom: "Moongeist Beam",
+		zMoveUser: ["Lunala", "Necrozma-Dawn-Wings"],
+		num: 922,
+		gen: 7,
+		desc: "Lunala or Dawn Wings Necrozma with Moongeist Beam can use a special Z-Move.",
+	},
 	"lureball": {
 		id: "lureball",
 		name: "Lure Ball",
@@ -3037,6 +3061,18 @@ exports.BattleItems = {
 		num: 11,
 		gen: 3,
 		desc: "A comfortable Poke Ball that makes a caught wild Pokemon quickly grow friendly.",
+	},
+	"lycaniumz": {
+		id: "lycaniumz",
+		name: "Lycanium Z",
+		spritenum: 689,
+		onTakeItem: false,
+		zMove: "Splintered Stormshards",
+		zMoveFrom: "Stone Edge",
+		zMoveUser: ["Lycanroc", "Lycanroc-Midnight", "Lycanroc-Dusk"],
+		num: 925,
+		gen: 7,
+		desc: "If held by a Lycanroc forme with Stone Edge, it can use Splintered Stormshards.",
 	},
 	"machobrace": {
 		id: "machobrace",
@@ -3427,6 +3463,18 @@ exports.BattleItems = {
 		gen: 4,
 		desc: "Holder's next move has 1.2x accuracy when at 1/4 max HP or less. Single use.",
 	},
+	"mimikiumz": {
+		id: "mimikiumz",
+		name: "Mimikium Z",
+		spritenum: 688,
+		onTakeItem: false,
+		zMove: "Let's Snuggle Forever",
+		zMoveFrom: "Play Rough",
+		zMoveUser: ["Mimikyu", "Mimikyu-Busted"],
+		num: 924,
+		gen: 7,
+		desc: "If held by a Mimikyu with Play Rough, it can use Let's Snuggle Forever.",
+	},
 	"mindplate": {
 		id: "mindplate",
 		name: "Mind Plate",
@@ -3593,7 +3641,7 @@ exports.BattleItems = {
 		spritenum: 307,
 		isGem: true,
 		onSourceTryPrimaryHit: function (target, source, move) {
-			if (target === source || move.category === 'Status' || move.id in {firepledge:1, grasspledge:1, waterpledge:1}) return;
+			if (target === source || move.category === 'Status' || ['firepledge', 'grasspledge', 'waterpledge'].includes(move.id)) return;
 			if (move.type === 'Normal') {
 				if (source.useItem()) {
 					this.add('-enditem', source, 'Normal Gem', '[from] gem', '[move] ' + move.name);
@@ -3858,7 +3906,7 @@ exports.BattleItems = {
 		onTakeItem: false,
 		zMove: "10,000,000 Volt Thunderbolt",
 		zMoveFrom: "Thunderbolt",
-		zMoveUser: ["Pikachu-Original", "Pikachu-Hoenn", "Pikachu-Sinnoh", "Pikachu-Unova", "Pikachu-Kalos", "Pikachu-Alola"],
+		zMoveUser: ["Pikachu-Original", "Pikachu-Hoenn", "Pikachu-Sinnoh", "Pikachu-Unova", "Pikachu-Kalos", "Pikachu-Alola", "Pikachu-Partner"],
 		num: 836,
 		gen: 7,
 		desc: "If held by cap Pikachu with Thunderbolt, it can use 10,000,000 Volt Thunderbolt.",
@@ -5026,6 +5074,18 @@ exports.BattleItems = {
 		gen: 2,
 		desc: "Holder's Ground-type attacks have 1.2x power.",
 	},
+	"solganiumz": {
+		id: "solganiumz",
+		name: "Solganium Z",
+		spritenum: 685,
+		onTakeItem: false,
+		zMove: "Searing Sunraze Smash",
+		zMoveFrom: "Sunsteel Strike",
+		zMoveUser: ["Solgaleo", "Necrozma-Dusk-Mane"],
+		num: 921,
+		gen: 7,
+		desc: "Solgaleo or Dusk Mane Necrozma with Sunsteel Strike can use a special Z-Move.",
+	},
 	"souldew": {
 		id: "souldew",
 		name: "Soul Dew",
@@ -5459,6 +5519,18 @@ exports.BattleItems = {
 		gen: 1,
 		desc: "An ultra-performance Ball that provides a higher catch rate than a Great Ball.",
 	},
+	"ultranecroziumz": {
+		id: "ultranecroziumz",
+		name: "Ultranecrozium Z",
+		spritenum: 687,
+		onTakeItem: false,
+		zMove: "Light That Burns the Sky",
+		zMoveFrom: "Photon Geyser",
+		zMoveUser: ["Necrozma-Ultra"],
+		num: 923,
+		gen: 7,
+		desc: "Dusk Mane/Dawn Wings Necrozma: Ultra Burst, then Z-Move w/ Photon Geyser.",
+	},
 	"venusaurite": {
 		id: "venusaurite",
 		name: "Venusaurite",
@@ -5503,7 +5575,7 @@ exports.BattleItems = {
 		spritenum: 528,
 		isGem: true,
 		onSourceTryPrimaryHit: function (target, source, move) {
-			if (target === source || move.category === 'Status' || move.id in {firepledge:1, grasspledge:1, waterpledge:1}) return;
+			if (target === source || move.category === 'Status' || ['firepledge', 'grasspledge', 'waterpledge'].includes(move.id)) return;
 			if (move.type === 'Water') {
 				if (source.useItem()) {
 					this.add('-enditem', source, 'Water Gem', '[from] gem', '[move] ' + move.name);

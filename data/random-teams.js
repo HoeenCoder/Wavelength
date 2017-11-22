@@ -126,7 +126,7 @@ class RandomTeams extends Dex.ModdedDex {
 			let moves;
 			let pool = ['struggle'];
 			if (species === 'Smeargle') {
-				pool = Object.keys(this.data.Movedex).filter(moveid => !(moveid in {'chatter':1, 'struggle':1, 'paleowave':1, 'shadowstrike':1, 'magikarpsrevenge':1} || this.data.Movedex[moveid].isZ));
+				pool = Object.keys(this.data.Movedex).filter(moveid => !(['chatter', 'struggle', 'paleowave', 'shadowstrike', 'magikarpsrevenge'].includes(moveid) || this.data.Movedex[moveid].isZ));
 			} else if (template.learnset) {
 				pool = Object.keys(template.learnset);
 				if (template.species.substr(0, 6) === 'Rotom-') {
@@ -2443,7 +2443,7 @@ class RandomTeams extends Dex.ModdedDex {
 		// Every 10.34 BST adds a level from 70 up to 99. Results are floored. Uses the Mega's stats if holding a Mega Stone
 		let baseStats = template.baseStats;
 		// If Wishiwashi, use the school-forme's much higher stats
-		if (template.baseSpecies === 'Wishiwashi') baseStats = Dex.getTemplate('wishiwashischool').baseStats;
+		if (template.baseSpecies === 'Wishiwashi') baseStats = this.getTemplate('wishiwashischool').baseStats;
 
 		let bst = baseStats.hp + baseStats.atk + baseStats.def + baseStats.spa + baseStats.spd + baseStats.spe;
 		// Adjust levels of mons based on abilities (Pure Power, Sheer Force, etc.) and also Eviolite

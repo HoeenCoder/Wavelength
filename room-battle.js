@@ -859,7 +859,7 @@ class Battle {
 		if (!player) return false;
 		this.players[user.userid] = player;
 		this.playerCount++;
-		this.room.auth[user.userid] = '\u2606';
+		this.room.auth[user.userid] = Users.PLAYER_SYMBOL;
 		if (this.playerCount >= 2) {
 			this.room.title = `${this.p1.name} vs. ${this.p2.name}`;
 			this.room.send(`|title|${this.room.title}`);
@@ -966,7 +966,7 @@ if (process.send && module === process.mainModule) {
 			const id = data[0];
 			if (!Battles.has(id)) {
 				try {
-					const battle = Sim.construct(data[2], !!data[3], sendBattleMessage);
+					const battle = Sim.construct(data[2], data[3], sendBattleMessage);
 					battle.id = id;
 					Battles.set(id, battle);
 				} catch (err) {

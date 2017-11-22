@@ -234,7 +234,7 @@ exports.BattleMovedex = {
 			// If both are true, counter will deal twice the last damage dealt in battle, no matter what was the move.
 			// That means that, if opponent switches, counter will use last counter damage * 2.
 			let lastUsedMove = this.getMove(target.side.lastMove);
-			if (lastUsedMove && lastUsedMove.basePower > 0 && lastUsedMove.type in {'Normal': 1, 'Fighting': 1} && target.battle.lastDamage > 0 && !this.willMove(target)) {
+			if (lastUsedMove && lastUsedMove.basePower > 0 && ['Normal', 'Fighting'].includes(lastUsedMove.type) && target.battle.lastDamage > 0 && !this.willMove(target)) {
 				return 2 * target.battle.lastDamage;
 			}
 			this.add('-fail', pokemon);
@@ -756,6 +756,9 @@ exports.BattleMovedex = {
 	},
 	struggle: {
 		inherit: true,
+		desc: "Deals Normal-type damage. If this move was successful, the user takes damage equal to 1/2 the HP lost by the target, rounded down, but not less than 1 HP. This move can only be used if none of the user's known moves can be selected.",
+		shortDesc: "User loses 1/2 the HP lost by the target.",
+		recoil: [1, 2],
 		onModifyMove: function () {},
 	},
 	substitute: {

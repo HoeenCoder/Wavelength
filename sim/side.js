@@ -20,7 +20,7 @@ const Pokemon = require('./pokemon');
  * @property {number} [index] - the chosen index in team preview
  * @property {number} [priority] - priority of the chosen index
  * @property {Side} [side] - the pokemon's side
- * @property {?boolean} [mega] - true if megaing
+ * @property {?boolean} [mega] - true if megaing or ultra bursting
  * @property {?boolean} [zmove] - true if zmoving
  */
 
@@ -36,6 +36,7 @@ const Pokemon = require('./pokemon');
  * @property {Set<number>} switchIns - indexes of pokemon chosen to switch in
  * @property {boolean} zMove - true if a Z-move has already been selected
  * @property {boolean} mega - true if a mega evolution has already been selected
+ * @property {boolean} ultra - true if an ultra burst has already been selected
  */
 
 class Side {
@@ -78,6 +79,7 @@ class Side {
 			switchIns: new Set(),
 			zMove: false,
 			mega: false,
+			ultra: false,
 		};
 		/**
 		 * Must be one of:
@@ -189,10 +191,10 @@ class Side {
 
 	/**
 	 * @param {string | Effect} status
-	 * @param {Pokemon} source
-	 * @param {Effect} sourceEffect
+	 * @param {Pokemon?} source
+	 * @param {Effect?} sourceEffect
 	 */
-	addSideCondition(status, source, sourceEffect) {
+	addSideCondition(status, source = null, sourceEffect = null) {
 		status = this.battle.getEffect(status);
 		if (this.sideConditions[status.id]) {
 			if (!status.onRestart) return false;
@@ -434,13 +436,22 @@ class Side {
 			this.emitCallback('cantmega', pokemon);
 			return this.emitChoiceError(`Can't move: You can only mega-evolve once per battle`);
 		}
+		const ultra = (megaOrZ === 'ultra');
+		if (ultra && !pokemon.canUltraBurst) {
+			return this.emitChoiceError(`Can't move: ${pokemon.name} can't mega evolve`);
+		}
+		if (ultra && this.choice.ultra) {
+			// TODO: The client shouldn't have sent this request in the first place.
+			this.emitCallback('cantmega', pokemon);
+			return this.emitChoiceError(`Can't move: You can only ultra burst once per battle`);
+		}
 
 		this.choice.actions.push({
 			choice: 'move',
 			pokemon: pokemon,
 			targetLoc: targetLoc,
 			move: moveid,
-			mega: mega,
+			mega: mega || ultra,
 			zmove: zMove,
 		});
 
@@ -449,6 +460,7 @@ class Side {
 		}
 
 		if (mega) this.choice.mega = true;
+		if (ultra) this.choice.ultra = true;
 		if (zMove) this.choice.zMove = true;
 
 		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
@@ -612,6 +624,7 @@ class Side {
 			switchIns: new Set(),
 			zMove: false,
 			mega: false,
+			ultra: false,
 		};
 	}
 
@@ -652,9 +665,11 @@ class Side {
 				}
 				const willMega = data.endsWith(' mega') ? 'mega' : '';
 				if (willMega) data = data.slice(0, -5);
+				const willUltra = data.endsWith(' ultra') ? 'ultra' : '';
+				if (willUltra) data = data.slice(0, -6);
 				const willZ = data.endsWith(' zmove') ? 'zmove' : '';
 				if (willZ) data = data.slice(0, -6);
-				this.chooseMove(data, targetLoc, willMega || willZ);
+				this.chooseMove(data, targetLoc, willMega || willUltra || willZ);
 				break;
 			case 'switch':
 				this.chooseSwitch(data);
@@ -677,6 +692,7 @@ class Side {
 				if (this.active[0].volatiles['lockedmove']) return this.emitChoiceError(`You can't throw a pokeball right now.`);
 				if (this.foe.active[0].species === 'Missingno.') return this.emitChoiceError(`You can't catch an error. Contact an Administrator if you haven't already.`);
 				this.choosePokeball(data);
+				break;
 			case 'useItem':
 				if (!this.battle.getFormat().useSGgame || !this.battle.getFormat().allowBag) return this.emitChoiceError(`You can't use an item from your bag here.`);
 				this.chooseUseItem(data);
@@ -795,7 +811,7 @@ class Side {
 			side: this,
 			target: this.foe.active[0],
 		});
-		
+
 		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
 		return true;
 	}
@@ -807,7 +823,7 @@ class Side {
 		data = data.split(" ");
 		let target = null;
 		for (let i = 0; i < this.pokemon.length; i++) {
-			if (this.pokemon[i].slot === parseInt(data[1], 10)) {
+			if (this.pokemon[i].slot === parseInt(data[1])) {
 				target = this.pokemon[i];
 				break;
 			}
@@ -817,9 +833,9 @@ class Side {
 			side: this,
 			item: WL.getItem(data[0]),
 			target: target || this.active[0], // TODO
-			move: parseInt(data[2], 10) || null,
+			move: parseInt(data[2]) || null,
 		});
-		
+
 		if (this.battle.LEGACY_API_DO_NOT_USE && !this.battle.checkDecisions()) return this;
 		return true;
 	}

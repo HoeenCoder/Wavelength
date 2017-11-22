@@ -1,7 +1,7 @@
 'use strict';
 
 let fs = require('fs');
-let http = require('http');
+let https = require('https');
 const Autolinker = require('autolinker');
 
 let regdateCache = {};
@@ -31,18 +31,16 @@ exports.WL = {
 	regdate: function (target, callback) {
 		target = toId(target);
 		if (regdateCache[target]) return callback(regdateCache[target]);
-		let options = {
-			host: 'pokemonshowdown.com',
-			port: 80,
-			path: '/users/' + target + '.json',
-			method: 'GET',
-		};
-		http.get(options, function (res) {
+		let req = https.get('https://pokemonshowdown.com/users/' + target + '.json', res => {
 			let data = '';
-			res.on('data', function (chunk) {
+			res.on('data', chunk => {
 				data += chunk;
-			}).on('end', function () {
-				data = JSON.parse(data);
+			}).on('end', () => {
+				try {
+					data = JSON.parse(data);
+				} catch (e) {
+					return callback(false);
+				}
 				let date = data['registertime'];
 				if (date !== 0 && date.toString().length < 13) {
 					while (date.toString().length < 13) {
@@ -56,6 +54,7 @@ exports.WL = {
 				callback((date === 0 ? false : date));
 			});
 		});
+		req.end();
 	},
 
 	/* eslint-disable no-useless-escape */
@@ -85,13 +84,8 @@ exports.WL = {
 
 	reloadCSS: function () {
 		const cssPath = 'wavelength'; // This should be the server id if Config.serverid doesn't exist. Ex: 'serverid'
-		let options = {
-			host: 'play.pokemonshowdown.com',
-			port: 80,
-			path: '/customcss.php?server=' + (Config.serverid || cssPath),
-			method: 'GET',
-		};
-		http.get(options, () => {});
+		let req = https.get('https://play.pokemonshowdown.com/customcss.php?server=' + (Config.serverid || cssPath), () => {});
+		req.end();
 	},
 
 	//Daily Rewards System for Wavelength by Lord Haji
@@ -441,6 +435,9 @@ exports.WL = {
 						}
 					}
 					if (!rem) continue;
+				} else if (pokemon.species === 'rockruff') {
+					let now = new Date().getHours();
+					if (now !== 17 || pokemon.ability !== 'Own Tempo') continue;
 				}
 			}
 			valid.push(evos[e]);
@@ -459,6 +456,10 @@ exports.WL = {
 				break;
 			case 'nincada':
 				// Falls through due to special rule
+				break;
+			case 'cosmoem':
+				// ATM: 50/50 for each forme
+				valid = valid.splice(Math.floor(Math.random() * valid.length), 1);
 				break;
 			default:
 				console.log('Multiple valid evolutions detected and unhandled. Base: ' + pokemon.species + '. Valid Evos: ' + valid.join('|'));
@@ -484,7 +485,7 @@ exports.WL = {
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
 	},
-	getNewMoves: function (pokemon, olvl, lvl, curMoves, slot) {
+	getNewMoves: function (pokemon, olvl, lvl, curMoves, slot, evo) {
 		if (!pokemon || olvl >= lvl) return [];
 		if (typeof pokemon === 'string') pokemon = Dex.getTemplate(pokemon);
 		if (!pokemon.exists) throw new Error('Can\'t get new moves for non-existant pokemon "' + pokemon.id + '"');
@@ -501,6 +502,15 @@ exports.WL = {
 					moves.push("learn|" + slot + "|" + move);
 					used.push(move);
 				}
+			}
+		}
+		if (evo) {
+			let eMoves = this.getEvoData(pokemon).evoMove;
+			if (!eMoves) return moves;
+			eMoves = eMoves.split('|');
+			for (let i = 0; i < eMoves.length; i++) {
+				if (used.indexOf(eMoves[i]) > -1 || curMoves.indexOf(eMoves[i]) > -1) continue;
+				moves.push("learn|" + slot + "|" + eMoves[i]);
 			}
 		}
 		return moves;
@@ -538,204 +548,228 @@ exports.WL = {
 		if (pokemon && pokemon.volatiles && pokemon.volatiles.formechange && !pokemon.volatiles.transform) id = toId(pokemon.volatiles.formechange[2]);
 		if (pokemon && pokemon.num !== undefined) num = pokemon.num;
 		if (num < 0) num = 0;
-		if (num > 802) num = 0;
+		if (num > 807) num = 0;
 		let altNums = {
-			egg: 804 + 1,
-			pikachubelle: 804 + 2,
-			pikachulibre: 804 + 3,
-			pikachuphd: 804 + 4,
-			pikachupopstar: 804 + 5,
-			pikachurockstar: 804 + 6,
-			pikachucosplay: 804 + 7,
-			castformrainy: 804 + 35,
-			castformsnowy: 804 + 36,
-			castformsunny: 804 + 37,
-			deoxysattack: 804 + 38,
-			deoxysdefense: 804 + 39,
-			deoxysspeed: 804 + 40,
-			burmysandy: 804 + 41,
-			burmytrash: 804 + 42,
-			wormadamsandy: 804 + 43,
-			wormadamtrash: 804 + 44,
-			cherrimsunshine: 804 + 45,
-			shelloseast: 804 + 46,
-			gastrodoneast: 804 + 47,
-			rotomfan: 804 + 48,
-			rotomfrost: 804 + 49,
-			rotomheat: 804 + 50,
-			rotommow: 804 + 51,
-			rotomwash: 804 + 52,
-			giratinaorigin: 804 + 53,
-			shayminsky: 804 + 54,
-			unfezantf: 804 + 55,
-			basculinbluestriped: 804 + 56,
-			darmanitanzen: 804 + 57,
-			deerlingautumn: 804 + 58,
-			deerlingsummer: 804 + 59,
-			deerlingwinter: 804 + 60,
-			sawsbuckautumn: 804 + 61,
-			sawsbucksummer: 804 + 62,
-			sawsbuckwinter: 804 + 63,
-			frillishf: 804 + 64,
-			jellicentf: 804 + 65,
-			tornadustherian: 804 + 66,
-			thundurustherian: 804 + 67,
-			landorustherian: 804 + 68,
-			kyuremblack: 804 + 69,
-			kyuremwhite: 804 + 70,
-			keldeoresolute: 804 + 71,
-			meloettapirouette: 804 + 72,
-			vivillonarchipelago: 804 + 73,
-			vivilloncontinental: 804 + 74,
-			vivillonelegant: 804 + 75,
-			vivillonfancy: 804 + 76,
-			vivillongarden: 804 + 77,
-			vivillonhighplains: 804 + 78,
-			vivillonicysnow: 804 + 79,
-			vivillonjungle: 804 + 80,
-			vivillonmarine: 804 + 81,
-			vivillonmodern: 804 + 82,
-			vivillonmonsoon: 804 + 83,
-			vivillonocean: 804 + 84,
-			vivillonpokeball: 804 + 85,
-			vivillonpolar: 804 + 86,
-			vivillonriver: 804 + 87,
-			vivillonsandstorm: 804 + 88,
-			vivillonsavanna: 804 + 89,
-			vivillonsun: 804 + 90,
-			vivillontundra: 804 + 91,
-			pyroarf: 804 + 92,
-			flabebeblue: 804 + 93,
-			flabebeorange: 804 + 94,
-			flabebewhite: 804 + 95,
-			flabebeyellow: 804 + 96,
-			floetteblue: 804 + 97,
-			floetteeternal: 804 + 98,
-			floetteorange: 804 + 99,
-			floettewhite: 804 + 100,
-			floetteyellow: 804 + 101,
-			florgesblue: 804 + 102,
-			florgesorange: 804 + 103,
-			florgeswhite: 804 + 104,
-			florgesyellow: 804 + 105,
-			meowsticf: 804 + 115,
-			aegislashblade: 804 + 116,
-			hoopaunbound: 804 + 118,
-			rattataalola: 804 + 119,
-			raticatealola: 804 + 120,
-			raichualola: 804 + 121,
-			sandshrewalola: 804 + 122,
-			sandslashalola: 804 + 123,
-			vulpixalola: 804 + 124,
-			ninetalesalola: 804 + 125,
-			diglettalola: 804 + 126,
-			dugtrioalola: 804 + 127,
-			meowthalola: 804 + 128,
-			persianalola: 804 + 129,
-			geodudealola: 804 + 130,
-			graveleralola: 804 + 131,
-			golemalola: 804 + 132,
-			grimeralola: 804 + 133,
-			mukalola: 804 + 134,
-			exeggutoralola: 804 + 135,
-			marowakalola: 804 + 136,
-			greninjaash: 804 + 137,
-			zygarde10: 804 + 138,
-			zygardecomplete: 804 + 139,
-			oricoriopompom: 804 + 140,
-			oricoriopau: 804 + 141,
-			oricoriosensu: 804 + 142,
-			lycanrocmidnight: 804 + 143,
-			wishiwashischool: 804 + 144,
-			miniormeteor: 804 + 145,
-			miniororange: 804 + 146,
-			minioryellow: 804 + 147,
-			miniorgreen: 804 + 148,
-			miniorblue: 804 + 149,
-			miniorviolet: 804 + 150,
-			miniorindigo: 804 + 151,
-			magearnaoriginal: 804 + 152,
-			pikachuoriginal: 804 + 153,
-			pikachuhoenn: 804 + 154,
-			pikachusinnoh: 804 + 155,
-			pikachuunova: 804 + 156,
-			pikachukalos: 804 + 157,
-			pikachualola: 804 + 158,
+			egg: 816 + 1,
+			pikachubelle: 816 + 2,
+			pikachulibre: 816 + 3,
+			pikachuphd: 816 + 4,
+			pikachupopstar: 816 + 5,
+			pikachurockstar: 816 + 6,
+			pikachucosplay: 816 + 7,
+			// unown gap
+			castformrainy: 816 + 35,
+			castformsnowy: 816 + 36,
+			castformsunny: 816 + 37,
+			deoxysattack: 816 + 38,
+			deoxysdefense: 816 + 39,
+			deoxysspeed: 816 + 40,
+			burmysandy: 816 + 41,
+			burmytrash: 816 + 42,
+			wormadamsandy: 816 + 43,
+			wormadamtrash: 816 + 44,
+			cherrimsunshine: 816 + 45,
+			shelloseast: 816 + 46,
+			gastrodoneast: 816 + 47,
+			rotomfan: 816 + 48,
+			rotomfrost: 816 + 49,
+			rotomheat: 816 + 50,
+			rotommow: 816 + 51,
+			rotomwash: 816 + 52,
+			giratinaorigin: 816 + 53,
+			shayminsky: 816 + 54,
+			unfezantf: 816 + 55,
+			basculinbluestriped: 816 + 56,
+			darmanitanzen: 816 + 57,
+			deerlingautumn: 816 + 58,
+			deerlingsummer: 816 + 59,
+			deerlingwinter: 816 + 60,
+			sawsbuckautumn: 816 + 61,
+			sawsbucksummer: 816 + 62,
+			sawsbuckwinter: 816 + 63,
+			frillishf: 816 + 64,
+			jellicentf: 816 + 65,
+			tornadustherian: 816 + 66,
+			thundurustherian: 816 + 67,
+			landorustherian: 816 + 68,
+			kyuremblack: 816 + 69,
+			kyuremwhite: 816 + 70,
+			keldeoresolute: 816 + 71,
+			meloettapirouette: 816 + 72,
+			vivillonarchipelago: 816 + 73,
+			vivilloncontinental: 816 + 74,
+			vivillonelegant: 816 + 75,
+			vivillonfancy: 816 + 76,
+			vivillongarden: 816 + 77,
+			vivillonhighplains: 816 + 78,
+			vivillonicysnow: 816 + 79,
+			vivillonjungle: 816 + 80,
+			vivillonmarine: 816 + 81,
+			vivillonmodern: 816 + 82,
+			vivillonmonsoon: 816 + 83,
+			vivillonocean: 816 + 84,
+			vivillonpokeball: 816 + 85,
+			vivillonpolar: 816 + 86,
+			vivillonriver: 816 + 87,
+			vivillonsandstorm: 816 + 88,
+			vivillonsavanna: 816 + 89,
+			vivillonsun: 816 + 90,
+			vivillontundra: 816 + 91,
+			pyroarf: 816 + 92,
+			flabebeblue: 816 + 93,
+			flabebeorange: 816 + 94,
+			flabebewhite: 816 + 95,
+			flabebeyellow: 816 + 96,
+			floetteblue: 816 + 97,
+			floetteeternal: 816 + 98,
+			floetteorange: 816 + 99,
+			floettewhite: 816 + 100,
+			floetteyellow: 816 + 101,
+			florgesblue: 816 + 102,
+			florgesorange: 816 + 103,
+			florgeswhite: 816 + 104,
+			florgesyellow: 816 + 105,
+			// furfrou gap
+			meowsticf: 816 + 115,
+			aegislashblade: 816 + 116,
+			hoopaunbound: 816 + 118,
+			rattataalola: 816 + 119,
+			raticatealola: 816 + 120,
+			raichualola: 816 + 121,
+			sandshrewalola: 816 + 122,
+			sandslashalola: 816 + 123,
+			vulpixalola: 816 + 124,
+			ninetalesalola: 816 + 125,
+			diglettalola: 816 + 126,
+			dugtrioalola: 816 + 127,
+			meowthalola: 816 + 128,
+			persianalola: 816 + 129,
+			geodudealola: 816 + 130,
+			graveleralola: 816 + 131,
+			golemalola: 816 + 132,
+			grimeralola: 816 + 133,
+			mukalola: 816 + 134,
+			exeggutoralola: 816 + 135,
+			marowakalola: 816 + 136,
+			greninjaash: 816 + 137,
+			zygarde10: 816 + 138,
+			zygardecomplete: 816 + 139,
+			oricoriopompom: 816 + 140,
+			oricoriopau: 816 + 141,
+			oricoriosensu: 816 + 142,
+			lycanrocmidnight: 816 + 143,
+			wishiwashischool: 816 + 144,
+			miniormeteor: 816 + 145,
+			miniororange: 816 + 146,
+			minioryellow: 816 + 147,
+			miniorgreen: 816 + 148,
+			miniorblue: 816 + 149,
+			miniorviolet: 816 + 150,
+			miniorindigo: 816 + 151,
+			magearnaoriginal: 816 + 152,
+			pikachuoriginal: 816 + 153,
+			pikachuhoenn: 816 + 154,
+			pikachusinnoh: 816 + 155,
+			pikachuunova: 816 + 156,
+			pikachukalos: 816 + 157,
+			pikachualola: 816 + 158,
+			pikachupartner: 816 + 159,
+			lycanrocdusk: 816 + 160,
+			necrozmaduskmane: 816 + 161,
+			necrozmadawnwings: 816 + 162,
+			necrozmaultra: 816 + 163,
 
-			venusaurmega: 972 + 0,
-			charizardmegax: 972 + 1,
-			charizardmegay: 972 + 2,
-			blastoisemega: 972 + 3,
-			beedrillmega: 972 + 4,
-			pidgeotmega: 972 + 5,
-			alakazammega: 972 + 6,
-			slowbromega: 972 + 7,
-			gengarmega: 972 + 8,
-			kangaskhanmega: 972 + 9,
-			pinsirmega: 972 + 10,
-			gyaradosmega: 972 + 11,
-			aerodactylmega: 972 + 12,
-			mewtwomegax: 972 + 13,
-			mewtwomegay: 972 + 14,
-			ampharosmega: 972 + 15,
-			steelixmega: 972 + 16,
-			scizormega: 972 + 17,
-			heracrossmega: 972 + 18,
-			houndoommega: 972 + 19,
-			tyranitarmega: 972 + 20,
-			sceptilemega: 972 + 21,
-			blazikenmega: 972 + 22,
-			swampertmega: 972 + 23,
-			gardevoirmega: 972 + 24,
-			sableyemega: 972 + 25,
-			mawilemega: 972 + 26,
-			aggronmega: 972 + 27,
-			medichammega: 972 + 28,
-			manectricmega: 972 + 29,
-			sharpedomega: 972 + 30,
-			cameruptmega: 972 + 31,
-			altariamega: 972 + 32,
-			banettemega: 972 + 33,
-			absolmega: 972 + 34,
-			glaliemega: 972 + 35,
-			salamencemega: 972 + 36,
-			metagrossmega: 972 + 37,
-			latiasmega: 972 + 38,
-			latiosmega: 972 + 39,
-			kyogreprimal: 972 + 40,
-			groudonprimal: 972 + 41,
-			rayquazamega: 972 + 42,
-			lopunnymega: 972 + 43,
-			garchompmega: 972 + 44,
-			lucariomega: 972 + 45,
-			abomasnowmega: 972 + 46,
-			gallademega: 972 + 47,
-			audinomega: 972 + 48,
-			dianciemega: 972 + 49,
+			venusaurmega: 984 + 0,
+			charizardmegax: 984 + 1,
+			charizardmegay: 984 + 2,
+			blastoisemega: 984 + 3,
+			beedrillmega: 984 + 4,
+			pidgeotmega: 984 + 5,
+			alakazammega: 984 + 6,
+			slowbromega: 984 + 7,
+			gengarmega: 984 + 8,
+			kangaskhanmega: 984 + 9,
+			pinsirmega: 984 + 10,
+			gyaradosmega: 984 + 11,
+			aerodactylmega: 984 + 12,
+			mewtwomegax: 984 + 13,
+			mewtwomegay: 984 + 14,
+			ampharosmega: 984 + 15,
+			steelixmega: 984 + 16,
+			scizormega: 984 + 17,
+			heracrossmega: 984 + 18,
+			houndoommega: 984 + 19,
+			tyranitarmega: 984 + 20,
+			sceptilemega: 984 + 21,
+			blazikenmega: 984 + 22,
+			swampertmega: 984 + 23,
+			gardevoirmega: 984 + 24,
+			sableyemega: 984 + 25,
+			mawilemega: 984 + 26,
+			aggronmega: 984 + 27,
+			medichammega: 984 + 28,
+			manectricmega: 984 + 29,
+			sharpedomega: 984 + 30,
+			cameruptmega: 984 + 31,
+			altariamega: 984 + 32,
+			banettemega: 984 + 33,
+			absolmega: 984 + 34,
+			glaliemega: 984 + 35,
+			salamencemega: 984 + 36,
+			metagrossmega: 984 + 37,
+			latiasmega: 984 + 38,
+			latiosmega: 984 + 39,
+			kyogreprimal: 984 + 40,
+			groudonprimal: 984 + 41,
+			rayquazamega: 984 + 42,
+			lopunnymega: 984 + 43,
+			garchompmega: 984 + 44,
+			lucariomega: 984 + 45,
+			abomasnowmega: 984 + 46,
+			gallademega: 984 + 47,
+			audinomega: 984 + 48,
+			dianciemega: 984 + 49,
 
-			syclant: 1140 + 0,
-			revenankh: 1140 + 1,
-			pyroak: 1140 + 2,
-			fidgit: 1140 + 3,
-			stratagem: 1140 + 4,
-			arghonaut: 1140 + 5,
-			kitsunoh: 1140 + 6,
-			cyclohm: 1140 + 7,
-			colossoil: 1140 + 8,
-			krilowatt: 1140 + 9,
-			voodoom: 1140 + 10,
-			tomohawk: 1140 + 11,
-			necturna: 1140 + 12,
-			mollux: 1140 + 13,
-			aurumoth: 1140 + 14,
-			malaconda: 1140 + 15,
-			cawmodore: 1140 + 16,
-			volkraken: 1140 + 17,
-			plasmanta: 1140 + 18,
-			naviathan: 1140 + 19,
-			crucibelle: 1140 + 20,
-			crucibellemega: 1140 + 21,
-			kerfluffle: 1140 + 22,
+			syclant: 1152 + 0,
+			revenankh: 1152 + 1,
+			pyroak: 1152 + 2,
+			fidgit: 1152 + 3,
+			stratagem: 1152 + 4,
+			arghonaut: 1152 + 5,
+			kitsunoh: 1152 + 6,
+			cyclohm: 1152 + 7,
+			colossoil: 1152 + 8,
+			krilowatt: 1152 + 9,
+			voodoom: 1152 + 10,
+			tomohawk: 1152 + 11,
+			necturna: 1152 + 12,
+			mollux: 1152 + 13,
+			aurumoth: 1152 + 14,
+			malaconda: 1152 + 15,
+			cawmodore: 1152 + 16,
+			volkraken: 1152 + 17,
+			plasmanta: 1152 + 18,
+			naviathan: 1152 + 19,
+			crucibelle: 1152 + 20,
+			crucibellemega: 1152 + 21,
+			kerfluffle: 1152 + 22,
+			pajantom: 1152 + 23,
+
+			syclar: 1176 + 0,
+			embirch: 1176 + 1,
+			flarelm: 1176 + 2,
+			breezi: 1176 + 3,
+			scratchet: 1176 + 4,
+			necturine: 1176 + 5,
+			cupra: 1176 + 6,
+			argalis: 1176 + 7,
+			brattler: 1176 + 8,
+			cawdet: 1176 + 9,
+			volkritter: 1176 + 10,
+			snugglow: 1176 + 11,
+			floatoy: 1176 + 12,
+			caimanoe: 1176 + 13,
+			pluffle: 1176 + 14,
 		};
 
 		if (altNums[id]) {
@@ -761,7 +795,7 @@ exports.WL = {
 			let banned = {illegal: 1, cap: 1, capnfe: 1, caplc: 1};
 			if (!poke.exists || toId(poke.tier) in banned) continue;
 			if (poke.forme) {
-				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash'];
+				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'partner', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'dusk', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash', 'dawnwings', 'duskmane'];
 				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
 			}
 			this.wildPokemon.push(poke.id);

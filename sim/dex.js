@@ -40,7 +40,7 @@ const MODS_DIR = path.resolve(__dirname, '../mods');
 const FORMATS = path.resolve(__dirname, '../config/formats');
 
 /** @type {{[mod: string]: ModdedDex}} */
-let dexes = {};
+let dexes = Object.create(null);
 
 /** @typedef {'Pokedex' | 'FormatsData' | 'Learnsets' | 'Movedex' | 'Statuses' | 'TypeChart' | 'Scripts' | 'Items' | 'Abilities' | 'Natures' | 'Formats'} DataType */
 /** @type {DataType[]} */
@@ -126,6 +126,8 @@ class ModdedDex {
 		this.itemCache = new Map();
 		/** @type {Map<string, Ability>} */
 		this.abilityCache = new Map();
+		/** @type {Map<string, TypeInfo>} */
+		this.typeCache = new Map();
 
 		if (!isOriginal) {
 			const original = dexes['base'].mod(mod).includeData();
@@ -329,6 +331,17 @@ class ModdedDex {
 		let template = this.templateCache.get(id);
 		if (template) return template;
 		if (this.data.Aliases.hasOwnProperty(id)) {
+			if (this.data.FormatsData.hasOwnProperty(id)) {
+				// special event ID, like Rockruff-Dusk
+				let baseId = toId(this.data.Aliases[id]);
+				template = new Data.Template({name}, this.data.Pokedex[baseId], this.data.FormatsData[id], this.data.Learnsets[id]);
+				template.name = id;
+				template.species = id;
+				template.speciesid = id;
+				// @ts-ignore
+				template.abilities = {0: template.abilities['S']};
+				return template;
+			}
 			template = this.getTemplate(this.data.Aliases[id]);
 			if (template) {
 				this.templateCache.set(id, template);
@@ -581,7 +594,7 @@ class ModdedDex {
 	 * @param {string | Ability} name
 	 * @return {Ability}
 	 */
-	getAbility(name) {
+	getAbility(name = '') {
 		if (name && typeof name !== 'string') {
 			return name;
 		}
@@ -598,28 +611,24 @@ class ModdedDex {
 		return ability;
 	}
 	/**
-	 * @param {string | AnyObject} type
-	 * @return {AnyObject}
+	 * @param {string | TypeInfo} name
+	 * @return {TypeInfo}
 	 */
-	getType(type) {
-		if (!type || typeof type === 'string') {
-			let id = toId(type);
-			id = id.charAt(0).toUpperCase() + id.substr(1);
-			type = {};
-			if (id && id !== 'constructor' && this.data.TypeChart[id]) {
-				type = this.data.TypeChart[id];
-				if (type.cached) return type;
-				type.cached = true;
-				type.exists = true;
-				type.isType = true;
-				type.effectType = 'Type';
-			}
-			if (!type.id) type.id = id;
-			if (!type.effectType) {
-				// man, this is really meta
-				type.effectType = 'EffectType';
-			}
+	getType(name) {
+		if (name && typeof name !== 'string') {
+			return name;
 		}
+		let id = toId(name);
+		id = id.charAt(0).toUpperCase() + id.substr(1);
+		let type = this.typeCache.get(id);
+		if (type) return type;
+		if (id && this.data.TypeChart.hasOwnProperty(id)) {
+			type = new Data.TypeInfo({id}, this.data.TypeChart[id]);
+		} else {
+			type = new Data.TypeInfo({name, exists: false, effectType: 'EffectType'});
+		}
+
+		if (type.exists) this.typeCache.set(id, type);
 		return type;
 	}
 	/**
@@ -716,7 +725,7 @@ class ModdedDex {
 		let ruleTable = new Data.RuleTable();
 		if (format.ruleTable) return format.ruleTable;
 
-		const ruleset = format.ruleset.slice();
+		let ruleset = format.ruleset.slice();
 		for (const ban of format.banlist) {
 			ruleset.push('-' + ban);
 		}
@@ -961,7 +970,7 @@ class ModdedDex {
 	}
 
 	/**
-	 * @param {AnyObject[]} team
+	 * @param {PokemonSet[]} team
 	 * @return {string}
 	 */
 	packTeam(team) {
@@ -1070,7 +1079,7 @@ class ModdedDex {
 
 	/**
 	 * @param {string} buf
-	 * @return {?AnyObject[]}
+	 * @return {?PokemonSet[]}
 	 */
 	fastUnpackTeam(buf) {
 		if (!buf) return null;
@@ -1080,7 +1089,7 @@ class ModdedDex {
 
 		// limit to 24
 		for (let count = 0; count < 24; count++) {
-			let set = {};
+			let set = /** @type {any} */ ({});
 			team.push(set);
 
 			// name
@@ -1107,7 +1116,7 @@ class ModdedDex {
 			let ability = buf.substring(i, j);
 			let template = dexes['base'].getTemplate(set.species);
 			// @ts-ignore
-			set.ability = (template.abilities && ability in {'':1, 0:1, 1:1, H:1} ? template.abilities[ability || '0'] : ability);
+			set.ability = (template.abilities && ['', '0', '1', 'H'].includes(ability) ? template.abilities[ability || '0'] : ability);
 			i = j + 1;
 
 			// moves
@@ -1171,6 +1180,7 @@ class ModdedDex {
 			j = buf.indexOf('|', i);
 			if (j < 0) return null;
 			if (i !== j) set.level = parseInt(buf.substring(i, j));
+			if (!set.level) set.level = 100;
 			i = j + 1;
 
 			// happiness
@@ -1225,7 +1235,7 @@ class ModdedDex {
 			if (!dataObject[key] || typeof dataObject[key] !== 'object') return new TypeError(`${filePath}, if it exists, must export an object whose '${key}' property is a non-null object`);
 			return dataObject[key];
 		} catch (e) {
-			if (e.code !== 'MODULE_NOT_FOUND') {
+			if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
 				throw e;
 			}
 		}
@@ -1358,7 +1368,9 @@ class ModdedDex {
 		try {
 			Formats = require(FORMATS).Formats;
 		} catch (e) {
-			if (e.code !== 'MODULE_NOT_FOUND') throw e;
+			if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
+				throw e;
+			}
 		}
 		if (!Array.isArray(Formats)) throw new TypeError(`Exported property 'Formats' from "./config/formats.js" must be an array`);
 

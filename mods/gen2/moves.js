@@ -140,7 +140,7 @@ exports.BattleMovedex = {
 				if (move.id === 'earthquake' || move.id === 'magnitude' || move.id === 'fissure') {
 					return;
 				}
-				if (move.id in {attract:1, curse:1, foresight:1, meanlook:1, mimic:1, nightmare:1, spiderweb:1, transform:1}) {
+				if (['attract', 'curse', 'foresight', 'meanlook', 'mimic', 'nightmare', 'spiderweb', 'transform'].includes(move.id)) {
 					// Oversight in the interaction between these moves and the Lock-On effect
 					return 0;
 				}
@@ -236,7 +236,7 @@ exports.BattleMovedex = {
 					// These moves miss even during the Lock-On effect
 					return 0;
 				}
-				if (move.id in {attract:1, curse:1, foresight:1, meanlook:1, mimic:1, nightmare:1, spiderweb:1, transform:1}) {
+				if (['attract', 'curse', 'foresight', 'meanlook', 'mimic', 'nightmare', 'spiderweb', 'transform'].includes(move.id)) {
 					// Oversight in the interaction between these moves and the Lock-On effect
 					return 0;
 				}
@@ -299,9 +299,9 @@ exports.BattleMovedex = {
 			},
 			onAfterMoveSelfPriority: 2,
 			onAfterMoveSelf: function (pokemon) {
+				if (!pokemon.hp) return;
 				let leecher = pokemon.side.foe.active[pokemon.volatiles['leechseed'].sourcePosition];
 				if (!leecher || leecher.fainted || leecher.hp <= 0) {
-					this.debug('Nothing to leech into');
 					return;
 				}
 				let toLeech = this.clampIntRange(pokemon.maxhp / 8, 1);
