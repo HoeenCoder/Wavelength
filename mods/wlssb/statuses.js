@@ -114,7 +114,7 @@ exports.BattleStatuses = {
 				msg = msg.split('|');
 				for (let i = 0; i < msg.length; i++) this.add('c', '~Kraken Mare', msg[i]);
 			} else {
-						this.add('c' '~Kraken Mare', msg);
+				this.add('c', '~Kraken Mare', msg);
 			}
 		},
 		onSwitchOut: function (pokemon) {
@@ -122,7 +122,7 @@ exports.BattleStatuses = {
 		},
 		onCriticalHit: function (source) {
 			let msg = ['EAT THAT!', 'Nailed it!', 'Got it!', 'Yeah! Let\'s ROCK!'][this.random(4)];
-			this.add('c' '~Kraken Mare', msg);
+			this.add('c', '~Kraken Mare', msg);
 		},
 		onSourceFaint: function (target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
