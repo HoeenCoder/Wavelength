@@ -47,17 +47,4 @@ exports.BattleItems = {
 			}
 		},
 	},
-	//bunnery5
-	bunberry: {
-		id: "bunberry",
-		name: "Bun Berry",
-		onUpdate: function (pokemon) {
-			if (pokemon.hp < pokemon.maxhp) {
-				pokemon.eatItem();
-			}
-		},
-		onEat: function (pokemon) {
-			this.boost({spa:1, spe: 2});
-		},
-	},
 };
