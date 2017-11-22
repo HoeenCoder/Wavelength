@@ -1279,7 +1279,13 @@ exports.commands = {
 		}
 		 this.sendReply(`${u.userid} has been taken ${target[2]} ${target[1]}'s. They now have ${p.bag.items[target[1]]} ${target[1]}'s.`);
 	},
-	takestonehelp: ['/takestone [user], [stone name], [amount] - take a users mega stone. Require global @ & ~.'], 
+	takestonehelp: ['/takestone [user], [stone name], [amount] - take a users mega stone. Require global @ & ~.'],
+	
+	stonelist: 'stoneslist', 
+	stoneslist: function(target, room, user) {
+		if (!this.can('talk')) return; 
+		this.sendReplyBox('<b><u>Available Mega Stones List:</u></b><br><a href="https://pastebin.com/gvsPjMk8">Mega Stones List.</a>'); 
+	},
 		
 	exportteam: function (target, room, user) {
 		// Allow users to save their SGgame teams to teambuilder
