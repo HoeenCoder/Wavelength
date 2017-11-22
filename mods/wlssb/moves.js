@@ -77,28 +77,47 @@ exports.BattleMovedex = {
 		},
 	},
 	// Kraken Mare
-	revengeofkrakenmare: {
-		category: "Special",
+	bombrushblush: {
+		category: "Physical",
 		accuracy: true,
-		basePower: 77000,
-		id: "revengeofkrakenmare",
+		basePower: 0,
+		id: "bombrushblush",
+		isViable: true,
 		isNonstandard: true,
-		name: "Revenge of Kraken Mare",
-		pp: 1,
-		noPPBoosts: true,
-		priority: 5,
-		selfdestruct: "always",
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Surf", target);
+		name: "Bomb Rush Blush",
+		pp: 5,
+		priority: 0,
+		onModifyMove: function (move, pokemon) {
+			let i = this.random(3);
+			if (i < 1) {
+				move.bomb = "Burst Bomb";
+				move.basePower = 60;
+				move.type = 'Water';
+			} else if (i < 2) {
+				move.bomb = "Splat Bomb";
+				move.basePower = 65;
+			} else {
+				move.bomb = "Suction Bomb";
+				move.basePower = 90; 
+				move.type = 'Steel';
+			}
 		},
-		flags: {mirror: 1},
-		desc: "Selfdestructs target.",
-		onHit: function (target, source, move) {
-			this.add('c|~Kraken Mare ☭|If I go down I\'m taking you with me!');
+		onPrepareHit: function (pokemon, target, move, source) {
+			this.add('-message', "KM threw 4 " + move.bomb + "s!");
 		},
-		target: "normal",
-		type: "Water",
+		onUseMoveMessage: function (target, source, move) {
+			let t = this.random(2);
+			if (t < 1) {
+				this.add('c|~Kraken Mare|♪Faces blush, a rush of ink!♪');
+				this.add('c|~Kraken Mare|♪Bombs explode, no time to think!♪');
+			} else  {
+				this.add('c|~Kraken Mare|♪Blushing faces covered in pink!♪');
+				this.add('c|~Kraken Mare|♪Rushing bombs, exploding ink!♪');
+			}
+		},
+		multihit: [1,4],
+		target: "Normal",
+		type: "Poison",
 	},
 	// C733937 123
 	shatterbreak: {
@@ -370,6 +389,32 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Water",
 	},
+	//Tidal Wave Bot
+	serverguardian: {
+		category: "Status",
+		id: "serverguardian",
+		isViable:true,
+		isNonstandard:true,
+		name: "Server Guardian",
+		pp: 10,
+		priority: 2,
+		boosts: {
+			def: 2,
+			spd: 2,
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Bulk Up", source);
+			this.add('-anim', source, "Safeguard", source);
+		},
+		onHit: function (target) {
+			this.add('c|*Tidal Wave Bot|Initiating Sustainability Protocol...standby.');
+		},
+		heal: [1, 2],
+		flags: {},
+		target: "self",
+		type: "Normal",
+	},
 	// CelestialTater
 	shellbreak: {
 		category: "Status",
@@ -632,7 +677,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Grass",
 	},
-	//Tsunami Prince
+	//Wavelength Prince
 	overpower: {
 		category: "Status",
 		accuracy: 100,
@@ -658,7 +703,7 @@ exports.BattleMovedex = {
 			},
 		},
 		onHit: function (target) {
-			this.add('c|~Tsunami Prince|Witness my true power, my true strength, the feeling of fear, and your team\'s demise.');
+			this.add('c|~Wavelength Prince|Witness my true power, my true strength, the feeling of fear, and your team\'s demise.');
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');

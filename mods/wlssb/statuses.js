@@ -12,6 +12,18 @@ exports.BattleStatuses = {
 			this.add('c', '~Desokoro', 'You may have vanquished me today, but beware of the future. I shall not be gone long.');
 		},
 	},
+	tidalwavebot: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '*Tidal Wave Bot', 'Threat Detected: Must deploy the Ban Hammer');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '*Tidal Wave Bot', 'Tidal Wave Bot powered down');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '*Tidal Wave Bot', 'Emergency shutdown: Battery life depleted. Must recharge.');
+		},
+	},
 	serperiorater: {
 		exists: true,
 		onStart: function () {
@@ -98,13 +110,53 @@ exports.BattleStatuses = {
 	krakenmare: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Kraken Mare', 'Today, I prove Gardevoir as the best Pokmeon!');
+			let t = this.random(4);
+			if (t < 1) {
+				this.add('c', '~Kraken Mare', 'I told you to leave...');
+				this.add('c', '~Kraken Mare', 'Now you leave me now choice..');
+				this.add('c', '~Kraken Mare', 'Prepare to be rocked!');
+			} else if (t < 2)  {
+				this.add('c', '~Kraken Mare', 'No one throws shade at my shades and gets away with it!');
+			} else if (t < 3) {
+				this.add('c', '~Kraken Mare', 'It\'s time to swab the deck and plunder the booty!');
+			} else {
+				this.add('c', '~Kraken Mare', 'It\'s all about becoming one with the music!');
+			} 
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Kraken Mare', 'I shall spare you today, young one!');
+			this.add('c', '~Kraken Mare', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
 		},
-		onFaint: function (pokemon) {
-			this.add('c', '~Kraken Mare', 'Even though I fall, I\'m sure I took a few down with me.');
+		onCriticalHit: function (source) {
+			let c = this.random(4);
+			if (c < 1) {
+				this.add('c', '~Kraken Mare', 'EAT THAT!');
+			} else if (c < 2) {
+				this.add('c', '~Kraken Mare', 'Nailed it!');
+			} else if (c < 3){
+				this.add('c', '~Kraken Mare', 'Got it!');
+			} else {
+				this.add('c', '~Kraken Mare', 'Yeah! Let\'s ROCK!');
+			}
+		},
+		onSourceFaint: function (target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.add('c', '~Kraken Mare', 'Thou ART defeated! HA!');
+			}
+		},
+			
+		onFaint: function () {
+			let i = this.random(5);
+			if (i < 1) {
+				this.add('c', '~Kraken Mare', 'Ow! You got ink RIGHT in my eye!');
+			} else if (i < 2)  {
+				this.add('c', '~Kraken Mare', 'I...I\'ll remember this!');
+			} else if (i < 3) {
+				this.add('c', '~Kraken Mare', 'Cross-fade to blaaaaaaaaaaack!')
+			} else if (i < 4){
+				this.add('c', '~Kraken Mare', 'I should have bought more bombs...');
+			} else {
+				this.add('c', '~Kraken Mare', 'Don\'t worry, Team Callie. I still love you all...');
+			}
 		},
 	},
 	almightybronzong: {
@@ -261,16 +313,16 @@ exports.BattleStatuses = {
 			this.add('c', '@TheRittz', '__fled from the scene__');
 		},
 	},
-	tsunamiprince: {
+	wavelengthprince: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Tsunami Prince', 'You think I came for the battle, when it\'s really your soul I want.');
+			this.add('c', '~Wavelength Prince', 'You think I came for the battle, when it\'s really your soul I want.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Tsunami Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+			this.add('c', '~Wavelength Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '~Tsunami Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+			this.add('c', '~Wavelength Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
 		},
 	},
 	xcmr: {

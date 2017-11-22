@@ -40,21 +40,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Bold',
 			},
-			'~Kraken Mare': {
-				species: 'Gardevoir-Mega',
-				ability: 'Kraken\'s Boost',
-				shiny: true,
-				item: 'Focus Sash',
+			'~~Kraken Mare': {
+				species: 'Malamar',
+				ability: 'Supreme Squid Sister',
+				item: 'Hypnoshades',
 				gender: 'F',
-				moves: ['Moonblast', 'Calm Mind', 'Psychic',
+				moves: ['Sing', 'Superpower', 'Gunk Shot',
 				],
-				signatureMove: 'Revenge of Kraken Mare',
+				signatureMove: 'Bomb Rush Blush',
 				evs: {
-					hp: 248,
-					spa: 252,
-					def: 8,
+					hp: 252,
+					atk: 252,
+					spd: 4,
 				},
-				nature: 'Modest',
+				nature: 'Adamant',
 			},
 			'~Desokoro': {
 				species: 'Gyarados',
@@ -87,7 +86,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Tsunami Prince': {
+			'~Wavelength Prince': {
 				species: 'Darkrai',
 				ability: 'Death Boost',
 				item: 'Darkiniumz',
@@ -164,6 +163,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 6,
 				},
 				nature: 'Adamant',
+			},
+			'*Tidal Wave Bot': {
+				species: 'Magikarp',
+				ability: 'Loading...',
+				item: 'Guardian\'s Amulet',
+				shiny: true,
+				moves: ['Wild Charge', 'Shift Gear', 'Gear Grind',
+				],
+				signatureMove: 'Server Guardian',
+				evs: {
+					hp: 4,
+					atk: 252,
+					spe: 252,
+				},
+				nature: 'Adament',
 			},
 			// Global Moderators:
 			'@BDH93': {

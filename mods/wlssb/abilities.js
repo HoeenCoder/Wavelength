@@ -72,6 +72,11 @@ exports.BattleAbilities = {
 					return this.chainModify(0.1);
 				}
 			},
+			onModifyPriority: function (priority, pokemon, target, move) {
+				if (move.id === 'tsunamicrash') {
+					return priority + 0.1;
+				}
+			},
 			onEnd: function (target) {
 				this.add('-end', target, 'Wave Call');
 			},
@@ -89,34 +94,29 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Kraken Mare
-	krakensboost: {
-		id: "krakensboost",
-		name: "Kraken's Boost",
-		desc: "Moody + No Guard",
-		onResidual: function (pokemon) {
-			let stats = [];
-			let boost = {};
-			for (let statPlus in pokemon.boosts) {
-				if (pokemon.boosts[statPlus] < 6) {
-					stats.push(statPlus);
-				}
-			}
-			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = 2;
-
-			stats = [];
-			for (let statMinus in pokemon.boosts) {
-				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat) {
-					stats.push(statMinus);
-				}
-			}
-			randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = -1;
-
-			this.boost(boost);
+	//Tidal Wave Bot
+	loading: {
+		id: "loading",
+		name: "Loading...",
+		desc: "Boosts user's Attack by 4 stages, and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.",
+		onStart: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', 'Electric/Steel');
+			pokemon.types = ["Electric", "Steel"];
+			this.boost({atk: 4, spe: 2});
+			this.useMove('magnetrise', pokemon);
 		},
-		onModifyAccuracy: function (accuracy, target, source, move) {
+	},
+	//Kraken Mare
+	supremesquidsister: {
+		id: "supremesquidsister",
+		name: "Supreme Squid Sister",
+		onBoost: function (boost, target, source, effect) {
+			if (effect && effect.id === 'zpower') return;
+			for (let i in boost) {
+				boost[i] *= -1;
+			}
+		},
+		onAnyAccuracy: function (accuracy, target, source, move) {
 			if (move && (source === this.effectData.target || target === this.effectData.target)) {
 				return true;
 			}
@@ -258,13 +258,13 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Tsunami Prince
+	//Wavelength Prince
 	deathboost: {
 		id: "deathboost",
 		name: "Death Boost",
 		desc: "Simple + Puts foe to sleep on entry.",
 		onStart: function (pokemon) {
-			this.useMove('darkvoid', pokemon);
+			this.useMove('hypnosis', pokemon);
 		},
 		onBoost: function (boost, target, source, effect) {
 			if (effect && effect.id === 'zpower') return;
