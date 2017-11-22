@@ -40,7 +40,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Bold',
 			},
-			'~~Kraken Mare': {
+			'~Kraken Mare': {
 				species: 'Malamar',
 				ability: 'Supreme Squid Sister',
 				item: 'Hypnoshades',
