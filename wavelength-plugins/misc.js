@@ -484,7 +484,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return false;
 		if (!target || target === 'help') return this.parse('/help wlssb');
 		let targetData = getMonData(toId(target));
-		if (['km', 'callie'].includes(toId(target))) return this.sendReplyBox(getMonData('krakenmare'));
+		if (['km', 'callie', 'krakenmare'].includes(toId(target))) return this.sendReplyBox(getMonData('callieagent1'));
 		if (toId(target) === toId('c7')) return this.sendReplyBox(getMonData('c733937123'));
 		if (['des', 'deso'].includes(toId(target))) return this.sendReplyBox(getMonData('desokoro'));
 		if (['mos', 'electricz'].includes(toId(target))) return this.sendReplyBox(getMonData('mosmero'));
