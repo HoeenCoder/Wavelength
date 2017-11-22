@@ -225,10 +225,13 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'I dont play for fun i play to win');
+			this.add('c', '%Lycanium Z', 'K im here, what do u need me to code? I hope its something pretty cool.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'bah i lost. hoeenhero pls buf <3');
+			this.add('c', '%Lycanium Z', '>');
+			this.add('c', '%Lycanium Z', '/me sigh');
+			this.add('c', '%Lycanium Z', 'I might as well change my super serious set to a meme set tbh or be buffed to the max.');
+						
 		},
 	},
 	celestialtater: {
