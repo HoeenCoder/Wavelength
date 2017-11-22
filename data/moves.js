@@ -2303,7 +2303,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		priority: 0,
 		flags: {protect: 1, mirror: 1, sound: 1, authentic: 1},
-		self: {
+		selfBoost: {
 			boosts: {
 				def: -1,
 			},
@@ -2313,6 +2313,33 @@ exports.BattleMovedex = {
 		type: "Dragon",
 		zMovePower: 185,
 		contestType: "Tough",
+	},
+	"clangoroussoulblaze": {
+		num: 728,
+		accuracy: true,
+		basePower: 185,
+		category: "Special",
+		desc: "Raises the user's Attack, Defense, Special Attack, Special Defense, and Speed by 1 stage.",
+		shortDesc: "Raises the user's Atk/Def/SpAtk/SpDef/Spe by 1.",
+		id: "clangoroussoulblaze",
+		name: "Clangorous Soulblaze",
+		pp: 1,
+		priority: 0,
+		flags: {sound: 1, authentic: 1},
+		selfBoost: {
+			boosts: {
+				atk: 1,
+				def: 1,
+				spa: 1,
+				spd: 1,
+				spe: 1,
+			},
+		},
+		isZ: "kommoniumz",
+		secondary: false,
+		target: "allAdjacentFoes",
+		type: "Dragon",
+		contestType: "Cool",
 	},
 	"clearsmog": {
 		num: 499,
@@ -3703,33 +3730,6 @@ exports.BattleMovedex = {
 		type: "Dragon",
 		zMovePower: 195,
 		contestType: "Beautiful",
-	},
-	"clangoroussoulblaze": {
-		num: 728,
-		accuracy: true,
-		basePower: 185,
-		category: "Special",
-		desc: "Boosts the user's Attack, Defense, Sp. Atk, Sp. Def, and Speed by one stage.",
-		shortDesc: "Boosts all stats 1 stage. Hits adjacent foes.",
-		id: "clangoroussoulblaze",
-		name: "Clangorous Soulblaze",
-		pp: 1,
-		priority: 0,
-		flags: {sound: 1, authentic: 1},
-		self: {
-			boosts: {
-				atk: 1,
-				def: 1,
-				spa: 1,
-				spd: 1,
-				spe: 1,
-			},
-		},
-		isZ: "kommoniumz",
-		secondary: false,
-		target: "allAdjacentFoes",
-		type: "Dragon",
-		contestType: "Cool",
 	},
 	"dragonascent": {
 		num: 620,
@@ -9284,11 +9284,11 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 200,
 		category: "Special",
-		desc: "Damage is calculated using the user's higher attacking stat, including stat stage changes. The user's Ability, item, and burn are used as normal.",
-		shortDesc: "Uses higher attacking stat for DMG. Ignores ability.",
+		desc: "Damage is calculated using the user's higher attacking stat, including stat stage changes. This move and its effects ignore the Abilities of other Pokemon.",
+		shortDesc: "Uses user's best attacking stat. Ignores Abilities.",
 		id: "lightthatburnsthesky",
 		name: "Light That Burns the Sky",
-		pp: 5,
+		pp: 1,
 		priority: 0,
 		flags: {},
 		useBestSourceOffensive: true,
@@ -10332,7 +10332,7 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 150,
 		category: "Special",
-		desc: "The user loses 50% of its max HP to damage the foe.",
+		desc: "Whether or not this move is successful, the user loses 1/2 of its maximum HP, rounded up, unless the user has the Ability Magic Guard. This move is prevented from executing and the user does not lose HP if any active Pokemon has the Ability Damp, if the user is affected by Powder, or Primordial Sea is in effect.",
 		shortDesc: "User loses 50% max HP. Hits adjacent Pokemon.",
 		id: "mindblown",
 		isViable: true,
@@ -10340,8 +10340,11 @@ exports.BattleMovedex = {
 		pp: 5,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
-		onHit: function (target, source, move) {
-			this.damage(Math.round(source.maxhp / 2), source, source, null, true);
+		mindBlownRecoil: true,
+		onAfterMove: function (pokemon, target, move) {
+			if (move.mindBlownRecoil && !move.multihit) {
+				this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.getEffect('Mind Blown'), true);
+			}
 		},
 		secondary: false,
 		target: "allAdjacent",
@@ -11696,8 +11699,8 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 100,
 		category: "Special",
-		desc: "Damage is calculated using the user's higher attacking stat, including stat stage changes. The user's Ability, item, and burn are used as normal.",
-		shortDesc: "Uses higher attacking stat in damage calculation.",
+		desc: "Damage is calculated using the user's higher attacking stat, including stat stage changes.",
+		shortDesc: "Calculates damage with user's higher attack stat.",
 		id: "photongeyser",
 		isViable: true,
 		name: "Photon Geyser",
@@ -11735,7 +11738,7 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 100,
 		category: "Physical",
-		desc: "Causes Normal-type moves to become Electric type this turn.",
+		desc: "If this move is successful, causes Normal-type moves to become Electric type this turn.",
 		shortDesc: "Normal moves become Electric type this turn.",
 		id: "plasmafists",
 		isViable: true,
@@ -15938,8 +15941,8 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 190,
 		category: "Physical",
-		desc: "Removes the current terrain.",
-		shortDesc: "Clears terrains.",
+		desc: "Ends the effects of Electric Terrain, Grassy Terrain, Misty Terrain, and Psychic Terrain.",
+		shortDesc: "Ends the effects of Terrain.",
 		id: "splinteredstormshards",
 		name: "Splintered Stormshards",
 		pp: 1,
@@ -18687,9 +18690,14 @@ exports.BattleMovedex = {
 				this.add('-singleturn', source, 'Wide Guard');
 			},
 			onTryHitPriority: 4,
-			onTryHit: function (target, source, effect) {
+			onTryHit: function (target, source, move) {
+				// USUM bug
+				if (move.isZ) {
+					move.zBrokeProtect = true;
+					return;
+				}
 				// Wide Guard blocks all spread moves
-				if (effect && effect.target !== 'allAdjacent' && effect.target !== 'allAdjacentFoes') {
+				if (move && move.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
 					return;
 				}
 				this.add('-activate', target, 'move: Wide Guard');

@@ -184,7 +184,7 @@ exports.commands = {
 			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(
-					'|html|You have recieved a custom title from ' + WL.nameColor(user.name, true) + '.' +
+					'|html|You have received a custom title from ' + WL.nameColor(user.name, true) + '.' +
 					'<br />Title: ' + showTitle(toId(targetUser)) +
 					'<br />Title Hex Color: ' + color
 				);
@@ -357,6 +357,34 @@ exports.commands = {
 		"/music take [user] - Removes a user's profile music. Requires % and up.",
 	],
 
+	pokemon: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) return this.parse("/pokemonhelp");
+			let pkmn = Dex.getTemplate(target);
+			if (!pkmn.exists) return this.errorReply('Not a Pokemon. Check your spelling?');
+			Db.pokemon.set(user.userid, pkmn.species);
+			return this.sendReply("You have successfully set your Pokemon onto your profile.");
+		},
+
+		del: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.pokemon.has(user.userid)) return this.errorReply("Your favorite Pokemon hasn't been set.");
+			Db.pokemon.remove(user.userid);
+			return this.sendReply("Your favorite Pokemon has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse('/pokemonhelp');
+		},
+	},
+	pokemonhelp: [
+		"/pokemon set [Pokemon] - Sets your Favorite Pokemon.",
+		"/pokemon delete - Removes your Favorite Pokemon.",
+	],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
@@ -419,6 +447,9 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>' + currencyPlural + ':</b></font> ' + currency + '<br />';
+				if (Db.pokemon.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Favorite Pokemon:</strong></font> ' + Db.pokemon.get(toId(username)) + '<br />';
+				}
 				if (WL.getFaction(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				}
