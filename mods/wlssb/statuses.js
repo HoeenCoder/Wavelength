@@ -149,7 +149,7 @@ exports.BattleStatuses = {
 			} else if (i < 2) {
 				this.add('c', '~Kraken Mare', 'I...I\'ll remember this!');
 			} else if (i < 3) {
-				this.add('c', '~Kraken Mare', 'Cross-fade to blaaaaaaaaaaack!')
+				this.add('c', '~Kraken Mare', 'Cross-fade to blaaaaaaaaaaack!');
 			} else if (i < 4) {
 				this.add('c', '~Kraken Mare', 'I should have bought more bombs...');
 			} else {
