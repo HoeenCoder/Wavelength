@@ -20,7 +20,7 @@
         "name": "Hyper Potion",
         "slot": "medicine",
         "use": {
-            "healHP": 200
+            "healHP": 120
         }
     },
     "maxpotion": {
