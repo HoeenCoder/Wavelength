@@ -109,33 +109,20 @@ exports.BattleStatuses = {
 	krakenmare: {
 		exists: true,
 		onStart: function () {
-			let t = this.random(4);
-			if (t < 1) {
-				this.add('c', '~Kraken Mare', 'I told you to leave...');
-				this.add('c', '~Kraken Mare', 'Now you leave me no choice..');
-				this.add('c', '~Kraken Mare', 'Prepare to be rocked!');
-			} else if (t < 2) {
-				this.add('c', '~Kraken Mare', 'No one throws shade at my shades and gets away with it!');
-			} else if (t < 3) {
-				this.add('c', '~Kraken Mare', 'It\'s time to swab the deck and plunder the booty!');
+			let msg = ['I told you to leave...|Now you leave me no choice...|Prepare to be rocked!', 'No one throws shade at my shades and gets away with it!', 'It\'s time to swab the deck and plunder the booty!', 'It\'s all about becoming one with the music!'][this.random(4)];
+			if (msg.split('|').length > 1) {
+				msg = msg.split('|');
+				for (let i = 0; i < msg.length; i++) this.add('c', '~Kraken Mare', msg[i]);
 			} else {
-				this.add('c', '~Kraken Mare', 'It\'s all about becoming one with the music!');
+						this.add('c' '~Kraken Mare', msg);
 			}
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '~Kraken Mare', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
 		},
 		onCriticalHit: function (source) {
-			let c = this.random(4);
-			if (c < 1) {
-				this.add('c', '~Kraken Mare', 'EAT THAT!');
-			} else if (c < 2) {
-				this.add('c', '~Kraken Mare', 'Nailed it!');
-			} else if (c < 3) {
-				this.add('c', '~Kraken Mare', 'Got it!');
-			} else {
-				this.add('c', '~Kraken Mare', 'Yeah! Let\'s ROCK!');
-			}
+			let msg = ['EAT THAT!', 'Nailed it!', 'Got it!', 'Yeah! Let\'s ROCK!'][this.random(4)];
+			this.add('c' '~Kraken Mare', msg);
 		},
 		onSourceFaint: function (target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
@@ -143,18 +130,8 @@ exports.BattleStatuses = {
 			}
 		},
 		onFaint: function () {
-			let i = this.random(5);
-			if (i < 1) {
-				this.add('c', '~Kraken Mare', 'Ow! You got ink RIGHT in my eye!');
-			} else if (i < 2) {
-				this.add('c', '~Kraken Mare', 'I...I\'ll remember this!');
-			} else if (i < 3) {
-				this.add('c', '~Kraken Mare', 'Cross-fade to blaaaaaaaaaaack!');
-			} else if (i < 4) {
-				this.add('c', '~Kraken Mare', 'I should have bought more bombs...');
-			} else {
-				this.add('c', '~Kraken Mare', 'Don\'t worry, Team Callie. I still love you all...');
-			}
+			let msg = ['Ow! You got ink RIGHT in my eye!', 'I...I\'ll remember this!', 'Cross-fade to blaaaaaaaaaaack!', 'I should have bought more bombs...', 'Don\'t worry, Team Callie. I still love you all...'][this.random(5)];
+			this.add('c', '~Kraken Mare', msg);
 		},
 	},
 	almightybronzong: {
@@ -231,7 +208,6 @@ exports.BattleStatuses = {
 			this.add('c', '%Lycanium Z', '>');
 			this.add('c', '%Lycanium Z', '/me sigh');
 			this.add('c', '%Lycanium Z', 'I might as well change my super serious set to a meme set tbh or be buffed to the max.');
-						
 		},
 	},
 	celestialtater: {
