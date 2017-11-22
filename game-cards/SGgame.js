@@ -1203,7 +1203,7 @@ exports.commands = {
 		Db.players.set(u.userid, p);
 		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
-	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],	
+	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
 	tp: 'takepokeballs',
 	takepokeballs: function (target, room, user) {
 		// Allows mods+ to give more pokeballs during the alpha
@@ -1240,7 +1240,7 @@ exports.commands = {
 		if (target.length < 3) return this.parse(`/help givestone`);
 		let u = target[0] = Users(target[0]);
 		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
-		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'stellixite', 'sharpendonite', 'sceptilite', 'salamencite', 'banettite', 'beedrillite', 'scizorite', 'slowbronite','charizarditex', 'charizarditey', 'redorb', 'tyranitarite', 'blueorb', 'lucarionite'].includes(target[1])) return this.parse(`/help givestone`);
+		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'stellixite', 'sharpendonite', 'sceptilite', 'salamencite', 'banettite', 'beedrillite', 'scizorite', 'slowbronite', 'charizarditex', 'charizarditey', 'redorb', 'tyranitarite', 'blueorb', 'lucarionite'].includes(target[1])) return this.parse(`/help givestone`);
 		target[2] = parseInt(target[2]);
 		if (isNaN(target[2]) || target[2] < 1 || target[2] > 11) return this.errorReply(`Stone amount must be 1.`);
 		let p = Db.players.get(u.userid);
@@ -1255,7 +1255,7 @@ exports.commands = {
 	},
 	givestonehelp: ['/help givestone [user], [stone name], [amount] - Give a user mega stone. Require global @ & ~'],
 	ts: 'takestone',
-	takestone: function(target, room, user) {
+	takestone: function (target, room, user) {
 		// Allows mod+ to take mega stones during the alpha
 		if (!this.can('ban')) return;
 		target = target.split(',').map(part => {
@@ -1264,7 +1264,7 @@ exports.commands = {
 		if (target.length < 3) return this.parse(`/help givepokeballs`);
 		let u = target[0] = Users(target[0]);
 		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
-		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'steelixite', 'sharpendonite', 'sceptilite', 'slamencite', 'banettite', 'beedrillite', 'scizorite','slowbronite','redorb', 'blueorb', 'charizarditex', 'charizarditey', 'lucarionite'].includes(target[1])) return this.parse(`/help givepokeballs`);
+		if (!['mewtwonitex', 'mewtwonitey', 'abomasite', 'absolite', 'aggronite', 'alakazite', 'altarianite', 'ampharosite', 'audinite', 'venusaurite', 'swampertite', 'steelixite', 'sharpendonite', 'sceptilite', 'slamencite', 'banettite', 'beedrillite', 'scizorite', 'slowbronite', 'redorb', 'blueorb', 'charizarditex', 'charizarditey', 'lucarionite'].includes(target[1])) return this.parse(`/help givepokeballs`);
 		target[2] = parseInt(target[2]);
 		if (isNaN(target[2]) || target[2] < 1 || target[2] > 1) return this.errorReply(`stone amount must be 1.`);
 		let p = Db.players.get(u.userid);
@@ -1278,9 +1278,8 @@ exports.commands = {
 		 this.sendReply(`${u.userid} has been taken ${target[2]} ${target[1]}'s. They now have ${p.bag.items[target[1]]} ${target[1]}'s.`);
 	},
 	takestonehelp: ['/takestone [user], [stone name], [amount] - take a users mega stone. Require global @ & ~.'],
-	
-	stonelist: 'stoneslist', 
-	stoneslist: function(target, room, user) {
+	stonelist: 'stoneslist',
+	stoneslist: function (target, room, user) {
 		if (!this.can('talk')) return;
 		this.sendReplyBox('<b><u>Available Mega Stones List:</u></b><br><a href="https://pastebin.com/gvsPjMk8">Mega Stones List.</a>');
 	},
