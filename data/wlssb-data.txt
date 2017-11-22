@@ -45,7 +45,7 @@ Ability: Analytic
 Moves: Cosmic Power/Calm Mind, Soft-Boiled and Stored Power.
 Signature Move: Mystic Mirage
 	- Fairy Type, Status, 10 PP, and boosts the user's Def, SpA, and SpD by 2 stages.
-Notes: idk
+Notes: N/A
 Rank: N/A.
 
 Kraken Mare
@@ -62,14 +62,15 @@ Notes: N/A.
 Rank: N/A.
 
 C733937 123
-(Tyranitar)
-@ Safety Googles
-EVs: 252 Atk / 4 Def / 252 HP
+(Skuntank)
+@ Shuca Berry
+EVs: 252 Atk / 4 SpD / 252 HP
 Adamant Nature
-Ability: Bulletproof
-Moves: Assist, Beat Up, Sucker Punch, and Heavy Slam
-Signature Move: Lightshot Giga-Lance
-	- 150 BP, Rock type, Physical, 30% chance to boost all stats (except acc and eva), must recharge
+Ability: Unaware
+Innate Ability: Psyched Up: Uses Psych up on switch in
+Moves: Crunch, Gunk Shot, Sacred Fire
+Signature Move: Shatter Break
+	- 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent.
 Notes: N/A.
 Rank: N/A.
 
@@ -94,7 +95,7 @@ Ability: Ready to Stab
     - On entry, +2 Attack and Speed.
 Moves: Crabhammer, Swords Dance, Knock Off
 Signature Move: Stab Stab
-    -Steel Type, 100 BP, Always Hits, Attacks Twice, 25% chance to flinch.
+    -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch.
 Notes: Stabby Stabby!
 Rank: N/A.
 
@@ -107,9 +108,9 @@ Ability: Wave Call
     -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage for two turns on switch in.
 Moves: Dragon Dance, Bounce and Substitute.
 Signature Move: Tsunami Crash
-	-Water Type, Physical, 150 BP, 8 PP and 35% chance to flinch the target.
-Notes:Quite stronger with buffs to counter issues. Finally living up to what it should with Tsunami's owner's name on it.
-Rank: TBD
+	-Water Type, Physical, 130 BP, 8 PP and 35% chance to flinch the target.
+Notes: Quite stronger with buffs to counter issues. Finally living up to what it should with Tsunami's owner's name on it.
+Rank: N/A
 
 BDH93
 (Dunsparce)
@@ -119,7 +120,7 @@ Naughty Nature
 Ability: Serene Grace
 Moves: Roost, Coil, Rock Slide, Glare and Body Slam.
 Signature Move: Getting Trolled
-	- Normal Type, Physical, 40 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target.
+	- Normal Type, Physical, 40 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +1 Priority.
 Notes: N/A.
 Rank: N/A.
 
@@ -132,7 +133,7 @@ Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
 Moves: Thunderbolt, Surf and HP Ice.
 Signature Move: Rocket Punch
-	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +1 Priority.
+	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +0.1 Priority.
 Notes: Fast Special Sweeper.
 Rank: N/A.
 
@@ -157,7 +158,7 @@ Ability: Unnamable
 	- Raises the user's Special Attack by one stage; Supereffective moves against the target deal 1.2x more damage.
 Moves: Aura Sphere, Dark Pulse and Psychic.
 Signature Move: Saber Strike
-	- Grass Type, Special, 140 BP, 10 PP, Boosts user's SpA by 2 stages and heals user by 1/5th of its max HP.
+	- Grass Type, Special, 120 BP, 10 PP, Boosts user's SpA by 2 stages and heals user by 1/5th of its max HP.
 Notes: N/A.
 Rank: N/A.
 
@@ -191,7 +192,8 @@ Auction
 @ Leftovers
 EVs: 248 HP / 8 SpD / 252 Atk
 Adamant Nature
-Ability: Water Absorb
+Ability: Stance Change
+Innate Ability: Duality: Immune to fire and water type attacks
 Moves: Swords Dance, Sacred Sword, Shadow Sneak and King's Shield.
 Signature Move: Zeo-Bash
 	- Steel Type, Physical, 90 BP and 15 PP.
@@ -208,7 +210,7 @@ Moves: Megahorn, Stone Edge and Drain Punch.
 Signature Move: Shell Break
 	- Water Type, Status, 5 PP, Boosts user's Attack, Speed and SpA by 2 stages and Accuracy by 1 stage and lowers its Defense and SpD by 1 stage.
 Notes: Fast Physical Sweeper, extremely threatening if it gets a Shell Break up.
-Rank: A.
+Rank: N/A
 
 HiroZ
 (Genesect)
@@ -228,25 +230,25 @@ Mosmero
 EVs: 252 Spa / 252 Spe / 4 HP
 Modest Nature
 Ability: Mosmic Power
-    - Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.
+    - Boosts user's Special and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.
 Moves: Shadow Ball, Sludge Bomb, Giga Drain
 Signature Move: Mosmero Beam
 	- Ghost type, 130 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
 Notes: Hit Quickly & you should be able to take down some enemies.
-Rank: TBD
+Rank: N/A
 
-Tsunami Prince
+Wavelength Prince
 (Darkrai)
 @ Darkiniumz
 EVs: 252 SpA / 252 Spe / 6 HP
 Timid Nature
 Ability: Death Boost
-    - Simple + Also puts enemy pokemon to sleep.
+    - Simple + Also attempts to put enemy pokemon to sleep.
 Moves: Nightmare, Dark Pulse, Shadow Ball
 Signature Move: Overpower
 	- Boosts all stats by 1 stage. Puts enemy to sleep.
 Notes: Usually can take care of most threats right away without using Overpower at all. Remember than Overpower will fail, if enemy is already asleep.
-Rank: TBD
+Rank: N/A
 
 iSteelX
 (Steelix-Mega)
@@ -254,12 +256,12 @@ iSteelX
 Evs: 252 HP / 4 Atk / 252 Def
 Impish Nature
 Ability: Sandbox
-    - Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.
+    - Sets up Trick Room, Sandstorm, & Gravity on switch in.
 Moves: Curse, Sleep Talk, Earthquake
 Signature Move: Deep Sleep
-    - Rest & +3 SpD boost.
+    - Rest & +2 SpD boost.
 Notes: Quite a nice wall, especially effective while Sandbox is active. Gets quite weakened by the loss of Sandbox ability, but still can fight well.
-Rank: TBD
+Rank: N/A
 
 CubsFan38
 (Rowlet)
@@ -270,9 +272,9 @@ Ability: Night Owl
 	- Raises Attack and Speed by 2 if against a Ghost/Dark type Pokemon
 Moves: Leaf Blade, Brave Bird, Swords Dance
 Signature Move: Moonlight Escape
-- Dark Type, Physical , 150 BP, 10 PP, Boosts speed by 1.
-Notes: idk
-Rank: TBD
+    - Dark Type, Physical , 150 BP, 10 PP, Boosts speed by 1.
+Notes: N/A
+Rank: N/A
 
 TheRittz
 (Venusaur-Mega)
@@ -280,12 +282,12 @@ TheRittz
 EVs: 252 HP / 128 Def / 128 SpD
 Calm Nature
 Ability: Paradoxical Prowess
-    - Has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Solid Rock, and has same effects of Oblivious
+    - Has same effects of Magic Guard, has same effects of Sticky Hold, and has same effects of Oblivious
 Moves: Substitute, Leech Seed, Toxic
 Signature Move: Everlasting Annoyingness
-    - Uses the move Ingrain & Special Bullet Seed move that drains 10% HP each hit (2-5 hits).
+    - Uses the move Aqua Ring & Special Bullet Seed move that drains 10% HP each hit (2-5 hits).
 Notes: Heavily annoying stall this meta has very little to take on.
-Rank: S.
+Rank: N/A
 
 xcmr
 (Meowth)
@@ -293,12 +295,12 @@ xcmr
 EVs 252 Atk / 4 SpD / 252 Spe
 Jolly Nature
 Ability: Feline Fury
-    - Scrappy & +3 Attack on switch in.
+    - Scrappy & +3 Attack on switch in.
 Moves: U-turn, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 to both Def & SpD on use.
+    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 Priority.
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
-Rank: TBD
+Rank: N/A
 
 wgc
 (Gengar)
@@ -313,4 +315,45 @@ Signature Move: Haze Reborn
 	- Ice Type, 20 PP, Inverts Targets stat changes. 40% chance to freeze.
 Notes: N/A.
 Rank: N/A.
+
+Tidal Wave Bot
+(Magikarp, Steel/Electric Typing, Shiny)
+@ Guardian's Amulet
+    Eviolite + Life Orb
+EVs: 4 HP / 252 Atk / 252 SpA
+Adament Nature
+Ability: Loading...
+    -Uses Magnet Rise & +4 Attack and +2 Speed on entry.
+Moves: Wild Charge, Gear Grind, Gear Shift
+Signature Move: Server Guardian
+    -Recover & +2 boosts to both Def & SpD.
+Notes: Able to hit quick and hard from the start, but if you can, set up.
+Rank: N/A
+
+Kraken Mare
+(Malamar, Poison/Water Typing)
+@ Hypnoshades
+    -Broken on hit by any move. Boosts physical moves by 1.5x. Also boosts freshness. Stay Fresh~!
+EVs: 252 HP / 252 Atk / 4 SpD
+Adamant Nature
+Ability: Supreme Squid Sister
+    -Contrary & No Guard
+Moves: Sing, Superpower, Gunk Shot.
+Signature Move: Bomb Rush Blush
+    -Physical, Hits 1-4 Times. Randomly Picks one of the following: "Burst Bombs" (60BP & Water type), "Splat Bombs" (65BP & Poison type), "Suction Bombs" (90BP & Steel type).
+Notes: Lots of Splatoon References. ^-^ || If she can hit, she will hit hard.
+Rank: N/A
+
+bunnery5
+(Tympole)
+@ Salac Berry
+EVs 252 Def / 252 SpD / 4 Spe
+Timid Nature
+Ability:  Muscles
+    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.
+Moves: Stored Power, Cosmic Power, Hydro Pump
+Signature Move: Bunnery Hates You Seed
+    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority.
+Notes: New
+Rank: N/A
 
