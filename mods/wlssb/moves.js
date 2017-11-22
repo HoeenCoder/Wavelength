@@ -98,7 +98,7 @@ exports.BattleMovedex = {
 				move.basePower = 65;
 			} else {
 				move.bomb = "Suction Bomb";
-				move.basePower = 90; 
+				move.basePower = 90;
 				move.type = 'Steel';
 			}
 		},
@@ -110,12 +110,12 @@ exports.BattleMovedex = {
 			if (t < 1) {
 				this.add('c|~Kraken Mare|♪Faces blush, a rush of ink!♪');
 				this.add('c|~Kraken Mare|♪Bombs explode, no time to think!♪');
-			} else  {
+			} else {
 				this.add('c|~Kraken Mare|♪Blushing faces covered in pink!♪');
 				this.add('c|~Kraken Mare|♪Rushing bombs, exploding ink!♪');
 			}
 		},
-		multihit: [1,4],
+		multihit: [1, 4],
 		target: "Normal",
 		type: "Poison",
 	},
