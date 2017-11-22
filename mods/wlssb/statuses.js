@@ -101,8 +101,7 @@ exports.BattleStatuses = {
 		onStart: function () {
 			this.add('c', '~Mystifi', '__I\'ll HM01 u faster then sanic m89__');
 		},
-		onSwitchOut: function (pokemon) {
-		},
+		onSwitchOut: function (pokemon) {},
 		onFaint: function (pokemon) {
 			this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
 		},
@@ -115,13 +114,13 @@ exports.BattleStatuses = {
 				this.add('c', '~Kraken Mare', 'I told you to leave...');
 				this.add('c', '~Kraken Mare', 'Now you leave me now choice..');
 				this.add('c', '~Kraken Mare', 'Prepare to be rocked!');
-			} else if (t < 2)  {
+			} else if (t < 2) {
 				this.add('c', '~Kraken Mare', 'No one throws shade at my shades and gets away with it!');
 			} else if (t < 3) {
 				this.add('c', '~Kraken Mare', 'It\'s time to swab the deck and plunder the booty!');
 			} else {
 				this.add('c', '~Kraken Mare', 'It\'s all about becoming one with the music!');
-			} 
+			}
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '~Kraken Mare', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
@@ -132,7 +131,7 @@ exports.BattleStatuses = {
 				this.add('c', '~Kraken Mare', 'EAT THAT!');
 			} else if (c < 2) {
 				this.add('c', '~Kraken Mare', 'Nailed it!');
-			} else if (c < 3){
+			} else if (c < 3) {
 				this.add('c', '~Kraken Mare', 'Got it!');
 			} else {
 				this.add('c', '~Kraken Mare', 'Yeah! Let\'s ROCK!');
@@ -143,16 +142,15 @@ exports.BattleStatuses = {
 				this.add('c', '~Kraken Mare', 'Thou ART defeated! HA!');
 			}
 		},
-			
 		onFaint: function () {
 			let i = this.random(5);
 			if (i < 1) {
 				this.add('c', '~Kraken Mare', 'Ow! You got ink RIGHT in my eye!');
-			} else if (i < 2)  {
+			} else if (i < 2) {
 				this.add('c', '~Kraken Mare', 'I...I\'ll remember this!');
 			} else if (i < 3) {
 				this.add('c', '~Kraken Mare', 'Cross-fade to blaaaaaaaaaaack!')
-			} else if (i < 4){
+			} else if (i < 4) {
 				this.add('c', '~Kraken Mare', 'I should have bought more bombs...');
 			} else {
 				this.add('c', '~Kraken Mare', 'Don\'t worry, Team Callie. I still love you all...');
@@ -175,8 +173,6 @@ exports.BattleStatuses = {
 		exists: true,
 		onStart: function () {
 			this.add('c', '&Opple', 'lol hi');
-		},
-		onSwitchOut: function (pokemon) {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '&Opple', 'I call hacks, fine. You got me, lol, I\'ll get you next time!');
@@ -341,7 +337,7 @@ exports.BattleStatuses = {
 		exists: true,
 		onSourceFaint: function (target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				this.boost({spa:1}, source);
+				this.boost({spa: 1}, source);
 			}
 		},
 	},
@@ -349,8 +345,6 @@ exports.BattleStatuses = {
 		exists: true,
 		onStart: function () {
 			this.add('c', '+bunnery5', 'LOL, you think you can win!');
-		},
-		onSwitchOut: function (pokemon) {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+bunnery5', 'One day, karma will get you back.');
