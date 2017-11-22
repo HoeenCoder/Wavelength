@@ -48,19 +48,6 @@ Signature Move: Mystic Mirage
 Notes: N/A
 Rank: N/A.
 
-Kraken Mare
-(Gardevoir-Mega)
-@ Focus Sash
-EVs: 248 HP / 8 Def / 252 SpA
-Modest Nature
-Ability: Kraken's Boosts
-	- No Guard and Moody.
-Moves: Moonblast, Calm Mind and Psychic.
-Signature Move: Revenge of Kraken Mare
-	- Water Type, Special, 77,000 BP, Always hits, Self-Destruct and +5 Priority.
-Notes: N/A.
-Rank: N/A.
-
 C733937 123
 (Skuntank)
 @ Shuca Berry
@@ -70,7 +57,7 @@ Ability: Unaware
 Innate Ability: Psyched Up: Uses Psych up on switch in
 Moves: Crunch, Gunk Shot, Sacred Fire
 Signature Move: Shatter Break
-	- 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent.
+	- Physical, Fairy Type, 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent.
 Notes: N/A.
 Rank: N/A.
 
