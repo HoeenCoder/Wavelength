@@ -348,4 +348,13 @@ exports.BattleStatuses = {
 			}
 		},
 	},
+	alfastorm: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+AlfaStorm', 'Hello, prepare to face my wrath!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+AlfaStorm', 'You\'ll regret doing this to me!');
+		},
+	},
 };
