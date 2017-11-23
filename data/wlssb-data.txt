@@ -353,5 +353,5 @@ Ability: Mummy
 Moves: Spacial Rend, Night Daze, Doom Desire
 Signature Move: Infinity Storm
     -Makes user invisibile next turn and raises spa by 2
-Notes: Able to hit quick and hard from the start, but if you can, set up.
+Notes: Invisibility Gives a key niche
 Rank: N/A
