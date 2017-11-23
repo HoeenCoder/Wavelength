@@ -829,4 +829,39 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Grass",
 	},
+	// Alfastorm
+	"infinitystorm": {
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		desc: "Raises the user's Special Attack by 2 stages and makes the user invisible for the next turn.",
+		shortDesc: "Raises the user's Sp. Atk by 2 and makes the user invisible.",
+		id: "infinitystorm",
+		name: "Infinity Storm",
+		pp: 20,
+		isNonStandard: true,
+		priority: 0,
+		flags: {snatch: 1},
+		boosts: {
+			spa: 2,
+		},
+		effect: {
+			duration: 3,
+			onAccuracy: function (accuracy, target, source, move) {
+				if (move.id === 'helpinghand') {
+					return;
+				}
+				if (source.hasAbility('noguard') || target.hasAbility('noguard')) {
+					return;
+				}
+				if (source.volatiles['lockon'] && target === source.volatiles['lockon'].source) return;
+				return 0;
+			},
+		},
+		secondary: false,
+		target: "self",
+		type: "Dark",
+		zMoveEffect: 'clearnegativeboost',
+		contestType: "Clever",
+	},
 };
