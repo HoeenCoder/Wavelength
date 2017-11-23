@@ -853,7 +853,7 @@ exports.BattleMovedex = {
 			pokemon.addVolatile('stall');
 		},
 		effect: {
-			duration: 3,
+			duration: 2,
 			onAccuracy: function (accuracy, target, source, move) {
 				if (move.id === 'helpinghand') {
 					return;
