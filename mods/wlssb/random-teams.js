@@ -420,6 +420,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+			'+AlfaStorm' : {
+				species: 'Hydreigon',
+				ability: 'Mummy',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['nightdaze', 'spacialrend', 'hydropump'],
+				signatureMove: 'Infinity Storm',
+				evs: {
+					def: 4,
+					spa: 252,
+					spe: 252,
+				},
+				nature: 'Timid',
+			},
 		};
 		// convert moves to ids.
 		for (let k in sets) {
