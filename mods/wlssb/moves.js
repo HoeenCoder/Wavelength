@@ -842,8 +842,15 @@ exports.BattleMovedex = {
 		isNonStandard: true,
 		priority: 0,
 		flags: {snatch: 1},
+		stallingMove: true,
 		boosts: {
 			spa: 2,
+		},
+		onPrepareHit: function (pokemon) {
+			return !!this.willAct() && this.runEvent('StallMove', pokemon);
+		},
+		onHit: function (pokemon) {
+			pokemon.addVolatile('stall');
 		},
 		effect: {
 			duration: 3,
