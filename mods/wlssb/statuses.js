@@ -106,7 +106,7 @@ exports.BattleStatuses = {
 			this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
 		},
 	},
-	krakenmare: {
+	callieagent1: {
 		exists: true,
 		onStart: function () {
 			let msg = ['I told you to leave...|Now you leave me no choice...|Prepare to be rocked!', 'No one throws shade at my shades and gets away with it!', 'It\'s time to swab the deck and plunder the booty!', 'It\'s all about becoming one with the music!'][this.random(4)];
