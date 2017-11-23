@@ -425,7 +425,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Mummy',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: ['nightdaze', 'spacialrend', 'hydropump'],
+				moves: ['nightdaze', 'spacialrend', 'doomdesire'],
 				signatureMove: 'Infinity Storm',
 				evs: {
 					def: 4,
