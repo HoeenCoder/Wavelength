@@ -1203,7 +1203,8 @@ exports.commands = {
 		Db.players.set(u.userid, p);
 		if (Rooms.get('staff')) {
 			Rooms.get('staff').add('|raw| <div class="broadcast-green">' + WL.name(user.name, true) + ' has given ' + target[2] + ' ' + target[1] + 's to ' + (u.userid) + '</div>').update();
-		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
+		}
+		this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
 	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
 	tp: 'takepokeballs',
