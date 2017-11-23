@@ -831,26 +831,28 @@ exports.BattleMovedex = {
 	},
 	// Alfastorm
 	"infinitystorm": {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		desc: "Raises the user's Special Attack by 2 stages and makes the user invisible for the next turn.",
-		shortDesc: "Raises the user's Sp. Atk by 2 and makes the user invisible.",
+		accuracy: 100,
+		basePower: 100,
+		category: "Special",
+		desc: "Disappears turn 1. Hits turn 2. Boosts Spa by 2.",
 		id: "infinitystorm",
+		isViable: true,
 		name: "Infinity Storm",
-		pp: 20,
-		isNonStandard: true,
+		pp: 10,
 		priority: 0,
-		flags: {snatch: 1},
-		stallingMove: true,
-		boosts: {
-			spa: 2,
-		},
-		onPrepareHit: function (pokemon) {
-			return !!this.willAct() && this.runEvent('StallMove', pokemon);
-		},
-		onHit: function (pokemon) {
-			pokemon.addVolatile('stall');
+		flags: {charge: 1, mirror: 1},
+		onTry: function (attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name, defender);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				this.add('-anim', attacker, move.name, defender);
+				this.boost({spa:2}, attacker);
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
 		},
 		effect: {
 			duration: 2,
@@ -866,9 +868,9 @@ exports.BattleMovedex = {
 			},
 		},
 		secondary: false,
-		target: "self",
-		type: "Dark",
-		zMoveEffect: 'clearnegativeboost',
-		contestType: "Clever",
+		target: "normal",
+		type: "Flying",
+		zMovePower: 190,
+		contestType: "Cool",
 	},
 };
