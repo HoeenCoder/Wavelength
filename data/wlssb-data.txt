@@ -352,6 +352,6 @@ Timid Nature
 Ability: Mummy
 Moves: Spacial Rend, Night Daze, Doom Desire
 Signature Move: Infinity Storm
-    -Makes user invisibile next turn and raises spa by 2
+    -Disappears turn 1. Hits turn 2. Boosts Spa by 2. Flying Type, 100 BP
 Notes: Invisibility Gives a key niche
 Rank: N/A
