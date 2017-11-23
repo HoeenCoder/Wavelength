@@ -848,7 +848,6 @@ exports.BattleMovedex = {
 			this.add('-prepare', attacker, move.name, defender);
 			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
 				this.add('-anim', attacker, move.name, defender);
-				this.boost({spa:2}, attacker);
 				return;
 			}
 			attacker.addVolatile('twoturnmove', defender);
@@ -867,7 +866,12 @@ exports.BattleMovedex = {
 				return 0;
 			},
 		},
-		secondary: false,
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {spa: 2},
+			},
+		},
 		target: "normal",
 		type: "Flying",
 		zMovePower: 190,
