@@ -751,7 +751,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bulk Up", source);
 			this.add('-anim', source, "Crush Claw", target);
 		},
-		desc: "Rock, steel and ghost types dake normal damage.",
+		desc: "Rock, steel and ghost types dake normal damage. Boosts def and spd by 2.",
 		target: "normal",
 		type: "Normal",
 	},
