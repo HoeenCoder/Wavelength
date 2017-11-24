@@ -279,7 +279,7 @@ exports.BattleAbilities = {
 		name: "Feline Fury",
 		desc: "+3 Attack on switch in.",
 		onStart: function (pokemon) {
-			this.boost({atk: 3});
+			this.boost({atk: 2});
 		},
 		onModifyMovePriority: -5,
 		onModifyMove: function (move) {
