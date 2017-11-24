@@ -729,7 +729,15 @@ exports.BattleMovedex = {
 		noPPBoosts: true,
 		priority: 1,
 		flags: {protect: 1, mirror: 1},
-		secondary: false,
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					def: 1,
+					spd: 1,
+				},
+			},
+		},
 		onHit: function (target) {
 			this.add('c|+xcmr|The calc says this should kill.');
 		},
@@ -743,7 +751,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bulk Up", source);
 			this.add('-anim', source, "Crush Claw", target);
 		},
-		desc: "Rock, steel and ghost types dake normal damage.",
+		desc: "Rock, steel and ghost types take normal damage. Boosts def and spd by 1.",
 		target: "normal",
 		type: "Normal",
 	},
