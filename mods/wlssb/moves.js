@@ -729,7 +729,15 @@ exports.BattleMovedex = {
 		noPPBoosts: true,
 		priority: 1,
 		flags: {protect: 1, mirror: 1},
-		secondary: false,
+		secondary: {
+			chance: 100,
+			self: {
+				boosts: {
+					def: 1,
+					spd: 1,
+				},
+			},
+		},
 		onHit: function (target) {
 			this.add('c|+xcmr|The calc says this should kill.');
 		},
