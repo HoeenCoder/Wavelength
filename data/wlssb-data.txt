@@ -277,15 +277,15 @@ Notes: Heavily annoying stall this meta has very little to take on.
 Rank: N/A
 
 xcmr
-(Meowth)
-@ Eviolite
+(Persian)
+@ Life Orb
 EVs 252 Atk / 4 SpD / 252 Spe
 Jolly Nature
 Ability: Feline Fury
-    - Scrappy & +3 Attack on switch in.
-Moves: U-turn, Fake Out, Knock Off,
+    - Scrappy & +2 Attack on switch in.
+Moves: Topsy-Turvy, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 Priority.
+    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 Priority. Boosts def and spd by 1.
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: N/A
 
