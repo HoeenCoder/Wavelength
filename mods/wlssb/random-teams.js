@@ -392,11 +392,11 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Adamant',
 			},
 			'+xcmr': {
-				species: 'Meowth',
+				species: 'Persian',
 				ability: 'Feline Fury',
-				item: 'Eviolite',
+				item: 'Life Orb',
 				gender: 'M',
-				moves: ['U-turn', 'Fake Out', 'Knock Off',
+				moves: ['Topsy-Turvy', 'Fake Out', 'Knock Off',
 				],
 				signatureMove: 'Kitty Crush',
 				evs: {
