@@ -440,63 +440,24 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	"finishthem": {
-		accuracy: 100,
-		basePower: 0,
-		damage: 1,
-		category: "Physical",
-		desc: "OHKOs the target if user didnt take damage. %10 chance to lower all stats by 1.",
-		id: "finishthem",
-		name: "FINISH THEM",
-		pp: 5,
-		noPPBoosts: true,
-		flags: {protect: 1, mirror: 1},
-		secondary: {
-			chance: 10,
-			self: {
-				boosts: {
-					atk: -1,
-					def: -1,
-					spa: -1,
-					spd: -1,
-					spe: -1,
-				},
-			},
+	unserious:{
+		category: "Status",
+		id: "unserious",
+		isNonstandard: true,
+		name: "Unserious",
+		pp: 30,
+		desc: "Forces the weather to hail and uses foresight and leech seed",
+		priority: 9,
+		flags: {mirror: 1, snatch: 1},
+		onHit: function (pokemon) {
+			this.clearWeather();
+			this.setWeather('hail');
+			this.useMove('leechseed', pokemon);
+			this.useMove('foresight', pokemon);
 		},
-		priority: -3,
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Extreme Evoboost", source);
-			this.add('-anim', source, "Fusion Flare", target);
-			this.add('-anim', source, "Splintered Stormshards", target);
-		},
-		onModifyMove: function (move, target) {
-			move.damage = target.maxhp;
-		},
-		beforeTurnCallback: function (pokemon) {
-			pokemon.addVolatile('finishthem');
-		},
-		beforeMoveCallback: function (pokemon) {
-			if (pokemon.volatiles['finishthem'] && pokemon.volatiles['finishthem'].lostFocus) {
-				this.add('cant', pokemon, 'FINISH THEM', 'FINISH THEM');
-				return true;
-			}
-		},
-		effect: {
-			duration: 1,
-			onStart: function (pokemon) {
-				this.add('-singleturn', pokemon, 'move: FINISH THEM');
-			},
-			onHit: function (pokemon, source, move) {
-				if (move.category !== 'Status') {
-					pokemon.volatiles['finishthem'].lostFocus = true;
-				}
-			},
-		},
-		target: "normal",
-		type: "Rock",
-		zMovePower: 180,
-		contestType: "Tough",
+		secondary: false,
+		target: "self",
+		type: "Ice",
 	},
 	//Stabby the Krabby
 	"stabstab": {
@@ -691,7 +652,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		status: 'slp',
 		secondary: {
-			chance: 100,
+			chance: 50,
 			self: {
 				boosts: {
 					atk: 1,
@@ -711,7 +672,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Future Sight", target);
 			this.add('-anim', source, "Psycho Boost", source);
 		},
-		desc: "Raises all stats by 1 and opponent falls asleep.",
+		desc: "50% chance to all stats by 1 and opponent falls asleep.",
 		target: "normal",
 		type: "Dark",
 		zMoveEffect: "heal",

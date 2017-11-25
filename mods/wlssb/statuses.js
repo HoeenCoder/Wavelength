@@ -108,7 +108,7 @@ exports.BattleStatuses = {
 	},
 	callieagent1: {
 		exists: true,
-		onStart: function () {
+		onStart: function (pokemon) {
 			let msg = ['I told you to leave...|Now you leave me no choice...|Prepare to be rocked!', 'No one throws shade at my shades and gets away with it!', 'It\'s time to swab the deck and plunder the booty!', 'It\'s all about becoming one with the music!'][this.random(4)];
 			if (msg.split('|').length > 1) {
 				msg = msg.split('|');
@@ -116,6 +116,8 @@ exports.BattleStatuses = {
 			} else {
 				this.add('c', '~Callie (Agent 1)', msg);
 			}
+			this.add('-start', pokemon, 'typechange', 'Water/Poison');
+			pokemon.types = ["Water", "Poison"];
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '~Callie (Agent 1)', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
@@ -203,6 +205,7 @@ exports.BattleStatuses = {
 		exists: true,
 		onStart: function (pokemon) {
 			this.add('c', '%Lycanium Z', 'K im here, what do u need me to code? I hope its something pretty cool.');
+			this.setWeather('hail');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '%Lycanium Z', '>');
