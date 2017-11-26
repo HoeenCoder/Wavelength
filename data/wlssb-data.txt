@@ -18,7 +18,7 @@ EVs: None
 Impish Nature
 Level 1
 Ability: Extreme Snow Cloak
-    - Evasion is multiplied by 3 during hail.
+    - Evasion is multiplied by 2 during hail.
 Innate Ability: Snow Warning
 Moves: Endeavor, Stealth Rock, Ice Shard
 Signature Move: Unserious
