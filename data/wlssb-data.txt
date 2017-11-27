@@ -22,8 +22,8 @@ Ability: Extreme Snow Cloak
 Innate Ability: Snow Warning
 Moves: Endeavor, Stealth Rock, Ice Shard
 Signature Move: Unserious
-	- Ice Type. Forces weather to hail, uses leech seed and foresight
-Notes: Memes.
+	- Ice Type. Forces weather to hail, uses foresight.
+Notes: Great "sweeper" in hail
 Rank: N/A.
 
 Arrays
