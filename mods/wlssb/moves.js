@@ -446,13 +446,12 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		name: "Unserious",
 		pp: 30,
-		desc: "Forces the weather to hail and uses foresight and leech seed",
+		desc: "Forces the weather to hail and uses foresight.",
 		priority: 9,
 		flags: {mirror: 1, snatch: 1},
 		onHit: function (pokemon) {
 			this.clearWeather();
 			this.setWeather('hail');
-			this.useMove('leechseed', pokemon);
 			this.useMove('foresight', pokemon);
 		},
 		secondary: false,
@@ -672,7 +671,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Future Sight", target);
 			this.add('-anim', source, "Psycho Boost", source);
 		},
-		desc: "50% chance to all stats by 1 and opponent falls asleep.",
+		desc: "50% chance to raise all stats by 1 and opponent falls asleep.",
 		target: "normal",
 		type: "Dark",
 		zMoveEffect: "heal",
