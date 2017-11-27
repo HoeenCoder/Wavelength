@@ -5,7 +5,7 @@ class SGgame extends Console.Console {
 		super(user, room, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
 		this.gameId = 'SGgame';
-		this.version = '(Alpha) 1.0';
+		this.version = '(Alpha) 2.0';
 		this.queue = [];
 		this.queueAction = null;
 		this.lastNextAction = null;
@@ -94,7 +94,7 @@ class SGgame extends Console.Console {
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
 		}
-		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent alot of glitches).');
+		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent a lot of glitches).');
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Moving');
 		let location = WL.locationData[this.location];
 		if (!location.zones[this.zone].exits.up) return;
@@ -106,7 +106,7 @@ class SGgame extends Console.Console {
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
 		}
-		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent alot of glitches).');
+		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent a lot of glitches).');
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Moving');
 		let location = WL.locationData[this.location];
 		if (!location.zones[this.zone].exits.left) return;
@@ -118,7 +118,7 @@ class SGgame extends Console.Console {
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
 		}
-		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent alot of glitches).');
+		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent a lot of glitches).');
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Moving');
 		let location = WL.locationData[this.location];
 		if (!location.zones[this.zone].exits.right) return;
@@ -130,7 +130,7 @@ class SGgame extends Console.Console {
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
 		}
-		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent alot of glitches).');
+		if (Rooms.global.lockdown) return user.popup('The server is restarting soon. You cannot move around in SGgame right now. (We do this to prevent a lot of glitches).');
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Moving');
 		let location = WL.locationData[this.location];
 		if (!location.zones[this.zone].exits.down) return;
@@ -1284,13 +1284,13 @@ exports.commands = {
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
 		if (room.battle.ended) return this.errorReply('The battle is already over, you can\'t throw a pokeball.');
 		target = toId(target);
-		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('Thats not a pokeball, or at least not one we support.');
+		if (['pokeball', 'greatball', 'ultraball', 'masterball'].indexOf(target) === -1) return this.errorReply('That\'s not a pokeball, or at least not one we support.');
 		let obj = Db.players.get(user.userid);
 		if (!obj) return false;
 		if (!obj.bag.pokeballs[target]) return this.errorReply("You don't have any " + target + "'s");
 		let side = (toId(room.battle.p1.name) === toId(user) ? "p1" : "p2");
 		if (room.battle.ended) return this.errorReply('The battle has already ended.');
-		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You cant throw a pokeball because your not the trainer here!');
+		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You can\`t throw a pokeball because you\'re not the trainer here!');
 		// Taking the pokeball is handled after throwing it in the battle process
 		//let data = side + " pokeball " + target;
 		//room.battle.send('choose', data.replace(/\n/g, '\f'));
@@ -1307,7 +1307,7 @@ exports.commands = {
 		let u = target[0] = Users(target[0]);
 		if (!u) return this.errorReply(`User "${target[0]}" not found.`);
 		if (!['pokeball', 'greatball', 'ultraball', 'masterball'].includes(target[1])) return this.parse(`/help givepokeballs`);
-		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may give masterballs.`);
+		if (target[1] === 'masterball' && !user.can('lockdown')) return this.errorReply(`Only Administrators may give Masterballs.`);
 		target[2] = parseInt(target[2]);
 		if (isNaN(target[2]) || target[2] < 1 || target[2] > 100) return this.errorReply(`Pokeball amount must be a number between 1 and 100.`);
 		let p = Db.players.get(u.userid);
