@@ -16,14 +16,17 @@ class SGgame extends Console.Console {
 		this.session = Date.now();
 		this.nextSymbol = '\u2605';
 	}
+
 	buildCSS() {
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Building the map');
 		return WL.locationData[this.location].zones[this.zone].css;
 	}
+
 	buildMap() {
 		if (!WL.locationData[this.location] || !WL.locationData[this.location].zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Building the map');
 		return WL.locationData[this.location].zones[this.zone].html + '<!--split-->';
 	}
+
 	buildBase(addOn, data) {
 		let location = WL.locationData[this.location];
 		if (!location || !location.zones[this.zone]) throw new Error('LOCATION NOT FOUND: ' + this.location + ' (Zone: ' + this.zone + ') while: Building the base menu');
@@ -56,6 +59,7 @@ class SGgame extends Console.Console {
 		}
 		return output;
 	}
+
 	warp(location) {
 		location = location.split('|').map(x => {
 			return toId(x);
@@ -88,6 +92,7 @@ class SGgame extends Console.Console {
 			return this.update(this.buildCSS(), this.buildMap(), this.buildBase());
 		}
 	}
+
 	up() {
 		if (this.queue.length || this.queueAction) return;
 		let user = Users(this.userid);
@@ -100,6 +105,7 @@ class SGgame extends Console.Console {
 		if (!location.zones[this.zone].exits.up) return;
 		return this.warp(location.zones[this.zone].exits.up);
 	}
+
 	left() {
 		if (this.queue.length || this.queueAction) return;
 		let user = Users(this.userid);
@@ -112,6 +118,7 @@ class SGgame extends Console.Console {
 		if (!location.zones[this.zone].exits.left) return;
 		return this.warp(location.zones[this.zone].exits.left);
 	}
+
 	right() {
 		if (this.queue.length || this.queueAction) return;
 		let user = Users(this.userid);
@@ -124,6 +131,7 @@ class SGgame extends Console.Console {
 		if (!location.zones[this.zone].exits.right) return;
 		return this.warp(location.zones[this.zone].exits.right);
 	}
+
 	down() {
 		if (this.queue.length || this.queueAction) return;
 		let user = Users(this.userid);
@@ -136,6 +144,7 @@ class SGgame extends Console.Console {
 		if (!location.zones[this.zone].exits.down) return;
 		return this.warp(location.zones[this.zone].exits.down);
 	}
+
 	next(hideButton) {
 		let base = this.buildMap();
 		if (!this.queue.length) return [this.buildCSS(), base, this.buildBase()];
@@ -198,6 +207,7 @@ class SGgame extends Console.Console {
 			//return [this.buildCSS(), base, this.buildBase()];
 		}
 	}
+
 	bag(menu, item) {
 		menu = toId(menu);
 		item = toId(item);
@@ -220,6 +230,7 @@ class SGgame extends Console.Console {
 		output += '</div></div>';
 		return output;
 	}
+
 	pc(box, slot, action) {
 		if (this.curPane && this.curPane !== 'pc') return this.buildMap();
 		this.curPane = 'pc';
@@ -344,6 +355,7 @@ class SGgame extends Console.Console {
 		output += '</div></div>';
 		return output;
 	}
+
 	summary(section, pokemon, details) {
 		let output = this.buildMap();
 		let player = Db.players.get(this.userid);
@@ -549,6 +561,7 @@ class SGgame extends Console.Console {
 		}
 		return output;
 	}
+
 	battle(type, pokemon) {
 		let output = this.buildMap();
 		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
@@ -570,6 +583,7 @@ class SGgame extends Console.Console {
 		output += '</center></div>';
 		return output;
 	}
+
 	onKill() {
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
@@ -608,9 +622,11 @@ class Player {
 		this.visited[user.console.location][user.console.zone] = true;
 		// More to come...
 	}
+
 	test() {
 		return true;
 	}
+
 	nickname(name, slot) {
 		if (!this.party[slot]) return false;
 		name = name.trim();
@@ -621,6 +637,7 @@ class Player {
 		this.party[slot].name = name;
 		return true;
 	}
+
 	boxPoke(pokemon, box) {
 		if (typeof pokemon !== 'string') {
 			pokemon = Dex.packTeam(pokemon);
@@ -644,6 +661,7 @@ class Player {
 		this.pc[box - 1].push(pokemon);
 		return box;
 	}
+
 	unBoxPoke(box, slot) {
 		box = Number(box);
 		slot = Number(slot);
@@ -715,6 +733,7 @@ exports.commands = {
 			user.console.warp(Db.players.get(user.userid).location + "|" + Db.players.get(user.userid).zone);
 		}
 	},
+
 	confirmpickstarter: 'pickstarter',
 	cancelpickstarter: 'pickstarter',
 	pickstarter: function (target, room, user, connection, cmd) {
@@ -772,6 +791,7 @@ exports.commands = {
 			if (user.console.lastNextAction === 'hide') return;
 			return user.console.update(...user.console.next());
 		},
+
 		learn: function (target, room, user) {
 			if (!user.console || user.console.gameId !== 'SGgame' || !user.console.queueAction) return;
 			target = toId(target);
@@ -810,6 +830,7 @@ exports.commands = {
 				return this.parse('/sggame next');
 			}
 		},
+
 		evo: function (target, room, user) {
 			if (!user.console || user.console.gameId !== 'SGgame' || !user.console.queueAction) return;
 			target = toId(target);
@@ -889,6 +910,7 @@ exports.commands = {
 				}
 			}
 		},
+
 		bag: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queueAction) return;
@@ -1075,6 +1097,7 @@ exports.commands = {
 			}
 			return user.console.update(user.console.buildCSS(), user.console.bag(target[0], target[1]), user.console.buildBase('bag', data));
 		},
+
 		pokemon: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queueAction) return;
@@ -1132,10 +1155,12 @@ exports.commands = {
 			}
 			return user.console.update(user.console.buildCSS(), user.console.summary(target[0], target[1], detail), user.console.buildBase('pokemon', data));
 		},
+
 		pokedex: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			return this.sendReply('Not Avaliable');
 		},
+
 		pc: function (target, room, user, connection, cmd) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queueAction) return;
@@ -1185,6 +1210,7 @@ exports.commands = {
 			let base = ((target[2] === 'close' || (user.console.curPane && user.console.curPane !== 'pc')) ? user.console.buildBase() : user.console.buildBase('pc', orders));
 			return user.console.update(user.console.buildCSS(), user.console.pc(target[0], slot, target[2]), base);
 		},
+
 		nickname: function (target, room, user) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (!target) return this.parse('/help sggame nickname');
@@ -1206,9 +1232,11 @@ exports.commands = {
 			}
 		},
 		nicknamehelp: ["/sggame nickname [party slot], [new nickname] - Set a pokemon's nickname. The pokemon needs to be in your party, and party slot should be the number of the slot the pokemon is in (1-6)."],
+
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help sggame');
 		},
+
 		battle: function (target, room, user, connection) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queue.length) return;
@@ -1266,12 +1294,14 @@ exports.commands = {
 				}
 			}
 		},
+
 		building: function (target, room, user) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queue.length) return;
 			if (user.console.queueAction) return;
 		},
 	},
+
 	sggamehelp: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox(
@@ -1279,6 +1309,7 @@ exports.commands = {
 			"<a href=\"https://pastebin.com/raw/GK3fsSqS\">Check it out here!</a>"
 		);
 	},
+
 	throwpokeball: function (target, room, user) {
 		if (!user.console || user.console.gameId !== 'SGgame') return;
 		if (!room.battle || toId(room.battle.format) !== 'gen7wildpokemonalpha') return this.errorReply('You can\'t throw a pokeball here!');
@@ -1290,12 +1321,13 @@ exports.commands = {
 		if (!obj.bag.pokeballs[target]) return this.errorReply("You don't have any " + target + "'s");
 		let side = (toId(room.battle.p1.name) === toId(user) ? "p1" : "p2");
 		if (room.battle.ended) return this.errorReply('The battle has already ended.');
-		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You can\`t throw a pokeball because you\'re not the trainer here!');
+		if (toId(room.battle[side].name) !== user.userid) return this.errorReply('You can\'t throw a pokeball, because you\'re not the trainer here!');
 		// Taking the pokeball is handled after throwing it in the battle process
 		//let data = side + " pokeball " + target;
 		//room.battle.send('choose', data.replace(/\n/g, '\f'));
 		room.battle.choose(user, "pokeball " + target);
 	},
+
 	gp: 'givepokeballs',
 	givepokeballs: function (target, room, user) {
 		// Allows mods+ to give more pokeballs during the alpha
@@ -1318,6 +1350,7 @@ exports.commands = {
 		return this.sendReply(`${u.userid} has been given ${target[2]} ${target[1]}'s. They now have ${p.bag.pokeballs[target[1]]} ${target[1]}'s.`);
 	},
 	givepokeballshelp: ['/givepokeballs [user], [type], [amount] - Give a user pokeballs. Requires global @ & ~'],
+
 	exportteam: function (target, room, user) {
 		// Allow users to save their SGgame teams to teambuilder
 		let player = Db.players.get(user.userid);
