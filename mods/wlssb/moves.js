@@ -441,6 +441,7 @@ exports.BattleMovedex = {
 	},
 	// Lycanium Z
 	unserious:{
+		accuracy: true,
 		category: "Status",
 		id: "unserious",
 		isNonstandard: true,
@@ -578,6 +579,7 @@ exports.BattleMovedex = {
 	},
 	// iSteelX
 	deepsleep:{
+		accuracy: true,
 		category: "Status",
 		id: "deepsleep",
 		isNonstandard: true,
@@ -616,6 +618,7 @@ exports.BattleMovedex = {
 		},
 		id: "everlastingannoyingness",
 		isViable: true,
+		accuracy: 100,
 		isNonstandard: true,
 		name: "Everlasting Annoyingness",
 		pp: 5,
