@@ -149,7 +149,7 @@ exports.commands = {
 		} else {
 			EXP.readExp(user.userid, exp => {
 				this.sendReplyBox(
-					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
+					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Current Exp: " + exp + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
 					"<br />All rewards have a 1 time use! <br /><br />" +
 					"Level 5 unlocks a free Profile Background and Song. <br /><br />" +
 					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
