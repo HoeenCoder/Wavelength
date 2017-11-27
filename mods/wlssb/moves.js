@@ -450,6 +450,9 @@ exports.BattleMovedex = {
 		desc: "Forces the weather to hail and uses foresight.",
 		priority: 9,
 		flags: {mirror: 1, snatch: 1},
+		onPrepareHit: function (source) {
+			this.add('-anim', source, "Minimize", source);
+		},
 		onHit: function (pokemon) {
 			this.clearWeather();
 			this.setWeather('hail');
@@ -816,13 +819,16 @@ exports.BattleMovedex = {
 			if (attacker.removeVolatile(move.id)) {
 				return;
 			}
-			this.add('-prepare', attacker, move.name, defender);
+			this.add('-prepare', attacker, "Shadow Force", defender);
 			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
-				this.add('-anim', attacker, move.name, defender);
+				this.add('-anim', attacker, "Hurricane", defender);
 				return;
 			}
 			attacker.addVolatile('twoturnmove', defender);
 			return null;
+		},
+		onPrepareHit: function (target, source) {
+			this.add('-anim', source, "Hurricane", target);
 		},
 		effect: {
 			duration: 2,
