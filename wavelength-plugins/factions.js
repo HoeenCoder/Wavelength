@@ -613,8 +613,9 @@ exports.commands = {
 			atm: function (target, room, user) {
 				if (!this.runBroadcast()) return;
 				if (!target) return this.errorReply('/faction bank atm [faction]');
+				let targetId = toId(target);
 				if (!factions[toId(target)]) return this.errorReply(target + ' is not a faction.');
-				let bank = Db.factionbank.get(target, 0);
+				let bank = Db.factionbank.get(targetId, 0);
 				return this.sendReplyBox(target + ' has ' + bank + ' in their faction bank.');
 			},
 			give: function (target, room, user) {
