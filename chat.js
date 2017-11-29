@@ -260,8 +260,9 @@ class CommandContext {
 				}
 			}
 
-			if (Date.now() > (this.user.lastMessageTime + 5000)) giveExp = true;
+			let lastMessageTime = this.user.lastMessageTime; // done this way because this.canTalk(message) reassigns the message time
 			message = this.canTalk(message);
+			if (message && Date.now() > (lastMessageTime + 5000)) giveExp = true;
 		}
 
 		// Output the message

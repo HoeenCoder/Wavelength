@@ -350,16 +350,17 @@ class SSB {
 		}
 	}
 
-	addMove(move) {
+	async addMove(move, self) {
 		move = Dex.getMove(toId(move));
-		if (!move.exists) return false; //Only normal moves here.
-		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return false;
-		if (TeamValidator('gen7ou').checkLearnset(move, this.species, {
-			set: {},
-		})) return false;
-		if (this.movepool.indexOf(move.name) > -1) return false;
+		if (!move.exists) return self.errorReply('The move "' + move.name + '" does not exist.'); //Only normal moves here.
+		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return self.errorReply('You already have ' + MAX_MOVEPOOL_SIZE + ' moves.');
+		let result = await TeamValidatorAsync('gen7ou').validateTeam(Dex.packTeam([{species: this.species, ability: this.ability, moves: [move]}]));
+		if (result.substring(0, 1) === '0') return self.errorReply(this.species + ' cannot learn ' + move.name + '.');
+		if (this.movepool.indexOf(move.name) > -1) return self.errorReply(this.species + ' already knows ' + move.name + '.');
 		this.movepool.push(move.name);
-		return true;
+		writeSSB();
+		if (self.cmd !== 'moveq') self.sendReply('Added the move ' + move.name + ' to your movepool.');
+		return self.user.sendTo(self.room, '|uhtmlchange|ssb' + self.user.userid + '|' + buildMenu(self.user.userid));
 	}
 
 	removeMove(move) {
@@ -426,19 +427,26 @@ class SSB {
 		return true;
 	}
 
-	activate(user) {
-		if (!user) return false;
-		let valid = this.validate();
+	async activate(self) {
+		let valid = await this.validate(self, true);
 		if (valid.length === 0) {
 			this.active = !this.active;
+			if (this.active) {
+				self.user.sendTo(self.room, '|uhtmlchange|ssb' + self.user.userid + '|' + buildMenu(self.user.userid));
+				self.sendReply('Your pokemon was activated! Your pokemon will appear in battles once the server restarts.');
+			} else {
+				self.user.sendTo(self.room, '|uhtmlchange|ssb' + self.user.userid + '|' + buildMenu(self.user.userid));
+				self.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once the server restarts.');
+			}
 			return true;
 		}
 		this.active = false;
-		if (user.connected) user.popup(`|modal|Your SSBFFA pokemon was rejected for the following reasons:\n${valid.join('\n')}`);
+		self.user.sendTo(self.room, '|uhtmlchange|ssb' + self.user.userid + '|' + buildMenu(self.user.userid));
+		self.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once the server restarts.');
 		return false;
 	}
 
-	validate() {
+	async validate(self, quiet) {
 		let dex = Dex.mod('cssb');
 		let msg = [];
 		// Species
@@ -447,12 +455,14 @@ class SSB {
 			msg.push(`The pokemon ${this.species} does not exist.`);
 			this.setSpecies('Unown');
 			this.active = false;
+			writeSSB();
 			return msg;
 		}
 		if (BANS.pokemon.includes(pokemon.species) || BANS.tiers.includes(pokemon.tier)) {
 			msg.push((BANS.pokemon.includes(pokemon.species) ? `${pokemon.species} is banned.` : `${pokemon.species} is in ${pokemon.tier} which is banned.`));
 			this.setSpecies('Unown');
 			this.active = false;
+			writeSSB();
 			return msg;
 		}
 		// Ability
@@ -501,10 +511,10 @@ class SSB {
 					i--;
 					continue;
 				}
-				if (TeamValidator('gen7ou').checkLearnset(move, pokemon.species, {
-					set: {},
-				})) {
-					msg.push(`${pokemon.species} cannot learn ${move.name}.`);
+				let result = await TeamValidatorAsync('gen7ou').validateTeam(Dex.packTeam([{species: this.species, ability: this.ability, moves: [move]}]));
+				if (result.startsWith('0')) {
+					result = result.slice(1);
+					msg.push(result.split('\n'));
 					this.movepool.splice(i, 1);
 					i--;
 					continue;
@@ -552,7 +562,14 @@ class SSB {
 			}
 		}
 		if (edited) msg.push(`${pokemon.species}'s IVs were invalid.`);
-		if (msg.length) this.active = false;
+		if (msg.length) {
+			this.active = false;
+			if (Users(toId(this.name))) Users(toId(this.name)).popup(`Your SSBFFA pokemon was deactivated for the following reasons:\n${msg.join('\n')}`);
+			if (!quiet) self.errorReply(`Done! ${this.name}'s SSBFFA pokemon was deactivated, and its invalid parts were reset to their defaults.`);
+		} else {
+			if (!quiet) self.sendReply(`Done! ${this.name}'s SSBFFA pokemon is valid.`);
+		}
+		writeSSB();
 		return msg;
 	}
 }
@@ -650,13 +667,7 @@ exports.commands = {
 				switch (target[0]) {
 				case 'set':
 					//set a normal move
-					if (targetUser.addMove(target[1])) {
-						writeSSB();
-						if (cmd !== 'moveq') this.sendReply('Added the move ' + target[1] + ' to your movepool.');
-						return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					} else {
-						return this.errorReply('Unable to add the move ' + target[1] + '.');
-					}
+					return targetUser.addMove(target[1], this);
 					//break;
 				case 'remove':
 					//remove a move
@@ -886,18 +897,7 @@ exports.commands = {
 				writeSSB();
 				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
-			let targetUser = WL.ssb[user.userid];
-			if (targetUser.activate(user)) {
-				if (targetUser.active) {
-					writeSSB();
-					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					return this.sendReply('Your pokemon was activated! Your pokemon will appear in battles once the server restarts.');
-				} else {
-					writeSSB();
-					user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + buildMenu(user.userid));
-					return this.sendReply('Your pokemon was deactivated. Your pokemon will no longer appear in battles once the server restarts.');
-				}
-			}
+			WL.ssb[user.userid].activate(this);
 		},
 		custommoves: 'custom',
 		cmoves: 'custom',
@@ -995,22 +995,10 @@ exports.commands = {
 			//Start validation.
 			if (toId(cmd) !== 'validateall') {
 				this.sendReply('Validating ' + targetUser.name + '\'s SSBFFA pokemon...');
-				let valid = targetUser.validate();
-				if (valid.length) {
-					if (Users(toId(targetUser.name))) Users(toId(targetUser.name)).popup(`Your SSBFFA pokemon was deactivated for the following reasons:\n${valid.join('\n')}`);
-					writeSSB();
-					return this.errorReply('Done. Invalid things have been set to their defaults, and this pokemon has been deactivated.');
-				} else {
-					return this.sendReply('Done! This pokemon is valid');
-				}
+				targetUser.validate(this);
 			} else {
 				for (let key in WL.ssb) {
-					let valid = WL.ssb[key].validate();
-					if (valid.length) {
-						if (Users(toId(WL.ssb[key].name))) Users(toId(WL.ssb[key].name)).popup(`Your SSBFFA pokemon was deactivated for the following reasons:\n${valid.join('\n')}`);
-						writeSSB();
-						this.errorReply(WL.ssb[key].name + '\'s pokemon was invalid. Invalid parts have been reset and this pokemon was deactivated.');
-					}
+					WL.ssb[key].validate(this, true);
 				}
 				return this.sendReply('All SSBFFA pokemon have been validated.');
 			}

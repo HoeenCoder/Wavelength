@@ -484,6 +484,21 @@ exports.commands = {
 		if (!this.runBroadcast()) return false;
 		if (!target || target === 'help') return this.parse('/help wlssb');
 		let targetData = getMonData(toId(target));
+		if (['km', 'callie', 'krakenmare'].includes(toId(target))) return this.sendReplyBox(getMonData('callieagent1'));
+		if (toId(target) === toId('c7')) return this.sendReplyBox(getMonData('c733937123'));
+		if (['des', 'deso'].includes(toId(target))) return this.sendReplyBox(getMonData('desokoro'));
+		if (['mos', 'electricz'].includes(toId(target))) return this.sendReplyBox(getMonData('mosmero'));
+		if (toId(target) === toId('prince')) return this.sendReplyBox(getMonData('wavelengthprince'));
+		if (toId(target) === toId('hiro')) return this.sendReplyBox(getMonData('hiroz'));
+		if (['hh', 'hoeen'].includes(toId(target))) return this.sendReplyBox(getMonData('hoeenhero'));
+		if (toId(target) === toId('[]')) return this.sendReplyBox(getMonData('arrays'));
+		if (['mech', 'mechsteelix'].includes(toId(target))) return this.sendReplyBox(getMonData('isteelx'));
+		if (toId(target) === toId('cubs')) return this.sendReplyBox(getMonData('cubsfan38'));
+		if (toId(target) === toId('bunnery')) return this.sendReplyBox(getMonData('bunnery5'));
+		if (toId(target) === toId('rittz')) return this.sendReplyBox(getMonData('therittz'));
+		if (['stk', 'stabby'].includes(toId(target))) return this.sendReplyBox(getMonData('stabbythekrabby'));
+		if (['twb', 'tidal'].includes(toId(target))) return this.sendReplyBox(getMonData('tidalwavebot'));
+		if (['lyc', 'lycan', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('lycaniumz'));
 		if (!targetData) return this.errorReply("The staffmon '" + toId(target) + "' could not be found.");
 		return this.sendReplyBox(targetData);
 	},
