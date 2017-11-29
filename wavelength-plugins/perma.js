@@ -43,7 +43,7 @@ exports.commands = {
 		this.globalModlog("PERMALOCK", tarUser, " by " + user.name);
 		return this.addModCommand(tarUser.name + ' was permalocked by ' + user.name + '.');
 	},
-	permalockhelp: ['/permalock user - Permalock a user. Requires: ~'],
+	permalockhelp: ['/permalock [user] - Permanently lock a user. Requires: ~'],
 
 	unpermalock: function (target, room, user, connection, cmd) {
 		if (!this.can('lockdown')) return;
@@ -58,7 +58,7 @@ exports.commands = {
 		this.globalModlog("UNPERMALOCK", (Users(target) || target), " by " + user.name);
 		return this.addModCommand(target + ' was unpermalocked by ' + user.name + '.');
 	},
-	unpermalockhelp: ['/unpermalock user - Unpermalock a user. Requires: ~'],
+	unpermalockhelp: ['/unpermalock [user] - Undo a permanent lock. Requires: ~'],
 
 	forceofflinepermaban: 'permaban',
 	offlinepermaban: 'permaban',
@@ -93,7 +93,7 @@ exports.commands = {
 		this.globalModlog("PERMABAN", tarUser, " by " + user.name);
 		return this.addModCommand(tarUser.name + ' was permabanned by ' + user.name + '.');
 	},
-	permabanhelp: ['/permaban user - Permaban a user. Requires: ~'],
+	permabanhelp: ['/permaban [user] - Permanently ban a user. Requires: ~'],
 	unpermaban: function (target, room, user, connection, cmd) {
 		if (!this.can('lockdown')) return;
 		if (!toId(target)) return this.parse('/help unpermaban');
@@ -105,5 +105,5 @@ exports.commands = {
 		this.globalModlog("UNPERMABAN", target, " by " + user.name);
 		return this.addModCommand(target + ' was unpermabanned by ' + user.name + '.');
 	},
-	unpermabanhelp: ['/unpermaban user - Unpermaban a user. Requires: ~'],
+	unpermabanhelp: ['/unpermaban [user] - Undo a permanent ban. Requires: ~'],
 };

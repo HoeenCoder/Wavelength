@@ -352,8 +352,8 @@ class SSB {
 
 	async addMove(move, self) {
 		move = Dex.getMove(toId(move));
-		if (!move.exists) return self.errorReply('The move "' + move.name + '" does not exist.');; //Only normal moves here.
-		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return self.errorReply('You already have ' + MAX_MOVEPOOL_SIZE + ' moves.');;
+		if (!move.exists) return self.errorReply('The move "' + move.name + '" does not exist.'); //Only normal moves here.
+		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return self.errorReply('You already have ' + MAX_MOVEPOOL_SIZE + ' moves.');
 		let result = await TeamValidatorAsync('gen7ou').validateTeam(Dex.packTeam([{species: this.species, ability: this.ability, moves: [move]}]));
 		if (result.substring(0, 1) === '0') return self.errorReply(this.species + ' cannot learn ' + move.name + '.');
 		if (this.movepool.indexOf(move.name) > -1) return self.errorReply(this.species + ' already knows ' + move.name + '.');
@@ -361,7 +361,6 @@ class SSB {
 		writeSSB();
 		if (self.cmd !== 'moveq') self.sendReply('Added the move ' + move.name + ' to your movepool.');
 		return self.user.sendTo(self.room, '|uhtmlchange|ssb' + self.user.userid + '|' + buildMenu(self.user.userid));
-		return true;
 	}
 
 	removeMove(move) {
@@ -898,7 +897,7 @@ exports.commands = {
 				writeSSB();
 				return this.sendReply('Your new SSB pokemon is not active, you should edit it before activating.');
 			}
-			WL.ssb[user.userid].activate(this)
+			WL.ssb[user.userid].activate(this);
 		},
 		custommoves: 'custom',
 		cmoves: 'custom',
