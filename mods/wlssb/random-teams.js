@@ -288,18 +288,17 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%Lycanium Z': {
-				species: "Lycanroc-Midnight",
-				ability: "Contrary",
-				item: "Leftovers",
+				species: "Swinub",
+				ability: "Extreme Snow Cloak",
+				level: 1,
+				item: "Focus Sash",
 				gender: "M",
-				moves: ['Close Combat', 'Stone Edge', 'Ice Hammer'],
-				signatureMove: "FINISH THEM",
+				moves: ['Endeavor', 'Stealth Rock', 'Ice Shard'],
+				signatureMove: "Unserious",
 				evs: {
-					atk: 252,
-					def: 4,
-					hp: 252,
+					atk: 1,
 				},
-				nature: "Adamant",
+				nature: "Impish",
 			},
 			'%Arrays': {
 				species: 'Conkeldurr',
@@ -456,7 +455,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				}
 			}*/
 			let set = sets[pool[i]];
-			set.level = 100;
+			if (!set.level) set.level = 100;
 			set.name = pool[i];
 			if (!set.ivs) {
 				set.ivs = {hp:31, atk:31, def:31, spa:31, spd:31, spe:31};

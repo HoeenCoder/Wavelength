@@ -12,15 +12,18 @@ Notes: N/A.
 Rank: N/A.
 
 Lycanium Z
-(Lycanroc-Midnight)
-@ Leftovers
-EVs: 252 HP / 252 Atk / 4 Def
-Adamant Nature
-Ability: Contrary
-Moves: Close Combat, Stone Edge and Ice Hammer.
-Signature Move: FINISH THEM
-	- Rock type, Physical, 5 PP, OHKOs the target as long as it hasnt taken direct damage before the move hits. %10 chance to lower all stats by 1.
-Notes: DO NOT SETUP, or switch, or do a random move that can miss, just dont risk anything in general.
+(Swinub)
+@ Focus Sash
+EVs: None
+Impish Nature
+Level 1
+Ability: Extreme Snow Cloak
+    - Evasion is multiplied by 2 during hail.
+Innate Ability: Snow Warning
+Moves: Endeavor, Stealth Rock, Ice Shard
+Signature Move: Unserious
+	- Ice Type. Forces weather to hail, uses foresight.
+Notes: Great "sweeper" in hail
 Rank: N/A.
 
 Arrays
@@ -233,7 +236,7 @@ Ability: Death Boost
     - Simple + Also attempts to put enemy pokemon to sleep.
 Moves: Nightmare, Dark Pulse, Shadow Ball
 Signature Move: Overpower
-	- Boosts all stats by 1 stage. Puts enemy to sleep.
+	- 50% chance to raise all stats by 1 stage. Puts enemy to sleep.
 Notes: Usually can take care of most threats right away without using Overpower at all. Remember than Overpower will fail, if enemy is already asleep.
 Rank: N/A
 

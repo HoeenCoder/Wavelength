@@ -327,4 +327,21 @@ exports.BattleAbilities = {
 			this.boost({atk: -4, def: 2, spa: 1, spd: 2});
 		},
 	},
+	//Lycanium Z
+	"extremesnowcloak": {
+		desc: "If Hail is active, this Pokemon's evasiveness is multiplied by 2. This Pokemon takes no damage from Hail.",
+		shortDesc: "If Hail is active, this Pokemon's evasiveness is 2x; immunity to Hail.",
+		onImmunity: function (type, pokemon) {
+			if (type === 'hail') return false;
+		},
+		onModifyAccuracy: function (accuracy) {
+			if (typeof accuracy !== 'number') return;
+			if (this.isWeather('hail')) {
+				this.debug('Snow Cloak - decreasing accuracy');
+				return accuracy * 0.5;
+			}
+		},
+		id: "extremesnowcloak",
+		name: "Extreme Snow Cloak",
+	},
 };
