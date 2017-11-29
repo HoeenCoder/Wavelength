@@ -32,8 +32,6 @@ exports.BattleAliases = {
 	"wlssb": "[Gen 7] Super Staff Bros",
 	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
-	"sggameag": "[Gen 7] [SGGame] Anything Goes",
-	"sggamelvl100ag": "[Gen 7] [SGGame] Lvl 100 Anything Goes",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
 	// mega evos
