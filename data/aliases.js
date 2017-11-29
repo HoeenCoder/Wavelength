@@ -29,10 +29,11 @@ exports.BattleAliases = {
 
 	//SpacialGaze
 	"digimon": "[Gen 7] Digimon Showdown",
-	"sgssb": "[Gen 7] Super Staff Bros",
+	"wlssb": "[Gen 7] Super Staff Bros",
 	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
-	"rssb": "[Gen 1] Retro Super Staff Bros",
+	"sggameag": "[Gen 7] [SGGame] Anything Goes",
+	"sggamelvl100ag": "[Gen 7] [SGGame] Lvl 100 Anything Goes",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
 	// mega evos
