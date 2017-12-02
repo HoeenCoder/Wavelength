@@ -245,8 +245,9 @@ exports.WL = {
 				let iv = Math.round(Math.random() * 31);
 				if (iv !== 31 && left) {
 					iv = (Math.random() > 0.5 ? 31 : iv);
-					if (i + iv >= 6) iv = 31;
+					if (i + left >= 6) iv = 31;
 				}
+				if (iv ===  31 & left > 0) left--;
 				data += iv + (i === 5 ? "|" : ",");
 			}
 		} else {
@@ -259,7 +260,7 @@ exports.WL = {
 		} else {
 			data += "|";
 		}
-		data += lvl + "|70";
+		data += lvl + "|70"; // TODO base happiness values by species
 		data += ",,pokeball," + this.calcExp(pokemon.species, lvl) + "," + (exact && exact.ot ? exact.ot : '');
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
