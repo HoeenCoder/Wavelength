@@ -2791,9 +2791,9 @@ class Battle extends Dex.ModdedDex {
 			let hadEffect = false;
 			if (decision.item.use.healHP) {
 				let heal = 0;
-				if (typeof decision.item.use.healHP === 'string' && decision.item.use.healHP !== "true") {
+				if (typeof decision.item.use.healHP === 'string') {
 					heal = decision.target.maxhp * (Number(decision.item.use.healHP.substring(0, decision.item.use.healHP.length - 1)) * 0.01);
-				} else if (decision.item.use.healHP === "true") {
+				} else if (decision.item.use.healHP === true) {
 					heal = decision.target.maxhp - decision.target.hp;
 				} else {
 					heal = decision.item.use.healHP;
@@ -2806,7 +2806,7 @@ class Battle extends Dex.ModdedDex {
 			}
 			if (decision.item.use.healStatus) {
 				if (decision.target.status || decision.target.volatiles['confusion']) {
-					if (decision.item.use.healStatus === "true") {
+					if (decision.item.use.healStatus === true) {
 						decision.target.cureStatus();
 						decision.target.removeVolatile('confusion');
 						hadEffect = true;
