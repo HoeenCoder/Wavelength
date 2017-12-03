@@ -1004,6 +1004,52 @@ exports.commands = {
 			}
 		},
 		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set it to its default value. Requires: &, ~'],
+		
+		setcmove: function (target, room, user, connection, message) {
+			if (!this.can('roomowner')) return false;
+			if (!target) return this.parse('/help ssb setcmove');
+			let targets = target.split(',');
+			let userid = toId(targets[0].trim());
+			if (!userid) return this.parse('/help ssb setcmove');
+			let customMove = toId(targets[1]);
+			if (!customMove) return this.errorReply('Must include a move!');
+			if (!Dex.mod('cssb').getMove(customMove).exists) return this.errorReply("Move doesnt exist in the ssbffa mod!");
+			WL.ssb[userid].selfCustomMove = customMove;
+			writeSSB();
+			return this.sendReply('Move set for ' + userid + '!');
+		},
+		setcmovehelp: ['/ssb setcmove targetUser, move'],
+
+		setcability: function (target, room, user, connection, message) {
+			if (!this.can('roomowner')) return false;
+			if (!target) return this.parse('/help ssb setcability');
+			let targets = target.split(',');
+			let userid = toId(targets[0].trim());
+			if (!userid) return this.errorReply('/help ssb setcability');
+			let customAbility = toId(targets[1]);
+			if (!customAbility) return this.errorReply('/ssb giveability target, ability');
+			if (!Dex.mod('cssb').getAbility(customAbility).exists) return this.errorReply("Ability doesnt exist in the ssbffa mod!");
+			WL.ssb[userid].cAbility = customAbility;
+			writeSSB();
+			return this.sendReply('Ability set for ' + userid + '!');
+		},
+		setcabilityhelp: ['/ssb setcmove targetUser, ability'],
+
+		setcitem: function (target, room, user, connection, cmd, message) {
+			if (!this.can('roomowner')) return false;
+			if (!target) return this.parse('/help ssb setcitem');
+			let targets = target.split(',');
+			let userid = toId(targets[0].trim());
+			if (!userid) return this.errorReply('/help ssb givecitem');
+			let item = toId(targets[1]);
+			if (!item) return this.errorReply('Must include an item');
+			if (!Dex.mod('cssb').getItem(item).exists) return this.errorReply("Item doesnt exist in the ssbffa mod!");
+			WL.ssb[userid].cItem = item;
+			writeSSB();
+			return this.sendReply('Item set for ' + userid + '!');
+		},
+		setcitemhelp: ['/ssb setcitem targetUser, item'],
+		
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help ssb');
 		},
