@@ -268,7 +268,7 @@ exports.BattleMovedex = {
 	// Auction
 	magnetflare: {
 		category: "Physical",
-		basePower: 100,
+		basePower: 95,
 		id: "magnetflare",
 		isNonstandard: true,
 		name: "Magnet Flare",
@@ -686,7 +686,7 @@ exports.BattleMovedex = {
 	kittycrush: {
 		category: "Physical",
 		accuracy: 95,
-		basePower: 95,
+		basePower: 70,
 		id: "kittycrush",
 		isViable: true,
 		isNonstandard: true,
@@ -694,9 +694,9 @@ exports.BattleMovedex = {
 		pp: 5,
 		noPPBoosts: true,
 		priority: 1,
-		flags: {protect: 1, mirror: 1},
+		flags: {protect: 1, mirror: 1, contact: 1},
 		secondary: {
-			chance: 100,
+			chance: 60,
 			self: {
 				boosts: {
 					def: 1,
@@ -717,7 +717,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Bulk Up", source);
 			this.add('-anim', source, "Crush Claw", target);
 		},
-		desc: "Rock, steel and ghost types take normal damage. Boosts def and spd by 1.",
+		desc: "Rock, steel and ghost types take normal damage. 60% chance to Boost def and spd by 1.",
 		target: "normal",
 		type: "Normal",
 	},

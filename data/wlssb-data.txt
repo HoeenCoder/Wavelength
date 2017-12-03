@@ -185,8 +185,8 @@ Adamant Nature
 Ability: Stance Change
 Innate Ability: Duality: Immune to fire and water type attacks
 Moves: Swords Dance, Sacred Sword, Shadow Sneak and King's Shield.
-Signature Move: Zeo-Bash
-	- Steel Type, Physical, 90 BP and 15 PP.
+Signature Move: Magnet Flare
+	- Steel Type, Physical, 95 BP. 40% chance to burn. 24 PP
 Notes: N/A.
 Rank: N/A.
 
@@ -288,7 +288,7 @@ Ability: Feline Fury
     - Scrappy & +2 Attack on switch in.
 Moves: Topsy-Turvy, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    - Hits all types neutral, Normal Type, 95 BP, 95% accuracy, +1 Priority. Boosts def and spd by 1.
+    - Hits all types neutral, Normal Type, 70 BP, 95% accuracy, +1 Priority. 60% chance to boost def and spd by 1.
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: N/A
 
