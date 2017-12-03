@@ -996,11 +996,13 @@ class Tournament {
 
 		delete exports.tournaments[this.room.id];
 		delete this.room.game;
-		for (let i in this.players) {
-			Users(this.players[i].userid).tourBoost = false;
-			Users(this.players[i].userid).gameBoost = false;
-			WL.addExp(this.players[i].userid, this.room, 20);
-			this.players[i].destroy();
+		if (this.room.isOfficial) {
+			for (let i in this.players) {
+				Users(this.players[i].userid).tourBoost = false;
+				Users(this.players[i].userid).gameBoost = false;
+				WL.addExp(this.players[i].userid, this.room, 20);
+				this.players[i].destroy();
+			}
 		}
 	}
 }
