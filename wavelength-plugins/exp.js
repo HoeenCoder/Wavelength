@@ -216,7 +216,7 @@ exports.commands = {
 		Db.expoff.remove(targetId);
 		this.sendReply(targetId + " is no longer banned from exp");
 	},
-	expunbanhelp: ['/expunban target - allows a user to gain exp if theyy were exp banned'],
+	expunbanhelp: ['/expunban target - allows a user to gain exp if they were exp banned'],
 
 	expban: function (target, room, user) {
 		if (!this.can('roomowner')) return false;
