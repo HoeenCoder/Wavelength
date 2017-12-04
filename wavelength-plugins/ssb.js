@@ -1004,7 +1004,7 @@ exports.commands = {
 			}
 		},
 		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set it to its default value. Requires: &, ~'],
-		
+
 		setcmove: function (target, room, user, connection, message) {
 			if (!this.can('roomowner')) return false;
 			if (!target) return this.parse('/help ssb setcmove');
@@ -1049,7 +1049,7 @@ exports.commands = {
 			return this.sendReply('Item set for ' + userid + '!');
 		},
 		setcitemhelp: ['/ssb setcitem targetUser, item'],
-		
+
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help ssb');
 		},
