@@ -7,11 +7,11 @@
 function genFC() {
 	let fc = Math.floor(Math.random() * 89999999 + 10000000);
 	let FCjson = Db.fc.keys();
-	let finalFC = 'WL' + fc;
+	let finalFC = 'HAZE' + fc;
 	for (let u of FCjson) {
-		while (FCjson[u] == [finalFC]) {
+		while (FCjson[u] === [finalFC]) {
 			fc = Math.floor(Math.random() * 89999999 + 10000000);
-			finalFC = 'WL' + fc;
+			finalFC = 'HAZE' + fc;
 		}
 	}
 	return finalFC;
@@ -30,6 +30,7 @@ const FC = {
 		return this.sendReply('Your friend code has been added to the system. Give to others to add you as a friend!');
 	},
 };
+// if needed outside of this file define it with a global var like how Wavelength has WL as a var
 
 const Friend = {
 	addFriend: function (target, fc, user) {
@@ -64,7 +65,7 @@ const Friend = {
 		return this.sendReply(`You are no longer friends with ${target}.`);
 	},
 };
-
+// if needed outside of this file define it with a global var like how Wavelength has WL as a var
 exports.commands = {
 	fc: {
 		make: function (target, room, user) {
@@ -77,12 +78,8 @@ exports.commands = {
 		get: function (target, room, user) {
 			if (user.locked) this.errorReply('You can\'t give out your code while locked.');
 			let getfc = FC.getFC(user);
-			if (getfc == undefined) {
-				this.sendReply('You need to make a friend code with /fc make ');
-			}
-			else {
-				this.sendReplyBox(`Your friend code is: ${getfc}`);
-			}
+			if (getfc === undefined) this.sendReply('You need to make a friend code with /fc make ');
+			else this.sendReplyBox(`Your friend code is: ${getfc}`);
 		},
 
 		help: function (target, room, user) {
@@ -128,13 +125,9 @@ exports.commands = {
 				num.push(array[i]);
 			}
  	        if (!this.runBroadcast()) return;
-			if (array.length === 0) {
-				return this.sendReply('You have no friends.');
-			} else if (array.length === 1) {
-				return this.sendReplyBox(`You have 1 friend, named ${num}.`);
-			} else {
-				return this.sendReplyBox(`You have ${amount} friends. Their names are: ${num}.`);
-			}
+			if (array.length === 0) return this.sendReply('You have no friends.');
+			else if (array.length === 1) return this.sendReplyBox(`You have 1 friend, named ${num}.`);
+			else return this.sendReplyBox(`You have ${amount} friends. Their names are: ${num}.`);
 		},
 		help: function (target, room, user) {
 			this.sendReplyBox(
@@ -146,4 +139,4 @@ exports.commands = {
 			);
 		},
 	},
-}; 
+};
