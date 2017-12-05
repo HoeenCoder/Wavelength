@@ -102,7 +102,7 @@ exports.locations = {
 				"css": "background: url(https://i.imgur.com/qkUTywK.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
-					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a pokemon? Ok, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
+					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a Pokemon? Okay, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
 					let msg = '';
 					let starters = [
 						['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'],
