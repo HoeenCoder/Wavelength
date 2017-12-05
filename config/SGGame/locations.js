@@ -3,15 +3,15 @@
 /**
  * SGgame - Locations
  * This file has data on all the locations in SGgame.
- * 
+ *
  * Events:
  * Events that are triggered by interacting with a location, or zone.
  * onFirstEnter(game) - Triggers the first time the player enters this location or zone.
  * onTryEnter(game) - Triggers before the player enters a location, useful when theres temporary blocks.
  * onEnter(game) - Triggers whenever the player enters this location or zone.
- * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command. 
+ * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command.
  * buildingId is the id of the building, and action is the action the user is trying to take.
- * 
+ *
  */
 
 function pokemonCenter(game, id, action) {
