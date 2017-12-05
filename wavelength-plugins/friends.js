@@ -7,11 +7,11 @@
 function genFC() {
 	let fc = Math.floor(Math.random() * 89999999 + 10000000);
 	let FCjson = Db.fc.keys();
-	let finalFC = 'HAZE' + fc;
+	let finalFC = 'WL' + fc;
 	for (let u of FCjson) {
 		while (FCjson[u] === [finalFC]) {
 			fc = Math.floor(Math.random() * 89999999 + 10000000);
-			finalFC = 'HAZE' + fc;
+			finalFC = 'WL' + fc;
 		}
 	}
 	return finalFC;
@@ -30,7 +30,6 @@ const FC = {
 		return this.sendReply('Your friend code has been added to the system. Give to others to add you as a friend!');
 	},
 };
-// if needed outside of this file define it with a global var like how Wavelength has WL as a var
 
 const Friend = {
 	addFriend: function (target, fc, user) {
@@ -49,7 +48,7 @@ const Friend = {
 		}
 	},
 
-	removeFriend: function (target, user) { // define tot
+	removeFriend: function (target, user) {
 		target = toId(target);
 		if (!Db.friend.get(user).includes(target)) return this.errorReply('You are not friends with this user.');
 		let array = Db.friend.get(user);
@@ -65,7 +64,7 @@ const Friend = {
 		return this.sendReply(`You are no longer friends with ${target}.`);
 	},
 };
-// if needed outside of this file define it with a global var like how Wavelength has WL as a var
+
 exports.commands = {
 	fc: {
 		make: function (target, room, user) {
