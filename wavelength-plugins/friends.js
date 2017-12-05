@@ -146,4 +146,4 @@ exports.commands = {
 			);
 		},
 	},
-};
+}; 
