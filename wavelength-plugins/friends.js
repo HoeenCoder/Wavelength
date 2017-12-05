@@ -77,8 +77,12 @@ exports.commands = {
 		get: function (target, room, user) {
 			if (user.locked) this.errorReply('You can\'t give out your code while locked.');
 			let getfc = FC.getFC(user);
-			if (getfc === undefined) this.sendReply('You need to make a friend code with /fc make ');
-			else this.sendReplyBox(`Your friend code is: ${getfc}`);
+			if (getfc === undefined) {
+				this.sendReply('You need to make a friend code with /fc make ');
+			}
+			else {
+				this.sendReplyBox(`Your friend code is: ${getfc}`);
+			}
 		},
 
 		help: function (target, room, user) {
@@ -123,10 +127,16 @@ exports.commands = {
 			for (let i in array) {
 				num.push(array[i]);
 			}
- 	        if (!this.runBroadcast()) return;
-			if (array.length === 0) return this.sendReply('You have no friends.');
-			else if (array.length === 1) return this.sendReplyBox(`You have 1 friend, named ${num}.`);
-			else return this.sendReplyBox(`You have ${amount} friends. Their names are: ${num}.`);
+			if (!this.runBroadcast()) return;
+			if (array.length === 0) {
+				return this.sendReply('You have no friends.');
+			}
+			else if (array.length === 1) {
+				return this.sendReplyBox(`You have 1 friend, named ${num}.`);
+			}
+			else {
+				return this.sendReplyBox(`You have ${amount} friends. Their names are: ${num}.`);
+			}
 		},
 		help: function (target, room, user) {
 			this.sendReplyBox(
