@@ -3,15 +3,15 @@
 /**
  * SGgame - Locations
  * This file has data on all the locations in SGgame.
- * 
+ *
  * Events:
  * Events that are triggered by interacting with a location, or zone.
  * onFirstEnter(game) - Triggers the first time the player enters this location or zone.
  * onTryEnter(game) - Triggers before the player enters a location, useful when theres temporary blocks.
  * onEnter(game) - Triggers whenever the player enters this location or zone.
- * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command. 
+ * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command.
  * buildingId is the id of the building, and action is the action the user is trying to take.
- * 
+ *
  */
 
 function pokemonCenter(game, id, action) {
@@ -102,7 +102,7 @@ exports.locations = {
 				"css": "background: url(https://i.imgur.com/qkUTywK.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
-					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a pokemon? Ok, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
+					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a Pokemon? Okay, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
 					let msg = '';
 					let starters = [
 						['Bulbasaur', 'Chikorita', 'Treecko', 'Turtwig', 'Snivy', 'Chespin', 'Rowlet'],
@@ -119,7 +119,7 @@ exports.locations = {
 						msg += (i + 1 < starters.length ? '<br/>' : '');
 					}
 					game.queueAction = 'pickStarter';
-					game.queue.push('text|' + msg + '|hide', 'text|<b>Old Merchant</b>: Ok, you have a pokemon. So go after that thief, theres no time to waste! He went to the west (&#8592;) towards the warehouses!|callback');
+					game.queue.push('text|' + msg + '|hide', 'text|<b>Old Merchant</b>: Okay, you have a Pokemon. So go after that thief, there\'s no time to waste! He went to the west (&#8592;) towards the warehouses!|callback');
 					game.callback = function (user) {
 						//<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>
 						user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
@@ -131,8 +131,8 @@ exports.locations = {
 				"onEnter": function (game) {
 					let player = Db.players.get(game.userid);
 					if (player.bag.keyitems.recoveredgoods) {
-						game.queue.push('text|<b>Old Merchant</b>: Did you get my goods back?<br/>Yes! Those are my goods, give them back to me.', 'text|<b>Old Merchant</b>: Thanks you so much for getting these back, I thought I would never see them again.', 'text|<b>Old Merchant</b>: Hm, now what should I reward you with.<br/>It seems that ' + player.party[0].species + ' has bonded with you.');
-						game.queue.push('text|<b>Old Merchant</b>: I think that ' + player.party[0].species + ' will do well with you.<br/>And take these as well, they will come in handy if you start traveling.', 'text|You obtained 20 pokeballs!<br/>You placed the pokeballs in the Pokeballs pocket.', 'text|<b>Old Merchant</b>: So where are you off to next? Are you going to train in the hills on this island?<br/>Or maybe try going to another island?', 'text|<b>Old Merchant</b>: Its up to you! If you ever need to heal, visit the pokemon center to the north. (&#8593;) You can buy more pokeballs or medicines here.', 'text|Good luck out there!');
+						game.queue.push('text|<b>Old Merchant</b>: Did you get my goods back?<br/>Yes! Those are my goods, give them back to me.', 'text|<b>Old Merchant</b>: Thank you so much for getting these back, I thought I would never see them again.', 'text|<b>Old Merchant</b>: Hm, now what should I reward you with.<br/>It seems that ' + player.party[0].species + ' has bonded with you.');
+						game.queue.push('text|<b>Old Merchant</b>: I think that ' + player.party[0].species + ' will do well with you.<br/>And take these as well, they will come in handy if you start traveling.', 'text|You obtained 20 Pokeballs!<br/>You placed the Pokeballs in the Pokeballs pocket.', 'text|<b>Old Merchant</b>: So where are you off to next? Are you going to train in the hills on this island?<br/>Or maybe try going to another island?', 'text|<b>Old Merchant</b>: It\'s up to you! If you ever need to heal, visit the Pokemon Center to the north. (&#8593;) You can buy more Pokeballs or medicines here.', 'text|Good luck out there!');
 						delete player.bag.keyitems.recoveredgoods;
 						player.bag.pokeballs.pokeball = 20;
 						Db.players.set(game.userid, player);
@@ -178,7 +178,7 @@ exports.locations = {
 				"css": "background: url(https://i.imgur.com/Z12Bkvo.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
-					game.queue.push('text|<b>Thief</b>: No! The door to the warehouse is locked!<br/>I just hope I can get away before...', 'text|<b>Thief</b>: Yikes! I\'ve been found! Well, i\'m not going down without a fight.<br/>Bring it on!', 'callback');
+					game.queue.push('text|<b>Thief</b>: No! The door to the warehouse is locked!<br/>I just hope I can get away before...', 'text|<b>Thief</b>: Yikes! I\'ve been found! Well, I\'m not going down without a fight.<br/>Bring it on!', 'callback');
 					game.callback = function (user) {
 						if (!Users('sgserver')) WL.makeCOM();
 						Rooms.createBattle('gen7trainerbattlealpha', {
