@@ -408,7 +408,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			'+bunnery5' : {
 				species: 'Tympole',
 				ability: 'Muscles',
-				item: 'Salac Berry',
+				item: 'Petaya Berry',
 				gender: 'M',
 				moves: ['storedpower', 'cosmicpower', 'hydropump'],
 				signatureMove: 'Bunnery Hates You Seed',
