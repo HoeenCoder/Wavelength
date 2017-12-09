@@ -1009,7 +1009,7 @@ exports.commands = {
 			if (!this.can('roomowner')) return false;
 			if (!target) return this.parse('/help ssb setcmove');
 			let targets = target.split(',');
-			let userid = toId(targets[0].trim());
+			let userid = toId(targets[0]);
 			if (!userid) return this.parse('/help ssb setcmove');
 			let customMove = toId(targets[1]);
 			if (!customMove) return this.errorReply('Must include a move!');
@@ -1024,7 +1024,7 @@ exports.commands = {
 			if (!this.can('roomowner')) return false;
 			if (!target) return this.parse('/help ssb setcability');
 			let targets = target.split(',');
-			let userid = toId(targets[0].trim());
+			let userid = toId(targets[0]);
 			if (!userid) return this.errorReply('/help ssb setcability');
 			let customAbility = toId(targets[1]);
 			if (!customAbility) return this.errorReply('/ssb giveability target, ability');
@@ -1039,7 +1039,7 @@ exports.commands = {
 			if (!this.can('roomowner')) return false;
 			if (!target) return this.parse('/help ssb setcitem');
 			let targets = target.split(',');
-			let userid = toId(targets[0].trim());
+			let userid = toId(targets[0]);
 			if (!userid) return this.errorReply('/help ssb givecitem');
 			let item = toId(targets[1]);
 			if (!item) return this.errorReply('Must include an item');
