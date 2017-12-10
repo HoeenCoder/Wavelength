@@ -324,9 +324,9 @@ exports.BattleAbilities = {
 	muscles: {
 		id: "muscles",
 		name: "Muscles",
-		desc: "+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.",
+		desc: "+4 defense, +4 Special defense, -3 attack, +1.5 special attack on switch in.",
 		onStart: function (pokemon) {
-			this.boost({atk: -4, def: 2, spa: 1, spd: 2});
+			this.boost({atk: -4, def: 4, spa: 1, spd: 4});
 		},
 	},
 	//Lycanium Z
