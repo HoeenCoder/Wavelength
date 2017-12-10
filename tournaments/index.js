@@ -992,6 +992,13 @@ class Tournament {
 				});
 				this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(runnerUp) + "</font> has won " + "<font color='" + color + "'>" + secondMoney + "</font>" + (firstMoney === 1 ? global.currencyName : global.currencyPlural) + " for winning the tournament!</b>");
 			}
+
+			if (WL.getFaction(winner)) {
+				let factionName = WL.getFaction(winner);
+				let factionId = toId(factionName);
+				Db.factionbank.set(factionId, Db.factionbank.get(factionId, 0) + 10);
+				this.room.addRaw(`<strong>Congratulations to ${factionName}! Your faction has gained 10 points!</strong>`);
+			}
 		}
 
 		delete exports.tournaments[this.room.id];
