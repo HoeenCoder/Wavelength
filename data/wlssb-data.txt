@@ -160,7 +160,7 @@ Timid Nature
 Ability: Protean
 Moves: Energy Ball, Oblivion Wing and Shadow Ball.
 Signature Move: Mewtation
-	- Dark Type, Special, 90 BP, 10 PP and transforms user into a Dark Type.
+	- Dark Type, Status, Badly poisons the foe and boosts evasion. 16PP.
 Notes: N/A.
 Rank: N/A.
 
@@ -340,7 +340,7 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.
+    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
     -Leech Seed + Stored Power & Cosmic Power now have +1 Priority.
