@@ -307,12 +307,14 @@ exports.BattleAbilities = {
 		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
 		onModifyAtk: function (atk, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
 		},
 		onModifySpe: function (spe, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
