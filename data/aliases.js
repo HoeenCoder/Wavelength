@@ -29,10 +29,9 @@ exports.BattleAliases = {
 
 	//SpacialGaze
 	"digimon": "[Gen 7] Digimon Showdown",
-	"sgssb": "[Gen 7] Super Staff Bros",
+	"wlssb": "[Gen 7] Super Staff Bros",
 	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
-	"rssb": "[Gen 1] Retro Super Staff Bros",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
 	// mega evos
@@ -275,9 +274,11 @@ exports.BattleAliases = {
 	"lycanrocd": "Lycanroc-Dusk",
 	"necrozmadm": "Necrozma-Dusk-Mane",
 	"necrozmadusk": "Necrozma-Dusk-Mane",
+	"duskmane": "Necrozma-Dusk-Mane",
 	"duskmanenecrozma": "Necrozma-Dusk-Mane",
 	"necrozmadw": "Necrozma-Dawn-Wings",
 	"necrozmadawn": "Necrozma-Dawn-Wings",
+	"dawnwings": "Necrozma-Dawn-Wings",
 	"dawnwingsnecrozma": "Necrozma-Dawn-Wings",
 	"necrozmau": "Necrozma-Ultra",
 	"ultranecrozma": "Necrozma-Ultra",
@@ -334,6 +335,34 @@ exports.BattleAliases = {
 
 	// event formes
 	"rockruffdusk": "Rockruff",
+
+	// totem formes
+	"raticatet": "Raticate-Alola-Totem",
+	"totemalolanraticate": "Raticate-Alola-Totem",
+	"totemraticate": "Raticate-Alola-Totem",
+	"totemraticatea": "Raticate-Alola-Totem",
+	"totemraticatealola": "Raticate-Alola-Totem",
+	"marowakt": "Marowak-Alola-Totem",
+	"totemalolanmarowak": "Marowak-Alola-Totem",
+	"totemmarowak": "Marowak-Alola-Totem",
+	"totemmarowaka": "Marowak-Alola-Totem",
+	"totemmarowakalola": "Marowak-Alola-Totem",
+	"gumshoost": "Gumshoos-Totem",
+	"totemgumshoos": "Gumshoos-Totem",
+	"totemvikavolt": "Vikavolt-Totem",
+	"vikavoltt": "Vikavolt-Totem",
+	"ribombeet": "Ribombee-Totem",
+	"totemribombee": "Ribombee-Totem",
+	"araquanidt": "Araquanid-Totem",
+	"totemaraquanid": "Araquanid-Totem",
+	"lurantist": "Lurantis-Totem",
+	"totemlurantis": "Lurantis-Totem",
+	"salazzlet": "Salazzle-Totem",
+	"totemsalazzle": "Salazzle-Totem",
+	"mimikyut": "Mimikyu-Totem",
+	"totemmimikyu": "Mimikyu-Totem",
+	"kommoot": "Kommo-o-Totem",
+	"totemkommoo": "Kommo-o-Totem",
 
 	// cosmetic formes
 	"burmygrass": "Burmy",
@@ -515,6 +544,7 @@ exports.BattleAliases = {
 	"bdrill": "Beedrill",
 	"bee": "Beedrill",
 	"birdjesus": "Pidgeot",
+	"blace": "Blacephalon",
 	"bliss": "Blissey",
 	"bulu": "Tapu Bulu",
 	"camel": "Camerupt",
@@ -567,7 +597,7 @@ exports.BattleAliases = {
 	"landot": "Landorus-Therian",
 	"lele": "Tapu Lele",
 	"linda": "Fletchinder",
-	"luke":  "Lucario",
+	"luke": "Lucario",
 	"lurk": "Golurk",
 	"mage": "Magearna",
 	"mamo": "Mamoswine",
@@ -575,6 +605,7 @@ exports.BattleAliases = {
 	"mence": "Salamence",
 	"milo": "Milotic",
 	"morfentshusbando": "Gengar",
+	"naga": "Naganadel",
 	"nape": "Infernape",
 	"nebby": "Cosmog",
 	"obama": "Abomasnow",
@@ -623,6 +654,7 @@ exports.BattleAliases = {
 	"zard": "Charizard",
 	"zong": "Bronzong",
 	"zor": "Scizor",
+	"zyg": "Zygarde",
 
 	// ultra beasts
 	"ub01": "Nihilego",

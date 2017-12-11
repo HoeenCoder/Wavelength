@@ -490,7 +490,7 @@ exports.commands = {
 				}
 				return {name: name, points: points};
 			});
-			keys.slice(0, 500).sort(function (a, b) { return b.points - a.points; });
+			keys = keys.slice(0, 500).sort(function (a, b) { return b.points - a.points; });
 			return this.sendReplyBox(rankLadder('PSGO Card Ladder', 'Points', keys, 'points'));
 		},
 		ladderhelp: ['/psgo ladder - show the PSGO card point ladder.'],

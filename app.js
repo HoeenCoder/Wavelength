@@ -101,7 +101,7 @@ global.toId = Dex.getId;
 
 global.LoginServer = require('./loginserver');
 
-global.Ladders = require(Config.remoteladder ? './ladders-remote' : './ladders');
+global.Ladders = require('./ladders');
 
 global.Users = require('./users');
 

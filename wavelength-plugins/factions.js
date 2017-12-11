@@ -327,7 +327,7 @@ exports.commands = {
 				},
 			};
 			write();
-			Monitor.adminlog('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)');
+			Monitor.adminlog('Faction ' + name + ' was just created by ' + user.name + '! If you wish to approve this faction please use /faction approve (name)');
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
@@ -614,7 +614,7 @@ exports.commands = {
 				if (!this.runBroadcast()) return;
 				if (!target) return this.errorReply('/faction bank atm [faction]');
 				if (!factions[toId(target)]) return this.errorReply(target + ' is not a faction.');
-				let bank = Db.factionbank.get(target, 0);
+				let bank = Db.factionbank.get(toId(target), 0);
 				return this.sendReplyBox(target + ' has ' + bank + ' in their faction bank.');
 			},
 			give: function (target, room, user) {
@@ -737,6 +737,7 @@ exports.commands = {
 			for (let faction in factions) {
 				if (!factions[faction].approved) {
 					output += '<tr>';
+					output += '<td>' + Chat.escapeHTML(factions[faction].ranks['owner'].users) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].name) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].desc) + '</td>';
 					output += '<td><button name="send" value="/faction approve ' + faction + '">Approve ' + factions[faction].name + '</button></td>';

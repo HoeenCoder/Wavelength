@@ -79,6 +79,8 @@ class BasicRoom {
 		/** @type {boolean | 'hidden' | 'voice'} */
 		this.isPrivate = false;
 		this.isPersonal = false;
+		/** @type {string | boolean} */
+		this.isHelp = false;
 		this.isOfficial = false;
 		this.reportJoins = !!Config.reportjoins;
 		this.logTimes = false;
@@ -632,7 +634,7 @@ class GlobalRoom extends BasicRoom {
 	 */
 	getRooms(user) {
 		/** @type {any} */
-		let roomsData = {official:[], pspl:[], chat:[], userCount: this.userCount, battleCount: this.battleCount};
+		let roomsData = {official: [], pspl: [], chat: [], userCount: this.userCount, battleCount: this.battleCount};
 		for (const room of this.chatRooms) {
 			if (!room) continue;
 			if (room.isPrivate && !(room.isPrivate === 'voice' && user.group !== ' ')) continue;
@@ -1436,7 +1438,7 @@ class ChatRoom extends BasicRoom {
 		this.lastUpdate = this.log.length;
 
 		// Set up expire timer to clean up inactive personal rooms.
-		if (this.isPersonal) {
+		if ((this.isPersonal && !this.isHelp) || (this.isHelp && this.isHelp !== 'open')) {
 			if (this.expireTimer) clearTimeout(this.expireTimer);
 			this.expireTimer = setTimeout(() => this.tryExpire(), TIMEOUT_INACTIVE_DEALLOCATE);
 		}
@@ -1679,8 +1681,8 @@ let Rooms = Object.assign(getRoom, {
 		if (p1 === p2) throw new Error(`Players can't battle themselves`);
 		if (!p1) throw new Error(`p1 required`);
 		if (!p2) throw new Error(`p2 required`);
-		Ladders.matchmaker.cancelSearch(p1);
-		Ladders.matchmaker.cancelSearch(p2);
+		Ladders.cancelSearches(p1);
+		Ladders.cancelSearches(p2);
 
 		if (Rooms.global.lockdown === true) {
 			p1.popup("The server is restarting. Battles will be available again in a few minutes.");
@@ -1689,8 +1691,6 @@ let Rooms = Object.assign(getRoom, {
 		}
 
 		const roomid = Rooms.global.prepBattleRoom(formatid);
-		const format = Dex.getFormat(formatid);
-		formatid = format.id;
 		options.format = formatid;
 		// options.rated is a number representing the lower player rating, for searching purposes
 		// options.rated < 0 or falsy means "unrated", and will be converted to 0 here

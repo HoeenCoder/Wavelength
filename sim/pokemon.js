@@ -56,13 +56,11 @@ class Pokemon {
 		this.name = set.name.substr(0, 20);
 		this.speciesid = toId(this.species);
 		this.template = this.baseTemplate;
-		this.moves = [];
-		this.baseMoves = this.moves;
 		this.movepp = {};
 		/**@type {MoveSlot[]} */
-		this.moveset = [];
+		this.moveSlots = [];
 		/**@type {MoveSlot[]} */
-		this.baseMoveset = [];
+		this.baseMoveSlots = [];
 		/**@type {AnyObject} */
 		// @ts-ignore - null used for this.formeChange(this.baseTemplate)
 		this.baseStats = null;
@@ -80,15 +78,25 @@ class Pokemon {
 		this.status = '';
 		this.position = 0;
 
+		/**
+		 * If the switch is called by an effect with a special switch
+		 * message, like U-turn or Baton Pass, this will be the fullname of
+		 * the calling effect.
+		 * @type {boolean | string}
+		 */
 		this.switchFlag = false;
 		this.forceSwitchFlag = false;
-		this.switchCopyFlag = '';
+		this.switchCopyFlag = false;
 		/**@type {?number} */
 		this.draggedIn = null;
 
 		this.lastMove = '';
 		/**@type {string | boolean} */
 		this.moveThisTurn = '';
+
+		// For Stomping Tantrum
+		this.moveLastTurnResult = undefined;
+		this.moveThisTurnResult = undefined;
 
 		this.lastDamage = 0;
 		this.lastAttackedBy = null;
@@ -107,7 +115,7 @@ class Pokemon {
 		set.level = this.battle.clampIntRange(set.forcedLevel || set.level || 100, 1, 9999);
 		this.level = set.level;
 
-		let genders = {M:'M', F:'F', N:'N'};
+		let genders = {M: 'M', F: 'F', N: 'N'};
 		this.gender = genders[set.gender] || this.template.gender || (Math.random() * 2 < 1 ? 'M' : 'F');
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
@@ -149,7 +157,7 @@ class Pokemon {
 					if (!set.hpType) set.hpType = move.type;
 					move = this.battle.getMove('hiddenpower');
 				}
-				this.baseMoveset.push({
+				this.baseMoveSlots.push({
 					move: move.name,
 					id: move.id,
 					pp: ((move.noPPBoosts || move.isZ) ? move.pp : move.pp * 8 / 5),
@@ -159,7 +167,6 @@ class Pokemon {
 					disabledSource: '',
 					used: false,
 				});
-				this.moves.push(move.id);
 			}
 		}
 
@@ -202,11 +209,11 @@ class Pokemon {
 
 		/**@type {{[k: string]: number}} */
 		this.boosts = {atk: 0, def: 0, spa: 0, spd: 0, spe: 0, accuracy: 0, evasion: 0};
-		this.stats = {atk:0, def:0, spa:0, spd:0, spe:0};
+		this.stats = {atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 
 		// This is used in gen 1 only, here to avoid code repetition.
 		// Only declared if gen 1 to avoid declaring an object we aren't going to need.
-		if (this.battle.gen === 1) this.modifiedStats = {atk:0, def:0, spa:0, spd:0, spe:0};
+		if (this.battle.gen === 1) this.modifiedStats = {atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 
 		this.isStale = 0;
 		this.isStaleCon = 0;
@@ -227,6 +234,12 @@ class Pokemon {
 
 		this.staleWarned = false;
 	}
+	get moves() {
+		return this.moveSlots.map(moveSlot => moveSlot.id);
+	}
+	get baseMoves() {
+		return this.baseMoveSlots.map(moveSlot => moveSlot.id);
+	}
 
 	toString() {
 		let fullname = this.fullname;
@@ -246,7 +259,7 @@ class Pokemon {
 	}
 
 	updateSpeed() {
-		this.speed = this.getDecisionSpeed();
+		this.speed = this.getActionSpeed();
 	}
 
 	/**
@@ -337,7 +350,7 @@ class Pokemon {
 
 		// stat modifier effects
 		if (!unmodified) {
-			let statTable = {atk:'Atk', def:'Def', spa:'SpA', spd:'SpD', spe:'Spe'};
+			let statTable = {atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe'};
 			stat = this.battle.runEvent('Modify' + statTable[statName], this, null, null, stat);
 		}
 
@@ -349,7 +362,7 @@ class Pokemon {
 		return stat;
 	}
 
-	getDecisionSpeed() {
+	getActionSpeed() {
 		let speed = this.getStat('spe', false, false);
 		if (speed > 10000) speed = 10000;
 		if (this.battle.getPseudoWeather('trickroom')) {
@@ -370,10 +383,9 @@ class Pokemon {
 	 */
 	getMoveData(move) {
 		move = this.battle.getMove(move);
-		for (let i = 0; i < this.moveset.length; i++) {
-			let moveData = this.moveset[i];
-			if (moveData.id === move.id) {
-				return moveData;
+		for (const moveSlot of this.moveSlots) {
+			if (moveSlot.id === move.id) {
+				return moveSlot;
 			}
 		}
 		return null;
@@ -456,7 +468,7 @@ class Pokemon {
 	}
 
 	ignoringAbility() {
-		return !!((this.battle.gen >= 5 && !this.isActive) || (this.volatiles['gastroacid'] && !['comatose', 'multitype', 'schooling', 'stancechange'].includes(this.ability)));
+		return !!((this.battle.gen >= 5 && !this.isActive) || (this.volatiles['gastroacid'] && !['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(this.ability)));
 	}
 
 	ignoringItem() {
@@ -517,14 +529,17 @@ class Pokemon {
 		};
 	}
 
+	/**
+	 * @return {string | null}
+	 */
 	getLockedMove() {
 		let lockedMove = this.battle.runEvent('LockMove', this);
-		if (lockedMove === true) lockedMove = false;
+		if (lockedMove === true) lockedMove = null;
 		return lockedMove;
 	}
 
 	/**
-	 * @param {string} [lockedMove]
+	 * @param {string?} [lockedMove]
 	 * @param {boolean} [restrictData]
 	 */
 	getMoves(lockedMove, restrictData) {
@@ -537,8 +552,8 @@ class Pokemon {
 					id: 'recharge',
 				}];
 			}
-			for (let i = 0; i < this.moveset.length; i++) {
-				let moveEntry = this.moveset[i];
+			for (let i = 0; i < this.moveSlots.length; i++) {
+				let moveEntry = this.moveSlots[i];
 				if (moveEntry.id !== lockedMove) continue;
 				return [{
 					move: moveEntry.move,
@@ -553,8 +568,8 @@ class Pokemon {
 		}
 		let moves = [];
 		let hasValidMove = false;
-		for (let i = 0; i < this.moveset.length; i++) {
-			let moveEntry = this.moveset[i];
+		for (let i = 0; i < this.moveSlots.length; i++) {
+			let moveEntry = this.moveSlots[i];
 
 			let moveName = moveEntry.move;
 			if (moveEntry.id === 'hiddenpower') {
@@ -733,18 +748,17 @@ class Pokemon {
 		for (let statName in this.stats) {
 			this.stats[statName] = pokemon.stats[statName];
 		}
-		this.moveset = [];
-		this.moves = [];
+		this.moveSlots = [];
 		this.set.ivs = (this.battle.gen >= 5 ? this.set.ivs : pokemon.set.ivs);
 		this.hpType = (this.battle.gen >= 5 ? this.hpType : pokemon.hpType);
 		this.hpPower = (this.battle.gen >= 5 ? this.hpPower : pokemon.hpPower);
-		for (let i = 0; i < pokemon.moveset.length; i++) {
-			let moveData = pokemon.moveset[i];
+		for (let i = 0; i < pokemon.moveSlots.length; i++) {
+			let moveData = pokemon.moveSlots[i];
 			let moveName = moveData.move;
 			if (moveData.id === 'hiddenpower') {
 				moveName = 'Hidden Power ' + this.hpType;
 			}
-			this.moveset.push({
+			this.moveSlots.push({
 				move: moveName,
 				id: moveData.id,
 				pp: moveData.maxpp === 1 ? 1 : 5,
@@ -834,7 +848,7 @@ class Pokemon {
 		return true;
 	}
 
-	clearVolatile() {
+	clearVolatile(includeSwitchFlags = true) {
 		this.boosts = {
 			atk: 0,
 			def: 0,
@@ -847,13 +861,12 @@ class Pokemon {
 
 		if (this.battle.gen === 1 && this.baseMoves.includes('mimic') && !this.transformed) {
 			let moveslot = this.baseMoves.indexOf('mimic');
-			let mimicPP = this.moveset[moveslot] ? this.moveset[moveslot].pp : 16;
-			this.moveset = this.baseMoveset.slice();
-			this.moveset[moveslot].pp = mimicPP;
+			let mimicPP = this.moveSlots[moveslot] ? this.moveSlots[moveslot].pp : 16;
+			this.moveSlots = this.baseMoveSlots.slice();
+			this.moveSlots[moveslot].pp = mimicPP;
 		} else {
-			this.moveset = this.baseMoveset.slice();
+			this.moveSlots = this.baseMoveSlots.slice();
 		}
-		this.moves = this.moveset.map(move => toId(move.move));
 
 		this.transformed = false;
 		this.ability = this.baseAbility;
@@ -866,8 +879,10 @@ class Pokemon {
 			}
 		}
 		this.volatiles = {};
-		this.switchFlag = false;
-		this.forceSwitchFlag = false;
+		if (includeSwitchFlags) {
+			this.switchFlag = false;
+			this.forceSwitchFlag = false;
+		}
 
 		this.lastMove = '';
 		this.moveThisTurn = '';
@@ -955,8 +970,8 @@ class Pokemon {
 	hasMove(moveid) {
 		moveid = toId(moveid);
 		if (moveid.substr(0, 11) === 'hiddenpower') moveid = 'hiddenpower';
-		for (let i = 0; i < this.moveset.length; i++) {
-			if (moveid === this.battle.getMove(this.moveset[i].move).id) {
+		for (const moveSlot of this.moveSlots) {
+			if (moveid === moveSlot.id) {
 				return moveid;
 			}
 		}
@@ -974,10 +989,10 @@ class Pokemon {
 		}
 		moveid = toId(moveid);
 
-		for (let move of this.moveset) {
-			if (move.id === moveid && move.disabled !== true) {
-				move.disabled = (isHidden || true);
-				move.disabledSource = (sourceEffect ? sourceEffect.fullname : '');
+		for (let moveSlot of this.moveSlots) {
+			if (moveSlot.id === moveid && moveSlot.disabled !== true) {
+				moveSlot.disabled = (isHidden || true);
+				moveSlot.disabledSource = (sourceEffect ? sourceEffect.fullname : '');
 				break;
 			}
 		}
@@ -1035,11 +1050,10 @@ class Pokemon {
 	 * @param {boolean} silent
 	 */
 	cureStatus(silent) {
-		if (!this.hp) return false;
-		if (this.status) {
-			this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
-			this.setStatus('');
-		}
+		if (!this.hp || !this.status) return false;
+		this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
+		this.setStatus('');
+		return true;
 	}
 
 	/**
@@ -1269,8 +1283,8 @@ class Pokemon {
 			return false;
 		}
 		if (!effect || effect.id !== 'transform') {
-			if (['illusion', 'multitype', 'stancechange'].includes(ability.id)) return false;
-			if (['multitype', 'stancechange'].includes(oldAbility)) return false;
+			if (['illusion', 'battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(ability.id)) return false;
+			if (['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(oldAbility)) return false;
 		}
 		this.battle.singleEvent('End', this.battle.getAbility(oldAbility), this.abilityData, this, source, effect);
 		if (!effect && this.battle.effect && this.battle.effect.effectType === 'Move') {
@@ -1329,7 +1343,11 @@ class Pokemon {
 			if (!status.onRestart) return false;
 			return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
 		}
-		if (!this.runStatusImmunity(status.id)) return false;
+		if (!this.runStatusImmunity(status.id)) {
+			this.battle.debug('immune to volatile status');
+			if (sourceEffect && sourceEffect.status) this.battle.add('-immune', this, '[msg]');
+			return false;
+		}
 		result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
 		if (!result) {
 			this.battle.debug('add volatile [' + status.id + '] interrupted');

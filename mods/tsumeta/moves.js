@@ -18,6 +18,8 @@ exports.BattleMovedex = {
 			protect: 1,
 			mirror: 1,
 		},
+		onTry: function (attacker, defender, move) {
+		}, // removes charge turn
 		desc: "Has a 10% chance to lower the foes special defense by 1.",
 		shortDesc: "10% chance to lower foes spd by 1.",
 		secondary: {

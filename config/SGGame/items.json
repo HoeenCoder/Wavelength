@@ -264,7 +264,7 @@
         "slot": "medicine",
         "use": {
             "boostEv": "def",
-            "boostEvAmmount": 10,
+            "boostEvAmount": 10,
             "noBattle": true
         }
     },
@@ -274,7 +274,7 @@
         "slot": "medicine",
         "use": {
             "boostEv": "atk",
-            "boosEvAmount": 10,
+            "boostEvAmount": 10,
             "noBattle": true
         }
     },

@@ -31,8 +31,8 @@ exports.WL = {
 				if (battle[side].active[0].volatiles['mustrecharge'] || battle[side].active[0].volatiles['lockedmove'] || battle[side].active[0].volatiles['bide'] || battle[side].active[0].volatiles['twoturnmove'] || battle[side].active[0].volatiles['rollout'] || battle[side].active[0].volatiles['iceball'] || battle[side].active[0].volatiles['uproar']) return battle[side].choose('default');
 				let moves = battle[side].pokemon[0].moves.slice(0);
 				let best = {slot: 0, effectiveness: -3, noPP: 0};
-				for (let j = 0; j < battle[side].pokemon[0].baseMoveset.length; j++) {
-					if (battle[side].pokemon[0].baseMoveset[j].pp <= 0) best.noPP++;
+				for (let j = 0; j < battle[side].pokemon[0].baseMoveSlots.length; j++) {
+					if (battle[side].pokemon[0].baseMoveSlots[j].pp <= 0) best.noPP++;
 				}
 				if (best.noPP === moves.length) {
 					// Struggle
