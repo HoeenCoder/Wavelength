@@ -139,9 +139,9 @@ exports.BattleScripts = {
 					// Duration reset thus partially trapped at 2 always.
 					targetVolatile.duration = 2;
 					// We get the move position for the PP change.
-					const moveData = pokemon.moveset.find(moveData => moveData.id === move.id);
-					if (moveData && moveData.pp === 0) {
-						moveData.pp = 63;
+					const moveSlot = pokemon.moveSlots.find(moveSlot => moveSlot.id === move.id);
+					if (moveSlot && moveSlot.pp === 0) {
+						moveSlot.pp = 63;
 						pokemon.isStale = 2;
 						pokemon.isStaleSource = 'ppoverflow';
 					}
@@ -215,7 +215,7 @@ exports.BattleScripts = {
 		// This only happens on moves that don't deal damage but call GetDamageVarsForPlayerAttack (disassembly).
 		if (!damage && (move.category !== 'Status' || (move.category === 'Status' && !['psn', 'tox', 'par'].includes(move.status))) &&
 		!['conversion', 'haze', 'mist', 'focusenergy', 'confuseray', 'supersonic', 'transform', 'lightscreen', 'reflect', 'substitute', 'mimic', 'leechseed', 'splash', 'softboiled', 'recover', 'rest'].includes(move.id)) {
-			pokemon.battle.lastDamage = 0;
+			this.lastDamage = 0;
 		}
 
 		// Go ahead with results of the used move.
@@ -285,6 +285,7 @@ exports.BattleScripts = {
 					accuracy *= boostTable[-target.boosts.evasion];
 				}
 			}
+			accuracy = Math.min(accuracy, 255);
 		}
 		accuracy = this.runEvent('Accuracy', target, pokemon, move, accuracy);
 		// Moves that target the user do not suffer from the 1/256 miss chance.
@@ -652,7 +653,7 @@ exports.BattleScripts = {
 		if (!['recoil', 'drain'].includes(effect.id) && effect.effectType !== 'Status') {
 			// FIXME: The stored damage should be calculated ignoring Substitute.
 			// https://github.com/Zarel/Pokemon-Showdown/issues/2598
-			target.battle.lastDamage = damage;
+			this.lastDamage = damage;
 		}
 		damage = target.damage(damage, source, effect);
 		if (source) source.lastDamage = damage;

@@ -166,9 +166,9 @@ exports.BattleMovedex = {
 				return this.random(3, 7);
 			},
 			onStart: function (target) {
-				let noEncore = {encore:1, metronome:1, mimic:1, mirrormove:1, sketch:1, sleeptalk:1, struggle:1, transform:1};
+				let noEncore = ['encore', 'metronome', 'mimic', 'mirrormove', 'sketch', 'sleeptalk', 'struggle', 'transform'];
 				let moveIndex = target.moves.indexOf(target.lastMove);
-				if (!target.lastMove || noEncore[target.lastMove] || (target.moveset[moveIndex] && target.moveset[moveIndex].pp <= 0)) {
+				if (!target.lastMove || noEncore.includes(target.lastMove) || (target.moveSlots[moveIndex] && target.moveSlots[moveIndex].pp <= 0)) {
 					// it failed
 					this.add('-fail', target);
 					delete target.volatiles['encore'];
@@ -180,12 +180,12 @@ exports.BattleMovedex = {
 					this.effectData.duration++;
 				}
 			},
-			onOverrideDecision: function (pokemon) {
+			onOverrideAction: function (pokemon) {
 				return this.effectData.move;
 			},
 			onResidualOrder: 13,
 			onResidual: function (target) {
-				if (target.moves.indexOf(target.lastMove) >= 0 && target.moveset[target.moves.indexOf(target.lastMove)].pp <= 0) {
+				if (target.moves.indexOf(target.lastMove) >= 0 && target.moveSlots[target.moves.indexOf(target.lastMove)].pp <= 0) {
 					// early termination if you run out of PP
 					delete target.volatiles.encore;
 					this.add('-end', target, 'Encore');
@@ -198,9 +198,9 @@ exports.BattleMovedex = {
 				if (!this.effectData.move || !pokemon.hasMove(this.effectData.move)) {
 					return;
 				}
-				for (let i = 0; i < pokemon.moveset.length; i++) {
-					if (pokemon.moveset[i].id !== this.effectData.move) {
-						pokemon.disableMove(pokemon.moveset[i].id);
+				for (const moveSlot of pokemon.moveSlots) {
+					if (moveSlot.id !== this.effectData.move) {
+						pokemon.disableMove(moveSlot.id);
 					}
 				}
 			},
@@ -340,7 +340,7 @@ exports.BattleMovedex = {
 	},
 	metronome: {
 		inherit: true,
-		noMetronome: {counter:1, destinybond:1, detect:1, endure:1, metronome:1, mimic:1, mirrorcoat:1, protect:1, sketch:1, sleeptalk:1, struggle:1, thief:1},
+		noMetronome: ['counter', 'destinybond', 'detect', 'endure', 'metronome', 'mimic', 'mirrorcoat', 'protect', 'sketch', 'sleeptalk', 'struggle', 'thief'],
 		noSketch: true,
 	},
 	mimic: {
@@ -363,12 +363,13 @@ exports.BattleMovedex = {
 	mirrormove: {
 		inherit: true,
 		onHit: function (pokemon) {
-			let noMirror = {metronome: 1, mimic: 1, mirrormove: 1, sketch: 1, sleeptalk: 1, transform: 1};
-			let foe = pokemon.side.foe.active[0];
-			if (!foe || !foe.lastMove || (!pokemon.activeTurns && !foe.moveThisTurn) || noMirror[foe.lastMove] || pokemon.moves.indexOf(foe.lastMove) >= 0) {
+			let noMirror = ['metronome', 'mimic', 'mirrormove', 'sketch', 'sleeptalk', 'transform'];
+			const target = pokemon.side.foe.active[0];
+			const lastMove = target && target.lastMove;
+			if (!lastMove || (!pokemon.activeTurns && !target.moveThisTurn) || noMirror.includes(lastMove) || pokemon.moves.includes(lastMove)) {
 				return false;
 			}
-			this.useMove(foe.lastMove, pokemon);
+			this.useMove(lastMove, pokemon);
 		},
 		noSketch: true,
 	},
@@ -552,13 +553,11 @@ exports.BattleMovedex = {
 	sleeptalk: {
 		inherit: true,
 		onHit: function (pokemon) {
+			let NoSleepTalk = ['bide', 'sleeptalk'];
 			let moves = [];
-			for (let i = 0; i < pokemon.moveset.length; i++) {
-				let move = pokemon.moveset[i].id;
-				let NoSleepTalk = {
-					bide:1, sleeptalk:1,
-				};
-				if (move && !NoSleepTalk[move] && !this.getMove(move).flags['charge']) {
+			for (const moveSlot of pokemon.moveSlots) {
+				let move = moveSlot.id;
+				if (move && !NoSleepTalk.includes(move) && !this.getMove(move).flags['charge']) {
 					moves.push(move);
 				}
 			}
@@ -620,14 +619,12 @@ exports.BattleMovedex = {
 					return null;
 				}
 				if (move.category === 'Status') {
-					let SubBlocked = {
-						leechseed:1, lockon:1, mindreader:1, nightmare:1, painsplit:1, sketch:1,
-					};
+					let SubBlocked = ['leechseed', 'lockon', 'mindreader', 'nightmare', 'painsplit', 'sketch'];
 					if (move.id === 'swagger') {
 						// this is safe, move is a copy
 						delete move.volatileStatus;
 					}
-					if (move.status || (move.boosts && move.id !== 'swagger') || move.volatileStatus === 'confusion' || SubBlocked[move.id]) {
+					if (move.status || (move.boosts && move.id !== 'swagger') || move.volatileStatus === 'confusion' || SubBlocked.includes(move.id)) {
 						this.add('-activate', target, 'Substitute', '[block] ' + move.name);
 						return null;
 					}

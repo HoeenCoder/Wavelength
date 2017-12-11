@@ -407,15 +407,6 @@ exports.commands = {
 		user.resetName();
 	},
 
-	requesthelp: 'report',
-	report: function (target, room, user) {
-		if (room.id === 'help') {
-			this.sendReply("Ask one of the Moderators (@) in the Help room.");
-		} else {
-			this.parse('/join help');
-		}
-	},
-
 	r: 'reply',
 	reply: function (target, room, user) {
 		if (!target) return this.parse('/help reply');
@@ -1228,7 +1219,7 @@ exports.commands = {
 		}
 
 		let buffer = Object.keys(rankLists).sort((a, b) =>
-			(Config.groups[b] || {rank:0}).rank - (Config.groups[a] || {rank:0}).rank
+			(Config.groups[b] || {rank: 0}).rank - (Config.groups[a] || {rank: 0}).rank
 		).map(r => {
 			let roomRankList = rankLists[r].sort();
 			roomRankList = roomRankList.map(s => s in targetRoom.users ? "**" + s + "**" : s);
@@ -1559,7 +1550,7 @@ exports.commands = {
 			name = targetUser.getLastName();
 			userid = targetUser.getLastId();
 
-			if (targetUser.locked && !target) {
+			if (targetUser.locked && !week) {
 				return this.privateModCommand(`(${name} would be locked by ${user.name} but was already locked.)`);
 			}
 
@@ -1984,7 +1975,7 @@ exports.commands = {
 	promotehelp: ["/promote [username], [group] - Promotes the user to the specified group. Requires: & ~"],
 
 	confirmuser: 'trustuser',
-	trustuser: function (target) {
+	trustuser: function (target, room, user) {
 		if (!target) return this.parse('/help trustuser');
 		if (!this.can('promote')) return;
 
@@ -2000,6 +1991,7 @@ exports.commands = {
 
 		targetUser.setGroup(Config.groupsranking[0], true);
 		this.sendReply("User '" + name + "' is now trusted.");
+		this.privateModCommand(`${name} was set as a trusted user by ${user.name}.`);
 	},
 	trustuserhelp: ["/trustuser [username] - Trusts the user (makes them immune to locks). Requires: & ~"],
 
@@ -2133,7 +2125,7 @@ exports.commands = {
 
 		let entry = targetUser.name + " was forced to choose a new name by " + user.name + (reason ? ": " + reason : "");
 		this.privateModCommand("(" + entry + ")");
-		Ladders.matchmaker.cancelSearch(targetUser);
+		Ladders.cancelSearches(targetUser);
 		targetUser.resetName(true);
 		targetUser.send("|nametaken||" + user.name + " considers your name inappropriate" + (reason ? ": " + reason : "."));
 		return true;
@@ -2163,7 +2155,7 @@ exports.commands = {
 		}
 
 		this.globalModlog("NAMELOCK", targetUser, ` by ${user.name}${reasonText}`);
-		Ladders.matchmaker.cancelSearch(targetUser);
+		Ladders.cancelSearches(targetUser);
 		Punishments.namelock(targetUser, null, null, reason);
 		targetUser.popup(`|modal|${user.name} has locked your name and you can't change names anymore${reasonText}`);
 		return true;
@@ -2523,7 +2515,7 @@ exports.commands = {
 				// uncache the sim/dex.js dependency tree
 				Chat.uncacheTree('./sim/dex');
 				// reload sim/dex.js
-				global.Dex = require('./sim/dex'); // note: this will lock up the server for a few seconds
+				global.Dex = require('./sim/dex');
 				// rebuild the formats list
 				delete Rooms.global.formatList;
 				// respawn validator processes
@@ -3058,7 +3050,7 @@ exports.commands = {
 			room.battle.send('eval', "let pl=" + getPlayer(targets[0]) + ";let p=pl" + getPokemon(targets[1]) + ";p.setStatus('" + toId(targets[2]) + "');if (!p.isActive){battle.add('','please ignore the above');battle.add('-status',pl.active[0],pl.active[0].status,'[silent]');}");
 			break;
 		case 'pp':
-			room.battle.send('eval', "let pl=" + getPlayer(targets[0]) + ";let p=pl" + getPokemon(targets[1]) + ";p.moveset[p.moves.indexOf('" + toId(targets[2]) + "')].pp = " + parseInt(targets[3]));
+			room.battle.send('eval', "let pl=" + getPlayer(targets[0]) + ";let p=pl" + getPokemon(targets[1]) + ";p.moveSlots[p.moves.indexOf('" + toId(targets[2]) + "')].pp = " + parseInt(targets[3]));
 			break;
 		case 'boost':
 		case 'b':
@@ -3157,8 +3149,11 @@ exports.commands = {
 	savereplay: function (target, room, user, connection) {
 		if (!room || !room.battle) return;
 		// retrieve spectator log (0) if there are privacy concerns
-		let logidx = room.battle.ended ? 3 : 0;
-		let data = room.getLog(logidx).join("\n");
+		const format = Dex.getFormat(room.format, true);
+		let hideDetails = !format.id.includes('customgame');
+		if (format.team && room.game.ended) hideDetails = false;
+		let logidx = hideDetails ? 0 : 3;
+		let data = room.getLog(logidx).join("\n").replace(/\n\|choice\|\|\n/g, '').replace(/\n\|seed\|\n/g, '');
 		let datahash = crypto.createHash('md5').update(data.replace(/[^(\x20-\x7F)]+/g, '')).digest('hex');
 		let players = room.battle.playerNames;
 		let rating = 0;
@@ -3173,7 +3168,7 @@ exports.commands = {
 			hidden: room.isPrivate ? '1' : '',
 		}, success => {
 			if (success && success.errorip) {
-				connection.popup("This server's request IP " + success.errorip + " is not a registered server.");
+				connection.popup(`This server's request IP ${success.errorip} is not a registered server.`);
 				return;
 			}
 			connection.send('|queryresponse|savereplay|' + JSON.stringify({
@@ -3324,28 +3319,28 @@ exports.commands = {
 	 *********************************************************/
 
 	'!search': true,
-	search: function (target, room, user) {
+	search: function (target, room, user, connection) {
 		if (target) {
 			if (Config.laddermodchat) {
 				let userGroup = user.group;
 				if (Config.groupsranking.indexOf(userGroup) < Config.groupsranking.indexOf(Config.laddermodchat)) {
 					let groupName = Config.groups[Config.laddermodchat].name || Config.laddermodchat;
-					this.popupReply("On this server, you must be of rank " + groupName + " or higher to search for a battle.");
+					this.popupReply(`On this server, you must be of rank ${groupName} or higher to search for a battle.`);
 					return false;
 				}
 			}
-			Ladders.matchmaker.searchBattle(user, target);
+			Ladders(target).searchBattle(user, connection);
 		} else {
-			Ladders.matchmaker.cancelSearches(user);
+			Ladders.cancelSearches(user);
 		}
 	},
 
 	'!cancelsearch': true,
 	cancelsearch: function (target, room, user) {
 		if (target) {
-			Ladders.matchmaker.cancelSearch(user, target);
+			Ladders(toId(target)).cancelSearch(user);
 		} else {
-			Ladders.matchmaker.cancelSearches(user);
+			Ladders.cancelSearches(user);
 		}
 	},
 
@@ -3355,32 +3350,20 @@ exports.commands = {
 		target = this.splitTarget(target);
 		let targetUser = this.targetUser;
 		if (!targetUser || !targetUser.connected) {
-			return this.popupReply("The user '" + this.targetUsername + "' was not found.");
+			return this.popupReply(`The user '${this.targetUsername}' was not found.`);
 		}
 		if (user.locked && !targetUser.locked) {
-			return this.popupReply("You are locked and cannot challenge unlocked users.");
-		}
-		if (targetUser.blockChallenges && !user.can('bypassblocks', targetUser)) {
-			return this.popupReply("The user '" + this.targetUsername + "' is not accepting challenges right now.");
-		}
-		if (user.challengeTo) {
-			return this.popupReply("You're already challenging '" + user.challengeTo.to + "'. Cancel that challenge before challenging someone else.");
+			return this.popupReply(`You are locked and cannot challenge unlocked users.`);
 		}
 		if (Config.pmmodchat) {
 			let userGroup = user.group;
 			if (Config.groupsranking.indexOf(userGroup) < Config.groupsranking.indexOf(Config.pmmodchat)) {
 				let groupName = Config.groups[Config.pmmodchat].name || Config.pmmodchat;
-				this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to challenge users.");
+				this.popupReply(`Because moderated chat is set, you must be of rank ${groupName} or higher to challenge users.`);
 				return false;
 			}
 		}
-		if (targetUser === user) {
-			return this.popupReply("You can't battle yourself. The best you can do is open PS in Private Browsing (or another browser) and log into a different username, and battle that username.");
-		}
-		user.prepBattle(Dex.getFormat(target).id, 'challenge', connection).then(validTeam => {
-			if (validTeam === false) return;
-			user.makeChallenge(targetUser, target, validTeam);
-		});
+		Ladders(target).makeChallenge(connection, targetUser);
 	},
 
 	'!blockchallenges': true,
@@ -3409,30 +3392,22 @@ exports.commands = {
 	'!cancelchallenge': true,
 	cchall: 'cancelChallenge',
 	cancelchallenge: function (target, room, user) {
-		user.cancelChallengeTo(target);
+		Ladders.cancelChallenging(user);
 	},
 
 	'!accept': true,
 	accept: function (target, room, user, connection) {
-		let userid = toId(target);
-		if (!userid && this.pmTarget) userid = this.pmTarget.userid;
-		let format = '';
-		if (user.challengesFrom[userid]) format = user.challengesFrom[userid].format;
-		if (!format) {
-			this.popupReply(target + " isn't challenging you - maybe they cancelled before you could accept?");
-			return false;
-		}
-		user.prepBattle(Dex.getFormat(format).id, 'challenge', connection).then(validTeam => {
-			if (validTeam === false) return;
-			user.acceptChallengeFrom(userid, validTeam);
-		});
+		target = this.splitTarget(target);
+		const targetUser = this.targetUser || this.pmTarget;
+		if (!targetUser) return this.popupReply(`User "${this.targetUsername}" not found.`);
+		Ladders.acceptChallenge(connection, targetUser);
 	},
 
 	'!reject': true,
 	reject: function (target, room, user) {
-		let userid = toId(target);
-		if (!userid && this.pmTarget) userid = this.pmTarget.userid;
-		user.rejectChallengeFrom(userid);
+		target = toId(target);
+		if (!target && this.pmTarget) target = this.pmTarget.userid;
+		Ladders.rejectChallenge(user, target);
 	},
 
 	'!useteam': true,
@@ -3530,7 +3505,7 @@ exports.commands = {
 			));
 		} else if (cmd === 'laddertop') {
 			if (!trustable) return false;
-			Ladders(target).getTop().then(result => {
+			Ladders(toId(target)).getTop().then(result => {
 				connection.send('|queryresponse|laddertop|' + JSON.stringify(result));
 			});
 		} else {

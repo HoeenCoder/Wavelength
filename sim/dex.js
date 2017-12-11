@@ -67,31 +67,31 @@ const DATA_FILES = {
 /** @typedef {{Pokedex: DexTable, Movedex: DexTable, Statuses: DexTable, TypeChart: DexTable, Scripts: DexTable, Items: DexTable, Abilities: DexTable, FormatsData: DexTable, Learnsets: DexTable, Aliases: {[id: string]: string}, Natures: DexTable, Formats: DexTable}} DexTableData */
 
 const BattleNatures = {
-	adamant: {name:"Adamant", plus:'atk', minus:'spa'},
-	bashful: {name:"Bashful"},
-	bold: {name:"Bold", plus:'def', minus:'atk'},
-	brave: {name:"Brave", plus:'atk', minus:'spe'},
-	calm: {name:"Calm", plus:'spd', minus:'atk'},
-	careful: {name:"Careful", plus:'spd', minus:'spa'},
-	docile: {name:"Docile"},
-	gentle: {name:"Gentle", plus:'spd', minus:'def'},
-	hardy: {name:"Hardy"},
-	hasty: {name:"Hasty", plus:'spe', minus:'def'},
-	impish: {name:"Impish", plus:'def', minus:'spa'},
-	jolly: {name:"Jolly", plus:'spe', minus:'spa'},
-	lax: {name:"Lax", plus:'def', minus:'spd'},
-	lonely: {name:"Lonely", plus:'atk', minus:'def'},
-	mild: {name:"Mild", plus:'spa', minus:'def'},
-	modest: {name:"Modest", plus:'spa', minus:'atk'},
-	naive: {name:"Naive", plus:'spe', minus:'spd'},
-	naughty: {name:"Naughty", plus:'atk', minus:'spd'},
-	quiet: {name:"Quiet", plus:'spa', minus:'spe'},
-	quirky: {name:"Quirky"},
-	rash: {name:"Rash", plus:'spa', minus:'spd'},
-	relaxed: {name:"Relaxed", plus:'def', minus:'spe'},
-	sassy: {name:"Sassy", plus:'spd', minus:'spe'},
-	serious: {name:"Serious"},
-	timid: {name:"Timid", plus:'spe', minus:'atk'},
+	adamant: {name: "Adamant", plus: 'atk', minus: 'spa'},
+	bashful: {name: "Bashful"},
+	bold: {name: "Bold", plus: 'def', minus: 'atk'},
+	brave: {name: "Brave", plus: 'atk', minus: 'spe'},
+	calm: {name: "Calm", plus: 'spd', minus: 'atk'},
+	careful: {name: "Careful", plus: 'spd', minus: 'spa'},
+	docile: {name: "Docile"},
+	gentle: {name: "Gentle", plus: 'spd', minus: 'def'},
+	hardy: {name: "Hardy"},
+	hasty: {name: "Hasty", plus: 'spe', minus: 'def'},
+	impish: {name: "Impish", plus: 'def', minus: 'spa'},
+	jolly: {name: "Jolly", plus: 'spe', minus: 'spa'},
+	lax: {name: "Lax", plus: 'def', minus: 'spd'},
+	lonely: {name: "Lonely", plus: 'atk', minus: 'def'},
+	mild: {name: "Mild", plus: 'spa', minus: 'def'},
+	modest: {name: "Modest", plus: 'spa', minus: 'atk'},
+	naive: {name: "Naive", plus: 'spe', minus: 'spd'},
+	naughty: {name: "Naughty", plus: 'atk', minus: 'spd'},
+	quiet: {name: "Quiet", plus: 'spa', minus: 'spe'},
+	quirky: {name: "Quirky"},
+	rash: {name: "Rash", plus: 'spa', minus: 'spd'},
+	relaxed: {name: "Relaxed", plus: 'def', minus: 'spe'},
+	sassy: {name: "Sassy", plus: 'spd', minus: 'spe'},
+	serious: {name: "Serious"},
+	timid: {name: "Timid", plus: 'spe', minus: 'atk'},
 };
 
 const toId = Data.Tools.getId;
@@ -340,9 +340,9 @@ class ModdedDex {
 				template.speciesid = id;
 				// @ts-ignore
 				template.abilities = {0: template.abilities['S']};
-				return template;
+			} else {
+				template = this.getTemplate(this.data.Aliases[id]);
 			}
-			template = this.getTemplate(this.data.Aliases[id]);
 			if (template) {
 				this.templateCache.set(id, template);
 			}
@@ -369,7 +369,13 @@ class ModdedDex {
 		}
 		if (id && this.data.Pokedex.hasOwnProperty(id)) {
 			template = new Data.Template({name}, this.data.Pokedex[id], this.data.FormatsData[id], this.data.Learnsets[id]);
-			if (!template.tier && template.baseSpecies !== template.species) template.tier = this.data.FormatsData[toId(template.baseSpecies)].tier;
+			if (!template.tier && template.baseSpecies !== template.species) {
+				if (template.speciesid.endsWith('totem')) {
+					template.tier = this.data.FormatsData[template.speciesid.slice(0, -5)].tier;
+				} else {
+					template.tier = this.data.FormatsData[toId(template.baseSpecies)].tier;
+				}
+			}
 			if (!template.tier) template.tier = 'Illegal';
 		} else {
 			template = new Data.Template({name, exists: false});
@@ -446,6 +452,13 @@ class ModdedDex {
 		if (name && typeof name !== 'string') {
 			return name;
 		}
+		if (name && name.startsWith('move:')) {
+			return this.getMove(name.slice(5));
+		} else if (name && name.startsWith('item:')) {
+			return this.getItem(name.slice(5));
+		} else if (name && name.startsWith('ability:')) {
+			return this.getAbility(name.slice(8));
+		}
 		let id = toId(name);
 		let effect;
 		if (id && this.data.Statuses.hasOwnProperty(id)) {
@@ -471,11 +484,31 @@ class ModdedDex {
 		return effect;
 	}
 	/**
+	 * Returns a sanitized format ID if valid, or throws if invalid.
+	 * @param {string} name
+	 */
+	validateFormat(name) {
+		const [formatName, customRulesString] = name.split('@@@', 2);
+		const format = this.getFormat(formatName);
+		if (!format.exists) throw new Error(`Unrecognized format "${formatName}"`);
+		if (!customRulesString) return format.id;
+		const ruleTable = this.getRuleTable(format);
+		const customRules = customRulesString.split(',').map(rule => {
+			const ruleSpec = this.validateRule(rule);
+			if (typeof ruleSpec === 'string' && ruleTable.has(ruleSpec)) return null;
+			return rule.replace(/[\r\n|]*/g, '').trim();
+		}).filter(rule => rule);
+		if (!customRules.length) throw new Error(`The format already has your custom rules`);
+		const validatedFormatid = format.id + '@@@' + customRules.join(',');
+		const moddedFormat = this.getFormat(validatedFormatid, true);
+		this.getRuleTable(moddedFormat);
+		return validatedFormatid;
+	}
+	/**
 	 * @param {string | Format} name
-	 * @param {string | string[]} [customRules]
 	 * @return {Format}
 	 */
-	getFormat(name, customRules) {
+	getFormat(name, isTrusted = false) {
 		if (name && typeof name !== 'string') {
 			return name;
 		}
@@ -488,70 +521,28 @@ class ModdedDex {
 		if (this.data.Formats.hasOwnProperty('gen7' + id)) {
 			id = 'gen7' + id;
 		}
-		let effect;
-		/**@type {string[]} */
-		let sanitizedCustomRules = [];
+		let supplementaryAttributes = /** @type {AnyObject?} */ (null);
 		if (name.includes('@@@')) {
-			let parts = name.split('@@@');
-			name = parts[0];
+			if (!isTrusted) {
+				try {
+					name = this.validateFormat(name);
+					isTrusted = true;
+				} catch (e) {}
+			}
+			let [newName, customRulesString] = name.split('@@@', 2);
+			name = newName;
 			id = toId(name);
-			sanitizedCustomRules = parts[1].split(',');
+			if (isTrusted) {
+				supplementaryAttributes = {
+					customRules: customRulesString.split(','),
+					searchShow: false,
+				};
+			}
 		}
+		let effect;
 		if (this.data.Formats.hasOwnProperty(id)) {
 			let format = this.data.Formats[id];
-			if (customRules) {
-				if (typeof customRules === 'string') customRules = customRules.split(',');
-				const ruleTable = this.getRuleTable(this.getFormat(name));
-				for (let ban of customRules) {
-					ban = ban.trim();
-					let unban = false;
-					if (ban.charAt(0) === '!') {
-						unban = true;
-						ban = ban.substr(1);
-					}
-					let subformat = this.getFormat(ban);
-					if (subformat.effectType === 'ValidatorRule' || subformat.effectType === 'Rule' || subformat.effectType === 'Format') {
-						if (unban) {
-							if (ruleTable.has('!' + subformat.id)) continue;
-						} else {
-							if (ruleTable.has(subformat.id)) continue;
-						}
-						ban = 'Rule:' + subformat.name;
-					} else {
-						ban = ban.toLowerCase();
-						let baseForme = false;
-						if (ban.endsWith('-base')) {
-							baseForme = true;
-							ban = ban.substr(0, ban.length - 5);
-						}
-						let search = this.dataSearch(ban);
-						if (!search || search.length < 1) continue;
-						if (search[0].isInexact || search[0].searchType === 'nature') continue;
-						ban = search[0].name;
-						if (baseForme) ban += '-Base';
-						if (unban) {
-							if (ruleTable.has('+' + ban)) continue;
-						} else {
-							if (ruleTable.has('-' + ban)) continue;
-						}
-					}
-					if (ban.startsWith('Rule:')) {
-						ban = ban.substr(5).trim();
-						if (unban) {
-							sanitizedCustomRules.unshift('!' + ban);
-						} else {
-							sanitizedCustomRules.push(ban);
-						}
-					} else {
-						if (unban) {
-							sanitizedCustomRules.push('+' + ban);
-						} else {
-							sanitizedCustomRules.push('-' + ban);
-						}
-					}
-				}
-			}
-			effect = new Data.Format({name}, format, sanitizedCustomRules.length ? {customRules: sanitizedCustomRules} : null);
+			effect = new Data.Format({name}, format, supplementaryAttributes);
 		} else {
 			effect = new Data.Format({name, exists: false});
 		}
@@ -601,6 +592,13 @@ class ModdedDex {
 		let id = toId(name);
 		let ability = this.abilityCache.get(id);
 		if (ability) return ability;
+		if (this.data.Aliases.hasOwnProperty(id)) {
+			ability = this.getAbility(this.data.Aliases[id]);
+			if (ability.exists) {
+				this.abilityCache.set(id, ability);
+			}
+			return ability;
+		}
 		if (id && this.data.Abilities.hasOwnProperty(id)) {
 			ability = new Data.Ability({name}, this.data.Abilities[id]);
 		} else {
@@ -660,7 +658,7 @@ class ModdedDex {
 	 * @return {AnyObject}
 	 */
 	spreadModify(stats, set) {
-		const modStats = {atk:10, def:10, spa:10, spd:10, spe:10};
+		const modStats = {atk: 10, def: 10, spa: 10, spd: 10, spe: 10};
 		for (let statName in modStats) {
 			let stat = stats[statName];
 			modStats[statName] = Math.floor(Math.floor(2 * stat + set.ivs[statName] + Math.floor(set.evs[statName] / 4)) * set.level / 100 + 5);
@@ -743,8 +741,58 @@ class ModdedDex {
 		}
 
 		for (const rule of ruleset) {
-			if (rule.charAt(0) === '-' || rule.charAt(0) === '+') { // ban or unban
-				const type = rule.charAt(0);
+			const ruleSpec = this.validateRule(rule, format);
+			if (typeof ruleSpec !== 'string') {
+				if (ruleSpec[0] === 'complexTeamBan') {
+					ruleTable.complexTeamBans.push(/** @type {any} */ (ruleSpec.slice(1)));
+				} else if (ruleSpec[0] === 'complexBan') {
+					ruleTable.complexBans.push(/** @type {any} */ (ruleSpec.slice(1)));
+				} else {
+					throw new Error(`Unrecognized rule spec ${ruleSpec}`);
+				}
+				continue;
+			}
+			if ("!+-".includes(ruleSpec.charAt(0))) {
+				if (ruleSpec.charAt(0) === '+' && ruleTable.has('-' + ruleSpec.slice(1))) {
+					ruleTable.delete('-' + ruleSpec.slice(1));
+				} else {
+					ruleTable.set(ruleSpec, '');
+				}
+				continue;
+			}
+			const subformat = this.getFormat(ruleSpec);
+			if (ruleTable.has('!' + subformat.id)) continue;
+			ruleTable.set(subformat.id, '');
+			if (!subformat.exists) continue;
+			if (depth > 16) {
+				throw new Error(`Excessive ruleTable recursion in ${format.name}: ${ruleSpec} of ${format.ruleset}`);
+			}
+			const subRuleTable = this.getRuleTable(subformat, depth + 1);
+			for (const [k, v] of subRuleTable) {
+				if (!ruleTable.has('!' + k)) ruleTable.set(k, v || subformat.name);
+			}
+			for (const [rule, source, limit, bans] of subRuleTable.complexBans) {
+				ruleTable.complexBans.push([rule, source || subformat.name, limit, bans]);
+			}
+			for (const [rule, source, limit, bans] of subRuleTable.complexTeamBans) {
+				ruleTable.complexTeamBans.push([rule, source || subformat.name, limit, bans]);
+			}
+		}
+
+		format.ruleTable = ruleTable;
+		return ruleTable;
+	}
+
+	/**
+	 * @param {string} rule
+	 * @param {Format?} format
+	 */
+	validateRule(rule, format = null) {
+		switch (rule.charAt(0)) {
+		case '-':
+		case '+':
+			if (format && format.team) throw new Error(`We don't currently support bans in generated teams`);
+			if (rule.slice(1).includes('>') || rule.slice(1).includes('+')) {
 				let buf = rule.slice(1);
 				const gtIndex = buf.lastIndexOf('>');
 				let limit = 0;
@@ -756,46 +804,88 @@ class ModdedDex {
 				const banNames = buf.split(checkTeam ? '++' : '+').map(v => v.trim());
 				if (banNames.length === 1 && limit > 0) checkTeam = true;
 				const innerRule = banNames.join(checkTeam ? ' ++ ' : ' + ');
-				const bans = banNames.map(v => toId(v));
+				const bans = banNames.map(v => this.validateBanRule(v));
 
 				if (checkTeam) {
-					ruleTable.complexTeamBans.push([innerRule, '', limit, bans]);
-					continue;
+					return ['complexTeamBan', innerRule, '', limit, bans];
 				}
 				if (bans.length > 1 || limit > 0) {
-					ruleTable.complexBans.push([innerRule, '', limit, bans]);
+					return ['complexBan', innerRule, '', limit, bans];
 				}
-				const ban = toId(buf);
-				ruleTable.delete('+' + ban);
-				ruleTable.delete('-' + ban);
-				ruleTable.set(type + ban, '');
-				continue;
+				throw new Error(`Confusing rule ${rule}`);
 			}
-			if (rule.startsWith('!')) {
-				ruleTable.set('!' + toId(rule), '');
-				continue;
+			return rule.charAt(0) + this.validateBanRule(rule.slice(1));
+		default:
+			let id = toId(rule);
+			if (!this.data.Formats.hasOwnProperty(id)) {
+				throw new Error(`Unrecognized rule "${rule}"`);
 			}
-			const subformat = this.getFormat(rule);
-			if (ruleTable.has('!' + subformat.id)) continue;
-			ruleTable.set(subformat.id, '');
-			if (!subformat.exists) continue;
-			if (depth > 16) {
-				throw new Error(`Excessive ruleTable recursion in ${format.name}: ${rule} of ${format.ruleset}`);
-			}
-			const subRuleTable = this.getRuleTable(subformat, depth + 1);
-			subRuleTable.forEach((v, k) => {
-				if (!ruleTable.has('!' + k)) ruleTable.set(k, v || subformat.name);
-			});
-			for (const [rule, source, limit, bans] of subRuleTable.complexBans) {
-				ruleTable.complexBans.push([rule, source || subformat.name, limit, bans]);
-			}
-			for (const [rule, source, limit, bans] of subRuleTable.complexTeamBans) {
-				ruleTable.complexTeamBans.push([rule, source || subformat.name, limit, bans]);
+			if (rule.charAt(0) === '!') return '!' + id;
+			return id;
+		}
+	}
+
+	/**
+	 * @param {string} rule
+	 */
+	validateBanRule(rule) {
+		let id = toId(rule);
+		if (id === 'unreleased') return 'unreleased';
+		if (id === 'illegal') return 'illegal';
+		const matches = [];
+		let matchTypes = ['pokemon', 'move', 'ability', 'item', 'pokemontag'];
+		for (const matchType of matchTypes) {
+			if (rule.slice(0, 1 + matchType.length) === matchType + ':') {
+				matchTypes = [matchType];
+				id = id.slice(matchType.length);
+				break;
 			}
 		}
-
-		format.ruleTable = ruleTable;
-		return ruleTable;
+		const ruleid = id;
+		if (this.data.Aliases.hasOwnProperty(id)) id = toId(this.data.Aliases[id]);
+		for (const matchType of matchTypes) {
+			let table;
+			switch (matchType) {
+			case 'pokemon': table = this.data.Pokedex; break;
+			case 'move': table = this.data.Movedex; break;
+			case 'item': table = this.data.Items; break;
+			case 'ability': table = this.data.Abilities; break;
+			case 'pokemontag':
+				// valid pokemontags
+				const validTags = [
+					// pokemon tiers
+					'uber', 'ou', 'bl', 'uu', 'bl2', 'ru', 'bl3', 'nu', 'bl4', 'pu', 'nfe', 'lcuber', 'lc', 'cap', 'caplc', 'capnfe',
+					// custom tags
+					'mega',
+				];
+				if (validTags.includes(ruleid)) matches.push('pokemontag:' + ruleid);
+				continue;
+			default:
+				throw new Error(`Unrecognized match type.`);
+			}
+			if (table.hasOwnProperty(id)) {
+				if (matchType === 'pokemon') {
+					const template = table[id];
+					if (template.otherFormes) {
+						matches.push('basepokemon:' + id);
+						continue;
+					}
+				}
+				matches.push(matchType + ':' + id);
+			} else if (matchType === 'pokemon' && id.slice(-4) === 'base') {
+				id = id.slice(0, -4);
+				if (table.hasOwnProperty(id)) {
+					matches.push('pokemon:' + id);
+				}
+			}
+		}
+		if (matches.length > 1) {
+			throw new Error(`More than one thing matches "${rule}"; please use something like "-item:metronome" to disambiguate`);
+		}
+		if (matches.length < 1) {
+			throw new Error(`Nothing matches "${rule}"`);
+		}
+		return matches[0];
 	}
 
 	/**
