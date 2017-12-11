@@ -109,12 +109,14 @@ Owners
 
 - [HoeenCoder](https://github.com/HoeenCoder)
 - [Mystifi](https://github.com/Mystifi)
+- [Desokoro](https://github.com/DesoGit)
 
 Contributors
 
 - [Insist](https://github.com/DeathlyPlays)
 - [Lycanium-Z](https://github.com/Lycanium-Z)
 - [Arrays](https://github.com/Arrays-Arr)
+- [wgc](https://github.com/wgc-coder)
 
 Special thanks
 

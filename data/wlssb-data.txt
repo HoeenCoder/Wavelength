@@ -170,7 +170,7 @@ Almighty Bronzong
 EVs: 252 HP / 88 SpD / 168 Def
 Sassy Nature
 Ability: Conflict of Interest
-	- Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.5x damage to user and burn damage is halved.
+	- Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.75x damage to user and burn damage is halved.
 Moves: Gyro Ball, Toxic, Confuse Ray and Earthquake.
 Signature Move: Blast Furnace
 	- Fire Type, Status, 10 PP, Boosts user's Defense and Special Defense by 1 stage and heals user by 7/20th of its max HP.

@@ -32,7 +32,7 @@ exports.BattleAbilities = {
 	conflictofinterest: {
 		id: "conflictofinterest",
 		name: "Conflict of Interest",
-		desc: "Uses Magnet Rise + Heatproof + Ghost & Dark type moves do 0.5x",
+		desc: "Uses Magnet Rise + Burn damage is halved + Fire, Ghost & Dark type moves do 0.75x",
 		//Since levitate cant be coded in
 		onStart: function (pokemon) {
 			this.useMove('magnetrise', pokemon);
@@ -41,7 +41,7 @@ exports.BattleAbilities = {
 		onBasePowerPriority: 7,
 		onSourceBasePower: function (basePower, attacker, defender, move) {
 			if (move.type === 'Fire' || move.type === 'Ghost' || move.type === 'Dark') {
-				return this.chainModify(0.5);
+				return this.chainModify(0.75);
 			}
 		},
 		onDamage: function (damage, target, source, effect) {
