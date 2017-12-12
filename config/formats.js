@@ -434,7 +434,8 @@ exports.Formats = [
 					disabledSource: '',
 					used: false,
 				}];
-				pokemon.moves = ['metronome'];
+				pokemon.moves.splice(0, 4);
+				pokemon.moves.push('metronome');
 				pokemon.moveSlots = pokemon.baseMoveSlots;
 				if (Dex.getFormat('[Gen 7] Metronome Battle').banlist.includes(this.getItem(pokemon.item).name)) {
 					pokemon.item = 'leppaberry';
@@ -460,7 +461,8 @@ exports.Formats = [
 				let pokemon = allPokemon[i];
 				let last = pokemon.moves.length - 1;
 				if (pokemon.moves[last]) {
-					pokemon.moves[last] = toId(pokemon.set.signatureMove);
+					pokemon.moves.splice(last, 1);
+					pokemon.moves.push(toId(pokemon.set.signatureMove));
 					pokemon.moveSlots[last].move = pokemon.set.signatureMove;
 					pokemon.baseMoveSlots[last].move = pokemon.set.signatureMove;
 				}
