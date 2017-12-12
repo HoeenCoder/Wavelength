@@ -424,7 +424,7 @@ exports.Formats = [
 		onBegin: function () {
 			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
 			allPokemon.forEach(pokemon => {
-				pokemon.baseMoveset = [{
+				pokemon.baseMoveSlots = [{
 					move: 'Metronome',
 					id: 'metronome',
 					pp: 16,
@@ -435,7 +435,7 @@ exports.Formats = [
 					used: false,
 				}];
 				pokemon.moves = ['metronome'];
-				pokemon.moveset = pokemon.baseMoveset;
+				pokemon.moveSlots = pokemon.baseMoveSlots;
 				if (Dex.getFormat('[Gen 7] Metronome Battle').banlist.includes(this.getItem(pokemon.item).name)) {
 					pokemon.item = 'leppaberry';
 				}
@@ -461,8 +461,8 @@ exports.Formats = [
 				let last = pokemon.moves.length - 1;
 				if (pokemon.moves[last]) {
 					pokemon.moves[last] = toId(pokemon.set.signatureMove);
-					pokemon.moveset[last].move = pokemon.set.signatureMove;
-					pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
+					pokemon.moveSlots[last].move = pokemon.set.signatureMove;
+					pokemon.baseMoveSlots[last].move = pokemon.set.signatureMove;
 				}
 			}
 		},
@@ -476,7 +476,7 @@ exports.Formats = [
 		onModifyPokemon: function (pokemon) {
 			//let name = toId(pokemon.name);
 			// Enforce choice item locking on custom moves.
-			let moves = pokemon.moveset;
+			let moves = pokemon.moveSlots;
 			if (pokemon.getItem().isChoice && pokemon.lastMove === moves[3].id) {
 				for (let i = 0; i < 3; i++) {
 					if (!moves[i].disabled) {
