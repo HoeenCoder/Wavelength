@@ -461,7 +461,8 @@ exports.Formats = [
 				let pokemon = allPokemon[i];
 				let last = pokemon.moves.length - 1;
 				if (pokemon.moves[last]) {
-					pokemon.moves[last] = toId(pokemon.set.signatureMove);
+					pokemon.moves.splice(last, 1);
+					pokemon.moves.push(toId(pokemon.set.signatureMove));
 					pokemon.moveSlots[last].move = pokemon.set.signatureMove;
 					pokemon.baseMoveSlots[last].move = pokemon.set.signatureMove;
 				}
