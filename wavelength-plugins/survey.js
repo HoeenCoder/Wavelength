@@ -60,11 +60,11 @@ class Survey {
 	}
 
 	generateQuestion(number) {
-		let output = `<div class="infobox"><p style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></p>`;
+		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></summary>`;
 		output += `<div style="margin-top: 3px">Please note that anyone can see what you reply.</div>`;
 		output += `<div style="margin-top: 5px"><button class="button" value="/survey answer" name="send" title="Answer the survey."><strong>Answer the survey</strong></button></div>`;
 		output += `<div style="margin-top: 7px; padding-left: 12px"><button class="button" value="/survey results ${this.surveyArray[number].surveyNum}" name="send" title="View results - you will not be able to answer the survey after viewing results"><small>(View Results)</small></button><small>(you will not be able to answer the survey after viewing results)</small></div>`;
-		output += `</div>`;
+		output += `</details></div>`;
 		return output;
 	}
 
@@ -133,7 +133,7 @@ class Survey {
 
 	generateResults(ended, number) {
 		let icon = `<span style="border:1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')};border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i>${(ended ? `Survey-${this.surveyArray[number].surveyNum} ended` : `Survey-${this.surveyArray[number].surveyNum}`)}</span>`;
-		let output = `<div class="infobox"><p style="margin: 2px 0 5px 0">${icon} <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></p>`;
+		let output = `<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></summary>`;
 		for (let i in this.surveyArray[number].repliers) {
 			if (this.surveyArray[number].repliers[i]) output += `<div>${WL.nameColor(i, true)}: <i>"${Chat.formatText(this.surveyArray[number].repliers[i])}"</i><div><br/>`;
 		}
@@ -174,7 +174,7 @@ class Survey {
 	end(number) {
 		let results = this.generateResults(true, number);
 
-		this.room.send(`|uhtmlchange|survey${this.surveyArray[number].surveyNum}|<div class="infobox">(The survey has ended &ndash; scroll down to see the results)</div>`);
+		this.room.send(`|uhtmlchange|survey${this.surveyArray[number].surveyNum}|<div class="infobox"><details>(The survey has ended &ndash; scroll down to see the results)</details></div>`);
 		this.room.add(`|html|${results}`);
 	}
 
@@ -324,7 +324,7 @@ exports.commands = {
 			if (!num) return this.errorReply("Not a survey number!");
 			if (room.survey.surveyArray[num].surveyNum === parseInt(target)) return room.survey.blankanswer(user, false, num);
 		},
-		resultshelp: ["/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already."],
+		resultshelp: ["/survey results [survey number] - View the results of the specified survey. You can't answer this survey after viewing results."],
 
 		hideresults: function (target, room, user) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
@@ -334,7 +334,7 @@ exports.commands = {
 				if (room.survey.hasReplied(user, num)) {
 					return room.survey.updateTo(user, num, false);
 				} else {
-					return this.errorReply('You can hide the results if you can\'t view them.');
+					return this.errorReply("You can't hide the results if you can't view them.");
 				}
 			}
 		},
@@ -434,7 +434,10 @@ exports.commands = {
 				}
 			}
 		},
-		timerhelp: ["/survey timer [minutes], [survey id number] - Sets the survey to automatically end after [minutes] minutes. Requires: % @ * # & ~", "/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~"],
+		timerhelp: [
+			"/survey timer [minutes], [survey id number] - Sets the specified survey to automatically end after [minutes] minutes. Requires: % @ * # & ~",
+			"/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~"
+		],
 
 		'': function (target, room, user) {
 			return this.parse('/help survey');
