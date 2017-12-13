@@ -310,10 +310,6 @@ exports.commands = {
 			let number = parseInt(targ);
 			let num = room.survey.obtain(number);
 			if (!num) return this.errorReply("Not a survey number!");
-			if (targets[0] === 'blank') {
-				room.survey.blankanswer(user, number);
-				return;
-			}
 			room.survey.answer(user, targets[0], num);
 		},
 		answerhelp: ["/survey answer [answer], [survey number] or /sa [answer], [survey number] - Answers the survey [survey answer] survey with [answer]."],
@@ -367,19 +363,23 @@ exports.commands = {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
-			if (!target) return this.errorReply("Please select an answer to remove.");
-			let num = room.survey.obtain(parseInt(target));
+			let targets = target.split(',');
+			for (let u in targets) targets[u] = targets[u].trim();
+			if (!targets[0] || !targets[1]) return this.parse('/help survey remove');
+			let targ = targets[1];
+			let number = parseInt(targ);
+			let num = room.survey.obtain(number);
 			if (!num) return this.errorReply("Not a survey number!");
-			if (!room.survey.surveyArray[num].repliers) return this.errorReply(`The user ${target} has not responded to this survey.`);
-			for (let i in this.surveyArray[num].replierIps) {
-				if (room.survey.replierIps[i] === room.survey.repliers[target]) {
-					room.survey.surveyArray.replierIps[i] = 0;
-					room.survey.surveyArray.repliers[target] = 0;
+			if (!room.survey.surveyArray[num].repliers[toId(targets[0])]) return this.errorReply(`The user ${toId(targets[0])} has not responded to this survey.`);
+			for (let i in room.survey.surveyArray[num].replierIps) {
+				if (room.survey.surveyArray[num].replierIps[i] === room.survey.surveyArray[num].repliers[toId(targets[0])]) {
+					room.survey.surveyArray[num].replierIps[i] = 0;
+					room.survey.surveyArray[num].repliers[toId(targets[0])] = 0;
 					break;
 				}
 			}
 			room.survey.update(num);
-			this.sendReply(`${target}'s answer was removed.`);
+			this.sendReply(`${targets[0]}'s answer was removed.`);
 		},
 		removehelp: ["/survey remove [user], [survey number] - Removes a user's reply and prevents them from sending in a new one for the specified survey. Requires: % @ # & ~"],
 
