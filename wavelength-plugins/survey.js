@@ -436,7 +436,7 @@ exports.commands = {
 		},
 		timerhelp: [
 			"/survey timer [minutes], [survey id number] - Sets the specified survey to automatically end after [minutes] minutes. Requires: % @ * # & ~",
-			"/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~"
+			"/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~",
 		],
 
 		'': function (target, room, user) {
