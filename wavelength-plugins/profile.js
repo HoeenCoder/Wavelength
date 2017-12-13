@@ -385,6 +385,65 @@ exports.commands = {
 		"/pokemon delete - Removes your Favorite Pokemon.",
 	],
 
+	favoritetype: 'type',
+	type: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) return this.parse("/help type");
+			let type = Dex.getType(target);
+			if (!type.exists) return this.errorReply('Not a type. Check your spelling?');
+			Db.type.set(user.userid, toId(type));
+			return this.sendReply("You have successfully set your Favorite Type onto your profile.");
+		},
+
+		del: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.type.has(user.userid)) return this.errorReply("Your Favorite Type hasn't been set.");
+			Db.type.remove(user.userid);
+			return this.sendReply("Your Favorite Type has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse('/help type');
+		},
+	},
+	typehelp: [
+		"/type set [type] - Sets your Favorite Type.",
+		"/type delete - Removes your Favorite Type.",
+	],
+
+	natures: "nature",
+	nature: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) this.parse("/help nature");
+			let nature = Dex.getNature(target);
+			if (!nature.exists) return this.errorReply("This is not a nature. Check your spelling?");
+			Db.nature.set(user.userid, nature.name);
+			return this.sendReply("You have successfully set your nature onto your profile.");
+		},
+
+		del: "delete",
+		take: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.nature.has(user.userid)) return this.errorReply("Your nature has not been set.");
+			Db.nature.remove(user.userid);
+			return this.sendReply("Your nature has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse("/naturehelp");
+		},
+	},
+	naturehelp: [
+		"/nature set [nature] - Sets your Profile Nature.",
+		"/nature delete - Removes your Profile Nature.",
+	],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
@@ -449,6 +508,12 @@ exports.commands = {
 				profile += '&nbsp;<font color="#24678d"><b>' + currencyPlural + ':</b></font> ' + currency + '<br />';
 				if (Db.pokemon.has(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Favorite Pokemon:</strong></font> ' + Db.pokemon.get(toId(username)) + '<br />';
+				}
+				if (Db.type.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Favorite Type:</strong></font> <img src="https://www.serebii.net/pokedex-bw/type/' + Db.type.get(toId(username)) + '.gif"><br />';
+				}
+				if (Db.nature.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Nature:</strong></font> ' + Db.nature.get(toId(username)) + '<br />';
 				}
 				if (WL.getFaction(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
