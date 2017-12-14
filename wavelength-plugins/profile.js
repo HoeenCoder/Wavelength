@@ -287,7 +287,7 @@ exports.commands = {
 		set: 'setbg',
 		setbackground: 'setbg',
 		setbg: function (target, room, user) {
-			if (!this.can('broadcast')) return false;
+			if (!this.can('lock')) return false;
 			let parts = target.split(',');
 			if (!parts[1]) return this.parse('/backgroundhelp');
 			let targ = parts[0].toLowerCase().trim();
@@ -484,16 +484,16 @@ exports.commands = {
 			return '<img src="http://flags.fmcdn.net/data/flags/normal/' + ip.country.toLowerCase() + '.png" alt="' + ip.country + '" title="' + ip.country + '" width="20" height="10">';
 		}
 
-		function background(buddy) {
-			let bg = Db.backgrounds.get(buddy);
-			if (!Db.backgrounds.has(buddy)) return '<div>';
+		function background(user) {
+			let bg = Db.backgrounds.get(user);
+			if (!Db.backgrounds.has(user)) return '<div>';
 			return '<div style="background:url(' + bg + ')">';
 		}
 
-		function song(fren) {
-			let song = Db.music.get([fren, 'link']);
-			let title = Db.music.get([fren, 'title']);
-			if (!Db.music.has(fren)) return '';
+		function song(user) {
+			let song = Db.music.get([user, 'link']);
+			let title = Db.music.get([user, 'title']);
+			if (!Db.music.has(user)) return '';
 			return '<acronym title="' + title + '"><br /><audio src="' + song + '" controls="" style="width:100%;"></audio></acronym>';
 		}
 
