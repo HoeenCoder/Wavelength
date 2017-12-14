@@ -393,8 +393,8 @@ exports.BattleMovedex = {
 	serverguardian: {
 		category: "Status",
 		id: "serverguardian",
-		isViable:true,
-		isNonstandard:true,
+		isViable: true,
+		isNonstandard: true,
 		name: "Server Guardian",
 		pp: 10,
 		priority: 2,
@@ -440,7 +440,7 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	unserious:{
+	unserious: {
 		accuracy: true,
 		category: "Status",
 		id: "unserious",
@@ -581,7 +581,7 @@ exports.BattleMovedex = {
 		type: "Dark",
 	},
 	// iSteelX
-	deepsleep:{
+	deepsleep: {
 		accuracy: true,
 		category: "Status",
 		id: "deepsleep",

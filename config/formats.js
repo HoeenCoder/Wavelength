@@ -424,7 +424,7 @@ exports.Formats = [
 		onBegin: function () {
 			let allPokemon = this.p1.pokemon.concat(this.p2.pokemon);
 			allPokemon.forEach(pokemon => {
-				pokemon.baseMoveset = [{
+				pokemon.baseMoveSlots = [{
 					move: 'Metronome',
 					id: 'metronome',
 					pp: 16,
@@ -434,8 +434,9 @@ exports.Formats = [
 					disabledSource: '',
 					used: false,
 				}];
-				pokemon.moves = ['metronome'];
-				pokemon.moveset = pokemon.baseMoveset;
+				pokemon.moves.splice(0, 4);
+				pokemon.moves.push('metronome');
+				pokemon.moveSlots = pokemon.baseMoveSlots;
 				if (Dex.getFormat('[Gen 7] Metronome Battle').banlist.includes(this.getItem(pokemon.item).name)) {
 					pokemon.item = 'leppaberry';
 				}
@@ -460,9 +461,10 @@ exports.Formats = [
 				let pokemon = allPokemon[i];
 				let last = pokemon.moves.length - 1;
 				if (pokemon.moves[last]) {
-					pokemon.moves[last] = toId(pokemon.set.signatureMove);
-					pokemon.moveset[last].move = pokemon.set.signatureMove;
-					pokemon.baseMoveset[last].move = pokemon.set.signatureMove;
+					pokemon.moves.splice(last, 1);
+					pokemon.moves.push(toId(pokemon.set.signatureMove));
+					pokemon.moveSlots[last].move = pokemon.set.signatureMove;
+					pokemon.baseMoveSlots[last].move = pokemon.set.signatureMove;
 				}
 			}
 		},
@@ -476,7 +478,7 @@ exports.Formats = [
 		onModifyPokemon: function (pokemon) {
 			//let name = toId(pokemon.name);
 			// Enforce choice item locking on custom moves.
-			let moves = pokemon.moveset;
+			let moves = pokemon.moveSlots;
 			if (pokemon.getItem().isChoice && pokemon.lastMove === moves[3].id) {
 				for (let i = 0; i < 3; i++) {
 					if (!moves[i].disabled) {
@@ -844,7 +846,7 @@ exports.Formats = [
 
 		mod: 'mixandmega',
 		ruleset: ['[Gen 7] Mix and Mega'],
-		banlist: ['Shadow Tag'],
+		banlist: ['Gengarite', 'Shadow Tag'],
 		bannedStones: ['Beedrillite', 'Blazikenite', 'Gengarite', 'Kangaskhanite', 'Mawilite', 'Medichamite', 'Ultranecrozium Z'],
 		cannotMega: [
 			'Arceus', 'Darkrai', 'Deoxys', 'Deoxys-Attack', 'Dialga', 'Dragonite', 'Giratina', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Lunala', 'Marshadow',
