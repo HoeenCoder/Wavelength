@@ -131,6 +131,7 @@ exports.commands = {
 	code: function (target, room, user) {
 		if (!target) return this.parse('/help code');
 		if (!this.canTalk()) return;
+		if (target.startsWith('\n')) target = target.slice(1);
 		const separator = '\n';
 		if (target.includes(separator)) {
 			const params = target.split(separator);
@@ -747,6 +748,15 @@ exports.commands = {
 			}
 		}
 
+		if (targetRoom.subRooms) {
+			for (const subRoom of targetRoom.subRooms) subRoom.parent = null;
+		}
+		const parent = targetRoom.parent;
+		if (parent && parent.subRooms) {
+			parent.subRooms.delete(targetRoom.id);
+			if (!parent.subRooms.size) parent.subRooms = null;
+		}
+
 		targetRoom.add("|raw|<div class=\"broadcast-red\"><b>This room has been deleted.</b></div>");
 		targetRoom.update(); // |expire| needs to be its own message
 		targetRoom.add("|expire|This room has been deleted.");
@@ -815,6 +825,7 @@ exports.commands = {
 			}
 		} else {
 			const settingName = (setting === true ? 'secret' : setting);
+			if (room.subRooms) return this.errorReply("Private rooms cannot have subrooms.");
 			if (room.isPrivate === setting) {
 				if (room.privacySetter && !room.privacySetter.has(user.userid)) {
 					room.privacySetter.add(user.userid);
@@ -875,6 +886,90 @@ exports.commands = {
 			Rooms.global.writeChatRoomData();
 		}
 	},
+
+	subroom: function (target, room, user) {
+		if (!this.can('makeroom')) return;
+		if (!target) return this.parse('/help subroom');
+
+		if (!room.chatRoomData) return this.errorReply(`Temporary rooms cannot be subrooms.`);
+		if (room.parent) return this.errorReply(`This room is already a subroom. To change which room this subroom belongs to, remove the subroom first.`);
+		if (room.subRooms) return this.errorReply(`This room is already a parent room, and a parent room cannot be made as a subroom.`);
+
+		const main = Rooms.search(target);
+
+		if (!main) return this.errorReply(`The room '${target}' does not exist.`);
+		if (main.isPrivate || !main.chatRoomData) return this.errorReply(`Only public rooms can have subrooms.`);
+		if (room === main) return this.errorReply(`You cannot set a room to be a subroom of itself.`);
+
+		room.parent = main;
+		if (!main.subRooms) main.subRooms = new Map();
+		main.subRooms.set(room.id, room);
+
+		let mainIdx = Rooms.global.chatRoomDataList.findIndex(r => r.title === main.title);
+		let subIdx = Rooms.global.chatRoomDataList.findIndex(r => r.title === room.title);
+
+		// This is needed to ensure that the main room gets loaded before the subroom.
+		if (mainIdx > subIdx) {
+			const tmp = Rooms.global.chatRoomDataList[mainIdx];
+			Rooms.global.chatRoomDataList[mainIdx] = Rooms.global.chatRoomDataList[subIdx];
+			Rooms.global.chatRoomDataList[subIdx] = tmp;
+		}
+
+		room.chatRoomData.parentid = main.id;
+		Rooms.global.writeChatRoomData();
+
+		for (let userid in room.users) {
+			room.users[userid].updateIdentity(room.id);
+		}
+
+		return this.addModCommand(`This room was set as a subroom of ${main.title} by ${user.name}.`);
+	},
+
+	removesubroom: 'unsubroom',
+	unsubroom: function (target, room, user) {
+		if (!this.can('makeroom')) return;
+		if (!room.parent || !room.chatRoomData) return this.errorReply(`This room is not currently a subroom of a public room.`);
+
+		const parent = room.parent;
+		if (parent && parent.subRooms) {
+			parent.subRooms.delete(room.id);
+			if (!parent.subRooms.size) parent.subRooms = null;
+		}
+
+		room.parent = null;
+
+		delete room.chatRoomData.parentid;
+		Rooms.global.writeChatRoomData();
+
+		for (let userid in room.users) {
+			room.users[userid].updateIdentity(room.id);
+		}
+
+		return this.addModCommand(`This room was unset as a subroom by ${user.name}.`);
+	},
+
+	subrooms: function (target, room, user) {
+		if (room.isPrivate) return this.errorReply(`Private rooms cannot have subrooms.`);
+		if (!room.chatRoomData) return this.errorReply(`Temporary rooms cannot have subrooms.`);
+
+		if (!this.runBroadcast()) return;
+
+		let showSecret = !this.broadcasting && this.can('mute', null, room);
+
+		let subRooms = room.getSubRooms(showSecret);
+
+		if (!subRooms.length) return this.sendReply(`This room doesn't have any subrooms.`);
+
+		let subRoomText = subRooms.map(room => Chat.html `<a href="/${room.id}">${room.title}</a><br/><small>${room.desc}</small>`);
+
+		return this.sendReplyBox(`<p style="font-weight:bold;">${Chat.escapeHTML(room.title)}'s subroom${Chat.plural(subRooms)}:</p><ul><li>${subRoomText.join('</li><br/><li>')}</li></ul></strong>`);
+	},
+
+	subroomhelp: [
+		"/subroom [room] - Marks the current room as a subroom of room. Requires: & ~",
+		"/unsubroom - Unmarks the current room as a subroom. Requires: & ~",
+		"/subrooms - Displays the current room's subrooms.",
+	],
 
 	roomdesc: function (target, room, user) {
 		if (!target) {
@@ -1099,6 +1194,11 @@ exports.commands = {
 		if (targetUser) {
 			targetUser.popup(`You were appointed Room Owner by ${user.name} in ${room.id}.`);
 			room.onUpdateIdentity(targetUser);
+			if (room.subRooms) {
+				for (const subRoom of room.subRooms.values()) {
+					subRoom.onUpdateIdentity(targetUser);
+				}
+			}
 		}
 		Rooms.global.writeChatRoomData();
 	},
@@ -1192,7 +1292,14 @@ exports.commands = {
 			if (needsPopup) targetUser.popup(`You were promoted to Room ${groupName} by ${user.name} in ${room.id}.`);
 		}
 
-		if (targetUser) targetUser.updateIdentity(room.id);
+		if (targetUser) {
+			targetUser.updateIdentity(room.id);
+			if (room.subRooms) {
+				for (const subRoom of room.subRooms.values()) {
+					targetUser.updateIdentity(subRoom.id);
+				}
+			}
+		}
 		if (room.chatRoomData) Rooms.global.writeChatRoomData();
 	},
 	roompromotehelp: [
@@ -1317,7 +1424,7 @@ exports.commands = {
 
 		if (targetUser in room.users || user.can('lock')) {
 			targetUser.popup(
-				"|modal||html|<p>" + Chat.escapeHTML(user.name) + " has banned you from the room " + room.id + ".</p>" + (target ? "<p>Reason: " + Chat.escapeHTML(target) + "</p>" : "") +
+				"|modal||html|<p>" + Chat.escapeHTML(user.name) + " has banned you from the room " + room.id + (room.subRooms ? " and its subrooms" : "") + ".</p>" + (target ? "<p>Reason: " + Chat.escapeHTML(target) + "</p>" : "") +
 				"<p>To appeal the ban, PM the staff member that banned you" + (!room.battle && room.auth ? " or a room owner. </p><p><button name=\"send\" value=\"/roomauth " + room.id + "\">List Room Staff</button></p>" : ".</p>")
 			);
 		}
@@ -1371,7 +1478,7 @@ exports.commands = {
 		Rooms.global.autojoinRooms(user, connection);
 		let autojoins = [];
 		for (const target of targets) {
-			if (user.tryJoinRoom(target, connection) === null) {
+			if (user.tryJoinRoom(target, connection) === Rooms.RETRY_AFTER_LOGIN) {
 				autojoins.push(target);
 			}
 		}
@@ -1387,7 +1494,7 @@ exports.commands = {
 		if (target.startsWith('https://')) target = target.slice(8);
 		if (target.startsWith('play.pokemonshowdown.com/')) target = target.slice(25);
 		if (target.startsWith('psim.us/')) target = target.slice(8);
-		if (user.tryJoinRoom(target, connection) === null) {
+		if (user.tryJoinRoom(target, connection) === Rooms.RETRY_AFTER_LOGIN) {
 			connection.sendTo(target, "|noinit|namerequired|The room '" + target + "' does not exist or requires a login to join.");
 		}
 	},
@@ -1398,6 +1505,7 @@ exports.commands = {
 	part: function (target, room, user, connection) {
 		let targetRoom = target ? Rooms.search(target) : room;
 		if (!targetRoom || targetRoom === Rooms.global) {
+			if (target.startsWith('view-')) return;
 			return this.errorReply("The room '" + target + "' does not exist.");
 		}
 		user.leaveRoom(targetRoom, connection);
@@ -1703,13 +1811,13 @@ exports.commands = {
 		}
 
 		// Destroy personal rooms of the banned user.
-		targetUser.inRooms.forEach(roomid => {
-			if (roomid === 'global') return;
+		for (const roomid of targetUser.inRooms) {
+			if (roomid === 'global') continue;
 			let targetRoom = Rooms.get(roomid);
 			if (targetRoom.isPersonal && targetRoom.auth[userid] === '#') {
 				targetRoom.destroy();
 			}
-		});
+		}
 
 		let proof = '';
 		let userReason = target;
@@ -2260,7 +2368,7 @@ exports.commands = {
 
 		if (targetUser in room.users || user.can('lock')) {
 			targetUser.popup(
-				"|modal||html|<p>" + Chat.escapeHTML(user.name) + " has blacklisted you from the room " + room.id + ".</p>" + (target ? "<p>Reason: " + Chat.escapeHTML(target) + "</p>" : "") +
+				"|modal||html|<p>" + Chat.escapeHTML(user.name) + " has blacklisted you from the room " + room.id + (room.subRooms ? " and its subrooms" : "") + ".</p>" + (target ? "<p>Reason: " + Chat.escapeHTML(target) + "</p>" : "") +
 				"<p>To appeal the ban, PM the staff member that blacklisted you" + (!room.battle && room.auth ? " or a room owner. </p><p><button name=\"send\" value=\"/roomauth " + room.id + "\">List Room Staff</button></p>" : ".</p>")
 			);
 		}
@@ -3467,13 +3575,13 @@ exports.commands = {
 				return false;
 			}
 			let roomList = {};
-			targetUser.inRooms.forEach(roomid => {
-				if (roomid === 'global') return;
+			for (let roomid of targetUser.inRooms) {
+				if (roomid === 'global') continue;
 				let targetRoom = Rooms.get(roomid);
-				if (!targetRoom) return; // shouldn't happen
+				if (!targetRoom) continue; // shouldn't happen
 				let roomData = {};
 				if (targetRoom.isPrivate) {
-					if (!user.inRooms.has(roomid) && !user.games.has(roomid)) return;
+					if (!user.inRooms.has(roomid) && !user.games.has(roomid)) continue;
 					roomData.isPrivate = true;
 				}
 				if (targetRoom.battle) {
@@ -3485,7 +3593,7 @@ exports.commands = {
 					roomid = targetRoom.auth[targetUser.userid] + roomid;
 				}
 				roomList[roomid] = roomData;
-			});
+			}
 			if (!targetUser.connected) roomList = false;
 			let userdetails = {
 				userid: targetUser.userid,

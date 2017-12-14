@@ -570,7 +570,7 @@ exports.BattleMovedex = {
 			},
 		},
 		category: "Physical",
-		pp:  3.75,
+		pp: 3.75,
 		priority: 0,
 		flags: {protect: 1, distance: 1},
 		onPrepareHit: function (target, source) {

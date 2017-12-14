@@ -2635,11 +2635,13 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		onHit: function (target) {
 			if (['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(target.ability)) return;
-			if (!this.willMove(target)) target.addVolatile('gastroacid');
+			if (target.newlySwitched || this.willMove(target)) return;
+			target.addVolatile('gastroacid');
 		},
 		onAfterSubDamage: function (target) {
 			if (['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(target.ability)) return;
-			if (!this.willMove(target)) target.addVolatile('gastroacid');
+			if (target.newlySwitched || this.willMove(target)) return;
+			target.addVolatile('gastroacid');
 		},
 		secondary: false,
 		target: "allAdjacentFoes",
@@ -8643,10 +8645,6 @@ exports.BattleMovedex = {
 		priority: 1,
 		flags: {},
 		pseudoWeather: 'iondeluge',
-		onTryHitField: function () {
-			this.add('-hint', "Ion Deluge does not work in Ultra Sun and Ultra Moon.");
-			return false;
-		},
 		effect: {
 			duration: 1,
 			onStart: function (target) {
@@ -18706,13 +18704,12 @@ exports.BattleMovedex = {
 			},
 			onTryHitPriority: 4,
 			onTryHit: function (target, source, move) {
-				// USUM bug
-				if (move.isZ) {
-					move.zBrokeProtect = true;
-					return;
-				}
 				// Wide Guard blocks all spread moves
 				if (move && move.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
+					return;
+				}
+				if (move.isZ) {
+					move.zBrokeProtect = true;
 					return;
 				}
 				this.add('-activate', target, 'move: Wide Guard');
