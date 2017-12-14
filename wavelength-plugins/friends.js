@@ -5,29 +5,27 @@
 'use strict';
 
 function genFC() {
-	let fc = Math.floor(Math.random() * 89999999 + 10000000);
-	let FCjson = Db.fc.keys();
-	let finalFC = 'WL' + fc;
-	for (let u of FCjson) {
-		while (FCjson[u] === [finalFC]) {
-			fc = Math.floor(Math.random() * 89999999 + 10000000);
-			finalFC = 'WL' + fc;
-		}
-	}
-	return finalFC;
+  const randomCode = () => Math.floor(Math.random() * 89999999) + 10000000;
+  let currentCodes = Db.fc.keys().map(curKey => Db.fc.get(curKey));
+  let uniqueCode = `WL${randomCode()}`;
+  while (currentCodes.some(curCode => uniqueCode === curCode)) {
+  	uniqueCode = `WL${randomCode()}`;
+  }
+  return uniqueCode;
 }
 
 const FC = {
 	getFC: function (user) {
 		user = toId(user);
 		let fcget = Db.fc.get(user);
+		if (!fcget || fcget === null) return user.reply('You don\'t have a friendcode. Use /fc make to make one.');
 		return fcget;
 	},
 
 	addFC: function (user, fc) {
 		user = toId(user);
 		Db.fc.set(user, fc);
-		return this.sendReply('Your friend code has been added to the system. Give to others to add you as a friend!');
+		return user.reply('Your friend code has been added to the system. Give to others to add you as a friend!');
 	},
 };
 
@@ -35,12 +33,12 @@ const Friend = {
 	addFriend: function (target, fc, user) {
 		target = toId(target);
 		fc = fc.toLowerCase();
-		let thisFC = FC.getFC(target);
-		thisFC = fc.toLowerCase();
+		let thisFC = FC.getFC(target).toLowerCase();
 		if (fc === thisFC) {
-			if (Db.friend.get(user, []).length === 0) Db.friend.set(user, []);
-			Db.friend.set(Db.friend.get(user).push(target));
-			user.popup(`You have added ${target} as a friend!`);
+			let curFriends = Db.friend.get(user, []);
+			curFriends.push(target);
+			Db.friend.set(user, curFriends);
+			user.popup(`You have added ${target} as a friend.`);
 			return;
 		} else {
 			user.popup(`${fc} is not the right friendcode for ${target}.`);
@@ -50,38 +48,37 @@ const Friend = {
 
 	removeFriend: function (target, user) {
 		target = toId(target);
-		if (!Db.friend.get(user).includes(target)) return this.errorReply('You are not friends with this user.');
-		let array = Db.friend.get(user);
-		let tot = 0;
-		for (let i = 0; i < array.length; i++) {
-			if (array[i] !== target) {
-				tot = tot + 1;
-			} else {
-				i = array.length;
-			}
-		}
-		Db.friends.set(Db.friends.get(user).splice(tot, 1));
-		return this.sendReply(`You are no longer friends with ${target}.`);
+		if (!Db.friends.get(user).includes(target)) return this.errorReply('You are not friends with this user.');
+		let userid = user.userid;
+		let curFriends = Db.friend.get(userid, []);
+		if (!curFriends.length) return user.popup("You don't have any friends to remove.");
+		let targetIndex = curFriends.findIndex(curFriend => toId(target) === curFriend);
+		if (targetIndex <= 0) return user.popup("You are not friends with this user.");
+		curFriends.splice(targetIndex, 1);
+		Db.friend.set(userid, curFriends);
+		user.popup(`You are no longer friends with "${target}".`);
+		return user.reply(`You are no longer friends with ${target}.`);
 	},
 };
 
 exports.commands = {
 	fc: {
 		make: function (target, room, user) {
-			if (user.locked) this.errorReply('You can\'t obtain your friend code while locked.');
-			let fc = genFC();
-			Db.fc.set(user.userid, fc);
-			this.popupReply(`Your friend code is ${fc}. If you forget it, use /fc get .`);
+			let hasFC = Db.fc.get(user);
+			if (!hasFC) {
+				if (user.locked) this.errorReply('You can\'t obtain your friend code while locked.');
+				let fc = genFC();
+				Db.fc.set(user.userid, fc);
+				this.popupReply(`Your friend code is ${fc}. If you forget it, use /fc get .`);
+			} else {
+				this.popupReply('You already have a friend code.');
+			}
 		},
 
 		get: function (target, room, user) {
 			if (user.locked) this.errorReply('You can\'t give out your code while locked.');
 			let getfc = FC.getFC(user);
-			if (getfc === undefined) {
-				this.sendReply('You need to make a friend code with /fc make ');
-			} else {
-				this.sendReplyBox(`Your friend code is: ${getfc}`);
-			}
+			this.sendReplyBox(`Your friend code is: ${getfc}`);
 		},
 
 		help: function (target, room, user) {
@@ -95,10 +92,7 @@ exports.commands = {
 	friend: {
 		add: function (target, room, user) {
 			if (user.locked) this.errorReply('You can\'t make friends while locked.');
-			let split = target.split(', ');
-			let targetUser = split[0];
-			targetUser = toId(targetUser);
-			let addFc = split[1];
+			let [targetUser, targetCode] = target.split(',').map(p => toId(p));
 			if (!split[0] || !split[1]) return this.errorReply('/friend add [friend], [fc]');
 			if (!FC.getFC(targetUser)) return this.errorReply('Tell your friend to get a FC. /fc make');
 			if (targetUser < 1) return this.errorReply('Invalid user.');
@@ -120,24 +114,15 @@ exports.commands = {
 		},
 
 		list: function (target, room, user) {
-			let num = [];
-			let array = Db.friend.get(user);
+			let array = Db.friends.get(user, []);
 			let amount = array.length;
-			for (let i in array) {
-				num.push(array[i]);
-			}
 			if (!this.runBroadcast()) return;
-			if (array.length === 0) {
-				return this.sendReply('You have no friends.');
-			} else if (array.length === 1) {
-				return this.sendReplyBox(`You have 1 friend, named ${num}.`);
-			} else {
-				return this.sendReplyBox(`You have ${amount} friends. Their names are: ${num}.`);
-			}
+			if (!amount) return this.sendReply('You have no friends.');
+			else return this.sendReply(`You have ${amount} friend${Chat.plural(amount)}: ${array.join(', ')}`);
 		},
 		help: function (target, room, user) {
 			this.sendReplyBox(
-				'<h2> Friends Commands: </h2> <br />' +
+			'<h2> Friends Commands: </h2> <br />' +
             '<i> /friend add [target], [friend code] </i> - Adds a friend. <br />' +
             '<i> /friend remove [target] </i> - Removes a friend. <br />' +
             '<i> /friend list </i> - Lists all your friends. <br />' +
