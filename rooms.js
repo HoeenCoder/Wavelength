@@ -1476,7 +1476,9 @@ class ChatRoom extends BasicRoom {
 		if (this.poll) this.poll.onConnect(user, connection);
 		// @ts-ignore TODO: strongly-typed surveys
 		if (this.survey) {
+			// @ts-ignore TODO: strongly-typed surveys
 			for (let u = 0; u < this.survey.surveyArray.length; u++) {
+				// @ts-ignore TODO: strongly-typed surveys
 				if (this.survey.surveyArray[u]) this.survey.onConnect(user, connection, u);
 			}
 		}
