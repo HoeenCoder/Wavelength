@@ -64,9 +64,9 @@ function addExp(user, room, amount) {
 				let reward = '';
 				switch (level) {
 				case 5:
-					Economy.logTransaction(user.userid + ' received a custom symbol for reaching level ' + level + '.');
-					user.canCustomSymbol = true;
-					reward = 'a Custom Symbol. To claim your custom symbol, use the command /customsymbol [symbol]';
+					Economy.logTransaction(user.userid + ' received a profile background and profile music for reaching level ' + level + '.');
+					Monitor.log(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '!');
+					reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a global staff member.';
 					break;
 				case 10:
 					Economy.logTransaction(user.userid + ' received a custom avatar for reaching level ' + level + '.');
@@ -148,16 +148,17 @@ exports.commands = {
 			});
 		} else {
 			EXP.readExp(user.userid, exp => {
-				this.sendReplyBox("Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Current Exp: " + exp + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
+				this.sendReplyBox(
+					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Current Exp: " + exp + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
 					"<br />All rewards have a 1 time use! <br /><br />" +
-					"Level 5 unlocks a free Custom Symbol. <br /><br />" +
+					"Level 5 unlocks a free Profile Background and Song. <br /><br />" +
 					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
 					"Level 15 unlocks a free Profile Title. <br /><br />" +
 					"Level 20 unlocks a free Custom Userlist Icon. <br /><br />" +
 					"Level 25 unlocks a free Emote. <br /><br />" +
 					"Level 30 unlocks a free Custom Color.  <br /><br />" +
 					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
-					"Level 40 unlocks a free chatroom. <br /><br />"
+					"Level 40 unlocks a free Chatroom. <br /><br />"
 				);
 			});
 		}
