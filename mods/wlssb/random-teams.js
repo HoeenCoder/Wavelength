@@ -434,7 +434,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-			'+SnorlaxTheRain' : {
+			'+SnorlaxTheRain': {
 				species: 'Snorlax',
 				ability: 'Scraroom',
 				item: 'Snorlium Z',
