@@ -865,7 +865,7 @@ exports.BattleMovedex = {
 		contestType: "Cool",
 	},
 	//SnorlaxTheRain
-	"snorlaxslam" : {
+	"snorlaxslam": {
 		accuracy: 95,
 		basePower: 120,
 		category: "Physical",
