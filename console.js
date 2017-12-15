@@ -1,15 +1,9 @@
 'use strict';
 
 class Console {
-	constructor(user, room, css, html, bottom, muted, sound) {
+	constructor(user, css, html, bottom, muted, sound) {
+		this.title = 'Game Console';
 		this.userid = user.userid;
-		this.consoleId = user.consoleId + 1 || 1;
-		if (!user.consoleId) {
-			user.consoleId = this.consoleId;
-		} else {
-			user.consoleId++;
-		}
-		this.room = room.id;
 		this.muted = !!muted;
 		this.sound = sound || null;
 		this.curScreen = [null, null, null];
@@ -22,13 +16,13 @@ class Console {
 		}
 		defaultInfo += '<br/><button name="send" value="/console kill" style="border: none; background: none; color: #FFF; font-family: monospace;"><u>Shutdown</u></button></div>';
 		this.defaultHTML = html || defaultInfo;
-		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button></center>';
+		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/console kill">Power</button></center>';
 	}
 	init() {
-		Users(this.userid).sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole());
+		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|init|html\n|title|${this.title}\n|pagehtml|${this.buildConsole()}`);
 	}
 	update(css, html, bottom) {
-		Users(this.userid).sendTo(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|' + this.buildConsole(css, html, bottom));
+		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|pagehtml|${this.buildConsole(css, html, bottom)}`);
 		this.prevScreen = this.curScreen;
 		this.curScreen = [(css || null), (html || null), (bottom || null)];
 	}
@@ -48,23 +42,8 @@ class Console {
 		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
 	}
-	shift() {
-		let user = Users(this.userid);
-		user.sendTo(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
-		user.consoleId++;
-		this.consoleId++;
-		user.sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
-	}
-	move(newRoom) {
-		newRoom = toId(newRoom);
-		if (newRoom === this.room || !Rooms.search(newRoom)) return false;
-		let user = Users(this.userid);
-		if (!user.inRooms.has(newRoom)) return false;
-		user.send(this.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
-		this.room = newRoom;
-		user.consoleId++;
-		this.consoleId++;
-		user.sendTo(this.room, '|uhtml|console' + this.userid + this.consoleId + '|' + this.buildConsole(this.curScreen[0], this.curScreen[1], this.curScreen[2]));
+	deinit() {
+		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|deinit`);
 	}
 	// Overwrite these to use them.
 	up(data) {}
@@ -96,28 +75,19 @@ exports.commands = {
 			if (!user.console) return;
 			user.console.toggleSound();
 		},
-		shift: function (target, room, user) {
-			if (!user.console) return;
-			user.console.shift();
-		},
-		move: function (target, room, user) {
-			if (!user.console) return;
-			user.console.move(toId(target) || room.id);
-		},
 		forcestart: 'start',
 		start: function (target, room, user, connection, cmd, message) {
-			if (room.battle) return this.errorReply('The game console is not designed to be used in battle rooms.');
 			if (user.console && cmd !== 'forcestart') return;
 			if (cmd === 'forcestart') this.parse('/console kill');
 			if (!target || Object.keys(WL.gameList).indexOf(toId(target)) === -1) {
-				user.console = new Console(user, room);
+				user.console = new Console(user);
 				return user.console.init();
 			}
 			return this.parse(WL.gameList[toId(target)].startCommand);
 		},
 		kill: function (target, room, user) {
 			if (!user.console) return;
-			user.sendTo(user.console.room, '|uhtmlchange|console' + user.userid + user.consoleId + '|');
+			user.console.deinit();
 			user.console.onKill();
 			delete user.console;
 		},

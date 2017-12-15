@@ -1,9 +1,10 @@
 'use strict';
 
 class SGgame extends Console.Console {
-	constructor(user, room, muted) {
-		super(user, room, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->  <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/console kill">Power</button>', muted);
+	constructor(user, muted) {
+		super(user, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
+		this.title = 'SGgame';
 		this.gameId = 'SGgame';
 		this.version = '(Alpha) 1.0';
 		this.queue = [];
@@ -696,7 +697,7 @@ exports.commands = {
 		}
 		if (user.lastCommand) delete user.lastCommand;
 		if (user.console) this.parse('/console kill');
-		user.console = new SGgame(user, room, !!target);
+		user.console = new SGgame(user, !!target);
 		if (cmd === 'playalpha') {
 			let htm = '<center>';
 			if (Db.players.has(user.userid)) htm += '<button name="send" value="/continuealpha" style="display: block; border: 5px solid #AAA; background: #FFF; font-family: monospace; border-radius: 5px; width: 90%; text-align: left;"><b>CONTINUE</b><br/><br/><span style="color: #4286f4">PLAYER ' + user.name + '<br/><br/>TIME ' + (Chat.toDurationString(Db.players.get(user.userid).time, {precision: 2}) || '0 Seconds') + '<br/><br/>POKEDEX ' + Object.keys(Db.players.get(user.userid).pokedex).length + '</span></button>';
@@ -711,7 +712,7 @@ exports.commands = {
 				"text|<b style=\"color: #090\">HoeenHero</b>: Well, that's enough from me. Let's get you started!<br/>Uh acutally it seems i've missplaced my starter pokemon for new players...",
 				"text|<b style=\"color: #090\">HoeenHero</b>: Oh well, I'm sure you'll end up with a pokemon soon enough.<br/>Good luck on your adventure, and be sure to report any issues you find!|callback"];
 			user.console.callback = function () {
-				//user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+				//user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				Db.players.set(user.userid, new Player(user, null));
 				user.console.warp("mainisland|0");
 				user.console.callback = null;
@@ -728,7 +729,7 @@ exports.commands = {
 				Object.assign(newPlayer, Db.players.get(user.userid));
 				Db.players.set(user.userid, newPlayer);
 			}
-			if (Db.players.get(user.userid).party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+			if (Db.players.get(user.userid).party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			user.console.warp(Db.players.get(user.userid).location + "|" + Db.players.get(user.userid).zone);
 		}
