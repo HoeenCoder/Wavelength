@@ -154,9 +154,10 @@ class BattleTimer {
 		this.lastDisabledTime = 0;
 		this.lastDisabledByUser = null;
 
-		const hasLongTurns = Dex.getFormat(battle.format).gameType !== 'singles';
+		const hasLongTurns = Dex.getFormat(battle.format, true).gameType !== 'singles';
 		const isChallenge = (!battle.rated && !battle.room.tour);
-		this.settings = Object.assign({}, Dex.getFormat(battle.format).timer);
+		const timerSettings = Dex.getFormat(battle.format, true).timer;
+		this.settings = Object.assign({}, timerSettings);
 		if (this.settings.perTurn === undefined) {
 			this.settings.perTurn = hasLongTurns ? 25 : 10;
 		}
@@ -171,6 +172,9 @@ class BattleTimer {
 		this.settings.startingTicks = Math.ceil(this.settings.starting / TICK_TIME);
 		this.settings.maxPerTurnTicks = Math.ceil(this.settings.maxPerTurn / TICK_TIME);
 		this.settings.maxFirstTurnTicks = Math.ceil((this.settings.maxFirstTurn || 0) / TICK_TIME);
+		if (this.settings.accelerate === undefined) {
+			this.settings.accelerate = !timerSettings;
+		}
 
 		for (let slotNum = 0; slotNum < 2; slotNum++) {
 			this.ticksLeft.push(this.settings.startingTicks);
@@ -229,6 +233,21 @@ class BattleTimer {
 			const slot = 'p' + (slotNum + 1);
 			const player = this.battle[slot];
 
+			let perTurnTicks = this.settings.perTurnTicks;
+			if (this.settings.accelerate && perTurnTicks) {
+				// after turn 100ish: 15s/turn -> 10s/turn
+				if (this.battle.requestCount > 200) {
+					perTurnTicks--;
+				}
+				// after turn 200ish: 10s/turn -> 7s/turn
+				if (this.battle.requestCount > 400 && this.battle.requestCount % 2) {
+					perTurnTicks = 0;
+				}
+				// after turn 400ish: 7s/turn -> 6s/turn
+				if (this.battle.requestCount > 800 && this.battle.requestCount % 4) {
+					perTurnTicks = 0;
+				}
+			}
 			this.ticksLeft[slotNum] += this.settings.perTurnTicks;
 			this.turnTicksLeft[slotNum] = Math.min(this.ticksLeft[slotNum], maxTurnTicks);
 
@@ -308,7 +327,7 @@ class BattleTimer {
 		let didSomething = false;
 		for (const [slotNum, ticks] of this.turnTicksLeft.entries()) {
 			if (ticks) continue;
-			if (this.settings.timeoutAutoChoose && this.ticksLeft[slotNum]) {
+			if (this.settings.timeoutAutoChoose && this.ticksLeft[slotNum] && this.dcTicksLeft[slotNum] === NOT_DISCONNECTED) {
 				const slot = 'p' + (slotNum + 1);
 				this.battle.send('choose', slot, 'default');
 				didSomething = true;
@@ -323,7 +342,7 @@ class BattleTimer {
 
 class Battle {
 	constructor(room, formatid, options) {
-		let format = Dex.getFormat(formatid);
+		let format = Dex.getFormat(formatid, true);
 		this.id = room.id;
 		this.room = room;
 		this.title = format.name;
@@ -360,6 +379,7 @@ class Battle {
 		this.endType = 'normal';
 
 		this.rqid = 1;
+		this.requestCount = 0;
 
 		this.process = SimulatorProcess.acquire();
 		if (this.process.pendingTasks.has(room.id)) {
@@ -526,6 +546,7 @@ class Battle {
 				request.rqid = this.rqid;
 				const requestJSON = JSON.stringify(request);
 				this.requests[player.slot] = [this.rqid, requestJSON, request.wait ? 'cantUndo' : false, ''];
+				this.requestCount++;
 				player.sendRoom(`|request|${requestJSON}`);
 			}
 			break;
@@ -590,7 +611,7 @@ class Battle {
 		this.room.update();
 	}
 	async logBattle(p1score, p1rating, p2rating) {
-		if (Dex.getFormat(this.format).noLog) return;
+		if (Dex.getFormat(this.format, true).noLog) return;
 		let logData = this.logData;
 		if (!logData) return;
 		this.logData = null; // deallocate to save space
@@ -841,6 +862,7 @@ if (process.send && module === process.mainModule) {
 	// another process.
 	process.on('message', message => {
 		//console.log('CHILD MESSAGE RECV: "' + message + '"');
+		let startTime = Date.now();
 		let nlIndex = message.indexOf("\n");
 		let more = '';
 		if (nlIndex > 0) {
@@ -910,6 +932,10 @@ if (process.send && module === process.mainModule) {
 					eval(data[2]);
 				} catch (e) {}
 			}
+		}
+		let deltaTime = Date.now() - startTime;
+		if (deltaTime > 1000) {
+			console.log(`[slow battle] ${deltaTime}ms - ${message}\\\\${more}`);
 		}
 	});
 

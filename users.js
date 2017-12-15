@@ -142,20 +142,20 @@ let getExactUser = Users.getExact = function (name) {
 let findUsers = Users.findUsers = function (userids, ips, options) {
 	let matches = [];
 	if (options && options.forPunishment) ips = ips.filter(ip => !Punishments.sharedIps.has(ip));
-	users.forEach(user => {
-		if (!(options && options.forPunishment) && !user.named && !user.connected) return;
-		if (!(options && options.includeTrusted) && user.trusted) return;
+	for (const user of users.values()) {
+		if (!(options && options.forPunishment) && !user.named && !user.connected) continue;
+		if (!(options && options.includeTrusted) && user.trusted) continue;
 		if (userids.includes(user.userid)) {
 			matches.push(user);
-			return;
+			continue;
 		}
 		for (let myIp of ips) {
 			if (myIp in user.ips) {
 				matches.push(user);
-				return;
+				break;
 			}
 		}
-	});
+	}
 	return matches;
 };
 
@@ -325,7 +325,7 @@ class Connection {
 		this.ip = ip || '';
 		this.protocol = protocol || '';
 
-		this.autojoin = '';
+		this.autojoins = '';
 	}
 
 	sendTo(roomid, data) {
@@ -400,9 +400,7 @@ class User {
 		// Set of roomids
 		this.games = new Set();
 
-		// searches and challenges
-		this.challengesFrom = {};
-		this.challengeTo = null;
+		// challenge state
 		this.lastChallenge = 0;
 
 		// settings
@@ -575,7 +573,7 @@ class User {
 	 * Special permission check for promoting and demoting
 	 */
 	canPromote(sourceGroup, targetGroup) {
-		return this.can('promote', {group:sourceGroup}) && this.can('promote', {group:targetGroup});
+		return this.can('promote', {group: sourceGroup}) && this.can('promote', {group: targetGroup});
 	}
 	resetName(isForceRenamed) {
 		return this.forceRename('Guest ' + this.guestNum, false, isForceRenamed);
@@ -584,9 +582,9 @@ class User {
 		if (roomid) {
 			return Rooms(roomid).onUpdateIdentity(this);
 		}
-		this.inRooms.forEach(roomid => {
+		for (const roomid of this.inRooms) {
 			Rooms(roomid).onUpdateIdentity(this);
-		});
+		}
 	}
 	/**
 	 *
@@ -601,7 +599,7 @@ class User {
 			let game = Rooms(roomid).game;
 			if (!game || game.ended) continue; // should never happen
 			if (game.allowRenames || !this.named) continue;
-			this.popup(`You can't change your name right now because you're in the middle of a rated game.`);
+			this.popup(`You can't change your name right now because you're in ${Rooms(roomid).title}, which doesn't allow renaming.`);
 			return false;
 		}
 
@@ -790,9 +788,9 @@ class User {
 		// skip the login server
 		let userid = toId(name);
 
-		this.inRooms.forEach(roomid => {
+		for (const roomid of this.inRooms) {
 			Punishments.checkNewNameInRoom(this, userid, roomid);
-		});
+		}
 
 		if (users.has(userid) && users.get(userid) !== this) {
 			return false;
@@ -800,7 +798,7 @@ class User {
 
 		let oldid = this.userid;
 		if (userid !== this.userid) {
-			this.cancelSearches();
+			this.cancelReady();
 
 			if (!Users.move(this, userid)) {
 				return false;
@@ -838,17 +836,16 @@ class User {
 			}
 			room.game.onRename(this, oldid, joining, isForceRenamed);
 		});
-		this.inRooms.forEach(roomid => {
+		for (const roomid of this.inRooms) {
 			Rooms(roomid).onRename(this, oldid, joining);
-		});
+		}
 		return true;
 	}
 	merge(oldUser) {
-		oldUser.cancelChallengeTo();
-		oldUser.cancelSearches();
-		oldUser.inRooms.forEach(roomid => {
+		oldUser.cancelReady();
+		for (const roomid of oldUser.inRooms) {
 			Rooms(roomid).onLeave(oldUser);
-		});
+		}
 
 		if (this.locked === '#dnsbl' && !oldUser.locked) this.locked = false;
 		if (!this.locked && oldUser.locked === '#dnsbl') oldUser.locked = false;
@@ -903,14 +900,14 @@ class User {
 		let initdata = `|updateuser|${this.name}|1|${this.avatar}`;
 		connection.send(initdata);
 		connection.user = this;
-		connection.inRooms.forEach(roomid => {
+		for (const roomid of connection.inRooms) {
 			let room = Rooms(roomid);
 			if (!this.inRooms.has(roomid)) {
 				if (Punishments.checkNameInRoom(this, room.id)) {
 					// the connection was in a room that this user is banned from
 					connection.sendTo(room.id, `|deinit`);
 					connection.leaveRoom(room);
-					return;
+					continue;
 				}
 				room.onJoin(this, connection);
 				this.inRooms.add(roomid);
@@ -921,8 +918,8 @@ class User {
 				// don't want this behavior.
 				room.game.onUpdateConnection(this, connection);
 			}
-		});
-		this.updateSearch(true, connection);
+		}
+		this.updateReady(connection);
 	}
 	debugData() {
 		let str = '' + this.group + this.name + ' (' + this.userid + ')';
@@ -1067,9 +1064,9 @@ class User {
 				if (this.connections.length <= 1) {
 					this.markInactive();
 				}
-				connection.inRooms.forEach(roomid => {
+				for (const roomid of connection.inRooms) {
 					this.leaveRoom(Rooms(roomid), connection, true);
-				});
+				}
 				--this.ips[connection.ip];
 				this.connections.splice(i, 1);
 				break;
@@ -1077,11 +1074,11 @@ class User {
 		}
 		if (!this.connections.length) {
 			// cleanup
-			this.inRooms.forEach(roomid => {
+			for (const roomid of this.inRooms) {
 				// should never happen.
 				Monitor.debug(`!! room miscount: ${roomid} not left`);
 				Rooms(roomid).onLeave(this);
-			});
+			}
 			this.inRooms.clear();
 			if (!this.named && !Object.keys(this.prevNames).length) {
 				// user never chose a name (and therefore never talked/battled)
@@ -1089,8 +1086,7 @@ class User {
 				// immediately deallocate
 				this.destroy();
 			} else {
-				this.cancelChallengeTo();
-				this.cancelSearches();
+				this.cancelReady();
 			}
 		}
 	}
@@ -1102,19 +1098,19 @@ class User {
 		for (let i = this.connections.length - 1; i >= 0; i--) {
 			// console.log('DESTROY: ' + this.userid);
 			connection = this.connections[i];
-			connection.inRooms.forEach(roomid => {
+			for (const roomid of connection.inRooms) {
 				this.leaveRoom(Rooms(roomid), connection, true);
-			});
+			}
 			connection.destroy();
 		}
 		if (this.connections.length) {
 			// should never happen
 			throw new Error(`Failed to drop all connections for ${this.userid}`);
 		}
-		this.inRooms.forEach(roomid => {
+		for (const roomid of this.inRooms) {
 			// should never happen.
 			throw new Error(`Room miscount: ${roomid} not left for ${this.userid}`);
-		});
+		}
 		this.inRooms.clear();
 	}
 	getAltUsers(includeTrusted, forPunishment) {
@@ -1135,9 +1131,27 @@ class User {
 	tryJoinRoom(room, connection) {
 		let roomid = (room && room.id ? room.id : room);
 		room = Rooms.search(room);
+		if (!room && roomid.startsWith('view-')) {
+			// it's a page!
+			let parts = roomid.split('-');
+			let handler = Chat.pages;
+			parts.shift();
+			while (handler) {
+				if (typeof handler === 'function') {
+					let res = handler(parts, this, connection);
+					if (typeof res === 'string') {
+						if (res !== '|deinit') res = `|init|html\n${res}`;
+						connection.send(`>${roomid}\n${res}`);
+						res = undefined;
+					}
+					return res;
+				}
+				handler = handler[parts.shift() || 'default'];
+			}
+		}
 		if (!room || !room.checkModjoin(this)) {
 			if (!this.named) {
-				return null;
+				return Rooms.RETRY_AFTER_LOGIN;
 			} else {
 				connection.sendTo(roomid, `|noinit|nonexistent|The room "${roomid}" does not exist.`);
 				return false;
@@ -1153,12 +1167,12 @@ class User {
 		}
 		if (room.isPrivate) {
 			if (!this.named) {
-				return null;
+				return Rooms.RETRY_AFTER_LOGIN;
 			}
 		}
 
 		if (Rooms.aliases.get(roomid) === room.id) {
-			connection.send(">" + roomid + "\n|deinit");
+			connection.send(`>${roomid}\n|deinit`);
 		}
 
 		let joinResult = this.joinRoom(room, connection);
@@ -1208,8 +1222,7 @@ class User {
 		if (room.id === 'global') {
 			// you can't leave the global room except while disconnecting
 			if (!force) return false;
-			this.cancelChallengeTo();
-			this.cancelSearches();
+			this.cancelReady();
 		}
 		if (!this.inRooms.has(room.id)) {
 			return false;
@@ -1217,7 +1230,7 @@ class User {
 		for (const curConnection of this.connections) {
 			if (connection && curConnection !== connection) continue;
 			if (curConnection.inRooms.has(room.id)) {
-				curConnection.sendTo(room.id, '|deinit');
+				curConnection.sendTo(room.id, `|deinit`);
 				curConnection.leaveRoom(room);
 			}
 			if (connection) break;
@@ -1232,176 +1245,21 @@ class User {
 			this.inRooms.delete(room.id);
 		}
 	}
-	prepBattle(formatid, type, connection) {
-		// all validation for a battle goes through here
-		if (!connection) connection = this;
-		if (!type) type = 'challenge';
 
-		if (Rooms.global.lockdown && Rooms.global.lockdown !== 'pre') {
-			let message = `The server is restarting. Battles will be available again in a few minutes.`;
-			if (Rooms.global.lockdown === 'ddos') {
-				message = `The server is under attack. Battles cannot be started at this time.`;
-			}
-			connection.popup(message);
-			return Promise.resolve(false);
-		}
-		let gameCount = this.games.size;
-		if (Monitor.countConcurrentBattle(gameCount, connection)) {
-			return Promise.resolve(false);
-		}
-		if (Monitor.countPrepBattle(connection.ip || connection.latestIp, connection)) {
-			return Promise.resolve(false);
-		}
-
-		let format = Dex.getFormat(formatid);
-		if (!format['' + type + 'Show']) {
-			connection.popup(`That format is not available.`);
-			return Promise.resolve(false);
-		}
-		return TeamValidatorAsync(formatid).validateTeam(this.team, this.locked || this.namelocked).then(result => this.finishPrepBattle(connection, result));
-	}
-
-	/**
-	 * Parses the result of a team validation and notifies the user.
-	 *
-	 * @param {Connection} connection - The connection from which the team validation was requested.
-	 * @param {string} result - The raw result received by the team validator.
-	 * @return {string|boolean} - The packed team if the validation was successful. False otherwise.
-	 */
-	finishPrepBattle(connection, result) {
-		if (result.charAt(0) !== '1') {
-			connection.popup(`Your team was rejected for the following reasons:\n\n- ` + result.slice(1).replace(/\n/g, `\n- `));
-			return false;
-		}
-
-		if (this !== users.get(this.userid)) {
-			// TODO: User feedback.
-			return false;
-		}
-
-		return result.slice(1);
-	}
-	updateChallenges() {
-		let challengeTo = this.challengeTo;
-		if (challengeTo) {
-			challengeTo = {
-				to: challengeTo.to,
-				format: challengeTo.format,
-			};
-		}
-		let challengesFrom = {};
-		for (let challenger in this.challengesFrom) {
-			challengesFrom[challenger] = this.challengesFrom[challenger].format;
-		}
-		this.send(`|updatechallenges|` + JSON.stringify({
-			challengesFrom: challengesFrom,
-			challengeTo: challengeTo,
-		}));
-	}
-	updateSearch(onlyIfExists, connection) {
-		let games = {};
-		let atLeastOne = false;
-		this.games.forEach(roomid => {
-			const room = Rooms(roomid);
-			if (!room) {
-				Monitor.warn(`while searching, room ${roomid} expired for user ${this.userid} in rooms ${[...this.inRooms]} and games ${[...this.games]}`);
-				this.games.delete(roomid);
-				return;
-			}
-			const game = room.game;
-			if (!game) {
-				Monitor.warn(`while searching, room ${roomid} has no game for user ${this.userid} in rooms ${[...this.inRooms]} and games ${[...this.games]}`);
-				this.games.delete(roomid);
-				return;
-			}
-			games[roomid] = game.title + (game.allowRenames ? '' : '*');
-			atLeastOne = true;
-		});
-		if (!atLeastOne) games = null;
-		let searching = Ladders.matchmaker.getSearches(this);
-		if (onlyIfExists && !searching.length && !atLeastOne) return;
-		(connection || this).send(`|updatesearch|` + JSON.stringify({
-			searching: searching,
-			games: games,
-		}));
-	}
-	cancelSearches(format) {
-		if (Ladders.matchmaker.cancelSearches(this)) {
-			this.popup(`You are no longer looking for a battle because you changed your username.`);
+	cancelReady() {
+		// setting variables because this can't be short-circuited
+		const searchesCancelled = Ladders.cancelSearches(this);
+		const challengesCancelled = Ladders.clearChallenges(this.userid);
+		if (searchesCancelled || challengesCancelled) {
+			this.popup(`Your searches and challenges have been cancelled because you changed your username.`);
 		}
 	}
-	makeChallenge(user, format, team/*, isPrivate*/) {
-		user = getUser(user);
-		if (!user || this.challengeTo) {
-			return false;
-		}
-		if (user.blockChallenges && !this.can('bypassblocks', user)) {
-			return false;
-		}
-		if (new Date().getTime() < this.lastChallenge + 10000) {
-			// 10 seconds ago
-			return false;
-		}
-		let time = new Date().getTime();
-		let challenge = {
-			time: time,
-			from: this.userid,
-			to: user.userid,
-			format: '' + (format || ''),
-			//isPrivate: !!isPrivate, // currently unused
-			team: team,
-		};
-		this.lastChallenge = time;
-		this.challengeTo = challenge;
-		user.challengesFrom[this.userid] = challenge;
-		this.updateChallenges();
-		user.updateChallenges();
+	updateReady(connection) {
+		Ladders.updateSearch(this, connection);
+		Ladders.updateChallenges(this, connection);
 	}
-	cancelChallengeTo() {
-		if (!this.challengeTo) return true;
-		let user = getUser(this.challengeTo.to);
-		if (user) delete user.challengesFrom[this.userid];
-		this.challengeTo = null;
-		this.updateChallenges();
-		if (user) user.updateChallenges();
-	}
-	rejectChallengeFrom(user) {
-		let userid = toId(user);
-		user = getUser(user);
-		if (this.challengesFrom[userid]) {
-			delete this.challengesFrom[userid];
-		}
-		if (user) {
-			delete this.challengesFrom[user.userid];
-			if (user.challengeTo && user.challengeTo.to === this.userid) {
-				user.challengeTo = null;
-				user.updateChallenges();
-			}
-		}
-		this.updateChallenges();
-	}
-	acceptChallengeFrom(user, team) {
-		let userid = toId(user);
-		user = getUser(user);
-		if (!user || !user.challengeTo || user.challengeTo.to !== this.userid || !this.connected || !user.connected) {
-			if (this.challengesFrom[userid]) {
-				delete this.challengesFrom[userid];
-				this.updateChallenges();
-			}
-			return false;
-		}
-		Rooms.createBattle(user.challengeTo.format, {
-			p1: this,
-			p1team: team,
-			p2: user,
-			p2team: user.challengeTo.team,
-			rated: false,
-		});
-		delete this.challengesFrom[user.userid];
-		user.challengeTo = null;
-		this.updateChallenges();
-		user.updateChallenges();
-		return true;
+	updateSearch(connection) {
+		Ladders.updateSearch(this, connection);
 	}
 	/**
 	 * The user says message in room.
@@ -1458,8 +1316,19 @@ class User {
 		}
 	}
 	processChatQueue() {
-		if (!this.chatQueue) return; // this should never happen
+		this.chatQueueTimeout = null;
+		if (!this.chatQueue) return;
+		if (!this.chatQueue.length) {
+			this.chatQueue = null;
+			return;
+		}
 		let [message, roomid, connection] = this.chatQueue.shift();
+		if (!connection.user) {
+			// connection disconnected, chat queue should not be big enough
+			// for recursion to be an issue, also didn't ES6 spec tail
+			// recursion at some point?
+			return this.processChatQueue();
+		}
 
 		this.lastChatMessage = new Date().getTime();
 
@@ -1480,7 +1349,6 @@ class User {
 				() => this.processChatQueue(), throttleDelay);
 		} else {
 			this.chatQueue = null;
-			this.chatQueueTimeout = null;
 		}
 	}
 	destroy() {
@@ -1520,12 +1388,12 @@ Users.Connection = Connection;
 
 Users.pruneInactive = function (threshold) {
 	let now = Date.now();
-	users.forEach(user => {
-		if (user.connected) return;
+	for (const user of users.values()) {
+		if (user.connected) continue;
 		if ((now - user.lastConnected) > threshold) {
 			user.destroy();
 		}
-	});
+	}
 };
 Users.pruneInactiveTimer = setInterval(() => {
 	Users.pruneInactive(Config.inactiveuserthreshold || 1000 * 60 * 60);

@@ -23,6 +23,8 @@ To reload chat commands:
 */
 'use strict';
 
+const LINK_WHITELIST = ['*.pokemonshowdown.com', 'psim.us', 'smogtours.psim.us', '*.smogon.com', '*.pastebin.com', '*.hastebin.com'];
+
 const MAX_MESSAGE_LENGTH = 300;
 
 const BROADCAST_COOLDOWN = 20 * 1000;
@@ -99,6 +101,7 @@ Chat.multiLinePattern = new PatternTester();
 
 Chat.baseCommands = undefined;
 Chat.commands = undefined;
+Chat.pages = undefined;
 
 /*********************************************************
  * Load chat filters
@@ -314,7 +317,7 @@ class CommandContext {
 	/**
 	 * @param {string} message
 	 * @param {boolean} recursing
-	 * @return string
+	 * @return {string}
 	 */
 	splitCommand(message = this.message, recursing = false) {
 		this.cmd = '';
@@ -680,9 +683,14 @@ class CommandContext {
 		}
 		return false;
 	}
+	/**
+	 * @param {string} message
+	 * @param {Room?} [room]
+	 * @param {User?} [targetUser]
+	 */
 	canTalk(message, room, targetUser) {
-		if (room === undefined) room = this.room;
-		if (targetUser === undefined && this.pmTarget) {
+		if (!room) room = this.room;
+		if (!targetUser && this.pmTarget) {
 			room = undefined;
 			targetUser = this.pmTarget;
 		}
@@ -702,7 +710,7 @@ class CommandContext {
 			let lockType = (user.namelocked ? `namelocked` : user.locked ? `locked` : ``);
 			let lockExpiration = Punishments.checkLockExpiration(user.namelocked || user.locked);
 			if (room) {
-				if (lockType) {
+				if (lockType && !room.isHelp) {
 					this.errorReply(`You are ${lockType} and can't talk in chat. ${lockExpiration}`);
 					return false;
 				}
@@ -768,8 +776,19 @@ class CommandContext {
 			}
 
 			// If the corresponding config option is set, non-AC users cannot send links, except to staff.
-			if (Config.restrictLinks && !user.autoconfirmed && message.match(Chat.linkRegex)) {
-				if (!(targetUser && targetUser.can('lock'))) {
+			if (Config.restrictLinks && !user.autoconfirmed) {
+				const links = message.match(Chat.linkRegex);
+				const allLinksWhitelisted = !links || links.every(link => {
+					link = link.toLowerCase();
+					const domainMatches = /^(?:http:\/\/|https:\/\/)?(?:[^/]*\.)?([^/.]*\.[^/.]*)\.?($|\/|:)/.exec(link);
+					const domain = domainMatches && domainMatches[1];
+					const hostMatches = /^(?:http:\/\/|https:\/\/)?([^/]*[^/.])\.?($|\/|:)/.exec(link);
+					let host = hostMatches && hostMatches[1];
+					if (host.startsWith('www.')) host = host.slice(4);
+					if (!domain || !host) return false;
+					return LINK_WHITELIST.includes(host) || LINK_WHITELIST.includes(`*.${domain}`);
+				});
+				if (!allLinksWhitelisted && !(targetUser && targetUser.can('lock'))) {
 					this.errorReply("Your account must be autoconfirmed to send links to other users, except for global staff.");
 					return false;
 				}
@@ -1035,7 +1054,9 @@ Chat.loadPlugins = function () {
 	// prevent TypeScript from resolving
 	const baseCommands = './chat-commands';
 	Chat.baseCommands = require(baseCommands).commands;
+	Chat.basePages = require(baseCommands).pages;
 	let commands = Chat.commands = Object.assign({}, Chat.baseCommands);
+	let pages = Chat.pages = Object.assign({}, Chat.basePages);
 
 	if (Config.chatfilter) Chat.filters.push(Config.chatfilter);
 	if (Config.namefilter) Chat.namefilters.push(Config.namefilter);
@@ -1054,6 +1075,7 @@ Chat.loadPlugins = function () {
 		const plugin = require(`./chat-plugins/${file}`);
 
 		Object.assign(commands, plugin.commands);
+		Object.assign(pages, plugin.pages);
 
 		if (plugin.chatfilter) Chat.filters.push(plugin.chatfilter);
 		if (plugin.namefilter) Chat.namefilters.push(plugin.namefilter);
@@ -1130,21 +1152,21 @@ Chat.plural = function (num, plural = 's', singular = '') {
 /**
  * Returns a timestamp in the form {yyyy}-{MM}-{dd} {hh}:{mm}:{ss}.
  *
- * options.hour12 = true will reports hours in mod-12 format.
+ * options.human = true will reports hours human-readable
  *
  * @param  {Date} date
  * @param  {object} options
  * @return {string}
  */
 Chat.toTimestamp = function (date, options) {
-	const isHour12 = options && options.hour12;
+	const human = options && options.human;
 	let parts = [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()];
-	if (isHour12) {
+	if (human) {
 		parts.push(parts[3] >= 12 ? 'pm' : 'am');
 		parts[3] = parts[3] % 12 || 12;
 	}
 	parts = parts.map(val => val < 10 ? '0' + val : '' + val);
-	return parts.slice(0, 3).join("-") + " " + parts.slice(3, 6).join(":") + (isHour12 ? " " + parts[6] : "");
+	return parts.slice(0, 3).join("-") + " " + parts.slice(3, human ? 5 : 6).join(":") + (human ? "" + parts[6] : "");
 };
 
 /**

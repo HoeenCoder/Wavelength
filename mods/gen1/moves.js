@@ -106,10 +106,9 @@ exports.BattleMovedex = {
 				if (!pokemon.hasMove('bide')) {
 					return;
 				}
-				let moves = pokemon.moveset;
-				for (let i = 0; i < moves.length; i++) {
-					if (moves[i].id !== 'bide') {
-						pokemon.disableMove(moves[i].id);
+				for (const moveSlot of pokemon.moveSlots) {
+					if (moveSlot.id !== 'bide') {
+						pokemon.disableMove(moveSlot.id);
 					}
 				}
 			},
@@ -234,8 +233,8 @@ exports.BattleMovedex = {
 			// If both are true, counter will deal twice the last damage dealt in battle, no matter what was the move.
 			// That means that, if opponent switches, counter will use last counter damage * 2.
 			let lastUsedMove = this.getMove(target.side.lastMove);
-			if (lastUsedMove && lastUsedMove.basePower > 0 && ['Normal', 'Fighting'].includes(lastUsedMove.type) && target.battle.lastDamage > 0 && !this.willMove(target)) {
-				return 2 * target.battle.lastDamage;
+			if (lastUsedMove && lastUsedMove.basePower > 0 && ['Normal', 'Fighting'].includes(lastUsedMove.type) && this.lastDamage > 0 && !this.willMove(target)) {
+				return 2 * this.lastDamage;
 			}
 			this.add('-fail', pokemon);
 			return false;
@@ -297,10 +296,9 @@ exports.BattleMovedex = {
 				}
 			},
 			onDisableMove: function (pokemon) {
-				let moves = pokemon.moveset;
-				for (let i = 0; i < moves.length; i++) {
-					if (moves[i].id === this.effectData.move) {
-						pokemon.disableMove(moves[i].id);
+				for (const moveSlot of pokemon.moveSlots) {
+					if (moveSlot.id === this.effectData.move) {
+						pokemon.disableMove(moveSlot.id);
 					}
 				}
 			},
@@ -526,14 +524,14 @@ exports.BattleMovedex = {
 	},
 	metronome: {
 		inherit: true,
-		noMetronome: {metronome:1, struggle:1},
+		noMetronome: ['metronome', 'struggle'],
 		secondary: false,
 		target: "self",
 		type: "Normal",
 	},
 	mimic: {
 		inherit: true,
-		desc: "This move is replaced by a random move on target's moveset. The copied move has the maximum PP for that move. Ignores a target's Substitute.",
+		desc: "This move is replaced by a random move on target's moveSlots. The copied move has the maximum PP for that move. Ignores a target's Substitute.",
 		shortDesc: "A random target's move replaces this one.",
 		onHit: function (target, source) {
 			let moveslot = source.moves.indexOf('mimic');
@@ -542,17 +540,16 @@ exports.BattleMovedex = {
 			let move = moves[this.random(moves.length)];
 			if (!move) return false;
 			move = this.getMove(move);
-			source.moveset[moveslot] = {
+			source.moveSlots[moveslot] = {
 				move: move.name,
 				id: move.id,
-				pp: source.moveset[moveslot].pp,
+				pp: source.moveSlots[moveslot].pp,
 				maxpp: move.pp * 8 / 5,
 				target: move.target,
 				disabled: false,
 				used: false,
 				virtual: true,
 			};
-			source.moves[moveslot] = toId(move.name);
 			this.add('-start', source, 'Mimic', move.name);
 		},
 	},
@@ -612,12 +609,12 @@ exports.BattleMovedex = {
 			onLockMove: 'rage',
 			onTryHit: function (target, source, move) {
 				if (target.boosts.atk < 6 && move.id === 'disable') {
-					this.boost({atk:1});
+					this.boost({atk: 1});
 				}
 			},
 			onHit: function (target, source, move) {
 				if (target.boosts.atk < 6 && move.category !== 'Status') {
-					this.boost({atk:1});
+					this.boost({atk: 1});
 				}
 			},
 		},
@@ -804,10 +801,8 @@ exports.BattleMovedex = {
 				if (move.category === 'Status') {
 					// In gen 1 it only blocks:
 					// poison, confusion, secondary effect confusion, stat reducing moves and Leech Seed.
-					let SubBlocked = {
-						lockon:1, meanlook:1, mindreader:1, nightmare:1,
-					};
-					if (move.status === 'psn' || move.status === 'tox' || (move.boosts && target !== source) || move.volatileStatus === 'confusion' || SubBlocked[move.id]) {
+					let SubBlocked = ['lockon', 'meanlook', 'mindreader', 'nightmare'];
+					if (move.status === 'psn' || move.status === 'tox' || (move.boosts && target !== source) || move.volatileStatus === 'confusion' || SubBlocked.includes(move.id)) {
 						return false;
 					}
 					return;

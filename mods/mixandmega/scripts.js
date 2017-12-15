@@ -14,7 +14,7 @@ exports.BattleScripts = {
 		if (item.megaStone) {
 			if (item.megaStone === pokemon.species) return false;
 			return item.megaStone;
-		} else if (pokemon.set.moves.indexOf('dragonascent') >= 0) {
+		} else if (pokemon.baseMoves.includes('dragonascent')) {
 			return 'Rayquaza-Mega';
 		} else {
 			return false;
@@ -58,7 +58,7 @@ exports.BattleScripts = {
 			}
 		}
 
-		pokemon.setAbility(template.abilities['0']);
+		pokemon.setAbility(template.abilities['0'], null, true);
 		pokemon.baseAbility = pokemon.ability;
 		pokemon.canMegaEvo = false;
 		if (isUltraBurst) pokemon.canUltraBurst = false;

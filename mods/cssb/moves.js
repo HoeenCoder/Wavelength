@@ -678,7 +678,7 @@ exports.BattleMovedex = {
 		name: "Stellar Impact",
 		pp: 5,
 		priority: 0,
-		flags: {contact:1},
+		flags: {contact: 1},
 		secondary: {
 			chance: 100,
 			self: {

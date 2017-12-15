@@ -12,7 +12,7 @@ exports.BattleMovedex = {
 				return 5;
 			},
 			onBasePower: function (basePower, attacker, defender, move) {
-				let weakenedMoves = {'earthquake':1, 'bulldoze':1, 'magnitude':1};
+				let weakenedMoves = {'earthquake': 1, 'bulldoze': 1, 'magnitude': 1};
 				if (move.id in weakenedMoves) {
 					this.debug('move weakened by grassy terrain');
 					return this.chainModify(0.5);

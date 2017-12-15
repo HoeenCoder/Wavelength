@@ -64,9 +64,9 @@ function addExp(user, room, amount) {
 				let reward = '';
 				switch (level) {
 				case 5:
-					Economy.logTransaction(user.userid + ' received a custom symbol for reaching level ' + level + '.');
-					user.canCustomSymbol = true;
-					reward = 'a Custom Symbol. To claim your custom symbol, use the command /customsymbol [symbol]';
+					Economy.logTransaction(user.userid + ' received a profile background and profile music for reaching level ' + level + '.');
+					Monitor.log(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '!');
+					reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a global staff member.';
 					break;
 				case 10:
 					Economy.logTransaction(user.userid + ' received a custom avatar for reaching level ' + level + '.');
@@ -148,16 +148,17 @@ exports.commands = {
 			});
 		} else {
 			EXP.readExp(user.userid, exp => {
-				this.sendReplyBox("Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Current Exp: " + exp + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
+				this.sendReplyBox(
+					"Name: " + WL.nameColor(user.userid, true) + "<br />Current level: " + WL.level(user.userid) + "<br />Current Exp: " + exp + "<br />Exp Needed for Next level: " + WL.nextLevel(user.userid) +
 					"<br />All rewards have a 1 time use! <br /><br />" +
-					"Level 5 unlocks a free Custom Symbol. <br /><br />" +
+					"Level 5 unlocks a free Profile Background and Song. <br /><br />" +
 					"Level 10 unlocks a free Custom Avatar. <br /><br />" +
 					"Level 15 unlocks a free Profile Title. <br /><br />" +
 					"Level 20 unlocks a free Custom Userlist Icon. <br /><br />" +
 					"Level 25 unlocks a free Emote. <br /><br />" +
 					"Level 30 unlocks a free Custom Color.  <br /><br />" +
 					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
-					"Level 40 unlocks a free chatroom. <br /><br />"
+					"Level 40 unlocks a free Chatroom. <br /><br />"
 				);
 			});
 		}
@@ -208,17 +209,29 @@ exports.commands = {
 		return this.sendReply('Double XP was turned ' + (DOUBLE_XP ? 'ON' : 'OFF') + '.');
 	},
 
-	expon: function (target, room, user) {
-		if (!this.can('root')) return false;
-		Db.expoff.remove(user.userid);
-		this.sendReply("You are no longer exempt from exp");
+	expunban: function (target, room, user) {
+		if (!this.can('roomowner')) return false;
+		if (!target) return this.parse('/help expunban');
+		let targetId = toId(target);
+		if (!Db.expoff.has(targetId)) return this.errorReply(targetId + ' is not currently exp banned.');
+		Db.expoff.remove(targetId);
+		this.globalModlog("EXPUNBAN", targetId, " by " + user.name);
+		this.addModCommand(targetId + ' was exp unbanned by ' + user.name + '.');
+		this.sendReply(targetId + " is no longer banned from exp");
 	},
+	expunbanhelp: ['/expunban target - allows a user to gain exp if they were exp banned'],
 
-	expoff: function (target, room, user) {
-		if (!this.can('root')) return false;
-		Db.expoff.set(user.userid, true);
-		this.sendReply("You are now exempt from exp");
+	expban: function (target, room, user) {
+		if (!this.can('roomowner')) return false;
+		if (!target) return this.parse('/help expban');
+		let targetId = toId(target);
+		if (Db.expoff.has(targetId)) return this.errorReply(targetId + ' is already exp banned.');
+		Db.expoff.set(targetId, true);
+		this.globalModlog("EXPBAN", targetId, " by " + user.name);
+		this.addModCommand(targetId + ' was exp banned by ' + user.name + '.');
+		this.sendReply(targetId + " is now banned from exp");
 	},
+	expbanhelp: ['/expban target - bans a user from gaining exp until removed'],
 
 	'!xpladder': true,
 	expladder: 'xpladder',
