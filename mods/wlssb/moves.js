@@ -357,8 +357,7 @@ exports.BattleMovedex = {
 		onHit: function (target, source) {
 			target.trySetStatus('tox', source);
 		},
-		desc: "Boosts evasion by 1 and badly poisons target.",
-		shortDesc: "Boosts evasion by 1 and badly poisons target.",
+		desc: "Boosts SpA by 1 and badly poisons target.",
 		target: "normal",
 		type: "Dark",
 	},
