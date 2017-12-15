@@ -598,9 +598,18 @@ class User {
 		for (let roomid of this.games) {
 			let game = Rooms(roomid).game;
 			if (!game || game.ended) continue; // should never happen
+			if (game.format && game.format === 'gen7wildpokemonalpha') {
+				this.popup(`You can't change your name right now because you're in the middle of a wild pokemon encounter.`);
+				return false;
+			}
 			if (game.allowRenames || !this.named) continue;
 			this.popup(`You can't change your name right now because you're in ${Rooms(roomid).title}, which doesn't allow renaming.`);
 			return false;
+		}
+		if (this.console) {
+			// Shutdown on rename
+			this.sendTo(this.console.room, '|uhtmlchange|console' + this.userid + this.consoleId + '|');
+			delete this.console;
 		}
 
 		let challenge = '';
@@ -1390,6 +1399,7 @@ Users.pruneInactive = function (threshold) {
 	let now = Date.now();
 	for (const user of users.values()) {
 		if (user.connected) continue;
+		if (user.userid === 'sgserver') continue; // Dont delete the COM!
 		if ((now - user.lastConnected) > threshold) {
 			user.destroy();
 		}

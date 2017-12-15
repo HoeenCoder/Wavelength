@@ -1,0 +1,1863 @@
+{
+    "potion": {
+        "id": "potion",
+        "name": "Potion",
+        "slot": "medicine",
+        "use": {
+            "healHP": 20
+        }
+    },
+    "superpotion": {
+        "id": "superpotion",
+        "name": "Super Potion",
+        "slot": "medicine",
+        "use": {
+            "healHP": 50
+        }
+    },
+    "hyperpotion": {
+        "id": "hyperpotion",
+        "name": "Hyper Potion",
+        "slot": "medicine",
+        "use": {
+            "healHP": 120
+        }
+    },
+    "maxpotion": {
+        "id": "maxpotion",
+        "name": "Max Potion",
+        "slot": "medicine",
+        "use": {
+            "healHP": true
+        }
+    },
+    "fullrestore": {
+        "id": "fullrestore",
+        "name": "Full Restore",
+        "slot": "medicine",
+        "use": {
+            "healHP": true,
+            "healStatus": true
+        }
+    },
+    "berryjuice": {
+        "id": "berryjuice",
+        "name": "Berry Juice",
+        "slot":"medicine",
+        "use": {
+            "healHP": 20
+        }
+    },
+    "sweetheart": {
+        "id": "sweetheart",
+        "name": "Sweet Heart",
+        "slot":"medicine",
+        "use": {
+            "healHP": 20
+        }
+    },
+    "freshwater": {
+        "id": "freshwater",
+        "name": "Fresh Water",
+        "slot": "medicine",
+        "use": {
+            "healHP": 50
+        }
+    },
+    "sodapop": {
+        "id": "sodapop",
+        "name": "Soda Pop",
+        "slot": "medicine",
+        "use": {
+            "healHP": 60
+        }
+    },
+    "lemonade": {
+        "id": "lemonade",
+        "name": "Lemonade",
+        "slot": "medicine",
+        "use": {
+            "healHP": 80
+        }
+    },
+    "moomoomilk": {
+        "id": "moomoomilk",
+        "name": "Moomoo Milk",
+        "slot": "medicine",
+        "use": {
+            "healHP": 100
+        }
+    },
+    "antidote": {
+        "id": "antidote",
+        "name": "Antidote",
+        "slot": "medicine",
+        "use": {
+            "healStatus": "psn|tox"
+        }
+    },
+    "awakening": {
+        "id": "awakening",
+        "name": "Awakening",
+        "slot": "medicine",
+        "use": {
+            "healStatus": "slp"
+        }
+    },
+    "burnheal": {
+        "id": "burnheal",
+        "name": "Burn Heal",
+        "slot": "medicine",
+        "use": {
+            "healStatus": "brn"
+        }
+    },
+    "iceheal": {
+        "id": "iceheal",
+        "name": "Ice Heal",
+        "slot": "medicine",
+        "use": {
+            "healStatus": "frz"
+        }
+    },
+    "parlyzheal": {
+        "id": "parlyzheal",
+        "name": "Parlyz Heal",
+        "slot": "medicine",
+        "use": {
+            "healStatus": "par"
+        }
+    },
+    "fullheal": {
+        "id": "fullheal",
+        "name": "Full Heal",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true
+        }
+    },
+    "casteliacone": {
+        "id": "casteliacone",
+        "name": "Casteliacone",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true
+        }
+    },
+    "lavacookie": {
+        "id": "lavacookie",
+        "name": "Lava Cookie",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true
+        }
+    },
+    "oldgateau": {
+        "id": "oldgateau",
+        "name": "Old Gateau",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true
+        }
+    },
+    "shaloursable": {
+        "id": "shaloursable",
+        "name": "Shalour Sable",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true
+        }
+    },
+    "bigmalasada": {
+        "id": "bigmalasada",
+        "name": "Big Malasada",
+        "slot": "medicine",
+        "use": {
+            "healstatus": true
+        }
+    },
+    "revive": {
+        "id": "revive",
+        "name": "Revive",
+        "slot": "medicine",
+        "use": {
+            "revive": 50
+        }
+    },
+    "maxrevive": {
+        "id": "maxrevive",
+        "name": "Max Revive",
+        "slot": "medicine",
+        "use": {
+            "revive": 100
+        }
+    },
+    "healpowder": {
+        "id": "healpowder",
+        "name": "Heal Powder",
+        "slot": "medicine",
+        "use": {
+            "healStatus": true,
+            "happiness": -5
+        }
+    },
+    "energypowder": {
+        "id": "energypowder",
+        "name": "Energy Powder",
+        "slot": "medicine",
+        "use": {
+            "healHP": 50,
+            "happiness": -5
+        }
+    },
+    "energyroot": {
+        "id": "energyroot",
+        "name": "Energy Root",
+        "slot": "medicine",
+        "use": {
+            "healHP": 200,
+            "happiness": -10
+        }
+    },
+    "revivalherb": {
+        "id": "revivalherb",
+        "name": "Revival Herb",
+        "slot": "true",
+        "use": {
+            "revive": 100,
+            "happiness": -15
+        }
+    },
+    "calcium": {
+        "id": "calcium",
+        "name": "Calcium",
+        "slot": "medicine",
+        "use": {
+            "boostEv": "spa",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "carbos": {
+        "id": "carbos",
+        "name": "Carbos",
+        "slot": "medicine",
+        "use": {
+            "boostEv": "spe",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "hpup": {
+        "id": "hpup",
+        "name": "HP Up",
+        "slot": "medicine",
+        "use": {
+            "boosEv": "hp",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "iron": {
+        "id": "iron",
+        "name": "Iron",
+        "slot": "medicine",
+        "use": {
+            "boostEv": "def",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "protein": {
+        "id": "protein",
+        "name": "Protein",
+        "slot": "medicine",
+        "use": {
+            "boostEv": "atk",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "zinc": {
+        "id": "zinc",
+        "name": "zinc",
+        "slot": "medicine",
+        "use": {
+            "boostEv": "spd",
+            "boostEvAmount": 10,
+            "noBattle": true
+        }
+    },
+    "oranberry": {
+        "id": "oranberry",
+        "name": "Oran Berry",
+        "slot": "berries",
+        "use": {
+            "healHP": 10
+        }
+    },
+    "sitrusberry": {
+        "id": "sitrusberry",
+        "slot": "berries",
+        "name": "Sitrus Berry",
+        "use": {
+            "healHP": "50%"
+        }
+    },
+     "pechaberry": {
+        "id": "pechaberry",
+        "slot": "berries",
+        "name": "Pecha Berry",
+        "use": {
+            "healStatus": "psn|tox"
+        }
+    },
+    "cheriberry": {
+        "id": "cheriberry",
+        "name": "Cheri Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "par"
+        }
+    },
+    "rawstberry": {
+        "id": "rawstberry",
+        "name": "Rawst Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "brn"
+        }
+    },
+    "persimberry": {
+        "id": "persimberry",
+        "name": "Persim Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "confusion"
+        }
+    },
+    "chestoberry": {
+        "id": "chestoberry",
+        "name": "Chesto Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "slp"
+        }
+    },
+    "aspearberry": {
+        "id": "aspearberry",
+        "name": "Aspear Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "frz"
+        }
+    },
+    "lumberry": {
+        "id": "lumberry",
+        "name": "Lum Berry",
+        "slot": "berries",
+        "use": {
+            "healStatus": "true"
+        }
+    },
+    "leppaberry": {
+        "id": "leppaberry",
+        "name": "Leppa Berry",
+        "slot": "berries",
+        "use": {
+            "healPP": 10
+        }
+    },
+    "aguavberry": {
+        "id": "aguavberry",
+        "name": "Aguav Berry",
+        "slot": "berries"
+    },
+    "apicotberry": {
+        "id": "apicotberry",
+        "name": "Apicot Berry",
+        "slot": "berries"
+    },
+    "babiriberry": {
+        "id": "babiriberry",
+        "name": "Babiri Berry",
+        "slot": "berries"
+    },
+    "belueberry": {
+        "id": "belueberry",
+        "name": "Belue Berry",
+        "slot": "berries"
+    },
+    "blukberry": {
+        "id": "blukberry",
+        "name": "Bluk Berry",
+        "slot": "berries"
+    },
+    "chartiberry": {
+        "id": "chartiberry",
+        "name": "Charti Berry",
+        "slot": "berries"
+    },
+    "chilanberry": {
+        "id": "chilanberry",
+        "name": "Chilan Berry",
+        "slot": "berries"
+    },
+    "chopleberry": {
+        "id": "chopleberry",
+        "name": "Chople Berry",
+        "slot": "berries"
+    },
+    "cobaberry": {
+        "id": "cobaberry",
+        "name": "Coba Berry",
+        "slot": "berries"
+    },
+    "colburberry": {
+        "id": "colburberry",
+        "name": "Colbur Berry",
+        "slot": "berries"
+    },
+    "cornnberry": {
+        "id": "cornnberry",
+        "name": "Cornn Berry",
+        "slot": "berries"
+    },
+    "custapberry": {
+        "id": "custapberry",
+        "name": "Custap Berry",
+        "slot": "berries"
+    },
+    "durinberry": {
+        "id": "durinberry",
+        "name": "Durin Berry",
+        "slot": "berries"
+    },
+    "enigmaberry": {
+        "id": "enigmaberry",
+        "name": "Enigma Berry",
+        "slot": "berries"
+    },
+    "figyberry": {
+        "id": "figyberry",
+        "name": "Figy Berry",
+        "slot": "berries"
+    },
+    "ganlonberry": {
+        "id": "ganlonberry",
+        "name": "Ganlon Berry",
+        "slot": "berries"
+    },
+    "grepaberry": {
+        "id": "grepaberry",
+        "name": "Grepa Berry",
+        "slot": "berries"
+    },
+    "habanberry": {
+        "id": "habanberry",
+        "name": "Haban Berry",
+        "slot": "berries"
+    },
+    "hondewberry": {
+        "id": "hondewberry",
+        "name": "Hondew Berry",
+        "slot": "berries"
+    },
+    "iapapaberry": {
+        "id": "iapapaberry",
+        "name": "Iapapa Berry",
+        "slot": "berries"
+    },
+    "jabocaberry": {
+        "id": "jabocaberry",
+        "name": "Jaboca Berry",
+        "slot": "berries"
+    },
+    "kasibberry": {
+        "id": "kasibberry",
+        "name": "Kasib berry",
+        "slot": "berries"
+    },
+    "kebiaberry": {
+        "id": "kebiaberry",
+        "name": "Kebia Berry",
+        "slot": "berries"
+    },
+    "keeberry": {
+        "id": "keeberry",
+        "name": "Kee Berry",
+        "slot": "berries"
+    },   
+     "kelpsyberry": {
+        "id": "kelpsyberry",
+        "name": "Kelpsy Berry",
+        "slot": "berries"
+    },
+    "lansatberry": {
+        "id": "lansatberry",
+        "name": "Lansat Berry",
+        "slot": "berries"
+    },
+    "liechiberry": {
+        "id": "liechiberry",
+        "name": "Liechi Berry",
+        "slot": "berries"
+    },
+    "magoberry": {
+        "id": "magoberry",
+        "name": "Mago Berry",
+        "slot": "berries"
+    },
+    "magostberry": {
+        "id": "magostberry",
+        "name": "Magost Berry",
+        "slot": "berries"
+    },
+    "marangaberry": {
+        "id": "marangaberry",
+        "name": "Maranga Berry",
+        "slot": "berries"
+    },
+    "micleberry": {
+        "id": "micleberry",
+        "name": "Micle Berry",
+        "slot": "berries"
+    },
+    "nanabberry": {
+        "id": "nanabberry",
+        "name": "Nanab Berry",
+        "slot": "berries"
+    },
+    "nomelberry": {
+        "id": "nomelberry",
+        "name": "Nomel Berry",
+        "slot": "berries"
+    },
+    "occaberry": {
+        "id": "occaberry",
+        "name": "Occa Berry",
+        "slot": "berries"
+    },
+    "pamtreberry": {
+        "id": "pamtreberry",
+        "name": "Pamtre Berry",
+        "slot": "berries"
+    },
+    "passhoberry": {
+        "id": "passhoberry",
+        "name": "Passho Berry",
+        "slot": "berries"
+    },
+    "payapaberry": {
+        "id": "payapaberry",
+        "name": "Payapa Berry",
+        "slot": "berries"
+    },
+    "petayaberry": {
+        "id": "petayaberry",
+        "name": "Petaya Berry",
+        "slot": "berries"
+    },
+    "pinapberry": {
+        "id": "pinapberry",
+        "name": "Pinap Berry",
+        "slot": "berries"
+    }, 
+    "pomegberry": {
+        "id": "pomegberry",
+        "name": "Pomeg Berry",
+        "slot": "berries"
+    }, 
+    "qualotberry": {
+        "id": "qualotberry",
+        "name": "Qualot Berry",
+        "slot": "berries"
+    }, 
+    "rabutaberry": {
+        "id": "rabutaberry",
+        "name": "Rabuta Berry",
+        "slot": "berries"
+    }, 
+    "razzberry": {
+        "id": "razzberry",
+        "name": "Razz Berry",
+        "slot": "berries"
+    }, 
+    "rindoberry": {
+        "id": "rindoberry",
+        "name": "Rindo Berry",
+        "slot": "berries"
+    },
+    "roseliberry": {
+        "id": "roseliberry",
+        "name": "Roseli Berry",
+        "slot": "berries"
+    }, 
+    "rowapberry": {
+        "id": "rowapberry",
+        "name": "Rowap Berry",
+        "slot": "berries"
+    }, 
+    "salacberry": {
+        "id": "salacberry",
+        "name": "Salac Berry",
+        "slot": "berries"
+    },
+    "shucaberry": {
+        "id": "shucaberry",
+        "name": "Shuca Berry",
+        "slot": "berries"
+    },
+    "spelonberry": {
+        "id": "spelonberry",
+        "name": "Spelon Berry",
+        "slot": "berries"
+    }, 
+    "starfberry": {
+        "id": "starfberry",
+        "name": "Starf Berry",
+        "slot": "berries"
+    }, 
+    "tamatoberry": {
+        "id": "tamatoberry",
+        "name": "Tamato Berry",
+        "slot": "berries"
+    }, 
+    "tangaberry": {
+        "id": "tangaberry",
+        "name": "Tanga Berry",
+        "slot": "berries"
+    },
+    "wacanberry": {
+        "id": "wacanberry",
+        "name": "Wacan Berry",
+        "slot": "berries"
+    }, 
+    "watamelberry": {
+        "id": "watamelberry",
+        "name": "Watamel Berry",
+        "slot": "berries"
+    }, 
+    "wepearberry": {
+        "id": "wepearberry",
+        "name": "Wepear Berry",
+        "slot": "berries"
+    }, 
+    "wikiberry": {
+        "id": "wikiberry",
+        "name": "Wiki Berry",
+        "slot": "berries"
+    }, 
+    "yacheberry": {
+        "id": "yacheberry",
+        "name": "Yache Berry",
+        "slot": "berries"
+    },
+    "pokeball": {
+        "id": "pokeball",
+        "name": "Pokeball",
+        "slot": "pokeballs",
+        "use": {
+            "battleOnly": true,
+            "isBall": true
+        }
+    },
+    "greatball": {
+        "id": "greatball",
+        "name": "Greatball",
+        "slot": "pokeballs",
+        "use": {
+            "battleOnly": true,
+            "isBall": true
+        }
+    },
+    "ultraball": {
+        "id": "ultraball",
+        "name": "Ultraball",
+        "slot": "pokeballs",
+        "use": {
+            "battleOnly": true,
+            "isBall": true
+        }
+    },
+    "masterball": {
+        "id": "masterball",
+        "name": "Masterball",
+        "slot": "pokeballs",
+        "use": {
+            "battleOnly": true,
+            "isBall": true
+        }
+    },
+    "rarecandy": {
+        "id": "rarecandy",
+        "name": "Rare Candy",
+        "slot": "medicine",
+        "use": {
+            "noBattle": true,
+            "level": 1
+        }
+    },
+    "firestone": {
+        "id": "firestone",
+        "name": "Fire Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "thunderstone": {
+        "id": "thunderstone",
+        "name": "Thunder Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "waterstone": {
+        "id": "waterstone",
+        "name": "Water Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "leafstone": {
+        "id": "leafstone",
+        "name": "Leaf Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "moonstone": {
+        "id": "moonstone",
+        "name": "Moon Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "sunstone": {
+        "id": "sunstone",
+        "name": "Sun Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "duskstone": {
+        "id": "duskstone",
+        "name": "Dusk Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "dawnstone": {
+        "id": "dawnstone",
+        "name": "Dawn Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "shinystone": {
+        "id": "shinystone",
+        "name": "Shiny Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "icestone": {
+        "id": "icestone",
+        "name": "Ice Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "linkcable": {
+        "id": "linkcable",
+        "name": "Link Cable",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "kingsrock": {
+        "id": "kingsrock",
+        "name": "King's Rock",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "metalcoat": {
+        "id": "metalcoat",
+        "name": "Metal Coat",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "upgrade": {
+        "id": "upgrade",
+        "name": "Up-Grade",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+    "dragonscale": {
+        "id": "dragonscale",
+        "name": "Dragon Scale",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "deepseatooth": {
+        "id": "deepseatooth",
+        "name": "Deep Sea Tooth",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "deepseascale": {
+        "id": "deepseascale",
+        "name": "Deep Sea Scale",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "razorclaw": {
+        "id": "razorclaw",
+        "name": "Razor Claw",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "razorfang": {
+        "id": "razorfang",
+        "name": "Razor Fang",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "protector": {
+        "id": "protector",
+        "name": "Protector",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "electrizer": {
+        "id": "electrizer",
+        "name": "Electrizer",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "magmarizer": {
+        "id": "magmarizer",
+        "name": "Magmarizer",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "reapercloth": {
+        "id": "reapercloth",
+        "name": "Reaper Cloth",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "ovalstone": {
+        "id": "ovalstone",
+        "name": "Oval Stone",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "dubiousdisc": {
+        "id": "dubiousdisc",
+        "name": "Dubious Disk",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "prismscale": {
+        "id": "prismscale",
+        "name": "Prism Scale",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "sachet": {
+        "id": "sachet",
+        "name": "Sachet",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "whippedream": {
+        "id": "whippeddream",
+        "name": "Whipped Dream",
+        "slot": "items",
+        "use": {
+            "noBattle": true,
+            "triggerEvo": true
+        }
+    },
+     "alphaticket": {
+        "id": "alphaticket",
+        "name": "Alpha Ticket",
+        "slot": "keyitems"
+    },
+    "recoveredgoods": {
+        "id": "recoveredgoods",
+        "name": "Recovered Goods",
+        "slot": "keyitems"
+    },
+    "tm01": {
+        "id": "tm01",
+        "name": "TM 01 Work Up",
+        "use": {
+            "move": "workup",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm02": {
+        "id": "tm02",
+        "name": "TM 02 Dragon Claw",
+        "use": {
+            "move": "dragonclaw",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm03": {
+        "id": "tm03",
+        "name": "TM 03 Psyshock",
+        "use": {
+            "move": "psyshock",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm04": {
+        "id": "tm04",
+        "name": "TM 04 Calm Mind",
+        "use": {
+            "move": "calmmind",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm05": {
+        "id": "tm05",
+        "name": "TM 05 Roar",
+        "use": {
+            "move": "roar",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm06": {
+        "id": "tm06",
+        "name": "TM 06 Toxic",
+        "use": {
+            "move": "toxic",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm07": {
+        "id": "tm07",
+        "name": "TM 07 Hail",
+        "use": {
+            "move": "hail",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm08": {
+        "id": "tm08",
+        "name": "TM 08 Bulk Up",
+        "use": {
+            "move": "bulkup",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm09": {
+        "id": "tm09",
+        "name": "TM 09 Venoshock",
+        "use": {
+            "move": "venoshock",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm10": {
+        "id": "tm10",
+        "name": "TM 10 Hidden Power",
+        "use": {
+            "move": "hiddenpower",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm11": {
+        "id": "tm11",
+        "name": "TM 11 Sunny Day",
+        "use": {
+            "move": "sunnyday",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm12": {
+        "id": "tm12",
+        "name": "TM 12 Taunt",
+        "use": {
+            "move": "taunt",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm13": {
+        "id": "tm13",
+        "name": "TM 13 Ice Beam",
+        "use": {
+            "move": "icebeam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm14": {
+        "id": "tm14",
+        "name": "TM 14 Blizzard",
+        "use": {
+            "move": "blizzard",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm15": {
+        "id": "tm15",
+        "name": "TM 15 Hyper Beam",
+        "use": {
+            "move": "hyperbeam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm16": {
+        "id": "tm16",
+        "name": "TM 16 Light Screen",
+        "use": {
+            "move": "lightscreen",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm17": {
+        "id": "tm17",
+        "name": "TM 17 Protect",
+        "use": {
+            "move": "protect",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm18": {
+        "id": "tm18",
+        "name": "TM 18 Rain Dance",
+        "use": {
+            "move": "raindance",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm19": {
+        "id": "tm19",
+        "name": "TM 19 Roost",
+        "use": {
+            "move": "roost",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm20": {
+        "id": "tm20",
+        "name": "TM 20 Safeguard",
+        "use": {
+            "move": "safeguard",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm21": {
+        "id": "tm21",
+        "name": "TM 21 Frustration",
+        "use": {
+            "move": "frustration",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm22": {
+        "id": "tm22",
+        "name": "TM 22 Solar Beam",
+        "use": {
+            "move": "solarbeam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm23": {
+        "id": "tm23",
+        "name": "TM 23 Smack Down",
+        "use": {
+            "move": "smackdown",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm24": {
+        "id": "tm24",
+        "name": "TM 24 Thunderbolt",
+        "use": {
+            "move": "thunderbolt",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm25": {
+        "id": "tm25",
+        "name": "TM 25 Thunder",
+        "use": {
+            "move": "thunder",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm26": {
+        "id": "tm26",
+        "name": "TM 26 Earthquake",
+        "use": {
+            "move": "earthquake",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm27": {
+        "id": "tm27",
+        "name": "TM 27 Return",
+        "use": {
+            "move": "return",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm28": {
+        "id": "tm28",
+        "name": "TM 28 Leech Life",
+        "use": {
+            "move": "leechlife",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm29": {
+        "id": "tm29",
+        "name": "TM 29 Psychic",
+        "use": {
+            "move": "psychic",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm30": {
+        "id": "tm30",
+        "name": "TM 30 Shadow Ball",
+        "use": {
+            "move": "shadowball",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm31": {
+        "id": "tm31",
+        "name": "TM 31 Brick Break",
+        "use": {
+            "move": "brickbreak",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm32": {
+        "id": "tm32",
+        "name": "TM 32 Double Team",
+        "use": {
+            "move": "doubleteam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm33": {
+        "id": "tm33",
+        "name": "TM 33 Reflect",
+        "use": {
+            "move": "reflect",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm34": {
+        "id": "tm34",
+        "name": "TM 34 Sludge Wave",
+        "use": {
+            "move": "sludgewave",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm35": {
+        "id": "tm35",
+        "name": "TM 35 Flamethrower",
+        "use": {
+            "move": "flamethrower",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm36": {
+        "id": "tm36",
+        "name": "TM 36 Sludge Bomb",
+        "use": {
+            "move": "sludgebomb",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm37": {
+        "id": "tm37",
+        "name": "TM 37 Sandstorm",
+        "use": {
+            "move": "sandstorm",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm38": {
+        "id": "tm38",
+        "name": "TM 38 Fire Blast",
+        "use": {
+            "move": "fireblast",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm39": {
+        "id": "tm39",
+        "name": "TM 39 Rock Tomb",
+        "use": {
+            "move": "rocktomb",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm40": {
+        "id": "tm40",
+        "name": "TM 40 Aerial Ace",
+        "use": {
+            "move": "aerialace",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm41": {
+        "id": "tm41",
+        "name": "TM 41 Torment",
+        "use": {
+            "move": "torment",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm42": {
+        "id": "tm42",
+        "name": "TM 42 Facade",
+        "use": {
+            "move": "facade",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm43": {
+        "id": "tm43",
+        "name": "TM 43 Flame Charge",
+        "use": {
+            "move": "flamecharge",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm44": {
+        "id": "tm44",
+        "name": "TM 44 Rest",
+        "use": {
+            "move": "rest",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm45": {
+        "id": "tm45",
+        "name": "TM 45 Attract",
+        "use": {
+            "move": "attract",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm46": {
+        "id": "tm46",
+        "name": "TM 46 Thief",
+        "use": {
+            "move": "thief",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm47": {
+        "id": "tm47",
+        "name": "TM 47 Low Sweep",
+        "use": {
+            "move": "lowsweep",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm48": {
+        "id": "tm48",
+        "name": "TM 48 Round",
+        "use": {
+            "move": "round",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm49": {
+        "id": "tm49",
+        "name": "TM 49 Echoed Voice",
+        "use": {
+            "move": "echoedvoice",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm50": {
+        "id": "tm50",
+        "name": "TM 50 Overheat",
+        "use": {
+            "move": "overheat",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm51": {
+        "id": "tm51",
+        "name": "TM 51 Steel Wing",
+        "use": {
+            "move": "steelwing",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm52": {
+        "id": "tm52 Focus Blast",
+        "name": "TM 52",
+        "use": {
+            "move": "focusblast",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm53": {
+        "id": "tm53",
+        "name": "TM 53 Energy Ball",
+        "use": {
+            "move": "energyball",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm54": {
+        "id": "tm54",
+        "name": "TM 54 False Swipe",
+        "use": {
+            "move": "falseswipe",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm55": {
+        "id": "tm55",
+        "name": "TM 55 Scald",
+        "use": {
+            "move": "scald",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm56": {
+        "id": "tm56",
+        "name": "TM 56 Fling",
+        "use": {
+            "move": "fling",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm57": {
+        "id": "tm57",
+        "name": "TM 57 Charge Beam",
+        "use": {
+            "move": "chargebeam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm58": {
+        "id": "tm58",
+        "name": "TM 58 Sky Drop",
+        "use": {
+            "move": "skydrop",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm59": {
+        "id": "tm59",
+        "name": "TM 59 Brutal Swing",
+        "use": {
+            "move": "brutalswing",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm60": {
+        "id": "tm60",
+        "name": "TM 60 Quash",
+        "use": {
+            "move": "quash",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm61": {
+        "id": "tm61",
+        "name": "TM 61 Will-O-Wisp",
+        "use": {
+            "move": "willowisp",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm62": {
+        "id": "tm62",
+        "name": "TM 62 Acrobatics",
+        "use": {
+            "move": "acrobatics",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm63": {
+        "id": "tm63",
+        "name": "TM 63 Embargo",
+        "use": {
+            "move": "embargo",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm64": {
+        "id": "tm64",
+        "name": "TM 64 Explosion",
+        "use": {
+            "move": "explosion",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm65": {
+        "id": "tm65",
+        "name": "TM 65 Shadow Claw",
+        "use": {
+            "move": "shadowclaw",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm66": {
+        "id": "tm66",
+        "name": "TM 66 Payback",
+        "use": {
+            "move": "payback",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm67": {
+        "id": "tm67",
+        "name": "TM 67 Smart Strike",
+        "use": {
+            "move": "smartstrike",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm68": {
+        "id": "tm68",
+        "name": "TM 68 Giga Impact",
+        "use": {
+            "move": "gigaimpact",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm69": {
+        "id": "tm69",
+        "name": "TM 69 Rock Polish",
+        "use": {
+            "move": "rockpolish",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm70": {
+        "id": "tm70",
+        "name": "TM 70 Aurora Veil",
+        "use": {
+            "move": "auroraveil",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm71": {
+        "id": "tm71",
+        "name": "TM 71 Stone Edge",
+        "use": {
+            "move": "stoneedge",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm72": {
+        "id": "tm72",
+        "name": "TM 72 Volt Switch",
+        "use": {
+            "move": "voltswitch",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm73": {
+        "id": "tm73",
+        "name": "TM 73 Thunder Wave",
+        "use": {
+            "move": "thunderwave",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm74": {
+        "id": "tm74",
+        "name": "TM 74 Gyro Ball",
+        "use": {
+            "move": "gyroball",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm75": {
+        "id": "tm75",
+        "name": "TM 75 Swords Dance",
+        "use": {
+            "move": "swordsdance",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm76": {
+        "id": "tm76",
+        "name": "TM 76 Fly",
+        "use": {
+            "move": "fly",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm77": {
+        "id": "tm77",
+        "name": "TM 77 Psych Up",
+        "use": {
+            "move": "psychup",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm78": {
+        "id": "tm78",
+        "name": "TM 78 Bulldoze",
+        "use": {
+            "move": "bulldoze",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm79": {
+        "id": "tm79",
+        "name": "TM 79 Frost Breath",
+        "use": {
+            "move": "frostbreath",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm80": {
+        "id": "tm80",
+        "name": "TM 80 Rock Slide",
+        "use": {
+            "move": "rockslide",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm81": {
+        "id": "tm81",
+        "name": "TM 81 X-Scissor",
+        "use": {
+            "move": "xscissor",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm82": {
+        "id": "tm82",
+        "name": "TM 82 Dragon Tail",
+        "use": {
+            "move": "dragontail",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm83": {
+        "id": "tm01",
+        "name": "TM 83 Infestation",
+        "use": {
+            "move": "infestation",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm84": {
+        "id": "tm84",
+        "name": "TM 84 Poison Jab",
+        "use": {
+            "move": "poisonjab",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm85": {
+        "id": "tm85",
+        "name": "TM 85 Dream Eater",
+        "use": {
+            "move": "dreameater",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm86": {
+        "id": "tm86",
+        "name": "TM 86 Grass Knot",
+        "use": {
+            "move": "grassknot",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm87": {
+        "id": "tm87",
+        "name": "TM 87 Swagger",
+        "use": {
+            "move": "swagger",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm88": {
+        "id": "tm88",
+        "name": "TM 88 Sleep Talk",
+        "use": {
+            "move": "sleeptalk",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm89": {
+        "id": "tm89",
+        "name": "TM 89 U-turn",
+        "use": {
+            "move": "uturn",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm90": {
+        "id": "tm90",
+        "name": "TM 90 Substitute",
+        "use": {
+            "move": "substitute",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm91": {
+        "id": "tm91",
+        "name": "TM 91 Flash Cannon",
+        "use": {
+            "move": "flashcannon",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm92": {
+        "id": "tm92",
+        "name": "TM 92 Trick Room",
+        "use": {
+            "move": "trickroom",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm93": {
+        "id": "tm93",
+        "name": "TM 93 Wild Charge",
+        "use": {
+            "move": "wildcharge",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm94": {
+        "id": "tm94",
+        "name": "TM 94 Surf",
+        "use": {
+            "move": "surf",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm95": {
+        "id": "tm95",
+        "name": "TM 95 Snarl",
+        "use": {
+            "move": "snarl",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm96": {
+        "id": "tm96",
+        "name": "TM 96 Nature Power",
+        "use": {
+            "move": "naturepower",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm97": {
+        "id": "tm97",
+        "name": "TM 97 Dark Pulse",
+        "use": {
+            "move": "darkpulse",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm98": {
+        "id": "tm98",
+        "name": "TM 98 Waterfall",
+        "use": {
+            "move": "waterfall",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm99": {
+        "id": "tm99",
+        "name": "TM 99 Dazzling Gleam",
+        "use": {
+            "move": "dazzlinggleam",
+            "noBattle": true
+        },
+        "slot": "tms"
+    },
+    "tm100": {
+        "id": "tm100",
+        "name": "TM 100 Confide",
+        "use": {
+            "move": "confide",
+            "noBattle": true
+        },
+        "slot": "tms"
+    }
+}

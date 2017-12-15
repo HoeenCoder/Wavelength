@@ -97,6 +97,19 @@ class Ladder extends LadderStore {
 			connection.popup(message);
 			return null;
 		}
+		if (Dex.getFormat(this.formatid).useSGgame) {
+			if (!user.console || user.console.gameId !== 'SGgame' || !Db.players.get(userid) || Db.players.get(userid).party.length <= 0) {
+				connection.popup(`You need to start SGgame before you can play this format.`);
+				return null;
+			}
+			for (let key of user.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) {
+					connection.popup(`Your already in a SGgame battle.`);
+					return null;
+				}
+			}
+			team = Dex.packTeam(Db.players.get(userid).party);
+		}
 		let gameCount = user.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
 			return null;
@@ -201,6 +214,10 @@ class Ladder extends LadderStore {
 		const user = connection.user;
 		if (targetUser === user) {
 			connection.popup(`You can't battle yourself. The best you can do is open PS in Private Browsing (or another browser) and log into a different username, and battle that username.`);
+			return false;
+		}
+		if ((Dex.getFormat(this.formatid).isWildEncounter || Dex.getFormat(this.formatid).isTrainerBattle)) {
+			connection.popup(`You cannot challenge users to wild pokemon or trainer battles.`);
 			return false;
 		}
 		if (Ladder.getChallenging(connection.user.userid)) {
@@ -501,6 +518,34 @@ class Ladder extends LadderStore {
 		}
 		if (formatTable.has(user.userid)) {
 			user.popup(`Couldn't search: You are already searching for a ${formatid} battle.`);
+			return;
+		}
+
+		if (Dex.getFormat(formatid).isWildEncounter) {
+			formatTable.delete(user.userid);
+			if (!Users('sgserver')) WL.makeCOM();
+			let wildTeam = Users('sgserver').wildTeams[user.userid];
+			if (!wildTeam) return;
+			Rooms.createBattle(formatid, {
+				p1: Users('sgserver'),
+				p1team: wildTeam,
+				p2: user,
+				p2team: newSearch.team,
+				rated: false,
+			});
+			return;
+		} else if (Dex.getFormat(formatid).isTrainerBattle) {
+			formatTable.delete(user.userid);
+			if (!Users('sgserver')) WL.makeCOM();
+			let trainerTeam = Users('sgserver').trainerTeams[user.userid];
+			if (!trainerTeam) return;
+			Rooms.createBattle(formatid, {
+				p1: Users('sgserver'),
+				p1team: trainerTeam,
+				p2: user,
+				p2team: newSearch.team,
+				rated: false,
+			});
 			return;
 		}
 

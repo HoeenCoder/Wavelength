@@ -719,6 +719,7 @@ class GlobalRoom extends BasicRoom {
 		}
 		return roomsData;
 	}
+
 	checkModjoin() {
 		return true;
 	}
@@ -1229,6 +1230,10 @@ class GameRoom extends BasicRoom {
 		if (this.game && this.game.onLeave) {
 			this.game.onLeave(user);
 		}
+		if (user.console && user.console.room === this.id) {
+			user.console.onKill();
+			delete user.console;
+		}
 		this.update();
 	}
 	expire() {
@@ -1578,6 +1583,10 @@ class ChatRoom extends BasicRoom {
 			this.reportJoin('l', user.getIdentity(this.id));
 		}
 		if (this.game && this.game.onLeave) this.game.onLeave(user);
+		if (user.console && user.console.room === this.id) {
+			user.console.onKill();
+			delete user.console;
+		}
 	}
 	destroy() {
 		// deallocate ourself

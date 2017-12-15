@@ -33,6 +33,9 @@ const TIMER_COOLDOWN = 20 * 1000;
 
 global.Config = require('./config/config');
 
+global.Db = require('nef')(require('nef-fs')('config/db'));
+global.WL = require('./WL.js').WL;
+
 class SimulatorManager extends ProcessManager {
 	onMessageUpstream(message) {
 		let lines = message.split('\n');
@@ -45,6 +48,9 @@ class SimulatorManager extends ProcessManager {
 			process.send(`|eval|${code}`);
 		}
 	}
+	//Add event listeners here, call with (process object for the battle ex: room.battle).send('event', 'data');
+	//TODO figure out points where we can call to other process.
+	//TODO figure out the proper point to call to a room-battle process.
 }
 
 const SimulatorProcess = new SimulatorManager({
@@ -518,6 +524,15 @@ class Battle {
 				this.ended = true;
 				this.onEnd(lines[2]);
 				this.removeAllPlayers();
+				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+					let notCom = toId(this.room.p1.name);
+					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
+					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
+					/*setTimeout(() => {
+						this.room.destroy();
+					}, 10000);*/
+				}
 			}
 			this.checkActive();
 			break;
@@ -558,6 +573,101 @@ class Battle {
 
 		case 'score':
 			this.score = [parseInt(lines[2]), parseInt(lines[3])];
+			break;
+
+		case 'caught':
+			lines[2] = lines[2].split('|');
+			let curTeam = Db.players.get(lines[2][0]);
+			let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
+			newSet = Dex.fastUnpackTeam(newSet)[0];
+			newSet.pokeball = lines[2][1];
+			newSet.ot = toId(lines[2][0]);
+			if (curTeam.party.length < 6) {
+				curTeam.party.push(newSet);
+				Db.players.set(lines[2][0], curTeam);
+			} else {
+				let name = (newSet.name || newSet.species);
+				newSet = Dex.packTeam([newSet]);
+				let response = curTeam.boxPoke(newSet, 1);
+				if (response) {
+					this.room.push(name + ' was sent to box ' + response + '.');
+				} else {
+					this.room.push(name + ' was released because your PC is full...');
+				}
+				this.room.update();
+			}
+			break;
+		case 'takeitem':
+			let raw = lines[2].split('|');
+			raw[0] = toId(raw[0]);
+			let player = Db.players.get(raw[0]);
+			let item = WL.getItem(raw[1]);
+			// ['userid', 'itemid', 'party slot #', from pokemon?];
+			if (raw[3]) {
+				player.party[raw[2]].item = '';
+			} else {
+				player.bag[item.slot][item.id]--;
+			}
+			if (item.use.happiness) {
+				player.party[raw[2]].happiness += item.use.happiness;
+			}
+			Db.players.set(raw[0], player);
+			if (!raw[3] && Users(raw[0]).console.curPane === 'bag') Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
+			break;
+		case 'updateExp':
+			let data = lines[2].split(']');
+			let userid = data.shift();
+			let user = Users(userid);
+			let gameObj = Db.players.get(userid);
+			let nMoves = [];
+			let nEvos = [];
+			for (let i = 0; i < data.length; i++) {
+				let cur = data[i].split('|');
+				cur[0] = Number(cur[0]);
+				let pokemon = Dex.getTemplate(gameObj.party[cur[0]].species);
+				let olvl = gameObj.party[cur[0]].level;
+				gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
+				gameObj.party[cur[0]].level += (isNaN(Number(cur[2])) ? 0 : Number(cur[2]));
+				let lvl = olvl + (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
+				if (lvl >= 100) {
+					lvl = 100;
+					gameObj.party[cur[0]].exp = WL.calcExp(pokemon.species, 100);
+					gameObj.party[cur[0]].level = 100;
+				}
+				let evs = cur[3].split(',');
+				if (!gameObj.party[cur[0]].evs) gameObj.party[cur[0]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+				let j = 0;
+				for (let ev in gameObj.party[cur[0]].evs) {
+					gameObj.party[cur[0]].evs[ev] += Number(evs[j]);
+					j++;
+				}
+				if (olvl !== lvl) {
+					// New Moves
+					nMoves = nMoves.concat(WL.getNewMoves(pokemon, olvl, lvl, gameObj.party[cur[0]].moves, cur[0]));
+					// Evolution
+					// Add the evo array onto the end of the move array
+					let evos = WL.canEvolve(gameObj.party[cur[0]], "level", userid, {location: null}); // TODO locations
+					if (evos) {
+						evos = evos.split('|');
+						if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
+							user.console.shed = true;
+							evos.splice(evos.indexOf('shedinja'), 1);
+						}
+						evos = evos[0];
+						//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
+						let take = WL.getEvoItem(evos);
+						nEvos.push("evo|" + cur[0] + "|" + evos + "|" + (take || ''));
+					}
+				}
+			}
+			Db.players.set(userid, gameObj);
+			// FIXME figure out why user#console isnt defined here sometimes
+			if (user.console) {
+				user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
+				if (nMoves.length || nEvos.length) {
+					user.console.update(...user.console.next());
+				}
+			}
 			break;
 		}
 		Monitor.activeIp = null;
@@ -603,6 +713,10 @@ class Battle {
 			if (uploader && uploader.connections[0]) {
 				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
 			}
+		}
+		if (Dex.getFormat(this.format).useSGgame) {
+			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
+			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
 		}
 		const parentGame = this.room.parent && this.room.parent.game;
 		if (parentGame && parentGame.onBattleWin) {

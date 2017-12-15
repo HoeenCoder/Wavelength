@@ -3352,6 +3352,7 @@ exports.commands = {
 		if (!room.game || !room.game.timer) {
 			return this.errorReply(`You can only set the timer from inside a battle room.`);
 		}
+		if (toId(room.battle.format) === 'gen7wildpokemonalpha') return this.errorReply('You can\'t start the timer during a Wild Pokemon Encounter.');
 		const timer = room.game.timer;
 		if (!timer.timerRequesters) {
 			return this.sendReply(`This game's timer is managed by a different command.`);
