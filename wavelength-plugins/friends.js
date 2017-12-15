@@ -44,7 +44,7 @@ const Friend = {
 	},
 	removeFriend: function (target, user) {
 		target = toId(target);
-		if (!Db.friends.get(user).includes(target)) return this.errorReply('You are not friends with this user.');
+		if (!Db.friend.get(user).includes(target)) return this.errorReply('You are not friends with this user.');
 		let userid = user.userid;
 		let curFriends = Db.friend.get(userid, []);
 		if (!curFriends.length) return user.popup("You don't have any friends to remove.");
@@ -96,12 +96,12 @@ exports.commands = {
 			Friend.removeFriend(target, user);
 		},
 		removeall: function (target, room, user) {
-			if (Db.friends.get(user).length === 0) this.errorReply('You have no friends.');
-			Db.friends.set(Db.friends.get(user), []);
+			if (Db.friend.get(user).length === 0) this.errorReply('You have no friends.');
+			Db.friend.set(Db.friend.get(user), []);
 			this.sendReply('You have removed all of your friends');
 		},
 		list: function (target, room, user) {
-			let array = Db.friends.get(user, []);
+			let array = Db.friend.get(user, []);
 			let amount = array.length;
 			if (!this.runBroadcast()) return;
 			if (!amount) {
