@@ -288,17 +288,18 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%Lycanium Z': {
-				species: "Swinub",
-				ability: "Extreme Snow Cloak",
-				level: 1,
-				item: "Focus Sash",
+				species: "Carbink",
+				ability: "Deflector Shield",
+				item: "Leftovers",
 				gender: "M",
-				moves: ['Endeavor', 'Stealth Rock', 'Ice Shard'],
-				signatureMove: "Unserious",
+				moves: ['Moonblast', 'Blue Flare', 'Seed Flare'],
+				signatureMove: "Meteor Madness",
 				evs: {
-					atk: 1,
+					spa: 252,
+					hp: 252,
+					def: 4,
 				},
-				nature: "Impish",
+				nature: "Calm",
 			},
 			'%Arrays': {
 				species: 'Conkeldurr',
@@ -432,6 +433,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spe: 252,
 				},
 				nature: 'Timid',
+			},
+			'+SnorlaxTheRain' : {
+				species: 'Snorlax',
+				ability: 'Scraroom',
+				item: 'Snorlium Z',
+				gender: 'M',
+				moves: ['gigaimpact', 'curse', 'rest'],
+				signatureMove: 'Snorlax Slam',
+				evs: {
+					hp: 164,
+					atk: 224,
+					spd: 120,
+				},
+				nature: 'Adamant',
 			},
 		};
 		// convert moves to ids.
