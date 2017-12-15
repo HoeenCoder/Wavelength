@@ -20,7 +20,7 @@ Ability: Deflector Shield
     - All direct damage the user takes goes to the opponent and heals half of the damage dealt if the move is not super effective.
 Moves: Moonblast, Blue Flare, Seed Flare
 Signature Move: Meteor Madness
-	- Rock Type. 70 BP. Heals users HP by 50% and transforms user's ability to normalize.
+	- Rock Type. 60 BP. Heals users HP by 50% and transforms user's ability to normalize.
 Notes: IDK
 Rank: N/A.
 
