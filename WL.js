@@ -247,7 +247,7 @@ exports.WL = {
 					iv = (Math.random() > 0.5 ? 31 : iv);
 					if (i + left >= 6) iv = 31;
 				}
-				if (iv ===  31 & left > 0) left--;
+				if (iv === 31 & left > 0) left--;
 				data += iv + (i === 5 ? "|" : ",");
 			}
 		} else {
