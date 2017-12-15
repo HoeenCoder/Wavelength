@@ -1508,7 +1508,13 @@ class ChatRoom extends BasicRoom {
 		// @ts-ignore TODO: strongly-typed polls
 		if (this.poll) this.poll.onConnect(user, connection);
 		// @ts-ignore TODO: strongly-typed surveys
-		if (this.survey) this.survey.onConnect(user, connection);
+		if (this.survey) {
+			// @ts-ignore TODO: strongly-typed surveys
+			for (let u = 0; u < this.survey.surveyArray.length; u++) {
+				// @ts-ignore TODO: strongly-typed surveys
+				if (this.survey.surveyArray[u]) this.survey.onConnect(user, connection, u);
+			}
+		}
 		if (this.game && this.game.onConnect) this.game.onConnect(user, connection);
 	}
 	/**
@@ -1551,6 +1557,14 @@ class ChatRoom extends BasicRoom {
 			for (let u in this.poll.pollArray) {
 				// @ts-ignore TODO: strongly typed polls
 				if (user.userid in this.poll.pollArray[u].voters) this.poll.updateFor(user);
+			}
+		}
+		// @ts-ignore TODO: strongly-typed surveys
+		if (this.survey) {
+			// @ts-ignore TODO: strongly-typed surveys
+			for (let u in this.survey.surveyArray) {
+				// @ts-ignore TODO: strongly-typed surveys
+				if (this.survey.surveyArray[u] && user.userid in this.survey.surveyArray[u].repliers) this.survey.updateTo(user, u, false);
 			}
 		}
 		return user;
