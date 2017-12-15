@@ -29,7 +29,6 @@ exports.BattleAbilities = {
 			this.setTerrain('');
 		},
 	},
-	// Almighty Bronzong
 	conflictofinterest: {
 		id: "conflictofinterest",
 		name: "Conflict of Interest",
@@ -278,7 +277,7 @@ exports.BattleAbilities = {
 	felinefury: {
 		id: "felinefury",
 		name: "Feline Fury",
-		desc: "+3 Attack on switch in.",
+		desc: "+2 Attack on switch in + Scrappy",
 		onStart: function (pokemon) {
 			this.boost({atk: 2});
 		},
@@ -331,20 +330,34 @@ exports.BattleAbilities = {
 		},
 	},
 	//Lycanium Z
-	"extremesnowcloak": {
-		desc: "If Hail is active, this Pokemon's evasiveness is multiplied by 2. This Pokemon takes no damage from Hail.",
-		shortDesc: "If Hail is active, this Pokemon's evasiveness is 2x; immunity to Hail.",
-		onImmunity: function (type, pokemon) {
-			if (type === 'hail') return false;
-		},
-		onModifyAccuracy: function (accuracy) {
-			if (typeof accuracy !== 'number') return;
-			if (this.isWeather('hail')) {
-				this.debug('Snow Cloak - decreasing accuracy');
-				return accuracy * 0.5;
+	"deflectorshield": {
+		onAfterDamageOrder: 1,
+		onAfterDamage: function (damage, target, source, move) {
+			if (source && source !== target && move && !(move.typeMod > 0)) {
+				this.damage(damage, source, target);
+				this.heal(damage / 2, target);
 			}
 		},
-		id: "extremesnowcloak",
-		name: "Extreme Snow Cloak",
+		desc: "Deals damage back to the attacker.",
+		id: "deflectorshield",
+		name: "Deflector Shield",
+	},
+	//SnorlaxTheRain
+	"scraroom": {
+		id: "scraroom",
+		name: "Scraroom",
+		desc: "Combination of Trick Room & Scrappy",
+		shortDesc: "Trick Room + Scrappy",
+		onStart: function (pokemon) {
+			this.useMove('trickroom', pokemon);
+		},
+		onModifyMovePriority: -5,
+		onModifyMove: function (move) {
+			if (!move.ignoreImmunity) move.ignoreImmunity = {};
+			if (move.ignoreImmunity !== true) {
+				move.ignoreImmunity['Fighting'] = true;
+				move.ignoreImmunity['Normal'] = true;
+			}
+		},
 	},
 };
