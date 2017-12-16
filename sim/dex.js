@@ -1156,11 +1156,13 @@ class ModdedDex {
 				buf += '|';
 			}
 
-			if (set.pokeball || set.hpType || set.exp || set.ot) {
+			if (set.pokeball || set.hpType || set.exp || set.ot || set.hp || set.status) {
 				buf += ',' + set.hpType;
 				buf += ',' + toId(set.pokeball);
 				buf += ',' + set.exp || '0';
 				buf += ',' + set.ot || '';
+				buf += ',' + set.hp || '';
+				buf += ',' + (set.status && ['psn', 'tox', 'brn', 'par', 'slp', 'frz'].includes(set.status)) ? set.status : '';
 			}
 		}
 
@@ -1277,9 +1279,9 @@ class ModdedDex {
 			j = buf.indexOf(']', i);
 			let misc;
 			if (j < 0) {
-				if (i < buf.length) misc = buf.substring(i).split(',', 5);
+				if (i < buf.length) misc = buf.substring(i).split(',', 7);
 			} else {
-				if (i !== j) misc = buf.substring(i, j).split(',', 5);
+				if (i !== j) misc = buf.substring(i, j).split(',', 7);
 			}
 			if (misc) {
 				set.happiness = (misc[0] ? Number(misc[0]) : 255);
@@ -1287,6 +1289,8 @@ class ModdedDex {
 				set.pokeball = misc[2];
 				set.exp = Number(misc[3]);
 				set.ot = misc[4];
+				if (misc[5]) set.hp = Number(misc[5]);
+				if (misc[6]) set.status = misc[6];
 			}
 			if (j < 0) break;
 			i = j + 1;

@@ -1650,6 +1650,12 @@ class Battle extends Dex.ModdedDex {
 			side.faintedLastTurn = side.faintedThisTurn;
 			side.faintedThisTurn = false;
 		}
+
+		if (this.getFormat().useSGgame && !this.getFormat().noExp) {
+			if (this.p1.name !== 'SG Server') this.send('updateHealth', WL.updateHealth(this.p1.name, this.p1.pokemon));
+			if (this.p2.name !== 'SG Server') this.send('updateHealth', WL.updateHealth(this.p2.name, this.p2.pokemon));
+		}
+
 		const ruleTable = this.getRuleTable(this.getFormat());
 		if (ruleTable.has('endlessbattleclause')) {
 			if (oneStale) {
@@ -3434,6 +3440,10 @@ class Battle extends Dex.ModdedDex {
 				}
 				this.send('score', [this.p1.pokemonLeft, this.p2.pokemonLeft]);
 				this.send('winupdate', [this.winner].concat(this.log.slice(logPos)));
+				if (this.getFormat().useSGgame && !this.getFormat().noExp) {
+					if (this.p1.name !== 'SG Server') this.send('updateHealth', WL.updateHealth(this.p1.name, this.p1.pokemon));
+					if (this.p2.name !== 'SG Server') this.send('updateHealth', WL.updateHealth(this.p2.name, this.p2.pokemon));
+				}
 			} else {
 				this.send('update', this.log.slice(logPos));
 			}

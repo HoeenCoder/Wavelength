@@ -108,7 +108,21 @@ class Ladder extends LadderStore {
 					return null;
 				}
 			}
-			team = Dex.packTeam(Db.players.get(userid).party);
+			team = Db.players.get(userid).party;
+			if (!Dex.getFormat(this.formatid).noExp) {
+				let able = false;
+				for (let i = 0; i < team.length; i++) {
+					if (team[i].hp > 0) {
+						able = true;
+						break;
+					}
+				}
+				if (!able) {
+					connection.popup(`You have no pokemon that are able to battle.`);
+					return null;
+				}
+			}
+			team = Dex.packTeam(team);
 		}
 		let gameCount = user.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {

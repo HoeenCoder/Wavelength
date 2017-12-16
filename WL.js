@@ -292,6 +292,21 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
+	getStat: function (pokemon, stat) {
+		stat = toId(stat);
+		if (!pokemon || !pokemon.species || !['hp', 'atk', 'def', 'spa', 'spd', 'spe'].includes(stat)) return (stat === 'hp' ? 11 : 4); // Return the lowest possible value
+		let template = Dex.getTemplate(pokemon.species);
+		if (!pokemon.evs) pokemon.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+		if (stat === 'hp') {
+			if (template.speciesid === 'shedinja') return 1;
+			return Math.round((((2 * template.baseStats.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10);
+		} else {
+			let natureMod = 1, nature = Dex.getNature(pokemon.nature);
+			if (nature.plus === stat) natureMod = 1.1;
+			if (nature.minus === stat) natureMod = 0.9;
+			return Math.round(((((2 * template.baseStats[stat] + pokemon.ivs[stat] + (pokemon.evs[stat] / 4)) * pokemon.level) / 100) + 5) * natureMod);
+		}
+	},
 	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);

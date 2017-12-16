@@ -360,6 +360,8 @@ class SGgame extends Console.Console {
 	summary(section, pokemon, details) {
 		let output = this.buildMap();
 		let player = Db.players.get(this.userid);
+		let statusColors = {'slp': '#AA77AA', 'frz': '#009AA4', 'psn': '#A4009A', 'tox': '#A4009A', 'brn': '#EE5533', 'par': '#9AA400', 'fnt': '#e60000'};
+		let maxhp = 11;
 		switch (section) {
 		case 'pokemon':
 		case 'summary':
@@ -377,11 +379,7 @@ class SGgame extends Console.Console {
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
 			let nextLevel = WL.calcExp(pokemon.species, (pokemon.level >= 100 ? 100 : pokemon.level + 1)), curLevel = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel) + '<br/>';
-			if (pokemon.level >= 100) {
-				output += '<progress max="1" value="1"></progress>';
-			} else {
-				output += '<progress max="' + (nextLevel - curLevel) + '" value="' + (pokemon.exp - curLevel) + '"></progress>';
-			}
+			output += '<div style="width: 10em; height: 1em; display: inline-block; backgorund: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + (pokemon.level >= 100 ? '100' : Math.round(((pokemon.exp - curLevel) / (nextLevel - curLevel)) * 100)) + '%; background: lightblue; float: left"></div></div>';
 			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
 			let move = null;
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
@@ -403,7 +401,7 @@ class SGgame extends Console.Console {
 				totalEvs += evs[ev];
 			}
 			output += '<br/><b>Total Evs</b>: ' + totalEvs + ' / 510<br/>';
-			output += '<progress max="510" value="' + totalEvs + '"></progress></div>';
+			output += '<div style="width: 10em; height: 1em; display: inline-block; background: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + Math.round((totalEvs / 510) * 100) + '%; background: lightblue; float: left"></div></div></div>';
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;">';
 			output += '<br/><b>' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '\'s Ivs</b><br/>';
 			for (let iv in pokemon.ivs) {
@@ -422,7 +420,12 @@ class SGgame extends Console.Console {
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(' + pmon.item + ')' : '(no item)');
+					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
+					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(pmon, 'hp');
+					if (!pmon.hp) pmon.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon.hp / maxhp) * 100) + '%; background: ' + (pmon.hp > maxhp / 2 ? 'limegreen' : (pmon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (pmon.item ? '(' + pmon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -436,7 +439,12 @@ class SGgame extends Console.Console {
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?') + '<br/>' + (pmon.item ? '(' + pmon.item + ')' : '(no item)');
+					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
+					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(pmon, 'hp');
+					if (!pmon.hp) pmon.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon.hp / maxhp) * 100) + '%; background: ' + (pmon.hp > maxhp / 2 ? 'limegreen' : (pmon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (pmon.item ? '(' + pmon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -459,7 +467,7 @@ class SGgame extends Console.Console {
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
 			let nextLevel2 = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel2 = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel2) + '<br/>';
-			output += '<progress max="' + (nextLevel2 - curLevel2) + '" value="' + (pokemon.exp - curLevel2) + '"></progress></center></div>';
+			output += '<div style="width: 10em; height: 1em; display: inline-block; backgorund: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + (pokemon.level >= 100 ? '100' : Math.round(((pokemon.exp - curLevel2) / (nextLevel2 - curLevel2)) * 100)) + '%; background: lightblue; float: left"></div></div>';
 			let move2 = null;
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
@@ -480,7 +488,12 @@ class SGgame extends Console.Console {
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?') + '<br/>' + (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
+					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(pmon2, 'hp');
+					if (!pmon2.hp) pmon2.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon2.hp / maxhp) * 100) + '%; background: ' + (pmon2.hp > maxhp / 2 ? 'limegreen' : (pmon2.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -494,7 +507,12 @@ class SGgame extends Console.Console {
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?') + '<br/>' + (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
+					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(pmon2, 'hp');
+					if (!pmon2.hp) pmon2.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon2.hp / maxhp) * 100) + '%; background: ' + (pmon2.hp > maxhp / 2 ? 'limegreen' : (pmon2.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (pmon2.item ? '(' + pmon2.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -517,7 +535,7 @@ class SGgame extends Console.Console {
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
 			let nextLevel3 = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel3 = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel3) + '<br/>';
-			output += '<progress max="' + (nextLevel3 - curLevel3) + '" value="' + (pokemon.exp - curLevel3) + '"></progress>';
+			output += '<div style="width: 10em; height: 1em; display: inline-block; backgorund: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + (pokemon.level >= 100 ? '100' : Math.round(((pokemon.exp - curLevel3) / (nextLevel3 - curLevel3)) * 100)) + '%; background: lightblue; float: left"></div></div>';
 			output += '<br/><button class="button" name="send" value="/sggame pokemon stats, ' + details + '">Evs &amp; Ivs</button></center></div>';
 			let move3 = null;
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center><b>Restore PP to which move?</b><br/>';
@@ -538,7 +556,12 @@ class SGgame extends Console.Console {
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(' + mon.item + ')' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>';
+					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(mon, 'hp');
+					if (!mon.hp) mon.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((mon.hp / maxhp) * 100) + '%; background: ' + (mon.hp > maxhp / 2 ? 'limegreen' : (mon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (mon.item ? '(' + mon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -552,7 +575,12 @@ class SGgame extends Console.Console {
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
 					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
-					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>' + (mon.item ? '(' + mon.item + ')' : '(no item)');
+					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?');
+					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span>' : '');
+					maxhp = WL.getStat(mon, 'hp');
+					if (!mon.hp) mon.hp = maxhp;
+					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((mon.hp / maxhp) * 100) + '%; background: ' + (mon.hp > maxhp / 2 ? 'limegreen' : (mon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
+					output += (mon.item ? '(' + mon.item + ')' : '(no item)');
 					output += '</button>';
 				} else {
 					output += '<button name="send" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">EMPTY</button>';
@@ -641,6 +669,8 @@ class Player {
 
 	boxPoke(pokemon, box) {
 		if (typeof pokemon !== 'string') {
+			if (pokemon[0].hp) delete pokemon[0].hp;
+			if (pokemon[0].status) delete pokemon[0].status;
 			pokemon = Dex.packTeam(pokemon);
 			if (!pokemon) return false;
 		}

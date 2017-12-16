@@ -19,10 +19,10 @@ class Console {
 		this.defaultBottomHTML = bottom || '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/console kill">Power</button></center>';
 	}
 	init() {
-		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|init|html\n|title|${this.title}\n|pagehtml|${this.buildConsole()}`);
+		Users(this.userid).send(`>view-gameconsole\n|init|html\n|title|${this.title}\n|pagehtml|${this.buildConsole()}`);
 	}
 	update(css, html, bottom) {
-		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|pagehtml|${this.buildConsole(css, html, bottom)}`);
+		Users(this.userid).send(`>view-gameconsole\n|pagehtml|${this.buildConsole(css, html, bottom)}`);
 		this.prevScreen = this.curScreen;
 		this.curScreen = [(css || null), (html || null), (bottom || null)];
 	}
@@ -41,9 +41,6 @@ class Console {
 			this.prevScreen[2] = this.prevScreen[2].split("<!--mutebutton-->")[0] + '<!--mutebutton--><button name="send" value="/console sound" class="button">' + (this.muted ? 'Unmute' : 'Mute') + '</button><!--endmute-->' + this.prevScreen[2].split("<!--endmute-->")[1];
 		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
-	}
-	deinit() {
-		Users(this.userid).send(`>view-gameconsole${this.gameId ? `-${toId(this.gameId)}` : ``}\n|deinit`);
 	}
 	// Overwrite these to use them.
 	up(data) {}
@@ -87,7 +84,7 @@ exports.commands = {
 		},
 		kill: function (target, room, user) {
 			if (!user.console) return;
-			user.console.deinit();
+			user.send(`>view-gameconsole\n|deinit`);
 			user.console.onKill();
 			delete user.console;
 		},

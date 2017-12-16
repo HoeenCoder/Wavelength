@@ -280,4 +280,12 @@ exports.WL = {
 		if (!this.itemData[id]) return false;
 		return this.itemData[id];
 	},
+	updateHealth: function (name, pokemon) {
+		if (toId(name) === 'sgserver') return '';
+		let buf = toId(name) + ']';
+		for (let i = 0; i < pokemon.length; i++) {
+			buf += pokemon[i].slot + '|' + pokemon[i].hp + (pokemon[i].status ? '|' + pokemon[i].status : '') + (i + 1 >= pokemon.length ? '' : ']');
+		}
+		return buf;
+	},
 };

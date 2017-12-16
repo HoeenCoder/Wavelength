@@ -1505,7 +1505,10 @@ exports.commands = {
 	part: function (target, room, user, connection) {
 		let targetRoom = target ? Rooms.search(target) : room;
 		if (!targetRoom || targetRoom === Rooms.global) {
-			if (target.startsWith('view-')) return;
+			if (target.startsWith('view-')) {
+				if (target === 'view-gameconsole' && user.console) this.parse('/console kill');
+				return;
+			}
 			return this.errorReply("The room '" + target + "' does not exist.");
 		}
 		user.leaveRoom(targetRoom, connection);

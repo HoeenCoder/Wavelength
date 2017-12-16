@@ -110,6 +110,14 @@ class Side {
 		for (let i = 0; i < this.team.length && i < 24; i++) {
 			//console.log("NEW POKEMON: " + (this.team[i] ? this.team[i].name : '[unidentified]'));
 			this.pokemon.push(new Pokemon(this.team[i], this, i));
+			if (this.battle.getFormat().useSGgame && !this.battle.getFormat().noExp) {
+				if (this.team[i].hp <= 0) {
+					this.pokemon[i].faint();
+				} else if (this.team[i].hp >= 1) {
+					this.pokemon[i].sethp(this.team[i].hp);
+				}
+				if (this.team[i].status) this.pokemon[i].setStatus(this.team[i].status);
+			}
 		}
 		this.pokemonLeft = this.pokemon.length;
 		for (let i = 0; i < this.pokemon.length; i++) {
