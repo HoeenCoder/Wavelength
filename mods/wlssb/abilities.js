@@ -335,7 +335,7 @@ exports.BattleAbilities = {
 		onAfterDamage: function (damage, target, source, move) {
 			if (source && source !== target && move && !(move.typeMod > 0)) {
 				this.damage(Math.ceil(damage / 2), source, target);
-				this.heal(Math.ceil(damage / 4) target);
+				this.heal(Math.ceil(damage / 4), target);
 			}
 		},
 		desc: "Deals damage back to the attacker.",
