@@ -440,18 +440,17 @@ exports.BattleMovedex = {
 	},
 	// Lycanium Z
 	meteormadness: {
-		category: "Special",
+		category: "Status",
 		accuracy: 100,
-		basePower: 60,
 		id: "meteormadness",
 		isViable: true,
 		isNonstandard: true,
 		name: "Meteor Madness",
-		pp: 15,
+		pp: 5,
 		noPPBoosts: true,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
-		desc: "Does random effects.",
+		desc: "Heals the user. Users ability -> Normalize",
 		secondary: false,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
@@ -459,9 +458,6 @@ exports.BattleMovedex = {
 		},
 		onHit: function (target, source) {
 			this.heal(Math.ceil(source.maxhp * 0.5), source);
-			target.clearBoosts();
-			this.add('-clearboost', target);
-			target.addVolatile('taunt');
 			let oldAbility = source.setAbility('normalize');
 			if (oldAbility) {
 				this.add('-endability', source, oldAbility, '[from] move: Meteor Madness');
