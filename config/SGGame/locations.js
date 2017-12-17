@@ -16,27 +16,31 @@
 
 function pokemonCenter(game, id, action) {
 	let player = Db.players.get(game.userid);
+	let out = '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h2>Pokemon Center</h2>Pardon the empty screen while we work on SGgame.<br/>Use the buttons bellow to interact.';
+	let options = {heal: '/sggame building ' + id + ', heal', pc: '/sggame pc'};
 	switch (action) {
-	case 'tryEnter':
-		if (player.party.length < 1) return false;
-		break;
 	case 'enter':
-
+		if (player.party.length < 1) return false;
+		game.curPane = id;
 		break;
 	case 'exit':
-
-		break;
+		game.curPane = null;
+		return game.update(game.buildCSS(), game.buildMap(), game.buildBase());
 	case 'heal':
-
+		for (let i = 0; i < player.party.length; i++) {
+			if (player.party[i].hp) delete player.party[i].hp;
+			if (player.party[i].status) delete player.party[i].status;
+		}
+		Db.players.set(game.userid, player);
+		delete options.heal;
+		out += '<h3>Your party was healed!</h3>';
 		break;
-	case 'pc':
+	/*case 'trade':
 
-		break;
-	case 'trade':
-
-		break;
+		break;*/
 	}
-	return false;
+	out += '</center></div>';
+	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('pokemoncenter', options));
 }
 
 exports.locations = {
@@ -74,7 +78,11 @@ exports.locations = {
 				"html": "",
 				"css": "background: url(https://i.imgur.com/MxvBu5l.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
+				"buildings": {
+					"pokemoncenter": "Pokemon Center",
+				},
 				"onBuilding": function (game, id, action) {
+					if (id !== 'pokemoncenter') return;
 					return pokemonCenter(game, id, action);
 				},
 				"exits": {
@@ -150,8 +158,11 @@ exports.locations = {
 				"html": "",
 				"css": "background: url(https://i.imgur.com/BLBDRGJ.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
+				"buildings": {
+					//"marina": "Marina",
+				},
 				"onBuilding": function (game, id, action) {
-					// only one building here, no need to check id
+					if (id !== 'marina') return;
 					switch (action) {
 					case 'enter':
 
