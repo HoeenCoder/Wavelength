@@ -1757,6 +1757,10 @@ let Rooms = Object.assign(getRoom, {
 			room.privacySetter = new Set(inviteOnly);
 			room.add(`|raw|<div class="broadcast-red"><strong>This battle is invite-only!</strong><br />Users must be rank + or invited with <code>/invite</code> to join</div>`);
 		}
+		
+		if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(p1.userid))] && Rooms(Rooms.global.FvF[toId(WL.getFaction(p1.userid))].room).fvf.tier === formatid) {
+			WL.isFvFBattle(p1.userid, p2.userid, room.id, 'start');
+		}
 
 		game.addPlayer(p1, options.p1team);
 		game.addPlayer(p2, options.p2team);
