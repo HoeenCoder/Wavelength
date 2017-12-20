@@ -420,6 +420,7 @@ exports.BattleMovedex = {
 		id: "shellbreak",
 		isNonstandard: true,
 		name: "Shell Break",
+		flags: {mirror: 1, snatch: 1},
 		boosts: {
 			spa: 2,
 			atk: 2,
@@ -449,7 +450,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		noPPBoosts: true,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
+		flags: {mirror: 1, snatch: 1},
 		desc: "Heals the user. Users ability -> Normalize",
 		secondary: false,
 		onPrepareHit: function (target, source, move) {
@@ -457,11 +458,10 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Draco Meteor", target);
 		},
 		onHit: function (target, source) {
-			this.heal(Math.ceil(source.maxhp * 0.5), source);
-			let oldAbility = source.setAbility('normalize');
+			this.heal(Math.ceil(target.maxhp * 0.5), source);
+			let oldAbility = target.setAbility('normalize');
 			if (oldAbility) {
-				this.add('-endability', source, oldAbility, '[from] move: Meteor Madness');
-				this.add('-ability', source, 'Normalize', '[from] move: Meteor Madness');
+				this.add('-ability', target, 'Normalize', '[from] move: Meteor Madness');
 				return;
 			}
 		},
