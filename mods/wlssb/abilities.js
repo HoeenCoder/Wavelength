@@ -277,7 +277,7 @@ exports.BattleAbilities = {
 	felinefury: {
 		id: "felinefury",
 		name: "Feline Fury",
-		desc: "+3 Attack on switch in.",
+		desc: "+2 Attack on switch in + Scrappy",
 		onStart: function (pokemon) {
 			this.boost({atk: 2});
 		},
@@ -307,12 +307,14 @@ exports.BattleAbilities = {
 		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
 		onModifyAtk: function (atk, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
 		},
 		onModifySpe: function (spe, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
@@ -322,26 +324,40 @@ exports.BattleAbilities = {
 	muscles: {
 		id: "muscles",
 		name: "Muscles",
-		desc: "+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.",
+		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.",
 		onStart: function (pokemon) {
-			this.boost({atk: -4, def: 2, spa: 1, spd: 2});
+			this.boost({atk: -4, def: 4, spa: 1, spd: 4});
 		},
 	},
 	//Lycanium Z
-	"extremesnowcloak": {
-		desc: "If Hail is active, this Pokemon's evasiveness is multiplied by 2. This Pokemon takes no damage from Hail.",
-		shortDesc: "If Hail is active, this Pokemon's evasiveness is 2x; immunity to Hail.",
-		onImmunity: function (type, pokemon) {
-			if (type === 'hail') return false;
-		},
-		onModifyAccuracy: function (accuracy) {
-			if (typeof accuracy !== 'number') return;
-			if (this.isWeather('hail')) {
-				this.debug('Snow Cloak - decreasing accuracy');
-				return accuracy * 0.5;
+	"deflectorshield": {
+		onAfterDamageOrder: 1,
+		onAfterDamage: function (damage, target, source, move) {
+			if (source && source !== target && move && !(move.typeMod > 0)) {
+				this.damage(Math.ceil(damage / 2), source, target);
+				this.heal(Math.ceil(damage / 4), target);
 			}
 		},
-		id: "extremesnowcloak",
-		name: "Extreme Snow Cloak",
+		desc: "Deals damage back to the attacker.",
+		id: "deflectorshield",
+		name: "Deflector Shield",
+	},
+	//SnorlaxTheRain
+	"scraroom": {
+		id: "scraroom",
+		name: "Scraroom",
+		desc: "Combination of Trick Room & Scrappy",
+		shortDesc: "Trick Room + Scrappy",
+		onStart: function (pokemon) {
+			this.useMove('trickroom', pokemon);
+		},
+		onModifyMovePriority: -5,
+		onModifyMove: function (move) {
+			if (!move.ignoreImmunity) move.ignoreImmunity = {};
+			if (move.ignoreImmunity !== true) {
+				move.ignoreImmunity['Fighting'] = true;
+				move.ignoreImmunity['Normal'] = true;
+			}
+		},
 	},
 };

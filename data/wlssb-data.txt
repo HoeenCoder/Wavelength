@@ -12,18 +12,16 @@ Notes: N/A.
 Rank: N/A.
 
 Lycanium Z
-(Swinub)
-@ Focus Sash
-EVs: None
-Impish Nature
-Level 1
-Ability: Extreme Snow Cloak
-    - Evasion is multiplied by 2 during hail.
-Innate Ability: Snow Warning
-Moves: Endeavor, Stealth Rock, Ice Shard
-Signature Move: Unserious
-	- Ice Type. Forces weather to hail, uses foresight.
-Notes: Great "sweeper" in hail
+(Carbink)
+@ Leftovers
+EVs: 252 HP / 4 Def / 252 SpA
+Calm Nature
+Ability: Deflector Shield
+    - Reflects 1/2 of damage taken from direct attcks back at foe, and heals half of the damage taken if the move is not super effective.
+Moves: Moonblast, Blue Flare, Seed Flare
+Signature Move: Meteor Madness
+	- Rock Type. Heals users HP by 50% and transforms user's ability to normalize.
+Notes: IDK
 Rank: N/A.
 
 Arrays
@@ -160,7 +158,7 @@ Timid Nature
 Ability: Protean
 Moves: Energy Ball, Oblivion Wing and Shadow Ball.
 Signature Move: Mewtation
-	- Dark Type, Special, 90 BP, 10 PP and transforms user into a Dark Type.
+	- Dark Type, 10 PP, boosts spa by 1 stage and badly poisons the opponent.
 Notes: N/A.
 Rank: N/A.
 
@@ -340,7 +338,7 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+2 defense, +2 Special defense, -3 attack, +1.5 special attack on switch in.
+    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
     -Leech Seed + Stored Power & Cosmic Power now have +1 Priority.
@@ -357,4 +355,17 @@ Moves: Spacial Rend, Night Daze, Doom Desire
 Signature Move: Infinity Storm
     -Disappears turn 1. Hits turn 2. Boosts Spa by 2. Flying Type, 100 BP
 Notes: Invisibility Gives a key niche
+Rank: N/A
+
+SnorlaxTheRain
+(Snorlax)
+@ Snorlium Z
+EVs: 164 HP / 224 Atk / 120 SpD 
+Adamant Nature
+Ability: Scraroom
+    -Scrappy + Trick Room.
+Moves: Giga Impact, Rest, Curse
+Signature Move: Snorlax Slam
+    -120BP, 95% Accuracy, and can be used while sleeping.
+Notes: New
 Rank: N/A
