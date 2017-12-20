@@ -1053,8 +1053,8 @@ exports.commands = {
 			return this.parse('/help sggame');
 		},
 		battle: function (target, room, user, connection) {
-			if (user.console.queue.length) return;
-			if (user.console.queueAction) return;
+			if (!user.console || user.console.gameId !== 'SGgame') return;
+			if (user.console.queue.length || user.console.queueAction) return;
 			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
 			if (toId(target) === 'close' && user.console.curPane === 'battle') {
 				Users('sgserver').wildTeams[user.userid] = null;
