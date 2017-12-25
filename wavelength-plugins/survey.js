@@ -294,7 +294,7 @@ exports.commands = {
 				room.survey.display();
 			}
 
-			this.logEntry(`${user.name} used ${message}.`);
+			this.roomlog(`${user.name} used ${message}.`);
 			return this.privateModCommand(`(A survey was started by ${user.name}.)`);
 		},
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
