@@ -128,7 +128,7 @@ exports.commands = {
 			}
 			if (req.type === 'public') {
 				r.add(`This chatroom is slated to go public in 1 week if Upper Staff feel its active enough during this trial phase. ${target[1]}, you are responsible for contacting Upper Staff to make your room public in 1 week.`).update();
-				r.sendModCommand(`(CHATROOM TYPE: Pre-Public. This room can be made public 1 week from this modnote.)`);
+				r.sendMods(`(CHATROOM TYPE: Pre-Public. This room can be made public 1 week from this modnote.)`);
 				r.roomlog(`(CHATROOM TYPE: Pre-Public. This room can be made public 1 week from this modnote.)`);
 				r.modlog(`(CHATROOM TYPE: Pre-Public. This room can be made public 1 week from this modnote.)`);
 			}
