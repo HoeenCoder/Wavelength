@@ -120,7 +120,7 @@ class Pokemon {
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
-		this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
+		if (this.battle.getFormat().useSGgame) this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
 		this.slot = (!slot && slot !== 0 ? this.side.pokemon.length - 1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
