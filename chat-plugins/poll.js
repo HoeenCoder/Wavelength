@@ -381,7 +381,7 @@ exports.commands = {
 			for (let u = 0; u < targets.length; u++) targets[u] = targets[u].trim();
 			if (!targets[1]) return this.errorReply("/poll timer (clear/ time amount), (poll number)");
 			let num = room.poll.obtain(parseInt(targets[1]));
-			if (!room.poll.pollArray[num]) return.this.errorReply('That poll number is not a currently poll!');
+			if (!room.poll.pollArray[num]) return this.errorReply('That poll number is not a currently poll!');
 			if (targets[0]) {
 				if (!this.can('minigame', null, room)) return false;
 				if (targets[0] === 'clear') {
