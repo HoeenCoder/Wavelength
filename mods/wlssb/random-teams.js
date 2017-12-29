@@ -305,7 +305,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Shadow Fist',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Drain Punch', 'Zen Headbutt', 'Swords Dance'],
+				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
 				signatureMove: 'Invisible Punch',
 				evs: {
 					hp: 4,
