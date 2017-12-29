@@ -234,7 +234,7 @@ exports.BattleStatuses = {
 			this.add('c', '*Stabby the Krabby', 'Impossible...');
 		},
 	},
-		volco: {
+	volco: {
 		exists: true,
 		onStart: function () {
 			this.add('c', '%Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
