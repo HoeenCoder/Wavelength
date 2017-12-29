@@ -234,16 +234,16 @@ exports.BattleStatuses = {
 			this.add('c', '*Stabby the Krabby', 'Impossible...');
 		},
 	},
-	arrays: {
+		volco: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Arrays', 'The code bracket is here! (Arrays)');
+			this.add('c', '%Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Arrays', 'I don\'t know how but i\'ve learned to run!');
+			this.add('c', '%Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Arrays', 'How does one beat up code? It\'s not able to be touched by physical means!');
+			this.add('c', '%Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
 	mosmero: {
