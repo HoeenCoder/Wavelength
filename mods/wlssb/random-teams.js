@@ -300,19 +300,19 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Impish",
 			},
-			'%Arrays': {
-				species: 'Conkeldurr',
+			'%Volco': {
+				species: 'Gallade-Mega',
 				ability: 'Shadow Fist',
-				item: 'Assault Vest',
+				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Drain Punch', 'Ice Punch', 'Mach Punch'],
+				moves: ['Drain Punch', 'Zen Headbutt', 'Swords Dance'],
 				signatureMove: 'Invisible Punch',
 				evs: {
-					hp: 252,
+					hp: 4,
 					atk: 252,
-					def: 4,
+					spe: 252,
 				},
-				nature: 'Adamant',
+				nature: 'Jolly',
 			},
 			'%wgc': {
 				species: 'Gengar',
