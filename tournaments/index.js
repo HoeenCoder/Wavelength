@@ -980,7 +980,7 @@ class Tournament {
 				let factionName = WL.getFaction(winner);
 				let factionId = toId(factionName);
 				Db.factionbank.set(factionId, Db.factionbank.get(factionId, 0) + 10);
-				this.room.addRaw(`<strong>Congratulations to ${factionName}! Your faction has gained 10 points!</strong>`);
+				this.room.addRaw(`<strong>Congratulations to ${factionName}! Your faction has gained 10 faction money! To view it type /faction bank atm (faction) </strong>`);
 			}
 		}
 
