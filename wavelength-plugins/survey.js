@@ -406,6 +406,7 @@ exports.commands = {
 			for (let u = 0; u < targets.length; u++) targets[u] = targets[u].trim();
 			if (!targets[1]) return this.errorReply("/survey timer (clear/ time amount), (survey number)");
 			let num = room.survey.obtain(parseInt(targets[1]));
+			if (!room.survey.surveyArray[num]) return this.errorReply('That survey number is not currently a survey!');
 			if (targets[0]) {
 				if (!this.can('minigame', null, room)) return false;
 				if (targets[0] === 'clear') {
