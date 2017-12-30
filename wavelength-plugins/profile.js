@@ -330,8 +330,7 @@ exports.commands = {
 			if (!parts[2]) return this.errorReply('/musichelp');
 			let link = parts[1].trim();
 			let title = parts[2].trim();
-			Db.music.set([targ, 'link'], link);
-			Db.music.set([targ, 'title'], title);
+			Db.music.set(targ, {'link': link, 'title': title});
 			this.sendReply(targ + '\'s song has been set to: ');
 			this.parse('/profile ' + targ);
 		},
@@ -491,9 +490,9 @@ exports.commands = {
 		}
 
 		function song(user) {
-			let song = Db.music.get([user, 'link']);
-			let title = Db.music.get([user, 'title']);
 			if (!Db.music.has(user)) return '';
+			let song = Db.music.get(user)['link'];
+			let title = Db.music.get(user)['title'];
 			return '<acronym title="' + title + '"><br /><audio src="' + song + '" controls="" style="width:100%;"></audio></acronym>';
 		}
 
