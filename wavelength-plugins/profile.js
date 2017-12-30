@@ -332,8 +332,8 @@ exports.commands = {
 			let title = parts[2].trim();
 			Db.music.set([targ, 'link'], link);
 			Db.music.set([targ, 'title'], title);
-			this.sendReply(targ + '\'s song has been set to: ');
-			this.parse('/profile ' + targ);
+			this.sendReply(`${targ}'s song has been set to: `);
+			this.parse(`/profile ${targ}`);
 		},
 
 		take: "delete",
@@ -524,7 +524,7 @@ exports.commands = {
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
+					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username) + '<br />');
 				}
 				profile += '&nbsp;' + song(toId(username)) + '';
 				profile += '&nbsp;</div>';
