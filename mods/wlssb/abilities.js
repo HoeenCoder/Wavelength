@@ -189,7 +189,7 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	// Arrays
+	// Volco
 	shadowfist: {
 		shortDesc: "On switch-in, This pokemon is a ghost/fighting type.",
 		onStart: function (pokemon) {

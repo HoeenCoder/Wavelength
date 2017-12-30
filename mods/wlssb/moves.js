@@ -497,7 +497,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Steel",
 	},
-	// Arrays
+	// Volco
 	"invisiblepunch": {
 		id: "invisiblepunch",
 		name: "Invisible Punch",
@@ -512,7 +512,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Shadow punch", target);
 		},
 		onHit: function (target, source, move) {
-			this.add('c|%Arrays|A punch from the world of code! Sadly it\'s forced to be spooky because code doesn\'t actually exist in the real world!');
+			this.add('c|%Volco|You cant see this punch. It\'s very spooky!');
 		},
 		secondary: false,
 		flags: {protect: 1, contact: 1, mirror: 1, punch: 1},
