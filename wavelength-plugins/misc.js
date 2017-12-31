@@ -580,10 +580,4 @@ exports.commands = {
 		out += `</div>`;
 		return this.sendReplyBox(out);
 	},
-	'!forums': true,
-	forum: 'forums',
-	forums: function (target, room, user) {
-		if (!this.runBroadcast()) return;
-		this.sendReplyBox("<a href=\"http://www.smogon.com/forums/forums/209/\">Pok&eacute;mon Showdown Forums</a> | <a href=\"http://ps-wavelength.proboards.com\">Wavelength Forums</a>");
-	},
 };
