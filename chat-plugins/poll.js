@@ -264,7 +264,7 @@ exports.commands = {
 					timeout: null,
 					timeoutMins: 0,
 					options: new Map(),
-				};
+				});
 				for (let i = 0; i < options.length; i++) {
 					room.poll.pollArray[room.poll.pollArray.length - 1].options.set(i + 1, {name: options[i], votes: 0});
 				}
