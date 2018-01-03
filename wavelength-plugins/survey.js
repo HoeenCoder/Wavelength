@@ -238,7 +238,7 @@ exports.commands = {
 				room.survey.display();
 			}
 
-			this.logEntry(`${user.name} used ${message}.`);
+			this.roomlog(`${user.name} used ${message}.`);
 			return this.privateModCommand(`(A survey was started by ${user.name}.)`);
 		},
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
@@ -249,7 +249,7 @@ exports.commands = {
 			let targets = target.split(',');
 			targets = targets.map(x => { return x.trim(); });
 			let num = room.survey.obtain(parseInt(targets.shift()));
-			targets = targets.join(',')
+			targets = targets.join(',');
 			if (targets.length > 600) return this.errorReply('Your answer is too long.');
 			if (!validateAnswer(room, targets)) return this.errorReply('Your answer contained a banned phrase.');
 			if (!num) return this.errorReply("That isn't a valid survey number.");

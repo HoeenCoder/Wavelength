@@ -84,12 +84,10 @@ exports.commands = {
 		}
 		buf += '<br />';
 		if (user.can('alts', targetUser) || user.can('alts') && user === targetUser) {
-			let alts = targetUser.getAltUsers(true);
 			let prevNames = Object.keys(targetUser.prevNames).join(", ");
 			if (prevNames) buf += Chat.html`<br />Previous names: ${prevNames}`;
 
-			for (let j = 0; j < alts.length; ++j) {
-				let targetAlt = alts[j];
+			for (const targetAlt of targetUser.getAltUsers(true)) {
 				if (!targetAlt.named && !targetAlt.connected) continue;
 				if (targetAlt.group === '~' && user.group !== '~') continue;
 
@@ -185,8 +183,10 @@ exports.commands = {
 		}
 		this.sendReplyBox(buf);
 	},
-	whoishelp: ["/whois - Get details on yourself: alts, group, IP address, and rooms.",
-		"/whois [username] - Get details on a username: alts (Requires: % @ * & ~), group, IP address (Requires: @ * & ~), and rooms."],
+	whoishelp: [
+		`/whois - Get details on yourself: alts, group, IP address, and rooms.`,
+		`/whois [username] - Get details on a username: alts (Requires: % @ * & ~), group, IP address (Requires: @ * & ~), and rooms.`,
+	],
 
 	'!offlinewhois': true,
 	checkpunishment: 'offlinewhois',
@@ -267,7 +267,7 @@ exports.commands = {
 			this.sendReply('IP ' + target + ': ' + (host || "ERROR"));
 		});
 	},
-	hosthelp: ["/host [ip] - Gets the host for a given IP. Requires: & ~"],
+	hosthelp: [`/host [ip] - Gets the host for a given IP. Requires: & ~`],
 
 	'!ipsearch': true,
 	searchip: 'ipsearch',
@@ -323,7 +323,7 @@ exports.commands = {
 		}
 		return this.sendReply(results.join('; '));
 	},
-	ipsearchhelp: ["/ipsearch [ip|range|host], (room) - Find all users with specified IP, IP range, or host. If a room is provided only users in the room will be shown. Requires: & ~"],
+	ipsearchhelp: [`/ipsearch [ip|range|host], (room) - Find all users with specified IP, IP range, or host. If a room is provided only users in the room will be shown. Requires: & ~`],
 
 	checkchallenges: function (target, room, user) {
 		if (!this.can('ban', null, room)) return false;
@@ -340,18 +340,30 @@ exports.commands = {
 			return this.errorReply(`Both users must be in this room.`);
 		}
 		let challenges = [];
-		if (user1.challengeTo && Users.get(user1.challengeTo.to) === user2) {
-			challenges.push(Chat.html`${user1.name} is challenging ${user2.name} in ${Dex.getFormat(user1.challengeTo.format).name}.`);
+		const user1Challs = Ladders.challenges.get(user1.userid);
+		if (user1Challs) {
+			for (const chall of user1Challs) {
+				if (chall.from === user1.userid && Users.get(chall.to) === user2) {
+					challenges.push(Chat.html`${user1.name} is challenging ${user2.name} in ${Dex.getFormat(chall.formatid).name}.`);
+					break;
+				}
+			}
 		}
-		if (user2.challengeTo && Users.get(user2.challengeTo.to) === user1) {
-			challenges.push(Chat.html`${user2.name} is challenging ${user1.name} in ${Dex.getFormat(user2.challengeTo.format).name}.`);
+		const user2Challs = Ladders.challenges.get(user2.userid);
+		if (user2Challs) {
+			for (const chall of user2Challs) {
+				if (chall.from === user2.userid && Users.get(chall.to) === user1) {
+					challenges.push(Chat.html`${user2.name} is challenging ${user1.name} in ${Dex.getFormat(chall.formatid).name}.`);
+					break;
+				}
+			}
 		}
 		if (!challenges.length) {
 			return this.sendReplyBox(Chat.html`${user1.name} and ${user2.name} are not challenging each other.`);
 		}
 		this.sendReplyBox(challenges.join(`<br />`));
 	},
-	checkchallengeshelp: ["!checkchallenges [user1], [user2] - Check if the specified users are challenging each other. Requires: @ * # & ~"],
+	checkchallengeshelp: [`!checkchallenges [user1], [user2] - Check if the specified users are challenging each other. Requires: @ * # & ~`],
 
 	/*********************************************************
 	 * Client fallback
@@ -403,13 +415,13 @@ exports.commands = {
 		let newTargets = mod.dataSearch(target);
 		let showDetails = (cmd === 'dt' || cmd === 'details');
 		if (newTargets && newTargets.length) {
-			for (let i = 0; i < newTargets.length; ++i) {
-				if (newTargets[i].isInexact && !i) {
+			for (const [i, newTarget] of newTargets.entries()) {
+				if (newTarget.isInexact && !i) {
 					buffer = `No Pok\u00e9mon, item, move, ability or nature named '${target}' was found${Dex.gen > mod.gen ? ` in Gen ${mod.gen}` : ""}. Showing the data of '${newTargets[0].name}' instead.\n`;
 				}
-				switch (newTargets[i].searchType) {
+				switch (newTarget.searchType) {
 				case 'nature':
-					let nature = Dex.getNature(newTargets[i].name);
+					let nature = Dex.getNature(newTarget.name);
 					buffer += "" + nature.name + " nature: ";
 					if (nature.plus) {
 						let statNames = {'atk': "Attack", 'def': "Defense", 'spa': "Special Attack", 'spd': "Special Defense", 'spe': "Speed"};
@@ -419,19 +431,19 @@ exports.commands = {
 					}
 					return this.sendReply(buffer);
 				case 'pokemon':
-					let template = mod.getTemplate(newTargets[i].name);
+					let template = mod.getTemplate(newTarget.name);
 					buffer += `|raw|${Chat.getDataPokemonHTML(template, mod.gen)}\n`;
 					break;
 				case 'item':
-					let item = mod.getItem(newTargets[i].name);
+					let item = mod.getItem(newTarget.name);
 					buffer += `|raw|${Chat.getDataItemHTML(item)}\n`;
 					break;
 				case 'move':
-					let move = mod.getMove(newTargets[i].name);
+					let move = mod.getMove(newTarget.name);
 					buffer += `|raw|${Chat.getDataMoveHTML(move)}\n`;
 					break;
 				case 'ability':
-					let ability = mod.getAbility(newTargets[i].name);
+					let ability = mod.getAbility(newTarget.name);
 					buffer += `|raw|${Chat.getDataAbilityHTML(ability)}\n`;
 					break;
 				default:
@@ -590,9 +602,11 @@ exports.commands = {
 		}
 		this.sendReply(buffer);
 	},
-	datahelp: ["/data [pokemon/item/move/ability] - Get details on this pokemon/item/move/ability/nature.",
-		"/data [pokemon/item/move/ability], Gen [generation number/format name] - Get details on this pokemon/item/move/ability/nature for that generation/format.",
-		"!data [pokemon/item/move/ability] - Show everyone these details. Requires: + % @ * # & ~"],
+	datahelp: [
+		`/data [pokemon/item/move/ability] - Get details on this pokemon/item/move/ability/nature.`,
+		`/data [pokemon/item/move/ability], Gen [generation number/format name] - Get details on this pokemon/item/move/ability/nature for that generation/format.`,
+		`!data [pokemon/item/move/ability] - Show everyone these details. Requires: + % @ * # & ~`,
+	],
 
 	'!details': true,
 	dt: 'details',
@@ -600,9 +614,11 @@ exports.commands = {
 		if (!target) return this.parse('/help details');
 		this.run('data');
 	},
-	detailshelp: ["/details [pokemon/item/move/ability] - Get additional details on this pokemon/item/move/ability/nature.",
-		"/details [pokemon/item/move/ability], Gen [generation number/format name] - Get details on this pokemon/item/move/ability/nature for that generation/format.",
-		"!details [pokemon/item/move/ability] - Show everyone these details. Requires: + % @ * # & ~"],
+	detailshelp: [
+		`/details [pokemon/item/move/ability] - Get additional details on this pokemon/item/move/ability/nature.`,
+		`/details [pokemon/item/move/ability], Gen [generation number/format name] - Get details on this pokemon/item/move/ability/nature for that generation/format.`,
+		`!details [pokemon/item/move/ability] - Show everyone these details. Requires: + % @ * # & ~`,
+	],
 
 	'!weakness': true,
 	weaknesses: 'weakness',
@@ -615,7 +631,7 @@ exports.commands = {
 		let mod = target.split(',');
 		mod = Dex.mod(toId(mod[mod.length - 1])) || Dex;
 		let targets = target.split(/ ?[,/ ] ?/);
-		let pokemon = mod.getTemplate(target);
+		let pokemon = mod.getTemplate(targets[0]);
 		let type1 = mod.getType(targets[0]);
 		let type2 = mod.getType(targets[1]);
 		let type3 = mod.getType(targets[2]);
@@ -680,10 +696,12 @@ exports.commands = {
 		buffer.push('<span class="message-effect-immune">Immunities</span>: ' + (immunities.join(', ') || '<font color=#999999>None</font>'));
 		this.sendReplyBox(buffer.join('<br />'));
 	},
-	weaknesshelp: ["/weakness [pokemon] - Provides a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities.",
-		"/weakness [type 1]/[type 2] - Provides a type or type combination's resistances, weaknesses, and immunities, ignoring abilities.",
-		"!weakness [pokemon] - Shows everyone a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ * # & ~",
-		"!weakness [type 1]/[type 2] - Shows everyone a type or type combination's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ * # & ~"],
+	weaknesshelp: [
+		`/weakness [pokemon] - Provides a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities.`,
+		`/weakness [type 1]/[type 2] - Provides a type or type combination's resistances, weaknesses, and immunities, ignoring abilities.`,
+		`!weakness [pokemon] - Shows everyone a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ * # & ~`,
+		`!weakness [type 1]/[type 2] - Shows everyone a type or type combination's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ * # & ~`,
+	],
 
 	'!effectiveness': true,
 	eff: 'effectiveness',
@@ -732,9 +750,9 @@ exports.commands = {
 		if (Dex.getImmunity(source, defender) || source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[source.type])) {
 			let totalTypeMod = 0;
 			if (source.effectType !== 'Move' || source.category !== 'Status' && (source.basePower || source.basePowerCallback)) {
-				for (let i = 0; i < defender.types.length; i++) {
-					let baseMod = Dex.getEffectiveness(source, defender.types[i]);
-					let moveMod = source.onEffectiveness && source.onEffectiveness.call(Dex, baseMod, defender.types[i], source);
+				for (const type of defender.types) {
+					let baseMod = Dex.getEffectiveness(source, type);
+					let moveMod = source.onEffectiveness && source.onEffectiveness.call(Dex, baseMod, type, source);
 					totalTypeMod += typeof moveMod === 'number' ? moveMod : baseMod;
 				}
 			}
@@ -746,8 +764,10 @@ exports.commands = {
 
 		this.sendReplyBox("" + atkName + " is " + factor + "x effective against " + defName + "." + additionalInfo);
 	},
-	effectivenesshelp: ["/effectiveness [attack], [defender] - Provides the effectiveness of a move or type on another type or a Pok\u00e9mon.",
-		"!effectiveness [attack], [defender] - Shows everyone the effectiveness of a move or type on another type or a Pok\u00e9mon."],
+	effectivenesshelp: [
+		`/effectiveness [attack], [defender] - Provides the effectiveness of a move or type on another type or a Pok\u00e9mon.`,
+		`!effectiveness [attack], [defender] - Shows everyone the effectiveness of a move or type on another type or a Pok\u00e9mon.`,
+	],
 
 	'!coverage': true,
 	cover: 'coverage',
@@ -768,8 +788,8 @@ exports.commands = {
 			bestCoverage[type] = -5;
 		}
 
-		for (let i = 0; i < targets.length; i++) {
-			let move = targets[i].trim();
+		for (const arg of targets) {
+			let move = arg.trim();
 			if (toId(move) === mod.currentMod) continue;
 			move = move.charAt(0).toUpperCase() + move.slice(1).toLowerCase();
 			if (move === 'Table' || move === 'All') {
@@ -807,7 +827,7 @@ exports.commands = {
 				continue;
 			}
 
-			return this.errorReply(`No type or move '${targets[i]}' found${Dex.gen > mod.gen ? ` in Gen ${mod.gen}` : ""}.`);
+			return this.errorReply(`No type or move '${arg}' found${Dex.gen > mod.gen ? ` in Gen ${mod.gen}` : ""}.`);
 		}
 		if (sources.length === 0) return this.errorReply("No moves using a type table for determining damage were specified.");
 		if (sources.length > 4) return this.errorReply("Specify a maximum of 4 moves or types.");
@@ -876,9 +896,7 @@ exports.commands = {
 						bestEff = bestCoverage[type1];
 					} else {
 						typing = type1 + "/" + type2;
-						for (let i = 0; i < sources.length; i++) {
-							let move = sources[i];
-
+						for (const move of sources) {
 							let curEff = 0;
 							if ((!mod.getImmunity((move.type || move), type1) || !mod.getImmunity((move.type || move), type2)) && !move.ignoreImmunity) continue;
 							let baseMod = mod.getEffectiveness(move, type1);
@@ -927,9 +945,11 @@ exports.commands = {
 			this.sendReplyBox('Coverage for ' + sources.join(' + ') + ':<br />' + buffer);
 		}
 	},
-	coveragehelp: ["/coverage [move 1], [move 2] ... - Provides the best effectiveness match-up against all defending types for given moves or attacking types",
-		"!coverage [move 1], [move 2] ... - Shows this information to everyone.",
-		"Adding the parameter 'all' or 'table' will display the information with a table of all type combinations."],
+	coveragehelp: [
+		`/coverage [move 1], [move 2] ... - Provides the best effectiveness match-up against all defending types for given moves or attacking types`,
+		`!coverage [move 1], [move 2] ... - Shows this information to everyone.`,
+		`Adding the parameter 'all' or 'table' will display the information with a table of all type combinations.`,
+	],
 
 	'!statcalc': true,
 	statcalc: function (target, room, user) {
@@ -952,8 +972,8 @@ exports.commands = {
 		let modifier = 0;
 		let positiveMod = true;
 
-		for (let i = 0; i < targets.length; i++) {
-			let lowercase = targets[i].toLowerCase();
+		for (const arg of targets) {
+			let lowercase = arg.toLowerCase();
 
 			if (!lvlSet) {
 				if (lowercase === 'lc') {
@@ -965,7 +985,7 @@ exports.commands = {
 					lvlSet = true;
 					continue;
 				} else if (lowercase.startsWith('lv') || lowercase.startsWith('level')) {
-					level = parseInt(targets[i].replace(/\D/g, ''));
+					level = parseInt(arg.replace(/\D/g, ''));
 					lvlSet = true;
 					if (level < 1 || level > 9999) {
 						return this.sendReplyBox('Invalid value for level: ' + level);
@@ -1019,11 +1039,11 @@ exports.commands = {
 
 			if (!ivSet) {
 				if (lowercase.endsWith('iv') || lowercase.endsWith('ivs')) {
-					iv = parseInt(targets[i]);
+					iv = parseInt(arg);
 					ivSet = true;
 
 					if (isNaN(iv)) {
-						return this.sendReplyBox('Invalid value for IVs: ' + Chat.escapeHTML(targets[i]));
+						return this.sendReplyBox('Invalid value for IVs: ' + Chat.escapeHTML(arg));
 					}
 
 					continue;
@@ -1041,21 +1061,21 @@ exports.commands = {
 					ev = 0;
 					evSet = true;
 				} else if (lowercase.endsWith('ev') || lowercase.endsWith('evs') || lowercase.endsWith('+') || lowercase.endsWith('-')) {
-					ev = parseInt(targets[i]);
+					ev = parseInt(arg);
 					evSet = true;
 
 					if (isNaN(ev)) {
-						return this.sendReplyBox('Invalid value for EVs: ' + Chat.escapeHTML(targets[i]));
+						return this.sendReplyBox('Invalid value for EVs: ' + Chat.escapeHTML(arg));
 					}
 					if (ev > 255 || ev < 0) {
 						return this.sendReplyBox('The amount of EVs should be between 0 and 255.');
 					}
 
 					if (!natureSet) {
-						if (targets[i].includes('+')) {
+						if (arg.includes('+')) {
 							nature = 1.1;
 							natureSet = true;
-						} else if (targets[i].includes('-')) {
+						} else if (arg.includes('-')) {
 							nature = 0.9;
 							natureSet = true;
 						}
@@ -1066,15 +1086,15 @@ exports.commands = {
 			}
 
 			if (!modSet) {
-				if (targets[i] === 'scarf' || targets[i] === 'specs' || targets[i] === 'band') {
+				if (['band', 'scarf', 'specs'].includes(arg)) {
 					modifier = 1;
 					modSet = true;
-				} else if (targets[i].charAt(0) === '+') {
-					modifier = parseInt(targets[i].charAt(1));
+				} else if (arg.charAt(0) === '+') {
+					modifier = parseInt(arg.charAt(1));
 					modSet = true;
-				} else if (targets[i].charAt(0) === '-') {
+				} else if (arg.charAt(0) === '-') {
 					positiveMod = false;
-					modifier = parseInt(targets[i].charAt(1));
+					modifier = parseInt(arg.charAt(1));
 					modSet = true;
 				}
 				if (isNaN(modifier)) {
@@ -1086,7 +1106,7 @@ exports.commands = {
 			}
 
 			if (!pokemon) {
-				let testPoke = Dex.getTemplate(targets[i]);
+				let testPoke = Dex.getTemplate(arg);
 				if (testPoke.baseStats) {
 					pokemon = testPoke.baseStats;
 					baseSet = true;
@@ -1094,7 +1114,7 @@ exports.commands = {
 				}
 			}
 
-			let tempStat = parseInt(targets[i]);
+			let tempStat = parseInt(arg);
 
 			if (!isNaN(tempStat) && !baseSet && tempStat > 0 && tempStat < 256) {
 				statValue = tempStat;
@@ -1128,9 +1148,11 @@ exports.commands = {
 		}
 		return this.sendReplyBox('Base ' + statValue + (calcHP ? ' HP ' : ' ') + 'at level ' + level + ' with ' + iv + ' IVs, ' + ev + (nature === 1.1 ? '+' : (nature === 0.9 ? '-' : '')) + ' EVs' + (modifier > 0 && !calcHP ? ' at ' + (positiveMod ? '+' : '-') + modifier : '') + ': <b>' + Math.floor(output) + '</b>.');
 	},
-	statcalchelp: ["/statcalc [level] [base stat] [IVs] [nature] [EVs] [modifier] (only base stat is required) - Calculates what the actual stat of a Pokémon is with the given parameters. For example, '/statcalc lv50 100 30iv positive 252ev scarf' calculates the speed of a base 100 scarfer with HP Ice in Battle Spot, and '/statcalc uninvested 90 neutral' calculates the attack of an uninvested Crobat.",
-		"!statcalc [level] [base stat] [IVs] [nature] [EVs] [modifier] (only base stat is required) - Shows this information to everyone.",
-		"Inputing 'hp' as an argument makes it use the formula for HP. Instead of giving nature, '+' and '-' can be appended to the EV amount (e.g. 252+ev) to signify a boosting or inhibiting nature."],
+	statcalchelp: [
+		`/statcalc [level] [base stat] [IVs] [nature] [EVs] [modifier] (only base stat is required) - Calculates what the actual stat of a Pokémon is with the given parameters. For example, '/statcalc lv50 100 30iv positive 252ev scarf' calculates the speed of a base 100 scarfer with HP Ice in Battle Spot, and '/statcalc uninvested 90 neutral' calculates the attack of an uninvested Crobat.`,
+		`!statcalc [level] [base stat] [IVs] [nature] [EVs] [modifier] (only base stat is required) - Shows this information to everyone.`,
+		`Inputing 'hp' as an argument makes it use the formula for HP. Instead of giving nature, '+' and '-' can be appended to the EV amount (e.g. 252+ev) to signify a boosting or inhibiting nature.`,
+	],
 
 	/*********************************************************
 	 * Informational commands
@@ -1181,9 +1203,11 @@ exports.commands = {
 			`~ <strong>Global Administrator</strong> -  They can do anything, like change what this message says` : ``)
 		);
 	},
-	groupshelp: ["/groups - Explains what the symbols (like % and @) before people's names mean.",
-		"/groups [global|room] - Explains only global or room symbols.",
-		"!groups - Shows everyone that information. Requires: + % @ * # & ~"],
+	groupshelp: [
+		`/groups - Explains what the symbols (like % and @) before people's names mean.`,
+		`/groups [global|room] - Explains only global or room symbols.`,
+		`!groups - Shows everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!punishments': true,
 	punishments: function (target, room, user) {
@@ -1203,8 +1227,10 @@ exports.commands = {
 			"<strong>globalban</strong> - Globally bans (makes them unable to connect and play games) for a week."
 		);
 	},
-	punishmentshelp: ["/punishments - Explains punishments.",
-		"!punishments - Show everyone that information. Requires: + % @ * # & ~"],
+	punishmentshelp: [
+		`/punishments - Explains punishments.`,
+		`!punishments - Show everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!opensource': true,
 	repo: 'opensource',
@@ -1221,8 +1247,10 @@ exports.commands = {
 			"- <a href=\"https://github.com/Zarel/Pokemon-Showdown-Dex\">Dex source code</a>"
 		);
 	},
-	opensourcehelp: ["/opensource - Links to PS's source code repository.",
-		"!opensource - Show everyone that information. Requires: + % @ * # & ~"],
+	opensourcehelp: [
+		`/opensource - Links to PS's source code repository.`,
+		`!opensource - Show everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!staff': true,
 	staff: function (target, room, user) {
@@ -1273,8 +1301,10 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox("You can <button name=\"avatars\">change your avatar</button> by clicking on it in the <button name=\"openOptions\"><i class=\"fa fa-cog\"></i> Options</button> menu in the upper right. Custom avatars are only obtainable by staff.");
 	},
-	avatarshelp: ["/avatars - Explains how to change avatars.",
-		"!avatars - Show everyone that information. Requires: + % @ * # & ~"],
+	avatarshelp: [
+		`/avatars - Explains how to change avatars.`,
+		`!avatars - Show everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!optionsbutton': true,
 	optionbutton: 'optionsbutton',
@@ -1302,8 +1332,10 @@ exports.commands = {
 			"- <a href=\"http://www.smogon.com/xyhub/tiers\">What are the rules for each format? What is 'Sleep Clause'?</a>"
 		);
 	},
-	introhelp: ["/intro - Provides an introduction to competitive Pok\u00e9mon.",
-		"!intro - Show everyone that information. Requires: + % @ * # & ~"],
+	introhelp: [
+		`/intro - Provides an introduction to competitive Pok\u00e9mon.`,
+		`!intro - Show everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!smogintro': true,
 	mentoring: 'smogintro',
@@ -1328,8 +1360,10 @@ exports.commands = {
 			"- <a href=\"https://pokemonshowdown.com/damagecalc/\">Damage Calculator</a>"
 		);
 	},
-	calchelp: ["/calc - Provides a link to a damage calculator",
-		"!calc - Shows everyone a link to a damage calculator. Requires: + % @ * # & ~"],
+	calchelp: [
+		`/calc - Provides a link to a damage calculator`,
+		`!calc - Shows everyone a link to a damage calculator. Requires: + % @ * # & ~`,
+	],
 
 	'!cap': true,
 	capintro: 'cap',
@@ -1343,8 +1377,10 @@ exports.commands = {
 			"- <a href=\"http://www.smogon.com/forums/threads/3593752/\">Sample SM CAP teams</a>"
 		);
 	},
-	caphelp: ["/cap - Provides an introduction to the Create-A-Pok\u00e9mon project.",
-		"!cap - Show everyone that information. Requires: + % @ * # & ~"],
+	caphelp: [
+		`/cap - Provides an introduction to the Create-A-Pok\u00e9mon project.`,
+		`!cap - Show everyone that information. Requires: + % @ * # & ~`,
+	],
 
 	'!gennext': true,
 	gennext: function (target, room, user) {
@@ -1394,12 +1430,12 @@ exports.commands = {
 		let exactMatch = '';
 		let sections = {};
 		let totalMatches = 0;
-		for (let i = 0; i < formatList.length; i++) {
-			let format = Dex.getFormat(formatList[i]);
+		for (const mode of formatList) {
+			let format = Dex.getFormat(mode);
 			let sectionId = toId(format.section);
 			let formatId = format.id;
 			if (!/^gen\d+/.test(targetId)) formatId = formatId.replace(/^gen\d+/, ''); // skip generation prefix if it wasn't provided
-			if (targetId && !format[targetId + 'Show'] && sectionId !== targetId && format.id === formatList[i] && !formatId.startsWith(targetId)) continue;
+			if (targetId && !format[targetId + 'Show'] && sectionId !== targetId && format.id === mode && !formatId.startsWith(targetId)) continue;
 			if (isOMSearch && format.id.startsWith('gen') && ['ou', 'uu', 'ru', 'ubers', 'lc', 'customgame', 'doublescustomgame', 'gbusingles', 'gbudoubles'].includes(format.id.slice(4))) continue;
 			if (isOMSearch && (format.id === 'gen5nu')) continue;
 			totalMatches++;
@@ -1453,8 +1489,8 @@ exports.commands = {
 		for (let sectionId in sections) {
 			if (exactMatch && sectionId !== exactMatch) continue;
 			buf.push(Chat.html`<th style="border:1px solid gray" colspan="2">${sections[sectionId].name}</th>`);
-			for (let i = 0; i < sections[sectionId].formats.length; i++) {
-				let format = Dex.getFormat(sections[sectionId].formats[i]);
+			for (const section of sections[sectionId].formats) {
+				let format = Dex.getFormat(section);
 				let nameHTML = Chat.escapeHTML(format.name);
 				let descHTML = format.desc ? format.desc.join("<br />") : "&mdash;";
 				buf.push(`<tr><td style="border:1px solid gray">${nameHTML}</td><td style="border: 1px solid gray; margin-left:10px">${descHTML}</td></tr>`);
@@ -1580,10 +1616,12 @@ exports.commands = {
 			Rooms.global.writeChatRoomData();
 		}
 	},
-	ruleshelp: ["/rules - Show links to room rules and global rules.",
-		"!rules - Show everyone links to room rules and global rules. Requires: + % @ * # & ~",
-		"/rules [url] - Change the room rules URL. Requires: # & ~",
-		"/rules remove - Removes a room rules URL. Requires: # & ~"],
+	ruleshelp: [
+		`/rules - Show links to room rules and global rules.`,
+		`!rules - Show everyone links to room rules and global rules. Requires: + % @ * # & ~`,
+		`/rules [url] - Change the room rules URL. Requires: # & ~`,
+		`/rules remove - Removes a room rules URL. Requires: # & ~`,
+	],
 
 	'!faq': true,
 	faq: function (target, room, user) {
@@ -1615,8 +1653,10 @@ exports.commands = {
 		}
 		this.sendReplyBox(buffer.join("<br />"));
 	},
-	faqhelp: ["/faq [theme] - Provides a link to the FAQ. Add deviation, doubles, randomcap, restart, or staff for a link to these questions. Add all for all of them.",
-		"!faq [theme] - Shows everyone a link to the FAQ. Add deviation, doubles, randomcap, restart, or staff for a link to these questions. Add all for all of them. Requires: + % @ * # & ~"],
+	faqhelp: [
+		`/faq [theme] - Provides a link to the FAQ. Add deviation, doubles, randomcap, restart, or staff for a link to these questions. Add all for all of them.`,
+		`!faq [theme] - Shows everyone a link to the FAQ. Add deviation, doubles, randomcap, restart, or staff for a link to these questions. Add all for all of them. Requires: + % @ * # & ~`,
+	],
 
 	'!smogdex': true,
 	analysis: 'smogdex',
@@ -1764,8 +1804,10 @@ exports.commands = {
 			return this.sendReplyBox(`Pok&eacute;mon, item, move, ability, or format not found for generation ${generation.toUpperCase()}.`);
 		}
 	},
-	smogdexhelp: ["/analysis [pokemon], [generation], [format] - Links to the Smogon University analysis for this Pok\u00e9mon in the given generation.",
-		"!analysis [pokemon], [generation], [format] - Shows everyone this link. Requires: + % @ * # & ~"],
+	smogdexhelp: [
+		`/analysis [pokemon], [generation], [format] - Links to the Smogon University analysis for this Pok\u00e9mon in the given generation.`,
+		`!analysis [pokemon], [generation], [format] - Shows everyone this link. Requires: + % @ * # & ~`,
+	],
 
 	'!veekun': true,
 	veekun: function (target, broadcast, user) {
@@ -1837,8 +1879,10 @@ exports.commands = {
 			return this.sendReplyBox("Pok&eacute;mon, item, move, ability, or nature not found.");
 		}
 	},
-	veekunhelp: ["/veekun [pokemon] - Links to Veekun website for this pokemon/item/move/ability/nature.",
-		"!veekun [pokemon] - Shows everyone this link. Requires: + % @ * # & ~"],
+	veekunhelp: [
+		`/veekun [pokemon] - Links to Veekun website for this pokemon/item/move/ability/nature.`,
+		`!veekun [pokemon] - Shows everyone this link. Requires: + % @ * # & ~`,
+	],
 
 	'!register': true,
 	register: function () {
@@ -1951,10 +1995,12 @@ exports.commands = {
 		let sumFragment = "<br />Sum" + offsetFragment + (removeOutlier ? " except " + (removeOutlier > 0 ? "highest" : "lowest") : "");
 		return this.sendReplyBox("" + diceQuantity + " rolls (1 - " + diceFaces + ")" + (trackRolls ? ": " + rolls.join(", ") : "") + sumFragment + ": " + rollSum);
 	},
-	dicehelp: ["/dice [max number] - Randomly picks a number between 1 and the number you choose.",
-		"/dice [number of dice]d[number of sides] - Simulates rolling a number of dice, e.g., /dice 2d4 simulates rolling two 4-sided dice.",
-		"/dice [number of dice]d[number of sides][+/-][offset] - Simulates rolling a number of dice and adding an offset to the sum, e.g., /dice 2d6+10: two standard dice are rolled; the result lies between 12 and 22.",
-		"/dice [number of dice]d[number of sides]-[H/L] - Simulates rolling a number of dice with removal of extreme values, e.g., /dice 3d8-L: rolls three 8-sided dice; the result ignores the lowest value."],
+	dicehelp: [
+		`/dice [max number] - Randomly picks a number between 1 and the number you choose.`,
+		`/dice [number of dice]d[number of sides] - Simulates rolling a number of dice, e.g., /dice 2d4 simulates rolling two 4-sided dice.`,
+		`/dice [number of dice]d[number of sides][+/-][offset] - Simulates rolling a number of dice and adding an offset to the sum, e.g., /dice 2d6+10: two standard dice are rolled; the result lies between 12 and 22.`,
+		`/dice [number of dice]d[number of sides]-[H/L] - Simulates rolling a number of dice with removal of extreme values, e.g., /dice 3d8-L: rolls three 8-sided dice; the result ignores the lowest value.`,
+	],
 
 	'!pickrandom': true,
 	pr: 'pickrandom',
@@ -1966,7 +2012,7 @@ exports.commands = {
 		const pickedOption = options[Math.floor(Math.random() * options.length)];
 		return this.sendReplyBox('<em>We randomly picked:</em> ' + Chat.escapeHTML(pickedOption).trim());
 	},
-	pickrandomhelp: ["/pick [option], [option], ... - Randomly selects an item from a list containing 2 or more elements."],
+	pickrandomhelp: [`/pick [option], [option], ... - Randomly selects an item from a list containing 2 or more elements.`],
 
 	showimage: function (target, room, user) {
 		if (!target) return this.parse('/help showimage');
@@ -2009,9 +2055,7 @@ exports.commands = {
 
 		this.sendReply('|raw|<img src="' + Chat.escapeHTML(image) + '" ' + 'style="width: ' + Chat.escapeHTML(width) + '; height: ' + Chat.escapeHTML(height) + '" />');
 	},
-	showimagehelp: ["/showimage [url], [width], [height] - Show an image. " +
-		"Any CSS units may be used for the width or height (default: px)." +
-		"Requires: # & ~"],
+	showimagehelp: [`/showimage [url], [width], [height] - Show an image. Any CSS units may be used for the width or height (default: px). Requires: # & ~`],
 
 	htmlbox: function (target, room, user, connection, cmd, message) {
 		if (!target) return this.parse('/help htmlbox');
@@ -2039,8 +2083,8 @@ exports.commands = {
 		this.addBox(target);
 	},
 	htmlboxhelp: [
-		"/htmlbox [message] - Displays a message, parsing HTML code contained.",
-		"!htmlbox [message] - Shows everyone a message, parsing HTML code contained. Requires: ~ & #",
+		`/htmlbox [message] - Displays a message, parsing HTML code contained.`,
+		`!htmlbox [message] - Shows everyone a message, parsing HTML code contained. Requires: ~ & #`,
 	],
 };
 
