@@ -268,7 +268,7 @@ exports.commands = {
 				for (let i = 0; i < options.length; i++) {
 					room.poll.pollArray[room.poll.pollArray.length - 1].options.set(i + 1, {name: options[i], votes: 0});
 				}
-				room.poll.displaySpecific(room.poll.pollArray.length -1);
+				room.poll.displaySpecific(room.poll.pollArray.length - 1);
 			} else {
 				room.poll = new Poll(room, {source: params[0], supportHTML: supportHTML}, options);
 				room.poll.display();
