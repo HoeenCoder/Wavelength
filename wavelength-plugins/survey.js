@@ -213,16 +213,16 @@ exports.commands = {
 		create: 'new',
 		new: function (target, room, user, connection, cmd, message) {
 			if (!target) return this.parse('/help survey new');
-			if (target.length > 300) return this.errorReply("Survey too long.");
+			if (target.length > 300) return this.errorReply("The survey question is too long.");
 			const supportHTML = cmd === 'htmlcreate';
-			if (room.survey && room.survey.surveyArray[0] && room.survey.surveyArray[1] && room.survey.surveyArray[2] && room.survey.surveyArray[3] && room.survey.surveyArray[4]) return this.errorReply("Only 5 surveys at a time!");
+			if (room.survey && room.survey.surveyArray.length >= 5) return this.errorReply("There can only be 5 surveys in a room at a time.");
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			let allowHTML = toId(cmd) === 'htmlcreate';
 			if (allowHTML && !user.can('declare', null, room)) return false;
 			if (room.survey && room.surveyNumber) room.surveyNumber++;
-			if (room.survey && room.survey.surveyArray[0] && room.survey.surveyArray[1] && room.survey.surveyArray[2] && room.survey.surveyArray[3] && !room.survey.surveyArray[4]) {
-				room.survey.surveyArray[4] = {
+			if (room.survey) {
+				room.survey.surveyArray.push({
 					room: room,
 					surveyNum: room.surveyNumber,
 					question: target,
@@ -231,65 +231,9 @@ exports.commands = {
 					replierIps: {},
 					timeout: null,
 					timeoutMins: 0,
-				};
-				room.survey.displaySpecific(4);
-			}
-			if (room.survey && room.survey.surveyArray[0] && room.survey.surveyArray[1] && room.survey.surveyArray[2] && !room.survey.surveyArray[3]) {
-				room.survey.surveyArray[3] = {
-					room: room,
-					surveyNum: room.surveyNumber,
-					question: target,
-					supportHTML: supportHTML,
-					repliers: {},
-					replierIps: {},
-					timeout: null,
-					timeoutMins: 0,
-				};
-				room.survey.displaySpecific(3);
-			}
-
-			if (room.survey && room.survey.surveyArray[0] && room.survey.surveyArray[1] && !room.survey.surveyArray[2]) {
-				room.survey.surveyArray[2] = {
-					room: room,
-					surveyNum: room.surveyNumber,
-					question: target,
-					supportHTML: supportHTML,
-					repliers: {},
-					replierIps: {},
-					timeout: null,
-					timeoutMins: 0,
-				};
-				room.survey.displaySpecific(2);
-			}
-
-			if (room.survey && room.survey.surveyArray[0] && !room.survey.surveyArray[1]) {
-				room.survey.surveyArray[1] = {
-					room: room,
-					surveyNum: room.surveyNumber,
-					question: target,
-					supportHTML: supportHTML,
-					repliers: {},
-					replierIps: {},
-					timeout: null,
-					timeoutMins: 0,
-				};
-				room.survey.displaySpecific(1);
-			}
-
-			if (room.survey && !room.survey.surveyArray[0]) {
-				room.survey.surveyArray[0] = {
-					room: room,
-					surveyNum: room.surveyNumber,
-					question: target,
-					supportHTML: supportHTML,
-					repliers: {},
-					replierIps: {},
-					timeout: null,
-					timeoutMins: 0,
-				};
-				room.survey.displaySpecific(0);
-			}
-			if (!room.survey) {
+				});
+				room.survey.displaySpecific(room.survey.surveyArray.length - 1);
+			} else {
 				room.survey = new Survey(room, target, supportHTML);
 				room.survey.display();
 			}
@@ -300,24 +244,23 @@ exports.commands = {
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
 
 		answer: function (target, room, user) {
-			if (!room.survey) return this.errorReply("There is no survey running in the room.");
+			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			if (!target) return this.parse('/help survey answer');
 			let targets = target.split(',');
-			for (let u in targets) targets[u] = targets[u].trim();
-			if (targets[0].length > 600) return this.errorReply('Your answer is too long.');
-			if (!validateAnswer(room, targets[0])) return this.errorReply('Your answer contained a banned phrase.');
-			let targ = Chat.escapeHTML(targets[1]);
-			let number = parseInt(targ);
-			let num = room.survey.obtain(number);
-			if (!num) return this.errorReply("Not a survey number!");
-			room.survey.answer(user, targets[0], num);
+			targets = targets.map(x => { return x.trim(); });
+			let num = room.survey.obtain(parseInt(targets.shift()));
+			targets = targets.join(',')
+			if (targets.length > 600) return this.errorReply('Your answer is too long.');
+			if (!validateAnswer(room, targets)) return this.errorReply('Your answer contained a banned phrase.');
+			if (!num) return this.errorReply("That isn't a valid survey number.");
+			room.survey.answer(user, targets, num);
 		},
-		answerhelp: ["/survey answer [answer], [survey number] or /sa [answer], [survey number] - Answers the survey [survey answer] survey with [answer]."],
+		answerhelp: ["/survey answer [survey number], [answer] or /sa [survey number], [answer] - Answers the specified survey with [answer]."],
 
 		results: function (target, room, user) {
-			if (!room.survey) return this.errorReply("There is no survey running in the room.");
+			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			let num = room.survey.obtain(parseInt(target));
-			if (!num) return this.errorReply("Not a survey number!");
+			if (!num) return this.errorReply("That isn't a valid survey number.");
 			if (room.survey.surveyArray[num].surveyNum === parseInt(target)) return room.survey.blankanswer(user, false, num);
 		},
 		resultshelp: ["/survey results [survey number] - View the results of the specified survey. You can't answer this survey after viewing results."],
@@ -325,19 +268,17 @@ exports.commands = {
 		hideresults: function (target, room, user) {
 			if (!room.survey) return this.errorReply("There is no survey running in the room.");
 			let num = room.survey.obtain(parseInt(target));
-			if (!num) return this.errorReply("Not a survey number!");
-			if (room.survey.surveyArray[num].surveyNum === parseInt(target)) {
-				if (room.survey.hasReplied(user, num)) {
-					return room.survey.updateTo(user, num, false);
-				} else {
-					return this.errorReply("You can't hide the results if you can't view them.");
-				}
+			if (!num) return this.errorReply("That isn't a valid survey number.");
+			if (room.survey.hasReplied(user, num)) {
+				return room.survey.updateTo(user, num, false);
+			} else {
+				return this.errorReply("You can't hide the results if you can't view them.");
 			}
 		},
 		hideresultshelp: ["/survey hideresults [survey number] - Hide the results of the specified survey. You can't do this if you haven't answered yet."],
 
 		display: function (target, room, user, connection) {
-			if (!room.survey) return this.errorReply("There is no survey running in the room.");
+			if (!room.survey) return this.errorReply("There are no surveys running in the room.");
 			if (!this.runBroadcast()) return;
 			room.update();
 
@@ -356,20 +297,18 @@ exports.commands = {
 				}
 			}
 		},
-		displayhelp: ["/survey display [survey id number] - Displays the survey. Id number is optional and only displays the survey with the id number."],
+		displayhelp: ["/survey display (survey number) - Displays the survey. survey number is optional and only displays the survey with the number given."],
 
 		delete: 'remove',
 		remove: function (target, room, user) {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
-			if (!room.survey) return this.errorReply("There is no survey running in the room.");
+			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			let targets = target.split(',');
 			for (let u in targets) targets[u] = targets[u].trim();
 			if (!targets[0] || !targets[1]) return this.parse('/help survey remove');
-			let targ = targets[1];
-			let number = parseInt(targ);
-			let num = room.survey.obtain(number);
-			if (!num) return this.errorReply("Not a survey number!");
+			let num = room.survey.obtain(parseInt(targets[1]));
+			if (!num) return this.errorReply("That isn't a valid survey number.");
 			if (!room.survey.surveyArray[num].repliers[toId(targets[0])]) return this.errorReply(`The user ${toId(targets[0])} has not responded to this survey.`);
 			for (let i in room.survey.surveyArray[num].replierIps) {
 				if (room.survey.surveyArray[num].replierIps[i] === room.survey.surveyArray[num].repliers[toId(targets[0])]) {
@@ -379,7 +318,7 @@ exports.commands = {
 				}
 			}
 			room.survey.update(num);
-			this.sendReply(`${targets[0]}'s answer was removed.`);
+			this.sendReply(`${targets[0]}'s answer was removed from survey number ${num}.`);
 		},
 		removehelp: ["/survey remove [user], [survey number] - Removes a user's reply and prevents them from sending in a new one for the specified survey. Requires: % @ # & ~"],
 
@@ -388,13 +327,13 @@ exports.commands = {
 		end: function (target, room, user) {
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return;
-			if (!room.survey) return this.errorReply("There is no survey running in this room.");
+			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			let num = room.survey.obtain(parseInt(target));
-			if (!num) return this.errorReply("Not a survey number!");
+			if (!num) return this.errorReply("That isn't a valid survey number.");
 
-			if (room.survey.surveyArray[num].surveyNum === parseInt(target) && room.survey.surveyArray[num].timeout) clearTimeout(room.survey.surveyArray[num].timeout);
-			if (room.survey.surveyArray[num].surveyNum === parseInt(target)) room.survey.end(num);
-			if (room.survey.surveyArray[num].surveyNum === parseInt(target)) delete room.survey.surveyArray[num];
+			if (room.survey.surveyArray[num].timeout) clearTimeout(room.survey.surveyArray[num].timeout);
+			room.survey.end(num);
+			room.survey.surveyArray.splice(num, 1);
 
 			return this.privateModCommand(`(A survey was ended by ${user.name}.)`);
 		},
@@ -404,13 +343,13 @@ exports.commands = {
 			if (!room.survey) return this.errorReply("There is no survey running in this room.");
 			let targets = target.split(",");
 			for (let u = 0; u < targets.length; u++) targets[u] = targets[u].trim();
-			if (!targets[1]) return this.errorReply("/survey timer (clear/ time amount), (survey number)");
+			if (!targets[1]) return this.parse('/help survey timer');
 			let num = room.survey.obtain(parseInt(targets[1]));
-			if (!room.survey.surveyArray[num]) return this.errorReply('That survey number is not currently a survey!');
+			if (!room.survey.surveyArray[num]) return this.errorReply('That isn\'t a valid survey number.');
 			if (targets[0]) {
 				if (!this.can('minigame', null, room)) return false;
 				if (targets[0] === 'clear') {
-					if (room.survey.surveyArray[num] && !room.survey.surveyArray[num].timeout) return this.errorReply("There is no timer to clear.");
+					if (room.survey.surveyArray[num] && !room.survey.surveyArray[num].timeout) return this.errorReply("The survey timer is not running.");
 					clearTimeout(room.survey.surveyArray[num].timeout);
 					room.survey.surveyArray[num].timeout = null;
 					room.survey.surveyArray[num].timeoutMins = 0;
@@ -424,20 +363,20 @@ exports.commands = {
 					room.survey.end(num);
 					delete room.survey.surveyArray[num];
 				}, (timeout * 60000));
-				room.add(`The survey timer was turned on: the survey ${room.survey.surveyArray[num].surveyNum} will end in ${timeout} minute(s).`);
-				return this.privateModCommand(`(The survey timer for survey ${room.survey.surveyArray[num].surveyNum} was set to ${timeout} minute(s) by ${user.name}.)`);
+				room.add(`The survey timer was turned on: survey ${room.survey.surveyArray[num].surveyNum} will end in ${timeout} minute(s).`);
+				return this.privateModCommand(`(The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} was set to ${timeout} minute(s) by ${user.name}.)`);
 			} else {
 				if (!this.runBroadcast()) return;
 				if (room.survey.surveyArray[num].timeout) {
-					return this.sendReply(`The survey timer for ${room.survey.surveyArray[num].surveyNum} is on and will end in ${room.survey.surveyArray[num].timeoutMins} minute(s).`);
+					return this.sendReply(`The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} is on and will end in ${room.survey.surveyArray[num].timeoutMins} minute(s).`);
 				} else {
-					return this.sendReply(`The survey timer for ${room.survey.surveyArray[num].surveyNum} is off.`);
+					return this.sendReply(`The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} is off.`);
 				}
 			}
 		},
 		timerhelp: [
-			"/survey timer [minutes], [survey id number] - Sets the specified survey to automatically end after [minutes] minutes. Requires: % @ * # & ~",
-			"/survey timer clear - Clears the survey's timer. Requires: % @ * # & ~",
+			"/survey timer [minutes], [survey number] - Sets the specified survey to automatically end after [minutes] minutes. Requires: % @ * # & ~",
+			"/survey timer clear, [survey number] - Clears the survey's timer. Requires: % @ * # & ~",
 		],
 
 		'': function (target, room, user) {
@@ -448,11 +387,11 @@ exports.commands = {
 		"/survey allows rooms to run their own surveys. These surveys are limited to five surveys at a time per room.",
 		"Accepts the following commands:",
 		"/survey create [question] - Create a survey. Allows up to 5 surveys. Requires % @ # & ~",
-		"/survey answer [answer], [survey id number] - Answers the specified survey.",
-		"/survey results [survey id number] - View the results of the specified survey. You can't go back and answer if you haven't already.",
-		"/survey display [survey id number] - Display the specified survey. If no ID is specified, displays all surveys.",
-		"/survey remove [user], [survey id number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
-		"/survey end [survey id number] - Ends the specified survey and displays the results. Requires: % @ # & ~",
-		"/survey timer [time in minutes], [survey id number] - Sets a timer for the specified survey to automatically end. Require % @ # & ~",
+		"/survey answer [answer], [survey number] - Answers the specified survey.",
+		"/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already.",
+		"/survey display (survey number) - Display the specified survey. If no ID is specified, displays all surveys.",
+		"/survey remove [user], [survey number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
+		"/survey end [survey number] - Ends the specified survey and displays the results. Requires: % @ # & ~",
+		"/survey timer [minutes | clear], [survey number] - Sets a timer for the specified survey to automatically end. Require % @ # & ~",
 	],
 };
