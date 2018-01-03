@@ -395,9 +395,6 @@ class Battle {
 
 		this.send('init', this.format, ratedMessage);
 		this.process.pendingTasks.set(room.id, this);
-		if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))] && Rooms(Rooms.global.FvF[toId(WL.getFaction(this.room.p1))].room).fvf.tier === this.format) {
-			WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), room.id, 'start');
-		}
 		if (Config.forcetimer) this.timer.start();
 	}
 
