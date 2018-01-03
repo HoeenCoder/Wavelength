@@ -523,7 +523,7 @@ exports.commands = {
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
+					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username) + '<br />');
 				}
 				profile += '&nbsp;' + song(toId(username)) + '';
 				profile += '&nbsp;</div>';
