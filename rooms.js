@@ -985,7 +985,7 @@ class BasicChatRoom extends BasicRoom {
 		/** @type {any} */
 		// TODO: strongly type surveys
 		this.survey = null;
-		
+
 		// room settings
 		this.desc = '';
 		this.modchat = (Config.chatmodchat || false);
