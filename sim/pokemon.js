@@ -90,7 +90,8 @@ class Pokemon {
 		/**@type {?number} */
 		this.draggedIn = null;
 
-		this.lastMove = '';
+		/**@type {?Move} */
+		this.lastMove = null;
 		/**@type {string | boolean} */
 		this.moveThisTurn = '';
 
@@ -120,7 +121,7 @@ class Pokemon {
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
-		this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
+		if (this.battle.getFormat().useSGgame) this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
 		this.slot = (!slot && slot !== 0 ? this.side.pokemon.length - 1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
@@ -504,13 +505,13 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string | Move} move
+	 * @param {Move} move
 	 * @param {number} targetLoc
 	 */
 	moveUsed(move, targetLoc) {
-		this.lastMove = this.battle.getMove(move).id;
+		this.lastMove = move;
 		this.lastMoveTargetLoc = targetLoc;
-		this.moveThisTurn = this.lastMove;
+		this.moveThisTurn = move.id;
 	}
 
 	/**
@@ -884,7 +885,7 @@ class Pokemon {
 			this.forceSwitchFlag = false;
 		}
 
-		this.lastMove = '';
+		this.lastMove = null;
 		this.moveThisTurn = '';
 
 		this.lastDamage = 0;
@@ -1132,16 +1133,12 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string} itemId
 	 * @param {Pokemon} source
 	 * @param {Effect} sourceEffect
 	 */
-	eatItem(itemId, source, sourceEffect) {
+	eatItem(source, sourceEffect) {
 		if (!this.hp || !this.isActive) return false;
 		if (!this.item) return false;
-
-		let id = toId(itemId);
-		if (id && this.item !== id) return false;
 
 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
 		if (!source && this.battle.event && this.battle.event.target) source = this.battle.event.target;
@@ -1165,16 +1162,12 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string} itemName
 	 * @param {Pokemon} source
 	 * @param {Effect} sourceEffect
 	 */
-	useItem(itemName, source, sourceEffect) {
+	useItem(source, sourceEffect) {
 		if ((!this.hp && !this.getItem().isGem) || !this.isActive) return false;
 		if (!this.item) return false;
-
-		let id = toId(itemName);
-		if (id && this.item !== id) return false;
 
 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
 		if (!source && this.battle.event && this.battle.event.target) source = this.battle.event.target;

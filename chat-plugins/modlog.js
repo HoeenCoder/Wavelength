@@ -1,6 +1,6 @@
 'use strict';
 
-const FS = require('./../fs');
+const FS = require('./../lib/fs');
 const path = require('path');
 const Dashycode = require('../lib/dashycode');
 const ProcessManager = require('./../process-manager');
@@ -56,7 +56,7 @@ class ModlogManager extends ProcessManager {
 		try {
 			result = '1|' + await runModlog(rooms.split(','), searchString, exactSearch, maxLines);
 		} catch (err) {
-			require('../crashlogger')(err, 'A modlog query', {
+			require('../lib/crashlogger')(err, 'A modlog query', {
 				rooms: rooms,
 				searchString: searchString,
 				exactSearch: exactSearch,
@@ -80,14 +80,14 @@ if (process.send && module === process.mainModule) {
 	global.Config = require('../config/config');
 	process.on('uncaughtException', err => {
 		if (Config.crashguard) {
-			require('../crashlogger')(err, 'A modlog child process');
+			require('../lib/crashlogger')(err, 'A modlog child process');
 		}
 	});
 	global.Dex = require('../sim/dex');
 	global.toId = Dex.getId;
 	process.on('message', message => PM.onMessageDownstream(message));
 	process.on('disconnect', () => process.exit());
-	require('../repl').start('modlog', cmd => eval(cmd));
+	require('../lib/repl').start('modlog', cmd => eval(cmd));
 } else {
 	PM.spawn();
 }
@@ -156,15 +156,15 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 	const useRipgrep = checkRipgrepAvailability();
 	let fileNameList = [];
 	let checkAllRooms = false;
-	for (let i = 0; i < rooms.length; i++) {
-		if (rooms[i] === 'all') {
+	for (const roomid of rooms) {
+		if (roomid === 'all') {
 			checkAllRooms = true;
 			const fileList = await FS(LOG_PATH).readdir();
-			for (let i = 0; i < fileList.length; i++) {
-				fileNameList.push(fileList[i]);
+			for (const file of fileList) {
+				if (file !== 'README.md') fileNameList.push(file);
 			}
 		} else {
-			fileNameList.push(`modlog_${rooms[i]}.txt`);
+			fileNameList.push(`modlog_${roomid}.txt`);
 		}
 	}
 	fileNameList = fileNameList.map(filename => `${LOG_PATH}${filename}`);
@@ -191,8 +191,8 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 		runRipgrepModlog(fileNameList, regexString, results);
 	} else {
 		const searchStringRegex = new RegExp(regexString, 'i');
-		for (let i = 0; i < fileNameList.length; i++) {
-			await checkRoomModlog(fileNameList[i], searchStringRegex, results);
+		for (const fileName of fileNameList) {
+			await checkRoomModlog(fileName, searchStringRegex, results);
 		}
 	}
 	const resultData = results.getListClone();
@@ -217,9 +217,8 @@ function runRipgrepModlog(paths, regexString, results) {
 	} catch (error) {
 		return results;
 	}
-	const fileResults = stdout.toString().split('\n').reverse();
-	for (let i = 0; i < fileResults.length; i++) {
-		if (fileResults[i]) results.tryInsert(fileResults[i]);
+	for (const fileName of stdout.toString().split('\n').reverse()) {
+		if (fileName) results.tryInsert(fileName);
 	}
 	return results;
 }
@@ -387,8 +386,8 @@ exports.commands = {
 		getModlog(connection, roomid, target, lines, cmd === 'timedmodlog');
 	},
 	modloghelp: [
-		"/modlog [roomid], [search] - Searches the moderator log - defaults to the current room unless specified otherwise.",
-		"If you set [roomid] as [all], it searches for [search] on all rooms' moderator logs.",
-		"If you set [roomid] as [public], it searches for [search] in all public rooms' moderator logs, excluding battles. Requires: % @ * # & ~",
+		`/modlog [roomid], [search] - Searches the moderator log - defaults to the current room unless specified otherwise.`,
+		`If you set [roomid] as [all], it searches for [search] on all rooms' moderator logs.`,
+		`If you set [roomid] as [public], it searches for [search] in all public rooms' moderator logs, excluding battles. Requires: % @ * # & ~`,
 	],
 };
