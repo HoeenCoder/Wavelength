@@ -204,8 +204,7 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'K im here, what do u need me to code? I hope its something pretty cool.');
-			this.setWeather('hail');
+			this.add('c', '%Lycanium Z', 'Le Overpowered dude has arrived');
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '%Lycanium Z', '>');
@@ -234,16 +233,16 @@ exports.BattleStatuses = {
 			this.add('c', '*Stabby the Krabby', 'Impossible...');
 		},
 	},
-	arrays: {
+	volco: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Arrays', 'The code bracket is here! (Arrays)');
+			this.add('c', '%Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Arrays', 'I don\'t know how but i\'ve learned to run!');
+			this.add('c', '%Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Arrays', 'How does one beat up code? It\'s not able to be touched by physical means!');
+			this.add('c', '%Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
 	mosmero: {
@@ -358,6 +357,18 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+AlfaStorm', 'You\'ll regret doing this to me!');
+		},
+	},
+	SnorlaxTheRain: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+SnorlaxTheRain', 'Fat Snorlax has arrived!');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '+SnorlaxTheRain', 'Be right back enemies! Snorsnor');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+SnorlaxTheRain', 'Even though u have won, I will still sleep and regain my energy in order to fight against u once more!');
 		},
 	},
 };

@@ -32,10 +32,10 @@ function getMonData(target) {
 }
 
 function clearRoom(room) {
-	let len = (room.log && room.log.length) || 0;
+	let len = (room.log.log && room.log.log.length) || 0;
 	let users = [];
 	while (len--) {
-		room.log[len] = '';
+		room.log.log[len] = '';
 	}
 	for (let u in room.users) {
 		users.push(u);

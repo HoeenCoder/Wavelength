@@ -146,7 +146,7 @@ exports.BattleMovedex = {
 				if (!target || target.fainted || target.hp <= 0) {
 					let stats = [];
 					for (let stat in target.boosts) {
-						if (target.boosts[stat] < 6) {
+						if (stat !== 'accuracy' && stat !== 'evasion' && target.boosts[stat] < 6) {
 							stats.push(stat);
 						}
 					}
@@ -343,7 +343,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		self: {
 			boosts: {
-				evasion: 1,
+				spa: 1,
 			},
 		},
 		priority: 0,
@@ -357,8 +357,7 @@ exports.BattleMovedex = {
 		onHit: function (target, source) {
 			target.trySetStatus('tox', source);
 		},
-		desc: "Boosts evasion by 1 and badly poisons target.",
-		shortDesc: "Boosts evasion by 1 and badly poisons target.",
+		desc: "Boosts SpA by 1 and badly poisons target.",
 		target: "normal",
 		type: "Dark",
 	},
@@ -421,6 +420,7 @@ exports.BattleMovedex = {
 		id: "shellbreak",
 		isNonstandard: true,
 		name: "Shell Break",
+		flags: {mirror: 1, snatch: 1},
 		boosts: {
 			spa: 2,
 			atk: 2,
@@ -440,27 +440,33 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	unserious: {
-		accuracy: true,
+	meteormadness: {
 		category: "Status",
-		id: "unserious",
+		accuracy: 100,
+		id: "meteormadness",
+		isViable: true,
 		isNonstandard: true,
-		name: "Unserious",
-		pp: 30,
-		desc: "Forces the weather to hail and uses foresight.",
-		priority: 9,
+		name: "Meteor Madness",
+		pp: 5,
+		noPPBoosts: true,
+		priority: 0,
 		flags: {mirror: 1, snatch: 1},
-		onPrepareHit: function (source) {
-			this.add('-anim', source, "Minimize", source);
-		},
-		onHit: function (pokemon) {
-			this.clearWeather();
-			this.setWeather('hail');
-			this.useMove('foresight', pokemon);
-		},
+		desc: "Heals the user. Users ability -> Normalize",
 		secondary: false,
-		target: "self",
-		type: "Ice",
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Draco Meteor", target);
+		},
+		onHit: function (target, source) {
+			this.heal(Math.ceil(target.maxhp * 0.5), source);
+			let oldAbility = target.setAbility('normalize');
+			if (oldAbility) {
+				this.add('-ability', target, 'Normalize', '[from] move: Meteor Madness');
+				return;
+			}
+		},
+		target: "Normal",
+		type: "Rock",
 	},
 	//Stabby the Krabby
 	"stabstab": {
@@ -491,7 +497,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Steel",
 	},
-	// Arrays
+	// Volco
 	"invisiblepunch": {
 		id: "invisiblepunch",
 		name: "Invisible Punch",
@@ -506,7 +512,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Shadow punch", target);
 		},
 		onHit: function (target, source, move) {
-			this.add('c|%Arrays|A punch from the world of code! Sadly it\'s forced to be spooky because code doesn\'t actually exist in the real world!');
+			this.add('c|%Volco|You cant see this punch. It\'s very spooky!');
 		},
 		secondary: false,
 		flags: {protect: 1, contact: 1, mirror: 1, punch: 1},
@@ -853,5 +859,27 @@ exports.BattleMovedex = {
 		type: "Flying",
 		zMovePower: 190,
 		contestType: "Cool",
+	},
+	//SnorlaxTheRain
+	"snorlaxslam": {
+		accuracy: 95,
+		basePower: 120,
+		category: "Physical",
+		desc: "120BP, 95% Accuracy, and can be used while sleeping.",
+		id: "snorlaxslam",
+		name: "Snorlax Slam",
+		pp: 5,
+		priority: 0,
+		//Stolen from Sleep Talk
+		flags: {protect: 1, mirror: 1},
+		sleepUsable: true,
+		onPrepareHit: function (target, source, move) {
+			this.add('-anim', source, "Body Slam", target);
+		},
+		onHit: function (target) {
+			this.add('c|+SnorlaxTheRain|Beware of the biggest body slam u will ever seen!');
+		},
+		target: "normal",
+		type: "Normal",
 	},
 };

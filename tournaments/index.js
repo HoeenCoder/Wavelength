@@ -844,6 +844,7 @@ class Tournament {
 	}
 	onBattleJoin(room, user) {
 		if (this.scouting || this.isEnded || user.latestIp === room.p1.latestIp || user.latestIp === room.p2.latestIp) return;
+		if (user.can('makeroom')) return;
 		let users = this.generator.getUsers(true);
 		for (let i = 0; i < users.length; i++) {
 			let otherUser = Users.get(users[i].userid);
@@ -980,7 +981,7 @@ class Tournament {
 				let factionName = WL.getFaction(winner);
 				let factionId = toId(factionName);
 				Db.factionbank.set(factionId, Db.factionbank.get(factionId, 0) + 10);
-				this.room.addRaw(`<strong>Congratulations to ${factionName}! Your faction has gained 10 points!</strong>`);
+				this.room.addRaw(`<strong>Congratulations to ${factionName}! Your faction has gained 10 faction money! To view it type /faction bank atm (faction) </strong>`);
 			}
 		}
 
@@ -1236,8 +1237,9 @@ let commands = {
 			if (params.length < 1) {
 				return this.sendReply("Usage: " + cmd + " <comma-separated arguments>");
 			}
-			const name = Chat.escapeHTML(params[0].trim());
-			if (!name.length) return this.errorReply("The tournament's name cannot be blank.");
+			let name = this.canTalk(params[0].trim());
+			if (!name) return;
+			name = Chat.escapeHTML(name);
 			if (name.length > MAX_CUSTOM_NAME_LENGTH) return this.errorReply("The tournament's name cannot exceed " + MAX_CUSTOM_NAME_LENGTH + " characters.");
 			if (name.includes('|')) return this.errorReply("The tournament's name cannot include the | symbol.");
 			tournament.format = name;
@@ -1258,7 +1260,7 @@ let commands = {
 		begin: 'start',
 		start: function (tournament, user) {
 			if (tournament.startTournament(this)) {
-				this.room.sendModCommand("(" + user.name + " started the tournament.)");
+				this.room.sendMods("(" + user.name + " started the tournament.)");
 			}
 		},
 		dq: 'disqualify',
@@ -1325,7 +1327,7 @@ let commands = {
 		runautodq: function (tournament, user) {
 			if (tournament.autoDisqualifyTimeout === Infinity) return this.errorReply("The automatic tournament disqualify timer is not set.");
 			tournament.runAutoDisqualify(this);
-			this.logEntry(user.name + " used /tour runautodq");
+			this.roomlog(user.name + " used /tour runautodq");
 		},
 		remind: function (tournament, user) {
 			let users = tournament.generator.getAvailableMatches().toString().split(',');

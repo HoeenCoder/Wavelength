@@ -405,9 +405,9 @@ exports.commands = {
 		list: function (target, room, user) {
 			if (!this.runBroadcast()) return;
 			if (Object.keys(factions).length < 1) return this.sendReply("There's no factions on this server.");
-			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Description</td><td>Points</td><td>Members</td></tr>';
+			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Description</td><td>FvF Wins</td><td>Members</td></tr>';
 			let sortedFactions = Object.keys(factions).sort(function (a, b) {
-				return factions[b].points - factions[a].points;
+				return factions[b].tourwins - factions[a].tourwins;
 			});
 
 			for (let faction = 0; faction < sortedFactions.length; faction++) {
