@@ -465,7 +465,7 @@ exports.BattleMovedex = {
 				return;
 			}
 		},
-		target: "Normal",
+		target: "Self",
 		type: "Rock",
 	},
 	//Stabby the Krabby
