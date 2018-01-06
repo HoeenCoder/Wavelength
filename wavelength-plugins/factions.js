@@ -327,7 +327,7 @@ exports.commands = {
 				},
 			};
 			write();
-			Monitor.adminlog('Faction ' + name + ' was just created! If you wish to approve this faction please use /faction approve (name)');
+			Monitor.adminlog('Faction ' + name + ' was just created by ' + user.name + '! If you wish to approve this faction please use /faction approve (name)');
 			return this.sendReply('Faction ' + name + ' created!');
 		},
 		delete: function (target, room, user) {
@@ -405,9 +405,9 @@ exports.commands = {
 		list: function (target, room, user) {
 			if (!this.runBroadcast()) return;
 			if (Object.keys(factions).length < 1) return this.sendReply("There's no factions on this server.");
-			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Description</td><td>Points</td><td>Members</td></tr>';
+			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Description</td><td>FvF Wins</td><td>Members</td></tr>';
 			let sortedFactions = Object.keys(factions).sort(function (a, b) {
-				return factions[b].points - factions[a].points;
+				return factions[b].tourwins - factions[a].tourwins;
 			});
 
 			for (let faction = 0; faction < sortedFactions.length; faction++) {
@@ -614,7 +614,7 @@ exports.commands = {
 				if (!this.runBroadcast()) return;
 				if (!target) return this.errorReply('/faction bank atm [faction]');
 				if (!factions[toId(target)]) return this.errorReply(target + ' is not a faction.');
-				let bank = Db.factionbank.get(target, 0);
+				let bank = Db.factionbank.get(toId(target), 0);
 				return this.sendReplyBox(target + ' has ' + bank + ' in their faction bank.');
 			},
 			give: function (target, room, user) {
@@ -737,6 +737,7 @@ exports.commands = {
 			for (let faction in factions) {
 				if (!factions[faction].approved) {
 					output += '<tr>';
+					output += '<td>' + Chat.escapeHTML(factions[faction].ranks['owner'].users) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].name) + '</td>';
 					output += '<td>' + Chat.escapeHTML(factions[faction].desc) + '</td>';
 					output += '<td><button name="send" value="/faction approve ' + faction + '">Approve ' + factions[faction].name + '</button></td>';

@@ -29,6 +29,7 @@ WL.showNews = function (userid, user) {
 	if (!Db.NewsSubscribers.has(userid) || (userid in notifiedUsers)) return false;
 	let newsDisplay = generateNews();
 	if (newsDisplay.length > 0) {
+		if (newsDisplay.length > 2) newsDisplay.splice(0, newsDisplay.length - 2);
 		newsDisplay = `${newsDisplay.join(`<hr>`)}${showSubButton(userid)}`;
 		notifiedUsers[userid] = setTimeout(() => {
 			delete notifiedUsers[userid];

@@ -121,6 +121,7 @@ exports.WL = {
 		user.forceRename('SG Server', true); // I have this name registed for use here. - HoeenHero
 		return user;
 	},
+	locationData: require('./config/SGGame/locations.js').locations,
 	makeWildPokemon: function (location, lvlBase, exact) {
 		//TODO: locations
 		if (!lvlBase) lvlBase = 10;
@@ -245,8 +246,9 @@ exports.WL = {
 				let iv = Math.round(Math.random() * 31);
 				if (iv !== 31 && left) {
 					iv = (Math.random() > 0.5 ? 31 : iv);
-					if (i + iv >= 6) iv = 31;
+					if (i + left >= 6) iv = 31;
 				}
+				if (iv === 31 & left > 0) left--;
 				data += iv + (i === 5 ? "|" : ",");
 			}
 		} else {
@@ -259,7 +261,7 @@ exports.WL = {
 		} else {
 			data += "|";
 		}
-		data += lvl + "|70";
+		data += lvl + "|70"; // TODO base happiness values by species
 		data += ",,pokeball," + this.calcExp(pokemon.species, lvl) + "," + (exact && exact.ot ? exact.ot : '');
 		if (data.split('|').length !== 12) {
 			console.log('Error on pokemon generation: Corrupted data: ' + data);
@@ -289,6 +291,21 @@ exports.WL = {
 		}
 		avrg = avrg / team.length;
 		return Math.round(avrg);
+	},
+	getStat: function (pokemon, stat) {
+		stat = toId(stat);
+		if (!pokemon || !pokemon.species || !['hp', 'atk', 'def', 'spa', 'spd', 'spe'].includes(stat)) return (stat === 'hp' ? 11 : 4); // Return the lowest possible value
+		let template = Dex.getTemplate(pokemon.species);
+		if (!pokemon.evs) pokemon.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+		if (stat === 'hp') {
+			if (template.speciesid === 'shedinja') return 1;
+			return Math.round((((2 * template.baseStats.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10);
+		} else {
+			let natureMod = 1, nature = Dex.getNature(pokemon.nature);
+			if (nature.plus === stat) natureMod = 1.1;
+			if (nature.minus === stat) natureMod = 0.9;
+			return Math.round(((((2 * template.baseStats[stat] + pokemon.ivs[stat] + (pokemon.evs[stat] / 4)) * pokemon.level) / 100) + 5) * natureMod);
+		}
 	},
 	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
 	calcExp: function (pokemon, n) {
@@ -511,6 +528,21 @@ exports.WL = {
 				if (used.indexOf(eMoves[i]) > -1 || curMoves.indexOf(eMoves[i]) > -1) continue;
 				moves.push("learn|" + slot + "|" + eMoves[i]);
 			}
+		}
+		return moves;
+	},
+	getTmMoves: function (pokemon, tm, curMoves, slot) {
+		if (!pokemon) return [];
+		if (typeof pokemon === 'string') pokemon = Dex.getTemplate(pokemon);
+		if (!pokemon.exists) throw new Error('Can\'t get new moves for non-existant pokemon "' + pokemon.id + '"');
+		let moves = [];
+		let baseSpecies = null;
+		if (pokemon.baseSpecies) baseSpecies = Dex.getTemplate(pokemon.baseSpecies);
+		if (!pokemon.learnset && baseSpecies && baseSpecies.learnset) {
+			pokemon.learnset = baseSpecies.learnset;
+		}
+		if (pokemon.learnset[tm] && pokemon.learnset[tm].includes('7M') && curMoves.indexOf(tm) === -1) {
+			moves.push("learn|" + slot + "|" + tm);
 		}
 		return moves;
 	},

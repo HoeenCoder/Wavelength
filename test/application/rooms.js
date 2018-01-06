@@ -26,13 +26,14 @@ describe('Rooms features', function () {
 		const packedTeam = 'Weavile||lifeorb||swordsdance,knockoff,iceshard,iciclecrash|Jolly|,252,,,4,252|||||';
 
 		let room;
+		let parent;
 		afterEach(function () {
 			Users.users.forEach(user => {
-				room.onLeave(user);
 				user.disconnectAll();
 				user.destroy();
 			});
 			if (room) room.destroy();
+			if (parent) parent.destroy();
 		});
 
 		it('should allow two users to join the battle', function () {
@@ -51,6 +52,8 @@ describe('Rooms features', function () {
 		});
 
 		it('should copy auth from tournament', function () {
+			parent = Rooms.createChatRoom('parentroom', '', {});
+			parent.getAuth = () => '%';
 			const p1 = new User();
 			const p2 = new User();
 			const options = {
@@ -62,9 +65,7 @@ describe('Rooms features', function () {
 				auth: {},
 				tour: {
 					onBattleWin() {},
-					room: {getAuth() {
-						return '%';
-					}},
+					room: parent,
 				},
 			};
 			room = Rooms.createBattle('customgame', options);
@@ -72,6 +73,8 @@ describe('Rooms features', function () {
 		});
 
 		it('should prevent overriding tournament room auth by a tournament player', function () {
+			parent = Rooms.createChatRoom('parentroom2', '', {});
+			parent.getAuth = () => '%';
 			const p1 = new User();
 			const p2 = new User();
 			const roomStaff = new User();
@@ -88,9 +91,7 @@ describe('Rooms features', function () {
 				auth: {},
 				tour: {
 					onBattleWin() {},
-					room: {getAuth(user) {
-						return '%';
-					}},
+					room: parent,
 				},
 			};
 			room = Rooms.createBattle('customgame', options);

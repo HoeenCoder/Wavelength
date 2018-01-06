@@ -60,25 +60,25 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 3,
 			onStart: function (target) {
-				let noEncore = {encore:1, mimic:1, mirrormove:1, sketch:1, struggle:1, transform:1};
-				let moveIndex = target.moves.indexOf(target.lastMove);
-				if (!target.lastMove || this.getMove(target.lastMove).isZ || noEncore[target.lastMove] || (target.moveset[moveIndex] && target.moveset[moveIndex].pp <= 0)) {
+				let noEncore = ['encore', 'mimic', 'mirrormove', 'sketch', 'struggle', 'transform'];
+				let moveIndex = target.lastMove ? target.moves.indexOf(target.lastMove.id) : -1;
+				if (!target.lastMove || noEncore.includes(target.lastMove.id) || (target.moveSlots[moveIndex] && target.moveSlots[moveIndex].pp <= 0)) {
 					// it failed
 					delete target.volatiles['encore'];
 					return false;
 				}
-				this.effectData.move = target.lastMove;
+				this.effectData.move = target.lastMove.id;
 				this.add('-start', target, 'Encore');
 				if (!this.willMove(target)) {
 					this.effectData.duration++;
 				}
 			},
-			onOverrideDecision: function (pokemon, target, move) {
+			onOverrideAction: function (pokemon, target, move) {
 				if (move.id !== this.effectData.move) return this.effectData.move;
 			},
 			onResidualOrder: 13,
 			onResidual: function (target) {
-				if (target.moves.indexOf(target.lastMove) >= 0 && target.moveset[target.moves.indexOf(target.lastMove)].pp <= 0) { // early termination if you run out of PP
+				if (target.moves.includes(this.effectData.move) && target.moveSlots[target.moves.indexOf(this.effectData.move)].pp <= 0) { // early termination if you run out of PP
 					delete target.volatiles.encore;
 					this.add('-end', target, 'Encore');
 				}
@@ -90,9 +90,9 @@ exports.BattleMovedex = {
 				if (!this.effectData.move || !pokemon.hasMove(this.effectData.move)) {
 					return;
 				}
-				for (let i = 0; i < pokemon.moveset.length; i++) {
-					if (pokemon.moveset[i].id !== this.effectData.move) {
-						pokemon.disableMove(pokemon.moveset[i].id);
+				for (const moveSlot of pokemon.moveSlots) {
+					if (moveSlot.id !== this.effectData.move) {
+						pokemon.disableMove(moveSlot.id);
 					}
 				}
 			},
@@ -112,7 +112,7 @@ exports.BattleMovedex = {
 		shortDesc: "Raises user's Attack by 2 if this KOes the target.",
 		basePower: 30,
 		onAfterMoveSecondarySelf: function (pokemon, target, move) {
-			if (!target || target.fainted || target.hp <= 0) this.boost({atk:2}, pokemon, pokemon, move);
+			if (!target || target.fainted || target.hp <= 0) this.boost({atk: 2}, pokemon, pokemon, move);
 		},
 	},
 	flyingpress: {

@@ -32,7 +32,7 @@ exports.BattleAbilities = {
 	conflictofinterest: {
 		id: "conflictofinterest",
 		name: "Conflict of Interest",
-		desc: "Uses Magnet Rise + Heatproof + Ghost & Dark type moves do 0.5x",
+		desc: "Uses Magnet Rise + Burn damage is halved + Fire, Ghost & Dark type moves do 0.75x",
 		//Since levitate cant be coded in
 		onStart: function (pokemon) {
 			this.useMove('magnetrise', pokemon);
@@ -41,7 +41,7 @@ exports.BattleAbilities = {
 		onBasePowerPriority: 7,
 		onSourceBasePower: function (basePower, attacker, defender, move) {
 			if (move.type === 'Fire' || move.type === 'Ghost' || move.type === 'Dark') {
-				return this.chainModify(0.5);
+				return this.chainModify(0.75);
 			}
 		},
 		onDamage: function (damage, target, source, effect) {
@@ -72,6 +72,11 @@ exports.BattleAbilities = {
 					return this.chainModify(0.1);
 				}
 			},
+			onModifyPriority: function (priority, pokemon, target, move) {
+				if (move.id === 'tsunamicrash') {
+					return priority + 0.1;
+				}
+			},
 			onEnd: function (target) {
 				this.add('-end', target, 'Wave Call');
 			},
@@ -89,34 +94,29 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Kraken Mare
-	krakensboost: {
-		id: "krakensboost",
-		name: "Kraken's Boost",
-		desc: "Moody + No Guard",
-		onResidual: function (pokemon) {
-			let stats = [];
-			let boost = {};
-			for (let statPlus in pokemon.boosts) {
-				if (pokemon.boosts[statPlus] < 6) {
-					stats.push(statPlus);
-				}
-			}
-			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = 2;
-
-			stats = [];
-			for (let statMinus in pokemon.boosts) {
-				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat) {
-					stats.push(statMinus);
-				}
-			}
-			randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = -1;
-
-			this.boost(boost);
+	//Tidal Wave Bot
+	loading: {
+		id: "loading",
+		name: "Loading...",
+		desc: "Boosts user's Attack by 4 stages, and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.",
+		onStart: function (pokemon) {
+			this.add('-start', pokemon, 'typechange', 'Electric/Steel');
+			pokemon.types = ["Electric", "Steel"];
+			this.boost({atk: 4, spe: 2});
+			this.useMove('magnetrise', pokemon);
 		},
-		onModifyAccuracy: function (accuracy, target, source, move) {
+	},
+	//Kraken Mare
+	supremesquidsister: {
+		id: "supremesquidsister",
+		name: "Supreme Squid Sister",
+		onBoost: function (boost, target, source, effect) {
+			if (effect && effect.id === 'zpower') return;
+			for (let i in boost) {
+				boost[i] *= -1;
+			}
+		},
+		onAnyAccuracy: function (accuracy, target, source, move) {
 			if (move && (source === this.effectData.target || target === this.effectData.target)) {
 				return true;
 			}
@@ -172,7 +172,7 @@ exports.BattleAbilities = {
 		name: "Ready to Stab",
 		desc: "Boosts user's Atk and Spe by 2 stages",
 		onStart: function (pokemon) {
-			this.boost({atk: 2, spe: 2});
+			this.boost({atk: 1, spe: 2});
 		},
 	},
 	//Serperiorater
@@ -189,7 +189,7 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	// Arrays
+	// Volco
 	shadowfist: {
 		shortDesc: "On switch-in, This pokemon is a ghost/fighting type.",
 		onStart: function (pokemon) {
@@ -212,8 +212,6 @@ exports.BattleAbilities = {
 		desc: "Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.",
 		onStart: function (pokemon) {
 			this.useMove('trickroom', pokemon);
-			this.useMove('reflect', pokemon);
-			this.useMove('lightscreen', pokemon);
 			this.useMove('gravity', pokemon);
 			this.setWeather('sandstorm');
 		},
@@ -222,7 +220,7 @@ exports.BattleAbilities = {
 	paradoxicalprowess: {
 		id: "paradoxicalprowess",
 		name: " Paradoxical Prowess",
-		desc: "Sets up Safeguard, Lucky Chant, has same effects of Magic Guard, has same effects of Sticky Hold, has same effects of Rock Solid, and has same effects of Oblivious",
+		desc: "Sets up Safeguard, Lucky Chant, has same effects of Magic Guard, has same effects of Sticky Hold, and has same effects of Oblivious",
 		//Magic Guard
 		onDamage: function (damage, target, source, effect) {
 			if (effect.effectType !== 'Move') {
@@ -259,13 +257,6 @@ exports.BattleAbilities = {
 				return null;
 			}
 		},
-		//Solid Rock
-		onSourceModifyDamage: function (damage, source, target, move) {
-			if (move.typeMod > 0) {
-				this.debug('Paradoxical Prowess neutralize');
-				return this.chainModify(0.75);
-			}
-		},
 	},
 	//Wavelength Prince
 	deathboost: {
@@ -273,7 +264,7 @@ exports.BattleAbilities = {
 		name: "Death Boost",
 		desc: "Simple + Puts foe to sleep on entry.",
 		onStart: function (pokemon) {
-			this.useMove('spore', pokemon);
+			this.useMove('hypnosis', pokemon);
 		},
 		onBoost: function (boost, target, source, effect) {
 			if (effect && effect.id === 'zpower') return;
@@ -286,9 +277,9 @@ exports.BattleAbilities = {
 	felinefury: {
 		id: "felinefury",
 		name: "Feline Fury",
-		desc: "+3 Attack on switch in.",
+		desc: "+2 Attack on switch in + Scrappy",
 		onStart: function (pokemon) {
-			this.boost({atk: 3});
+			this.boost({atk: 2});
 		},
 		onModifyMovePriority: -5,
 		onModifyMove: function (move) {
@@ -303,9 +294,9 @@ exports.BattleAbilities = {
 	mosmicpower: {
 		id: "mosmicpower",
 		name: "Mosmic Power",
-		desc: "Boosts user's Special and Spe by 3 stages on switch in. Also uses Magnet Rise on entry.",
+		desc: "Boosts user's Special and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.",
 		onStart: function (pokemon) {
-			this.boost({spa: 3, spe: 3});
+			this.boost({spa: 2, spe: 2});
 			this.useMove('magnetrise', pokemon);
 		},
 	},
@@ -316,14 +307,56 @@ exports.BattleAbilities = {
 		desc: "Doubles user's Attack and Speed if the opponent is a ghost or dark type.",
 		onModifyAtk: function (atk, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
 			}
 		},
 		onModifySpe: function (spe, pokemon) {
 			let target = pokemon.side.foe.active[0];
+			if (!target) return;
 			if (target.hasType('Ghost') || target.hasType('Dark')) {
 				return this.chainModify(2);
+			}
+		},
+	},
+	//bunnery5
+	muscles: {
+		id: "muscles",
+		name: "Muscles",
+		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.",
+		onStart: function (pokemon) {
+			this.boost({atk: -4, def: 4, spa: 1, spd: 4});
+		},
+	},
+	//Lycanium Z
+	"deflectorshield": {
+		onAfterDamageOrder: 1,
+		onAfterDamage: function (damage, target, source, move) {
+			if (source && source !== target && move && !(move.typeMod > 0)) {
+				this.damage(Math.ceil(damage / 2), source, target);
+				this.heal(Math.ceil(damage / 4), target);
+			}
+		},
+		desc: "Deals damage back to the attacker.",
+		id: "deflectorshield",
+		name: "Deflector Shield",
+	},
+	//SnorlaxTheRain
+	"scraroom": {
+		id: "scraroom",
+		name: "Scraroom",
+		desc: "Combination of Trick Room & Scrappy",
+		shortDesc: "Trick Room + Scrappy",
+		onStart: function (pokemon) {
+			this.useMove('trickroom', pokemon);
+		},
+		onModifyMovePriority: -5,
+		onModifyMove: function (move) {
+			if (!move.ignoreImmunity) move.ignoreImmunity = {};
+			if (move.ignoreImmunity !== true) {
+				move.ignoreImmunity['Fighting'] = true;
+				move.ignoreImmunity['Normal'] = true;
 			}
 		},
 	},

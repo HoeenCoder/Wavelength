@@ -6,7 +6,7 @@
 
 'use strict';
 
-const FS = require('../fs');
+const FS = require('./../lib/fs');
 
 Punishments.roomPunishmentTypes.set('GIVEAWAYBAN', 'banned from giveaways');
 
@@ -193,7 +193,7 @@ class Giveaway {
 	generateWindow(rightSide) {
 		return `<p style="text-align:center;font-size:14pt;font-weight:bold;margin-bottom:2px;">It's giveaway time!</p>` +
 			`<p style="text-align:center;font-size:7pt;">Giveaway started by ${Chat.escapeHTML(this.host.name)}</p>` +
-			`<table style="margin-left:auto;margin-right:auto;"><tr><td style="text-align:center;width:45%">${this.sprite}<p style="font-weight:bold;">Giver: ${this.giver}</p>${Chat.formatText(this.prize)}<br />OT: ${Chat.escapeHTML(this.ot)}, TID: ${this.tid}</td>` +
+			`<table style="margin-left:auto;margin-right:auto;"><tr><td style="text-align:center;width:45%">${this.sprite}<p style="font-weight:bold;">Giver: ${this.giver}</p>${Chat.formatText(this.prize, true)}<br />OT: ${Chat.escapeHTML(this.ot)}, TID: ${this.tid}</td>` +
 			`<td style="text-align:center;width:45%">${rightSide}</td></tr></table><p style="text-align:center;font-size:7pt;font-weight:bold;"><u>Note:</u> Please do not join if you don't have a 3DS, a copy of Pokémon Sun/Moon, or are currently unable to receive the prize.</p>`;
 	}
 }
@@ -277,7 +277,7 @@ class QuestionGiveaway extends Giveaway {
 				this.changeUhtml('<p style="text-align:center;font-size:13pt;font-weight:bold;">The giveaway has ended! Scroll down to see the answer.</p>');
 				this.phase = 'ended';
 				this.clearTimer();
-				this.room.modlog(`${this.winner.name} won ${this.giver.name}'s giveaway for a "${this.prize}" (OT: ${this.ot} TID: ${this.tid} FC: ${this.fc})`);
+				this.room.modlog(`(wifi) ${this.winner.name} won ${this.giver.name}'s giveaway for a "${this.prize}" (OT: ${this.ot} TID: ${this.tid} FC: ${this.fc})`);
 				this.send(this.generateWindow(`<p style="text-align:center;font-size:12pt;"><b>${Chat.escapeHTML(this.winner.name)}</b> won the giveaway! Congratulations!</p>` +
 				`<p style="text-align:center;">${this.question}<br />Correct answer${Chat.plural(this.answers)}: ${this.answers.join(', ')}</p>`));
 				this.winner.sendTo(this.room, `|raw|You have won the giveaway. PM <b>${Chat.escapeHTML(this.giver.name)}</b> (FC: ${this.fc}) to claim your prize!`);
@@ -389,7 +389,7 @@ class LotteryGiveaway extends Giveaway {
 			this.changeUhtml(`<p style="text-align:center;font-size:13pt;font-weight:bold;">The giveaway has ended! Scroll down to see the winner${Chat.plural(this.winners)}.</p>`);
 			this.phase = 'ended';
 			let winnerNames = this.winners.map(winner => winner.name).join(', ');
-			this.room.modlog(`${winnerNames} won ${this.giver.name}'s giveaway for "${this.prize}" (OT: ${this.ot} TID: ${this.tid} FC: ${this.fc})`);
+			this.room.modlog(`(wifi) ${winnerNames} won ${this.giver.name}'s giveaway for "${this.prize}" (OT: ${this.ot} TID: ${this.tid} FC: ${this.fc})`);
 			this.send(this.generateWindow(`<p style="text-align:center;font-size:10pt;font-weight:bold;">Lottery Draw</p><p style="text-align:center;">${Object.keys(this.joined).length} users joined the giveaway.<br />Our lucky winner${Chat.plural(this.winners)}: <b>${Chat.escapeHTML(winnerNames)}!</b> Congratulations!</p>`));
 			for (let i = 0; i < this.winners.length; i++) {
 				this.winners[i].sendTo(this.room, `|raw|You have won the lottery giveaway! PM <b>${this.giver.name}</b> (FC: ${this.fc}) to claim your prize!`);
@@ -448,7 +448,7 @@ class GtsGiveaway {
 			`<p style="text-align:center;font-size:10pt;margin-top:0px;">Hosted by: ${Chat.escapeHTML(this.giver.name)} | Left: <b>${this.left}</b></p>` +
 			`<table style="margin-left:auto;margin-right:auto;"><tr>` +
 			(sentModifier ? `<td style="text-align:center;width:10%"><b>Last winners:</b><br/>${this.sent.join('<br/>')}</td>` : '') +
-			`<td style="text-align:center;width:15%">${this.sprite}</td><td style="text-align:center;width:${40 - sentModifier}%">${Chat.formatText(this.summary)}</td>` +
+			`<td style="text-align:center;width:15%">${this.sprite}</td><td style="text-align:center;width:${40 - sentModifier}%">${Chat.formatText(this.summary, true)}</td>` +
 			`<td style="text-align:center;width:${35 - sentModifier}%">${rightSide}</td></tr></table>`;
 	}
 
@@ -484,7 +484,7 @@ class GtsGiveaway {
 		} else {
 			this.clearTimer();
 			this.changeUhtml(`<p style="text-align:center;font-size:13pt;font-weight:bold;">The GTS giveaway has finished.</p>`);
-			this.room.modlog(`${this.giver.name} has finished their GTS giveaway for "${this.summary}"`);
+			this.room.modlog(`(wifi) ${this.giver.name} has finished their GTS giveaway for "${this.summary}"`);
 			this.send(`<p style="text-align:center;font-size:11pt">The GTS giveaway for a "<strong>${Chat.escapeHTML(this.lookfor)}</strong>" has finished.</p>`);
 			Giveaway.updateStats(this.monIds);
 		}

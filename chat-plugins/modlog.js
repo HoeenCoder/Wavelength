@@ -1,7 +1,8 @@
 'use strict';
 
-const FS = require('./../fs');
+const FS = require('./../lib/fs');
 const path = require('path');
+const Dashycode = require('../lib/dashycode');
 const ProcessManager = require('./../process-manager');
 const execFileSync = require('child_process').execFileSync;
 
@@ -55,7 +56,7 @@ class ModlogManager extends ProcessManager {
 		try {
 			result = '1|' + await runModlog(rooms.split(','), searchString, exactSearch, maxLines);
 		} catch (err) {
-			require('../crashlogger')(err, 'A modlog query', {
+			require('../lib/crashlogger')(err, 'A modlog query', {
 				rooms: rooms,
 				searchString: searchString,
 				exactSearch: exactSearch,
@@ -79,14 +80,14 @@ if (process.send && module === process.mainModule) {
 	global.Config = require('../config/config');
 	process.on('uncaughtException', err => {
 		if (Config.crashguard) {
-			require('../crashlogger')(err, 'A modlog child process');
+			require('../lib/crashlogger')(err, 'A modlog child process');
 		}
 	});
 	global.Dex = require('../sim/dex');
 	global.toId = Dex.getId;
 	process.on('message', message => PM.onMessageDownstream(message));
 	process.on('disconnect', () => process.exit());
-	require('../repl').start('modlog', cmd => eval(cmd));
+	require('../lib/repl').start('modlog', cmd => eval(cmd));
 } else {
 	PM.spawn();
 }
@@ -147,7 +148,7 @@ function getMoreButton(room, search, useExactSearch, lines, maxLines) {
 		return ''; // don't show a button if no more pre-set increments are valid or if the amount of results is already below the max
 	} else {
 		if (useExactSearch) search = Chat.escapeHTML(`"${search}"`);
-		return `<br /><div style="float:right"><button class="button" name="send" value="/modlog ${room}, ${search} ${LINES_SEPARATOR}${newLines}" title="View more results">More results...</button></div>`;
+		return `<br /><div style="text-align:center"><button class="button" name="send" value="/modlog ${room}, ${search} ${LINES_SEPARATOR}${newLines}" title="View more results">Older results<br />&#x25bc;</button></div>`;
 	}
 }
 
@@ -155,15 +156,15 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 	const useRipgrep = checkRipgrepAvailability();
 	let fileNameList = [];
 	let checkAllRooms = false;
-	for (let i = 0; i < rooms.length; i++) {
-		if (rooms[i] === 'all') {
+	for (const roomid of rooms) {
+		if (roomid === 'all') {
 			checkAllRooms = true;
 			const fileList = await FS(LOG_PATH).readdir();
-			for (let i = 0; i < fileList.length; i++) {
-				fileNameList.push(fileList[i]);
+			for (const file of fileList) {
+				if (file !== 'README.md') fileNameList.push(file);
 			}
 		} else {
-			fileNameList.push(`modlog_${rooms[i]}.txt`);
+			fileNameList.push(`modlog_${roomid}.txt`);
 		}
 	}
 	fileNameList = fileNameList.map(filename => `${LOG_PATH}${filename}`);
@@ -190,8 +191,8 @@ async function runModlog(rooms, searchString, exactSearch, maxLines) {
 		runRipgrepModlog(fileNameList, regexString, results);
 	} else {
 		const searchStringRegex = new RegExp(regexString, 'i');
-		for (let i = 0; i < fileNameList.length; i++) {
-			await checkRoomModlog(fileNameList[i], searchStringRegex, results);
+		for (const fileName of fileNameList) {
+			await checkRoomModlog(fileName, searchStringRegex, results);
 		}
 	}
 	const resultData = results.getListClone();
@@ -216,9 +217,8 @@ function runRipgrepModlog(paths, regexString, results) {
 	} catch (error) {
 		return results;
 	}
-	const fileResults = stdout.toString().split('\n').reverse();
-	for (let i = 0; i < fileResults.length; i++) {
-		if (fileResults[i]) results.tryInsert(fileResults[i]);
+	for (const fileName of stdout.toString().split('\n').reverse()) {
+		if (fileName) results.tryInsert(fileName);
 	}
 	return results;
 }
@@ -245,65 +245,127 @@ function prettifyResults(rawResults, room, searchString, exactSearch, addModlogL
 		return `|popup|No moderator actions containing ${searchString} found on ${roomName}.` +
 				(exactSearch ? "" : " Add quotes to the search parameter to search for a phrase, rather than a user.");
 	}
+	const title = `[${room}]` + (searchString ? ` ${searchString}` : ``);
 	const resultArray = rawResults.split('\n');
 	let lines = resultArray.length;
+	let curDate = '';
+	resultArray.unshift('');
 	const resultString = resultArray.map(line => {
-		if (hideIps) line = line.replace(/\([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\)/g, '');
-		let bracketIndex = line.indexOf(']');
+		let time;
+		let bracketIndex;
+		if (line) {
+			if (hideIps) line = line.replace(/\([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\)/g, '');
+			bracketIndex = line.indexOf(']');
+			if (bracketIndex < 0) return Chat.escapeHTML(line);
+			time = new Date(line.slice(1, bracketIndex));
+		} else {
+			time = new Date();
+		}
+		let [date, timestamp] = Chat.toTimestamp(time, {human: true}).split(' ');
+		if (date !== curDate) {
+			curDate = date;
+			date = `</p><p>[${date}]<br />`;
+		} else {
+			date = ``;
+		}
+		if (!line) {
+			return `${date}<small>[${timestamp}] \u2190 current server time</small>`;
+		}
 		let parenIndex = line.indexOf(')');
-		if (bracketIndex < 0) return Chat.escapeHTML(line);
-		const time = line.slice(1, bracketIndex);
-		let timestamp = Chat.toTimestamp(new Date(time), {hour12: true});
-		parenIndex = line.indexOf(')');
 		let thisRoomID = line.slice(bracketIndex + 3, parenIndex);
 		if (addModlogLinks) {
 			let url = Config.modloglink(time, thisRoomID);
 			if (url) timestamp = `<a href="${url}">${timestamp}</a>`;
 		}
-		return `<small>[${timestamp}] (${thisRoomID})</small>${Chat.escapeHTML(line.slice(parenIndex + 1))}`;
+		return `${date}<small>[${timestamp}] (${thisRoomID})</small>${Chat.escapeHTML(line.slice(parenIndex + 1))}`;
 	}).join(`<br />`);
 	let preamble;
+	const modlogid = room + (searchString ? '-' + Dashycode.encode(searchString) : '');
 	if (searchString) {
 		const searchStringDescription = (exactSearch ? `containing the string "${searchString}"` : `matching the username "${searchString}"`);
-		preamble = `|popup||wide||html|<p>The last ${lines} logged action${Chat.plural(lines)} ${searchStringDescription} on ${roomName}.` +
+		preamble = `>view-modlog-${modlogid}\n|init|html\n|title|[Modlog]${title}\n|pagehtml|<div class="pad"><p>The last ${lines} logged action${Chat.plural(lines)} ${searchStringDescription} on ${roomName}.` +
 						(exactSearch ? "" : " Add quotes to the search parameter to search for a phrase, rather than a user.");
 	} else {
-		preamble = `|popup||wide||html|<p>The last ${lines} line${Chat.plural(lines)} of the Moderator Log of ${roomName}.`;
+		preamble = `>view-modlog-${modlogid}\n|init|html\n|title|[Modlog]${title}\n|pagehtml|<div class="pad"><p>The last ${lines} line${Chat.plural(lines)} of the Moderator Log of ${roomName}.`;
 	}
-	preamble +=	`</p><p><small>[${Chat.toTimestamp(new Date(), {hour12: true})}] \u2190 current server time</small></p>`;
 	let moreButton = getMoreButton(room, searchString, exactSearch, lines, maxLines);
-	return `${preamble}${resultString}${moreButton}`;
+	return `${preamble}${resultString}${moreButton}</div>`;
 }
+
+function getModlog(connection, roomid = 'global', searchString = '', lines = 20, timed = false) {
+	const startTime = Date.now();
+	const targetRoom = Rooms.search(roomid);
+	const user = connection.user;
+
+	// permission checking
+	if (roomid === 'all' || roomid === 'public') {
+		if (!user.can('modlog')) {
+			return connection.popup("Access denied");
+		}
+	} else {
+		if (!user.can('modlog', null, targetRoom)) {
+			return connection.popup("Access denied");
+		}
+	}
+
+	const hideIps = !user.can('lock');
+	const addModlogLinks = Config.modloglink && (user.group !== ' ' || (targetRoom && targetRoom.isPrivate !== true));
+
+	if (searchString.length > MAX_QUERY_LENGTH) {
+		connection.popup(`Your search query must be shorter than ${MAX_QUERY_LENGTH} characters.`);
+		return;
+	}
+
+	let exactSearch = '0';
+	if (searchString.match(/^["'].+["']$/)) {
+		exactSearch = '1';
+		searchString = searchString.substring(1, searchString.length - 1);
+	}
+
+	let roomidList;
+	// handle this here so the child process doesn't have to load rooms data
+	if (roomid === 'public') {
+		const isPublicRoom = (room => !(room.isPrivate || room.battle || room.isPersonal || room.id === 'global'));
+		roomidList = Array.from(Rooms.rooms.values()).filter(isPublicRoom).map(room => room.id);
+	} else {
+		roomidList = [roomid];
+	}
+
+	PM.send(roomidList.join(','), searchString, exactSearch, lines).then(response => {
+		connection.send(prettifyResults(response, roomid, searchString, exactSearch === '1', addModlogLinks, hideIps, lines));
+		if (timed) connection.popup(`The modlog query took ${Date.now() - startTime} ms to complete.`);
+	});
+}
+
+exports.pages = {
+	modlog(args, user, connection) {
+		if (!user.named) return Rooms.RETRY_AFTER_LOGIN;
+		const roomid = args[0];
+		const target = Dashycode.decode(args.slice(1).join('-'));
+
+		getModlog(connection, roomid, target);
+	},
+};
 
 exports.commands = {
 	'!modlog': true,
 	timedmodlog: 'modlog',
 	modlog: function (target, room, user, connection, cmd) {
-		const startTime = Date.now();
 		if (!room) room = Rooms('global');
-		let roomId = (room.id === 'staff' ? 'global' : room.id);
-		const hideIps = !user.can('lock');
+		let roomid = (room.id === 'staff' ? 'global' : room.id);
 
 		if (target.includes(',')) {
 			let targets = target.split(',');
 			target = targets[1].trim();
-			roomId = toId(targets[0]) || room.id;
+			roomid = toId(targets[0]) || room.id;
 		}
 
-		let targetRoom = Rooms.search(roomId);
+		let targetRoom = Rooms.search(roomid);
 		// if a room alias was used, replace alias with actual id
-		if (targetRoom) roomId = targetRoom.id;
-		if (roomId.startsWith('battle-') || roomId.startsWith('groupchat-')) return this.errorReply("Battles and groupchats don't have individual modlogs.");
+		if (targetRoom) roomid = targetRoom.id;
+		if (roomid.includes('-')) return this.errorReply(`Battles and groupchats (and other rooms with - in their ID) don't have individual modlogs.`);
 
-		// permission checking
-		if (roomId === 'all' || roomId === 'public') {
-			if (!this.can('modlog')) return;
-		} else {
-			if (!this.can('modlog', null, targetRoom)) return;
-		}
-
-		const addModlogLinks = Config.modloglink && (!hideIps || (targetRoom && targetRoom.isPrivate !== true));
-		let lines = 0;
+		let lines;
 		if (target.includes(LINES_SEPARATOR)) { // undocumented line specification
 			const reqIndex = target.indexOf(LINES_SEPARATOR);
 			const requestedLines = parseInt(target.substr(reqIndex + LINES_SEPARATOR.length, target.length));
@@ -321,36 +383,11 @@ exports.commands = {
 		if (!lines) lines = DEFAULT_RESULTS_LENGTH;
 		if (lines > MAX_RESULTS_LENGTH) lines = MAX_RESULTS_LENGTH;
 
-		let searchString = '';
-		if (target) searchString = target.trim();
-		if (searchString.length > MAX_QUERY_LENGTH) {
-			this.errorReply(`Your search query must be shorter than ${MAX_QUERY_LENGTH} characters.`);
-			return;
-		}
-
-		let exactSearch = '0';
-		if (searchString.match(/^["'].+["']$/)) {
-			exactSearch = '1';
-			searchString = searchString.substring(1, searchString.length - 1);
-		}
-
-		let roomIdList;
-		// handle this here so the child process doesn't have to load rooms data
-		if (roomId === 'public') {
-			const isPublicRoom = (room => !(room.isPrivate || room.battle || room.isPersonal || room.id === 'global'));
-			roomIdList = Array.from(Rooms.rooms.values()).filter(isPublicRoom).map(room => room.id);
-		} else {
-			roomIdList = [roomId];
-		}
-
-		PM.send(roomIdList.join(','), searchString, exactSearch, lines).then(response => {
-			connection.send(prettifyResults(response, roomId, searchString, exactSearch === '1', addModlogLinks, hideIps, lines));
-			if (cmd === 'timedmodlog') this.sendReply(`The modlog query took ${Date.now() - startTime} ms to complete.`);
-		});
+		getModlog(connection, roomid, target, lines, cmd === 'timedmodlog');
 	},
 	modloghelp: [
-		"/modlog [roomid], [search] - Searches the moderator log - defaults to the current room unless specified otherwise.",
-		"If you set [roomid] as [all], it searches for [search] on all rooms' moderator logs.",
-		"If you set [roomid] as [public], it searches for [search] in all public rooms' moderator logs, excluding battles. Requires: % @ * # & ~",
+		`/modlog [roomid], [search] - Searches the moderator log - defaults to the current room unless specified otherwise.`,
+		`If you set [roomid] as [all], it searches for [search] on all rooms' moderator logs.`,
+		`If you set [roomid] as [public], it searches for [search] in all public rooms' moderator logs, excluding battles. Requires: % @ * # & ~`,
 	],
 };

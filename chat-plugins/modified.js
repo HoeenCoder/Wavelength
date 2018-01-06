@@ -85,7 +85,7 @@ exports.commands = {
 		}
 
 		let buffer = Object.keys(rankLists).sort((a, b) =>
-			(Config.groups[b] || {rank:0}).rank - (Config.groups[a] || {rank:0}).rank
+			(Config.groups[b] || {rank: 0}).rank - (Config.groups[a] || {rank: 0}).rank
 		).map(r => {
 			let roomRankList = rankLists[r].sort();
 			roomRankList = roomRankList.map(s => ((Users(s) && Users(s).connected) ? WL.nameColor(s, true) : WL.nameColor(s)));
@@ -460,4 +460,11 @@ exports.commands = {
 		if (user.can('lock')) this.parse('/show');
 	},
 	backhelp: ["/back - Sets a users away status back to normal."],
+
+	'!forums': true,
+	forum: 'forums',
+	forums: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReplyBox("<a href=\"http://www.smogon.com/forums/forums/209/\">Pok&eacute;mon Showdown Forums</a> | <a href=\"http://ps-wavelength.proboards.com\">Wavelength Forums</a>");
+	},
 };

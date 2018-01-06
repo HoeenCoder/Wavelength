@@ -119,6 +119,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	dev: {
 		give: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -164,6 +165,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	title: 'customtitle',
 	customtitle: {
 		set: 'give',
@@ -182,7 +184,7 @@ exports.commands = {
 			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(
-					'|html|You have recieved a custom title from ' + WL.nameColor(user.name, true) + '.' +
+					'|html|You have received a custom title from ' + WL.nameColor(user.name, true) + '.' +
 					'<br />Title: ' + showTitle(toId(targetUser)) +
 					'<br />Title Hex Color: ' + color
 				);
@@ -191,6 +193,7 @@ exports.commands = {
 			Monitor.adminlog(user.name + " set a custom title to " + userid + "'s profile.");
 			return this.sendReply("Title '" + title + "' and color '" + color + "' for " + userid + "'s custom title have been set.");
 		},
+
 		take: 'remove',
 		remove: function (target, room, user) {
 			if (!this.can('declare')) return false;
@@ -210,6 +213,7 @@ exports.commands = {
 			Monitor.adminlog(user.name + " removed " + userid + "'s custom title.");
 			return this.sendReply(userid + "'s custom title and title color were removed from the server memory.");
 		},
+
 		'': 'help',
 		help: function (target, room, user) {
 			if (!user.autoconfirmed) return this.errorReply("You need to be autoconfirmed to use this command.");
@@ -224,6 +228,7 @@ exports.commands = {
 			);
 		},
 	},
+
 	fc: 'friendcode',
 	friendcode: {
 		add: 'set',
@@ -242,6 +247,7 @@ exports.commands = {
 			Db.friendcodes.set(toId(user), fc);
 			return this.sendReply("Your friend code: " + fc + " has been saved to the server.");
 		},
+
 		remove: 'delete',
 		delete: function (target, room, user) {
 			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
@@ -258,6 +264,7 @@ exports.commands = {
 				return this.sendReply(userid + "'s friend code has been deleted from the server.");
 			}
 		},
+
 		'': 'help',
 		help: function (target, room, user) {
 			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
@@ -274,10 +281,172 @@ exports.commands = {
 			);
 		},
 	},
+
+	bg: 'background',
+	background: {
+		set: 'setbg',
+		setbackground: 'setbg',
+		setbg: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let parts = target.split(',');
+			if (!parts[1]) return this.parse('/backgroundhelp');
+			let targ = parts[0].toLowerCase().trim();
+			let link = parts[1].trim();
+			Db.backgrounds.set(targ, link);
+			this.sendReply('This user\'s background has been set to : ');
+			this.parse('/profile ' + targ);
+		},
+
+		removebg: 'deletebg',
+		remove: 'deletebg',
+		deletebackground: 'deletebg',
+		delete: 'deletebg',
+		deletebg: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let targ = target.toLowerCase();
+			if (!target) return this.parse('/backgroundhelp');
+			if (!Db.backgrounds.has(targ)) return this.errorReply('This user does not have a custom background.');
+			Db.backgrounds.remove(targ);
+			this.sendReply('This user\'s background has been deleted.');
+		},
+
+		'': 'help',
+		help: function (target, room, user) {
+			this.parse("/backgroundhelp");
+		},
+	},
+	backgroundhelp: [
+		"/bg set [user], [link] - Sets the user's profile background. Requires % and up.",
+		"/bg delete [user] - Removes the user's profile background. Requires % and up.",
+	],
+
+	music: {
+		add: "set",
+		give: "set",
+		set: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let parts = target.split(',');
+			let targ = parts[0].toLowerCase().trim();
+			if (!parts[2]) return this.errorReply('/musichelp');
+			let link = parts[1].trim();
+			let title = parts[2].trim();
+			Db.music.set(targ, {'link': link, 'title': title});
+			this.sendReply(targ + '\'s song has been set to: ');
+			this.parse('/profile ' + targ);
+		},
+
+		take: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!this.can('lock')) return false;
+			let targ = target.toLowerCase();
+			if (!target) return this.parse('/musichelp');
+			if (!Db.music.has(targ)) return this.errorReply('This user does not have any music on their profile.');
+			Db.music.remove(targ);
+			this.sendReply('This user\'s profile music has been deleted.');
+		},
+
+		'': 'help',
+		help: function (target, room, user) {
+			this.parse('/musichelp');
+		},
+	},
+	musichelp: [
+		"/music set [user], [link], [title of song] - Sets a user's profile music. Requires % and up.",
+		"/music take [user] - Removes a user's profile music. Requires % and up.",
+	],
+
+	pokemon: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) return this.parse("/pokemonhelp");
+			let pkmn = Dex.getTemplate(target);
+			if (!pkmn.exists) return this.errorReply('Not a Pokemon. Check your spelling?');
+			Db.pokemon.set(user.userid, pkmn.species);
+			return this.sendReply("You have successfully set your Pokemon onto your profile.");
+		},
+
+		del: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.pokemon.has(user.userid)) return this.errorReply("Your favorite Pokemon hasn't been set.");
+			Db.pokemon.remove(user.userid);
+			return this.sendReply("Your favorite Pokemon has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse('/pokemonhelp');
+		},
+	},
+	pokemonhelp: [
+		"/pokemon set [Pokemon] - Sets your Favorite Pokemon.",
+		"/pokemon delete - Removes your Favorite Pokemon.",
+	],
+
+	favoritetype: 'type',
+	type: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) return this.parse("/help type");
+			let type = Dex.getType(target);
+			if (!type.exists) return this.errorReply('Not a type. Check your spelling?');
+			Db.type.set(user.userid, toId(type));
+			return this.sendReply("You have successfully set your Favorite Type onto your profile.");
+		},
+
+		del: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.type.has(user.userid)) return this.errorReply("Your Favorite Type hasn't been set.");
+			Db.type.remove(user.userid);
+			return this.sendReply("Your Favorite Type has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse('/help type');
+		},
+	},
+	typehelp: [
+		"/type set [type] - Sets your Favorite Type.",
+		"/type delete - Removes your Favorite Type.",
+	],
+
+	natures: "nature",
+	nature: {
+		add: "set",
+		set: function (target, room, user) {
+			if (!target) this.parse("/help nature");
+			let nature = Dex.getNature(target);
+			if (!nature.exists) return this.errorReply("This is not a nature. Check your spelling?");
+			Db.nature.set(user.userid, nature.name);
+			return this.sendReply("You have successfully set your nature onto your profile.");
+		},
+
+		del: "delete",
+		take: "delete",
+		remove: "delete",
+		delete: function (target, room, user) {
+			if (!Db.nature.has(user.userid)) return this.errorReply("Your nature has not been set.");
+			Db.nature.remove(user.userid);
+			return this.sendReply("Your nature has been deleted from your profile.");
+		},
+
+		"": "help",
+		help: function (target, room, user) {
+			this.parse("/naturehelp");
+		},
+	},
+	naturehelp: [
+		"/nature set [nature] - Sets your Profile Nature.",
+		"/nature delete - Removes your Profile Nature.",
+	],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
-		if (!target) target = user.name;
+		if (!target) target = user.userid;
 		if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 		if (!this.runBroadcast()) return;
 		let self = this;
@@ -314,15 +483,37 @@ exports.commands = {
 			return '<img src="http://flags.fmcdn.net/data/flags/normal/' + ip.country.toLowerCase() + '.png" alt="' + ip.country + '" title="' + ip.country + '" width="20" height="10">';
 		}
 
+		function background(user) {
+			let bg = Db.backgrounds.get(user);
+			if (!Db.backgrounds.has(user)) return '<div>';
+			return '<div style="background:url(' + bg + ')">';
+		}
+
+		function song(user) {
+			if (!Db.music.has(user)) return '';
+			let song = Db.music.get(user)['link'];
+			let title = Db.music.get(user)['title'];
+			return '<acronym title="' + title + '"><br /><audio src="' + song + '" controls="" style="width:100%;"></audio></acronym>';
+		}
+
 		function showProfile() {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
-				profile += showBadges(toId(username));
+				profile += background(toId(username)) + showBadges(toId(username));
 				profile += '<div style="display: inline-block; width: 7em; second: nothing"><img src="' + avatar + '" height="80" width="80" align="left"></div>';
 				profile += '<div style="display: inline-block; float: Center">&nbsp;<font color="#24678d"><b>Name:</b></font> ' + WL.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
-				profile += '&nbsp;<font color="#24678d"><b>' + global.currencyPlural + ':</b></font> ' + currency + '<br />';
+				profile += '&nbsp;<font color="#24678d"><b>' + currencyPlural + ':</b></font> ' + currency + '<br />';
+				if (Db.pokemon.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Favorite Pokemon:</strong></font> ' + Db.pokemon.get(toId(username)) + '<br />';
+				}
+				if (Db.type.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Favorite Type:</strong></font> <img src="https://www.serebii.net/pokedex-bw/type/' + Db.type.get(toId(username)) + '.gif"><br />';
+				}
+				if (Db.nature.has(toId(username))) {
+					profile += '&nbsp;<font color="#24678d"><strong>Nature:</strong></font> ' + Db.nature.get(toId(username)) + '<br />';
+				}
 				if (WL.getFaction(toId(username))) {
 					profile += '&nbsp;<font color="#24678d"><strong>Faction:</strong></font> ' + WL.getFaction(toId(username)) + '<br />';
 				}
@@ -332,8 +523,9 @@ exports.commands = {
 				}
 				profile += '&nbsp;<font color="#24678d"><b>Last Seen:</b></font> ' + getLastSeen(toId(username)) + '</font><br />';
 				if (Db.friendcodes.has(toId(username))) {
-					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username));
+					profile += '&nbsp;<font color="#24678d"><b>Friend Code:</b></font> ' + Db.friendcodes.get(toId(username) + '<br />');
 				}
+				profile += '&nbsp;' + song(toId(username)) + '';
 				profile += '&nbsp;</div>';
 				profile += '<br clear="all">';
 				self.sendReplyBox(profile);

@@ -40,21 +40,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Bold',
 			},
-			'~Kraken Mare': {
-				species: 'Gardevoir-Mega',
-				ability: 'Kraken\'s Boost',
-				shiny: true,
-				item: 'Focus Sash',
+			'~Callie (Agent 1)': {
+				species: 'Malamar',
+				ability: 'Supreme Squid Sister',
+				item: 'Hypnoshades',
 				gender: 'F',
-				moves: ['Moonblast', 'Calm Mind', 'Psychic',
+				moves: ['Sing', 'Superpower', 'Gunk Shot',
 				],
-				signatureMove: 'Revenge of Kraken Mare',
+				signatureMove: 'Bomb Rush Blush',
 				evs: {
-					hp: 248,
-					spa: 252,
-					def: 8,
+					hp: 252,
+					atk: 252,
+					spd: 4,
 				},
-				nature: 'Modest',
+				nature: 'Adamant',
 			},
 			'~Desokoro': {
 				species: 'Gyarados',
@@ -165,6 +164,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+			'*Tidal Wave Bot': {
+				species: 'Magikarp',
+				ability: 'Loading...',
+				item: 'Guardian\'s Amulet',
+				shiny: true,
+				moves: ['Wild Charge', 'Shift Gear', 'Gear Grind',
+				],
+				signatureMove: 'Server Guardian',
+				evs: {
+					hp: 4,
+					atk: 252,
+					spe: 252,
+				},
+				nature: 'Adament',
+			},
 			// Global Moderators:
 			'@BDH93': {
 				species: 'Dunsparce',
@@ -200,13 +214,13 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Modest',
 			},
 			'@C733937 123': {
-				species: 'Tyranitar',
-				ability: 'Bulletproof',
-				item: 'Safety Goggles',
+				species: 'Skuntank',
+				ability: 'Unaware',
+				item: 'Shuca Berry',
 				gender: 'M',
-				moves: ['Assist', 'Beat Up', 'Sucker Punch', 'Heavy Slam',
+				moves: ['Gunk Shot', 'Crunch', 'Sacred Fire',
 				],
-				signatureMove: 'Lightshot Giga-Lance',
+				signatureMove: 'Shatter Break',
 				evs: {
 					hp: 252,
 					atk: 252,
@@ -274,32 +288,32 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%Lycanium Z': {
-				species: "Lycanroc-Midnight",
-				ability: "Contrary",
+				species: "Carbink",
+				ability: "Deflector Shield",
 				item: "Leftovers",
 				gender: "M",
-				moves: ['Close Combat', 'Stone Edge', 'Ice Hammer'],
-				signatureMove: "FINISH THEM",
+				moves: ['Moonblast', 'Blue Flare', 'Seed Flare'],
+				signatureMove: "Meteor Madness",
 				evs: {
-					atk: 252,
-					def: 4,
+					spa: 252,
 					hp: 252,
+					def: 4,
 				},
-				nature: "Adamant",
+				nature: "Calm",
 			},
-			'%Arrays': {
-				species: 'Conkeldurr',
+			'%Volco': {
+				species: 'Gallade-Mega',
 				ability: 'Shadow Fist',
-				item: 'Assault Vest',
+				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Drain Punch', 'Ice Punch', 'Mach Punch'],
+				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
 				signatureMove: 'Invisible Punch',
 				evs: {
-					hp: 252,
+					hp: 4,
 					atk: 252,
-					def: 4,
+					spe: 252,
 				},
-				nature: 'Adamant',
+				nature: 'Jolly',
 			},
 			'%wgc': {
 				species: 'Gengar',
@@ -349,12 +363,12 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 			'+Auction': {
 				species: 'Aegislash',
-				ability: 'Water Absorb',
+				ability: 'Stance Change',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Swords Dance', 'Sacred Sword', 'Shadow Sneak', 'Kings Shield',
+				moves: [['Swords Dance', 'Sacred Sword'][variant], 'Shadow Sneak', 'Kings Shield',
 				],
-				signatureMove: 'Zeo-Bash',
+				signatureMove: 'Magnet Flare',
 				evs: {
 					atk: 252,
 					spd: 8,
@@ -378,11 +392,11 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Adamant',
 			},
 			'+xcmr': {
-				species: 'Meowth',
+				species: 'Persian',
 				ability: 'Feline Fury',
-				item: 'Eviolite',
+				item: 'Life Orb',
 				gender: 'M',
-				moves: ['U-turn', 'Fake Out', 'Knock Off',
+				moves: ['Topsy-Turvy', 'Fake Out', 'Knock Off',
 				],
 				signatureMove: 'Kitty Crush',
 				evs: {
@@ -391,6 +405,48 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spe: 252,
 				},
 				nature: 'Jolly',
+			},
+			'+bunnery5': {
+				species: 'Tympole',
+				ability: 'Muscles',
+				item: 'Petaya Berry',
+				gender: 'M',
+				moves: ['storedpower', 'cosmicpower', 'hydropump'],
+				signatureMove: 'Bunnery Hates You Seed',
+				evs: {
+					def: 252,
+					spd: 252,
+					spe: 4,
+				},
+				nature: 'Timid',
+			},
+			'+AlfaStorm': {
+				species: 'Hydreigon',
+				ability: 'Mummy',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['nightdaze', 'spacialrend', 'doomdesire'],
+				signatureMove: 'Infinity Storm',
+				evs: {
+					def: 4,
+					spa: 252,
+					spe: 252,
+				},
+				nature: 'Timid',
+			},
+			'+SnorlaxTheRain': {
+				species: 'Snorlax',
+				ability: 'Scraroom',
+				item: 'Snorlium Z',
+				gender: 'M',
+				moves: ['gigaimpact', 'curse', 'rest'],
+				signatureMove: 'Snorlax Slam',
+				evs: {
+					hp: 164,
+					atk: 224,
+					spd: 120,
+				},
+				nature: 'Adamant',
 			},
 		};
 		// convert moves to ids.
@@ -414,17 +470,17 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				}
 			}*/
 			let set = sets[pool[i]];
-			set.level = 100;
+			if (!set.level) set.level = 100;
 			set.name = pool[i];
 			if (!set.ivs) {
-				set.ivs = {hp:31, atk:31, def:31, spa:31, spd:31, spe:31};
+				set.ivs = {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31};
 			} else {
-				for (let iv in {hp:31, atk:31, def:31, spa:31, spd:31, spe:31}) {
+				for (let iv in {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31}) {
 					set.ivs[iv] = set.ivs[iv] || set.ivs[iv] === 0 ? set.ivs[iv] : 31;
 				}
 			}
 			// Assuming the hardcoded set evs are all legal.
-			if (!set.evs) set.evs = {hp:84, atk:84, def:84, spa:84, spd:84, spe:84};
+			if (!set.evs) set.evs = {hp: 84, atk: 84, def: 84, spa: 84, spd: 84, spe: 84};
 			set.moves = [this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves), this.sampleNoReplace(set.moves)].concat(set.signatureMove);
 			team.push(set);
 		}

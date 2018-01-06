@@ -191,14 +191,6 @@ class ScavengerHunt extends Rooms.RoomGame {
 		this.gameType = gameType;
 		this.playerCap = Infinity;
 
-		this.hosts = hosts;
-		this.staffHostId = staffHost.userid;
-		this.staffHostName = staffHost.name;
-
-		this.gameid = 'scavengerhunt';
-		this.title = 'Scavenger Hunt';
-		this.scavGame = true;
-
 		this.state = 'signups';
 		this.joinedIps = [];
 
@@ -209,6 +201,16 @@ class ScavengerHunt extends Rooms.RoomGame {
 		this.leftHunt = {};
 
 		this.parentGame = parentGame || null;
+
+		this.hosts = hosts;
+
+		this.staffHostId = staffHost.userid;
+		this.staffHostName = staffHost.name;
+		this.cacheUserIps(staffHost); // store it in case of host subbing
+
+		this.gameid = 'scavengerhunt';
+		this.title = 'Scavenger Hunt';
+		this.scavGame = true;
 
 		this.onLoad(questions);
 	}
@@ -223,10 +225,7 @@ class ScavengerHunt extends Rooms.RoomGame {
 		if (this.hosts.some(h => h.userid === user.userid) || user.userid === this.staffHostId) return user.sendTo(this.room, "You cannot join your own hunt! If you wish to view the check your questions, use /viewhunt instead!");
 		if (Object.keys(user.ips).some(ip => this.joinedIps.includes(ip))) return user.sendTo(this.room, "You already have one alt in the hunt.");
 		if (this.addPlayer(user)) {
-			// limit to 1 IP in every game.
-			for (let ip in user.ips) {
-				this.joinedIps.push(ip);
-			}
+			this.cacheUserIps(user);
 			delete this.leftHunt[user.userid];
 			user.sendTo("You joined the scavenger hunt! Use the command /scavenge to answer.");
 			this.onSendQuestion(user);
@@ -234,6 +233,14 @@ class ScavengerHunt extends Rooms.RoomGame {
 		}
 		user.sendTo(this.room, "You have already joined the hunt.");
 		return false;
+	}
+
+	cacheUserIps(user) {
+		// limit to 1 IP in every game.
+		if (!user.ips) return; // ghost user object cached from queue
+		for (let ip in user.ips) {
+			this.joinedIps.push(ip);
+		}
 	}
 
 	leaveGame(user) {
@@ -379,11 +386,11 @@ class ScavengerHunt extends Rooms.RoomGame {
 			let blitzPoints = this.room.blitzPoints || DEFAULT_BLITZ_POINTS;
 
 			if (this.gameType === 'official') {
-				for (let i = 0; i < this.completed.length; i++) {
-					if (!this.completed[i].blitz && i >= winPoints.length) break; // there won't be any more need to keep going
-					let name = this.completed[i].name;
+				for (const [i, completed] of this.completed.entries()) {
+					if (!completed.blitz && i >= winPoints.length) break; // there won't be any more need to keep going
+					let name = completed.name;
 					if (winPoints[i]) Leaderboard.addPoints(name, 'points', winPoints[i]);
-					if (this.completed[i].blitz) Leaderboard.addPoints(name, 'points', blitzPoints);
+					if (completed.blitz) Leaderboard.addPoints(name, 'points', blitzPoints);
 				}
 				Leaderboard.write();
 			}
@@ -392,7 +399,7 @@ class ScavengerHunt extends Rooms.RoomGame {
 
 			this.announce(
 				`The ${this.gameType ? `${this.gameType} ` : ""}scavenger hunt was ended ${(endedBy ? "by " + Chat.escapeHTML(endedBy.name) : "automatically")}.<br />` +
-				`${this.completed.slice(0, sliceIndex).map((p, i) => `${formatOrder(i + 1)} place: <em>${Chat.escapeHTML(p.name)}</em>.<br />`).join("")}${this.completed.length > sliceIndex ? `Consolation Prize: ${this.completed.slice(sliceIndex).map(e => Chat.escapeHTML(e.name)).join(', ')}<br />` : ''}<br />` +
+				`${this.completed.slice(0, sliceIndex).map((p, i) => `${formatOrder(i + 1)} place: ${Chat.escapeHTML(p.name)}${this.gameType === 'official' ? ` <span style="color: magenta;">[${p.time}]</span>` : ''}.<br />`).join("")}${this.completed.length > sliceIndex ? `Consolation Prize: ${this.completed.slice(sliceIndex).map(e => `${Chat.escapeHTML(e.name)}${this.gameType === 'official' ? ` <span style="color: magenta;">[${e.time}]</span>` : ''}`).join(', ')}<br />` : ''}<br />` +
 				`<details style="cursor: pointer;"><summary>Solution: </summary><br />${this.questions.map((q, i) => `${i + 1}) ${Chat.formatText(q.hint)} <span style="color: lightgreen">[<em>${Chat.escapeHTML(q.answer.join(' / '))}</em>]</span>`).join("<br />")}</details>`
 			);
 
@@ -425,8 +432,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 			PlayerLeaderboard.addPoints(id, 'join', 1, true);
 		}
 		if (this.gameType !== 'practice') {
-			for (let i = 0; i < this.hosts.length; i++) {
-				HostLeaderboard.addPoints(this.hosts[i].name, 'points', 1, this.hosts[i].noUpdate).write();
+			for (const host of this.hosts) {
+				HostLeaderboard.addPoints(host.name, 'points', 1, host.noUpdate).write();
 			}
 		}
 		PlayerLeaderboard.write();
@@ -452,7 +459,7 @@ class ScavengerHunt extends Rooms.RoomGame {
 					room.chatRoomData.scavQueue = room.scavQueue;
 					Rooms.global.writeChatRoomData();
 				}
-			}, 1.5 * 60000); // 1.5 minute cooldown
+			}, 2 * 60000); // 2 minute cooldown
 		}
 	}
 
@@ -485,8 +492,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 
 			// notify staff
 			let staffMsg = `(${player.name} has been caught trying to do their own hunt.)`;
-			this.room.sendModCommand(staffMsg);
-			this.room.logEntry(staffMsg);
+			this.room.sendMods(staffMsg);
+			this.room.roomlog(staffMsg);
 			this.room.modlog(staffMsg);
 
 			PlayerLeaderboard.addPoints(player.name, 'infraction', 1);
@@ -500,8 +507,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 
 			// notify staff
 			let staffMsg = `(${player.name} has been caught attempting a hunt with ${uniqueConnections} connections on the account. The user has also been given 1 infraction point on the player leaderboard.)`;
-			this.room.sendModCommand(staffMsg);
-			this.room.logEntry(staffMsg);
+			this.room.sendMods(staffMsg);
+			this.room.roomlog(staffMsg);
 			this.room.modlog(staffMsg);
 
 			PlayerLeaderboard.addPoints(player.name, 'infraction', 1);
@@ -512,6 +519,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 	eliminate(userid) {
 		if (!(userid in this.players)) return false;
 		let player = this.players[userid];
+
+		if (player.completed) return true; // do not remove players that have completed - they should still get to see the answers
 
 		player.destroy();
 		delete this.players[userid];
@@ -528,7 +537,8 @@ class ScavengerHunt extends Rooms.RoomGame {
 
 		let filtered = this.questions.some(q => {
 			return q.answer.some(a => {
-				let md = Math.ceil((a.length - 3) / FILTER_LENIENCY);
+				a = toId(a);
+				let md = Math.ceil((a.length - 5) / FILTER_LENIENCY);
 				if (Dex.levenshtein(msgId, a, md) <= md) return true;
 				return false;
 			});
@@ -564,13 +574,15 @@ class ScavengerHunt extends Rooms.RoomGame {
 		if (questionArray.length % 2 === 1) return {err: "Your final question is missing an answer"};
 		if (questionArray.length < 6) return {err: "You must have at least 3 hints and answers"};
 
-		for (let i = 0; i < questionArray.length; i++) {
+		for (let [i, question] of questionArray.entries()) {
 			if (i % 2) {
-				questionArray[i] = questionArray[i].split(';').map(p => p.trim());
-				if (!questionArray[i].length || questionArray[i].some(a => !toId(a))) return {err: "Empty answer - only alphanumeric characters will count in answers."};
+				question = question.split(';').map(p => p.trim());
+				questionArray[i] = question;
+				if (!question.length || question.some(a => !toId(a))) return {err: "Empty answer - only alphanumeric characters will count in answers."};
 			} else {
-				questionArray[i] = questionArray[i].trim();
-				if (!questionArray[i]) return {err: "Empty question."};
+				question = question.trim();
+				questionArray[i] = question;
+				if (!question) return {err: "Empty question."};
 			}
 		}
 
@@ -788,6 +800,7 @@ let commands = {
 		if (!room.game || !room.game.scavGame) return this.errorReply(`There is no scavenger game currently running.`);
 
 		let game = room.game.childGame || room.game;
+		if (!('questions' in game)) return this.errorReply('There is currently no hunt going on.');
 
 		const elapsedMsg = Chat.toDurationString(Date.now() - game.startTime, {hhmmss: true});
 		const gameTypeMsg = game.gameType ? `<em>${game.gameType}</em> ` : '';
@@ -827,6 +840,25 @@ let commands = {
 
 		room.add(message + '.');
 		this.privateModCommand(`(${message} by ${user.name}.)`);
+	},
+
+	inherit: function (target, room, user) {
+		if (!this.can('mute', null, room)) return false;
+		if (!room.game || !room.game.scavGame) return this.errorReply(`There is no scavenger game currently running.`);
+
+		let game = room.game.childGame || room.game;
+		if (!('questions' in game)) return this.errorReply('There is currently no hunt going on.');
+
+		if (game.staffHostId === user.userid) return this.errorReply('You already have staff permissions for this hunt.');
+
+		game.staffHostId = '' + user.userid;
+		game.staffHostName = '' + user.name;
+
+		// clear user's game progress and prevent user from ever entering again
+		game.eliminate(user.userid);
+		game.cacheUserIps(user);
+
+		this.privateModCommand(`(${user.name} has inherited staff permissions for the current hunt.)`);
 	},
 
 	reset: function (target, room, user) {
@@ -1240,6 +1272,7 @@ exports.commands = {
 	endhunt: commands.end,
 	edithunt: commands.edithunt,
 	viewhunt: commands.viewhunt,
+	inherithunt: commands.inherit,
 	scavengerstatus: commands.status,
 	scavengerhint: commands.hint,
 
@@ -1285,6 +1318,7 @@ exports.commands = {
 			"- /resethunt - resets the current scavenger hunt without revealing the hints and answers. (Requires: % @ * # & ~)",
 			"- /endhunt - ends the current scavenger hunt and announces the winners and the answers. (Requires: % @ * # & ~)",
 			"- /viewhunt - views the current scavenger hunt.  Only the user who started the hunt can use this command. Only the host(s) can view the hunt.",
+			"- /inherithunt - becomes the staff host, gaining staff permissions to the current hunt. (Requires: % @ * # & ~)",
 			"- /scav timer <em>[minutes | off]</em> - sets a timer to automatically end the current hunt. (Requires: % @ * # & ~)",
 			"- /scav addpoints <em>[user], [amount]</em> - gives the user the amount of scavenger points towards the monthly ladder. (Requires: % @ * # & ~)",
 			"- /scav removepoints <em>[user], [amount]</em> - takes the amount of scavenger points from the user towards the monthly ladder. (Requires: % @ * # & ~)",

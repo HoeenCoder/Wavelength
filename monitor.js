@@ -8,7 +8,7 @@
  */
 'use strict';
 
-const FS = require('./fs');
+const FS = require('./lib/fs');
 
 const MONITOR_CLEAN_TIMEOUT = 2 * 60 * 60 * 1000;
 
@@ -59,6 +59,11 @@ const Monitor = module.exports = {
 	/*********************************************************
 	 * Logging
 	 *********************************************************/
+
+	/** @param {Error} error */
+	crashlog(error, source = 'The main process') {
+		require('./lib/crashlogger')(error, source);
+	},
 
 	/**
 	 * @param {string} text
@@ -127,6 +132,7 @@ const Monitor = module.exports = {
 	battles: new TimedCounter(),
 	battlePreps: new TimedCounter(),
 	groupChats: new TimedCounter(),
+	tickets: new TimedCounter(),
 
 	/** @type {string | null} */
 	activeIp: null,
@@ -220,6 +226,19 @@ const Monitor = module.exports = {
 	countGroupChat(ip) {
 		let count = this.groupChats.increment(ip, 60 * 60 * 1000)[0];
 		return count > 4;
+	},
+
+	/**
+	 * Counts ticket creation. Returns true if too much.
+	 *
+	 * @param {string} ip
+	 * @return {boolean}
+	 */
+	countTickets(ip) {
+		let count = this.tickets.increment(ip, 60 * 60 * 1000)[0];
+		if (Punishments.sharedIps.has(ip) && count >= 50) return true;
+		if (count >= 5) return true;
+		return false;
 	},
 
 	/**

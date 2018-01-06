@@ -44,8 +44,8 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			if (pokemon.hasAbility('gluttony')) this.boost({spd:1});
-			this.boost({spd:1});
+			if (pokemon.hasAbility('gluttony')) this.boost({spd: 1});
+			this.boost({spd: 1});
 		},
 		desc: "Raises holder's Sp. Def by 1 stage when at 1/4 max HP or less. Single use.",
 	},
@@ -405,8 +405,8 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			if (pokemon.hasAbility('gluttony')) this.boost({def:1});
-			this.boost({def:1});
+			if (pokemon.hasAbility('gluttony')) this.boost({def: 1});
+			this.boost({def: 1});
 		},
 		desc: "Raises holder's Defense by 1 stage when at 1/4 max HP or less. Single use.",
 	},
@@ -503,8 +503,8 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			if (pokemon.hasAbility('gluttony')) this.boost({atk:1});
-			this.boost({atk:1});
+			if (pokemon.hasAbility('gluttony')) this.boost({atk: 1});
+			this.boost({atk: 1});
 		},
 		desc: "Raises holder's Attack by 2 stages when at 1/4 max HP or less. Single use.",
 	},
@@ -598,7 +598,7 @@ exports.BattleItems = {
 		},
 		onEat: function (pokemon) {
 			if (pokemon.hasAbility('gluttony')) this.boost({spa: 1});
-			this.boost({spa:1});
+			this.boost({spa: 1});
 		},
 		desc: "Raises holder's Sp. Atk by 1 stage when at 1/4 max HP or less. Single use.",
 	},
@@ -628,7 +628,7 @@ exports.BattleItems = {
 		},
 		onEat: function (pokemon) {
 			if (pokemon.hasAbility('gluttony')) this.boost({spe: 1});
-			this.boost({spe:1});
+			this.boost({spe: 1});
 		},
 		desc: "Raises holder's Speed by 1 stage when at 1/4 max HP or less. Single use.",
 	},

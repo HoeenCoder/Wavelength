@@ -117,6 +117,16 @@ class Effect {
 		 */
 		this.isUnreleased = false;
 		/**
+		 * A shortened form of the description of this effect. Not all effects have this
+		 * @type {string}
+		 */
+		this.shortDesc = '';
+		/**
+		 * The full description for this effect
+		 * @type {string}
+		 */
+		this.desc = '';
+		/**
 		 * Is this item/move/ability/pokemon nonstandard? True for effects
 		 * that have no use in standard formats: made-up pokemon (CAP),
 		 * glitches (Missingno etc), and Pokestar pokemon.
@@ -207,18 +217,19 @@ class RuleTable extends Map {
 	}
 	/**
 	 * @param {string} thing
-	 * @param {{[id: string]: true}} setHas
+	 * @param {{[id: string]: true}?} setHas
 	 * @return {string}
 	 */
-	check(thing, setHas) {
-		setHas[thing] = true;
-		return this.getReason(this.get('-' + thing));
+	check(thing, setHas = null) {
+		if (setHas) setHas[thing] = true;
+		return this.getReason('-' + thing);
 	}
 	/**
-	 * @param {string | undefined} source
+	 * @param {string} key
 	 * @return {string}
 	 */
-	getReason(source) {
+	getReason(key) {
+		const source = this.get(key);
 		if (source === undefined) return '';
 		return source ? `banned by ${source}` : `banned`;
 	}
@@ -348,6 +359,13 @@ class Format extends Effect {
 		 * @type {number?}
 		 */
 		this.maxForcedLevel = this.maxForcedLevel;
+
+		/** @type {boolean | undefined} */
+		this.searchShow = this.searchShow;
+		/** @type {boolean | undefined} */
+		this.challengeShow = this.challengeShow;
+		/** @type {boolean | undefined} */
+		this.tournamentShow = this.tournamentShow;
 
 		/**
 		 * @type {((this: Validator, set: PokemonSet, teamHas: AnyObject) => string[] | false)?}
@@ -577,7 +595,7 @@ class Template extends Effect {
 
 		/**
 		 * Abilities
-		 * @type {{0: string, 1?: string, H?: string}}
+		 * @type {{0: string, 1?: string, H?: string, S?: string}}
 		 */
 		this.abilities = this.abilities || {0: ""};
 
@@ -642,10 +660,10 @@ class Template extends Effect {
 		 * Gender ratio. Should add up to 1 unless genderless.
 		 * @type {{M: number, F: number}}
 		 */
-		this.genderRatio = this.genderRatio || (this.gender === 'M' ? {M:1, F:0} :
-			this.gender === 'F' ? {M:0, F:1} :
-				this.gender === 'N' ? {M:0, F:0} :
-					{M:0.5, F:0.5});
+		this.genderRatio = this.genderRatio || (this.gender === 'M' ? {M: 1, F: 0} :
+			this.gender === 'F' ? {M: 0, F: 1} :
+				this.gender === 'N' ? {M: 0, F: 0} :
+					{M: 0.5, F: 0.5});
 
 		/**
 		 * Required item. Do not use this directly; see requiredItems.
@@ -715,7 +733,7 @@ class Template extends Effect {
 		this.eventPokemon = this.eventPokemon;
 
 		if (!this.gen) {
-			if (this.num >= 722 || this.forme === 'Alola') {
+			if (this.num >= 722 || this.forme.startsWith('Alola')) {
 				this.gen = 7;
 			} else if (this.forme && ['Mega', 'Mega-X', 'Mega-Y'].includes(this.forme)) {
 				this.gen = 6;
@@ -796,6 +814,12 @@ class Move extends Effect {
 		 * @type {number}
 		 */
 		this.basePower = this.basePower;
+
+		/**
+		 * Move base accuracy. True denotes a move that always hits
+		 * @type {true | number}
+		 */
+		this.accuracy = this.accuracy;
 
 		/**
 		 * Critical hit ratio. Defaults to 1.
@@ -898,12 +922,6 @@ class Move extends Effect {
 		 * @type {boolean}
 		 */
 		this.ignoreDefensive = this.ignoreDefensive;
-
-		/**
-		 * Whether or not this move uses the source's highest raw stat.
-		 * @type {boolean}
-		 */
-		this.useBestSourceOffensive = this.useBestSourceOffensive;
 
 		/**
 		 * Whether or not this move ignores type immunities. Defaults to
