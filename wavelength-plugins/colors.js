@@ -3,25 +3,22 @@
  *
  * Credits go to:
  * - panpawn and jd
+ * - Refactored by HoeenHero
  */
 'use strict';
 
-const fs = require('fs');
-
-let customColors = {};
-
-function load() {
-	fs.readFile('config/customcolors.json', 'utf8', function (err, file) {
-		if (err) return;
-		customColors = JSON.parse(file);
-	});
+const FS = require('../lib/fs.js');
+let customColors = FS('config/customcolors.json').readTextIfExistsSync();
+if (customColors !== '') {
+	customColors = JSON.parse(customColors);
+} else {
+	customColors = {};
 }
-setInterval(function () {
-	load();
-}, 500);
 
 function updateColor() {
-	fs.writeFileSync('config/customcolors.json', JSON.stringify(customColors));
+	FS('config/customcolors.json').writeUpdate(() => (
+		JSON.stringify(customColors)
+	));
 
 	let newCss = '/* COLORS START */\n';
 
@@ -30,27 +27,18 @@ function updateColor() {
 	}
 	newCss += '/* COLORS END */\n';
 
-	let file = fs.readFileSync('config/custom.css', 'utf8').split('\n');
+	let file = FS('config/custom.css').readTextIfExistsSync().split('\n');
 	if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
-	fs.writeFileSync('config/custom.css', file.join('\n') + newCss);
+	FS('config/custom.css').writeUpdate(() => (
+		file.join('\n') + newCss
+	));
 	WL.reloadCSS();
 }
 
 function generateCSS(name, color) {
-	let css = '';
-	let rooms = [];
 	name = toId(name);
-	Rooms.rooms.forEach((curRoom, id) => {
-		if (id === 'global' || curRoom.type !== 'chat' || curRoom.isPersonal) return;
-		if (!isNaN(Number(id.charAt(0)))) return;
-		rooms.push('#' + id + '-userlist-user-' + name + ' strong em');
-		rooms.push('#' + id + '-userlist-user-' + name + ' strong');
-		rooms.push('#' + id + '-userlist-user-' + name + ' span');
-	});
-	css = rooms.join(', ');
-	css += '{\ncolor: ' + color + ' !important;\n}\n';
-	css += '.chat.chatmessage-' + name + ' strong {\n';
-	css += 'color: ' + color + ' !important;\n}\n';
+	let css = `[class$="chatmessage-${name}"] strong, [class$="chatmessage-${name} mine"] strong, [class$="chatmessage-${name} highlighted"] strong, [id$="-userlist-user-${name}"] strong em, [id$="-userlist-user-${name}"] strong, [id$="-userlist-user-${name}"] span`;
+	css += `{\ncolor: ${color} !important;\n}\n`;
 	return css;
 }
 
