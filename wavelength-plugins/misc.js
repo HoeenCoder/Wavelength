@@ -180,7 +180,7 @@ exports.commands = {
 			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
 			"<br />" +
 			"<u><b>Contributors:</b></u><br />" +
-			"- " + WL.nameColor('Arrays', true) + " (Development)<br />" +
+			"- " + WL.nameColor('Volco', true) + " (Development)<br />" +
 			"- " + WL.nameColor('Ashley the Pikachu', true) + " (Spriting, Digimon Project)<br />" +
 			"- " + WL.nameColor('Insist', true) + " (Development)<br />" +
 			"- " + WL.nameColor('Lycanium Z', true) + " (Development)<br />" +
