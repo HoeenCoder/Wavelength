@@ -486,7 +486,7 @@ exports.commands = {
 		function background(user) {
 			let bg = Db.backgrounds.get(user);
 			if (!Db.backgrounds.has(user)) return '<div>';
-			return `<div style="background:url(${bg}); size: 100%">`;
+			return `<div style="background:url(${bg}); background-size: 100% 100%">`;
 		}
 
 		function song(user) {
