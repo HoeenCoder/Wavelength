@@ -387,7 +387,7 @@ exports.commands = {
 		"/survey allows rooms to run their own surveys. These surveys are limited to five surveys at a time per room.",
 		"Accepts the following commands:",
 		"/survey create [question] - Create a survey. Allows up to 5 surveys. Requires % @ # & ~",
-		"/survey answer [answer], [survey number] - Answers the specified survey.",
+		"/survey answer [survey number], [answer] - Answers the specified survey.",
 		"/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already.",
 		"/survey display (survey number) - Display the specified survey. If no ID is specified, displays all surveys.",
 		"/survey remove [user], [survey number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
