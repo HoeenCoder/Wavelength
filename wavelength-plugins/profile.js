@@ -688,14 +688,14 @@ exports.commands = {
 		}
 
 		function showProfile() {
-			Economy.readMoney(toId(username), money => {
+			Economy.readMoney(toId(username), currency => {
 				let profile = ``;
 				profile += `${background(toId(username))} ${showBadges(toId(username))}`;
 				profile += `<div style="display: inline-block; width: 7em; vertical-align: 2.5em;"><img src="${avatar}" height="80" width="80" align="left"></div>`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp; ${getFlag(toId(username))} ${showTitle(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Group:</b> ${userGroup}</font> ${devCheck(username)} ${vipCheck(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Registered:</b> ${regdate}</font><br />`;
-				profile += `&nbsp;${pColor(toId(username))}<b>${moneyPlural}:</b> ${money}</font><br />`;
+				profile += `&nbsp;${pColor(toId(username))}<b>${currencyPlural}:</b> ${currency}</font><br />`;
 				if (Db.pokemon.has(toId(username))) {
 					profile += `&nbsp;${pColor(toId(username))}<b>Favorite Pokemon:</b> ${Db.pokemon.get(toId(username))}</font><br />`;
 				}
