@@ -500,7 +500,7 @@ exports.commands = {
 			Economy.readMoney(toId(username), currency => {
 				let profile = '';
 				profile += background(toId(username)) + showBadges(toId(username));
-				profile += '<div style="display: inline-block; width: 7em; second: nothing"><img src="' + avatar + '" height="80" width="80" align="left"></div>';
+				profile += '<div style="display: inline-block; width: 7em; vertical-align: 2.5em;"><img src="' + avatar + '" height="80" width="80" align="left"></div>';
 				profile += '<div style="display: inline-block; float: Center">&nbsp;<font color="#24678d"><b>Name:</b></font> ' + WL.nameColor(username, true) + '&nbsp;' + getFlag(toId(username)) + ' ' + showTitle(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Group:</b></font> ' + userGroup + ' ' + devCheck(username) + vipCheck(username) + '<br />';
 				profile += '&nbsp;<font color="#24678d"><b>Registered:</b></font> ' + regdate + '<br />';
