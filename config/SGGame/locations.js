@@ -11,6 +11,7 @@
  * onEnter(game) - Triggers whenever the player enters this location or zone.
  * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command.
  * buildingId is the id of the building, and action is the action the user is trying to take.
+ * wild poekmon are handled in encounters.txt
  *
  */
 
@@ -143,6 +144,7 @@ exports.locations = {
 						game.queue.push('text|<b>Old Merchant</b>: I think that ' + player.party[0].species + ' will do well with you.<br/>And take these as well, they will come in handy if you start traveling.', 'text|You obtained 20 Pokeballs!<br/>You placed the Pokeballs in the Pokeballs pocket.', 'text|<b>Old Merchant</b>: So where are you off to next? Are you going to train in the hills on this island?<br/>Or maybe try going to another island?', 'text|<b>Old Merchant</b>: It\'s up to you! If you ever need to heal, visit the Pokemon Center to the north. (&#8593;) You can buy more Pokeballs or medicines here.', 'text|Good luck out there!');
 						delete player.bag.keyitems.recoveredgoods;
 						player.bag.pokeballs.pokeball = 20;
+						player.stage++;
 						Db.players.set(game.userid, player);
 					}
 				},
@@ -228,8 +230,38 @@ exports.locations = {
 				},
 				"exits": {
 					"up": null,
-					"left": null,
+					"left": "mainisland|5",
 					"right": "mainisland|2",
+					"down": null,
+				},
+			},
+			"5": {
+				"html": "",
+				"css": "",
+				"base": "",
+				"onTryEnter": function (game) {
+					if (Db.players.get(game.userid).stage < 1) {
+						game.queue.unshift(`text|<b>Worker</b>: Some pylons fell over and are blocking the path ahead.<br/>We should have them cleaned up soon.`);
+						game.update(...game.next());
+						return false;
+					}
+					return true;
+				},
+				"exits": {
+					"up": null,
+					"left": "mainisland|6",
+					"right": "mainisland|4",
+					"down": null,
+				},
+			},
+			"6": {
+				"html": "",
+				"css": "",
+				"base": "",
+				"exits": {
+					"up": null,
+					"left": null,
+					"right": "mainisland|5",
 					"down": null,
 				},
 			},

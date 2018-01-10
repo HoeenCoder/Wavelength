@@ -6,7 +6,7 @@ class SGgame extends Console.Console {
 		// Lines of text to be displayed
 		this.title = 'SGgame';
 		this.gameId = 'SGgame';
-		this.version = '(Alpha) 1.0';
+		this.version = '(Alpha) 2.0';
 		this.queue = [];
 		this.queueAction = null;
 		this.lastNextAction = null;
@@ -42,6 +42,7 @@ class SGgame extends Console.Console {
 				output += `<button class="button" name="send" value="/sggame building ${keys[i]}, enter">${buildings[keys[i]]}</button> `;
 			}
 		}
+		if (WL.locationData[this.location].zones[this.zone].wild) output += `${buildings ? `` : `<br/>`}<button class="button" name="send" value="/sggame battle wild">Search for Wild Pokemon</button>`;
 		if (!addOn) return output;
 		output += "<br/>";
 		let checkButton = function (title, prop, command) {
@@ -602,7 +603,7 @@ class SGgame extends Console.Console {
 		let output = this.buildMap();
 		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
 		if (!type) {
-			output += '<h2>Battle</h2><button class="button" name="send" value="/sggame battle wild">Battle a wild pokemon</button><br/>';
+			output += '<h2>Battle</h2><button class="button" name="send" value="/sggame battle wild">Search for a wild pokemon</button><br/>';
 			output += '<button class="button" name="send" value="/sggame battle trainer">Battle a COM trainer</button><br/>';
 			output += '<button class="button" name="send" value="/sggame battle search">Battle other players on the SGgame Anything Goes ladder</button>';
 		} else if (type === 'wild') {
@@ -642,20 +643,31 @@ class SGgame extends Console.Console {
 class Player {
 	constructor(user, starter) {
 		this.game = 'SGgame - Alpha';
+		// Version, used for checking if the save data is compatible with the current game version
 		this.version = user.console.version;
 		this.userid = user.userid;
-		this.poke = 0; // Currency
+		// In-game currency
+		this.poke = 0;
+		// Time played, not ingame time
 		this.time = 0;
+		// players bag - object containing objects that contain items as keys and the number held as values
 		this.bag = {items: {}, medicine: {}, pokeballs: {}, berries: {}, tms: {}, keyitems: {alphaticket: 1}};
-		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
+		// players pc - Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], [], [], [], []];
+		// players party - Array of pokemon objects
 		this.party = starter ? starter : [];
+		// players pokedex - WIP
 		this.pokedex = {};
+		// Players current location
 		this.location = user.console.location;
+		// Players current zone within their current location
 		this.zone = user.console.zone;
+		// Where the player has visited, used for "firstEnter" events
 		this.visited = {};
 		this.visited[user.console.location] = {};
 		this.visited[user.console.location][user.console.zone] = true;
+		// Stage - incremented at various points to indicate progress in the game
+		this.stage = 0;
 		// More to come...
 	}
 
@@ -747,7 +759,8 @@ exports.commands = {
 				"text|<b style=\"color: #090\">HoeenHero</b>: The developers have been working hard on this project, but we're still not finished! We're only in " + user.console.version + ", after all!",
 				"text|<b style=\"color: #090\">HoeenHero</b>: Tell us what you think about it, and any ideas you come up with, too! We would love to hear them. Any help with the project is also appreciated; coding, spriting, or even just writing raw data when we need it.",
 				"text|<b style=\"color: #090\">HoeenHero</b>: Well, that's enough from me. Let's get you started!<br/>Uh acutally it seems i've missplaced my starter pokemon for new players...",
-				"text|<b style=\"color: #090\">HoeenHero</b>: Oh well, I'm sure you'll end up with a pokemon soon enough.<br/>Good luck on your adventure, and be sure to report any issues you find!|callback"];
+				"text|<b style=\"color: #090\">HoeenHero</b>: Oh well, I'm sure you'll end up with a pokemon soon enough.<br/>Good luck on your adventure, and be sure to report any issues you find!|callback",
+				"text|Use the arrow keys located around the screen to move.<br/>Use the buttons at the bottom to interact with buildings."];
 			user.console.callback = function () {
 				//user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 				Db.players.set(user.userid, new Player(user, null));
@@ -759,14 +772,23 @@ exports.commands = {
 		} else {
 			// Continue
 			if (!Db.players.has(user.userid)) return this.parse('/confirmresetalpha');
+			const MIN_VERSION = '(Alpha) 2.0';
+			let player = Db.players.get(user.userid);
+			if (parseInt(player.version.substring(8)) < parseInt(MIN_VERSION.substring(8))) {
+				// Incompatible save data, require an update.
+				user.popup(`|modal|Incompatible save data detected!\nYour save data for SGgame ${player.version} is not compatible with SGgame ${user.console.version} and must be reset.\nYour old save data will be archived, and you will be able to re-capture most of your pokemon from your old save data at a certain point.`);
+				Db.alphaone.set(user.userid, player);
+				Db.players.remove(user.userid);
+				return this.parse('/playalpha');
+			}
 			try {
 				Db.players.get(user.userid).test();
 			} catch (e) {
-				let newPlayer = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {name: "ERROR!", species: "Missingno.", level: 10, ability: 0})));
+				let newPlayer = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(null, null, null, {name: "ERROR!", species: "Missingno.", level: 10, ability: 0})));
 				Object.assign(newPlayer, Db.players.get(user.userid));
 				Db.players.set(user.userid, newPlayer);
 			}
-			if (Db.players.get(user.userid).party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+			if (player.party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			user.console.warp(Db.players.get(user.userid).location + "|" + Db.players.get(user.userid).zone);
 		}
@@ -802,7 +824,7 @@ exports.commands = {
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
-			let player = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(false, false, {species: target, level: 5, ability: 0, ot: user.userid})));
+			let player = new Player(user, Dex.fastUnpackTeam(WL.makeWildPokemon(null, null, null, {species: target, level: 5, ability: 0, ot: user.userid})));
 			let oldPlayer = Db.players.get(user.userid);
 			if (oldPlayer && oldPlayer.bag.keyitems.alphaticket) {
 				player.bag.keyitems.alphaticket = oldPlayer.bag.keyitems.alphaticket;
@@ -1284,6 +1306,12 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queue.length || user.console.queueAction) return;
 			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
+			// TODO more battle types than wild pokemon
+			if (!WL.locationData[user.console.location].zones[user.console.zone].wild) {
+				user.console.queue.unshift(`text|There are no wild pokemon here!`);
+				user.console.update(...user.console.next());
+				return;
+			}
 			if (toId(target) === 'close' && user.console.curPane === 'battle') {
 				Users('sgserver').wildTeams[user.userid] = null;
 				Users('sgserver').trainerTeams[user.userid] = null;
@@ -1294,13 +1322,16 @@ exports.commands = {
 			user.console.curPane = 'battle';
 			if (!Users('sgserver')) WL.makeCOM();
 			if (!toId(target)) {
-				return user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+				return this.parse('/sggame battle wild'); // Force to wild pokemon at this time.
+				//return user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
 			} else {
 				target = target.split(',');
 				switch (toId(target[0])) {
 				case 'wild':
-					if (!target[1]) {
-						Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(false, WL.teamAverage(Db.players.get(user.userid).party));
+				default:
+					if (!toId(target[1])) {
+						// TODO support multiple types of encounters (ex: tall grass, surfing, fishing...)
+						Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(user.console.location, user.console.zone, 'grass');
 						return user.console.update(user.console.buildCSS(), user.console.battle('wild', Users('sgserver').wildTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
 					}
 					if (toId(target[1]) === 'confirm') {
@@ -1310,10 +1341,12 @@ exports.commands = {
 						this.parse('/search gen7wildpokemonalpha');
 					} else {
 						Users('sgserver').wildTeams[user.userid] = null;
-						user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
+						// Temporarly stopped returning to the main battle menu
+						this.parse('/sggame battle close');
+						//user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
 					}
 					break;
-				case 'trainer':
+				/*case 'trainer':
 					if (!target[1]) {
 						Users('sgserver').trainerTeams[user.userid] = WL.makeComTeam(WL.teamAverage(Db.players.get(user.userid).party), Db.players.get(user.userid).party.length);
 						return user.console.update(user.console.buildCSS(), user.console.battle('trainer', Users('sgserver').trainerTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
@@ -1332,7 +1365,7 @@ exports.commands = {
 					user.console.curPane = null;
 					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
 					this.parse('/search gen7sggameanythinggoes');
-					break;
+					break;*/
 				}
 			}
 		},

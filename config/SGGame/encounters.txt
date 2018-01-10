@@ -1,0 +1,44 @@
+/*
+SGgame - Encounters
+This file holds raw data for wild pokemon encounters in SGgame
+The following is an example of a layout of wild pokemon appearences in a specific zone. Messages in {} braces are information about the example, not part of the example
+
+LOCATION LOCATION|ZONE {the location id and zone id number seperated with a | ex: mainisland|0}
+TYPE ENCOUNTER_TYPE {The method the player needs to use to support an encounter with the following pokemon ex: GRASS.}
+{Accepted values for the Encounter Type are: GRASS (tall grass), WATER (surfing), CAVE (walking in a cave), FISH (fishing), more may be added}
+species,level {A pokemon that can appear and the level that it appears at ex: lotad,5}
+species,min-level,max-level {A pokemon that can appear and the range of levels it can appear at (inclusive) ex: lotad,3,5}
+species,min-level,max-level,count {Instead of writing multiple lines for a species to increase how common it is, use count to duplicate the line so that there are "count" lines for the line selected when parsed}
+{count modifies the rate of appearence for a pokemon, so if you have a count of 2 on pidgy, and 3 on sentret, theres a 40% chance of finding pidgy, and 60% chance of finding sentret}
+{to have a pokemon only appear at a specific level and have a count, set min and max level to the same level}
+{you CAN have multiple of a pokemon species id in one location|zone's encounter type, this can be used to have different chances for appearences at different levels}
+{ex:}
+bidoof,5,6
+bidoof,2,4,5
+
+Other information:
+Starting a line with /* signals the start of a multi-line comment
+Starting a line with */ signals the end of a multi-line comment
+Starting a line with // signals a single line comment
+Blank lines are ignored as well
+*/
+
+LOCATION mainisland|5
+TYPE GRASS
+// rattata: 40%, yungoos: 30%, patrat: 20%, zigzagoon: 10%
+rattata,2,4,3
+rattata,3,5
+yungoos,2,4,2
+yungoos,3,5
+zigzagoon,2,5
+patrat,2,4
+patrat,3,5
+
+LOCATION mainisland|6
+TYPE GRASS
+// sentret: 60%, bidoof: 30%, bunnelby: 10%
+sentret,2,4,5
+sentret,4,6
+bidoof,2,4
+bidoof,3,5,2
+bunnelby,3,5

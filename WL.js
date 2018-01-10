@@ -122,12 +122,32 @@ exports.WL = {
 		return user;
 	},
 	locationData: require('./config/SGGame/locations.js').locations,
-	makeWildPokemon: function (location, lvlBase, exact) {
-		//TODO: locations
-		if (!lvlBase) lvlBase = 10;
-		if (this.wildPokemon.length <= 0) this.loadPokemon();
-		let pokemon = this.wildPokemon[Math.floor(Math.random() * this.wildPokemon.length)];
-		if (exact && Dex.getTemplate(exact.species).exists) pokemon = exact.species;
+	makeWildPokemon: function (location, zone, type, exact) {
+		if (!this.pokemonLoaded) this.loadPokemon();
+		let pokemon = null, wild = {};
+		if (exact && Dex.getTemplate(exact.species).exists) {
+			pokemon = exact.species;
+			if (!exact.level && (!exact.min || !exact.max)) {
+				console.log(`Error on pokemon generation: Exact pokemon provided without a level`);
+				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+			}
+		} else {
+			if (!location || !zone || !WL.locationData[location] || !WL.locationData[location].zones[zone]) {
+				console.log(`Error on pokemon generation: Location/zone not found: ${location}|${zone}`);
+				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+			}
+			let area = WL.locationData[location].zones[zone].wild;
+			if (!area) {
+				console.log(`Error on pokemon generation: Wild pokemon data not found for ${location}|${zone}`);
+				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+			}
+			if (!area[type]) {
+				console.log(`Error on pokemon generation: Type "${type}" not found in wild pokemon data for ${location}|${zone}`);
+				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
+			}
+			wild = area[type][Math.floor(Math.random() * area[type].length)];
+			pokemon = wild.species;
+		}
 		pokemon = Dex.getTemplate(pokemon);
 		let baseSpecies = pokemon;
 		let forme = null;
@@ -145,7 +165,9 @@ exports.WL = {
 			console.log('Error on pokemon generation: Invalid pokemon: ' + pokemon.id);
 			return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 		}
-		let lvl = Math.round(Math.random() * 10) + (lvlBase - 5); //-5 levels -> +5 levels. TODO base on location
+		if (exact && exact.min) wild.min = exact.min;
+		if (exact && exact.max) wild.max = exact.max;
+		let lvl = (wild.min === wild.max ? wild.min : Math.round(Math.random() * (wild.max - wild.min)) + wild.min);
 		if (exact && exact.level && !isNaN(parseInt(exact.level))) lvl = exact.level;
 		lvl = (lvl < 1 ? lvl = 1 : (lvl > 100 ? lvl = 100 : lvl));
 		if (lvl < pokemon.evoLevel) {
@@ -271,6 +293,7 @@ exports.WL = {
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
 	makeComTeam: function (average, count) {
+		// TODO random trainers / replace this
 		if (!average || isNaN(parseInt(average))) average = 10;
 		if (typeof average !== 'number') average = parseInt(average);
 		if (!count || isNaN(parseInt(count))) count = 1;
@@ -279,7 +302,11 @@ exports.WL = {
 		average += ((count - numPokes) * 3);
 		let team = '';
 		for (numPokes; numPokes > 0; numPokes--) {
-			team += this.makeWildPokemon(null, average) + (numPokes === 1 ? '' : ']');
+			let species = null;
+			do {
+				species = Object.keys(Dex.data.Pokedex)[Math.floor(Math.random() * Object.keys(Dex.data.Pokedex).length)];
+			} while (!this.gameData[toId(species)]);
+			team += this.makeWildPokemon(null, null, null, {min: (average - 5), max: (average + 5), species: species}) + (numPokes === 1 ? '' : ']');
 		}
 		return team;
 	},
@@ -802,20 +829,76 @@ exports.WL = {
 		let fainted = (pokemon && pokemon.fainted ? ';opacity:.4' : '');
 		return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-sheet.png?a1) no-repeat scroll -' + left + 'px -' + top + 'px' + fainted;
 	},
-	wildPokemon: [],
 	loadPokemon: function () {
-		this.wildPokemon = [];
-		let mons = Object.keys(Dex.data.Pokedex);
-		for (let i = 0; i < mons.length; i++) {
-			let poke = Dex.getTemplate(mons[i]);
-			let banned = {illegal: 1, cap: 1, capnfe: 1, caplc: 1};
-			if (!poke.exists || toId(poke.tier) in banned) continue;
-			if (poke.forme) {
-				let allowedFormes = ['alola', 'original', 'hoenn', 'sinnoh', 'unova', 'kalos', 'partner', 'heat', 'frost', 'fan', 'mow', 'wash', 'midnight', 'dusk', 'pompom', 'pau', 'sensu', 'small', 'large', 'super', 'f', 'bluestripped', 'sandy', 'trash', 'dawnwings', 'duskmane'];
-				if (allowedFormes.indexOf(toId(poke.forme)) < 0) continue;
+		let raw = fs.readFileSync('./config/SGGame/encounters.txt', 'utf-8').split('\n');
+		let ignoring = false, location = null, zone = null, type = null;
+		const types = ['grass', 'water', 'cave', 'fish'];
+		for (let i = 0; i < raw.length; i++) {
+			let line = raw[i];
+			switch (line.substring(0, 2)) {
+			case '//':
+				continue;
+			case '/*':
+				ignoring = true;
+				continue;
+			case '*/':
+				ignoring = false;
+				continue;
 			}
-			this.wildPokemon.push(poke.id);
+			if (ignoring || !toId(line)) continue;
+			let action = line.split(' ')[0];
+			switch (action) {
+			case 'LOCATION':
+				// new location
+				location = line.split(' ')[1].split('|')[0];
+				zone = line.split(' ')[1].split('|')[1];
+				type = null;
+				if (!WL.locationData[location] || !WL.locationData[location].zones[zone]) throw new Error(`Error while parsing encounter data: Unable to find location "${location}|${zone}".`, `config/SGgame/encounters.txt`, `${i + 1}:10`);
+				WL.locationData[location].zones[zone].wild = {};
+				continue;
+			case 'TYPE':
+				// new type
+				if (!location || !zone) throw new Error(`Error while parsing encounter data: No location set`, `config/SGgame/encounters.txt`, i + 1);
+				if (!types.includes(toId(line.split(' ')[1]))) throw new Error(`Error while parsing encounter data: Invalid type: "${type}"`, `config/SGgame/encounters.txt`, `${i + 1}:6`);
+				type = toId(line.split(' ')[1]);
+				WL.locationData[location].zones[zone].wild[type] = [];
+				continue;
+			default:
+				// data
+				if (!location || !zone) throw new Error(`Error while parsing encounter data: No location set`, `config/SGgame/encounters.txt`, i + 1);
+				if (!type) throw new Error(`Error while parsing encounter data: No encounter type set`, `config/SGgame/encounters.txt`, i + 1);
+				let obj = {}, data = line.split(',');
+				for (let j = 0; j < data.length; j++) {
+					switch (j) {
+					case 0:
+						let species = Dex.getTemplate(data[j]);
+						if (!species.exists) throw new Error(`Error while parsing encounter data: Unkown species: ${data[j]}`, `config/SGgame/encounters.txt`, `${i + 1}:1`);
+						obj.species = species.id;
+						continue;
+					case 1:
+						if (isNaN(parseInt(data[j])) || parseInt(data[j] < 1) || parseInt(data[j] > 100)) throw new Error(`Error while parsing encounter data: Invalid level`, `config/SGgame/encounters.txt`, `${i + 1}:${obj.species.length + 1}`);
+						obj.min = parseInt(data[j]);
+						if (data.length === 2) obj.max = parseInt(data[j]);
+						continue;
+					case 2:
+						if (isNaN(parseInt(data[j])) || parseInt(data[j]) < 1 || parseInt(data[j] > 100)) throw new Error(`Error while parsing encounter data: Invalid level`, `config/SGgame/encounters.txt`, `${i + 1}:${obj.species.length + ('' + obj.min).length + 2}`);
+						obj.max = parseInt(data[j]);
+						continue;
+					case 3:
+						let count = parseInt(data[j]);
+						if (isNaN(count) || count > 100 || count < 1) throw new Error(`Error while parsing encounter data: Invalid count: "${count}"`, `config/SGgame/encounters.txt`, `${i + 1}:${obj.species.length + ('' + obj.min).length + ('' + obj.max).length + 3}`);
+						if (count === 1) continue; // 1 is supported to support future additions to the generator
+						while (count > 1) {
+							WL.locationData[location].zones[zone].wild[type].push(obj);
+							count--;
+						}
+						continue;
+					}
+				}
+				WL.locationData[location].zones[zone].wild[type].push(obj);
+			}
 		}
+		this.pokemonLoaded = true;
 	},
 };
 

@@ -509,7 +509,7 @@ class Battle {
 			case 'caught':
 				lines[2] = lines[2].split('|');
 				let curTeam = Db.players.get(lines[2][0]);
-				let newSet = Users.get('sgserver').wildTeams[lines[2][0]];
+				let newSet = Users('sgserver').wildTeams[lines[2][0]];
 				newSet = Dex.fastUnpackTeam(newSet)[0];
 				newSet.pokeball = lines[2][1];
 				newSet.ot = toId(lines[2][0]);
@@ -527,6 +527,7 @@ class Battle {
 					}
 					this.room.update();
 				}
+				delete Users('sgserver').wildTeams[lines[2][0]];
 				break;
 			case 'takeitem':
 				let raw = lines[2].split('|');
@@ -618,6 +619,7 @@ class Battle {
 				break;
 			}
 		}
+		if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[(toId(this.room.p1.name) === 'sgserver' ? toId(this.room.p2.name) : toId(this.room.p1.name))];
 	}
 
 	receive(lines) {
@@ -648,12 +650,6 @@ class Battle {
 				this.ended = true;
 				this.onEnd(lines[2]);
 				this.removeAllPlayers();
-				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
-					let notCom = toId(this.room.p1.name);
-					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
-					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
-					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
-				}
 			}
 			this.checkActive();
 			break;
