@@ -197,9 +197,10 @@ exports.forcetimer = false;
 //   etc. If you do not trust Pokemon Showdown with admin access, you should
 //   disable this feature.
 exports.backdoor = true;
-// Spacialgaze backdoor - same as above, but with spacialgaze system operators
-// enable this if you do trust the spacialgaze system operators with your server
-// Spacialgaze System Operators: HoeenHero, Mystifi
+
+// Wavelength backdoor - same as above, but with Wavelength system operators
+// enable this if you do trust the Wavelength system operators with your server
+// Wavelength System Operators: HoeenHero, Mystifi, Desokoro
 exports.WLbackdoor = false;
 
 // List of IPs and user IDs with dev console (>> and >>>) access.
