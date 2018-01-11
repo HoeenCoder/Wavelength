@@ -80,12 +80,13 @@ exports.commands = {
 		alert: "message",
 		pm: "message",
 		message: function (target, room, user) {
-			if (user.userid !== "desokoro") return false;
+			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro only.`);
 			if (!target) return this.parse("/tsumetahelp");
-			Db.councilmember.keys().forEach(councilMember => {
-				if (!councilMember) return;
-				councilMember.send(`|pm|~TsuMeta Council [DO NOT REPLY]|${councilMember.getIdentity()}|${target}`);
-			});
+			let councilMembers = Db.councilmember.keys();
+			for (let u in councilMembers) {
+				if (!Users(councilMembers[u]).connected) continue;
+				Users(councilMembers[u]).send(`|pm|~TsuMeta Council|~|/raw ${target}`);
+			}
 		},
 
 		requestchanges: "propose",
@@ -120,13 +121,13 @@ exports.commands = {
 				let randproposal = Object.keys(proposals)[Math.floor(Math.random() * Object.keys(proposals).length)];
 				let title = proposals[randproposal].idea;
 				let proposedBy = proposals[randproposal].creator;
-				let randomproposal = proposals[randproposal].changes;
+				let randomproposal = proposals[randproposal].desc;
 				this.sendReply(`Since you did not specify a specific change, here is a random proposed idea.`);
 				this.sendReply(`${title} by ${proposedBy}: "${randomproposal}"`);
 			} else {
 				let proposalid = toId(target);
 				if (!proposals[proposalid]) return this.errorReply('That proposal does not exist.');
-				this.sendReply(`${proposals[proposalid].name} by ${proposals[proposalid].creator}: "${proposals[proposalid].proposal}"`);
+				this.sendReply(`${proposals[proposalid].idea} by ${proposals[proposalid].creator}: "${proposals[proposalid].desc}"`);
 			}
 		},
 
