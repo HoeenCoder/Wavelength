@@ -33,7 +33,7 @@ function isVIP(user) {
 function showTitle(userid) {
 	userid = toId(userid);
 	if (Db.titles.has(userid)) {
-		return `<font color="${Db.titles.get(userid)[1]}">(<strong>${Db.titles.get(userid)[0]}</strong>)</font>`;
+		return `<font color="${Db.customtitles.get(userid)[1]}">(<strong>${Db.customtitles.get(userid)[0]}</strong>)</font>`;
 	}
 	return '';
 }
@@ -182,12 +182,12 @@ exports.commands = {
 			let userid = toId(target[0]);
 			let targetUser = Users.getExact(userid);
 			let title = target[1].trim();
-			if (Db.titles.has(userid) && Db.titlecolors.has(userid)) {
+			if (Db.customtitles.has(userid) && Db.titlecolors.has(userid)) {
 				return this.errorReply(`${userid} already has a custom title.`);
 			}
 			let color = target[2].trim();
 			if (color.charAt(0) !== '#') return this.errorReply(`The color needs to be a hex starting with "#".`);
-			Db.titles.set(userid, [title, color]);
+			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(
 					`|html|You have received a custom title from ${WL.nameColor(user.name, true)}.` +
@@ -206,11 +206,11 @@ exports.commands = {
 			if (!this.can('ban')) return false;
 			if (!target) return this.parse('/help', true);
 			let userid = toId(target);
-			if (!Db.titles.has(userid) && !Db.titlecolors.has(userid)) {
+			if (!Db.customtitles.has(userid) && !Db.titlecolors.has(userid)) {
 				return this.errorReply(`${target} does not have a custom title set.`);
 			}
 			Db.titlecolors.remove(userid);
-			Db.titles.remove(userid);
+			Db.customtitles.remove(userid);
 			if (Users.get(userid)) {
 				Users(userid).popup(`|html|${WL.nameColor(user.name, true)} has removed your custom title.`);
 			}
