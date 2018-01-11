@@ -48,8 +48,8 @@ exports.commands = {
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} is already in the TsuMeta Council.`);
 			Db.councilmember.set(tsuMetaMember, 1);
-			this.sendReply(`|html|${Server.nameColor(tsuMetaMember, true)} has been successfully been added into the TsuMeta Council.`);
-			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${Server.nameColor(user.name, true)}.`);
+			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been successfully been added into the TsuMeta Council.`);
+			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		kick: "take",
@@ -62,8 +62,8 @@ exports.commands = {
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (!isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} isn't a TsuMeta council member.`);
 			Db.councilmember.remove(tsuMetaMember);
-			this.sendReply(`|html|${Server.nameColor(tsuMetaMember, true)} has been removed from the TsuMeta council.`);
-			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${Server.nameColor(user.name, true)}.`);
+			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been removed from the TsuMeta council.`);
+			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		users: 'list',
@@ -71,7 +71,7 @@ exports.commands = {
 			if (!Db.councilmember.keys().length) return this.errorReply('There seems to be no users in the TsuMeta Council.');
 			let display = [];
 			Db.councilmember.keys().forEach(councilMember => {
-				display.push(Server.nameColor(councilMember, (Users(councilMember) && Users(councilMember).connected)));
+				display.push(WL.nameColor(councilMember, (Users(councilMember) && Users(councilMember).connected)));
 			});
 			this.popupReply(`|html|<strong><u><font size="3"><center>TsuMeta Council Members:</center></font></u></strong>${display.join(',')}`);
 		},
