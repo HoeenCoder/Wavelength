@@ -591,9 +591,9 @@ class Battle {
 				newSet = Dex.packTeam([newSet]);
 				let response = curTeam.boxPoke(newSet, 1);
 				if (response) {
-					this.room.push(name + ' was sent to box ' + response + '.');
+					this.room.add(name + ' was sent to box ' + response + '.');
 				} else {
-					this.room.push(name + ' was released because your PC is full...');
+					this.room.add(name + ' was released because your PC is full...');
 				}
 				this.room.update();
 			}
