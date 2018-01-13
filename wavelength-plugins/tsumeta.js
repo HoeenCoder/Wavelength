@@ -42,7 +42,7 @@ exports.commands = {
 	tsumetacouncil: "tsumeta",
 	tsumeta: {
 		give: function (target, room, user) {
-			if (!this.can("ban")) return false;
+			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to add users into the council.");
 			if (!target) return this.parse("/tsumetahelp");
 			let tsuMetaMember = toId(target);
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -56,7 +56,7 @@ exports.commands = {
 		remove: "take",
 		delete: "take",
 		take: function (target, room, user) {
-			if (!this.can("ban")) return false;
+			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to remove users into the council.");
 			if (!target) return this.parse(`/tsumetahelp`);
 			let tsuMetaMember = toId(target);
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -132,23 +132,34 @@ exports.commands = {
 		},
 
 		suspend: function (target, room, user) {
-			if (user.userid !== "desokoro" && user.userid !== "xcmr" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro and xcmr.`);
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
 			let targetUser = toId(target);
-			if (!isTsuMetaCouncil(targetUser)) return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
+			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
+			// Only allow xcmr to suspend users if he is currently in the council
+			if (user.userid === "insist" && Db.councilmember.has("insist", 1)) {
+				Db.councilmember.set(targetUser, 2);
+				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
+				return true;
+			}
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			Db.councilmember.set(targetUser, 2);
-			this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 		},
 
 		unsuspend: function (target, room, user) {
-			if (user.userid !== "desokoro" && user.userid !== "xcmr" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro and xcmr.`);
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
 			let targetUser = toId(target);
-			if (isTsuMetaCouncil(targetUser)) return this.errorReply(`${target} is either not in TsuMeta, or they are not suspended.`);
+			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
+			// Only allow xcmr to unsuspend users if he is currently in the council
+			if (user.userid === "xcmr" && Db.councilmember.has("xcmr", 1)) {
+				Db.councilmember.set(targetUser, 1);
+				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
+				return true;
+			}
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
+			this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 			Db.councilmember.set(targetUser, 1);
-			this.sendReply(`You have successfully unsuspended ${target} from participating in TsuMeta Committee proposals.`);
 		},
 
 		info: "forums",
