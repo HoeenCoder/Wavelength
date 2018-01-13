@@ -6,25 +6,29 @@
 
 "use strict";
 
-let proposals = {};
+const FS = require('../lib/fs.js');
 
-const fs = require('fs');
+let proposals = FS('config/proposals.json').readTextIfExistsSync();
 
-try {
-	proposals = JSON.parse(fs.readFileSync('config/proposals.json', 'utf8'));
-} catch (e) {
-	if (e.code !== 'ENOENT') throw e;
+if (proposals !== '') {
+	proposals = JSON.parse(proposals);
+} else {
+	proposals = {};
 }
 
 function write() {
-	if (Object.keys(proposals).length < 1) return fs.writeFileSync('config/proposals.json', JSON.stringify(proposals));
+	FS('config/proposals.json').writeUpdate(() => (
+		JSON.stringify(proposals)
+	));
 	let data = "{\n";
 	for (let u in proposals) {
 		data += '\t"' + u + '": ' + JSON.stringify(proposals[u]) + ",\n";
 	}
 	data = data.substr(0, data.length - 2);
 	data += "\n}";
-	fs.writeFileSync('config/proposals.json', data);
+	FS('config/proposals.json').writeUpdate(() => (
+		data
+	));
 }
 
 function isTsuMetaCouncil(user) {
