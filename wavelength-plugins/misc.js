@@ -378,7 +378,7 @@ exports.commands = {
 		target[0] = toId(target[0]);
 		if (target[0] === 'intro') target[0] = 'disableintroscroll';
 		let msg = '';
-		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll', 'music', 'background'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
 		if (!user.tokens || !user.tokens[target[0]]) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
@@ -412,7 +412,7 @@ exports.commands = {
 		case 'emote':
 			if (!target[2]) return this.errorReply('/usetoken emote, [name], [img]');
 			target[2] = target[2].trim();
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem a emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
+			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem an emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
 			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
@@ -422,7 +422,21 @@ exports.commands = {
 			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
 			if (Db.disabledScrolls.has(roomid)) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
 			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed roomintro scroll disabler token.<br/>';
-			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scrool for <b>' + Rooms(roomid).title + '</b></button></center>';
+			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scroll for <b>' + Rooms(roomid).title + '</b></button></center>';
+			delete user.tokens[target[0]];
+			return WL.messageSeniorStaff(msg);
+		case 'background':
+			if (!target[1]) return this.errorReply('/usetoken background, [img]');
+			target[1] = target[1].trim();
+			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem a background token.<br/><img src="' + target[1] + '"/><br/>';
+			msg += '<button class="button" name="send" value="/background set ' + user.userid + ', ' + target[1] + '">Set the background</button></center>';
+			delete user.tokens[target[0]];
+			return WL.messageSeniorStaff(msg);
+		case 'music':
+			if (!target[2]) return this.errorReply('/usetoken music, [link], [name]');
+			target[1] = target[1].trim();
+			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem a music token.<br/><audio src="' + target[2] + '" alt="' + target[1] + '"></audio><br/>';
+			msg += '<button class="button" name="send" value="/music set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set music</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		default:
@@ -433,7 +447,7 @@ exports.commands = {
 		'/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
 		'/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
 		'/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]',
-		'/usetoken disableintroscroll [room name]',
+		'/usetoken disableintroscroll [room name] | /usetoken background, [img] | /usetoken music, [song], [name]',
 	],
 
 	bonus: 'dailybonus',
