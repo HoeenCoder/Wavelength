@@ -5,7 +5,7 @@
  */
 
 'use strict';
-
+let activePolls = 0;
 class Poll {
 	constructor(room, questionData, options) {
 		if (room.pollNumber) {
@@ -224,7 +224,7 @@ exports.commands = {
 			if (target.length > 1024) return this.errorReply("Poll too long.");
 
 			const supportHTML = cmd === 'htmlcreate';
-			if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
+			if (room.poll && activePolls >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
 			let separator = '';
 			if (target.includes('\n')) {
 				separator = '\n';
@@ -276,6 +276,7 @@ exports.commands = {
 
 			this.roomlog("" + user.name + " used " + message);
 			return this.privateModCommand("(A poll was started by " + user.name + ".)");
+			activePolls = activePolls + 1;
 		},
 		newhelp: [`/poll create [question], [option1], [option2], [...] - Creates a poll. Allows up to 5 polls at once. Requires: % @ * # & ~`],
 
@@ -362,6 +363,7 @@ exports.commands = {
 			if (room.poll.pollArray[num].pollNum === parseInt(target)) delete room.poll.pollArray[num];
 
 			return this.privateModCommand("(A poll was ended by " + user.name + ".)");
+			activePolls = activePolls - 1;
 		},
 		endhelp: [`/poll end [poll id number] - Ends a poll and displays the results. Requires: % @ * # & ~`],
 
