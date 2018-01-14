@@ -5,7 +5,7 @@
  */
 
 'use strict';
-let activePolls = 0;
+
 class Poll {
 	constructor(room, questionData, options) {
 		if (room.pollNumber) {
@@ -224,7 +224,7 @@ exports.commands = {
 			if (target.length > 1024) return this.errorReply("Poll too long.");
 
 			const supportHTML = cmd === 'htmlcreate';
-			if (room.poll && activePolls >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
+			if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
 			let separator = '';
 			if (target.includes('\n')) {
 				separator = '\n';
@@ -276,7 +276,6 @@ exports.commands = {
 
 			this.roomlog("" + user.name + " used " + message);
 			return this.privateModCommand("(A poll was started by " + user.name + ".)");
-			activePolls = activePolls + 1;
 		},
 		newhelp: [`/poll create [question], [option1], [option2], [...] - Creates a poll. Allows up to 5 polls at once. Requires: % @ * # & ~`],
 
@@ -323,7 +322,7 @@ exports.commands = {
 				room.poll.pollArray[num].timeoutMins = timeout;
 				room.poll.pollArray[num].timeout = setTimeout(() => {
 					room.poll.end(num);
-					delete room.poll.pollArray[num];
+					room.poll.pollArray.splice(num, 1)
 				}, (timeout * 60000));
 				room.add("The poll timer was turned on: the poll " + room.poll.pollArray[num].pollNum + " will end in " + timeout + " minute(s).");
 				return this.privateModCommand("(The poll timer for poll " + room.poll.pollArray[num].pollNum + " was set to " + timeout + " minute(s) by " + user.name + ".)");
@@ -360,10 +359,9 @@ exports.commands = {
 
 			if (room.poll.pollArray[num].pollNum === parseInt(target) && room.poll.pollArray[num].timeout) clearTimeout(room.poll.pollArray[num].timeout);
 			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.end(num);
-			if (room.poll.pollArray[num].pollNum === parseInt(target)) delete room.poll.pollArray[num];
+			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.pollArray.splice(num, 1);
 
 			return this.privateModCommand("(A poll was ended by " + user.name + ".)");
-			activePolls = activePolls - 1;
 		},
 		endhelp: [`/poll end [poll id number] - Ends a poll and displays the results. Requires: % @ * # & ~`],
 
