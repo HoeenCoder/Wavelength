@@ -205,7 +205,7 @@ exports.BattleAbilities = {
 	sandbox: {
 		id: "sandbox",
 		name: "Sandbox",
-		desc: "Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.",
+		desc: "Sets up Trick Room, Sandstorm & Gravity on switch in.",
 		onStart: function (pokemon) {
 			this.useMove('trickroom', pokemon);
 			this.useMove('gravity', pokemon);
@@ -333,7 +333,7 @@ exports.BattleAbilities = {
 	},
 	//Lycanium Z
 	"bloodytears": {
-		desc: "Lowers Opponents attack stats by 1 + Shadow Tag.",
+		desc: "Lowers Opponents offensive stats by 1.",
 		onStart: function (pokemon) {
 			this.add('-ability', pokemon, 'Bloody Tears');
 			this.add('-message', "You feel fear... yet you cannot look away...");
