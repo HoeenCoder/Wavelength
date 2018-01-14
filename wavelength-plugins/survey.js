@@ -8,7 +8,6 @@
 ***********************************/
 'use strict';
 
-let actSurveys = 0;
 class Survey {
 	constructor(room, question, allowHTML) {
 		if (room.surveyNumber) {
@@ -177,7 +176,6 @@ class Survey {
 
 		this.room.send(`|uhtmlchange|survey${this.surveyArray[number].surveyNum}|<div class="infobox"><details>(The survey has ended &ndash; scroll down to see the results)</details></div>`);
 		this.room.add(`|html|${results}`);
-		actSurveys = actSurveys - 1;
 	}
 
 	obtain(number) {
@@ -217,7 +215,7 @@ exports.commands = {
 			if (!target) return this.parse('/help survey new');
 			if (target.length > 300) return this.errorReply("The survey question is too long.");
 			const supportHTML = cmd === 'htmlcreate';
-			if (room.survey && actSurveys >= 5) return this.errorReply("There can only be 5 surveys in a room at a time.");
+			if (room.survey && room.survey.surveyArray.length >= 5) return this.errorReply("There can only be 5 surveys in a room at a time.");
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			let allowHTML = toId(cmd) === 'htmlcreate';
@@ -242,7 +240,6 @@ exports.commands = {
 
 			this.roomlog(`${user.name} used ${message}.`);
 			return this.privateModCommand(`(A survey was started by ${user.name}.)`);
-			actSurveys = actSurveys + 1;
 		},
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
 
@@ -364,7 +361,7 @@ exports.commands = {
 				room.survey.surveyArray[num].timeoutMins = timeout;
 				room.survey.surveyArray[num].timeout = setTimeout(() => {
 					room.survey.end(num);
-					delete room.survey.surveyArray[num];
+					room.survey.surveyArray.splice(num, 1);
 				}, (timeout * 60000));
 				room.add(`The survey timer was turned on: survey ${room.survey.surveyArray[num].surveyNum} will end in ${timeout} minute(s).`);
 				return this.privateModCommand(`(The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} was set to ${timeout} minute(s) by ${user.name}.)`);
