@@ -8,6 +8,7 @@
 ***********************************/
 'use strict';
 
+let actSurveys = 0;
 class Survey {
 	constructor(room, question, allowHTML) {
 		if (room.surveyNumber) {
@@ -176,6 +177,7 @@ class Survey {
 
 		this.room.send(`|uhtmlchange|survey${this.surveyArray[number].surveyNum}|<div class="infobox"><details>(The survey has ended &ndash; scroll down to see the results)</details></div>`);
 		this.room.add(`|html|${results}`);
+		actSurveys = actSurveys - 1;
 	}
 
 	obtain(number) {
@@ -215,7 +217,7 @@ exports.commands = {
 			if (!target) return this.parse('/help survey new');
 			if (target.length > 300) return this.errorReply("The survey question is too long.");
 			const supportHTML = cmd === 'htmlcreate';
-			if (room.survey && room.survey.surveyArray.length >= 5) return this.errorReply("There can only be 5 surveys in a room at a time.");
+			if (room.survey && actSurveys >= 5) return this.errorReply("There can only be 5 surveys in a room at a time.");
 			if (!this.can('minigame', null, room)) return false;
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			let allowHTML = toId(cmd) === 'htmlcreate';
@@ -240,6 +242,7 @@ exports.commands = {
 
 			this.roomlog(`${user.name} used ${message}.`);
 			return this.privateModCommand(`(A survey was started by ${user.name}.)`);
+			actSurveys = actSurveys + 1;
 		},
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
 
