@@ -322,7 +322,7 @@ exports.commands = {
 				room.poll.pollArray[num].timeoutMins = timeout;
 				room.poll.pollArray[num].timeout = setTimeout(() => {
 					room.poll.end(num);
-					room.poll.pollArray.splice(num, 1)
+					room.poll.pollArray.splice(num, 1);
 				}, (timeout * 60000));
 				room.add("The poll timer was turned on: the poll " + room.poll.pollArray[num].pollNum + " will end in " + timeout + " minute(s).");
 				return this.privateModCommand("(The poll timer for poll " + room.poll.pollArray[num].pollNum + " was set to " + timeout + " minute(s) by " + user.name + ".)");
