@@ -342,7 +342,6 @@ exports.BattleAbilities = {
 			for (let i = 0; i < foeactive.length; i++) {
 				if (!foeactive[i] || !this.isAdjacent(foeactive[i], pokemon)) continue;
 				if (!activated) {
-					this.add('-ability', pokemon, 'Bloody Tears', 'boost');
 					activated = true;
 				}
 				if (foeactive[i].volatiles['substitute']) {
