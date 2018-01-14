@@ -141,12 +141,13 @@ exports.commands = {
 			let targetUser = toId(target);
 			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
 			// Only allow xcmr to suspend users if he is currently in the council
-			if (user.userid === "insist" && Db.councilmember.has("insist", 1)) {
+			if (user.userid === "xcmr" && Db.councilmember.has("xcmr", 1)) {
 				Db.councilmember.set(targetUser, 2);
 				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
+			this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 			Db.councilmember.set(targetUser, 2);
 		},
 
@@ -162,7 +163,7 @@ exports.commands = {
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
-			this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
+			this.sendReply(`You have successfully unsuspended ${target} from participating in TsuMeta Committee proposals.`);
 			Db.councilmember.set(targetUser, 1);
 		},
 
