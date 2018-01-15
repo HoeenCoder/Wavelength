@@ -69,8 +69,8 @@ exports.commands = {
 			let parts = target.split(',');
 			for (let u in parts) parts[u] = parts[u].trim();
 			if (!this.can('roomowner')) return false;
-			if (!parts[1]) return this.sendReply("Usage: /emoticon add [name], [url] - Remember to resize the image first! (recommended 30x30)");
-			if (emoticons[parts[0]]) return this.sendReply("\"" + parts[0] + "\" is already an emoticon.");
+			if (!parts[1]) return this.sendReply(`Usage: /emoticon add [name], [url] - Remember to resize the image first! (recommended 30x30)`);
+			if (emoticons[parts[0]]) return this.sendReply(`"${parts[0]}" is already an emoticon.`);
 			emoticons[parts[0]] = parts[1];
 			saveEmoticons();
 			this.sendReply(`|raw|The emoticon "${Chat.escapeHTML(parts[0])}" has been added: <img src="${parts[1]}">`);
