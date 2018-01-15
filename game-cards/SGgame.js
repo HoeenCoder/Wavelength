@@ -500,7 +500,7 @@ class Player {
 		this.userid = user.userid;
 		this.poke = 0; // Currency
 		this.time = 0;
-		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1, linkcable: 5}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {alphaticket: 1}};
+		this.bag = {items: {leafstone: 1, firestone: 1, waterstone: 1, thunderstone: 1, linkcable: 5, icestone: 1}, medicine: {potion: 5, rarecandy: 3}, pokeballs: {pokeball: 50, greatball: 25, ultraball: 10, masterball: 1}, berries: {oranberry: 5, lumberry: 2}, tms: {}, keyitems: {alphaticket: 1}};
 		// Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], [], [], [], []];
 		this.party = starter;
