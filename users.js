@@ -715,7 +715,7 @@ class User {
 	 * @param {boolean} newlyRegistered Make sure this account will identify as registered
 	 * @param {Connection} connection The connection asking for the rename
 	 */
-async rename(name, token, newlyRegistered, connection) {
+	async rename(name, token, newlyRegistered, connection) {
 		for (const roomid of this.games) {
 			const game = Rooms(roomid).game;
 			if (!game || game.ended) continue; // should never happen
