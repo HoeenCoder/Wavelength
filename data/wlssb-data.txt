@@ -12,15 +12,16 @@ Notes: N/A.
 Rank: N/A.
 
 Lycanium Z
-(Carbink)
+(Arceus-Dark)
+    Base Stats: 100/100/100/100/100/100
 @ Leftovers
-EVs: 252 HP / 4 Def / 252 SpA
-Calm Nature
-Ability: Deflector Shield
-    - Reflects 1/2 of damage taken from direct attcks back at foe, and heals half of the damage taken if the move is not super effective.
-Moves: Moonblast, Blue Flare, Seed Flare
-Signature Move: Meteor Madness
-	- Rock Type. Heals users HP by 50% and transforms user's ability to normalize.
+EVs: 252 HP / 4 Def / 252 Spe
+Jolly Nature
+Ability: Bloody Tears
+    - Lowers opponents spa and atk by 1 stage.
+Moves: Drill Peck, Shore Up, Meteor Mash
+Signature Move: Heart of Darkness
+	- Dark type, Physical, 15 PP, 60 BP, 10% chance to inflict dread.
 Notes: IDK
 Rank: N/A.
 
@@ -80,7 +81,7 @@ Stabby the Krabby
 EVs: 6 HP / 252 Atk / 252 Spe
 Adamant Nature
 Ability: Ready to Stab
-    - On entry, +2 Attack and Speed.
+    - On entry, +1 Attack and Speed.
 Moves: Crabhammer, Swords Dance, Knock Off
 Signature Move: Stab Stab
     -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch.
@@ -108,7 +109,7 @@ Naughty Nature
 Ability: Serene Grace
 Moves: Roost, Coil, Rock Slide, Glare and Body Slam.
 Signature Move: Getting Trolled
-	- Normal Type, Physical, 40 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +1 Priority.
+	- Normal Type, Physical, 60 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +1 Priority.
 Notes: N/A.
 Rank: N/A.
 
@@ -167,8 +168,7 @@ Almighty Bronzong
 @ Leftovers
 EVs: 252 HP / 88 SpD / 168 Def
 Sassy Nature
-Ability: Conflict of Interest
-	- Magnet Rise upon entry, Ghost, Dark and Fire Moves do 0.75x damage to user and burn damage is halved.
+Ability: Levitate
 Moves: Gyro Ball, Toxic, Confuse Ray and Earthquake.
 Signature Move: Blast Furnace
 	- Fire Type, Status, 10 PP, Boosts user's Defense and Special Defense by 1 stage and heals user by 7/20th of its max HP.
@@ -182,7 +182,7 @@ EVs: 248 HP / 8 SpD / 252 Atk
 Adamant Nature
 Ability: Stance Change
 Innate Ability: Duality: Immune to fire and water type attacks
-Moves: Swords Dance, Sacred Sword, Shadow Sneak and King's Shield.
+Moves: Swords Dance, Sacred Sword, Shadow Claw and King's Shield.
 Signature Move: Magnet Flare
 	- Steel Type, Physical, 95 BP. 40% chance to burn. 24 PP
 Notes: N/A.
@@ -218,10 +218,10 @@ Mosmero
 EVs: 252 Spa / 252 Spe / 4 HP
 Modest Nature
 Ability: Mosmic Power
-    - Boosts user's Special and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.
-Moves: Shadow Ball, Sludge Bomb, Giga Drain
+    - Boosts user's Special and Spe by 1 stage on switch in. Also uses Magnet Rise on entry.
+Moves: Thunderbolt, Sludge Bomb, Giga Drain
 Signature Move: Mosmero Beam
-	- Ghost type, 130 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
+	- Ghost type, 80 BP, 80% Accuracy, 30% chance to Burn, Paralyze, Freeze. 30% to also Flinch or Confuse.
 Notes: Hit Quickly & you should be able to take down some enemies.
 Rank: N/A
 
@@ -318,19 +318,18 @@ Signature Move: Server Guardian
 Notes: Able to hit quick and hard from the start, but if you can, set up.
 Rank: N/A
 
-Callie (Agent 1)
-(Malamar, Poison/Water Typing)
-@ Hypnoshades
-    -Broken on hit by any move. Boosts physical moves by 1.5x. Also boosts freshness. Stay Fresh~!
-EVs: 252 HP / 252 Atk / 4 SpD
-Adamant Nature
-Ability: Supreme Squid Sister
-    -Contrary & No Guard
-Moves: Sing, Superpower, Gunk Shot.
-Signature Move: Bomb Rush Blush
-    -Physical, Hits 1-4 Times. Randomly Picks one of the following: "Burst Bombs" (60BP & Water type), "Splat Bombs" (65BP & Poison type), "Suction Bombs" (90BP & Steel type).
-Notes: Lots of Splatoon References. ^-^ || If she can hit, she will hit hard.
-Rank: N/A
+Kraken Mare
+(Gardevoir-Mega)
+@ Focus Sash
+EVs: 248 HP / 8 Def / 252 SpA
+Modest Nature
+Ability: Kraken's Boosts
+	- No Guard and Moody.
+Moves: Moonblast, Calm Mind and Psychic.
+Signature Move: Revenge of Kraken Mare
+	- Water Type, Special, 77,000 BP, Always hits, Self-Destruct and +5 Priority.
+Notes: N/A.
+Rank: N/A.
 
 bunnery5
 (Tympole)
@@ -338,10 +337,10 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.
+    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
-    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority.
+    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +1 Priority.
 Notes: New
 Rank: N/A
 
