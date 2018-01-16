@@ -238,7 +238,7 @@ Signature Move: Overpower
 Notes: Usually can take care of most threats right away without using Overpower at all. Remember than Overpower will fail, if enemy is already asleep.
 Rank: N/A
 
-iSteelX
+MechSteelix
 (Steelix-Mega)
 @ Lum Berry
 Evs: 252 HP / 4 Atk / 252 Def
