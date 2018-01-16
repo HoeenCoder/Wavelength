@@ -186,6 +186,7 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
+			pokemon.types = ["Dark"];
 			this.add('c', '%Lycanium Z', '...Hi...');
 		},
 		onSwitchOut: function (pokemon) {
