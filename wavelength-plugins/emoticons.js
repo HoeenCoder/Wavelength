@@ -95,11 +95,13 @@ exports.commands = {
 			if (!room.disableEmoticons) {
 				room.disableEmoticons = true;
 				Rooms.global.writeChatRoomData();
-				this.privateModCommand(`(${user.name} disabled emoticons in this room.)`);
+				this.modlog(`EMOTES`, null, `disabled emoticons`);
+				this.privateModAction(`(${user.name} disabled emoticons in this room.)`);
 			} else {
 				room.disableEmoticons = false;
 				Rooms.global.writeChatRoomData();
-				this.privateModCommand(`(${user.name} enabled emoticons in this room.)`);
+				this.modlog(`EMOTES`, null, `enabled emoticons`);
+				this.privateModAction(`(${user.name} enabled emoticons in this room.)`);
 			}
 		},
 

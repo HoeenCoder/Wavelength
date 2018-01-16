@@ -56,7 +56,8 @@ exports.commands = {
 
 		clearRoom(room);
 
-		this.privateModCommand(`(${user.name} used /clearall.)`);
+		this.modlog(`CLEARALL`);
+		this.privateModAction(`(${user.name} used /clearall.)`);
 	},
 
 	gclearall: 'globalclearall',
@@ -65,7 +66,8 @@ exports.commands = {
 
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
-		this.privateModCommand(`(${user.name} used /globalclearall.)`);
+		this.modlog(`GLOBALCLEARALL`);
+		this.privateModAction(`(${user.name} used /globalclearall.)`);
 	},
 
 	contact: 'whotocontact',
@@ -209,8 +211,9 @@ exports.commands = {
 		if (!this.can('mute', targetUser, room)) return false;
 		if (!room.users[targetUser.userid]) return this.errorReply("User \"" + this.targetUsername + "\" is not in this room.");
 
-		this.addModCommand(targetUser.name + " was kicked from the room by " + user.name + ". (" + target + ")");
-		targetUser.popup("You were kicked from " + room.id + " by " + user.name + "." + (target ? " (" + target + ")" : ""));
+		this.modlog(`ROOMKICK`, targetUser, target);
+		this.addModAction(`${targetUser.name} was kicked from the room by ${user.name}.${target.trim() ? ` (${target})` : ``}`);
+		targetUser.popup(`"You were kicked from ${room.id} by ${user.name}.${target.trim() ? ` (${target})` : ``}`);
 		targetUser.leaveRoom(room.id);
 	},
 	kickhelp: ["/kick - Kick a user out of a room. Requires: % @ # & ~"],
@@ -517,7 +520,8 @@ exports.commands = {
 			let message = '|pm|' + pmName + '|' + room.users[i].getIdentity() + '| ' + target;
 			room.users[i].send(message);
 		}
-		this.privateModCommand('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
+		this.modlog(`MASSROOMPM`, null, target);
+		this.privateModAction('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
 	},
 
 	fj: 'forcejoin',
