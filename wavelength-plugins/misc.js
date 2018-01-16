@@ -494,7 +494,7 @@ exports.commands = {
 		if (toId(target) === toId('prince')) return this.sendReplyBox(getMonData('wavelengthprince'));
 		if (toId(target) === toId('hiro')) return this.sendReplyBox(getMonData('hiroz'));
 		if (['hh', 'hoeen'].includes(toId(target))) return this.sendReplyBox(getMonData('hoeenhero'));
-		if (toId(target) === toId('[]')) return this.sendReplyBox(getMonData('volco'));
+		if (toId(target) === toId('arrays')) return this.sendReplyBox(getMonData('volco'));
 		if (['mech', 'isteelx'].includes(toId(target))) return this.sendReplyBox(getMonData('mechsteelix'));
 		if (toId(target) === toId('cubs')) return this.sendReplyBox(getMonData('cubsfan38'));
 		if (toId(target) === toId('bunnery')) return this.sendReplyBox(getMonData('bunnery5'));
