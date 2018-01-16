@@ -423,7 +423,7 @@ exports.BattleMovedex = {
 	// Lycanium Z
 	"heartofdarkness": {
 		accuracy: 100,
-		basePower: 60,
+		basePower: 80,
 		category: "Physical",
 		desc: "Has a 10% chance to inflict dread on the target.",
 		shortDesc: "10% chance to inflict dread on the target.",
