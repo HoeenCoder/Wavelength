@@ -56,7 +56,8 @@ exports.commands = {
 			if (!target) return this.parse('/help serverannouncements');
 			if (!Db.news.has(target)) return this.errorReply("News with this title doesn't exist.");
 			Db.news.remove(target);
-			this.privateModCommand(`(${user.name} deleted server announcement titled: ${target}.)`);
+			this.modlog(`NEWS`, null, `deleted announcement titled: ${target}.`);
+			this.privateModAction(`(${user.name} deleted server announcement titled: ${target}.)`);
 		},
 		add: function (target, room, user) {
 			if (!this.can('ban')) return false;
@@ -78,7 +79,8 @@ exports.commands = {
 			];
 			let postTime = `${MonthNames[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 			Db.news.set(title, [postedBy, desc, postTime]);
-			this.privateModCommand(`(${user.name} added server announcement: ${parts[0]})`);
+			this.modlog(`NEWS`, null, `Added announcement: ${parts[0]}`);
+			this.privateModAction(`(${user.name} added server announcement: ${parts[0]})`);
 		},
 		subscribe: function (target, room, user) {
 			if (!user.named) return this.errorReply('You must choose a name before subscribing');

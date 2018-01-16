@@ -29,27 +29,6 @@ exports.BattleAbilities = {
 			this.setTerrain('');
 		},
 	},
-	conflictofinterest: {
-		id: "conflictofinterest",
-		name: "Conflict of Interest",
-		desc: "Uses Magnet Rise + Burn damage is halved + Fire, Ghost & Dark type moves do 0.75x",
-		//Since levitate cant be coded in
-		onStart: function (pokemon) {
-			this.useMove('magnetrise', pokemon);
-		},
-		//HeatProof and filter other types
-		onBasePowerPriority: 7,
-		onSourceBasePower: function (basePower, attacker, defender, move) {
-			if (move.type === 'Fire' || move.type === 'Ghost' || move.type === 'Dark') {
-				return this.chainModify(0.75);
-			}
-		},
-		onDamage: function (damage, target, source, effect) {
-			if (effect && effect.id === 'brn') {
-				return damage / 2;
-			}
-		},
-	},
 	//Desokoro
 	wavecall: {
 		id: "wavecall",
@@ -107,16 +86,33 @@ exports.BattleAbilities = {
 		},
 	},
 	//Kraken Mare
-	supremesquidsister: {
-		id: "supremesquidsister",
-		name: "Supreme Squid Sister",
-		onBoost: function (boost, target, source, effect) {
-			if (effect && effect.id === 'zpower') return;
-			for (let i in boost) {
-				boost[i] *= -1;
+	krakensboost: {
+		id: "krakensboost",
+		name: "Kraken's Boost",
+		desc: "Moody + No Guard",
+		onResidual: function (pokemon) {
+			let stats = [];
+			let boost = {};
+			for (let statPlus in pokemon.boosts) {
+				if (pokemon.boosts[statPlus] < 6) {
+					stats.push(statPlus);
+				}
 			}
+			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
+			if (randomStat) boost[randomStat] = 2;
+
+			stats = [];
+			for (let statMinus in pokemon.boosts) {
+				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat) {
+					stats.push(statMinus);
+				}
+			}
+			randomStat = stats.length ? stats[this.random(stats.length)] : "";
+			if (randomStat) boost[randomStat] = -1;
+
+			this.boost(boost);
 		},
-		onAnyAccuracy: function (accuracy, target, source, move) {
+		onModifyAccuracy: function (accuracy, target, source, move) {
 			if (move && (source === this.effectData.target || target === this.effectData.target)) {
 				return true;
 			}
@@ -170,9 +166,9 @@ exports.BattleAbilities = {
 	readytostab: {
 		id: "readytostab",
 		name: "Ready to Stab",
-		desc: "Boosts user's Atk and Spe by 2 stages",
+		desc: "Boosts user's Atk and Spe by 1 stage",
 		onStart: function (pokemon) {
-			this.boost({atk: 1, spe: 2});
+			this.boost({atk: 1, spe: 1});
 		},
 	},
 	//Serperiorater
@@ -209,7 +205,7 @@ exports.BattleAbilities = {
 	sandbox: {
 		id: "sandbox",
 		name: "Sandbox",
-		desc: "Sets up Trick Room, Sandstorm, Reflect, Light Screen & Gravity on switch in.",
+		desc: "Sets up Trick Room, Sandstorm & Gravity on switch in.",
 		onStart: function (pokemon) {
 			this.useMove('trickroom', pokemon);
 			this.useMove('gravity', pokemon);
@@ -294,9 +290,9 @@ exports.BattleAbilities = {
 	mosmicpower: {
 		id: "mosmicpower",
 		name: "Mosmic Power",
-		desc: "Boosts user's Special and Spe by 2 stages on switch in. Also uses Magnet Rise on entry.",
+		desc: "Boosts user's Special and Spe by 1 stages on switch in. Also uses Magnet Rise on entry.",
 		onStart: function (pokemon) {
-			this.boost({spa: 2, spe: 2});
+			this.boost({spa: 1, spe: 1});
 			this.useMove('magnetrise', pokemon);
 		},
 	},
@@ -324,23 +320,39 @@ exports.BattleAbilities = {
 	muscles: {
 		id: "muscles",
 		name: "Muscles",
-		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in.",
+		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple.",
 		onStart: function (pokemon) {
 			this.boost({atk: -4, def: 4, spa: 1, spd: 4});
 		},
-	},
-	//Lycanium Z
-	"deflectorshield": {
-		onAfterDamageOrder: 1,
-		onAfterDamage: function (damage, target, source, move) {
-			if (source && source !== target && move && !(move.typeMod > 0)) {
-				this.damage(Math.ceil(damage / 2), source, target);
-				this.heal(Math.ceil(damage / 4), target);
+		onBoost: function (boost, target, source, effect) {
+			if (effect && effect.id === 'zpower') return;
+			for (let i in boost) {
+				boost[i] *= 2;
 			}
 		},
-		desc: "Deals damage back to the attacker.",
-		id: "deflectorshield",
-		name: "Deflector Shield",
+	},
+	//Lycanium Z
+	"bloodytears": {
+		desc: "Lowers Opponents offensive stats by 1.",
+		onStart: function (pokemon) {
+			this.add('-ability', pokemon, 'Bloody Tears');
+			this.add('-message', "You feel fear... yet you cannot look away...");
+			let foeactive = pokemon.side.foe.active;
+			let activated = false;
+			for (let i = 0; i < foeactive.length; i++) {
+				if (!foeactive[i] || !this.isAdjacent(foeactive[i], pokemon)) continue;
+				if (!activated) {
+					activated = true;
+				}
+				if (foeactive[i].volatiles['substitute']) {
+					this.add('-immune', foeactive[i], '[msg]');
+				} else {
+					this.boost({atk: -1, spa: -1}, foeactive[i], pokemon);
+				}
+			}
+		},
+		id: "bloodytears",
+		name: "Bloody Tears",
 	},
 	//SnorlaxTheRain
 	"scraroom": {

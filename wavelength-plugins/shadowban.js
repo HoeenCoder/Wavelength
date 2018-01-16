@@ -159,7 +159,8 @@ exports.commands = {
 
 		if (this.targetUser.shadowbanned) return this.errorReply(`${this.targetUser.name} is already shadow banned.`);
 		this.targetUser.shadowbanned = true;
-		this.privateModCommand("(" + user.name + " has shadow banned: " + this.targetUser.name + (target.trim() ? " (" + target + ")" : "") + ")");
+		this.modlog(`SHADOWBAN`, this.targetUser, target);
+		this.privateModAction("(" + user.name + " has shadow banned: " + this.targetUser.name + (toId(target) ? " (" + target + ")" : "") + ")");
 	},
 	shadowbanhelp: ["/shadowban [username], (reason) - Sends all the user's messages to the shadow ban room. Requires %, @, &, ~"],
 
@@ -174,7 +175,8 @@ exports.commands = {
 		if (!this.targetUser.shadowbanned) return this.errorReply(`${this.targetUser.name} is not shadow banned.`);
 
 		this.targetUser.shadowbanned = false;
-		this.privateModCommand("(" + user.name + " has shadow unbanned: " + this.targetUser.name + ")");
+		this.modlog(`UNSHADOWBAN`, this.targetUser);
+		this.privateModAction("(" + user.name + " has shadow unbanned: " + this.targetUser.name + ")");
 	},
 	unshadowbanhelp: ['/unshadowban [user] - Undoes a shadowban. Requires %, @, &, ~'],
 
@@ -191,7 +193,8 @@ exports.commands = {
 		if (targets.length === 0) {
 			return this.sendReply('||' + this.targetUsername + " is already shadow banned or isn't named.");
 		}
-		this.privateModCommand("(" + user.name + " has permanently shadow banned: " + targets.join(", ") + (target.trim() ? " (" + target + ")" : "") + ")");
+		this.modlog(`PERMASHADOWBAN`, this.targetUser, `Additonal accounts: ${targets.join(`, `)}`);
+		this.privateModAction("(" + user.name + " has permanently shadow banned: " + targets.join(", ") + (toId(target) ? " (" + target + ")" : "") + ")");
 	},
 	permashadowbanhelp: ['/permashadowban [user] - Permanently shadow ban a user. Requires ~'],
 
@@ -206,7 +209,8 @@ exports.commands = {
 		if (targets.length === 0) {
 			return this.sendReply('||' + this.targetUsername + " is not shadow banned.");
 		}
-		this.privateModCommand("(" + user.name + " has shadow unbanned: " + targets.join(", ") + ")");
+		this.modlog(`UNPERMASHADOWBAN`, (this.targetUser || this.targetUsername), `Additional names: ${targets.join(`, `)}`);
+		this.privateModAction("(" + user.name + " has shadow unbanned: " + targets.join(", ") + ")");
 	},
 	unpermashadowbanhelp: ['/unpermashadowban [user] - Undo a permanent shadowban. Requires ~'],
 

@@ -11,6 +11,7 @@
 /wavelength-plugins/filter.js
 npm-debug.log
 .eslintcache
+package-lock.json
 
 # boilerplate #
 ###############
