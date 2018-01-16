@@ -21,7 +21,7 @@ Ability: Bloody Tears
     - Lowers opponents spa and atk by 1 stage.
 Moves: Drill Peck, Shore Up, Meteor Mash
 Signature Move: Heart of Darkness
-	- Dark type, Physical, 15 PP, 60 BP, 10% chance to inflict dread.
+	- Dark type, Physical, 15 PP, 80 BP, 10% chance to inflict dread.
 Notes: IDK
 Rank: N/A.
 
