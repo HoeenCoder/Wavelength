@@ -26,25 +26,4 @@ exports.BattleItems = {
 			}
 		},
 	},
-	//Kraken Mare
-	hypnoshades: {
-		id: "hypnoshades",
-		name: "Hypnoshades",
-		onStart: function (target) {
-			this.add('-item', target, 'Hypnoshades');
-		},
-		onModifyAtkPriority: 1,
-		onModifyAtk: function (atk) {
-			return this.chainModify(1.5);
-		},
-		onAfterDamage: function (damage, target, source, effect) {
-			this.debug('effect: ' + effect.id);
-			if (effect.effectType === 'Move' && effect.id !== 'confused') {
-				this.add('-message', 'The Hypnoshades have broken!');
-				target.item = '';
-				this.itemData = {id: '', target: this};
-				this.runEvent('AfterUseItem', target, null, null, 'Hypnoshades');
-			}
-		},
-	},
 };

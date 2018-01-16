@@ -78,7 +78,8 @@ exports.commands = {
 			if (room.lottery) return this.sendReply("A join-able Lottery drawing is already active.");
 			if (!this.can('mute', null, room)) return false;
 			if (!room.isOfficial) return this.sendReply('Lottery drawings can only be created in Official Chatrooms.');
-			this.privateModCommand(`(A new Lottery drawing has been created.)`);
+			this.modlog(`LOTTERY`, null, `created`);
+			this.privateModAction(`(A new Lottery drawing has been created.)`);
 			room.lottery = new Lottery(room, user);
 		},
 		j: "join",
@@ -104,14 +105,16 @@ exports.commands = {
 			if (!this.can('mute', null, room)) return;
 			if (!room.lottery) return this.sendReply("There is not any Lottery drawing available to be started.");
 			if (room.lottery.players.length < 2) return this.sendReply("You can't start a Lottery drawing without at least two users joining.");
-			this.privateModCommand(`(The Lottery drawing has been started early.)`);
+			this.modlog(`LOTTERY`, null, `started early`);
+			this.privateModAction(`(The Lottery drawing has been started early.)`);
 			room.lottery.drawWinner();
 		},
 		cancel: "end",
 		end: function (target, room, user) {
 			if (!this.can('mute', null, room)) return;
 			if (!room.lottery) return this.sendReply("There is no Lottery drawing going on right now.");
-			this.privateModCommand(`(The Lottery drawing was forcefully ended.)`);
+			this.modlog(`LOTTERY`, null, `forcefully ended`);
+			this.privateModAction(`(The Lottery drawing was forcefully ended.)`);
 			room.lottery.end();
 		},
 	},

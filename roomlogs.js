@@ -60,13 +60,13 @@ class Roomlog {
 		/**
 		 * undefined = uninitialized,
 		 * null = disabled
-		 * @type {NodeJS.WritableStream? | undefined}
+		 * @type {WriteStream? | undefined}
 		 */
 		this.modlogStream = undefined;
 		/**
 		 * undefined = uninitialized,
 		 * null = disabled
-		 * @type {NodeJS.WritableStream? | undefined}
+		 * @type {WriteStream? | undefined}
 		 */
 		this.roomlogStream = undefined;
 
@@ -97,7 +97,7 @@ class Roomlog {
 		}
 		let textLog = log.join('\n') + '\n';
 		if (channel === 0) {
-			return textLog.replace(/\n\|choice\|\|\n/g, '').replace(/\n\|seed\|\n/g, '');
+			return textLog.replace(/\n\|choice\|\|\n/g, '\n').replace(/\n\|seed\|\n/g, '\n');
 		}
 		return textLog;
 	}
@@ -225,25 +225,19 @@ class Roomlog {
 			this.modlogStream = null;
 		}
 		if (this.modlogStream) {
-			promises.push(new Promise(resolve => {
-				// @ts-ignore https://github.com/DefinitelyTyped/DefinitelyTyped/pull/22077
-				this.modlogStream.end(resolve);
-				this.modlogStream = null;
-			}));
+			promises.push(this.modlogStream.end());
+			this.modlogStream = null;
 		}
 		if (this.roomlogStream) {
-			promises.push(new Promise(resolve => {
-				// @ts-ignore https://github.com/DefinitelyTyped/DefinitelyTyped/pull/22077
-				this.roomlogStream.end(resolve);
-				this.roomlogStream = null;
-			}));
+			promises.push(this.roomlogStream.end());
+			this.roomlogStream = null;
 		}
 		Roomlogs.roomlogs.delete(this.id);
 		return Promise.all(promises);
 	}
 }
 
-/** @type {Map<string, NodeJS.WritableStream>} */
+/** @type {Map<string, WriteStream>} */
 const sharedModlogs = new Map();
 
 /** @type {Map<string, Roomlog>} */

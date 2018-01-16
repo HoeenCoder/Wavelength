@@ -216,7 +216,7 @@ exports.commands = {
 		if (!Db.expoff.has(targetId)) return this.errorReply(targetId + ' is not currently exp banned.');
 		Db.expoff.remove(targetId);
 		this.globalModlog("EXPUNBAN", targetId, " by " + user.name);
-		this.addModCommand(targetId + ' was exp unbanned by ' + user.name + '.');
+		this.addModAction(targetId + ' was exp unbanned by ' + user.name + '.');
 		this.sendReply(targetId + " is no longer banned from exp");
 	},
 	expunbanhelp: ['/expunban target - allows a user to gain exp if they were exp banned'],
@@ -228,7 +228,7 @@ exports.commands = {
 		if (Db.expoff.has(targetId)) return this.errorReply(targetId + ' is already exp banned.');
 		Db.expoff.set(targetId, true);
 		this.globalModlog("EXPBAN", targetId, " by " + user.name);
-		this.addModCommand(targetId + ' was exp banned by ' + user.name + '.');
+		this.addModAction(targetId + ' was exp banned by ' + user.name + '.');
 		this.sendReply(targetId + " is now banned from exp");
 	},
 	expbanhelp: ['/expban target - bans a user from gaining exp until removed'],

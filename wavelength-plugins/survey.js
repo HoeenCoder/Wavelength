@@ -239,7 +239,8 @@ exports.commands = {
 			}
 
 			this.roomlog(`${user.name} used ${message}.`);
-			return this.privateModCommand(`(A survey was started by ${user.name}.)`);
+			this.modlog(`SURVEY`, null, `#${room.surveyNumber}, started with question: ${target}`);
+			return this.privateModAction(`(A survey was started by ${user.name}.)`);
 		},
 		newhelp: ["/survey create [question] - Create a survey. Requires % @ # & ~"],
 
@@ -335,7 +336,8 @@ exports.commands = {
 			room.survey.end(num);
 			room.survey.surveyArray.splice(num, 1);
 
-			return this.privateModCommand(`(A survey was ended by ${user.name}.)`);
+			this.modlog(`SURVEY`, null, `ended`);
+			return this.privateModAction(`(A survey was ended by ${user.name}.)`);
 		},
 		endhelp: ["/survey end [survey id number] - Ends a survey and displays the results. Requires: % @ * # & ~"],
 
@@ -364,7 +366,8 @@ exports.commands = {
 					delete room.survey.surveyArray[num];
 				}, (timeout * 60000));
 				room.add(`The survey timer was turned on: survey ${room.survey.surveyArray[num].surveyNum} will end in ${timeout} minute(s).`);
-				return this.privateModCommand(`(The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} was set to ${timeout} minute(s) by ${user.name}.)`);
+				this.modlog(`SURVEY`, null, `timer was set to ${timeout} minutes for survey #${room.survey.surveyArray[num].surveyNum}`);
+				return this.privateModAction(`(The survey timer for survey number ${room.survey.surveyArray[num].surveyNum} was set to ${timeout} minute(s) by ${user.name}.)`);
 			} else {
 				if (!this.runBroadcast()) return;
 				if (room.survey.surveyArray[num].timeout) {
@@ -387,7 +390,7 @@ exports.commands = {
 		"/survey allows rooms to run their own surveys. These surveys are limited to five surveys at a time per room.",
 		"Accepts the following commands:",
 		"/survey create [question] - Create a survey. Allows up to 5 surveys. Requires % @ # & ~",
-		"/survey answer [answer], [survey number] - Answers the specified survey.",
+		"/survey answer [survey number], [answer] - Answers the specified survey.",
 		"/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already.",
 		"/survey display (survey number) - Display the specified survey. If no ID is specified, displays all surveys.",
 		"/survey remove [user], [survey number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~",

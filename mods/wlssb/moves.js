@@ -77,47 +77,27 @@ exports.BattleMovedex = {
 		},
 	},
 	// Kraken Mare
-	bombrushblush: {
-		category: "Physical",
+	revengeofkrakenmare: {
+		category: "Special",
 		accuracy: true,
-		basePower: 0,
-		id: "bombrushblush",
-		isViable: true,
+		basePower: 77000,
+		id: "revengeofkrakenmare",
 		isNonstandard: true,
-		name: "Bomb Rush Blush",
-		pp: 5,
-		priority: 0,
-		onModifyMove: function (move, pokemon) {
-			let i = this.random(3);
-			if (i < 1) {
-				move.bomb = "Burst Bomb";
-				move.basePower = 60;
-				move.type = 'Water';
-			} else if (i < 2) {
-				move.bomb = "Splat Bomb";
-				move.basePower = 65;
-			} else {
-				move.bomb = "Suction Bomb";
-				move.basePower = 90;
-				move.type = 'Steel';
-			}
+		name: "Revenge of Kraken Mare",
+		pp: 1,
+		noPPBoosts: true,
+		priority: 5,
+		selfdestruct: "always",
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Surf", target);
 		},
-		onPrepareHit: function (pokemon, target, move, source) {
-			this.add('-message', "Callie threw 4 " + move.bomb + "s!");
+		desc: "Selfdestructs target.",
+		onHit: function (target, source, move) {
+			this.add('c|~Kraken Mare ☭|If I go down I\'m taking you with me!');
 		},
-		onUseMoveMessage: function (target, source, move) {
-			let t = this.random(2);
-			if (t < 1) {
-				this.add('c|~Callie (Agent 1)|♪Faces blush, a rush of ink!♪');
-				this.add('c|~Callie (Agent 1)|♪Bombs explode, no time to think!♪');
-			} else {
-				this.add('c|~Callie (Agent 1)|♪Blushing faces covered in pink!♪');
-				this.add('c|~Callie (Agent 1)|♪Rushing bombs, exploding ink!♪');
-			}
-		},
-		multihit: [1, 4],
-		target: "Normal",
-		type: "Poison",
+		target: "normal",
+		type: "Water",
 	},
 	// C733937 123
 	shatterbreak: {
@@ -225,7 +205,7 @@ exports.BattleMovedex = {
 		category: "Physical",
 		id: "gettingtrolled",
 		isNonstandard: true,
-		basePower: 90,
+		basePower: 60,
 		name: "Getting Trolled",
 		pp: 20,
 		secondary: {
@@ -433,6 +413,7 @@ exports.BattleMovedex = {
 		pp: 5,
 		priority: 1,
 		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
 			this.add('-anim', source, "Brick Break", source);
 			this.add('-anim', source, "Shell Smash", source);
 		},
@@ -440,33 +421,34 @@ exports.BattleMovedex = {
 		type: "Water",
 	},
 	// Lycanium Z
-	meteormadness: {
-		category: "Status",
+	"heartofdarkness": {
 		accuracy: 100,
-		id: "meteormadness",
-		isViable: true,
-		isNonstandard: true,
-		name: "Meteor Madness",
-		pp: 5,
-		noPPBoosts: true,
+		basePower: 60,
+		category: "Physical",
+		desc: "Has a 10% chance to inflict dread on the target.",
+		shortDesc: "10% chance to inflict dread on the target.",
+		id: "heartofdarkness",
+
+		name: "Ḫ̱̙̞̅̓͑͝e̲̅̿a̤͕̦͉ř̗̿ͫ̽͢t̼̝͊͒ͭ̀ ̖̦͆ͯỏͧf̻̙ ̺̏̂̉͐ͨ̐̃͟D̼̦͕̅ͬ̚a̝̻͉̰̯̓̊̇r͉͇̿̽ͤ̆k̍̑ͯ̃͟ͅn̺̞̤͉̪ͦ͒̒ͪ̄͑ě̴̖̙̩̘̂ŝ̸̇ͪ̃ͬŝ̨͙̙͚͎̬̂̒ͅ",
+		pp: 15,
 		priority: 0,
-		flags: {mirror: 1, snatch: 1},
-		desc: "Heals the user. Users ability -> Normalize",
-		secondary: false,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 10,
+			volatileStatus: 'dread',
+		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Draco Meteor", target);
+			this.add('-anim', source, "Dark Void", source);
+			this.add('-anim', source, "heart Stamp", target);
 		},
-		onHit: function (target, source) {
-			this.heal(Math.ceil(target.maxhp * 0.5), source);
-			let oldAbility = target.setAbility('normalize');
-			if (oldAbility) {
-				this.add('-ability', target, 'Normalize', '[from] move: Meteor Madness');
-				return;
-			}
+		onHit: function (target) {
+			this.add('c|%Lycanium Z|T̡̞͚͈̥̋ͧͯ̈̓ͩ̆i̗̱̦ͦͦͅm̞̥̰͎̱ͬ̅̆̈̽e̢͕̞̙͆ͤͫ ̲̳̮ͩ̐͌̈̔͐͗͢t̗ͤ̂̃o̱̖̤̤̟͔͛̐ͩ̌ ͍͚̺͍̹̓ͨs̢̞̮̏ḫ͖̱̖̍́ͮͧ̚ò̷͔ͫw̨̞͕̻̓̒͋ͮ ̧ͣ̚y͈͚͉̥̳̒́̇͌̓̈̑ŏ̼͇̠̰̖̈́̅ͧ̓͗́u̴͇̟̔̆͆͂ ͔̖̼͔̣̗̲͋̆̊̈̊̓̊͢w̹̻͔̠̙̫ͫͧ͛̅̑h͚̣̳̮̪͌̉ͥ̀̀a̽͏̘̘͕̹t̤̟̝̘̺͉̼̽ ̥̻̳͖̮̅ͤ̏͌͗ͅi̼͍̍́͢t͉̙̳̹ͤ͝s̺͒ͨ̔̋̓͛ ̺͈̹̻̟̱̞̅ͩͦ͋̋̾͛lͯ҉̪͉̝̻̙i̗̺͖̞ͅk͗̎͑̅ͯ҉̭e̅̊ͥ̄̑ͭͩ ̸̩̜̼̀ͫ̿͗̃ͅt̛̠̑̍ͤͤͩͬ̚ǒ̲̜̼͕̞ ̋̾͛̃̎̾͡d̟̯̤͚̤̬̐͟įĕ̻̞̖͖͎̿͛!̞̳̘̳͒̇̋̈');
 		},
-		target: "Self",
-		type: "Rock",
+		target: "normal",
+		type: "Dark",
+		zMovePower: 160,
+		contestType: "Cool",
 	},
 	//Stabby the Krabby
 	"stabstab": {
@@ -512,7 +494,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Shadow punch", target);
 		},
 		onHit: function (target, source, move) {
-			this.add('c|%Volco|You cant see this punch. It\'s very spooky!');
+			this.add('c|@Volco|You cant see this punch. It\'s very spooky!');
 		},
 		secondary: false,
 		flags: {protect: 1, contact: 1, mirror: 1, punch: 1},
@@ -523,7 +505,7 @@ exports.BattleMovedex = {
 	mosmerobeam: {
 		category: "Special",
 		accuracy: 80,
-		basePower: 130,
+		basePower: 80,
 		id: "mosmerobeam",
 		isViable: true,
 		isNonstandard: true,
@@ -774,7 +756,7 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 6,
 		noPPBoosts: true,
-		priority: 0,
+		priority: 1,
 		flags: {mirror: 1, protect: 1},
 		volatileStatus: 'leechseed',
 		effect: {
@@ -874,6 +856,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		sleepUsable: true,
 		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
 			this.add('-anim', source, "Body Slam", target);
 		},
 		onHit: function (target) {
