@@ -520,8 +520,8 @@ class UNOgame extends Rooms.RoomGame {
 		if (Db.userBadges.has(targetUserid) && Db.userBadges.get(targetUserid).indexOf('Uno Champion') > -1) prize = Math.ceil(prize * 1.5);
 		if (Users(targetUserid).unoBoost) prize *= 2;
 		if (Users(targetUserid).gameBoost) prize *= 2;
-		for (let i = 0; i < this.players.length; i++) {
-			WL.ExpControl.addExp(Users(this.players[i]).userid, this.room, 20);
+		for (let i in this.players) {
+			WL.ExpControl.addExp(this.players[i].userid, this.room, 20);
 		}
 		if (this.room.isOfficial) {
 			Economy.writeMoney(targetUserid, prize, newAmount => {
