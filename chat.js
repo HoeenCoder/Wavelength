@@ -251,7 +251,6 @@ class CommandContext {
 			this.room = Rooms.global;
 		}
 
-		let giveExp = false;
 		let commandHandler = this.splitCommand(message);
 
 		if (typeof commandHandler === 'function') {
@@ -280,10 +279,7 @@ class CommandContext {
 					message = message.charAt(0) + message;
 				}
 			}
-
-			let lastMessageTime = this.user.lastMessageTime; // done this way because this.canTalk(message) reassigns the message time
 			message = this.canTalk(message);
-			if (message && Date.now() > (lastMessageTime + 5000)) giveExp = true;
 		}
 
 		// Output the message
@@ -326,7 +322,6 @@ class CommandContext {
 			}
 		}
 
-		if (this.user.registered && giveExp) WL.addExp(this.user.userid, this.room, 1);
 		this.update();
 
 		return message;
