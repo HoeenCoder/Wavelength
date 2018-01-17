@@ -58,7 +58,8 @@ class ExpFunctions {
 
 	grantExp() {
 		Users.users.forEach(user => {
-			if (!user || !user.named || !user.connected || Date.now() - user.lastChatMessage > 900000) return;
+			if (!user || !user.named || !user.connected || !user.lastPublicMessage) return;
+			if (Date.now() - user.lastPublicMessage > 300000) return;
 			this.addExp(user, null, 1);
 		});
 	}
