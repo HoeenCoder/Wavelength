@@ -79,6 +79,7 @@ class ExpFunctions {
 		if (!user) return;
 		if (!room) room = Rooms('lobby');
 		user = Users(toId(user));
+		if (!user.registered) return false;
 		if (Db.expoff.get(user.userid)) return false;
 		if (DOUBLE_XP) amount = amount * 2;
 		EXP.readExp(user.userid, totalExp => {
