@@ -521,7 +521,7 @@ class UNOgame extends Rooms.RoomGame {
 		if (Users(targetUserid).unoBoost) prize *= 2;
 		if (Users(targetUserid).gameBoost) prize *= 2;
 		for (let i = 0; i < this.players.length; i++) {
-			WL.addExp(Users(this.players[i]).userid, this.room, 20);
+			WL.ExpControl.addExp(Users(this.players[i]).userid, this.room, 20);
 		}
 		if (this.room.isOfficial) {
 			Economy.writeMoney(targetUserid, prize, newAmount => {
