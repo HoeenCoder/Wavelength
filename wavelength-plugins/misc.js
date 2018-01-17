@@ -176,7 +176,7 @@ exports.commands = {
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Kraken Mare', true) + " (Community Admin, Development)<br />" +
-			"- " + WL.nameColor('iSteelX', true) + " (Policy Leader)<br/>" +
+			"- " + WL.nameColor('MechSteelix', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
@@ -487,18 +487,18 @@ exports.commands = {
 		if (!this.runBroadcast()) return false;
 		if (!target || target === 'help') return this.parse('/help wlssb');
 		let targetData = getMonData(toId(target));
-		if (['km', 'callie', 'krakenmare'].includes(toId(target))) return this.sendReplyBox(getMonData('callieagent1'));
-		if (toId(target) === toId('c7')) return this.sendReplyBox(getMonData('c733937123'));
+		if (['km', 'callie', 'krakenmeme'].includes(toId(target))) return this.sendReplyBox(getMonData('krakenmare'));
+		if (toId(target) === 'c7') return this.sendReplyBox(getMonData('c733937123'));
 		if (['des', 'deso'].includes(toId(target))) return this.sendReplyBox(getMonData('desokoro'));
 		if (['mos', 'electricz'].includes(toId(target))) return this.sendReplyBox(getMonData('mosmero'));
-		if (toId(target) === toId('prince')) return this.sendReplyBox(getMonData('wavelengthprince'));
-		if (toId(target) === toId('hiro')) return this.sendReplyBox(getMonData('hiroz'));
+		if (['perison', 'prince', 'peri'].includes(toId(target))) return this.sendReplyBox(getMonData('wavelengthprince'));
+		if (toId(target) === 'hiro') return this.sendReplyBox(getMonData('hiroz'));
 		if (['hh', 'hoeen'].includes(toId(target))) return this.sendReplyBox(getMonData('hoeenhero'));
-		if (toId(target) === toId('[]')) return this.sendReplyBox(getMonData('arrays'));
-		if (['mech', 'mechsteelix'].includes(toId(target))) return this.sendReplyBox(getMonData('isteelx'));
-		if (toId(target) === toId('cubs')) return this.sendReplyBox(getMonData('cubsfan38'));
-		if (toId(target) === toId('bunnery')) return this.sendReplyBox(getMonData('bunnery5'));
-		if (toId(target) === toId('rittz')) return this.sendReplyBox(getMonData('therittz'));
+		if (toId(target) === 'arrays') return this.sendReplyBox(getMonData('volco'));
+		if (['mech', 'isteelx'].includes(toId(target))) return this.sendReplyBox(getMonData('mechsteelix'));
+		if (toId(target) === 'cubs') return this.sendReplyBox(getMonData('cubsfan38'));
+		if (toId(target) === 'bunnery') return this.sendReplyBox(getMonData('bunnery5'));
+		if (toId(target) === 'rittz') return this.sendReplyBox(getMonData('therittz'));
 		if (['stk', 'stabby'].includes(toId(target))) return this.sendReplyBox(getMonData('stabbythekrabby'));
 		if (['twb', 'tidal'].includes(toId(target))) return this.sendReplyBox(getMonData('tidalwavebot'));
 		if (['lyc', 'lycan', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('lycaniumz'));
