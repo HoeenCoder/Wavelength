@@ -55,26 +55,26 @@ class ExpFunctions {
 	constructor() {
 		this.start();
 	}
-	
+
 	grantExp() {
 		Users.users.forEach(user => {
 			if (!user || !user.named || !user.connected || Date.now() - user.lastChatMessage > 900000) return;
 			this.addExp(user, null, 1);
 		});
 	}
-	
+
 	level(userid) {
 		userid = toId(userid);
 		let curExp = Db.exp.get(userid, 0);
 		return Math.floor(Math.pow(curExp / minLevelExp, 1 / multiply) + 1);
 	}
-	
+
 	nextLevel(user) {
 		let curExp = Db.exp.get(toId(user), 0);
 		let lvl = this.level(toId(user));
 		return Math.floor(Math.pow(lvl, multiply) * minLevelExp) - curExp;
 	}
-	
+
 	addExp(user, room, amount) {
 		if (!user) return;
 		if (!room) room = Rooms('lobby');
