@@ -82,9 +82,9 @@ class ExpFunctions {
 		if (Db.expoff.get(user.userid)) return false;
 		if (DOUBLE_XP) amount = amount * 2;
 		EXP.readExp(user.userid, totalExp => {
-			let oldLevel = WL.level(user.userid);
+			let oldLevel = this.level(user.userid);
 			EXP.writeExp(user.userid, amount, newTotal => {
-				let level = WL.level(user.userid);
+				let level = this.level(user.userid);
 				if (oldLevel < level) {
 					let reward = '';
 					switch (level) {
