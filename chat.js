@@ -280,7 +280,7 @@ class CommandContext {
 				}
 			}
 			message = this.canTalk(message);
-			if (this.room && !this.room.battle && !this.room.isPersonal && !this.room.isPrivate) this.user.lastPublicMessage = Date.now();
+			if (this.room && message && !this.room.battle && !this.room.isPersonal && !this.room.isPrivate) this.user.lastPublicMessage = Date.now();
 		}
 
 		// Output the message
