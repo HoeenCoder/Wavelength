@@ -12,7 +12,7 @@
 let geoip = require('geoip-lite-country');
 
 // fill your server's IP in your config.js for exports.serverIp
-let serverIp = Config.serverIp;
+const serverIp = Config.serverIp;
 
 function isDev(user) {
 	if (!user) return;
@@ -32,8 +32,8 @@ function isVIP(user) {
 
 function showTitle(userid) {
 	userid = toId(userid);
-	if (Db.titles.has(userid)) {
-		return `<font color="${Db.titles.get(userid)[1]}">(<strong>${Db.titles.get(userid)[0]}</strong>)</font>`;
+	if (Db.customtitles.has(userid)) {
+		return `<font color="${Db.customtitles.get(userid)[1]}">(<strong>${Db.customtitles.get(userid)[0]}</strong>)</font>`;
 	}
 	return '';
 }
@@ -182,18 +182,14 @@ exports.commands = {
 			let userid = toId(target[0]);
 			let targetUser = Users.getExact(userid);
 			let title = target[1].trim();
-			if (Db.titles.has(userid) && Db.titlecolors.has(userid)) {
+			if (Db.customtitles.has(userid) && Db.titlecolors.has(userid)) {
 				return this.errorReply(`${userid} already has a custom title.`);
 			}
 			let color = target[2].trim();
 			if (color.charAt(0) !== '#') return this.errorReply(`The color needs to be a hex starting with "#".`);
 			Db.titles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
-				Users(targetUser).popup(
-					`|html|You have received a custom title from ${WL.nameColor(user.name, true)}.` +
-					`<br />Title: ${showTitle(toId(targetUser))}` +
-					`<br />Title Hex Color: ${color}`
-				);
+				Users(targetUser).popup(`|html|You have received a custom title from ${WL.nameColor(user.name, true)}.<br />Title: ${showTitle(toId(targetUser))}<br />Title Hex Color: ${color}`);
 			}
 			this.addModAction(`${user.name} set a custom title to ${target[0]}'s profile.`);
 			Monitor.log(`${user.name} set a custom title to ${target[0]}'s profile.`);
@@ -249,7 +245,7 @@ exports.commands = {
 			}
 			if (fc.length < 12) return this.errorReply("Your friend code needs to be 12 digits long.");
 			fc = fc.slice(0, 4) + '-' + fc.slice(4, 8) + '-' + fc.slice(8, 12);
-			Db.friendcode.set(toId(user), fc);
+			Db.friendcodes.set(toId(user), fc);
 			return this.sendReply(`Your friend code: ${fc} has been saved to the server.`);
 		},
 
@@ -258,14 +254,14 @@ exports.commands = {
 			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
 			if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
 			if (!target) {
-				if (!Db.friendcode.has(toId(user))) return this.errorReply("Your friend code isn't set.");
-				Db.friendcode.remove(toId(user));
+				if (!Db.friendcodes.has(toId(user))) return this.errorReply("Your friend code isn't set.");
+				Db.friendcodes.remove(toId(user));
 				return this.sendReply("Your friend code has been deleted from the server.");
 			} else {
 				if (!this.can('lock')) return false;
 				let userid = toId(target);
-				if (!Db.friendcode.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
-				Db.friendcode.remove(userid);
+				if (!Db.friendcodes.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
+				Db.friendcodes.remove(userid);
 				return this.sendReply(`${target}'s friend code has been deleted from the server.`);
 			}
 		},
@@ -327,22 +323,6 @@ exports.commands = {
 			this.sendReply(`You have set your profile color to "${color}".`);
 		},
 
-		// For staff
-		forceset: 'forceadd',
-		forceadd: function (target, room, user) {
-			if (!this.can('lock')) return false;
-			if (!target || target.length < 3) return this.parse('/pcolor help');
-			target = target.split(',');
-			let targetUser = target[0].trim();
-			let color = target[1].trim();
-			if (color.charAt(0) !== '#') return this.errorReply(`The color needs to be a hex starting with "#".`);
-			Db.profilecolor.set(targetUser, color);
-			if (Users.get(targetUser)) {
-				Users(targetUser).popup(`|html|You have received profile color from ${WL.nameColor(user.name, true)}.<br />Profile Hex Color: ${color}`);
-			}
-			this.sendReply(`You have set profile color of ${targetUser} to ${color}.`);
-		},
-
 		delete: 'remove',
 		remove: function (target, room, user) {
 			if (!this.can('lock')) return false;
@@ -366,7 +346,6 @@ exports.commands = {
 				'All commands are nestled under the namespace <code>pcolor</code>.</center>' +
 				'<hr width="100%">' +
 				'- <code>[set|add] [hex color]</code>: set your profile color.' +
-				'- <code>[forceset|forceadd] [username], [hex color]</code>: Sets a user\'s profile color. Requires: % or higher.' +
 				'- <code>[remove|delete] [username]</code>: Removes a user\'s profile color and erases it from the server. Requires: % or higher.'
 			);
 		},
@@ -377,7 +356,7 @@ exports.commands = {
 		set: 'setbg',
 		setbackground: 'setbg',
 		setbg: function (target, room, user) {
-			if (!this.can('broadcast')) return false;
+			if (!this.can('lock')) return false;
 			let parts = target.split(',');
 			if (!parts[1]) return this.parse('/backgroundhelp');
 			let targ = parts[0].toLowerCase().trim();
@@ -394,7 +373,7 @@ exports.commands = {
 		take: 'deletebg',
 		delete: 'deletebg',
 		deletebg: function (target, room, user) {
-			if (!this.can('broadcast')) return false;
+			if (!this.can('lock')) return false;
 			let targ = target.toLowerCase();
 			if (!target) return this.parse('/backgroundhelp');
 			if (!Db.backgrounds.has(targ)) return this.errorReply('This user does not have a custom background.');
@@ -416,7 +395,7 @@ exports.commands = {
 		add: "set",
 		give: "set",
 		set: function (target, room, user) {
-			if (!this.can('broadcast')) return false;
+			if (!this.can('lock')) return false;
 			let parts = target.split(',');
 			let targ = parts[0].toLowerCase().trim();
 			if (!parts[2]) return this.errorReply('/musichelp');
@@ -430,7 +409,7 @@ exports.commands = {
 		take: "delete",
 		remove: "delete",
 		delete: function (target, room, user) {
-			if (!this.can('broadcast')) return false;
+			if (!this.can('lock')) return false;
 			let targ = target.toLowerCase();
 			if (!target) return this.parse('/musichelp');
 			if (!Db.music.has(targ)) return this.errorReply('This user does not have any music on their profile.');
@@ -505,21 +484,6 @@ exports.commands = {
 		"/nature set [nature] - Sets your Profile Nature.",
 		"/nature delete - Removes your Profile Nature.",
 	],
-
-	'!lastactive': true,
-	checkactivity: 'lastactive',
-	lastactive: function (target, room, user) {
-		if (!target) target = user.name;
-		const targetId = toId(target);
-		if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
-		if (!this.runBroadcast()) return;
-		let username = (targetId ? targetId.name : target);
-		let online = (targetId ? targetId.connected : false);
-		if (online && lastActive(toId(username))) {
-			return this.sendReplyBox(`${WL.nameColor(target, true)} was last active: ${lastActive(targetId)}.`);
-		}
-	},
-	lastactivehelp: ["/lastactive - Shows how long ago it has been since a user has posted a message."],
 
 	'!profile': true,
 	profile: function (target, room, user) {
@@ -607,8 +571,8 @@ exports.commands = {
 					profile += `&nbsp;${pColor(toId(username))}<b>Last Activity:</b> ${lastActive(toId(username))}</font><br />`;
 				}
 				profile += `&nbsp;${pColor(toId(username))}<b>Last Seen:</b> ${getLastSeen(toId(username))}</font><br />`;
-				if (Db.friendcode.has(toId(username))) {
-					profile += `&nbsp;${pColor(toId(username))}<b>Friend Code:</b> ${Db.friendcode.get(toId(username))}</font><br />`;
+				if (Db.friendcodes.has(toId(username))) {
+					profile += `&nbsp;${pColor(toId(username))}<b>Friend Code:</b> ${Db.friendcodes.get(toId(username))}</font><br />`;
 				}
 				profile += `&nbsp;${song(toId(username))}`;
 				profile += `&nbsp;</div>`;
