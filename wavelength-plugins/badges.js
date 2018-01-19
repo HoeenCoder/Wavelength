@@ -40,7 +40,7 @@ exports.commands = {
 			userBadges.push(selectedBadge);
 			Db.userBadges.set(userid, userBadges);
 			if (Users.get(targetUser)) Users.get(userid).popup('|modal||html|You have received a badge from ' + WL.nameColor(toId(user), true) + ': <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16"> (' + selectedBadge + ')');
-			this.logModCommand(user.name + " gave the badge '" + selectedBadge + "' badge to " + userid + ".");
+			this.privateModAction(user.name + " gave the badge '" + selectedBadge + "' badge to " + userid + ".");
 			this.sendReply("The '" + selectedBadge + "' badge was given to '" + userid + "'.");
 			break;
 		case 'create':
@@ -51,7 +51,7 @@ exports.commands = {
 			let img = parts[3].trim();
 			if (Db.badgeData.has(badgeName)) return this.errorReply('This badge already exists.');
 			Db.badgeData.set(badgeName, [description, img]);
-			this.logModCommand(user.name + " created the badge '" + badgeName + ".");
+			this.privateModAction(user.name + " created the badge '" + badgeName + ".");
 			Users.get(user.userid).popup('|modal||html|You have successfully created the badge ' + '<img src ="' + img + '" width="16" height="16"> (' + badgeName + ')');
 			break;
 		case 'list':
@@ -82,7 +82,7 @@ exports.commands = {
 			if (!Db.badgeData.get.has(selectedBadge)) return this.errorReply(selectedBadge + " is not a badge.");
 			userBadges = userBadges.filter(b => b !== selectedBadge);
 			Db.userBadges.set(userid, userBadges);
-			this.logModCommand(user.name + " took the badge '" + selectedBadge + "' badge from " + userid + ".");
+			this.privateModAction(user.name + " took the badge '" + selectedBadge + "' badge from " + userid + ".");
 			this.sendReply("The '" + selectedBadge + "' badge was taken from '" + userid + "'.");
 			if (Users(userid)) Users.get(userid).popup('|modal||html|' + WL.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
 			break;
@@ -99,7 +99,7 @@ exports.commands = {
 				Db.userBadges.set(curUser.userid, badges);
 			});
 			this.sendReply("The badge with the name '" + selectedBadge + "' deleted.");
-			this.logModCommand(user.name + " removed the badge '" + selectedBadge + ".");
+			this.privateModAction(user.name + " removed the badge '" + selectedBadge + ".");
 			break;
 		case 'user':
 			if (!parts[1]) return this.errorReply('No target user was specified.');
