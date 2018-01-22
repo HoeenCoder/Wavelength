@@ -286,6 +286,37 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Jolly',
 			},
+			'@Finny': {
+				species: 'Totodile',
+				ability: 'Sheer Force',
+				item: 'Life Orb',
+				gender: 'M',
+				moves: ['Waterfall', 'Dragon Dance', 'Aqua Jet'],
+				signatureMove: 'Dying Inside',
+				evs: {
+					atk: 252,
+					def: 4,
+					spe: 252,
+				},
+				nature: 'Adamant',
+			},
+			'~Showdown Helper': {
+				species: 'Celebi',
+				ability: 'Magic Bounce',
+				item: 'Weakness Policy',
+				gender: 'M',
+				moves: ['Quiver Dance', 'Recover', 'Giga Drain'],
+				signatureMove: 'Psychic',
+				evs: {
+					hp: 252,
+					def: 252,
+					spd: 4,
+				},
+				ivs: {
+					atk: 0,
+				},
+				nature: 'Bold',
+			},
 			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
