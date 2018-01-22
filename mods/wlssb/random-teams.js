@@ -300,7 +300,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'~Showdown Helper': {
+			'@Showdown Helper': {
 				species: 'Celebi',
 				ability: 'Magic Bounce',
 				item: 'Weakness Policy',
