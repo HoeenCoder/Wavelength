@@ -187,11 +187,11 @@ exports.commands = {
 			}
 			let color = target[2].trim();
 			if (color.charAt(0) !== '#') return this.errorReply(`The color needs to be a hex starting with "#".`);
-			Db.titles.set(userid, [title, color]);
+			Db.customtitles.set(userid, [title, color]);
 			if (Users.get(targetUser)) {
 				Users(targetUser).popup(`|html|You have received a custom title from ${WL.nameColor(user.name, true)}.<br />Title: ${showTitle(toId(targetUser))}<br />Title Hex Color: ${color}`);
 			}
-			this.addModAction(`${user.name} set a custom title to ${target[0]}'s profile.`);
+			this.privateModAction(`${user.name} set a custom title to ${target[0]}'s profile.`);
 			Monitor.log(`${user.name} set a custom title to ${target[0]}'s profile.`);
 			return this.sendReply(`Title "${title}" and color "${color}" for ${target[0]}'s custom title have been set.`);
 		},
@@ -202,15 +202,15 @@ exports.commands = {
 			if (!this.can('ban')) return false;
 			if (!target) return this.parse('/help', true);
 			let userid = toId(target);
-			if (!Db.titles.has(userid) && !Db.titlecolors.has(userid)) {
+			if (!Db.customtitles.has(userid) && !Db.titlecolors.has(userid)) {
 				return this.errorReply(`${target} does not have a custom title set.`);
 			}
 			Db.titlecolors.remove(userid);
-			Db.titles.remove(userid);
+			Db.customtitles.remove(userid);
 			if (Users.get(userid)) {
 				Users(userid).popup(`|html|${WL.nameColor(user.name, true)} has removed your custom title.`);
 			}
-			this.addModAction(`${user.name} removed ${target}'s custom title.`);
+			this.privateModAction(`${user.name} removed ${target}'s custom title.`);
 			Monitor.log(`${user.name} removed ${target}'s custom title.`);
 			return this.sendReply(`${target}'s custom title and title color were removed from the server memory.`);
 		},
