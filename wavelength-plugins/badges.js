@@ -39,7 +39,7 @@ exports.commands = {
 			userBadges.push(selectedBadge);
 			Db.userBadges.set(userid, userBadges);
 			if (Users.get(targetUser)) Users.get(userid).popup(`|modal||html|You have received a badge from ${WL.nameColor(user.name, true)}: <img src="${Db.badgeData.get(selectedBadge)[1]}" width="16" height="16"> (${selectedBadge})`);
-			this.addModCommand(`${user.name} gave the "${selectedBadge}" badge to ${parts[0]}.`);
+			this.privateModAction(`${user.name} gave the "${selectedBadge}" badge to ${parts[0]}.`);
 			this.sendReply(`The "${selectedBadge}" badge was given to ${parts[0]}.`);
 		},
 
@@ -52,7 +52,7 @@ exports.commands = {
 			let img = parts[2].trim();
 			if (Db.badgeData.has(badgeName)) return this.errorReply('This badge already exists.');
 			Db.badgeData.set(badgeName, [description, img]);
-			this.addModCommand(`${user.name} created the badge "${badgeName}".`);
+			this.privateModAction(`${user.name} created the badge "${badgeName}".`);
 			Users.get(user.userid).popup(`|modal||html|You have successfully created the badge <img src ="${img}" width="16" height="16"> (${badgeName})`);
 		},
 
@@ -89,7 +89,7 @@ exports.commands = {
 			if (!Db.badgeData.get(selectedBadge)) return this.errorReply(`${selectedBadge} is not a badge.`);
 			userBadges = userBadges.filter(b => b !== selectedBadge);
 			Db.userBadges.set(userid, userBadges);
-			this.addModCommand(`${user.name} took the badge "${selectedBadge}" badge from ${parts[0]}.`);
+			this.privateModAction(`${user.name} took the badge "${selectedBadge}" badge from ${parts[0]}.`);
 			this.sendReply(`The "${selectedBadge}" badge was taken from "${parts[0]}.`);
 			if (Users(userid)) Users.get(userid).popup(`|modal||html|${WL.nameColor(user.name, true)} has taken the ${selectedBadge} from you. <img src="${Db.badgeData.get(selectedBadge)[1]}" width="16" height="16">`);
 		},
@@ -108,7 +108,7 @@ exports.commands = {
 				Db.userBadges.set(curUser.userid, badges);
 			});
 			this.sendReply(`The badge with the name "${selectedBadge}" deleted.`);
-			this.addModCommand(`${user.name} removed the badge "${selectedBadge}".`);
+			this.privateModAction(`${user.name} removed the badge "${selectedBadge}".`);
 		},
 
 		user: function (target, room, user) {
