@@ -865,4 +865,24 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Normal",
 	},
+	//Finny
+	"dyinginside": {
+		id: "dyinginside",
+		name: "Dying Inside",
+		accuracy: 100,
+		basePower: 80,
+		category: "Physical",
+		desc: "Has Ice type effectiveness.",
+		pp: 15,
+		onEffectiveness: function (typeMod, type, move) {
+			return typeMod + this.getEffectiveness('Ice', type);
+		},
+		priority: 0,
+		flags: {protect: 1, mirror: 1, contact: 1},
+		secondary: false,
+		target: "normal",
+		type: "Ghost",
+		zMovePower: 160,
+		contestType: "Tough",
+	},
 };
