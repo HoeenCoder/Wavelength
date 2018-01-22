@@ -533,8 +533,7 @@ exports.commands = {
 
 		function pColor(user) {
 			let color = Db.profilecolor.get(user);
-			// default to black
-			if (!Db.profilecolor.has(user)) return `<font color="#000">`;
+			if (!Db.profilecolor.has(user)) return '';
 			return `<font color="${color}">`;
 		}
 
