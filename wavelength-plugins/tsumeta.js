@@ -53,7 +53,7 @@ exports.commands = {
 			if (isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} is already in the TsuMeta Council.`);
 			Db.councilmember.set(tsuMetaMember, 1);
 			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been successfully been added into the TsuMeta Council.`);
-			Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
+			if (Users(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		kick: "take",
@@ -67,7 +67,7 @@ exports.commands = {
 			if (!isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} isn't a TsuMeta council member.`);
 			Db.councilmember.remove(tsuMetaMember);
 			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been removed from the TsuMeta council.`);
-			Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
+			if (Users(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		users: 'list',
@@ -167,7 +167,7 @@ exports.commands = {
 			// Only allow xcmr to unsuspend users if he is currently in the council
 			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				Db.councilmember.set(targetUser, 1);
-				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
+				this.sendReply(`You have successfully unsuspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
