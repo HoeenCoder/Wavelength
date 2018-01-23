@@ -118,7 +118,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'&iSteelX': {
+			'&MechSteelix': {
 				species: 'Steelix-Mega',
 				ability: 'Sandbox',
 				item: 'Lum Berry',

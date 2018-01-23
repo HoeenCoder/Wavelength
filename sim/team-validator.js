@@ -4,7 +4,7 @@
  *
  * Handles team validation, and specifically learnset checking.
  *
- * @license MIT license
+ * @license MIT
  */
 
 'use strict';
@@ -41,8 +41,8 @@ class Validator {
 	}
 
 	/**
-	 * @param {PokemonSet[]} team
-	 * @return {string[] | false}
+	 * @param {PokemonSet[]?} team
+	 * @return {string[]?}
 	 */
 	validateTeam(team, removeNicknames = false) {
 		if (this.format.validateTeam) return this.format.validateTeam.call(this, team, removeNicknames);
@@ -50,8 +50,8 @@ class Validator {
 	}
 
 	/**
-	 * @param {PokemonSet[]} team
-	 * @return {string[] | false}
+	 * @param {PokemonSet[]?} team
+	 * @return {string[]?}
 	 */
 	baseValidateTeam(team, removeNicknames = false) {
 		let format = this.format;
@@ -60,11 +60,11 @@ class Validator {
 		let problems = /** @type {string[]} */ ([]);
 		const ruleTable = this.ruleTable;
 		if (format.team) {
-			return false;
+			return null;
 		}
 		if (!team || !Array.isArray(team)) {
 			if (format.canUseRandomTeam) {
-				return false;
+				return null;
 			}
 			return [`You sent invalid team data. If you're not using a custom client, please report this as a bug.`];
 		}
@@ -122,14 +122,14 @@ class Validator {
 			problems = problems.concat(format.onValidateTeam.call(dex, team, format, teamHas) || []);
 		}
 
-		if (!problems.length) return false;
+		if (!problems.length) return null;
 		return problems;
 	}
 
 	/**
 	 * @param {PokemonSet} set
 	 * @param {AnyObject} teamHas
-	 * @return {string[] | false}
+	 * @return {string[]?}
 	 */
 	validateSet(set, teamHas) {
 		let format = this.format;
@@ -356,7 +356,8 @@ class Validator {
 			}
 
 			if (ruleTable.has('-illegal')) {
-				let problem = (format.checkLearnset || this.checkLearnset).call(this, move, template, lsetData, set);
+				const checkLearnset = (ruleTable.checkLearnset && ruleTable.checkLearnset[0] || this.checkLearnset);
+				let problem = checkLearnset.call(this, move, template, lsetData, set);
 				if (problem) {
 					let problemString = `${name} can't learn ${move.name}`;
 					if (problem.type === 'incompatibleAbility') {
@@ -645,7 +646,7 @@ class Validator {
 
 		if (!problems.length) {
 			if (forcedLevel) set.level = forcedLevel;
-			return false;
+			return null;
 		}
 
 		return problems;
@@ -852,7 +853,7 @@ class Validator {
 	 * @param {Template} species
 	 * @param {PokemonSources} lsetData
 	 * @param {AnyObject} set
-	 * @return {{type: string, [any: string]: any} | false}
+	 * @return {{type: string, [any: string]: any}?}
 	 */
 	checkLearnset(move, species, lsetData = {sources: [], sourcesBefore: this.dex.gen}, set = {}) {
 		let dex = this.dex;
@@ -1003,7 +1004,7 @@ class Validator {
 						if (learnedGen === dex.gen) {
 							// current-gen level-up, TM or tutor moves:
 							//   always available
-							return false;
+							return null;
 						}
 						// past-gen level-up, TM, or tutor moves:
 						//   available as long as the source gen was or was before this gen
@@ -1200,7 +1201,7 @@ class Validator {
 			lsetData.limitedEgg.push(limitedEgg === true ? moveid : limitedEgg);
 		}
 
-		return false;
+		return null;
 	}
 
 	/**

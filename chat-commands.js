@@ -690,12 +690,14 @@ exports.commands = {
 			isPrivate: privacy,
 			auth: {},
 			introMessage: '<h2 style="margin-top:0">' + titleHTML + '</h2><p>There are several ways to invite people:<br />- in this chat: <code>/invite USERNAME</code><br />- anywhere in PS: link to <code>&lt;&lt;' + roomid + '>></code>' + (groupChatURL ? '<br />- outside of PS: link to <a href="' + groupChatURL + '">' + groupChatURL + '</a>' : '') + '</p><p>This room will expire after 40 minutes of inactivity or when the server is restarted.</p><p style="margin-bottom:0"><button name="send" value="/roomhelp">Room management</button>',
+			staffMessage: `<p>As creator of this groupchat, <u>you are entirely responsible for what occurs in this chatroom</u>. Global rules apply at all times.</p><p>If you have created this room for someone else, <u>you are still responsible</u> whether or not you choose to actively supervise the room.</p><p style="font-style:italic">For this reason, we strongly recommend that you only create groupchats for users you know and trust.</p><p>If this room is used to break global rules or disrupt other areas of the server, this will be considered irresponsible use of auth privileges on the part of the creator, and <b>you will be globally demoted and barred from public auth.</b></p>`,
 		});
 		if (targetRoom) {
 			// The creator is RO.
 			targetRoom.auth[user.userid] = '#';
 			// Join after creating room. No other response is given.
 			user.joinRoom(targetRoom.id);
+			user.popup(`You've just made a groupchat; it is now your responsibility, regardless of whether or not you actively partake in the room. For more info, read your groupchat's staff intro.`);
 			return;
 		}
 		return this.errorReply("An unknown error occurred while trying to create the room '" + title + "'.");
@@ -1456,6 +1458,7 @@ exports.commands = {
 			return this.errorReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
 		if (!this.can('ban', targetUser, room)) return false;
+		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to ban upper staff members.");
 		let name = targetUser.getLastName();
 		let userid = targetUser.getLastId();
 
@@ -1581,6 +1584,7 @@ exports.commands = {
 			return this.errorReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
 		if (!this.can('warn', targetUser, room)) return false;
+		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to warn upper staff members.");
 
 		this.addModAction("" + targetUser.name + " was warned by " + user.name + "." + (target ? " (" + target + ")" : ""));
 		this.modlog('WARN', targetUser, target, {noalts: 1});
@@ -1637,6 +1641,7 @@ exports.commands = {
 
 		let muteDuration = ((cmd === 'hm' || cmd === 'hourmute') ? HOURMUTE_LENGTH : MUTE_LENGTH);
 		if (!this.can('mute', targetUser, room)) return false;
+		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to mute upper staff members.");
 		let canBeMutedFurther = ((room.getMuteTime(targetUser) || 0) <= (muteDuration * 5 / 6));
 		if (targetUser.locked || (room.isMuted(targetUser) && !canBeMutedFurther) || Punishments.isRoomBanned(targetUser, room.id)) {
 			let problem = " but was already " + (targetUser.locked ? "locked" : room.isMuted(targetUser) ? "muted" : "room banned");
@@ -2006,21 +2011,20 @@ exports.commands = {
 
 	rangeban: 'banip',
 	banip: function (target, room, user) {
-		target = this.splitTargetText(target);
-		let targetIp = this.targetUsername.trim();
-		if (!targetIp || !/^[0-9.]+(?:\.\*)?$/.test(targetIp)) return this.parse('/help banip');
-		if (!target) return this.errorReply("/banip requires a ban reason");
+		const [ip, reason] = this.splitOne(target);
+		if (!ip || !/^[0-9.]+(?:\.\*)?$/.test(ip)) return this.parse('/help banip');
+		if (!reason) return this.errorReply("/banip requires a ban reason");
 
 		if (!this.can('rangeban')) return false;
-		const targetDesc = "IP " + (targetIp.endsWith('*') ? "range " : "") + targetIp;
+		const ipDesc = "IP " + (ip.endsWith('*') ? "range " : "") + ip;
 
-		const curPunishment = Punishments.ipSearch(targetIp);
+		const curPunishment = Punishments.ipSearch(ip);
 		if (curPunishment && curPunishment[0] === 'BAN') {
-			return this.errorReply(`The ${targetDesc} is already temporarily banned.`);
+			return this.errorReply(`The ${ipDesc} is already temporarily banned.`);
 		}
-		Punishments.banRange(targetIp, target);
-		this.addModAction(`${user.name} hour-banned the ${targetDesc}: ${target}`);
-		this.modlog('RANGEBAN', null, target);
+		Punishments.banRange(ip, reason);
+		this.addModAction(`${user.name} hour-banned the ${ipDesc}: ${reason}`);
+		this.modlog('RANGEBAN', null, reason);
 	},
 	baniphelp: [`/banip [ip] - Globally bans this IP or IP range for an hour. Accepts wildcards to ban ranges. Existing users on the IP will not be banned. Requires: & ~`],
 
@@ -2042,23 +2046,22 @@ exports.commands = {
 
 	rangelock: 'lockip',
 	lockip: function (target, room, user) {
-		target = this.splitTargetText(target);
-		let targetIp = this.targetUsername.trim();
-		if (!targetIp || !/^[0-9.]+(?:\.\*)?$/.test(targetIp)) return this.parse('/help lockip');
-		if (!target) return this.errorReply("/lockip requires a lock reason");
+		const [ip, reason] = this.splitOne(target);
+		if (!ip || !/^[0-9.]+(?:\.\*)?$/.test(ip)) return this.parse('/help lockip');
+		if (!reason) return this.errorReply("/lockip requires a lock reason");
 
 		if (!this.can('rangeban')) return false;
-		const targetDesc = "IP " + (targetIp.endsWith('*') ? "range " : "") + targetIp;
+		const ipDesc = "IP " + (ip.endsWith('*') ? "range " : "") + ip;
 
-		const curPunishment = Punishments.ipSearch(targetIp);
+		const curPunishment = Punishments.ipSearch(ip);
 		if (curPunishment && (curPunishment[0] === 'BAN' || curPunishment[0] === 'LOCK')) {
 			const punishDesc = curPunishment[0] === 'BAN' ? `temporarily banned` : `temporarily locked`;
-			return this.errorReply(`The ${targetDesc} is already ${punishDesc}.`);
+			return this.errorReply(`The ${ipDesc} is already ${punishDesc}.`);
 		}
 
-		Punishments.lockRange(targetIp, target);
-		this.addModAction(`${user.name} hour-locked the ${targetDesc}: ${target}`);
-		this.modlog('RANGELOCK', null, target);
+		Punishments.lockRange(ip, reason);
+		this.addModAction(`${user.name} hour-locked the ${ipDesc}: ${reason}`);
+		this.modlog('RANGELOCK', null, reason);
 	},
 	lockiphelp: [`/lockip [ip] - Globally locks this IP or IP range for an hour. Accepts wildcards to ban ranges. Existing users on the IP will not be banned. Requires: & ~`],
 
@@ -2374,44 +2377,46 @@ exports.commands = {
 	hidealttext: 'hidetext',
 	hidealtstext: 'hidetext',
 	hidetext: function (target, room, user, connection, cmd) {
-		if (!target) return this.parse('/help hidetext');
+		if (!target) return this.parse(`/help hidetext`);
 
 		this.splitTarget(target);
 		let targetUser = this.targetUser;
 		let name = this.targetUsername;
-		if (!targetUser) return this.errorReply("User '" + name + "' not found.");
-		let userid = targetUser.getLastId();
+		if (!targetUser && !room.log.hasUsername(target)) return this.errorReply(`User ${target} not found or has no roomlogs.`);
+		if (!targetUser && !user.can('lock')) return this.errorReply(`User ${name} not found.`);
+		let userid = toId(this.inputUsername);
 		let hidetype = '';
 		if (!user.can('mute', targetUser, room) && !this.can('ban', targetUser, room)) return;
 
-		if (targetUser.locked || Punishments.isRoomBanned(targetUser, room.id) || room.isMuted(targetUser) || user.can('rangeban')) {
+		if (targetUser && (targetUser.locked || Punishments.isRoomBanned(targetUser, room.id) || room.isMuted(targetUser) || user.can('lock'))) {
+			hidetype = 'hide|';
+		} else if (!targetUser && user.can('lock')) {
 			hidetype = 'hide|';
 		} else {
-			return this.errorReply("User '" + name + "' is not muted/banned from this room or locked.");
+			return this.errorReply(`User ${name} is neither locked nor muted/banned from this room.`);
 		}
 
 		if (cmd === 'hidealtstext' || cmd === 'hidetextalts' || cmd === 'hidealttext') {
-			this.addModAction(`${targetUser.name}'s alts' messages were cleared from ${room.title} by ${user.name}.`);
+			this.addModAction(`${name}'s alts' messages were cleared from ${room.title} by ${user.name}.`);
 			this.modlog('HIDEALTSTEXT', targetUser, null, {noip: 1});
 			this.add(`|unlink|${hidetype}${userid}`);
 
 			const alts = targetUser.getAltUsers(true);
 			for (const alt of alts) {
-				this.add(`|unlink|${hidetype}${alt.name}`);
+				this.add(`|unlink|${hidetype}${alt.getLastId()}`);
 			}
-			for (const name in targetUser.prevNames) {
-				this.add(`|unlink|${hidetype}${targetUser.prevNames[name]}`);
+			for (const prevName in targetUser.prevNames) {
+				this.add(`|unlink|${hidetype}${targetUser.prevNames[prevName]}`);
 			}
 		} else {
-			this.addModAction("" + targetUser.name + "'s messages were cleared from  " + room.title + " by " + user.name + ".");
+			this.addModAction(`${name}'s messages were cleared from ${room.title} by ${user.name}.`);
 			this.modlog('HIDETEXT', targetUser, null, {noip: 1, noalts: 1});
-			this.add('|unlink|' + hidetype + userid);
-			if (userid !== toId(this.inputUsername)) this.add('|unlink|' + hidetype + toId(this.inputUsername));
+			this.add(`|unlink|${hidetype}${userid}`);
 		}
 	},
 	hidetexthelp: [
-		`/hidetext [username] - Removes a locked or muted/banned user's messages from chat. Requires: %, @ * # & ~`,
-		`/hidealtstext [username] - Removes a locked or muted/banned user's messages, and their alternate account's messages from the chat.  Requires: %, @ * # & ~`,
+		`/hidetext [username] - Removes a locked or muted/banned user's messages from chat. Requires: % @ * # & ~`,
+		`/hidealtstext [username] - Removes a locked or muted/banned user's messages, and their alternate account's messages from the chat.  Requires: % @ * # & ~`,
 	],
 
 	ab: 'blacklist',
@@ -2658,7 +2663,7 @@ exports.commands = {
 		if (!this.can('hotpatch')) return;
 
 		const lock = Monitor.hotpatchLock;
-		const hotpatches = ['chat', 'tournaments', 'formats', 'loginserver', 'punishments', 'dnsbl', 'wavelength'];
+		const hotpatches = ['chat', 'formats', 'loginserver', 'punishments', 'dnsbl', 'wavelength'];
 
 		try {
 			if (target === 'all') {
@@ -2670,22 +2675,24 @@ exports.commands = {
 				}
 			} else if (target === 'chat' || target === 'commands') {
 				if (lock['chat']) return this.errorReply(`Hot-patching chat has been disabled by ${lock['chat'].by} (${lock['chat'].reason})`);
+				if (lock['tournaments']) return this.errorReply(`Hot-patching tournaments has been disabled by ${lock['tournaments'].by} (${lock['tournaments'].reason})`);
 
-				const ProcessManagers = require('./process-manager').cache;
-				for (let PM of ProcessManagers.keys()) {
-					if (PM.isChatBased) {
-						PM.unspawn();
-						ProcessManagers.delete(PM);
+				const processManagers = require('./lib/process-manager').processManagers;
+				for (let manager of processManagers.slice()) {
+					if (manager.filename.startsWith(FS('chat-plugins').path)) {
+						manager.destroy();
 					}
 				}
 
-				Chat.uncacheTree('./chat');
-				delete require.cache[require.resolve('./chat-commands')];
-				delete require.cache[require.resolve('./chat-plugins/info')];
+				Chat.uncache('./chat');
+				Chat.uncache('./chat-commands');
+				Chat.uncacheDir('./chat-plugins');
+				Chat.uncache('./WL');
+				global.WL = require('./WL').WL;
 				global.Chat = require('./chat');
 
 				let runningTournaments = Tournaments.tournaments;
-				Chat.uncacheTree('./tournaments');
+				Chat.uncacheDir('./tournaments');
 				global.Tournaments = require('./tournaments');
 				Tournaments.tournaments = runningTournaments;
 				this.sendReply("Chat commands have been hot-patched.");
@@ -2693,7 +2700,7 @@ exports.commands = {
 				if (lock['tournaments']) return this.errorReply(`Hot-patching tournaments has been disabled by ${lock['tournaments'].by} (${lock['tournaments'].reason})`);
 
 				let runningTournaments = Tournaments.tournaments;
-				Chat.uncacheTree('./tournaments');
+				Chat.uncacheDir('./tournaments');
 				global.Tournaments = require('./tournaments');
 				Tournaments.tournaments = runningTournaments;
 				this.sendReply("Tournaments have been hot-patched.");
@@ -2701,7 +2708,7 @@ exports.commands = {
 				if (lock['battles']) return this.errorReply(`Hot-patching battles has been disabled by ${lock['battles'].by} (${lock['battles'].reason})`);
 				if (lock['formats']) return this.errorReply(`Hot-patching formats has been disabled by ${lock['formats'].by} (${lock['formats'].reason})`);
 
-				Rooms.SimulatorProcess.respawn();
+				Rooms.PM.respawn();
 				this.sendReply("Battles have been hot-patched. Any battles started after now will use the new code; however, in-progress battles will continue to use the old code.");
 			} else if (target === 'formats') {
 				if (lock['formats']) return this.errorReply(`Hot-patching formats has been disabled by ${lock['formats'].by} (${lock['formats'].reason})`);
@@ -2709,7 +2716,10 @@ exports.commands = {
 				if (lock['validator']) return this.errorReply(`Hot-patching the validator has been disabled by ${lock['validator'].by} (${lock['validator'].reason})`);
 
 				// uncache the sim/dex.js dependency tree
-				Chat.uncacheTree('./sim/dex');
+				Chat.uncacheDir('./sim');
+				Chat.uncacheDir('./data');
+				Chat.uncacheDir('./mods');
+				Chat.uncache('./config/formats');
 				// reload sim/dex.js
 				global.Dex = require('./sim/dex');
 				// rebuild the formats list
@@ -2717,14 +2727,14 @@ exports.commands = {
 				// respawn validator processes
 				TeamValidatorAsync.PM.respawn();
 				// respawn simulator processes
-				Rooms.SimulatorProcess.respawn();
+				Rooms.PM.respawn();
 				// broadcast the new formats list to clients
 				Rooms.global.send(Rooms.global.formatListText);
 
 				this.sendReply("Formats have been hot-patched.");
 			} else if (target === 'loginserver') {
 				FS('config/custom.css').unwatch();
-				Chat.uncacheTree('./loginserver');
+				Chat.uncache('./loginserver');
 				global.LoginServer = require('./loginserver');
 				this.sendReply("The login server has been hot-patched. New login server requests will use the new code.");
 			} else if (target === 'learnsets' || target === 'validator') {
@@ -2736,19 +2746,12 @@ exports.commands = {
 			} else if (target === 'punishments') {
 				if (lock['punishments']) return this.errorReply(`Hot-patching punishments has been disabled by ${lock['punishments'].by} (${lock['punishments'].reason})`);
 
-				delete require.cache[require.resolve('./punishments')];
+				Chat.uncache('./punishments');
 				global.Punishments = require('./punishments');
 				this.sendReply("Punishments have been hot-patched.");
 			} else if (target === 'dnsbl' || target === 'datacenters') {
 				Dnsbl.loadDatacenters();
 				this.sendReply("Dnsbl has been hot-patched.");
-			} else if (target === 'wavelength') {
-				if (lock['wavelength']) return this.errorReply(`Hot-patching wavelength has been disabled by ${lock['wavelength'].by} (${lock['wavelength'].reason})`);
-
-				delete require.cache[require.resolve('./WL')];
-				// Dosent remove functions, only overwrites existing functions with fresh copies.
-				global.WL = Object.assign(WL, require('./WL').WL);
-				this.sendReply('The Wavelength global has been hotpatched.');
 			} else if (target.startsWith('disable')) {
 				this.sendReply("Disabling hot-patch has been moved to its own command:");
 				return this.parse('/help nohotpatch');
@@ -2827,7 +2830,7 @@ exports.commands = {
 		// should be in the format: IP, IP, name, URL
 		let widen = (cmd === 'widendatacenters');
 
-		FS('config/datacenters.csv').readTextIfExists().then(data => {
+		FS('config/datacenters.csv').readIfExists().then(data => {
 			let datacenters = [];
 			for (const row of data.split("\n")) {
 				if (!row) continue;

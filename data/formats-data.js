@@ -2706,7 +2706,7 @@ exports.BattleFormatsData = {
 		tier: "NFE",
 	},
 	slaking: {
-		randomBattleMoves: ["earthquake", "pursuit", "nightslash", "doubleedge", "retaliate"],
+		randomBattleMoves: ["earthquake", "pursuit", "nightslash", "doubleedge", "gigaimpact"],
 		randomDoubleBattleMoves: ["earthquake", "nightslash", "doubleedge", "retaliate", "hammerarm", "rockslide"],
 		eventPokemon: [
 			{"generation": 4, "level": 50, "gender": "M", "nature": "Adamant", "moves": ["gigaimpact", "return", "shadowclaw", "aerialace"], "pokeball": "cherishball"},
@@ -5169,7 +5169,7 @@ exports.BattleFormatsData = {
 	durant: {
 		randomBattleMoves: ["honeclaws", "ironhead", "xscissor", "stoneedge", "batonpass", "superpower"],
 		randomDoubleBattleMoves: ["honeclaws", "ironhead", "xscissor", "rockslide", "protect", "superpower"],
-		tier: "RU",
+		tier: "BL2",
 	},
 	deino: {
 		randomBattleMoves: ["outrage", "crunch", "firefang", "dragontail", "thunderwave", "superpower"],
@@ -6604,7 +6604,7 @@ exports.BattleFormatsData = {
 		tier: "RU",
 	},
 	necrozmaduskmane: {
-		randomBattleMoves: ["swordsdance", "autotomize", "photongeyser", "sunsteelstrike", "earthquake", "knockoff"],
+		randomBattleMoves: ["swordsdance", "sunsteelstrike", "photongeyser", "earthquake", "knockoff", "autotomize"],
 		eventPokemon: [
 			{"generation": 7, "level": 65, "moves": ["sunsteelstrike"]},
 		],
@@ -6612,7 +6612,7 @@ exports.BattleFormatsData = {
 		tier: "Uber",
 	},
 	necrozmadawnwings: {
-		randomBattleMoves: ["calmmind", "moongeistbeam", "photongeyser", "heatwave", "moonlight"],
+		randomBattleMoves: ["calmmind", "moongeistbeam", "photongeyser", "heatwave", "powergem", "trickroom"],
 		eventPokemon: [
 			{"generation": 7, "level": 65, "moves": ["moongeistbeam"]},
 		],

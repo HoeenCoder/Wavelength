@@ -423,13 +423,13 @@ exports.BattleMovedex = {
 	// Lycanium Z
 	"heartofdarkness": {
 		accuracy: 100,
-		basePower: 60,
+		basePower: 80,
 		category: "Physical",
 		desc: "Has a 10% chance to inflict dread on the target.",
 		shortDesc: "10% chance to inflict dread on the target.",
 		id: "heartofdarkness",
 
-		name: "Ḫ̱̙̞̅̓͑͝e̲̅̿a̤͕̦͉ř̗̿ͫ̽͢t̼̝͊͒ͭ̀ ̖̦͆ͯỏͧf̻̙ ̺̏̂̉͐ͨ̐̃͟D̼̦͕̅ͬ̚a̝̻͉̰̯̓̊̇r͉͇̿̽ͤ̆k̍̑ͯ̃͟ͅn̺̞̤͉̪ͦ͒̒ͪ̄͑ě̴̖̙̩̘̂ŝ̸̇ͪ̃ͬŝ̨͙̙͚͎̬̂̒ͅ",
+		name: "Ḫ̱̙̞̅̓͑͝e̲̅̿a̤͕̦͉ř̗̿ͫ̽͢t̼̝͊͒ͭ̀ ̖̦͆ͯỏͧf̻̙ ̺̏̂̉͐ͨ̐̃͟D̼̦͕̅ͬ̚a̝̻͉̰̯̓̊̇r͉͇̿̽ͤ̆k̍̑ͯ̃͟ͅn̺̞̤͉̪ͦ͒̒ͪ̄͑ě̴̖̙̩̘̂ŝ̸̇ͪ̃ͬŝ̨͙̙͚͎̬̂̒ͅ",
 		pp: 15,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
@@ -443,7 +443,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "heart Stamp", target);
 		},
 		onHit: function (target) {
-			this.add('c|%Lycanium Z|T̡̞͚͈̥̋ͧͯ̈̓ͩ̆i̗̱̦ͦͦͅm̞̥̰͎̱ͬ̅̆̈̽e̢͕̞̙͆ͤͫ ̲̳̮ͩ̐͌̈̔͐͗͢t̗ͤ̂̃o̱̖̤̤̟͔͛̐ͩ̌ ͍͚̺͍̹̓ͨs̢̞̮̏ḫ͖̱̖̍́ͮͧ̚ò̷͔ͫw̨̞͕̻̓̒͋ͮ ̧ͣ̚y͈͚͉̥̳̒́̇͌̓̈̑ŏ̼͇̠̰̖̈́̅ͧ̓͗́u̴͇̟̔̆͆͂ ͔̖̼͔̣̗̲͋̆̊̈̊̓̊͢w̹̻͔̠̙̫ͫͧ͛̅̑h͚̣̳̮̪͌̉ͥ̀̀a̽͏̘̘͕̹t̤̟̝̘̺͉̼̽ ̥̻̳͖̮̅ͤ̏͌͗ͅi̼͍̍́͢t͉̙̳̹ͤ͝s̺͒ͨ̔̋̓͛ ̺͈̹̻̟̱̞̅ͩͦ͋̋̾͛lͯ҉̪͉̝̻̙i̗̺͖̞ͅk͗̎͑̅ͯ҉̭e̅̊ͥ̄̑ͭͩ ̸̩̜̼̀ͫ̿͗̃ͅt̛̠̑̍ͤͤͩͬ̚ǒ̲̜̼͕̞ ̋̾͛̃̎̾͡d̟̯̤͚̤̬̐͟įĕ̻̞̖͖͎̿͛!̞̳̘̳͒̇̋̈');
+			this.add('c|%Lycanium Z|T̡̞͚͈̥̋ͧͯ̈̓ͩ̆i̗̱̦ͦͦͅm̞̥̰͎̱ͬ̅̆̈̽e̢͕̞̙͆ͤͫ ̲̳̮ͩ̐͌̈̔͐͗͢t̗ͤ̂̃o̱̖̤̤̟͔͛̐ͩ̌ ͍͚̺͍̹̓ͨs̢̞̮̏ḫ͖̱̖̍́ͮͧ̚ò̷͔ͫw̨̞͕̻̓̒͋ͮ ̧ͣ̚y͈͚͉̥̳̒́̇͌̓̈̑ŏ̼͇̠̰̖̈́̅ͧ̓͗́u̴͇̟̔̆͆͂ ͔̖̼͔̣̗̲͋̆̊̈̊̓̊͢w̹̻͔̠̙̫ͫͧ͛̅̑h͚̣̳̮̪͌̉ͥ̀̀a̽͏̘̘͕̹t̤̟̝̘̺͉̼̽ ̥̻̳͖̮̅ͤ̏͌͗ͅi̼͍̍́͢t͉̙̳̹ͤ͝s̺͒ͨ̔̋̓͛ ̺͈̹̻̟̱̞̅ͩͦ͋̋̾͛lͯ҉̪͉̝̻̙i̗̺͖̞ͅk͗̎͑̅ͯ҉̭e̅̊ͥ̄̑ͭͩ ̸̩̜̼̀ͫ̿͗̃ͅt̛̠̑̍ͤͤͩͬ̚ǒ̲̜̼͕̞ ̋̾͛̃̎̾͡d̟̯̤͚̤̬̐͟įĕ̻̞̖͖͎̿͛!̞̳̘̳͒̇̋̈');
 		},
 		target: "normal",
 		type: "Dark",
@@ -568,7 +568,7 @@ exports.BattleMovedex = {
 		target: "Normal",
 		type: "Dark",
 	},
-	// iSteelX
+	// MechSteelix
 	deepsleep: {
 		accuracy: true,
 		category: "Status",
@@ -586,7 +586,7 @@ exports.BattleMovedex = {
 			target.statusData.startTime = 3;
 			this.heal(target.maxhp); //Aeshetic only as the healing happens after you fall asleep in-game
 			this.add('-status', target, 'slp', '[from] move: Deep Sleep');
-			this.add('c|&iSteelX|Witness my true power!');
+			this.add('c|&MechSteelix|Witness my true power!');
 			this.add('-anim', target, "Protect", target);
 		},
 		secondary: {

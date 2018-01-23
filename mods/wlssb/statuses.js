@@ -186,6 +186,7 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
+			pokemon.types = ["Dark"];
 			this.add('c', '%Lycanium Z', '...Hi...');
 		},
 		onSwitchOut: function (pokemon) {
@@ -268,16 +269,16 @@ exports.BattleStatuses = {
 			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
 		},
 	},
-	isteelx: {
+	mechsteelix: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&iSteelX', 'Tell me, does a player such as yourself experience true fear?');
+			this.add('c', '&MechSteelix', 'Tell me, does a player such as yourself experience true fear?');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&iSteelX', 'What just happened?');
+			this.add('c', '&MechSteelix', 'What just happened?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&iSteelX', 'Forget my life.. always surrounded by bumbling baboons.');
+			this.add('c', '&MechSteelix', 'Forget my life.. always surrounded by bumbling baboons.');
 		},
 	},
 	therittz: {

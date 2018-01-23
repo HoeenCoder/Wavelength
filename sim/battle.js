@@ -2,7 +2,7 @@
  * Simulator Battle
  * Pokemon Showdown - http://pokemonshowdown.com/
  *
- * @license MIT license
+ * @license MIT
  */
 'use strict';
 
@@ -89,6 +89,8 @@ class Battle extends Dex.ModdedDex {
 		let format = Dex.getFormat(formatid, true);
 		super(format.mod);
 		Object.assign(this, this.data.Scripts);
+
+		this.id = '';
 
 		/**@type {string[]} */
 		this.log = [];
@@ -2157,7 +2159,11 @@ class Battle extends Dex.ModdedDex {
 			critMult = [0, 16, 8, 4, 3, 2];
 		} else {
 			critRatio = this.clampIntRange(critRatio, 0, 4);
-			critMult = [0, 16, 8, 2, 1];
+			if (this.gen === 6) {
+				critMult = [0, 16, 8, 2, 1];
+			} else {
+				critMult = [0, 24, 8, 2, 1];
+			}
 		}
 
 		move.crit = move.willCrit || false;
@@ -3376,17 +3382,17 @@ class Battle extends Dex.ModdedDex {
 		this.messageLog.push(data.join(' '));
 		let logPos = this.log.length;
 		let alreadyEnded = this.ended;
-		switch (data[1]) {
+		switch (data[0]) {
 		case 'join': {
 			let team = null;
 			if (more) team = Dex.fastUnpackTeam(more);
-			this.join(data[2], data[3], data[4], team);
+			this.join(data[1], data[2], data[3], team);
 			break;
 		}
 
 		case 'win':
 		case 'tie':
-			this.win(data[2]);
+			this.win(data[1]);
 			break;
 
 		case 'tiebreak':
@@ -3394,11 +3400,11 @@ class Battle extends Dex.ModdedDex {
 			break;
 
 		case 'choose':
-			this.choose(data[2], data[3]);
+			this.choose(data[1], data[2]);
 			break;
 
 		case 'undo':
-			this.undoChoice(data[2]);
+			this.undoChoice(data[1]);
 			break;
 
 		case 'eval': {
@@ -3435,9 +3441,9 @@ class Battle extends Dex.ModdedDex {
 
 	/**
 	 * @param {number} logPos
-	 * @param {boolean} alreadyEnded
+	 * @param {boolean} [alreadyEnded]
 	 */
-	sendUpdates(logPos, alreadyEnded) {
+	sendUpdates(logPos, alreadyEnded = false) {
 		if (this.log.length > logPos) {
 			if (alreadyEnded !== undefined && this.ended && !alreadyEnded) {
 				if (this.rated || Config.logchallenges) {
