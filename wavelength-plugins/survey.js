@@ -363,7 +363,7 @@ exports.commands = {
 				room.survey.surveyArray[num].timeoutMins = timeout;
 				room.survey.surveyArray[num].timeout = setTimeout(() => {
 					room.survey.end(num);
-					delete room.survey.surveyArray[num];
+					room.survey.surveyArray.splice(num, 1);
 				}, (timeout * 60000));
 				room.add(`The survey timer was turned on: survey ${room.survey.surveyArray[num].surveyNum} will end in ${timeout} minute(s).`);
 				this.modlog(`SURVEY`, null, `timer was set to ${timeout} minutes for survey #${room.survey.surveyArray[num].surveyNum}`);

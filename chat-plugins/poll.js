@@ -323,7 +323,7 @@ exports.commands = {
 				room.poll.pollArray[num].timeoutMins = timeout;
 				room.poll.pollArray[num].timeout = setTimeout(() => {
 					room.poll.end(num);
-					delete room.poll.pollArray[num];
+					room.poll.pollArray.splice(num, 1);
 				}, (timeout * 60000));
 				room.add("The poll timer was turned on: the poll " + room.poll.pollArray[num].pollNum + " will end in " + timeout + " minute(s).");
 				this.modlog('POLL TIMER', null, `#${room.poll.pollArray[num].pollNum} ${timeout} minutes`);
@@ -361,7 +361,7 @@ exports.commands = {
 
 			if (room.poll.pollArray[num].pollNum === parseInt(target) && room.poll.pollArray[num].timeout) clearTimeout(room.poll.pollArray[num].timeout);
 			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.end(num);
-			if (room.poll.pollArray[num].pollNum === parseInt(target)) delete room.poll.pollArray[num];
+			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.pollArray.splice(num, 1);
 
 			this.modlog('POLL END');
 			return this.privateModAction("(A poll was ended by " + user.name + ".)");
