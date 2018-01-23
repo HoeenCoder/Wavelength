@@ -152,7 +152,7 @@ class Hangman extends Rooms.RoomGame {
 			}
 			if (result === 2) {
 				output += '<br />Winner: ' + Chat.escapeHTML(this.lastGuesser);
-				WL.addExp(this.lastGuesser, this.room, 5);
+				WL.ExpControl.addExp(this.lastGuesser, this.room, 5);
 			} else if (this.guesses[this.guesses.length - 1].length === 1) {
 				// last guess was a letter
 				output += ' <small>&ndash; ' + Chat.escapeHTML(this.lastGuesser) + '</small>';

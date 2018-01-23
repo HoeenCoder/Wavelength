@@ -991,7 +991,7 @@ class Tournament {
 			if (this.room.isOfficial) {
 				Users(this.players[i].userid).tourBoost = false;
 				Users(this.players[i].userid).gameBoost = false;
-				WL.addExp(this.players[i].userid, this.room, 20);
+				WL.ExpControl.addExp(this.players[i].userid, this.room, 20);
 			}
 			this.players[i].destroy();
 		}
