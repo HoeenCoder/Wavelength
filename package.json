@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "node pokemon-showdown",
-    "test": "eslint --rulesdir=dev-tools/eslint --cache . && mocha"
+    "test": "eslint --cache . && mocha"
   },
   "bin": "./pokemon-showdown",
   "homepage": "http://pokemonshowdown.com",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@types/node": "^8.0.32",
     "@types/nodemailer": "^4.3.0",
-    "eslint": "^4.8.0",
+    "eslint": "^4.16.0",
     "mocha": "^4.0.1",
     "typescript": "^2.6.1"
   }

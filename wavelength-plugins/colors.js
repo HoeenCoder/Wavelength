@@ -8,7 +8,7 @@
 'use strict';
 
 const FS = require('../lib/fs.js');
-let customColors = FS('config/customcolors.json').readTextIfExistsSync();
+let customColors = FS('config/customcolors.json').readIfExistsSync();
 if (customColors !== '') {
 	customColors = JSON.parse(customColors);
 } else {

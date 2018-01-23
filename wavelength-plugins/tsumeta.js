@@ -8,7 +8,7 @@
 
 const FS = require('../lib/fs.js');
 
-let proposals = FS('config/proposals.json').readTextIfExistsSync();
+let proposals = FS('config/proposals.json').readIfExistsSync();
 
 if (proposals !== '') {
 	proposals = JSON.parse(proposals);

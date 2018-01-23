@@ -1485,9 +1485,6 @@ function getRoom(roomid) {
 
 /** @typedef {GlobalRoom | GameRoom | ChatRoom} Room */
 
-// workaround to stop TypeScript from checking room-battle
-let roomBattleLoc = './room-battle';
-
 let Rooms = Object.assign(getRoom, {
 	/**
 	 * The main roomid:Room table. Please do not hold a reference to a
@@ -1617,10 +1614,9 @@ let Rooms = Object.assign(getRoom, {
 
 	Roomlogs: Roomlogs,
 
-	RoomBattle: require(roomBattleLoc).RoomBattle,
-	RoomBattlePlayer: require(roomBattleLoc).RoomBattlePlayer,
-	SimulatorManager: require(roomBattleLoc).SimulatorManager,
-	SimulatorProcess: require(roomBattleLoc).SimulatorProcess,
+	RoomBattle: require('./room-battle').RoomBattle,
+	RoomBattlePlayer: require('./room-battle').RoomBattlePlayer,
+	PM: require('./room-battle').PM,
 });
 
 // initialize

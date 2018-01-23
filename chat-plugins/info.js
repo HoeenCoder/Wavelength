@@ -12,8 +12,6 @@
 
 'use strict';
 
-const path = require('path');
-
 exports.commands = {
 
 	'!whois': true,
@@ -277,32 +275,31 @@ exports.commands = {
 		if (!target.trim()) return this.parse(`/help ipsearch`);
 		if (!this.can('rangeban')) return;
 
-		target = this.splitTargetText(target).trim();
-		let targetIp = this.targetUsername;
-		let targetRoom = target.length ? Rooms(target.trim()) : null;
-		if (!targetRoom && targetRoom !== null) return this.errorReply(`The room "${target}" does not exist.`);
+		let [ip, roomid] = this.splitOne(target);
+		let targetRoom = roomid ? Rooms(roomid) : null;
+		if (!targetRoom && targetRoom !== null) return this.errorReply(`The room "${roomid}" does not exist.`);
 		let results = [];
 		let isAll = (cmd === 'ipsearchall');
 
-		if (/[a-z]/.test(targetIp)) {
+		if (/[a-z]/.test(ip)) {
 			// host
-			this.sendReply(`Users with host ${targetIp}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
+			this.sendReply(`Users with host ${ip}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
 			Users.users.forEach(curUser => {
 				if (results.length > 100 && !isAll) return;
-				if (!curUser.latestHost || !curUser.latestHost.endsWith(targetIp)) return;
+				if (!curUser.latestHost || !curUser.latestHost.endsWith(ip)) return;
 				if (targetRoom && !curUser.inRooms.has(targetRoom.id)) return;
 				results.push((curUser.connected ? " \u25C9 " : " \u25CC ") + " " + curUser.name);
 			});
 			if (results.length > 100 && !isAll) {
 				return this.sendReply(`More than 100 users match the specified IP range. Use /ipsearchall to retrieve the full list.`);
 			}
-		} else if (targetIp.slice(-1) === '*') {
+		} else if (ip.slice(-1) === '*') {
 			// IP range
-			this.sendReply(`Users in IP range ${targetIp}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
-			targetIp = targetIp.slice(0, -1);
+			this.sendReply(`Users in IP range ${ip}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
+			ip = ip.slice(0, -1);
 			Users.users.forEach(curUser => {
 				if (results.length > 100 && !isAll) return;
-				if (!curUser.latestIp.startsWith(targetIp)) return;
+				if (!curUser.latestIp.startsWith(ip)) return;
 				if (targetRoom && !curUser.inRooms.has(targetRoom.id)) return;
 				results.push((curUser.connected ? " \u25C9 " : " \u25CC ") + " " + curUser.name);
 			});
@@ -310,15 +307,15 @@ exports.commands = {
 				return this.sendReply(`More than 100 users match the specified IP range. Use /ipsearchall to retrieve the full list.`);
 			}
 		} else {
-			this.sendReply(`Users with IP ${targetIp}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
+			this.sendReply(`Users with IP ${ip}${targetRoom ? ` in the room ${targetRoom.title}` : ``}:`);
 			Users.users.forEach(curUser => {
-				if (curUser.latestIp !== targetIp) return;
+				if (curUser.latestIp !== ip) return;
 				if (targetRoom && !curUser.inRooms.has(targetRoom.id)) return;
 				results.push((curUser.connected ? " \u25C9 " : " \u25CC ") + " " + curUser.name);
 			});
 		}
 		if (!results.length) {
-			if (!targetIp.includes('.')) return this.errorReply(`${targetIp} is not a valid IP or host.`);
+			if (!ip.includes('.')) return this.errorReply(`${ip} is not a valid IP or host.`);
 			return this.sendReply(`No results found.`);
 		}
 		return this.sendReply(results.join('; '));
@@ -1571,13 +1568,15 @@ exports.commands = {
 			buf += `<strong>${worker.pid || worker.process.pid}</strong> - Sockets ${worker.id}<br />`;
 		});
 
-		const ProcessManager = require('../process-manager');
-		ProcessManager.cache.forEach((execFile, processManager) => {
-			let i = 0;
-			processManager.processes.forEach(process => {
-				buf += `<strong>${process.process.pid}</strong> - ${path.basename(execFile)} ${i++}<br />`;
-			});
-		});
+		const processManagers = require('../lib/process-manager').processManagers;
+		for (const manager of processManagers) {
+			for (const [i, process] of manager.processes.entries()) {
+				buf += `<strong>${process.process.pid}</strong> - ${manager.basename} ${i} (load ${process.load})<br />`;
+			}
+			for (const [i, process] of manager.releasingProcesses.entries()) {
+				buf += `<strong>${process.process.pid}</strong> - PENDING RELEASE ${manager.basename} ${i} (load ${process.load})<br />`;
+			}
+		}
 
 		this.sendReplyBox(buf);
 	},
@@ -1900,7 +1899,8 @@ exports.commands = {
 		if (!this.can('potd')) return false;
 
 		Config.potd = target;
-		Rooms.SimulatorProcess.eval('Config.potd = \'' + toId(target) + '\'');
+		// TODO: support eval in new PM
+		Rooms.PM.eval('Config.potd = \'' + toId(target) + '\'');
 		if (target) {
 			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pok&eacute;mon of the Day is now " + target + "!</b><br />This Pokemon will be guaranteed to show up in random battles.</div>");
 			this.modlog('POTD', null, target);

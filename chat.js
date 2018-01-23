@@ -651,7 +651,7 @@ class CommandContext {
 			let userid = user.getLastId();
 			buf += `[${userid}]`;
 			if (user.autoconfirmed && user.autoconfirmed !== userid) buf += ` ac:[${user.autoconfirmed}]`;
-			const alts = user.getAltUsers(false, true).map(user => user.getLastName()).join(', ');
+			const alts = user.getAltUsers(false, true).map(user => user.getLastId()).join('], [');
 			if (alts.length) buf += ` alts:[${alts}]`;
 			buf += ` [${user.latestIp}]`;
 		}
@@ -676,7 +676,7 @@ class CommandContext {
 				buf += `[${userid}]`;
 				if (!options.noalts) {
 					if (user.autoconfirmed && user.autoconfirmed !== userid) buf += ` ac:[${user.autoconfirmed}]`;
-					const alts = user.getAltUsers(false, true).map(user => user.getLastName()).join(', ');
+					const alts = user.getAltUsers(false, true).map(user => user.getLastId()).join('], [');
 					if (alts.length) buf += ` alts:[${alts}]`;
 				}
 				if (!options.noip) buf += ` [${user.latestIp}]`;
@@ -1092,11 +1092,25 @@ class CommandContext {
 	splitOne(target) {
 		let commaIndex = target.indexOf(',');
 		if (commaIndex < 0) {
-			return [target, ''];
+			return [target.trim(), ''];
 		}
-		return [target.substr(0, commaIndex), target.substr(commaIndex + 1).trim()];
+		return [target.substr(0, commaIndex).trim(), target.substr(commaIndex + 1).trim()];
 	}
 	/**
+	 * Given a message in the form "USERNAME" or "USERNAME, MORE", splits
+	 * it apart:
+	 *
+	 * - `this.targetUser` will be the User corresponding to USERNAME
+	 *   (or null, if not found)
+	 *
+	 * - `this.inputUsername` will be the text of USERNAME, unmodified
+	 *
+	 * - `this.targetUsername` will be the username, if found, or
+	 *   this.inputUsername otherwise
+	 *
+	 * - and the text of MORE will be returned (empty string, if the
+	 *   message has no comma)
+	 *
 	 * @param {string} target
 	 * @param {boolean} exactName
 	 */
@@ -1107,15 +1121,6 @@ class CommandContext {
 		this.inputUsername = name.trim();
 		this.targetUsername = this.targetUser ? this.targetUser.name : this.inputUsername;
 		return rest;
-	}
-	/**
-	 * @param {string} target
-	 */
-	splitTargetText(target) {
-		let [first, rest] = this.splitOne(target);
-
-		this.targetUsername = first.trim();
-		return rest.trim();
 	}
 }
 Chat.CommandContext = CommandContext;
@@ -1200,10 +1205,30 @@ Chat.uncacheTree = function (root) {
 	} while (uncache.length > 0);
 };
 
+/**
+ * @param {string} root
+ */
+Chat.uncacheDir = function (root) {
+	const absoluteRoot = FS(root).path;
+	for (const key in require.cache) {
+		if (key.startsWith(absoluteRoot)) {
+			delete require.cache[key];
+		}
+	}
+};
+
+/**
+ * @param {string} path
+ */
+Chat.uncache = function (path) {
+	const absolutePath = require.resolve(path);
+	delete require.cache[absolutePath];
+};
+
 Chat.loadPlugins = function () {
 	if (Chat.commands) return;
 
-	FS('package.json').readTextIfExists().then(data => {
+	FS('package.json').readIfExists().then(data => {
 		if (data) Chat.package = JSON.parse(data);
 	});
 
@@ -1303,6 +1328,36 @@ Chat.plural = function (num, plural = 's', singular = '') {
 		num = Number(num);
 	}
 	return (num !== 1 ? plural : singular);
+};
+
+/**
+ * Like string.split(delimiter), but only recognizes the first `limit`
+ * delimiters (default 1).
+ *
+ * `"1 2 3 4".split(" ", 2) => ["1", "2"]`
+ *
+ * `Chat.splitFirst("1 2 3 4", " ", 1) => ["1", "2 3 4"]`
+ *
+ * Returns an array of length exactly limit + 1.
+ *
+ * @param {string} str
+ * @param {string} delimiter
+ * @param {number} [limit]
+ */
+Chat.splitFirst = function (str, delimiter, limit = 1) {
+	let splitStr = /** @type {string[]} */ ([]);
+	while (splitStr.length < limit) {
+		let delimiterIndex = str.indexOf(delimiter);
+		if (delimiterIndex >= 0) {
+			splitStr.push(str.slice(0, delimiterIndex));
+			str = str.slice(delimiterIndex + delimiter.length);
+		} else {
+			splitStr.push(str);
+			str = '';
+		}
+	}
+	splitStr.push(str);
+	return splitStr;
 };
 
 /**
