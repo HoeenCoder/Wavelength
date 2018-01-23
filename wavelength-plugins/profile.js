@@ -579,7 +579,7 @@ exports.commands = {
 				if (WL.getFaction(toId(username))) {
 					profile += `&nbsp;${pColor(toId(username))}<b>Faction:</b> ${WL.getFaction(toId(username))}</font><br />`;
 				}
-				profile += `&nbsp;${pColor(toId(username))}<b>EXP Level:</b> ${WL.level(toId(username))}</font><br />`;
+				profile += `&nbsp;${pColor(toId(username))}<b>EXP Level:</b> ${WL.ExpControl.level(toId(username))}</font><br />`;
 				if (online && lastActive(toId(username))) {
 					profile += `&nbsp;${pColor(toId(username))}<b>Last Activity:</b> ${lastActive(toId(username))}</font><br />`;
 				}
