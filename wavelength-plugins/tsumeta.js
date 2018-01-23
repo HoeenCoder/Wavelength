@@ -135,6 +135,14 @@ exports.commands = {
 			}
 		},
 
+		listproposals: "viewproposals",
+		viewproposals: function (target, room, user) {
+			if (!this.runBroadcast()) return;
+			let reply = `<b><u>Proposals (${Object.keys(proposals).length})</u></b><br />`;
+			for (let proposal in proposals) reply += `(<strong>${proposal}</strong>)<br />`;
+			this.sendReply(`|raw|<div class="infobox infobox-limited">${reply}</div>`);
+		},
+
 		suspend: function (target, room, user) {
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
@@ -188,6 +196,7 @@ exports.commands = {
 		`/tsumeta alert [message] - Sends a message to all online users from the TsuMeta Council. Only for Desokoro.`,
 		`/tsumeta propose [what you modified], [change requested] - Proposes a change for the TsuMeta metagame. Must be in the TsuMeta Council to use.`,
 		`/tsumeta proposals [optional proposal ID] - Checks the specified proposal ID, if not specified generates a random one from the proposals index.`,
+		`/tsumeta viewproposals - Shows the list of proposals.`,
 		`/tsumeta suspend [target] - Suspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.`,
 		`/tsumeta unsuspend [target] - Unsuspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.`,
 		`/tsumeta forums - Displays the official TsuMeta Website.`,
