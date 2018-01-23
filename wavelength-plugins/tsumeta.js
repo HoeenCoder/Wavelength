@@ -53,21 +53,21 @@ exports.commands = {
 			if (isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} is already in the TsuMeta Council.`);
 			Db.councilmember.set(tsuMetaMember, 1);
 			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been successfully been added into the TsuMeta Council.`);
-			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
+			Users(tsuMetaMember).popup(`|html|You have been added into the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		kick: "take",
 		remove: "take",
 		delete: "take",
 		take: function (target, room, user) {
-			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to remove users into the council.");
+			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to remove users from the council.");
 			if (!target) return this.parse(`/tsumetahelp`);
 			let tsuMetaMember = toId(target);
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
 			if (!isTsuMetaCouncil(tsuMetaMember)) return this.errorReply(`${tsuMetaMember} isn't a TsuMeta council member.`);
 			Db.councilmember.remove(tsuMetaMember);
 			this.sendReply(`|html|${WL.nameColor(tsuMetaMember, true)} has been removed from the TsuMeta council.`);
-			if (Users.get(tsuMetaMember)) Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
+			Users(tsuMetaMember).popup(`|html|You have been removed from the TsuMeta Council by ${WL.nameColor(user.name, true)}.`);
 		},
 
 		users: 'list',
@@ -88,7 +88,7 @@ exports.commands = {
 			if (!target) return this.parse("/tsumetahelp");
 			let councilMembers = Db.councilmember.keys();
 			for (let u in councilMembers) {
-				if (!Users(councilMembers[u]).connected) continue;
+				if (!Users(councilMembers[u]) || !Users(councilMembers[u]).connected) continue;
 				Users(councilMembers[u]).send(`|pm|~TsuMeta Council|~|/raw ${target}`);
 			}
 		},
@@ -147,9 +147,9 @@ exports.commands = {
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
 			let targetUser = toId(target);
-			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
+			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already been suspended.`);
 			// Only allow xcmr to suspend users if he is currently in the council
-			if (user.userid === "xcmr" && Db.councilmember.has("xcmr", 1)) {
+			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				Db.councilmember.set(targetUser, 2);
 				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
@@ -163,9 +163,9 @@ exports.commands = {
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
 			let targetUser = toId(target);
-			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already suspended.`);
+			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already been unsuspended.`);
 			// Only allow xcmr to unsuspend users if he is currently in the council
-			if (user.userid === "xcmr" && Db.councilmember.has("xcmr", 1)) {
+			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				Db.councilmember.set(targetUser, 1);
 				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
