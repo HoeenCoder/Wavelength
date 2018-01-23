@@ -163,7 +163,7 @@ exports.commands = {
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			if (!target || target.length > 18) return this.errorReply(`You must specify a target, with a maximum of 18 characters.`);
 			let targetUser = toId(target);
-			if (!isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already been unsuspended.`);
+			if (isTsuMetaCouncil(targetUser) || targetUser === "desokoro") return this.errorReply(`${target} is either not in TsuMeta, or they have already been unsuspended.`);
 			// Only allow xcmr to unsuspend users if he is currently in the council
 			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				Db.councilmember.set(targetUser, 1);
