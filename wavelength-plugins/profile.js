@@ -30,6 +30,14 @@ function isVIP(user) {
 	return false;
 }
 
+function isTsuMetaCouncil(user) {
+	if (!user) return;
+	if (typeof user === 'object') user = user.userid;
+	let council = Db.councilmember.get(toId(user));
+	if (council === 1) return true;
+	return false;
+}
+
 function showTitle(userid) {
 	userid = toId(userid);
 	if (Db.customtitles.has(userid)) {
@@ -48,6 +56,11 @@ function vipCheck(user) {
 	return '';
 }
 
+function tsumetaCheck(user) {
+	if (isTsuMetaCouncil(user)) return '<font color="#B22222">(<strong>TsuMeta Member</strong>)</font>';
+	return '';
+}
+
 function lastActive(user) {
 	if (!Users(user)) return false;
 	user = Users(user);
@@ -55,7 +68,8 @@ function lastActive(user) {
 }
 
 function showBadges(user) {
-	if (Db.userBadges.has(toId(user))) {
+	// Disabled
+	/*if (Db.userBadges.has(toId(user))) {
 		let badges = Db.userBadges.get(toId(user));
 		let css = `border:none; background:none; padding:0;`;
 		if (typeof badges !== 'undefined' && badges !== null) {
@@ -69,7 +83,7 @@ function showBadges(user) {
 			output += `</tr> </table></div></td>`;
 			return output;
 		}
-	}
+	}*/
 	return ``;
 }
 
@@ -527,8 +541,8 @@ exports.commands = {
 
 		function background(user) {
 			let bg = Db.backgrounds.get(user);
-			if (!Db.backgrounds.has(user)) return `<div style="height: 250px">`;
-			return `<div style="background:url(${bg}); background-size: 100% 100%; height: 250px;">`;
+			if (!Db.backgrounds.has(user)) return `<div style="max-height: 250px; overflow-y: scroll">`;
+			return `<div style="background:url(${bg}); background-size: 100% 100%; height: 250px">`;
 		}
 
 		function pColor(user) {
@@ -548,9 +562,9 @@ exports.commands = {
 			Economy.readMoney(toId(username), currency => {
 				let profile = ``;
 				profile += `${background(toId(username))} ${showBadges(toId(username))}`;
-				profile += `<div style="display: inline-block; width: 7em; height: 100%; vertical-align: middle"><img src="${avatar}" height="80" width="80" align="left"></div>`;
-				profile += `&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp; ${getFlag(toId(username))} ${showTitle(username)}<br />`;
-				profile += `&nbsp;${pColor(toId(username))}<b>Group:</b> ${userGroup}</font> ${devCheck(username)} ${vipCheck(username)}<br />`;
+				profile += `<div style="display: inline-block; width: 6.5em; height: 100%; vertical-align: top"><img src="${avatar}" height="80" width="80" align="left"></div>`;
+				profile += `<div style="display: inline-block">&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp; ${getFlag(toId(username))} ${showTitle(username)}<br />`;
+				profile += `&nbsp;${pColor(toId(username))}<b>Group:</b> ${userGroup}</font> ${devCheck(username)} ${vipCheck(username)} ${tsumetaCheck(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Registered:</b> ${regdate}</font><br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>${currencyPlural}:</b> ${currency}</font><br />`;
 				if (Db.pokemon.has(toId(username))) {
@@ -573,7 +587,7 @@ exports.commands = {
 				if (Db.friendcodes.has(toId(username))) {
 					profile += `&nbsp;${pColor(toId(username))}<b>Friend Code:</b> ${Db.friendcodes.get(toId(username))}</font><br />`;
 				}
-				profile += `&nbsp;${song(toId(username))}`;
+				profile += `&nbsp;${song(toId(username))}<br />`;
 				profile += `&nbsp;</div>`;
 				profile += `<br clear="all">`;
 				self.sendReplyBox(profile);
