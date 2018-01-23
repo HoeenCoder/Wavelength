@@ -388,8 +388,8 @@ exports.commands = {
 		switch (target[0]) {
 		case 'avatar':
 			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg = '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a avatar token.<br/><img src="' + target[1] + '" alt="avatar"/><br/>';
-			msg += '<button class="button" name="send" value="/customavatar set ' + user.userid + ', ' + target[1] + '">Apply Avatar</button></center>';
+			msg = `/html <center>${WL.nameColor(user.name, true)} has redeemed a avatar token.<br/><img src="${target[1]}" alt="avatar"/><br/>`;
+			msg += `<button class="button" name="send" value="/customavatar set ${user.userid}, ${target[1]}">Apply Avatar</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'declare':
@@ -402,30 +402,30 @@ exports.commands = {
 			return WL.messageSeniorStaff(msg);
 		case 'color':
 			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a custom color token.<br/> hex color: <span' + target[1] + '<br/>';
-			msg += '<button class="button" name="send" value="/customcolor set ' + user.name + ',' + target[1] + '">Set color (<b><font color="' + target[1] + '">' + target[1] + '</font></b>)</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a custom color token.<br/> Hex color: <span ${target[1]}<br/>`;
+			msg += `<button class="button" name="send" value="/customcolor set ${user.name}, ${target[1]}">Set color (<b><font color="${target[1]}">${target[1]}</font></b>)</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'icon':
 			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a icon token.<br/><img src="' + target[1] + '" alt="icon"/><br/>';
-			msg += '<button class="button" name="send" value="/customicon set ' + user.userid + ', ' + target[1] + '">Apply icon</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a icon token.<br/><img src="${target[1]}" alt="icon"/><br/>`;
+			msg += `<button class="button" name="send" value="/customicon set ${user.userid}, ${target[1]}">Apply icon</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'title':
 			if (!target[2]) return this.errorReply('/usetoken title, [name], [hex code]');
 			target[2] = target[2].trim();
 			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a title token.<br/> title name: ' + target[1] + '<br/>';
-			msg += '<button class="button" name="send" value="/customtitle set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set title (<b><font color="' + target[2] + '">' + target[2] + '</font></b>)</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a title token.<br/> Title name: ${target[1]}<br/>`;
+			msg += `<button class="button" name="send" value="/customtitle set ${user.userid}, ${target[1]}, ${target[2]}">Set title (<b><font color="${target[2]}">${target[2]}</font></b>)</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'emote':
 			if (!target[2]) return this.errorReply('/usetoken emote, [name], [img]');
 			target[2] = target[2].trim();
 			if (!['.png', '.gif', '.jpg'].includes(target[2].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
-			msg += '<button class="button" name="send" value="/emote add ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a emote token.<br/><img src="${target[2]}" alt="${target[1]}"/><br/>`;
+			msg += `<button class="button" name="send" value="/emote add ${target[1]}, ${target[2]}">Add emote</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'disableintroscroll':
@@ -433,22 +433,24 @@ exports.commands = {
 			let roomid = toId(target[1]);
 			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
 			if (Db.disabledScrolls.has(roomid) || room.isOfficial) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed roomintro scroll disabler token.<br/>';
-			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scroll for <b>' + Rooms(roomid).title + '</b></button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed roomintro scroll disabler token.<br/>`;
+			msg += `<button class="button" name="send" value="/disableintroscroll ${target[1]}">Disable Intro Scroll for <b>${Rooms(roomid).title}</b></button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'background':
 			if (!target[1]) return this.errorReply('/usetoken background, [img]');
 			target[1] = target[1].trim();
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a background token.<br/><a href="' + target[1] + '"/><br/>';
-			msg += '<button class="button" name="send" value="/background set ' + user.userid + ', ' + target[1] + '">Set the background</button></center>';
+			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a background token.<br/><img src="${target[1]}/><br/>`;
+			msg += `<button class="button" name="send" value="/background set ${user.userid}, ${target[1]}">Set the background</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'music':
 			if (!target[2]) return this.errorReply('/usetoken music, [link], [name]');
 			target[1] = target[1].trim();
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a music token.<br/><audio src="' + target[2] + '" alt="' + target[1] + '"></audio><br/>';
-			msg += '<button class="button" name="send" value="/music set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set music</button></center>';
+			if (!['.mp3', '.mp4', '.m4a'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .mp3, .mp4, or .m4a`);
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a music token.<br/><audio src="${target[2]}" alt="${target[1]}"></audio><br/>`;
+			msg += `<button class="button" name="send" value="/music set ${user.userid}, ${target[1]}, ${target[2]}">Set music</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		default:
