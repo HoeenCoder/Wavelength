@@ -527,8 +527,8 @@ exports.commands = {
 
 		function background(user) {
 			let bg = Db.backgrounds.get(user);
-			if (!Db.backgrounds.has(user)) return `<div>`;
-			return `<div style="background:url(${bg}); size: 100%">`;
+			if (!Db.backgrounds.has(user)) return `<div style="height: 250px">`;
+			return `<div style="background:url(${bg}); background-size: 100% 100%; height: 250px;">`;
 		}
 
 		function pColor(user) {
@@ -548,7 +548,7 @@ exports.commands = {
 			Economy.readMoney(toId(username), currency => {
 				let profile = ``;
 				profile += `${background(toId(username))} ${showBadges(toId(username))}`;
-				profile += `<div style="display: inline-block; width: 7em; vertical-align: 2.5em;"><img src="${avatar}" height="80" width="80" align="left"></div>`;
+				profile += `<div style="display: inline-block; width: 7em; height: 100%; vertical-align: middle"><img src="${avatar}" height="80" width="80" align="left"></div>`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp; ${getFlag(toId(username))} ${showTitle(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Group:</b> ${userGroup}</font> ${devCheck(username)} ${vipCheck(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Registered:</b> ${regdate}</font><br />`;
