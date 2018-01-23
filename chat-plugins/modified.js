@@ -125,7 +125,8 @@ exports.commands = {
 		room.auth[userid] = '#';
 		room.chatRoomData.founder = userid;
 		room.founder = userid;
-		this.addModCommand(`${name} was appointed Room Founder by ${user.name}.`);
+		this.modlog(`ROOMFOUNDER`, name);
+		this.addModAction(`${name} was appointed Room Founder by ${user.name}.`);
 		if (targetUser) {
 			targetUser.popup(`|html|You were appointed Room Founder by ${WL.nameColor(user.name, true)} in ${room.title}.`);
 			room.onUpdateIdentity(targetUser);
@@ -149,7 +150,7 @@ exports.commands = {
 	},
 	roomdefounderhelp: ["/roomdefounder [username] - Revoke [username]'s room founder position. Requires: &, ~"],
 
-	roomowner: function (target, room, user) {
+	roomowner: function (target, room, user, connection, cmd) {
 		if (!room.chatRoomData) {
 			return this.sendReply("/roomowner - This room isn't designed for per-room moderation to be added");
 		}
@@ -164,7 +165,7 @@ exports.commands = {
 		}
 
 		if (!user.can('makeroom')) {
-			if (user.userid !== room.founder) return false;
+			if (user.userid !== room.founder) return this.errorReply(`/${cmd} - Access Denied.`);
 		}
 		let req = Db.rooms.get(userid);
 		if (req && req.blacklisted) return this.errorReply(`${name} is banned from owning rooms.`);
@@ -172,10 +173,16 @@ exports.commands = {
 		if (!room.auth) room.auth = room.chatRoomData.auth = {};
 
 		room.auth[userid] = '#';
-		this.addModCommand(`${name} was appointed Room Owner by ${user.name}.`);
+		this.addModAction(`${name} was appointed Room Owner by ${user.name}.`);
+		this.modlog('ROOMOWNER', userid);
 		if (targetUser) {
-			targetUser.popup(`|html|You were appointed Room Owner by ${WL.nameColor(user.name, true)} in ${room.title}.`);
+			targetUser.popup(`You were appointed Room Owner by ${user.name} in ${room.id}.`);
 			room.onUpdateIdentity(targetUser);
+			if (room.subRooms) {
+				for (const subRoom of room.subRooms.values()) {
+					subRoom.onUpdateIdentity(targetUser);
+				}
+			}
 		}
 		Rooms.global.writeChatRoomData();
 	},
@@ -195,13 +202,15 @@ exports.commands = {
 		if (!this.canTalk()) return;
 		if (!target) return this.parse('/help roompromote');
 
+		const force = target.startsWith('!!!');
+		if (force) target = target.slice(3);
 		target = this.splitTarget(target, true);
 		let targetUser = this.targetUser;
 		let userid = toId(this.targetUsername);
 		let name = targetUser ? targetUser.name : this.targetUsername;
 
 		if (!userid) return this.parse('/help roompromote');
-		if (!targetUser && !Users.isUsernameKnown(userid)) {
+		if (!targetUser && !Users.isUsernameKnown(userid) && !force) {
 			return this.errorReply(`User '${name}' is offline and unrecognized, and so can't be promoted.`);
 		}
 		if (targetUser && !targetUser.registered) {
@@ -244,7 +253,7 @@ exports.commands = {
 		} else {
 			room.auth[userid] = nextGroup;
 		}
-		if (room.founder === userid && nextGroup !== '#') room.founder = false; //Must be a demotion as
+		if (room.founder === userid && nextGroup !== '#') room.founder = false;
 
 		// Only show popup if: user is online and in the room, the room is public, and not a groupchat or a battle.
 		let needsPopup = targetUser && room.users[targetUser.userid] && !room.isPrivate && !room.isPersonal && !room.battle;
@@ -258,17 +267,27 @@ exports.commands = {
 				// if the user can't see the demotion message (i.e. rank < %), it is shown in the chat
 				targetUser.send(">" + room.id + "\n(You were demoted to Room " + groupName + " by " + user.name + ".)");
 			}
-			this.privateModCommand(`(${name} was demoted to Room ${groupName} by ${user.name}.)`);
-			if (needsPopup) targetUser.popup(`|html|You were demoted to Room ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
+			this.privateModAction(`(${name} was demoted to Room ${groupName} by ${user.name}.)`);
+			this.modlog(`ROOM${groupName.toUpperCase()}`, userid, '(demote)');
+			if (needsPopup) targetUser.popup(`You were demoted to Room ${groupName} by ${user.name} in ${room.id}.`);
 		} else if (nextGroup === '#') {
-			this.addModCommand(`${'' + name} was promoted to ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`|html|You were promoted to ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
+			this.addModAction(`${'' + name} was promoted to ${groupName} by ${user.name}.`);
+			this.modlog('ROOM OWNER', userid);
+			if (needsPopup) targetUser.popup(`You were promoted to ${groupName} by ${user.name} in ${room.id}.`);
 		} else {
-			this.addModCommand(`${'' + name} was promoted to Room ${groupName} by ${user.name}.`);
-			if (needsPopup) targetUser.popup(`|html|You were promoted to Room ${groupName} by ${WL.nameColor(user.name, true)} in ${room.title}.`);
+			this.addModAction(`${'' + name} was promoted to Room ${groupName} by ${user.name}.`);
+			this.modlog(`ROOM${groupName.toUpperCase()}`, userid);
+			if (needsPopup) targetUser.popup(`You were promoted to Room ${groupName} by ${user.name} in ${room.id}.`);
 		}
 
-		if (targetUser) targetUser.updateIdentity(room.id);
+		if (targetUser) {
+			targetUser.updateIdentity(room.id);
+			if (room.subRooms) {
+				for (const subRoom of room.subRooms.values()) {
+					targetUser.updateIdentity(subRoom.id);
+				}
+			}
+		}
 		if (room.chatRoomData) Rooms.global.writeChatRoomData();
 	},
 	roompromotehelp: [
@@ -283,6 +302,7 @@ exports.commands = {
 		if (!target) return this.parse('/help declare');
 		if (!this.can('declare', null, room)) return false;
 		if (!this.canTalk()) return;
+		if (target.length > 2000) return this.errorReply("Declares should not exceed 2000 characters.");
 
 		let color = 'blue';
 		switch (cmd) {
@@ -293,8 +313,9 @@ exports.commands = {
 			color = 'green';
 			break;
 		}
-		this.add('|raw|<div class="broadcast-' + color + '"><b>' + Chat.escapeHTML(target) + '</b></div>');
-		this.logModCommand(user.name + " declared " + target);
+		this.add(`|notify|${room.title} announcement!|${target}`);
+		this.add(`|raw|<div class="broadcast-${color}"><b>${Chat.escapeHTML(target)}</b></div>`);
+		this.modlog('DECLARE', null, target);
 	},
 	declarehelp: ["/declare [message] - Anonymously announces a message. Requires: # * & ~"],
 
@@ -316,8 +337,9 @@ exports.commands = {
 			color = 'green';
 			break;
 		}
-		this.add('|raw|<div class="broadcast-' + color + '">' + target + '</div>');
-		this.logModCommand(user.name + " declared " + target);
+		this.add(`|notify|${room.title} announcement!|${Chat.stripHTML(target)}`);
+		this.add(`|raw|<div class="broadcast-${color}">${target}</div>`);
+		this.modlog(`HTMLDECLARE`, null, target);
 	},
 	htmldeclarehelp: ["/htmldeclare [message] - Anonymously announces a message using safe HTML. Requires: ~"],
 
@@ -344,9 +366,12 @@ exports.commands = {
 			break;
 		}
 		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+			if (id !== 'global') curRoom.addRaw(`<div class="broadcast-${color}">${target}</div>`).update();
 		});
-		this.logModCommand(user.name + " globally declared " + target);
+		Users.users.forEach(u => {
+			if (u.connected) u.send(`|pm|~|${u.group}${u.name}|/raw <div class="broadcast-${color}">${target}</div>`);
+		});
+		this.modlog(`GLOBALDECLARE`, null, target);
 	},
 	globaldeclarehelp: ["/globaldeclare [message] - Anonymously announces a message to every room on the server. Requires: ~"],
 
@@ -363,17 +388,19 @@ exports.commands = {
 
 		let color = 'blue';
 		switch (cmd) {
-		case 'reddeclare':
+		case 'redchatdeclare':
+		case 'redcdeclare':
 			color = 'red';
 			break;
-		case 'greendeclare':
+		case 'greenchatdeclare':
+		case 'greencdeclare':
 			color = 'green';
 			break;
 		}
 		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw(`<div class="broadcast-${color}">${target}</div>`).update();
 		});
-		this.logModCommand(user.name + " globally declared (chat level) " + target);
+		this.modlog(`CHATDECLARE`, null, target);
 	},
 	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
 

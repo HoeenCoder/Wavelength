@@ -40,20 +40,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Bold',
 			},
-			'~Callie (Agent 1)': {
-				species: 'Malamar',
-				ability: 'Supreme Squid Sister',
-				item: 'Hypnoshades',
+			'~Kraken Mare': {
+				species: 'Gardevoir-Mega',
+				ability: 'Krakens Boost',
+				shiny: true,
+				item: 'Focus Sash',
 				gender: 'F',
-				moves: ['Sing', 'Superpower', 'Gunk Shot',
+				moves: ['Moonblast', 'Calm Mind', 'Psychic',
 				],
-				signatureMove: 'Bomb Rush Blush',
+				signatureMove: 'Revenge of Kraken Mare',
 				evs: {
-					hp: 252,
-					atk: 252,
-					spd: 4,
+					hp: 248,
+					spa: 252,
+					def: 8,
 				},
-				nature: 'Adamant',
+				nature: 'Modest',
 			},
 			'~Desokoro': {
 				species: 'Gyarados',
@@ -76,7 +77,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Mosmic Power',
 				item: 'Life Orb',
 				gender: '',
-				moves: ['Shadow Ball', 'Sludge Bomb', 'Giga Drain',
+				moves: ['Thunderbolt', 'Sludge Bomb', 'Giga Drain',
 				],
 				signatureMove: 'Mosmero Beam',
 				evs: {
@@ -117,7 +118,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'&iSteelX': {
+			'&MechSteelix': {
 				species: 'Steelix-Mega',
 				ability: 'Sandbox',
 				item: 'Lum Berry',
@@ -271,6 +272,20 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Calm',
 			},
+			'@Volco': {
+				species: 'Gallade-Mega',
+				ability: 'Shadow Fist',
+				item: 'Leftovers',
+				gender: 'M',
+				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
+				signatureMove: 'Invisible Punch',
+				evs: {
+					hp: 4,
+					atk: 252,
+					spe: 252,
+				},
+				nature: 'Jolly',
+			},
 			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
@@ -288,32 +303,18 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%Lycanium Z': {
-				species: "Carbink",
-				ability: "Deflector Shield",
+				species: "Arceus-Dark",
+				ability: "Bloody Tears",
 				item: "Leftovers",
 				gender: "M",
-				moves: ['Moonblast', 'Blue Flare', 'Seed Flare'],
-				signatureMove: "Meteor Madness",
+				moves: ['Drill Peck', 'Shore Up', 'Meteor Mash'],
+				signatureMove: "Heart of Darkness",
 				evs: {
-					spa: 252,
+					spe: 252,
 					hp: 252,
 					def: 4,
 				},
-				nature: "Calm",
-			},
-			'%Volco': {
-				species: 'Gallade-Mega',
-				ability: 'Shadow Fist',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
-				signatureMove: 'Invisible Punch',
-				evs: {
-					hp: 4,
-					atk: 252,
-					spe: 252,
-				},
-				nature: 'Jolly',
+				nature: "Jolly",
 			},
 			'%wgc': {
 				species: 'Gengar',
@@ -348,7 +349,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 			'+Almighty Bronzong': {
 				species: 'Bronzong',
-				ability: 'Conflict Of Interest',
+				ability: 'Levitate',
 				item: 'Leftovers',
 				gender: (variant === 1) ? 'M' : 'F',
 				moves: ['Gyro Ball', 'Confuse Ray', 'Toxic', 'Earthquake',
@@ -366,7 +367,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				ability: 'Stance Change',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: [['Swords Dance', 'Sacred Sword'][variant], 'Shadow Sneak', 'Kings Shield',
+				moves: [['Swords Dance', 'Sacred Sword'][variant], 'Shadow Claw', 'Kings Shield',
 				],
 				signatureMove: 'Magnet Flare',
 				evs: {

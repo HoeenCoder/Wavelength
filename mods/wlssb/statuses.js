@@ -106,34 +106,16 @@ exports.BattleStatuses = {
 			this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
 		},
 	},
-	callieagent1: {
+	krakenmare: {
 		exists: true,
-		onStart: function (pokemon) {
-			let msg = ['I told you to leave...|Now you leave me no choice...|Prepare to be rocked!', 'No one throws shade at my shades and gets away with it!', 'It\'s time to swab the deck and plunder the booty!', 'It\'s all about becoming one with the music!'][this.random(4)];
-			if (msg.split('|').length > 1) {
-				msg = msg.split('|');
-				for (let i = 0; i < msg.length; i++) this.add('c', '~Callie (Agent 1)', msg[i]);
-			} else {
-				this.add('c', '~Callie (Agent 1)', msg);
-			}
-			this.add('-start', pokemon, 'typechange', 'Water/Poison');
-			pokemon.types = ["Water", "Poison"];
+		onStart: function () {
+			this.add('c', '~Kraken Mare', 'Today, I prove Gardevoir as the best Pokmeon!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Callie (Agent 1)', 'I\'ll be back to drop some more SPICY WASABI BEATS!');
+			this.add('c', '~Kraken Mare', 'I shall spare you today, young one!');
 		},
-		onCriticalHit: function (source) {
-			let msg = ['EAT THAT!', 'Nailed it!', 'Got it!', 'Yeah! Let\'s ROCK!'][this.random(4)];
-			this.add('c', '~Callie (Agent 1)', msg);
-		},
-		onSourceFaint: function (target, source, effect) {
-			if (effect && effect.effectType === 'Move') {
-				this.add('c', '~Callie (Agent 1)', 'Thou ART defeated! HA!');
-			}
-		},
-		onFaint: function () {
-			let msg = ['Ow! You got ink RIGHT in my eye!', 'I...I\'ll remember this!', 'Cross-fade to blaaaaaaaaaaack!', 'I should have bought more bombs...', 'Don\'t worry, Team Callie. I still love you all...'][this.random(5)];
-			this.add('c', '~Callie (Agent 1)', msg);
+		onFaint: function (pokemon) {
+			this.add('c', '~Kraken Mare', 'Even though I fall, I\'m sure I took a few down with me.');
 		},
 	},
 	almightybronzong: {
@@ -204,12 +186,33 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'Le Overpowered dude has arrived');
+			pokemon.types = ["Dark"];
+			this.add('c', '%Lycanium Z', '...Hi...');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '%Lycanium Z', 'I gotta know when to stop, and its now.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Lycanium Z', '>');
-			this.add('c', '%Lycanium Z', '/me sigh');
-			this.add('c', '%Lycanium Z', 'I might as well change my super serious set to a meme set tbh or be buffed to the max.');
+			this.add('c', '%Lycanium Z', 'Oh well, I tried.');
+		},
+	},
+	dread: {
+		// this is a volatile status
+		onStart: function (target, source, sourceEffect) {
+			this.add('-start', target, 'Dread');
+			this.add('-message', target.name + ' will die in 3 turns!');
+			this.effectData.time = 4;
+		},
+		onEnd: function (target) {
+			this.add('-end', target, 'Dread');
+			target.faint();
+		},
+		onResidual: function (pokemon) {
+			pokemon.volatiles.dread.time--;
+			if (!pokemon.volatiles.dread.time) {
+				pokemon.removeVolatile('Dread');
+				return;
+			}
 		},
 	},
 	celestialtater: {
@@ -236,13 +239,13 @@ exports.BattleStatuses = {
 	volco: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '%Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
+			this.add('c', '@Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
+			this.add('c', '@Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '%Volco', 'Okay then. BACK TO CODING!');
+			this.add('c', '@Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
 	mosmero: {
@@ -266,16 +269,16 @@ exports.BattleStatuses = {
 			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
 		},
 	},
-	isteelx: {
+	mechsteelix: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&iSteelX', 'Tell me, does a player such as yourself experience true fear?');
+			this.add('c', '&MechSteelix', 'Tell me, does a player such as yourself experience true fear?');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&iSteelX', 'What just happened?');
+			this.add('c', '&MechSteelix', 'What just happened?');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '&iSteelX', 'Forget my life.. always surrounded by bumbling baboons.');
+			this.add('c', '&MechSteelix', 'Forget my life.. always surrounded by bumbling baboons.');
 		},
 	},
 	therittz: {

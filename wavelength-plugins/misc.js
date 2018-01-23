@@ -56,7 +56,8 @@ exports.commands = {
 
 		clearRoom(room);
 
-		this.privateModCommand(`(${user.name} used /clearall.)`);
+		this.modlog(`CLEARALL`);
+		this.privateModAction(`(${user.name} used /clearall.)`);
 	},
 
 	gclearall: 'globalclearall',
@@ -65,7 +66,8 @@ exports.commands = {
 
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
-		this.privateModCommand(`(${user.name} used /globalclearall.)`);
+		this.modlog(`GLOBALCLEARALL`);
+		this.privateModAction(`(${user.name} used /globalclearall.)`);
 	},
 
 	contact: 'whotocontact',
@@ -174,7 +176,7 @@ exports.commands = {
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Kraken Mare', true) + " (Community Admin, Development)<br />" +
-			"- " + WL.nameColor('iSteelX', true) + " (Policy Leader)<br/>" +
+			"- " + WL.nameColor('MechSteelix', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
 			"- " + WL.nameColor('Tsunami Prince', true) + " (Community Admin)<br/>" +
@@ -209,8 +211,9 @@ exports.commands = {
 		if (!this.can('mute', targetUser, room)) return false;
 		if (!room.users[targetUser.userid]) return this.errorReply("User \"" + this.targetUsername + "\" is not in this room.");
 
-		this.addModCommand(targetUser.name + " was kicked from the room by " + user.name + ". (" + target + ")");
-		targetUser.popup("You were kicked from " + room.id + " by " + user.name + "." + (target ? " (" + target + ")" : ""));
+		this.modlog(`ROOMKICK`, targetUser, target);
+		this.addModAction(`${targetUser.name} was kicked from the room by ${user.name}.${target.trim() ? ` (${target})` : ``}`);
+		targetUser.popup(`"You were kicked from ${room.id} by ${user.name}.${target.trim() ? ` (${target})` : ``}`);
 		targetUser.leaveRoom(room.id);
 	},
 	kickhelp: ["/kick - Kick a user out of a room. Requires: % @ # & ~"],
@@ -379,32 +382,40 @@ exports.commands = {
 		if (target[0] === 'intro') target[0] = 'disableintroscroll';
 		let msg = '';
 		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll', 'music', 'background'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
-		if (!user.tokens || !user.tokens[target[0]]) return this.errorReply('You need to buy this from the shop first.');
+		if (!user.tokens || !user.tokens[target[0]] && !user.can('bypassall')) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
 		switch (target[0]) {
 		case 'avatar':
+			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
 			msg = '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a avatar token.<br/><img src="' + target[1] + '" alt="avatar"/><br/>';
 			msg += '<button class="button" name="send" value="/customavatar set ' + user.userid + ', ' + target[1] + '">Apply Avatar</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'declare':
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a global declare token.<br/> Message: ' + target[1] + "<br/>";
-			msg += '<button class="button" name="send" value="/globaldeclare ' + target[1] + '">Globally Declare the Message</button></center>';
+			target[1] = target[1].replace(/<<[a-zA-z]+>>/g, match => {
+				return `«<a href='/${toId(match)}'>${match.replace(/[<<>>]/g, '')}</a>»`;
+			});
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a global declare token.<br/> Message: ${Chat.escapeHTML(target[1])}<br/>`;
+			msg += `<button class="button" name="send" value="/globaldeclare ${target[1]}">Globally Declare the Message</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'color':
+			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
 			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a custom color token.<br/> hex color: <span' + target[1] + '<br/>';
 			msg += '<button class="button" name="send" value="/customcolor set ' + user.name + ',' + target[1] + '">Set color (<b><font color="' + target[1] + '">' + target[1] + '</font></b>)</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'icon':
+			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
 			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a icon token.<br/><img src="' + target[1] + '" alt="icon"/><br/>';
 			msg += '<button class="button" name="send" value="/customicon set ' + user.userid + ', ' + target[1] + '">Apply icon</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'title':
 			if (!target[2]) return this.errorReply('/usetoken title, [name], [hex code]');
+			target[2] = target[2].trim();
+			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
 			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a title token.<br/> title name: ' + target[1] + '<br/>';
 			msg += '<button class="button" name="send" value="/customtitle set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set title (<b><font color="' + target[2] + '">' + target[2] + '</font></b>)</button></center>';
 			delete user.tokens[target[0]];
@@ -412,15 +423,16 @@ exports.commands = {
 		case 'emote':
 			if (!target[2]) return this.errorReply('/usetoken emote, [name], [img]');
 			target[2] = target[2].trim();
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed an emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
-			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
+			if (!['.png', '.gif', '.jpg'].includes(target[2].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
+			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
+			msg += '<button class="button" name="send" value="/emote add ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'disableintroscroll':
 			if (!target[1]) return this.errorReply('/usetoken disableintroscroll, [room]');
 			let roomid = toId(target[1]);
 			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
-			if (Db.disabledScrolls.has(roomid)) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
+			if (Db.disabledScrolls.has(roomid) || room.isOfficial) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
 			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed roomintro scroll disabler token.<br/>';
 			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scroll for <b>' + Rooms(roomid).title + '</b></button></center>';
 			delete user.tokens[target[0]];
@@ -498,18 +510,18 @@ exports.commands = {
 		if (!this.runBroadcast()) return false;
 		if (!target || target === 'help') return this.parse('/help wlssb');
 		let targetData = getMonData(toId(target));
-		if (['km', 'callie', 'krakenmare'].includes(toId(target))) return this.sendReplyBox(getMonData('callieagent1'));
-		if (toId(target) === toId('c7')) return this.sendReplyBox(getMonData('c733937123'));
+		if (['km', 'callie', 'krakenmeme'].includes(toId(target))) return this.sendReplyBox(getMonData('krakenmare'));
+		if (toId(target) === 'c7') return this.sendReplyBox(getMonData('c733937123'));
 		if (['des', 'deso'].includes(toId(target))) return this.sendReplyBox(getMonData('desokoro'));
 		if (['mos', 'electricz'].includes(toId(target))) return this.sendReplyBox(getMonData('mosmero'));
-		if (toId(target) === toId('prince')) return this.sendReplyBox(getMonData('wavelengthprince'));
-		if (toId(target) === toId('hiro')) return this.sendReplyBox(getMonData('hiroz'));
+		if (['perison', 'prince', 'peri'].includes(toId(target))) return this.sendReplyBox(getMonData('wavelengthprince'));
+		if (toId(target) === 'hiro') return this.sendReplyBox(getMonData('hiroz'));
 		if (['hh', 'hoeen'].includes(toId(target))) return this.sendReplyBox(getMonData('hoeenhero'));
-		if (toId(target) === toId('[]')) return this.sendReplyBox(getMonData('arrays'));
-		if (['mech', 'mechsteelix'].includes(toId(target))) return this.sendReplyBox(getMonData('isteelx'));
-		if (toId(target) === toId('cubs')) return this.sendReplyBox(getMonData('cubsfan38'));
-		if (toId(target) === toId('bunnery')) return this.sendReplyBox(getMonData('bunnery5'));
-		if (toId(target) === toId('rittz')) return this.sendReplyBox(getMonData('therittz'));
+		if (toId(target) === 'arrays') return this.sendReplyBox(getMonData('volco'));
+		if (['mech', 'isteelx'].includes(toId(target))) return this.sendReplyBox(getMonData('mechsteelix'));
+		if (toId(target) === 'cubs') return this.sendReplyBox(getMonData('cubsfan38'));
+		if (toId(target) === 'bunnery') return this.sendReplyBox(getMonData('bunnery5'));
+		if (toId(target) === 'rittz') return this.sendReplyBox(getMonData('therittz'));
 		if (['stk', 'stabby'].includes(toId(target))) return this.sendReplyBox(getMonData('stabbythekrabby'));
 		if (['twb', 'tidal'].includes(toId(target))) return this.sendReplyBox(getMonData('tidalwavebot'));
 		if (['lyc', 'lycan', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('lycaniumz'));
@@ -531,7 +543,8 @@ exports.commands = {
 			let message = '|pm|' + pmName + '|' + room.users[i].getIdentity() + '| ' + target;
 			room.users[i].send(message);
 		}
-		this.privateModCommand('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
+		this.modlog(`MASSROOMPM`, null, target);
+		this.privateModAction('(' + Chat.escapeHTML(user.name) + ' mass room PM\'ed: ' + target + ')');
 	},
 
 	fj: 'forcejoin',

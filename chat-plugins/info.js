@@ -1456,10 +1456,10 @@ exports.commands = {
 				if (format.removedRules && format.removedRules.length) rules.push("<b>Removed rules</b> - " + Chat.escapeHTML(format.removedRules.join(", ")));
 				if (format.banlist && format.banlist.length) rules.push("<b>Bans</b> - " + Chat.escapeHTML(format.banlist.join(", ")));
 				if (format.unbanlist && format.unbanlist.length) rules.push("<b>Unbans</b> - " + Chat.escapeHTML(format.unbanlist.join(", ")));
-				if (format.bannedStones && format.bannedStones.length) rules.push("<b>Banned Mega Stones</b> - " + Chat.escapeHTML(format.bannedStones.join(", ")));
+				if (format.restrictedStones && format.restrictedStones.length) rules.push("<b>Restricted Mega Stones</b> - " + Chat.escapeHTML(format.restrictedStones.join(", ")));
 				if (format.cannotMega && format.cannotMega.length) rules.push("<b>Can't Mega Evolve non-natively</b> - " + Chat.escapeHTML(format.cannotMega.join(", ")));
-				if (format.bannedAbilities && format.bannedAbilities.length) rules.push("<b>Non-usable abilities</b> - " + Chat.escapeHTML(format.bannedAbilities.join(", ")));
-				if (format.noLearn && format.noLearn.length) rules.push("<b>Non-learnable moves</b> - " + Chat.escapeHTML(format.noLearn.join(", ")));
+				if (format.restrictedAbilities && format.restrictedAbilities.length) rules.push("<b>Restricted abilities</b> - " + Chat.escapeHTML(format.restrictedAbilities.join(", ")));
+				if (format.restrictedMoves && format.restrictedMoves.length) rules.push("<b>Restricted moves</b> - " + Chat.escapeHTML(format.restrictedMoves.join(", ")));
 				if (rules.length > 0) {
 					rulesetHtml = `<details><summary>Banlist/Ruleset</summary>${rules.join("<br />")}</details>`;
 				} else {
@@ -1605,10 +1605,12 @@ exports.commands = {
 		if (target === 'delete' || target === 'remove') {
 			if (!room.rulesLink) return this.errorReply("This room does not have rules set to remove.");
 			delete room.rulesLink;
-			this.privateModCommand(`(${user.name} has removed the room rules link.)`);
+			this.privateModAction(`(${user.name} has removed the room rules link.)`);
+			this.modlog('RULES', null, `removed room rules link`);
 		} else {
 			room.rulesLink = target;
-			this.privateModCommand(`(${user.name} changed the room rules link to: ${target})`);
+			this.privateModAction(`(${user.name} changed the room rules link to: ${target})`);
+			this.modlog('RULES', null, `changed link to: ${target}`);
 		}
 
 		if (room.chatRoomData) {
@@ -1901,10 +1903,10 @@ exports.commands = {
 		Rooms.SimulatorProcess.eval('Config.potd = \'' + toId(target) + '\'');
 		if (target) {
 			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pok&eacute;mon of the Day is now " + target + "!</b><br />This Pokemon will be guaranteed to show up in random battles.</div>");
-			this.logModCommand("The Pok\u00e9mon of the Day was changed to " + target + " by " + user.name + ".");
+			this.modlog('POTD', null, target);
 		} else {
 			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pok&eacute;mon of the Day was removed!</b><br />No pokemon will be guaranteed in random battles.</div>");
-			this.logModCommand("The Pok\u00e9mon of the Day was removed by " + user.name + ".");
+			this.modlog('POTD', null, 'removed');
 		}
 	},
 

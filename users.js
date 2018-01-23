@@ -621,11 +621,11 @@ class User {
 
 		if (groupData && groupData[permission]) {
 			let jurisdiction = groupData[permission];
-			if (!targetUser) {
+			if (!targetUser && !targetGroup) {
 				return !!jurisdiction;
 			}
 			if (jurisdiction === true && permission !== 'jurisdiction') {
-				return this.can('jurisdiction', targetUser, room);
+				return this.can('jurisdiction', (targetUser || targetGroup), room);
 			}
 			if (typeof jurisdiction !== 'string') {
 				return !!jurisdiction;
@@ -715,7 +715,7 @@ class User {
 	 * @param {boolean} newlyRegistered Make sure this account will identify as registered
 	 * @param {Connection} connection The connection asking for the rename
 	 */
-async rename(name, token, newlyRegistered, connection) {
+	async rename(name, token, newlyRegistered, connection) {
 		for (const roomid of this.games) {
 			const game = Rooms(roomid).game;
 			if (!game || game.ended) continue; // should never happen
