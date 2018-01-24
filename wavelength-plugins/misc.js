@@ -402,7 +402,7 @@ exports.commands = {
 			return WL.messageSeniorStaff(msg);
 		case 'color':
 			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
-			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a custom color token.<br/> Hex color: <span ${target[1]}<br/>`;
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a custom color token.<br/> Hex color: ${target[1]}<br/>`;
 			msg += `<button class="button" name="send" value="/customcolor set ${user.name}, ${target[1]}">Set color (<b><font color="${target[1]}">${target[1]}</font></b>)</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
@@ -448,7 +448,7 @@ exports.commands = {
 		case 'music':
 			if (!target[2]) return this.errorReply('/usetoken music, [link], [name]');
 			target[1] = target[1].trim();
-			if (!['.mp3', '.mp4', '.m4a'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .mp3, .mp4, or .m4a`);
+			if (!['.mp3', '.mp4', '.m4a'].includes(target[1].slice(-4))) return this.errorReply(`The song needs to end in .mp3, .mp4, or .m4a`);
 			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a music token.<br/><audio src="${target[2]}" alt="${target[1]}"></audio><br/>`;
 			msg += `<button class="button" name="send" value="/music set ${user.userid}, ${target[1]}, ${target[2]}">Set music</button></center>`;
 			delete user.tokens[target[0]];
