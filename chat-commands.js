@@ -2686,10 +2686,13 @@ exports.commands = {
 
 				Chat.uncache('./chat');
 				Chat.uncache('./chat-commands');
+				Chat.uncache('./console');
 				Chat.uncacheDir('./chat-plugins');
 				Chat.uncacheDir('./wavelength-plugins');
+				Chat.uncacheDir('./game-cards');
 				Chat.uncache('./WL');
 				global.WL = require('./WL').WL;
+				global.Console = require('./console');
 				global.Chat = require('./chat');
 
 				let runningTournaments = Tournaments.tournaments;
