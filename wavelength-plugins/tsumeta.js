@@ -139,7 +139,6 @@ exports.commands = {
 		removeproposals: "deleteproposal",
 		deleteproposals: "deleteproposal",
 		deleteproposal: function (target, room, user) {
-			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			if (!target) return this.errorReply("This command requires a target.");
 			if (!proposals[toId(target)].id) return this.errorReply(`This proposal doesn't exist!`);
 			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
