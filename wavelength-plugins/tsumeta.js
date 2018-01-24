@@ -149,6 +149,8 @@ exports.commands = {
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
+			delete proposals[proposalid];
+			write();
 			this.sendReply(`Proposal ${target} has been deleted.`);
 		},
 
