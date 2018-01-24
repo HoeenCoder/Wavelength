@@ -2687,6 +2687,7 @@ exports.commands = {
 				Chat.uncache('./chat');
 				Chat.uncache('./chat-commands');
 				Chat.uncacheDir('./chat-plugins');
+				Chat.uncacheDir('./wavelength-plugins');
 				Chat.uncache('./WL');
 				global.WL = require('./WL').WL;
 				global.Chat = require('./chat');
