@@ -71,6 +71,16 @@ function toToken(item) {
 	case 'disableintroscroll':
 		return 'disableintroscroll';
 
+	case 'profilemusic':
+	case 'music':
+		return 'music';
+
+	case 'profilebackground':
+	case 'profilebg':
+	case 'background':
+	case 'bg':
+		return 'bg';
+
 	default:
 		return false;
 	}
@@ -121,6 +131,7 @@ exports.commands = {
 			writeShop();
 			return this.sendReply('The item ' + target[0] + ' was added.');
 		},
+
 		remove: function (target, room, user, connection, cmd, message) {
 			if (!allowThisShop) return this.errorReply('This shop is closed');
 			if (!this.can('roomowner')) return false;
@@ -131,6 +142,7 @@ exports.commands = {
 			writeShop();
 			return this.sendReply('The item ' + target + ' was removed.');
 		},
+
 		buy: function (target, room, user, connection, cmd, message) {
 			if (!allowThisShop) return this.errorReply('This shop is closed');
 			if (!target) return this.parse('/eshop help buy');
@@ -208,6 +220,7 @@ exports.commands = {
 				});
 			});
 		},
+
 		help: function (target, room, user, connection, cmd, message) {
 			let reply = '<b>Shop commands</b><br/>';
 			reply += '/eshop - Load the shop screen.<br/>';
@@ -220,6 +233,7 @@ exports.commands = {
 			}
 			return this.sendReplyBox(reply);
 		},
+
 		reopen: '',
 		'': function (target, room, user, connection, cmd, message) {
 			if (!allowThisShop) return this.errorReply('This shop is closed');
