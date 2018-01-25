@@ -8,6 +8,16 @@
 
 'use strict';
 
+const FS = require("../lib/fs.js");
+
+let newsRequests = FS("config/newsrequests.json").readIfExistsSync();
+
+if (newsRequests !== "") {
+	newsRequests = JSON.parse(newsRequests);
+} else {
+	newsRequests = {};
+}
+
 const notifiedUsers = {};
 
 function generateNews() {
@@ -24,6 +34,7 @@ function showSubButton(userid) {
 	let hasSubscribed = Db.NewsSubscribers.get(userid, false);
 	return `<hr><center><button class="button" name="send" value="/news ${(hasSubscribed ? `unsubscribe` : `subscribe`)}">${(hasSubscribed ? `Unsubscribe from the news` : `Subscribe to the news`)}</button></center>`;
 }
+
 WL.showNews = function (userid, user) {
 	if (!user || !userid) return false;
 	if (!Db.NewsSubscribers.has(userid) || (userid in notifiedUsers)) return false;
@@ -38,6 +49,10 @@ WL.showNews = function (userid, user) {
 	}
 };
 
+function saveNewsRequests() {
+	FS("config/newsrequests.json").write(JSON.stringify(newsRequests));
+}
+
 exports.commands = {
 	news: 'serverannouncements',
 	announcements: 'serverannouncements',
@@ -50,6 +65,7 @@ exports.commands = {
 			if (this.broadcasting) return this.sendReplyBox(`<div class="infobox-limited">${output}</div>`);
 			return user.send(`|popup||wide||html|${output}`);
 		},
+
 		remove: 'delete',
 		delete: function (target, room, user) {
 			if (!this.can('ban')) return false;
@@ -59,6 +75,7 @@ exports.commands = {
 			this.modlog(`NEWS`, null, `deleted announcement titled: ${target}.`);
 			this.privateModAction(`(${user.name} deleted server announcement titled: ${target}.)`);
 		},
+
 		add: function (target, room, user) {
 			if (!this.can('ban')) return false;
 			if (!target) return this.parse('/help serverannouncements');
@@ -82,6 +99,7 @@ exports.commands = {
 			this.modlog(`NEWS`, null, `Added announcement: ${parts[0]}`);
 			this.privateModAction(`(${user.name} added server announcement: ${parts[0]})`);
 		},
+
 		subscribe: function (target, room, user) {
 			if (!user.named) return this.errorReply('You must choose a name before subscribing');
 			if (Db.NewsSubscribers.has(user.userid)) return this.errorReply("You are alreading subscribing Wavelength News.");
@@ -89,6 +107,7 @@ exports.commands = {
 			this.sendReply("You have subscribed Wavelength News.");
 			this.popupReply("|wide||html|You will receive Wavelength News automatically once you connect to the Wavelength next time.<br><hr><center><button class='button' name='send' value ='/news'>View News</button></center>");
 		},
+
 		unsubscribe: function (target, room, user) {
 			if (!user.named) return this.errorReply('You must choose a name before unsubscribing');
 			if (!Db.NewsSubscribers.has(user.userid)) return this.errorReply("You have not subscribed Wavelength News.");
@@ -96,11 +115,36 @@ exports.commands = {
 			this.sendReply("You have unsubscribed Wavelength News.");
 			this.popupReply("|wide||html|You will no longer automatically receive Wavelength News.<br><hr><center><button class='button' name='send' value='/news'>View News</button></center>");
 		},
+
+		request: function (target, room, user) {
+			if (!user.named) return this.errorReply("You must have a name before requesting an announcement.");
+			if (!this.canTalk()) return this.errorReply("You can't use this command while unable to speak.");
+			if (!target) return this.sendReply(`/news request [message] - Requests a news announcement from the ${Config.serverName} Staff.`);
+			if (target.length < 1) return this.sendReply(`/news request [message] - Requests a news announcement from the ${Config.serverName} Staff.`);
+			let newsId = (Object.keys(newsRequests).length + 1);
+			let d = new Date();
+			let MonthNames = ["January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November", "December",
+			];
+			while (newsRequests[newsId]) newsId--;
+			newsRequests[newsId] = {};
+			newsRequests[newsId].reporter = user.name;
+			newsRequests[newsId].message = target.trim();
+			newsRequests[newsId].id = newsId;
+			newsRequests[newsId].status = 'Pending';
+			newsRequests[newsId].reportTime = MonthNames[d.getUTCMonth()] + ' ' + d.getUTCDate() + "th, " + d.getUTCFullYear() + ", " + (d.getUTCHours() < 10 ? "0" + d.getUTCHours() : d.getUTCHours()) + ":" + (d.getUTCMinutes() < 10 ? "0" + d.getUTCMinutes() : d.getUTCMinutes()) + " UTC";
+			saveNewsRequests();
+			Monitor.log(`A news request has been submitted by ${user.name}. ID: ${newsId} Request Message: ${target.trim()}`);
+			Server.messageSeniorStaff(`A news requested has been submitted by ${user.name}. ID: ${newsId} Request Message: ${target.trim()}`);
+			return this.sendReply(`Your request has been sent to the ${Config.serverName} global authorities.`);
+		},
 	},
-	serverannouncementshelp: ["/news view - Views current Wavelength news.",
-		"/news delete [news title] - Deletes announcement with the [title]. Requires @, &, ~",
-		"/news add [news title], [news desc] - Adds news [news]. Requires @, &, ~",
-		"/news subscribe - Subscribes to Wavelength News.",
-		"/news unsubscribe - Unsubscribes to Wavelength News.",
+	serverannouncementshelp: [
+		`/news view - Views current Wavelength News.
+		/news delete [news title] - Deletes announcement with the [title]. Requires @, &, ~.
+		/news add [news title], [news desc] - Adds [news]. Requires @, &, ~.
+		/news subscribe - Subscribes to the Wavelength News.
+		/news unsubscribe - Unsubscribes from the Wavelength News.
+		/news request [message] - A user may request for a news announcement to be made.`,
 	],
 };
