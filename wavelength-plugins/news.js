@@ -119,8 +119,8 @@ exports.commands = {
 		request: function (target, room, user) {
 			if (!user.named) return this.errorReply("You must have a name before requesting an announcement.");
 			if (!this.canTalk()) return this.errorReply("You can't use this command while unable to speak.");
-			if (!target) return this.sendReply(`/news request [message] - Requests a news announcement from the ${Config.serverName} Staff.`);
-			if (target.length < 1) return this.sendReply(`/news request [message] - Requests a news announcement from the ${Config.serverName} Staff.`);
+			if (!target) return this.sendReply(`/news request [message] - Requests a news announcement from the Wavelength Staff.`);
+			if (target.length < 1) return this.sendReply(`/news request [message] - Requests a news announcement from the Wavelength Staff.`);
 			let newsId = (Object.keys(newsRequests).length + 1);
 			let d = new Date();
 			let MonthNames = ["January", "February", "March", "April", "May", "June",
@@ -135,8 +135,8 @@ exports.commands = {
 			newsRequests[newsId].reportTime = MonthNames[d.getUTCMonth()] + ' ' + d.getUTCDate() + "th, " + d.getUTCFullYear() + ", " + (d.getUTCHours() < 10 ? "0" + d.getUTCHours() : d.getUTCHours()) + ":" + (d.getUTCMinutes() < 10 ? "0" + d.getUTCMinutes() : d.getUTCMinutes()) + " UTC";
 			saveNewsRequests();
 			Monitor.log(`A news request has been submitted by ${user.name}. ID: ${newsId} Request Message: ${target.trim()}`);
-			Server.messageSeniorStaff(`A news requested has been submitted by ${user.name}. ID: ${newsId} Request Message: ${target.trim()}`);
-			return this.sendReply(`Your request has been sent to the ${Config.serverName} global authorities.`);
+			WL.messageSeniorStaff(`A news requested has been submitted by ${user.name}. ID: ${newsId} Request Message: ${target.trim()}`);
+			return this.sendReply(`Your request has been sent to the Wavelength global authorities.`);
 		},
 	},
 	serverannouncementshelp: [
