@@ -24,6 +24,8 @@ class Poll {
 			totalVotes: 0,
 			timeout: null,
 			timeoutMins: 0,
+			startTime: Date.now(),
+			startedUser: WL.nameColor(questionData.username, true, true),
 			options: new Map(),
 		}];
 		for (let i = 0; i < options.length; i++) {
@@ -56,32 +58,38 @@ class Poll {
 	}
 
 	generateVotes(num) {
-		let output = '<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Poll-' + this.pollArray[num].pollNum + '</span> <strong style="font-size:11pt">' + this.getQuestionMarkup(num) + '</strong></summary>';
+		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Poll-${this.pollArray[num].pollNum}</span> <strong style="font-size:11pt">${this.getQuestionMarkup(num)}</strong><img src="https://pldh.net/media/pokecons_action/491.gif" width="32" height="32"></summary>`;
 		this.pollArray[num].options.forEach((option, number) => {
-			output += '<div style="margin-top: 5px"><button class="button" style="text-align: left" value="/poll vote ' + number + ',' + this.pollArray[num].pollNum + '" name="send" title="Vote for ' + number + '. ' + Chat.escapeHTML(option.name) + '">' + number + '. <strong>' + this.getOptionMarkup(option, num) + '</strong></button></div>';
+			output += `<div style="margin-top: 5px"><button class="button" style="text-align: left" value="/poll vote ${number}, ${this.pollArray[num].pollNum}" name="send" title="Vote for ${number}. ${Chat.escapeHTML(option.name)}">${number}. <strong>${this.getOptionMarkup(option, num)}</strong></button></div>`;
 		});
-		output += '<div style="margin-top: 7px; padding-left: 12px"><button value="/poll results ' + this.pollArray[num].pollNum + '" name="send" title="View results - you will not be able to vote after viewing results"><small>(View results)</small></button></div>';
-		output += '</details></div>';
+		output += `<div style="margin-top: 7px; padding-left: 12px"><button value="/poll results ${this.pollArray[num].pollNum}" name="send" title="View results - you will not be able to vote after viewing results"><small>(View results)</small></button></div>`;
+		output += `</details></div>`;
 
 		return output;
 	}
 
 	generateResults(ended, option, num) {
-		let icon = '<span style="border:1px solid #' + (ended ? '777;color:#555' : '6A6;color:#484') + ';border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> ' + (ended ? "Poll-" + this.pollArray[num].pollNum + " ended" : "Poll-" + this.pollArray[num].pollNum) + '</span>';
-		let output = '<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">' + icon + ' <strong style="font-size:11pt">' + this.getQuestionMarkup(num) + '</strong></summary>';
+		let icon = `<span style="border: 1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')}; border-radius: 4px; padding: 3px"><i class="fa fa-bar-chart"></i> ${(ended ? `Poll-${this.pollArray[num].pollNum} ended` : `Poll-${this.pollArray[num].pollNum}`)}</span>`;
+		let totalVotes = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Votes: ${this.pollArray[num].totalVotes}] (Started by ${this.pollArray[num].startedUser} ${Chat.toDurationString(Date.now() - this.pollArray[num].startTime)} ago.)</span></div>`;
+		let output = `<div style="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${this.getQuestionMarkup(num)}</strong><img src="https://pldh.net/media/pokecons_action/491.gif" width="32" height="32"></summary>`;
+		output += totalVotes;
+		output += `<div style="padding: 8px 15px;"><font color="yellow"><small><center>(Options with 0 votes are not shown)</center></small></font>`;
+		output += `<table cellspacing="0" style="width: 100%; margin-top: 3px;">`;
 		let iter = this.pollArray[num].options.entries();
 
 		let i = iter.next();
 		let c = 0;
-		let colors = ['#79A', '#8A8', '#88B'];
+		let colors = ['#00FFFF', '#66CCCC', '#388E8E'];
 		while (!i.done) {
-			let percentage = Math.round((i.value[1].votes * 100) / (this.pollArray[num].totalVotes || 1));
-			output += '<div style="margin-top: 3px">' + i.value[0] + '. <strong>' + (i.value[0] === option ? '<em>' : '') + this.getOptionMarkup(i.value[1], num) + (i.value[0] === option ? '</gem>' : '') + '</strong> <small>(' + i.value[1].votes + ' vote' + (i.value[1].votes === 1 ? '' : 's') + ')</small><br /><span style="font-size:7pt;background:' + colors[c % 3] + ';padding-right:' + (percentage * 3) + 'px"></span><small>&nbsp;' + percentage + '%</small></div>';
+			if (i.value[1].votes && i.value[1].votes !== 0) {
+				let percentage = Math.round((i.value[1].votes * 100) / (this.totalVotes || 1));
+				output += `<tr><td><strong>${(i.value[0] === option ? '<em>' : '')} ${Chat.escapeHTML(i.value[1].name)} ${(i.value[0] === option ? '</em>' : '')}</strong> <small>(${i.value[1].votes} vote${(i.value[1].votes === 1 ? '' : 's')})</small></td><td><span style="font-size: 7pt; background: ${colors[c % 3]}; padding-right: ${(percentage * 3)}px; border-radius: 20px;"></span><small>&nbsp;${percentage}%</small></td></tr>`
+			}
 			i = iter.next();
 			c++;
 		}
-		if (option === 0 && !ended) output += '<div><small>(You can\'t vote after viewing results)</small></div>';
-		output += '</details></div>';
+		if (option === 0 && !ended) output += `<div style="text-align:center; color:yellow;"><small>(You can't vote after viewing results)</small></div>`;
+		output += `</table></details>`;
 
 		return output;
 	}
@@ -406,6 +414,31 @@ exports.commands = {
 		`/poll display [poll id number] - Displays the poll. The poll id number is optional for this command and displays only the poll with the matching id number.`,
 		`/poll end [poll id number] - Ends a poll and displays the results. The poll id number is optional for this command and ends only the poll with the matching id number. and Requires: % @ * # & ~`,
 	],
+
+	tpoll: 'tierpoll',
+	tierpoll: function (target, room, user, connection, cmd, message) {
+		if (!this.can('minigame', null, room)) return false;
+		if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply("The maximum amount of polls is 5.");
+		let options = [];
+		for (let key in Dex.formats) {
+			if (!Dex.formats[key].mod) continue;
+			if (!Dex.formats[key].searchShow) continue;
+			if (toId(target) !== 'all') {
+				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon'];
+				if (commonMods.indexOf(Dex.formats[key].mod) === -1) continue;
+			}
+			options.push(Dex.formats[key].name);
+		}
+		room.poll = new Poll(room, {
+			source: 'What should the next tournament tier be?',
+			supportHTML: false,
+			username: user.name,
+		}, options);
+		room.poll.display();
+		this.roomlog(`${user.name} used ${message}`);
+		return this.privateModAction(`(A tier poll was started by ${user.name}.)`);
+	},
+	tierpollhelp: ["/tierpoll - (all) Creates a poll with all the common formats as options. All all to use all formats Requires: % @ * # & ~"],
 };
 process.nextTick(() => {
 	Chat.multiLinePattern.register('/poll (new|create|htmlcreate) ');
