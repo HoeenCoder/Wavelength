@@ -10,11 +10,6 @@
 
 'use strict';
 
-let targetUser;
-let selectedBadge;
-let userBadges;
-let userid;
-
 const TR_CSS = 'style ="background: rgba(69, 76, 80, 0.8); border: 3px solid #FFF; border-radius: 4px"';
 const TD_CSS = 'style ="background: rgba(69, 76, 80, 0.6); color: #FFF; padding: 5px; border: 1px solid #222; border: 3px solid #FFF; border-radius: 4px"';
 
@@ -26,6 +21,10 @@ exports.commands = {
 	badge: 'badges',
 	badges: {
 		give: function (target, room, user) {
+			let targetUser;
+			let selectedBadge;
+			let userBadges;
+			let userid;
 			if (!this.can('lock')) return false;
 			let parts = target.split(',');
 			if (parts.length !== 2) return this.errorReply("Correct command: `/badges set [user], [badgeName]`");
@@ -70,6 +69,7 @@ exports.commands = {
 
 		info: function (target, room, user) {
 			if (!this.runBroadcast()) return;
+			let selectedBadge;
 			let parts = target.split(',');
 			if (!parts[1]) return this.parse('/help badges');
 			selectedBadge = parts[1].trim();
@@ -80,6 +80,9 @@ exports.commands = {
 
 		take: function (target, room, user) {
 			if (!this.can('lock')) return false;
+			let selectedBadge;
+			let userBadges;
+			let userid;
 			let parts = target.split(',');
 			if (parts.length !== 2) return this.errorReply("Correct command: `/badges take user, badgeName`");
 			userid = toId(parts[0].trim());
@@ -96,6 +99,7 @@ exports.commands = {
 
 		delete: function (target, room, user) {
 			if (!this.can('ban')) return false;
+			let selectedBadge;
 			let parts = target.split(',');
 			if (parts.length !== 1) return this.errorReply("Correct command: `/badges delete badgeName`");
 			selectedBadge = parts[0].trim();
@@ -112,9 +116,9 @@ exports.commands = {
 		},
 
 		user: function (target, room, user) {
+			let userid;
 			let parts = target.split(',');
 			if (!parts[0]) return this.errorReply('No target user was specified.');
-
 			if (!this.runBroadcast()) return;
 			let output = '';
 			userid = toId(parts[0].trim());
