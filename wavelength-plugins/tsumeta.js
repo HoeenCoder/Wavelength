@@ -46,7 +46,7 @@ exports.commands = {
 	tsumetacouncil: "tsumeta",
 	tsumeta: {
 		give: function (target, room, user) {
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply("You must be Desokoro to add users into the council.");
+			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to add users into the council.");
 			if (!target) return this.parse("/tsumetahelp");
 			let tsuMetaMember = toId(target);
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -60,7 +60,7 @@ exports.commands = {
 		remove: "take",
 		delete: "take",
 		take: function (target, room, user) {
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply("You must be Desokoro to remove users from the council.");
+			if (user.userid !== "desokoro") return this.errorReply("You must be Desokoro to remove users from the council.");
 			if (!target) return this.parse(`/tsumetahelp`);
 			let tsuMetaMember = toId(target);
 			if (tsuMetaMember.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -84,7 +84,7 @@ exports.commands = {
 		alert: "message",
 		pm: "message",
 		message: function (target, room, user) {
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro only.`);
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro only.`);
 			if (!target) return this.parse("/tsumetahelp");
 			let councilMembers = Db.councilmember.keys();
 			for (let u in councilMembers) {
@@ -95,7 +95,7 @@ exports.commands = {
 
 		requestchanges: "propose",
 		propose: function (target, room, user) {
-			if (!isTsuMetaCouncil(user.userid) && !this.can("bypassall")) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
+			if (!isTsuMetaCouncil(user.userid)) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			let parts = target.split(',');
 			for (let u in parts) parts[u] = parts[u].trim();
@@ -119,7 +119,7 @@ exports.commands = {
 		edit: "editproposal",
 		modifyproposal: "editproposal",
 		editproposal: function (target, room, user) {
-			if (!isTsuMetaCouncil(user.userid) && !this.can("bypassall")) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
+			if (!isTsuMetaCouncil(user.userid)) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 			let parts = target.split(',');
 			for (let u in parts) parts[u] = parts[u].trim();
@@ -128,8 +128,17 @@ exports.commands = {
 			let proposalid = toId(proposal);
 			if (!proposals[proposalid]) return this.errorReply(`This proposal doesn't exist!`);
 			if (proposal.length > 500) return this.errorReply("Please keep your changes to a maximum of 500 characters.");
-			if (proposals[proposalid].creator !== user.userid && !this.can("bypassall")) return this.errorReply(`Only the creator "${proposals[proposalid].creator}" can modify this proposal.`);
 			let newDesc = parts[1];
+			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
+				proposals[toId(proposal)].desc = newDesc;
+				write();
+				this.sendReplyBox(`You have successfully modified proposal <strong>${proposals[proposalid].idea}'s</strong> description to:<br />${proposals[proposalid].desc}`);
+				if (Rooms('tsumetacommittee')) {
+					Rooms('tsumetacommittee').add(`|c|~TsuMeta Council|${user.name} has edited ${proposals[proposalid].idea}'s description.`).update();
+				}
+				return true;
+			}
+			if (proposals[proposalid].creator !== user.userid && user.userid !== "desokoro") return this.errorReply(`Only the creator "${proposals[proposalid].creator}" can modify this proposal.`);
 			proposals[toId(proposal)].desc = newDesc;
 			write();
 			this.sendReplyBox(`You have successfully modified proposal <strong>${proposals[proposalid].idea}'s</strong> description to:<br />${proposals[proposalid].desc}`);
@@ -173,7 +182,7 @@ exports.commands = {
 				this.sendReply(`Proposal ${target} has been deleted.`);
 				return true;
 			}
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro.`);
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			delete proposals[proposalid];
 			write();
 			this.sendReply(`Proposal ${target} has been deleted.`);
@@ -184,7 +193,7 @@ exports.commands = {
 			if (!this.runBroadcast()) return;
 			let reply = `<b><u>Proposals (${Object.keys(proposals).length})</u></b><br />`;
 			for (let proposal in proposals) reply += `(<strong>${proposal}</strong>)<br />`;
-			this.sendReply(`|raw|<div class="infobox infobox-limited">${reply}</div>`);
+			this.sendReplyBox(`<div class="infobox infobox-limited">${reply}</div>`);
 		},
 
 		suspend: function (target, room, user) {
@@ -198,7 +207,7 @@ exports.commands = {
 				this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
 			}
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro.`);
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			this.sendReply(`You have successfully suspended ${target} from participating in TsuMeta Committee proposals.`);
 			Db.councilmember.set(targetUser, 2);
 		},
@@ -214,7 +223,7 @@ exports.commands = {
 				this.sendReply(`You have successfully unsuspended ${target} from participating in TsuMeta Committee proposals.`);
 				return true;
 			}
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro.`);
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			this.sendReply(`You have successfully unsuspended ${target} from participating in TsuMeta Committee proposals.`);
 			Db.councilmember.set(targetUser, 1);
 		},
@@ -238,8 +247,8 @@ exports.commands = {
 		/tsumeta take [user] - Removes a user's TsuMeta Council Member status.
 		/tsumeta list - Shows the list of TsuMeta Council Members.
 		/tsumeta alert [message] - Sends a message to all online users from the TsuMeta Council. Only for Desokoro.
-		/tsumeta propose [what you modified], [change requested] - Proposes a change for the TsuMeta metagame. Must be in the TsuMeta Council to use.
-		/tsumeta edit [proposal], [description update] - Edits a proposal. Must be the submitter of the proposal.
+		/tsumeta propose [what you modified], [change requested] - Proposes a change for the TsuMeta metagame. Must be in the TsuMeta Council to use this command.
+		/tsumeta edit [proposal], [description update] - Edits a proposal. Must be the submitter of the proposal, Desokoro, or xcmr.
 		/tsumeta proposals [optional proposal ID] - Checks the specified proposal ID, if not specified generates a random one from the proposals index.
 		/tsumeta deleteproposal [proposal] - Deletes the specified proposal. Reserved for Desokoro and xcmr.
 		/tsumeta viewproposals - Shows the list of proposals.
