@@ -1,12 +1,12 @@
-/**
- * Badges plugin
- *
- * Credits: Niisama
- *
- * Cleanup: Insist
- *
- * @license MIT license
- */
+/************************
+ * Badges plugin			*
+ *								*
+ * Credits: Niisama		*
+ *								*
+ * Cleanup: Insist		*
+ *								*
+ * @license MIT license *
+ ************************/
 
 'use strict';
 
@@ -27,7 +27,7 @@ exports.commands = {
 			let userid;
 			if (!this.can('lock')) return false;
 			let parts = target.split(',');
-			if (parts.length !== 2) return this.errorReply("Correct command: `/badges set [user], [badgeName]`");
+			if (parts.length !== 2) return this.parse("/badgeshelp");
 			userid = toId(parts[0].trim());
 			targetUser = Users.getExact(userid);
 			userBadges = Db.userBadges.get(userid);
@@ -38,20 +38,20 @@ exports.commands = {
 			userBadges.push(selectedBadge);
 			Db.userBadges.set(userid, userBadges);
 			if (Users.get(targetUser)) Users.get(userid).popup(`|modal||html|You have received a badge from ${WL.nameColor(user.name, true)}: <img src="${Db.badgeData.get(selectedBadge)[1]}" width="16" height="16"> (${selectedBadge})`);
-			this.privateModAction(`${user.name} gave the "${selectedBadge}" badge to ${parts[0]}.`);
+			this.modlog(`BADGES`, targetUser, `gave badge`);
 			this.sendReply(`The "${selectedBadge}" badge was given to ${parts[0]}.`);
 		},
 
 		create: function (target, room, user) {
 			if (!this.can('ban')) return false;
 			let parts = target.split(',');
-			if (parts.length !== 3) return this.errorReply("Correct command: `/badges create [badge name], [description], [image]`.");
+			if (parts.length !== 3) return this.parse("/badgeshelp");
 			let badgeName = Chat.escapeHTML(parts[0].trim());
 			let description = Chat.escapeHTML(parts[1].trim());
 			let img = parts[2].trim();
 			if (Db.badgeData.has(badgeName)) return this.errorReply('This badge already exists.');
 			Db.badgeData.set(badgeName, [description, img]);
-			this.privateModAction(`${user.name} created the badge "${badgeName}".`);
+			this.modlog(`BADGE`, null, `added badge.`);
 			Users.get(user.userid).popup(`|modal||html|You have successfully created the badge <img src ="${img}" width="16" height="16"> (${badgeName})`);
 		},
 
@@ -84,7 +84,7 @@ exports.commands = {
 			let userBadges;
 			let userid;
 			let parts = target.split(',');
-			if (parts.length !== 2) return this.errorReply("Correct command: `/badges take user, badgeName`");
+			if (parts.length !== 2) return this.parse("/badgeshelp");
 			userid = toId(parts[0].trim());
 			if (!Db.userBadges.has(userid)) return this.errorReply("This user doesn't have any badges.");
 			userBadges = Db.userBadges.get(userid);
@@ -92,36 +92,32 @@ exports.commands = {
 			if (!Db.badgeData.get(selectedBadge)) return this.errorReply(`${selectedBadge} is not a badge.`);
 			userBadges = userBadges.filter(b => b !== selectedBadge);
 			Db.userBadges.set(userid, userBadges);
-			this.privateModAction(`${user.name} took the badge "${selectedBadge}" badge from ${parts[0]}.`);
+			this.modlog(`BADGES`, parts[0], `took badge`);
 			this.sendReply(`The "${selectedBadge}" badge was taken from "${parts[0]}.`);
 			if (Users(userid)) Users.get(userid).popup(`|modal||html|${WL.nameColor(user.name, true)} has taken the ${selectedBadge} from you. <img src="${Db.badgeData.get(selectedBadge)[1]}" width="16" height="16">`);
 		},
 
 		delete: function (target, room, user) {
 			if (!this.can('ban')) return false;
-			let selectedBadge;
-			let parts = target.split(',');
-			if (parts.length !== 1) return this.errorReply("Correct command: `/badges delete badgeName`");
-			selectedBadge = parts[0].trim();
-			if (!Db.badgeData.has(selectedBadge)) return this.errorReply("This badge does not exist, please check /badges list");
-			Db.badgeData.remove(selectedBadge);
+			if (!target) return this.parse("/badgeshelp");
+			let targetId = toId(target);
+			if (!Db.badgeData.has(targetId)) return this.errorReply("This badge does not exist, please check /badges list");
+			Db.badgeData.remove(targetId);
 			let badgedUsers = Db.userBadges.keys().map(curUser => ({userid: curUser, badges: Db.userBadges.get(curUser)}));
 			badgedUsers.forEach(curUser => {
-				let badges = curUser.badges.filter(b => b !== selectedBadge);
+				let badges = curUser.badges.filter(b => b !== targetId);
 				if (!badges.length) return Db.userBadges.remove(curUser.userid);
 				Db.userBadges.set(curUser.userid, badges);
 			});
-			this.sendReply(`The badge with the name "${selectedBadge}" deleted.`);
-			this.privateModAction(`${user.name} removed the badge "${selectedBadge}".`);
+			this.sendReply(`The badge with the name "${targetId}" deleted.`);
+			this.modlog(`BADGES`, null, `removed badge`);
 		},
 
 		user: function (target, room, user) {
 			let userid;
-			let parts = target.split(',');
-			if (!parts[0]) return this.errorReply('No target user was specified.');
+			if (!target) target = user.userid;
 			if (!this.runBroadcast()) return;
 			let output = '';
-			userid = toId(parts[0].trim());
 			if (!Db.userBadges.has(userid)) return this.errorReply("This user doesn't have any badges.");
 			output = `<table>`;
 			let usersBadges = Db.userBadges.get(userid);
@@ -147,6 +143,6 @@ exports.commands = {
 		"/badges delete [badge] - Delete a badge. Requires Global @ or higher.",
 		"/badges set [user], [badgeName] - Gives a user a badge. Requires Global % or higher.",
 		"/badges take [user], [badgeName] - Takes a badge from a user. Requires Global % or higher.",
-		"/badges user [user] - List a user's badges.",
+		"/badges user [user] - List a user's badges. Defaults to the user.",
 	],
 };
