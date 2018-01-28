@@ -333,7 +333,7 @@ exports.commands = {
 		delete: function (target, room, user) {
 			if (!target) return this.errorReply('/factions delete (name)');
 			if (!factions[toId(target)]) return this.errorReply('Doesn\'t exist!');
-			if (!this.can('declare') && factions[toId(target)].ranks['owner'].users.indexOf(user.userid) === -1) return false;
+			if (!this.can('faction') && factions[toId(target)].ranks['owner'].users.indexOf(user.userid) === -1) return false;
 
 			delete factions[toId(target)];
 			write();
@@ -361,7 +361,7 @@ exports.commands = {
 		},
 		aa: 'approveavatar',
 		approveavatar: function (target, room, user) {
-			if (!this.can('declare')) return false;
+			if (!this.can('faction')) return false;
 			let targets = target.split(',');
 			for (let u in targets) targets[u] = targets[u].trim();
 			if (!targets[1]) return this.errorReply("Usage: '/factiona approveavatar factionid, link'");
@@ -377,7 +377,7 @@ exports.commands = {
 		},
 		da: 'denyavatar',
 		denyavatar: function (target, room, user) {
-			if (!this.can('declare')) return false;
+			if (!this.can('faction')) return false;
 			let factionId = toId(target);
 			if (!factions[factionId]) return this.errorReply('That faction does not exist!');
 			if (!factions[factionId].pendingAVI) return this.errorReply('That faction has no requested faction avatar!');
@@ -388,7 +388,7 @@ exports.commands = {
 		},
 		pa: 'pendingavatars',
 		pendingavatars: function (target, room, user) {
-			if (!this.can('declare')) return false;
+			if (!this.can('faction')) return false;
 			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Image</td><td>Approve</td><td>Deny</td</tr>';
 			for (let faction in factions) {
 				if (factions[faction].pendingAVI) {
@@ -459,7 +459,7 @@ exports.commands = {
 			}
 		},
 		approve: function (target, room, user) {
-			if (!this.can('declare')) return false;
+			if (!this.can('faction')) return false;
 			if (!target) return this.errorReply('/factions approve (faction)');
 			if (!factions[toId(target)]) return this.errorReply("Not a faction!");
 			if (factions[toId(target)].approved) return this.errorReply("Already approved!");
@@ -622,7 +622,7 @@ exports.commands = {
 				if (!targets[1]) return this.errorReply('/faction bank give [faction], [amount]');
 				let name = toId(targets[0]);
 				if (!factions[name]) return this.errorReply(name + ' is not a faction.');
-				if (!this.can('declare')) return this.errorReply('You don\'t have permission to do that.');
+				if (!this.can('faction')) return this.errorReply('You don\'t have permission to do that.');
 				let amount = parseInt(targets[1]);
 				if (isNaN(amount)) return this.errorReply("That is not a number!");
 				Db.factionbank.set(name, Db.factionbank.get(name, 0) + amount);
@@ -633,7 +633,7 @@ exports.commands = {
 				if (!targets[1]) return this.errorReply('/faction bank take [faction], [amount');
 				let name = toId(targets[0]);
 				if (!factions[name]) return this.errorReply(name + ' is not a faction.');
-				if (!this.can('declare')) return this.errorReply('You don\'t have permission to do that.');
+				if (!this.can('faction')) return this.errorReply('You don\'t have permission to do that.');
 				let amount = parseInt(targets[1]);
 				if (isNaN(amount)) return this.errorReply("That is not a number!");
 				Db.factionbank.set(name, Db.factionbank.get(name, 0) - amount);
@@ -652,7 +652,7 @@ exports.commands = {
 				this.sendReplyBox(rankLadder('Richest Factions', 'Faction Atm', keys.slice(0, target), 'atm') + '</div>');
 			},
 			reset: function (target, room, user) {
-				if (!this.can('roomowner')) return false;
+				if (!this.can('faction')) return false;
 				let factionId = toId(target);
 				if (!factions[factionId]) return this.errorReply(factionId + ' is not a faction!');
 				Db.factionbank.remove(factionId);
@@ -732,7 +732,7 @@ exports.commands = {
 			this.sendReply("You've removed " + targetUser + " from the faction rank " + rank + ".");
 		},
 		pending: function (target, room, user) {
-			if (!this.can('declare')) return false;
+			if (!this.can('faction')) return false;
 			let output = '<center><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Faction</td><td>Description</td><td>Approve</td></tr>';
 			for (let faction in factions) {
 				if (!factions[faction].approved) {

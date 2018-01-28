@@ -28,7 +28,7 @@ exports.commands = {
 		switch (cmd) {
 		case 'give':
 		case 'set':
-			if (!this.can('lock')) return false;
+			if (!this.can('badge')) return false;
 			if (parts.length !== 3) return this.errorReply("Correct command: `/badges set, [user], [badgeName]`");
 			userid = toId(parts[1].trim());
 			targetUser = Users.getExact(userid);
@@ -44,7 +44,7 @@ exports.commands = {
 			this.sendReply("The '" + selectedBadge + "' badge was given to '" + userid + "'.");
 			break;
 		case 'create':
-			if (!this.can('ban')) return false;
+			if (!this.can('badge')) return false;
 			if (parts.length !== 4) return this.errorReply("Correct command: `/badges create, [badge name], [description], [image]`.");
 			let badgeName = Chat.escapeHTML(parts[1].trim());
 			let description = Chat.escapeHTML(parts[2].trim());
@@ -73,7 +73,7 @@ exports.commands = {
 			this.sendReplyBox('<table><tr ' + TR_CSS + '> <td ' + TD_CSS + '>' + badgeImg(badgeData[1], selectedBadge) + '</td> <td ' + TD_CSS + '>' + selectedBadge + '</td> <td ' + TD_CSS + '>' + badgeData[0] + '</td></tr></table>');
 			break;
 		case 'take':
-			if (!this.can('lock')) return false;
+			if (!this.can('badge')) return false;
 			if (parts.length !== 3) return this.errorReply("Correct command: `/badges take, user, badgeName`");
 			userid = toId(parts[1].trim());
 			if (!Db.userBadges.has(userid)) return this.errorReply("This user doesn't have any badges.");
@@ -87,7 +87,7 @@ exports.commands = {
 			if (Users(userid)) Users.get(userid).popup('|modal||html|' + WL.nameColor(user.name, true) + ' has taken the ' + selectedBadge + ' from you. <img src="' + Db.badgeData.get(selectedBadge)[1] + '" width="16" height="16">');
 			break;
 		case 'delete':
-			if (!this.can('ban')) return false;
+			if (!this.can('badge')) return false;
 			if (parts.length !== 2) return this.errorReply("Correct command: `/badges delete, badgeName`");
 			selectedBadge = parts[1].trim();
 			if (!Db.badgeData.has(selectedBadge)) return this.errorReply("This badge does not exist, please check /badges list");

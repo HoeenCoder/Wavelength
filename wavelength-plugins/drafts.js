@@ -147,7 +147,7 @@ exports.commands = {
 		let cmd = parts[0].trim().toLowerCase().replace(' ', '');
 		switch (cmd) {
 		case 'create':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (drafts[room]) return this.errorReply('There is already a draft going on in this room.');
 			drafts[room] = new Draft(room);
 			drafts[room].state = 'prep';
@@ -155,13 +155,13 @@ exports.commands = {
 			room.add('|html|<div style="' + greencss + '">A Draft has been started!</div>');
 			break;
 		case 'reset':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (!drafts[room]) return this.errorReply('This room is not taking part in a draft at the moment.');
 			delete drafts[room];
 			room.add('|html|<div style="' + redcss + '">The data for this draft has been reset.</div>');
 			break;
 		case 'addteam':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (parts.length < 3) return this.parse('/draft help');
 			if ((!drafts[room])) return this.errorReply('This room is not drafting at the moment.');
 			if (!drafts[room].state === 'prep') return this.errorReply('You may not add teams to the draft at this moment.');
@@ -170,7 +170,7 @@ exports.commands = {
 			drafts[room].addTeam(teamName, manager, this);
 			break;
 		case 'removeteam':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (parts.length < 2) return this.parse('/draft help');
 			let teamNamez = parts[1].trim();
 			if ((!drafts[room])) return this.errorReply('This room is not drafting at the moment.');
@@ -178,13 +178,13 @@ exports.commands = {
 			drafts[room].removeTeam(teamNamez, this);
 			break;
 		case 'start':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
 			if (drafts[room].state === 'drafting') return this.errorReply('The draft has already started.');
 			drafts[room].start(this);
 			break;
 		case 'random':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if ((!drafts[room])) return this.errorReply('This room is not drafting at the moment.');
 			if (!parts[1]) return this.prase('/draft help');
 			let either = parts[1].trim().toLowerCase().replace(' ', '');
@@ -201,7 +201,7 @@ exports.commands = {
 			}
 			break;
 		case 'snake':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if ((!drafts[room])) return this.errorReply('This room is not drafting at the moment.');
 			if (!parts[1]) return this.prase('/draft help');
 			let eitheror = parts[1].trim().toLowerCase().replace(' ', '');
@@ -218,14 +218,14 @@ exports.commands = {
 			}
 			break;
 		case 'end':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
 			drafts[room].log('The draft has been ended by ' + user.name);
 			delete drafts[room];
 			room.add('|html|<div style="' + redcss + '">The draft has ended!<br>We hope you are happy with what you came out with :).</div>');
 			break;
 		case 'max':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
 			if (!parts[1]) return this.sendReply('The draft pick limit for this draft is ' + drafts[room].maxMons);
 			let num = parseFloat(parts[1].trim());
@@ -240,7 +240,7 @@ exports.commands = {
 			drafts[room].show(this);
 			break;
 		case 'change':
-			if (!this.can('roommod', null, room)) return false;
+			if (!this.can('draft', null, room)) return false;
 			if (!drafts[room]) return this.errorReply('This room is not drafting at the moment.');
 			if (parts.length < 3) return this.parse('/draft help');
 			let teamname = parts[1].trim();

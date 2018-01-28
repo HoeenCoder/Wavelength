@@ -52,7 +52,7 @@ exports.commands = {
 		},
 		remove: 'delete',
 		delete: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('news')) return false;
 			if (!target) return this.parse('/help serverannouncements');
 			if (!Db.news.has(target)) return this.errorReply("News with this title doesn't exist.");
 			Db.news.remove(target);
@@ -60,7 +60,7 @@ exports.commands = {
 			this.privateModAction(`(${user.name} deleted server announcement titled: ${target}.)`);
 		},
 		add: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('news')) return false;
 			if (!target) return this.parse('/help serverannouncements');
 			let parts = target.split(',');
 			if (parts.length < 2) return this.errorReply("Usage: /news add [title], [desc]");

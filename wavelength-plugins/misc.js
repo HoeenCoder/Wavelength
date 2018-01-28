@@ -51,7 +51,7 @@ function clearRoom(room) {
 
 exports.commands = {
 	clearall: function (target, room, user) {
-		if (!this.can('declare')) return false;
+		if (!this.can('lockdown')) return false;
 		if (room.battle) return this.sendReply("You cannot clearall in battle rooms.");
 
 		clearRoom(room);
@@ -62,7 +62,7 @@ exports.commands = {
 
 	gclearall: 'globalclearall',
 	globalclearall: function (target, room, user) {
-		if (!this.can('gdeclare')) return false;
+		if (!this.can('lockdown')) return false;
 
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
@@ -108,7 +108,7 @@ exports.commands = {
 			if (curRoom.modjoin) {
 				if (Config.groupsranking.indexOf(curRoom.modjoin) > Config.groupsranking.indexOf(user.group)) continue;
 			}
-			if (curRoom.isPrivate === true && !user.can('roomowner')) continue;
+			if (curRoom.isPrivate === true && !user.can('makeroom')) continue;
 			if (curRoom.type === 'battle') {
 				battleRooms.push('<a href="/' + curRoom.id + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 			}
@@ -234,7 +234,7 @@ exports.commands = {
 	staffpm: 'pmallstaff',
 	pmstaff: 'pmallstaff',
 	pmallstaff: function (target, room, user) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('pmall')) return false;
 		if (!target) return this.parse('/help pmallstaff');
 
 		let pmName = ' WL Server';
@@ -486,7 +486,7 @@ exports.commands = {
 	rtourhelp: ["/rtour [format] - Creates a round robin tournament in the format provided."],
 
 	disableintroscroll: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('makeroom')) return false;
 		if (!target) return this.errorReply("No Room Specified");
 		target = toId(target);
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
@@ -497,7 +497,7 @@ exports.commands = {
 
 	disableintroscrollhelp: ["/disableintroscroll [room] - Disables scroll bar preset in the room's roomintro."],
 	enableintroscroll: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('makeroom')) return false;
 		if (!target) return this.errorReply("No Room Specified");
 		target = toId(target);
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
@@ -535,7 +535,7 @@ exports.commands = {
 	pmroom: 'rmall',
 	roompm: 'rmall',
 	rmall: function (target, room, user) {
-		if (!this.can('declare', null, room)) return this.errorReply("/rmall - Access denied.");
+		if (!this.can('pmall', null, room)) return this.errorReply("/rmall - Access denied.");
 		if (!target) return this.sendReply("/rmall [message] - Sends a pm to all users in the room.");
 		target = target.replace(/<(?:.|\n)*?>/gm, '');
 
@@ -600,7 +600,7 @@ exports.commands = {
 	autoconfirmhelp: ['/autoconfirm user - Grants a user autoconfirmed status on this server only. Requires ~'],
 
 	usercodes: function (target, room, user) {
-		if (!this.can('roomowner')) return;
+		if (!this.can('lockdown')) return;
 		let out = `<div style="max-height: 300px; overflow: scroll">`;
 		let keys = Db.userType.keys(), codes = {3: 'Wavelength Sysop', 4: 'Autoconfirmed', 5: 'Permalocked', 6: 'Permabanned'};
 		for (let i = 0; i < keys.length; i++) {

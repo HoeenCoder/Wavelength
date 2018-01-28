@@ -11,7 +11,7 @@ exports.commands = {
 	offlinepermalock: 'permalock',
 	forcepermalock: 'permalock',
 	permalock: function (target, room, user, connection, cmd) {
-		if (!this.can('lockdown')) return;
+		if (!this.can('perma')) return;
 		if (!toId(target)) return this.parse('/help permalock');
 		let tarUser = Users(target);
 		if (!tarUser && (cmd !== 'offlinepermalock' && cmd !== 'forceofflinepermalock')) return this.errorReply('User ' + target + ' not found. If your sure you want to permalock them, use /offlinepermalock.');
@@ -46,7 +46,7 @@ exports.commands = {
 	permalockhelp: ['/permalock [user] - Permanently lock a user. Requires: ~'],
 
 	unpermalock: function (target, room, user, connection, cmd) {
-		if (!this.can('lockdown')) return;
+		if (!this.can('perma')) return;
 		if (!toId(target)) return this.parse('/help unpermalock');
 		target = toId(target);
 		if (Db.userType.get(target, 0) < 5) return this.errorReply(target + ' is not permalocked.');
@@ -64,7 +64,7 @@ exports.commands = {
 	offlinepermaban: 'permaban',
 	forcepermaban: 'permaban',
 	permaban: function (target, room, user, connection, cmd) {
-		if (!this.can('lockdown')) return;
+		if (!this.can('perma')) return;
 		if (!toId(target)) return this.parse('/help permaban');
 		let tarUser = Users(target);
 		if (!tarUser && (cmd !== 'offlinepermaban' && cmd !== 'forceofflinepermaban')) return this.errorReply('User ' + target + ' not found. If your sure you want to permaban them, use /offlinepermaban.');
@@ -95,7 +95,7 @@ exports.commands = {
 	},
 	permabanhelp: ['/permaban [user] - Permanently ban a user. Requires: ~'],
 	unpermaban: function (target, room, user, connection, cmd) {
-		if (!this.can('lockdown')) return;
+		if (!this.can('perma')) return;
 		if (!toId(target)) return this.parse('/help unpermaban');
 		target = toId(target);
 		if (Db.userType.get(target, 0) !== 6) return this.errorReply(target + ' is not permabanned.');

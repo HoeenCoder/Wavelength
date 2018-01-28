@@ -17,7 +17,7 @@ exports.WL = {
 		pmName = (pmName ? pmName : '~Wavelength Server');
 		from = (from ? ' (PM from ' + from + ')' : '');
 		Users.users.forEach(curUser => {
-			if (curUser.group === '~' || curUser.group === '&') {
+			if (curUser.can('roomowner')) {
 				curUser.send('|pm|' + pmName + '|' + curUser.getIdentity() + '|' + message + from);
 			}
 		});

@@ -118,7 +118,7 @@ exports.commands = {
 	//shop: 'eshop', //Uncomment this if you want this to be able to be used using the /shop command
 	eshop: {
 		add: function (target, room, user, connection, cmd, message) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('editshop')) return false;
 			if (!allowThisShop) return this.errorReply('This shop is closed');
 			if (WL.eShop.closed) return this.sendReply('An error closed the shop.');
 			target = target.split(',');
@@ -134,7 +134,7 @@ exports.commands = {
 
 		remove: function (target, room, user, connection, cmd, message) {
 			if (!allowThisShop) return this.errorReply('This shop is closed');
-			if (!this.can('roomowner')) return false;
+			if (!this.can('editshop')) return false;
 			if (WL.eShop.closed) return this.sendReply('An error closed the shop.');
 			if (!target) return this.parse('/eshop help');
 			if (!WL.eShop[toId(target)]) return this.errorReply(target + ' is not in the shop.');
@@ -225,7 +225,7 @@ exports.commands = {
 			let reply = '<b>Shop commands</b><br/>';
 			reply += '/eshop - Load the shop screen.<br/>';
 			reply += '/eshop buy [item] - Buy an item from the shop.<br/>';
-			if (user.can('roomowner')) {
+			if (user.can('editshop')) {
 				reply += '<b>Administrative shop commands:</b><br/>';
 				reply += '/eshop add [item name], [description], [price], (is a SSBFFA item) - Adds a item to the shop.<br/>';
 				reply += 'Valid SSBFFA items are: shiny, ffacustommove, customitem, customability, custommove.<br/>';
