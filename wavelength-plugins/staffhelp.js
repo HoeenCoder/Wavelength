@@ -86,7 +86,7 @@ exports.commands = {
 			'<b>As well as all the commands listed above <br />' +
 			'</details>';
 		}
-		if (user.can('roomowner')) {
+		if (user.can('rangeban')) {
 			out += '<details><summary>Global Leader Commands (&)</summary>' +
 			'<b>/lockip [IP]</b> - locks a particular IP address from the server. Exisiting users on the IP will not be locked. <br />' +
 			'<b>/banip [IP] OR /unbanip</b> - bans a particular IP address from the server. Exisiting users on the IP will not be banned. <br />' +

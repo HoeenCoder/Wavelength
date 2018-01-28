@@ -187,7 +187,7 @@ exports.commands = {
 		target = this.splitTarget(target).split(',');
 
 		if (!this.targetUser) return this.sendReply("User '" + this.targetUsername + "' not found.");
-		if (!this.can('lock', this.targetUser)) return;
+		if (!this.can('perma', this.targetUser)) return;
 
 		let targets = addUser(this.targetUser);
 		if (targets.length === 0) {
@@ -203,7 +203,7 @@ exports.commands = {
 		if (!target) return this.parse('/help unpermashadowban');
 		this.splitTarget(target);
 
-		if (!this.can('lock')) return;
+		if (!this.can('perma')) return;
 
 		let targets = removeUser(this.targetUser || this.targetUsername);
 		if (targets.length === 0) {

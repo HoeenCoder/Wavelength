@@ -345,6 +345,24 @@ exports.github = {
 //     - minigame: make minigames (hangman, polls, etc.).
 //     - game: make games.
 //     - gamemanagement: enable/disable games and minigames.
+// Wavelength specific permissions
+//     - customcolor: manage custom colors
+//     - avatar: manage custom avatars
+//     - badge: manage badges
+//     - draft: manage room drafts
+//     - economy: manage server currency
+//     - emote: manage emoticons
+//     - editshop: manage the server shop
+//     - exp: manage the exp system
+//     - faction: manage factions
+//     - icon: manage custom icons
+//     - lottery: manage a room's lottery
+//     - news: manage server news
+//     - perma: manage permalocks and permabans
+//     - customtitle: manage custom profile titles
+//     - psgo: manage PSGO
+//     - pmall: send a masspm to a room or globally
+//     - ssb: manage super staff bros free for all
 
 exports.grouplist = [
 	{
@@ -358,24 +376,49 @@ exports.grouplist = [
 		symbol: '&',
 		id: "leader",
 		name: "Leader",
-		inherit: '@',
+		inherit: '^',
 		jurisdiction: 'u',
 		promote: 'u',
+		forcewin: true,
+		rangeban: true,
+		disableladder: true,
+		globalonly: true,
+		// Wavelength
+		customcolor: true,
+		badge: true,
+		editshop: true,
+		exp: true,
+		faction: true,
+		icon: true,
+		customtitle: true,
+	},
+	{
+		symbol: '^',
+		id: "captain",
+		name: "Captain",
+		inherit: '@',
+		jurisdiction: 'u',
+		globalonly: true,
+		declare: true,
+		gdeclare: true,
+		makeroom: true,
+		editroom: true,
 		roomowner: true,
 		roombot: true,
 		roommod: true,
 		roomdriver: true,
-		forcewin: true,
-		declare: true,
 		modchatall: true,
-		rangeban: true,
-		makeroom: true,
-		editroom: true,
-		potd: true,
-		disableladder: true,
-		globalonly: true,
-		tournamentsmanagement: true,
+		tourannouncements: true,
 		gamemanagement: true,
+		potd: true,
+		// Wavelength
+		draft: true,
+		masspm: true,
+		avatar: true,
+		economy: true,
+		emote: true,
+		psgo: true,
+		ssb: true,
 	},
 	{
 		symbol: '#',
@@ -392,21 +435,9 @@ exports.grouplist = [
 		roomonly: true,
 		tournamentsmanagement: true,
 		gamemanagement: true,
-	},
-	{
-		symbol: '\u2605',
-		id: "host",
-		name: "Host",
-		inherit: '@',
-		jurisdiction: 'u',
-		roommod: true,
-		roomdriver: true,
-		editroom: true,
-		declare: true,
-		modchat: true,
-		roomonly: true,
-		tournamentsmanagement: true,
-		gamemanagement: true,
+		// Wavelength
+		draft: true,
+		masspm: true,
 	},
 	{
 		symbol: '\u2606',
@@ -443,6 +474,8 @@ exports.grouplist = [
 		alts: '@u',
 		tournaments: true,
 		game: true,
+		// Wavelength
+		news: true,
 	},
 	{
 		symbol: '%',
@@ -465,6 +498,8 @@ exports.grouplist = [
 		jeopardy: true,
 		joinbattle: true,
 		minigame: true,
+		// Wavelength
+		lottery: true,
 	},
 	{
 		symbol: '+',

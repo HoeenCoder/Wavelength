@@ -194,7 +194,7 @@ exports.commands = {
 
 	givexp: 'giveexp',
 	giveexp: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('exp')) return false;
 		if (!target || target.indexOf(',') < 0) return this.parse('/help giveexp');
 
 		let parts = target.split(',');
@@ -219,7 +219,7 @@ exports.commands = {
 		if (!target) return this.errorReply('USAGE: /resetxp (USER)');
 		let parts = target.split(',');
 		let targetUser = parts[0].toLowerCase().trim();
-		if (!this.can('roomowner')) return false;
+		if (!this.can('exp')) return false;
 		if (cmd !== 'confirmresetexp') {
 			return this.popupReply('|html|<center><button name="send" value="/confirmresetexp ' + targetUser + '"style="background-color:red;height:300px;width:150px"><b><font color="white" size=3>Confirm XP reset of ' + WL.nameColor(targetUser, true) + '; this is only to be used in emergencies, cannot be undone!</font></b></button>');
 		}
@@ -232,13 +232,13 @@ exports.commands = {
 
 	doublexp: 'doubleexp',
 	doubleexp: function (target, room, user) {
-		if (!this.can('roomowner')) return;
+		if (!this.can('exp')) return;
 		DOUBLE_XP = !DOUBLE_XP;
 		return this.sendReply('Double XP was turned ' + (DOUBLE_XP ? 'ON' : 'OFF') + '.');
 	},
 
 	expunban: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('exp')) return false;
 		if (!target) return this.parse('/help expunban');
 		let targetId = toId(target);
 		if (!Db.expoff.has(targetId)) return this.errorReply(targetId + ' is not currently exp banned.');
@@ -250,7 +250,7 @@ exports.commands = {
 	expunbanhelp: ['/expunban target - allows a user to gain exp if they were exp banned'],
 
 	expban: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('exp')) return false;
 		if (!target) return this.parse('/help expban');
 		let targetId = toId(target);
 		if (Db.expoff.has(targetId)) return this.errorReply(targetId + ' is already exp banned.');
