@@ -135,7 +135,7 @@ exports.commands = {
 	givestardust: 'givecurrency',
 	gc: 'givecurrency',
 	givecurrency: function (target, room, user, connection, cmd) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('economy')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
 		if (!splitTarget[2]) return this.sendReply("Usage: /" + cmd + " [user], [amount], [reason]");
@@ -170,7 +170,7 @@ exports.commands = {
 	takestardust: 'takecurrency',
 	tc: 'takecurrency',
 	takecurrency: function (target, room, user, connection, cmd) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('economy')) return false;
 		if (!target) return this.sendReply("Usage: /" + cmd + " [user], [amount]");
 		let splitTarget = target.split(',');
 		if (!splitTarget[2]) return this.sendReply("Usage: /" + cmd + " [user], [amount], [reason]");
@@ -248,7 +248,7 @@ exports.commands = {
 	},
 
 	moneylog: function (target, room, user) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('economy')) return false;
 		if (!target) return this.sendReply("Usage: /moneylog [number] to view the last x lines OR /moneylog [text] to search for text.");
 		let word = false;
 		if (isNaN(Number(target))) word = true;
@@ -291,7 +291,7 @@ exports.commands = {
 
 	resetstardust: 'resetmoney',
 	resetmoney: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('economy')) return false;
 		if (!target) return this.parse('/help resetmoney');
 		target = toId(target);
 		Economy.writeMoney(target, 0);
@@ -304,7 +304,7 @@ exports.commands = {
 		for (let u in Config.groups) if (Config.groups[u].symbol) bannedSymbols.push(Config.groups[u].symbol);
 		if (!user.canCustomSymbol && !user.can('vip')) return this.sendReply('You need to buy this item from the shop to use.');
 		if (!target || target.length > 1) return this.sendReply('/customsymbol [symbol] - changes your symbol (usergroup) to the specified symbol. The symbol can only be one character');
-		if (target.match(/([a-zA-Z ^0-9])/g) || bannedSymbols.indexOf(target) >= 0) {
+		if (target.match(/([a-zA-Z 0-9])/g) || bannedSymbols.indexOf(target) >= 0) {
 			return this.sendReply('This symbol is banned.');
 		}
 		user.customSymbol = target;

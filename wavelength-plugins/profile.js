@@ -90,7 +90,7 @@ function showBadges(user) {
 exports.commands = {
 	dev: {
 		give: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			if (!target) return this.parse('/help', true);
 			let devUsername = toId(target);
 			if (devUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -101,7 +101,7 @@ exports.commands = {
 		},
 
 		take: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			if (!target) return this.parse('/help', true);
 			let devUsername = toId(target);
 			if (devUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -139,7 +139,7 @@ exports.commands = {
 
 	vip: {
 		give: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			if (!target) return this.parse('/help', true);
 			let vipUsername = toId(target);
 			if (vipUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -150,7 +150,7 @@ exports.commands = {
 		},
 
 		take: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			if (!target) return this.parse('/help', true);
 			let vipUsername = toId(target);
 			if (vipUsername.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
@@ -190,7 +190,7 @@ exports.commands = {
 	customtitle: {
 		set: 'give',
 		give: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			target = target.split(',');
 			if (!target || target.length < 3) return this.parse('/help', true);
 			let userid = toId(target[0]);
@@ -213,7 +213,7 @@ exports.commands = {
 		delete: 'remove',
 		take: 'remove',
 		remove: function (target, room, user) {
-			if (!this.can('ban')) return false;
+			if (!this.can('customtitle')) return false;
 			if (!target) return this.parse('/help', true);
 			let userid = toId(target);
 			if (!Db.customtitles.has(userid) && !Db.titlecolors.has(userid)) {
@@ -272,7 +272,7 @@ exports.commands = {
 				Db.friendcodes.remove(toId(user));
 				return this.sendReply("Your friend code has been deleted from the server.");
 			} else {
-				if (!this.can('lock')) return false;
+				if (!this.can('customtitle')) return false;
 				let userid = toId(target);
 				if (!Db.friendcodes.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
 				Db.friendcodes.remove(userid);
@@ -339,7 +339,7 @@ exports.commands = {
 
 		delete: 'remove',
 		remove: function (target, room, user) {
-			if (!this.can('lock')) return false;
+			if (!this.can('customtitle')) return false;
 			let userid = (toId(target));
 			if (!target) return this.parse('/pcolor help');
 			if (!Db.profilecolor.has(userid)) return this.errorReply(`${userid} does not have a profile color set.`);

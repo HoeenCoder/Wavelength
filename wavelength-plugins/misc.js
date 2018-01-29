@@ -51,7 +51,7 @@ function clearRoom(room) {
 
 exports.commands = {
 	clearall: function (target, room, user) {
-		if (!this.can('declare')) return false;
+		if (!this.can('lockdown')) return false;
 		if (room.battle) return this.sendReply("You cannot clearall in battle rooms.");
 
 		clearRoom(room);
@@ -62,7 +62,7 @@ exports.commands = {
 
 	gclearall: 'globalclearall',
 	globalclearall: function (target, room, user) {
-		if (!this.can('gdeclare')) return false;
+		if (!this.can('lockdown')) return false;
 
 		Rooms.rooms.forEach(room => clearRoom(room));
 		Users.users.forEach(user => user.popup('All rooms have been cleared.'));
@@ -108,7 +108,7 @@ exports.commands = {
 			if (curRoom.modjoin) {
 				if (Config.groupsranking.indexOf(curRoom.modjoin) > Config.groupsranking.indexOf(user.group)) continue;
 			}
-			if (curRoom.isPrivate === true && !user.can('roomowner')) continue;
+			if (curRoom.isPrivate === true && !user.can('makeroom')) continue;
 			if (curRoom.type === 'battle') {
 				battleRooms.push('<a href="/' + curRoom.id + '" class="ilink">' + Chat.escapeHTML(curRoom.title) + '</a> (' + curRoom.userCount + ')');
 			}
@@ -234,7 +234,7 @@ exports.commands = {
 	staffpm: 'pmallstaff',
 	pmstaff: 'pmallstaff',
 	pmallstaff: function (target, room, user) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('pmall')) return false;
 		if (!target) return this.parse('/help pmallstaff');
 
 		let pmName = ' WL Server';
@@ -381,15 +381,15 @@ exports.commands = {
 		target[0] = toId(target[0]);
 		if (target[0] === 'intro') target[0] = 'disableintroscroll';
 		let msg = '';
-		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
-		if ((!user.tokens || !user.tokens[target[0]]) && !user.can('bypassall')) return this.errorReply('You need to buy this from the shop first.');
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll', 'music', 'background'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (!user.tokens || !user.tokens[target[0]] && !user.can('bypassall')) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
 		switch (target[0]) {
 		case 'avatar':
 			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg = '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a avatar token.<br/><img src="' + target[1] + '" alt="avatar"/><br/>';
-			msg += '<button class="button" name="send" value="/customavatar set ' + user.userid + ', ' + target[1] + '">Apply Avatar</button></center>';
+			msg = `/html <center>${WL.nameColor(user.name, true)} has redeemed a avatar token.<br/><img src="${target[1]}" alt="avatar"/><br/>`;
+			msg += `<button class="button" name="send" value="/customavatar set ${user.userid}, ${target[1]}">Apply Avatar</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'declare':
@@ -402,30 +402,30 @@ exports.commands = {
 			return WL.messageSeniorStaff(msg);
 		case 'color':
 			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a custom color token.<br/> hex color: <span' + target[1] + '<br/>';
-			msg += '<button class="button" name="send" value="/customcolor set ' + user.name + ',' + target[1] + '">Set color (<b><font color="' + target[1] + '">' + target[1] + '</font></b>)</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a custom color token.<br/> Hex color: ${target[1]}<br/>`;
+			msg += `<button class="button" name="send" value="/customcolor set ${user.name}, ${target[1]}">Set color (<b><font color="${target[1]}">${target[1]}</font></b>)</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'icon':
 			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed a icon token.<br/><img src="' + target[1] + '" alt="icon"/><br/>';
-			msg += '<button class="button" name="send" value="/customicon set ' + user.userid + ', ' + target[1] + '">Apply icon</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a icon token.<br/><img src="${target[1]}" alt="icon"/><br/>`;
+			msg += `<button class="button" name="send" value="/customicon set ${user.userid}, ${target[1]}">Apply icon</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'title':
 			if (!target[2]) return this.errorReply('/usetoken title, [name], [hex code]');
 			target[2] = target[2].trim();
 			if (target[1].substring(0, 1) !== '#' || target[1].length !== 7) return this.errorReply(`Colors must be a 6 digit hex code starting with # such as #009900`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem a title token.<br/> title name: ' + target[1] + '<br/>';
-			msg += '<button class="button" name="send" value="/customtitle set ' + user.userid + ', ' + target[1] + ', ' + target[2] + '">Set title (<b><font color="' + target[2] + '">' + target[2] + '</font></b>)</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a title token.<br/> Title name: ${target[1]}<br/>`;
+			msg += `<button class="button" name="send" value="/customtitle set ${user.userid}, ${target[1]}, ${target[2]}">Set title (<b><font color="${target[2]}">${target[2]}</font></b>)</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'emote':
 			if (!target[2]) return this.errorReply('/usetoken emote, [name], [img]');
 			target[2] = target[2].trim();
 			if (!['.png', '.gif', '.jpg'].includes(target[2].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeem a emote token.<br/><img src="' + target[2] + '" alt="' + target[1] + '"/><br/>';
-			msg += '<button class="button" name="send" value="/emote add, ' + target[1] + ', ' + target[2] + '">Add emote</button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a emote token.<br/><img src="${target[2]}" alt="${target[1]}"/><br/>`;
+			msg += `<button class="button" name="send" value="/emote add ${target[1]}, ${target[2]}">Add emote</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		case 'disableintroscroll':
@@ -433,8 +433,24 @@ exports.commands = {
 			let roomid = toId(target[1]);
 			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
 			if (Db.disabledScrolls.has(roomid) || room.isOfficial) return this.errorReply(`${Rooms(roomid).title} has already roomintro scroll disabled.`);
-			msg += '/html <center>' + WL.nameColor(user.name, true) + ' has redeemed roomintro scroll disabler token.<br/>';
-			msg += '<button class="button" name="send" value="/disableintroscroll ' + target[1] + '">Disable Intro Scrool for <b>' + Rooms(roomid).title + '</b></button></center>';
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed roomintro scroll disabler token.<br/>`;
+			msg += `<button class="button" name="send" value="/disableintroscroll ${target[1]}">Disable Intro Scroll for <b>${Rooms(roomid).title}</b></button></center>`;
+			delete user.tokens[target[0]];
+			return WL.messageSeniorStaff(msg);
+		case 'background':
+			if (!target[1]) return this.errorReply('/usetoken background, [img]');
+			target[1] = target[1].trim();
+			if (!['.png', '.gif', '.jpg'].includes(target[1].slice(-4))) return this.errorReply(`The image needs to end in .png, .gif, or .jpg`);
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a background token.<br/><img src="${target[1]}/><br/>`;
+			msg += `<button class="button" name="send" value="/background set ${user.userid}, ${target[1]}">Set the background</button></center>`;
+			delete user.tokens[target[0]];
+			return WL.messageSeniorStaff(msg);
+		case 'music':
+			if (!target[2]) return this.errorReply('/usetoken music, [link], [name]');
+			target[1] = target[1].trim();
+			if (!['.mp3', '.mp4', '.m4a'].includes(target[1].slice(-4))) return this.errorReply(`The song needs to end in .mp3, .mp4, or .m4a`);
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a music token.<br/><audio src="${target[2]}" alt="${target[1]}"></audio><br/>`;
+			msg += `<button class="button" name="send" value="/music set ${user.userid}, ${target[1]}, ${target[2]}">Set music</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
 		default:
@@ -442,10 +458,10 @@ exports.commands = {
 		}
 	},
 	usetokenhelp: [
-		'/usetoken [token], [argument(s)] - Redeem a token from the shop. Accepts the following arguments: ',
+		'/usetoken [token], [argument(s)] - Redeems a token from the shop. Accepts the following arguments: ',
 		'/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
 		'/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]',
-		'/usetoken disableintroscroll [room name]',
+		'/usetoken disableintroscroll [room name] | /usetoken background, [img] | /usetoken music, [song], [name]',
 	],
 
 	bonus: 'dailybonus',
@@ -470,7 +486,7 @@ exports.commands = {
 	rtourhelp: ["/rtour [format] - Creates a round robin tournament in the format provided."],
 
 	disableintroscroll: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('makeroom')) return false;
 		if (!target) return this.errorReply("No Room Specified");
 		target = toId(target);
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
@@ -481,7 +497,7 @@ exports.commands = {
 
 	disableintroscrollhelp: ["/disableintroscroll [room] - Disables scroll bar preset in the room's roomintro."],
 	enableintroscroll: function (target, room, user) {
-		if (!this.can('roomowner')) return false;
+		if (!this.can('makeroom')) return false;
 		if (!target) return this.errorReply("No Room Specified");
 		target = toId(target);
 		if (!Rooms(target)) return this.errorReply(`${target} is not a room`);
@@ -519,7 +535,7 @@ exports.commands = {
 	pmroom: 'rmall',
 	roompm: 'rmall',
 	rmall: function (target, room, user) {
-		if (!this.can('declare', null, room)) return this.errorReply("/rmall - Access denied.");
+		if (!this.can('pmall', null, room)) return this.errorReply("/rmall - Access denied.");
 		if (!target) return this.sendReply("/rmall [message] - Sends a pm to all users in the room.");
 		target = target.replace(/<(?:.|\n)*?>/gm, '');
 
@@ -584,7 +600,7 @@ exports.commands = {
 	autoconfirmhelp: ['/autoconfirm user - Grants a user autoconfirmed status on this server only. Requires ~'],
 
 	usercodes: function (target, room, user) {
-		if (!this.can('roomowner')) return;
+		if (!this.can('lockdown')) return;
 		let out = `<div style="max-height: 300px; overflow: scroll">`;
 		let keys = Db.userType.keys(), codes = {3: 'Wavelength Sysop', 4: 'Autoconfirmed', 5: 'Permalocked', 6: 'Permabanned'};
 		for (let i = 0; i < keys.length; i++) {

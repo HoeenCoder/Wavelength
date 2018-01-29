@@ -4,14 +4,11 @@
 *******************************/
 "use strict";
 
-const FS = require("../lib/fs.js");
+let iconsData = FS("config/icons.json").readIfExistsSync();
+let icons = {};
 
-let icons = FS("config/icons.json").readIfExistsSync();
-
-if (icons !== "") {
-	icons = JSON.parse(icons);
-} else {
-	icons = {};
+if (iconsData) {
+   icons = JSON.parse(icons);
 }
 
 function updateIcons() {
@@ -27,7 +24,7 @@ function updateIcons() {
 	newCss += "/* ICONS END */\n";
 
 	let file = FS("config/custom.css").readIfExistsSync().split("\n");
-	if (~file.indexOf("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
+	if (!file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
 	FS("config/custom.css").writeUpdate(() => (
 		file.join("\n") + newCss
 	));
@@ -47,8 +44,8 @@ exports.commands = {
 	customicon: "icon",
 	icon: {
 		set: function (target, room, user) {
-			if (!this.can("lock")) return false;
-			target = target.split(",");
+			if (!this.can('icon')) return false;
+			target = target.split(',');
 			for (let u in target) target[u] = target[u].trim();
 			if (target.length !== 2) return this.parse("/help icon");
 			if (toId(target[0]).length > 19) return this.errorReply("Usernames are not this long...");
@@ -65,6 +62,7 @@ exports.commands = {
 		remove: "delete",
 		delete: function (target, room, user) {
 			if (!this.can("lock")) return false;
+			if (!this.can('icon')) return false;
 			target = toId(target);
 			if (!icons[toId(target)]) return this.errorReply(`/icon - ${target} does not have an icon.`);
 			delete icons[toId(target)];

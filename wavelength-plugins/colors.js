@@ -46,7 +46,7 @@ exports.commands = {
 	customcolour: 'customcolor',
 	customcolor: {
 		set: function (target, room, user) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('customcolor')) return false;
 			target = target.split(',');
 			for (let u = 0; u < target.length; u++) target[u] = target[u].trim();
 			if (!target[1]) return this.parse('/help customcolor');
@@ -59,7 +59,7 @@ exports.commands = {
 			updateColor();
 		},
 		delete: function (target, room, user) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('customcolor')) return false;
 			if (!target) return this.parse('/help customcolor');
 			if (!customColors[toId(target)]) return this.errorReply('/customcolor - ' + target + ' does not have a custom color.');
 			delete customColors[toId(target)];
