@@ -190,7 +190,7 @@ exports.commands = {
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
 			"- " + WL.nameColor('Mystifi', true) + " (Former Owner, Sysadmin and Technical Admin)<br />" +
-			"<br />" +*/
+			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
 			"- Our Regular Users<br />";
