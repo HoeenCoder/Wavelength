@@ -8,11 +8,11 @@ let iconsData = FS("config/icons.json").readIfExistsSync();
 let icons = {};
 
 if (iconsData) {
-   icons = JSON.parse(icons);
+	icons = JSON.parse(icons);
 }
 
 function updateIcons() {
-	FS("config/icons.json").writeUpdate(() => (
+	iconsData("config/icons.json").writeUpdate(() => (
 		JSON.stringify(icons)
 	));
 
@@ -23,9 +23,9 @@ function updateIcons() {
 	}
 	newCss += "/* ICONS END */\n";
 
-	let file = FS("config/custom.css").readIfExistsSync().split("\n");
+	let file = iconsData("config/custom.css").readIfExistsSync().split("\n");
 	if (!file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
-	FS("config/custom.css").writeUpdate(() => (
+	iconsData("config/custom.css").writeUpdate(() => (
 		file.join("\n") + newCss
 	));
 	WL.reloadCSS();
