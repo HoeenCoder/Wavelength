@@ -4,6 +4,8 @@
 *******************************/
 "use strict";
 
+const FS = require("../lib/fs.js");
+
 let iconsData = FS("config/icons.json").readIfExistsSync();
 let icons = {};
 
@@ -12,7 +14,7 @@ if (iconsData) {
 }
 
 function updateIcons() {
-	iconsData("config/icons.json").writeUpdate(() => (
+	FS("config/icons.json").writeUpdate(() => (
 		JSON.stringify(icons)
 	));
 
@@ -23,9 +25,9 @@ function updateIcons() {
 	}
 	newCss += "/* ICONS END */\n";
 
-	let file = iconsData("config/custom.css").readIfExistsSync().split("\n");
+	let file = FS("config/custom.css").readIfExistsSync().split("\n");
 	if (!file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
-	iconsData("config/custom.css").writeUpdate(() => (
+	FS("config/custom.css").writeUpdate(() => (
 		file.join("\n") + newCss
 	));
 	WL.reloadCSS();
