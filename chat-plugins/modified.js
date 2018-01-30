@@ -237,7 +237,11 @@ exports.commands = {
 		}
 		if (!user.can('makeroom')) {
 			if (currentGroup !== ' ' && !user.can('room' + (Config.groups[currentGroup] ? Config.groups[currentGroup].id : 'voice'), null, room)) {
-				if (user.userid !== room.founder) return this.errorReply(`/${cmd} - Access denied for promoting/demoting from ${(Config.groups[currentGroup] ? Config.groups[currentGroup].name : "an undefined group")}.`);
+				if (user.userid !== room.founder) {
+					return this.errorReply(`/${cmd} - Access denied for promoting/demoting from ${(Config.groups[currentGroup] ? Config.groups[currentGroup].name : "an undefined group")}.`);
+				} else if (user.userid === userid) {
+					return this.errorReply(`/${cmd} - You cant demote yourself from room founder!`);
+				}
 			}
 			if (nextGroup !== ' ' && !user.can('room' + Config.groups[nextGroup].id, null, room)) {
 				return this.errorReply(`/${cmd} - Access denied for promoting/demoting to ${Config.groups[nextGroup].name}.`);
