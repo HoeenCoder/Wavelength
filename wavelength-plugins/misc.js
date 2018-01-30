@@ -171,7 +171,6 @@ exports.commands = {
 			"<u><b>Server Maintainers:</u></b><br />" +
 			"- " + WL.nameColor('Desokoro', true) + " (Owner, Sysadmin, Policy Admin, Server Host)<br />" +
 			"- " + WL.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
-			"- " + WL.nameColor('Mystifi', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
