@@ -421,10 +421,9 @@ exports.commands = {
 		if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply("The maximum amount of polls is 5.");
 		let options = [];
 		for (let key in Dex.formats) {
-			if (!Dex.formats[key].mod) continue;
 			if (!Dex.formats[key].searchShow) continue;
 			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon'];
+				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon', 'stacked', '];
 				if (commonMods.indexOf(Dex.formats[key].mod) === -1) continue;
 			}
 			options.push(Dex.formats[key].name);
