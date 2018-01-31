@@ -93,7 +93,10 @@ class ExpFunctions {
 					case 5:
 						Economy.logTransaction(user.userid + ' received a profile background and profile music for reaching level ' + level + '.');
 						Monitor.log(user.userid + ' has earned a profile background and profile music for reaching level ' + level + '!');
-						reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, contact a global staff member.';
+						if (!user.tokens) user.tokens = {};
+						user.tokens.bg = true;
+						user.tokens.music = true;
+						reward = 'a Profile Background and Profile Music. To claim your profile background and profile music, use /usetoken bg, [background] and /usetoken music, [song], [name of song] respectively.';
 						break;
 					case 10:
 						Economy.logTransaction(user.userid + ' received a custom avatar for reaching level ' + level + '.');
