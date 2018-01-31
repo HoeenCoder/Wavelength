@@ -414,30 +414,6 @@ exports.commands = {
 		`/poll display [poll id number] - Displays the poll. The poll id number is optional for this command and displays only the poll with the matching id number.`,
 		`/poll end [poll id number] - Ends a poll and displays the results. The poll id number is optional for this command and ends only the poll with the matching id number. and Requires: % @ * # & ~`,
 	],
-
-	tpoll: 'tierpoll',
-	tierpoll: function (target, room, user, connection, cmd, message) {
-		if (!this.can('minigame', null, room)) return false;
-		if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply("The maximum amount of polls is 5.");
-		let options = [];
-		for (let key in Dex.formats) {
-			if (!Dex.formats[key].searchShow) continue;
-			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon', 'stacked'];
-				if (commonMods.indexOf(Dex.formats[key].mod) === -1) continue;
-			}
-			options.push(Dex.formats[key].name);
-		}
-		room.poll = new Poll(room, {
-			source: 'What should the next tournament tier be?',
-			supportHTML: false,
-			username: user.name,
-		}, options);
-		room.poll.display();
-		this.roomlog(`${user.name} used ${message}`);
-		return this.privateModAction(`(A tier poll was started by ${user.name}.)`);
-	},
-	tierpollhelp: ["/tierpoll - (all) Creates a poll with all the common formats as options. All all to use all formats Requires: % @ * # & ~"],
 };
 process.nextTick(() => {
 	Chat.multiLinePattern.register('/poll (new|create|htmlcreate) ');
