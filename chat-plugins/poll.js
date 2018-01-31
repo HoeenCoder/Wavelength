@@ -71,7 +71,7 @@ class Poll {
 	generateResults(ended, option, num) {
 		let icon = `<span style="border: 1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')}; border-radius: 4px; padding: 3px"><i class="fa fa-bar-chart"></i> ${(ended ? `Poll-${this.pollArray[num].pollNum} ended` : `Poll-${this.pollArray[num].pollNum}`)}</span>`;
 		let totalVotes = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Votes: ${this.pollArray[num].totalVotes}] (Started by ${this.pollArray[num].startedUser} ${Chat.toDurationString(Date.now() - this.pollArray[num].startTime)} ago.)</span></div>`;
-		let output = `<div style="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${this.getQuestionMarkup(num)}</strong><img src="https://pldh.net/media/pokecons_action/196.gif" width="32" height="32"></summary>`;
+		let output = `<div style="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${this.getQuestionMarkup(num)}</strong><psicon pokemon="espeon"></summary>`;
 		output += totalVotes;
 		output += `<div style="padding: 8px 15px;"><font color="yellow"><small><center>(Options with 0 votes are not shown)</center></small></font>`;
 		output += `<table cellspacing="0" style="width: 100%; margin-top: 3px;">`;
@@ -423,7 +423,7 @@ exports.commands = {
 		for (let key in Dex.formats) {
 			if (!Dex.formats[key].searchShow) continue;
 			if (toId(target) !== 'all') {
-				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon', 'stacked', '];
+				let commonMods = ['gen7', 'wlssb', 'pmd', 'cssb', 'metronome', 'digimon', 'stacked'];
 				if (commonMods.indexOf(Dex.formats[key].mod) === -1) continue;
 			}
 			options.push(Dex.formats[key].name);
