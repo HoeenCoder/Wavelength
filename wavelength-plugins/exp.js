@@ -140,7 +140,7 @@ class ExpFunctions {
 						break;
 					case 40:
 						Economy.logTransaction(`${user.name} received a chatroom for reaching level ${level}.`);
-						Server.messageSeniorStaff(`${user.name} has earned a chatroom for reaching level ${level}!`);
+						WL.messageSeniorStaff(`${user.name} has earned a chatroom for reaching level ${level}!`);
 						Monitor.adminlog(`${user.name} has earned a chatroom for reaching level ${level}!`);
 						reward = `a Chatroom. To claim your chatroom, Contact a Leader (&) or Administrator (~).`;
 						break;
@@ -180,7 +180,7 @@ exports.commands = {
 		if (target || !target && this.broadcasting) {
 			if (!target) targetId = user.userid;
 			EXP.readExp(targetId, exp => {
-				this.sendReplyBox(`${Server.nameColor(targetId, true)} has ${exp} exp and is level ${Server.ExpControl.level(targetId)} and needs ${Server.ExpControl.nextLevel(targetId)} to reach the next level.`);
+				this.sendReplyBox(`${WL.nameColor(targetId, true)} has ${exp} exp and is level ${WL.ExpControl.level(targetId)} and needs ${WL.ExpControl.nextLevel(targetId)} to reach the next level.`);
 			});
 		} else {
 			EXP.readExp(user.userid, exp => {
