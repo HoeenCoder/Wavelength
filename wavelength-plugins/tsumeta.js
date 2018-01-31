@@ -16,7 +16,7 @@ if (proposals !== '') {
 	proposals = {};
 }
 
-function write() {
+function writeProposals() {
 	FS('config/proposals.json').writeUpdate(() => (
 		JSON.stringify(proposals)
 	));
@@ -112,7 +112,7 @@ exports.commands = {
 				creator: user.name,
 				desc: changes,
 			};
-			write();
+			writeProposals();
 		},
 
 		modify: "editproposal",
@@ -121,26 +121,14 @@ exports.commands = {
 		editproposal: function (target, room, user) {
 			if (!isTsuMetaCouncil(user.userid)) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
 			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
-			let parts = target.split(',');
-			for (let u in parts) parts[u] = parts[u].trim();
-			if (!parts[0] || !parts[1]) return this.parse('/tsumetahelp');
-			let proposal = parts[0];
+			let [proposal, ...newDesc] = target.split(',').map(p => p.trim());
+			if (!proposal || !newDesc) return this.parse('/tsumetahelp');
 			let proposalid = toId(proposal);
 			if (!proposals[proposalid]) return this.errorReply(`This proposal doesn't exist!`);
 			if (proposal.length > 500) return this.errorReply("Please keep your changes to a maximum of 500 characters.");
-			let newDesc = parts[1];
-			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
-				proposals[toId(proposal)].desc = newDesc;
-				write();
-				this.sendReplyBox(`You have successfully modified proposal <strong>${proposals[proposalid].idea}'s</strong> description to:<br />${proposals[proposalid].desc}`);
-				if (Rooms('tsumetacommittee')) {
-					Rooms('tsumetacommittee').add(`|c|~TsuMeta Council|${user.name} has edited ${proposals[proposalid].idea}'s description.`).update();
-				}
-				return true;
-			}
-			if (proposals[proposalid].creator !== user.userid && user.userid !== "desokoro") return this.errorReply(`Only the creator "${proposals[proposalid].creator}" can modify this proposal.`);
-			proposals[toId(proposal)].desc = newDesc;
-			write();
+			if (proposals[proposalid].creator !== user.userid && user.userid !== "desokoro" && (user.userid !== 'xcmr' || !Db.councilmember.has("xcmr"))) return this.errorReply(`Only the creator "${proposals[proposalid].creator}" can modify this proposal.`);
+			proposals[proposalid].desc = newDesc.join(', ');
+			writeProposals();
 			this.sendReplyBox(`You have successfully modified proposal <strong>${proposals[proposalid].idea}'s</strong> description to:<br />${proposals[proposalid].desc}`);
 			if (Rooms('tsumetacommittee')) {
 				Rooms('tsumetacommittee').add(`|c|~TsuMeta Council|${user.name} has edited ${proposals[proposalid].idea}'s description.`).update();
@@ -178,13 +166,13 @@ exports.commands = {
 			if (!proposals[proposalid]) return this.errorReply(`This proposal doesn't exist!`);
 			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				delete proposals[proposalid];
-				write();
+				writeProposals();
 				this.sendReply(`Proposal ${target} has been deleted.`);
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			delete proposals[proposalid];
-			write();
+			writeProposals();
 			this.sendReply(`Proposal ${target} has been deleted.`);
 		},
 
