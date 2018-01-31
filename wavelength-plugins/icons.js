@@ -26,7 +26,7 @@ function updateIcons() {
 	newCss += "/* ICONS END */\n";
 
 	let file = FS("config/custom.css").readIfExistsSync().split("\n");
-	if (!file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
+	if (file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
 	FS("config/custom.css").writeUpdate(() => (
 		file.join("\n") + newCss
 	));
