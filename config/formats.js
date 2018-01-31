@@ -450,6 +450,16 @@ exports.Formats = [
 				}
 			}
 		},
+		onModifyTemplate: function (template, pokemon) {
+			let name = toId(pokemon.name);
+			//Stat changes
+			if (name === "finny") {
+				for (let i in template.baseStats) {
+					template.baseStats[i] *= 1.5;
+				}
+			}
+			return template;
+		},
 	},
 	{
 		name: "[Gen 7] Pokemon Mystery Dungeon",

@@ -24,22 +24,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Mystifi': {
-				species: 'Clefairy',
-				ability: 'Analytic',
-				item: 'Eviolite',
-				gender: 'F',
-				moves: [
-					['Calm Mind', 'Cosmic Power'][variant], 'Soft-Boiled', 'Stored Power',
-				],
-				signatureMove: 'Mystic Mirage',
-				evs: {
-					hp: 252,
-					def: 252,
-					spd: 4,
-				},
-				nature: 'Bold',
-			},
+
 			'~Kraken Mare': {
 				species: 'Gardevoir-Mega',
 				ability: 'Krakens Boost',
@@ -56,6 +41,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
+
 			'~Desokoro': {
 				species: 'Gyarados',
 				ability: 'Wave Call',
@@ -72,6 +58,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'~Mosmero': {
 				species: 'Gastly',
 				ability: 'Mosmic Power',
@@ -87,6 +74,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
+
 			'~Wavelength Prince': {
 				species: 'Darkrai',
 				ability: 'Death Boost',
@@ -102,6 +90,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+
 			// Global Leaders:
 			'&Opple': {
 				species: 'Dragonite',
@@ -118,6 +107,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'&MechSteelix': {
 				species: 'Steelix-Mega',
 				ability: 'Sandbox',
@@ -133,6 +123,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Impish',
 			},
+
 			'&CubsFan38': {
 				species: 'Rowlet',
 				ability: 'Night Owl',
@@ -165,6 +156,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'*Tidal Wave Bot': {
 				species: 'Magikarp',
 				ability: 'Loading...',
@@ -178,8 +170,43 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					atk: 252,
 					spe: 252,
 				},
-				nature: 'Adament',
+				nature: 'Adamant',
 			},
+
+			// Global Captains
+			'^Finny': {
+				species: 'Totodile',
+				ability: 'Sheer Force',
+				item: 'Life Orb',
+				gender: 'M',
+				moves: ['Waterfall', 'Dragon Dance', 'Aqua Jet'],
+				signatureMove: 'Dying Inside',
+				evs: {
+					atk: 252,
+					def: 4,
+					spe: 252,
+				},
+				nature: 'Adamant',
+			},
+
+			'^Showdown Helper': {
+				species: 'Celebi',
+				ability: 'Magic Bounce',
+				item: 'Weakness Policy',
+				gender: 'M',
+				moves: ['Quiver Dance', 'Recover', 'Giga Drain'],
+				signatureMove: 'Psychic',
+				evs: {
+					hp: 252,
+					def: 252,
+					spd: 4,
+				},
+				ivs: {
+					atk: 0,
+				},
+				nature: 'Bold',
+			},
+
 			// Global Moderators:
 			'@BDH93': {
 				species: 'Dunsparce',
@@ -196,6 +223,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Naughty',
 			},
+
 			'@Ashley the Pikachu': {
 				species: 'Pikachu-Cosplay',
 				ability: 'Primal Surge',
@@ -214,6 +242,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
+
 			'@C733937 123': {
 				species: 'Skuntank',
 				ability: 'Unaware',
@@ -229,6 +258,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'@Admewn': {
 				species: 'Mew',
 				ability: 'Protean',
@@ -243,6 +273,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+
 			'@HiroZ': {
 				species: 'Genesect',
 				ability: 'Download',
@@ -257,6 +288,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Hasty',
 			},
+
 			'@TheRittz': {
 				species: 'Venusaur-Mega',
 				ability: 'Paradoxical Prowess',
@@ -272,6 +304,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Calm',
 			},
+
 			'@Volco': {
 				species: 'Gallade-Mega',
 				ability: 'Shadow Fist',
@@ -286,6 +319,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Jolly',
 			},
+
 			// Global Drivers:
 			'%Serperiorater': {
 				species: 'Serperior',
@@ -302,6 +336,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+
 			'%Lycanium Z': {
 				species: "Arceus-Dark",
 				ability: "Bloody Tears",
@@ -316,6 +351,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Jolly",
 			},
+
 			'%wgc': {
 				species: 'Gengar',
 				ability: 'Levitate',
@@ -347,6 +383,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
+
 			'+Almighty Bronzong': {
 				species: 'Bronzong',
 				ability: 'Levitate',
@@ -362,6 +399,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Sassy',
 			},
+
 			'+Auction': {
 				species: 'Aegislash',
 				ability: 'Stance Change',
@@ -377,6 +415,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'+CelestialTater': {
 				species: 'Armaldo',
 				ability: 'Unburden',
@@ -392,6 +431,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+
 			'+xcmr': {
 				species: 'Persian',
 				ability: 'Feline Fury',
@@ -407,6 +447,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Jolly',
 			},
+
 			'+bunnery5': {
 				species: 'Tympole',
 				ability: 'Muscles',
@@ -421,6 +462,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+
 			'+AlfaStorm': {
 				species: 'Hydreigon',
 				ability: 'Mummy',
@@ -435,6 +477,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
+
 			'+SnorlaxTheRain': {
 				species: 'Snorlax',
 				ability: 'Scraroom',
@@ -448,6 +491,23 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spd: 120,
 				},
 				nature: 'Adamant',
+			},
+
+			'+Mystifi': {
+				species: 'Clefairy',
+				ability: 'Analytic',
+				item: 'Eviolite',
+				gender: 'F',
+				moves: [
+					['Calm Mind', 'Cosmic Power'][variant], 'Soft-Boiled', 'Stored Power',
+				],
+				signatureMove: 'Mystic Mirage',
+				evs: {
+					hp: 252,
+					def: 252,
+					spd: 4,
+				},
+				nature: 'Bold',
 			},
 		};
 		// convert moves to ids.

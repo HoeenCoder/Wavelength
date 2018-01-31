@@ -305,16 +305,17 @@ Notes: N/A.
 Rank: N/A.
 
 Tidal Wave Bot
-(Magikarp, Steel/Electric Typing, Shiny)
+(Magikarp)
+	- Steel/Electric Type
 @ Guardian's Amulet
-    Eviolite + Life Orb
+	- Eviolite + Life Orb
 EVs: 4 HP / 252 Atk / 252 SpA
 Adament Nature
 Ability: Loading...
-    -Uses Magnet Rise & +4 Attack and +2 Speed on entry.
+    - Uses Magnet Rise & +4 Attack and +2 Speed on entry.
 Moves: Wild Charge, Gear Grind, Gear Shift
 Signature Move: Server Guardian
-    -Recover & +2 boosts to both Def & SpD.
+    - Recover & +2 boosts to both Def & SpD.
 Notes: Able to hit quick and hard from the start, but if you can, set up.
 Rank: N/A
 
@@ -337,7 +338,7 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple
+    - +3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
     -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +1 Priority.
@@ -352,7 +353,7 @@ Timid Nature
 Ability: Mummy
 Moves: Spacial Rend, Night Daze, Doom Desire
 Signature Move: Infinity Storm
-    -Disappears turn 1. Hits turn 2. Boosts Spa by 2. Flying Type, 100 BP
+    - Disappears turn 1. Hits turn 2. Boosts Spa by 2. Flying Type, 100 BP
 Notes: Invisibility Gives a key niche
 Rank: N/A
 
@@ -362,9 +363,33 @@ SnorlaxTheRain
 EVs: 164 HP / 224 Atk / 120 SpD 
 Adamant Nature
 Ability: Scraroom
-    -Scrappy + Trick Room.
+    - Scrappy + Trick Room.
 Moves: Giga Impact, Rest, Curse
 Signature Move: Snorlax Slam
-    -120BP, 95% Accuracy, and can be used while sleeping.
+    - 120 BP, 95% Accuracy, and can be used while sleeping.
 Notes: New
 Rank: N/A
+
+Finny
+(Totodile)
+	- Base Stats are multiplied by 1.5x
+@ Life Orb
+EVs: 252 Atk / 4 Def / 252 Spe
+Adamant Nature
+Ability: Sheer Force
+Moves: Waterfall, Dragon Dance, Aqua Jet
+Signature Move: Dying Inside
+	- 80 BP, Ghost type, Physical, Contact move, has Ice type effectiveness.
+Notes: N/A.
+Rank: N/A.
+
+Showdown Helper
+(Celebi)
+@ Weakness Policy
+EVs: 252 HP / 4 SpD / 252 Def
+IVs: 0 Atk
+Bold Nature
+Ability: Magic Bounce
+Moves: Quiver Dance, Recover, Psychic, Giga Drain
+Notes: N/A.
+Rank: N/A.
