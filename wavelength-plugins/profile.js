@@ -65,7 +65,6 @@ function lastActive(user) {
 	if (!Users(user)) return false;
 	user = Users(user);
 	return (user && user.lastMessageTime ? Chat.toDurationString(Date.now() - user.lastMessageTime, {precision: true}) : "hasn't talked yet");
-
 }
 
 function showBadges(user) {
