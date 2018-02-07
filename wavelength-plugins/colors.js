@@ -27,7 +27,7 @@ function updateColor() {
 	}
 	newCss += '/* COLORS END */\n';
 
-	let file = FS('config/custom.css').readTextIfExistsSync().split('\n');
+	let file = FS('config/custom.css').readIfExistsSync().split('\n');
 	if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
 	FS('config/custom.css').writeUpdate(() => (
 		file.join('\n') + newCss
