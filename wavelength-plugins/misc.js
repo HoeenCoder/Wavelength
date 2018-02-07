@@ -171,7 +171,6 @@ exports.commands = {
 			"<u><b>Server Maintainers:</u></b><br />" +
 			"- " + WL.nameColor('Desokoro', true) + " (Owner, Sysadmin, Policy Admin, Server Host)<br />" +
 			"- " + WL.nameColor('HoeenHero', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
-			"- " + WL.nameColor('Mystifi', true) + " (Owner, Sysadmin, Technical Admin)<br />" +
 			"<br />" +
 			"<u><b>Major Contributors:</b></u><br />" +
 			"- " + WL.nameColor('CubsFan38', true) + " (Community Leader)<br />" +
@@ -188,8 +187,9 @@ exports.commands = {
 			"- " + WL.nameColor('Lycanium Z', true) + " (Development)<br />" +
 			"- " + WL.nameColor('wgc', true) + " (Development)<br />" +
 			"<br />" +
-			/*"<u><b>Retired Staff:</b></u><br />" +
-			"<br />" +*/
+			"<u><b>Retired Staff:</b></u><br />" +
+			"- " + WL.nameColor('Mystifi', true) + " (Former Owner, Sysadmin and Technical Admin)<br />" +
+			"<br />" +
 			"<u><b>Special Thanks:</b></u><br />" +
 			"- Our Staff Members<br />" +
 			"- Our Regular Users<br />";
