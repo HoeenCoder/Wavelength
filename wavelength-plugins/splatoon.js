@@ -108,8 +108,8 @@ exports.commands = {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has enabled Splatfest. The teams of this Splatfest are: ${team1} and ${team2}.`);
 				}
 				// Set Splatfest Teams
-				SPLATFEST.alpha = team1;
-				SPLATFEST.bravo = team2;
+				SPLATFEST.alpha = toId(team1);
+				SPLATFEST.bravo = toId(team2);
 			},
 
 			disable: "off",
@@ -135,7 +135,7 @@ exports.commands = {
 			join: function (target, room, user) {
 				if (!target) return this.parse(`/splatoonhelp`);
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
-				if (!SPLATFEST.alpha.includes(toId(target)) || !SPLATFEST.bravo.includes(toId(target))) return this.errorReply(`This is not a Splatfest team.`);
+				if (!SPLATFEST.alpha === toId(target) || !SPLATFEST.bravo === toId(target)) return this.errorReply(`This is not a Splatfest team.`);
 				let splatProfile = Db.splatoon.get(user.userid);
 				splatProfile.splatfest = target;
 				Db.splatoon.set(user.userid, splatProfile);
