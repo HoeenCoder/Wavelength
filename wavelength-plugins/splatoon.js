@@ -181,12 +181,12 @@ exports.commands = {
 			let username = (targetUser ? targetUser.name : target);
 			let splatProfile = Db.splatoon.get(toId(username), {ranks: {}});
 
-			function IGN(user) {
+			function IGN() {
 				if (!splatProfile.ign) return ``;
 				return ` (<strong>IGN:</strong> ${splatProfile.ign})`;
 			}
 
-			function splatLevel(user) {
+			function splatLevel() {
 				if (!splatProfile.level) return ``;
 				return ` (<strong>Level:</strong> ${splatProfile.level}`;
 			}
@@ -231,6 +231,7 @@ exports.commands = {
 		`/splatoon rank [Clam Blitz | Rainmaker | Splat Zones | Tower Control | Salmon Run] [rank] - Sets your Splatoon 2 Ranked Battle rank.
 		/splatoon weapon [weapon] - Sets your Splatoon 2 Weapon.
 		/splatoon IGN [Splatoon IGN] - Sets your Splatoon 2 IGN.
+		/splatoon level [level] - Sets your Splatoon 2 Level.
 		/splatoon splatfest start [1st Splatfest team name], [2nd Splatfest team name] - Initiates a Splatfest of the two teams.  Must have Room Moderator or higher in the Splatoon room.
 		/splatoon splatfest end - Ends the Splatfest.
 		/splatoon splatfest join [Splatfest team name] - Joins the specified Splatfest team.
