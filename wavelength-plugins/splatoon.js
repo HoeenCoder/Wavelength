@@ -86,7 +86,7 @@ exports.commands = {
 		randweapon: "randomweapon",
 		randomweapon: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			return this.sendReplyBox(weapons[Math.floor(Math.random() * weapons.length)]);
+			return this.sendReplyBox(`<strong>Randomly Generated Weapon:</strong> ${weapons[Math.floor(Math.random() * weapons.length)]}`);
 		},
 
 		splatfest: {
@@ -121,6 +121,12 @@ exports.commands = {
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
 				if (!SPLATFEST.active) return this.errorReply(`Splatfest is not currently active.`);
 				SPLATFEST.active = false;
+				let splatfestUsers = Db.splatoon.keys();
+				for (let u in splatfestUsers) {
+					let splatProfile = Db.splatoon.get(splatfestUsers[u], {ranks: {}});
+					delete splatProfile.splatfest;
+					Db.splatoon.set(splatfestUsers[u], splatProfile);
+				}
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has disabled Splatfest.`);
 				}
