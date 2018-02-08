@@ -65,7 +65,7 @@ exports.commands = {
 			salmonrun: "sr",
 			sr: function (target, room, user) {
 				if (!target) return this.parse("/splatoonhelp");
-				target = target.trim().split("-").map(x => { return x.substring(0, 1).toUpperCase() + x.substring(1).toLowerCase(); }).join("-");
+				target = target.trim().split("-").map(x => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase()).join("-");
 				let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
 				if (!["Intern", "Apprentice", "Part-Timer", "Go-Getter", "Overachiever", "Profreshional"].includes(target)) return this.errorReply(`Invalid Ranking; check your spelling?`);
 				splatProfile.ranks.sr = target;
@@ -97,17 +97,16 @@ exports.commands = {
 			on: function (target, room, user) {
 				if (!this.can("ban", null, room)) return this.errorReply(`You must be a Room Moderator or higher to use this command.`);
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
-				let targets = target.split(",");
-				for (let u in targets) targets[u] = targets[u].trim();
-				if (!targets[1]) return this.parse("/splatoonhelp");
+				let [team1, team2] = target.split(",").map(p => p.trim());
+				if (!team2) return this.parse("/splatoonhelp");
 				if (SPLATFEST.active) return this.errorReply(`Splatfest is already active.`);
 				SPLATFEST.active = true;
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has enabled Splatfest. The teams of this Splatfest are: ${team1} and ${team2}.`);
 				}
 				// Set Splatfest Teams
-				SPLATFEST.alpha = targets[0];
-				SPLATFEST.bravo = targets[1];
+				SPLATFEST.alpha = team1;
+				SPLATFEST.bravo = team2;
 			},
 
 			disable: "off",
@@ -120,11 +119,11 @@ exports.commands = {
 				if (!SPLATFEST.active) return this.errorReply(`Splatfest is not currently active.`);
 				SPLATFEST.active = false;
 				let splatfestUsers = Db.splatoon.keys();
-				for (let u in splatfestUsers) {
-					let splatProfile = Db.splatoon.get(splatfestUsers[u], {ranks: {}});
+				for (let u of splatfestUsers) {
+					let splatProfile = Db.splatoon.get(u, {ranks: {}});
 					if (splatProfile.splatfest) {
 						delete splatProfile.splatfest;
-						Db.splatoon.set(splatfestUsers[u], splatProfile);
+						Db.splatoon.set(u, splatProfile);
 					}
 				}
 				if (Rooms("splatoon")) {
@@ -182,7 +181,6 @@ exports.commands = {
 			if (!target) target = user.userid;
 			target = toId(target);
 			if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
-			let self = this;
 			let targetUser = Users.get(target);
 			let username = (targetUser ? targetUser.name : target);
 			let splatProfile = Db.splatoon.get(toId(username), {ranks: {}});
@@ -197,8 +195,7 @@ exports.commands = {
 				return ` <strong>Level:</strong> ${splatProfile.level}`;
 			}
 
-			let profile = ``;
-			profile += `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}${IGN(toId(username))}${splatLevel(toId(username))}<br />`;
+			let profile = `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}${IGN(toId(username))}${splatLevel(toId(username))}<br />`;
 			if (Db.switchfc.has(toId(username))) {
 				profile += `<strong>Switch Friend Code:</strong> SW-${Db.switchfc.get(toId(username))}<br />`;
 			}
@@ -224,7 +221,7 @@ exports.commands = {
 				profile += `<strong>Salmon Run:</strong> ${splatProfile.ranks.sr}<br />`;
 			}
 			profile += `</div>`;
-			self.sendReplyBox(profile);
+			this.sendReplyBox(profile);
 		},
 
 		"": "help",
