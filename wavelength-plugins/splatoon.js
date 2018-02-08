@@ -8,7 +8,7 @@
 
 let SPLATFEST = {alpha: null, bravo: null, active: false};
 
-let weapons = [".52 Gal", ".52 Gal Deco", ".96 Gal", "Aerospray MG", "Aerospray RG", "Bamboozler 14 Mk I", "Bamboozler 14 Mk II", "Blaster", "Carbon Roller", "Clash Blaster", "Clash Blaster Neo", "Classic Squiffer", "Custom Blaster", "Custom E-Liter 4K", "Custom E-Liter 4K Scope", "Custom Goo Tuber", "Custom Hydra Splatling", "Custom Jet Squelcher", "Custom Range Blaster", "Custom Splattershot Jr.", "Dapple Dualies", "Dapple Dualies Nouveau", "Dark Tetra Dualies", "Dualie Squelchers", "Dynamo Roller", "E-Liter 4K", "E-Liter 4K Scope", "Enperry Splat Dualies", "Firefin Splat Charger", "Firefine Splatterscope", "Flingza Roller", "Foil Flingza Roller", "Forge Splattershot Pro", "Foil Squeezer", "Glooga Dualies", "Glooga Dualies Deco", "Gold Dynamo Roller", "Goo Tuber", "H-3 Nozzlenose", "Heavy Splatling", "Heavy Splatling Deco", "Hero Blaster Replica", "Hero Brella Replica", "Hero Charger Replica", "Hero Dualie Replica", "Hero Roller Replica", "Hero Shot Replica", "Hero Slosher Replica", "Hero Splatling Replica", "Herobrush Replica", "Hydra Splatling", "Inkbrush", "Inkbrush Nouveau", "Jet Squelcher", "Krak-On Splat Roller", "L-3 Nozzlenose", "L-3 Nozzlenose D", "Light Tetra Dualies", "Luna Blaster", "Luna Blaster Neo", "Mini Splatling", "Neo Splash-o-matic", "Neo Sploosh-o-matic", "New Squiffer", "N-ZAP '85", "N-ZAP '89", "Octobrush", "Octobrush Nouveau", "Range Blaster", "Rapid Blaster", "Rapid Blaster Deco", "Rapid Blaster Pro", "Slosher", "Slosher Deco", "Sloshing Machine", "Sloshing Machine Neo", "Sorella Brella", "Splash-o-matic", "Splat Brella", "Splat Charger", "Splat Dualies", "Splat Roller", "Splatterscope", "Splattershot", "Splattershot Jr.", "Splattershot Pro", "Sploosh-o-matic", "Squeezer", "Tenta Brella", "Tentatek Splattershot", "Tri-Slosher", "Tri-Slosher Nouveau" "Undercover Brella", "Zink Mini Splatling"];
+let weapons = [".52 Gal", ".52 Gal Deco", ".96 Gal", "Aerospray MG", "Aerospray RG", "Bamboozler 14 Mk I", "Bamboozler 14 Mk II", "Blaster", "Carbon Roller", "Clash Blaster", "Clash Blaster Neo", "Classic Squiffer", "Custom Blaster", "Custom E-Liter 4K", "Custom E-Liter 4K Scope", "Custom Goo Tuber", "Custom Hydra Splatling", "Custom Jet Squelcher", "Custom Range Blaster", "Custom Splattershot Jr.", "Dapple Dualies", "Dapple Dualies Nouveau", "Dark Tetra Dualies", "Dualie Squelchers", "Dynamo Roller", "E-Liter 4K", "E-Liter 4K Scope", "Enperry Splat Dualies", "Firefin Splat Charger", "Firefine Splatterscope", "Flingza Roller", "Foil Flingza Roller", "Forge Splattershot Pro", "Foil Squeezer", "Glooga Dualies", "Glooga Dualies Deco", "Gold Dynamo Roller", "Goo Tuber", "H-3 Nozzlenose", "Heavy Splatling", "Heavy Splatling Deco", "Hero Blaster Replica", "Hero Brella Replica", "Hero Charger Replica", "Hero Dualie Replica", "Hero Roller Replica", "Hero Shot Replica", "Hero Slosher Replica", "Hero Splatling Replica", "Herobrush Replica", "Hydra Splatling", "Inkbrush", "Inkbrush Nouveau", "Jet Squelcher", "Krak-On Splat Roller", "L-3 Nozzlenose", "L-3 Nozzlenose D", "Light Tetra Dualies", "Luna Blaster", "Luna Blaster Neo", "Mini Splatling", "Neo Splash-o-matic", "Neo Sploosh-o-matic", "New Squiffer", "N-ZAP '85", "N-ZAP '89", "Octobrush", "Octobrush Nouveau", "Range Blaster", "Rapid Blaster", "Rapid Blaster Deco", "Rapid Blaster Pro", "Slosher", "Slosher Deco", "Sloshing Machine", "Sloshing Machine Neo", "Sorella Brella", "Splash-o-matic", "Splat Brella", "Splat Charger", "Splat Dualies", "Splat Roller", "Splatterscope", "Splattershot", "Splattershot Jr.", "Splattershot Pro", "Sploosh-o-matic", "Squeezer", "Tenta Brella", "Tentatek Splattershot", "Tri-Slosher", "Tri-Slosher Nouveau", "Undercover Brella", "Zink Mini Splatling"];
 
 exports.commands = {
 	"spl2n": "splatoon",
@@ -77,7 +77,7 @@ exports.commands = {
 		weapon: function (target, room, user) {
 			if (!target) return this.parse(`/splatoonhelp`);
 			let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
-			if (![".52 Gal", ".52 Gal Deco", ".96 Gal", "Aerospray MG", "Aerospray RG", "Bamboozler 14 Mk I", "Bamboozler 14 Mk II", "Blaster", "Carbon Roller", "Clash Blaster", "Clash Blaster Neo", "Classic Squiffer", "Custom Blaster", "Custom E-Liter 4K", "Custom E-Liter 4K Scope", "Custom Goo Tuber", "Custom Hydra Splatling", "Custom Jet Squelcher", "Custom Range Blaster", "Custom Splattershot Jr.", "Dapple Dualies", "Dapple Dualies Nouveau", "Dark Tetra Dualies", "Dualie Squelchers", "Dynamo Roller", "E-Liter 4K", "E-Liter 4K Scope", "Enperry Splat Dualies", "Firefin Splat Charger", "Firefine Splatterscope", "Flingza Roller", "Foil Flingza Roller", "Forge Splattershot Pro", "Foil Squeezer", "Glooga Dualies", "Glooga Dualies Deco", "Gold Dynamo Roller", "Goo Tuber", "H-3 Nozzlenose", "Heavy Splatling", "Heavy Splatling Deco", "Hero Blaster Replica", "Hero Brella Replica", "Hero Charger Replica", "Hero Dualie Replica", "Hero Roller Replica", "Hero Shot Replica", "Hero Slosher Replica", "Hero Splatling Replica", "Herobrush Replica", "Hydra Splatling", "Inkbrush", "Inkbrush Nouveau", "Jet Squelcher", "Krak-On Splat Roller", "L-3 Nozzlenose", "L-3 Nozzlenose D", "Light Tetra Dualies", "Luna Blaster", "Luna Blaster Neo", "Mini Splatling", "Neo Splash-o-matic", "Neo Sploosh-o-matic", "New Squiffer", "N-ZAP '85", "N-ZAP '89", "Octobrush", "Octobrush Nouveau", "Range Blaster", "Rapid Blaster", "Rapid Blaster Deco", "Rapid Blaster Pro", "Slosher", "Slosher Deco", "Sloshing Machine", "Sloshing Machine Neo", "Sorella Brella", "Splash-o-matic", "Splat Brella", "Splat Charger", "Splat Dualies", "Splat Roller", "Splatterscope", "Splattershot", "Splattershot Jr.", "Splattershot Pro", "Sploosh-o-matic", "Squeezer", "Tenta Brella", "Tentatek Splattershot", "Tri-Slosher", "Tri-Slosher Nouveau" "Undercover Brella", "Zink Mini Splatling"].includes(target)) return this.errorReply(`Invalid weapon; check your spelling? [case sensitive]`);
+			if (!weapons.includes(target)) return this.errorReply(`Invalid weapon; check your spelling? [case sensitive]`);
 			splatProfile.weapon = target;
 			Db.splatoon.set(user.userid, splatProfile);
 			return this.sendReply(`Your Splatoon 2 weapon has been set to "${target}".`);
@@ -99,17 +99,15 @@ exports.commands = {
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
 				let targets = target.split(",");
 				for (let u in targets) targets[u] = targets[u].trim();
-				let team1 = targets[0];
-				let team2 = targets[1];
-				if (!team1 || !team2) return this.parse("/splatoonhelp");
+				if (!targets[1]) return this.parse("/splatoonhelp");
 				if (SPLATFEST.active) return this.errorReply(`Splatfest is already active.`);
 				SPLATFEST.active = true;
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has enabled Splatfest. The teams of this Splatfest are: ${team1} and ${team2}.`);
 				}
 				// Set Splatfest Teams
-				SPLATFEST.alpha = toId(team1);
-				SPLATFEST.bravo = toId(team2);
+				SPLATFEST.alpha = targets[0];
+				SPLATFEST.bravo = targets[1];
 			},
 
 			disable: "off",
@@ -124,8 +122,10 @@ exports.commands = {
 				let splatfestUsers = Db.splatoon.keys();
 				for (let u in splatfestUsers) {
 					let splatProfile = Db.splatoon.get(splatfestUsers[u], {ranks: {}});
-					delete splatProfile.splatfest;
-					Db.splatoon.set(splatfestUsers[u], splatProfile);
+					if (splatProfile.splatfest) {
+						delete splatProfile.splatfest;
+						Db.splatoon.set(splatfestUsers[u], splatProfile);
+					}
 				}
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has disabled Splatfest.`);
@@ -141,7 +141,7 @@ exports.commands = {
 			join: function (target, room, user) {
 				if (!target) return this.parse(`/splatoonhelp`);
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
-				if (!SPLATFEST.alpha === toId(target) || !SPLATFEST.bravo === toId(target)) return this.errorReply(`This is not a Splatfest team.`);
+				if (!toId(SPLATFEST.alpha) === toId(target) || !toId(SPLATFEST.bravo) === toId(target)) return this.errorReply(`This is not a Splatfest team.`);
 				let splatProfile = Db.splatoon.get(user.userid);
 				splatProfile.splatfest = target;
 				Db.splatoon.set(user.userid, splatProfile);
@@ -160,7 +160,7 @@ exports.commands = {
 		ingamename: "ign",
 		ign: function (target, room, user) {
 			if (!this.canTalk()) return false;
-			if (!target || target.length > 10) return this.errorReply(`Your IGN must be between 1-10 characters long.`);
+			if (!target || !target.trim() || target.length > 10) return this.errorReply(`Your IGN must be between 1-10 characters long.`);
 			let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
 			splatProfile.ign = target;
 			Db.splatoon.set(user.userid, splatProfile);
@@ -169,8 +169,8 @@ exports.commands = {
 
 		lvl: "level",
 		level: function (target, room, user) {
-			if (!this.canTalk()) return false;
-			if (!target || target > 99 || target < 1 || target.includes(".")) return this.errorReply(`Your level must be a number between 1-99 (no decimals).`);
+			target = parseInt(target);
+			if (isNaN(target) || target > 99 || target < 1) return this.errorReply(`Your level must be a number between 1-99 (no decimals).`);
 			let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
 			splatProfile.level = target;
 			Db.splatoon.set(user.userid, splatProfile);
@@ -238,8 +238,8 @@ exports.commands = {
 		/splatoon weapon [weapon] - Sets your Splatoon 2 Weapon.
 		/splatoon IGN [Splatoon IGN] - Sets your Splatoon 2 IGN.
 		/splatoon level [level] - Sets your Splatoon 2 Level.
-		/splatoon splatfest start [1st Splatfest team name], [2nd Splatfest team name] - Initiates a Splatfest of the two teams.  Must have Room Moderator or higher in the Splatoon room.
-		/splatoon splatfest end - Ends the Splatfest.
+		/splatoon splatfest start [1st Splatfest team name], [2nd Splatfest team name] - Initiates a Splatfest of the two teams.  Must have Room Moderator or higher in the Splatoon room. Requires @, &, #, ~.
+		/splatoon splatfest end - Ends the Splatfest. Requires @, &, #, ~.
 		/splatoon splatfest join [Splatfest team name] - Joins the specified Splatfest team.
 		/splatoon splatfest teams - Shows the Splatfest teams.
 		/splatoon randomweapon - Sends a random weapon from Splatoon 2 into chat.
