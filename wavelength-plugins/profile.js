@@ -246,56 +246,95 @@ exports.commands = {
 
 	fc: 'friendcode',
 	friendcode: {
-		add: 'set',
-		set: function (target, room, user) {
-			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
-			if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
-			if (!target) return this.parse('/help', true);
-			let fc = target;
-			fc = fc.replace(/-/g, '');
-			fc = fc.replace(/ /g, '');
-			if (isNaN(fc)) {
-				return this.errorReply("Your friend code needs to contain only numerical characters.");
-			}
-			if (fc.length < 12) return this.errorReply("Your friend code needs to be 12 digits long.");
-			fc = fc.slice(0, 4) + '-' + fc.slice(4, 8) + '-' + fc.slice(8, 12);
-			Db.friendcodes.set(toId(user), fc);
-			return this.sendReply(`Your friend code: ${fc} has been saved to the server.`);
+		switch: "nintendoswitch",
+		nintendoswitch: {
+			add: "set",
+			set: function (target, room, user) {
+				if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
+				if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
+				if (!target) return this.parse("/friendcodehelp");
+				let fc = target;
+				fc = fc.replace(/-/g, '');
+				fc = fc.replace(/ /g, '');
+				if (isNaN(fc)) {
+					return this.errorReply("Your Switch friend code needs to contain only numerical characters (the SW- will be automatically added).");
+				}
+				if (fc.length < 12) return this.errorReply("Your Switch friend code needs to be 12 digits long.");
+				fc = `${fc.slice(0, 4)}-${fc.slice(4, 8)}-${fc.slice(8, 12)}`;
+				Db.switchfc.set(user.userid, fc);
+				return this.sendReply(`Your Switch friend code: ${fc} has been saved to the server.`);
+			},
+
+			remove: "delete",
+			delete: function (target, room, user) {
+				if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
+				if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
+				if (!target) {
+					if (!Db.switchfc.has(user.userid)) return this.errorReply("Your friend code isn't set.");
+					Db.switchfc.remove(user.userid);
+					return this.sendReply("Your Switch friend code has been deleted from the server.");
+				} else {
+					if (!this.can('lock')) return false;
+					let userid = toId(target);
+					if (!Db.switchfc.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
+					Db.switchfc.remove(userid);
+					return this.sendReply(`${target}'s Switch friend code has been deleted from the server.`);
+				}
+			},
 		},
 
-		remove: 'delete',
-		delete: function (target, room, user) {
-			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
-			if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
-			if (!target) {
-				if (!Db.friendcodes.has(toId(user))) return this.errorReply("Your friend code isn't set.");
-				Db.friendcodes.remove(toId(user));
-				return this.sendReply("Your friend code has been deleted from the server.");
-			} else {
-				if (!this.can('customtitle')) return false;
-				let userid = toId(target);
-				if (!Db.friendcodes.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
-				Db.friendcodes.remove(userid);
-				return this.sendReply(`${target}'s friend code has been deleted from the server.`);
-			}
+		"2ds": "ds",
+		"3ds": "ds",
+		nintendods: "ds",
+		nintendo3ds: "ds",
+		nintendo2ds: "ds",
+		ds: {
+			add: "set",
+			set: function (target, room, user) {
+				if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
+				if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
+				if (!target) return this.parse("/friendcodehelp");
+				let fc = target;
+				fc = fc.replace(/-/g, '');
+				fc = fc.replace(/ /g, '');
+				if (isNaN(fc)) {
+					return this.errorReply("Your friend code needs to contain only numerical characters.");
+				}
+				if (fc.length < 12) return this.errorReply("Your friend code needs to be 12 digits long.");
+				fc = `${fc.slice(0, 4)}-${fc.slice(4, 8)}-${fc.slice(8, 12)}`;
+				Db.friendcode.set(user.userid, fc);
+				return this.sendReply(`Your friend code: ${fc} has been saved to the server.`);
+			},
+
+			remove: 'delete',
+			delete: function (target, room, user) {
+				if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
+				if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
+				if (!target) {
+					if (!Db.friendcode.has(user.userid)) return this.errorReply("Your friend code isn't set.");
+					Db.friendcode.remove(user.userid);
+					return this.sendReply("Your friend code has been deleted from the server.");
+				} else {
+					if (!this.can('lock')) return false;
+					let userid = toId(target);
+					if (!Db.friendcode.has(userid)) return this.errorReply(`${target} hasn't set a friend code.`);
+					Db.friendcode.remove(userid);
+					return this.sendReply(`${target}'s friend code has been deleted from the server.`);
+				}
+			},
 		},
 
-		'': 'help',
+		"": "help",
 		help: function (target, room, user) {
-			if (room.battle) return this.errorReply("Please use this command outside of battle rooms.");
-			if (!user.autoconfirmed) return this.errorReply("You must be autoconfirmed to use this command.");
-			return this.sendReplyBox(
-				'<center><code>/friendcode</code> commands<br />' +
-				'All commands are nestled under the namespace <code>friendcode</code>.</center>' +
-				'<hr width="100%">' +
-				'<code>[add|set] [code]</code>: Sets your friend code. Must be in the format 111111111111, 1111 1111 1111, or 1111-1111-1111.' +
-				'<br />' +
-				'<code>[remove|delete]</code>: Removes your friend code. Global staff can include <code>[username]</code> to delete a user\'s friend code.' +
-				'<br />' +
-				'<code>help</code>: Displays this help command.'
-			);
+			this.parse("/friendcodehelp");
 		},
 	},
+	friendcodehelp: [
+		`/fc [switch|ds] set [friendcode] - Sets your friend code of the specified console.
+		/fc [switch|ds] delete - Deletes your friend code off the server of the specified console.
+		/fc [switch|ds] delete [target] - Deletes the specified user's friend code for the specified console. Requires Global % or higher.
+		/fc help - Shows this command.`,
+	],
 
 	favoritetype: 'type',
 	type: {
@@ -587,6 +626,9 @@ exports.commands = {
 				if (Db.friendcodes.has(toId(username))) {
 					profile += `&nbsp;${pColor(toId(username))}<b>Friend Code:</b> ${Db.friendcodes.get(toId(username))}</font><br />`;
 				}
+				if (Db.switchfc.has(toId(username))) {
+					profile += `&nbsp;${pColor(toId(username))}<strong>Switch Friend Code:</strong> SW-${Db.switchfc.get(toId(username))}</font><br />`;
+				}
 				profile += `&nbsp;${song(toId(username))}<br />`;
 				profile += `&nbsp;</div>`;
 				profile += `<br clear="all">`;
@@ -596,23 +638,23 @@ exports.commands = {
 	},
 
 	profilehelp: [
-		"/profile [user] - Shows a user's profile. Defaults to yourself.",
-		"/pcolor help - Shows profile color commands.",
-		"/pokemon set [Pokemon] - Set your Favorite Pokemon onto your profile.",
-		"/pokemon delete - Delete your Favorite Pokemon from your profile.",
-		"/type set [type] - Set your favorite type.",
-		"/type delete - Delete your favorite type.",
-		"/nature set [nature] - Set your nature.",
-		"/nature delete - Delete your nature.",
-		"/music set [user], [song], [title] - Sets a user's profile song. Requires + or higher.",
-		"/music take [user] - Removes a user's profile song. Requires + or higher.",
-		"/bg set [user], [link] - Sets the user's profile background. Requires + or higher.",
-		"/bg delete [user] - Removes the user's profile background. Requires + or higher.",
-		"/fc set [friend code] - Sets your Friend Code.",
-		"/fc delete [friend code] - Removes your Friend Code.",
-		"/dev give [user] - Gives a user Dev Status. Requires @ or higher.",
-		"/dev take [user] - Removes a user's Dev Status. Requires @ or higher.",
-		"/vip give [user] - Gives a user VIP Status. Requires @ or higher.",
-		"/vip take [user] - Removes a user's VIP Status. Requires @ or higher.",
+		`/profile [user] - Shows a user's profile. Defaults to yourself.
+		/pcolor help - Shows profile color commands.
+		/pokemon set [Pokemon] - Set your Favorite Pokemon onto your profile.
+		/pokemon delete - Delete your Favorite Pokemon from your profile.
+		/type set [type] - Set your favorite type.
+		/type delete - Delete your favorite type.
+		/nature set [nature] - Set your nature.
+		/nature delete - Delete your nature.
+		/music set [user], [song], [title] - Sets a user's profile song. Requires % or higher.
+		/music take [user] - Removes a user's profile song. Requires % or higher.
+		/bg set [user], [link] - Sets the user's profile background. Requires % or higher.
+		/bg delete [user] - Removes the user's profile background. Requires % or higher.
+		/fc [switch|ds] set [friend code] - Sets your Friend Code.
+		/fc [switch|ds] delete [friend code] - Removes your Friend Code.
+		/dev give [user] - Gives a user Dev Status. Requires & or higher.
+		/dev take [user] - Removes a user's Dev Status. Requires & or higher.
+		/vip give [user] - Gives a user VIP Status. Requires & or higher.
+		/vip take [user] - Removes a user's VIP Status. Requires & or higher.`,
 	],
 };
