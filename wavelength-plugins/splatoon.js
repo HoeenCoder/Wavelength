@@ -161,6 +161,16 @@ exports.commands = {
 			return this.sendReply(`Your In-Game Name has been set as: "${target}".`);
 		},
 
+		lvl: "level",
+		level: function (target, room, user) {
+			if (!this.canTalk()) return false;
+			if (!target || target > 99 || target < 1 || !isNaN(target)) return this.errorReply(`Your level must be a number between 1-99 (no decimals).`);
+			let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
+			splatProfile.level = target;
+			Db.splatoon.set(user.userid, splatProfile);
+			return this.sendReply(`Your Level has been set to: Level ${target}.`);
+		},
+
 		profile: function (target, room, user) {
 			if (!this.runBroadcast()) return;
 			if (!target) target = user.userid;
@@ -173,11 +183,16 @@ exports.commands = {
 
 			function IGN(user) {
 				if (!splatProfile.ign) return ``;
-				return `(<strong>IGN:</strong> ${splatProfile.ign})`;
+				return ` (<strong>IGN:</strong> ${splatProfile.ign})`;
+			}
+
+			function splatLevel(user) {
+				if (!splatProfile.level) return ``;
+				return ` (<strong>Level:</strong> ${splatProfile.level}`;
 			}
 
 			let profile = ``;
-			profile += `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)} ${IGN(toId(username))}<br />`;
+			profile += `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}${IGN(toId(username))}${splatLevel(toId(username))}<br />`;
 			if (Db.switchfc.has(toId(username))) {
 				profile += `<strong>Switch Friend Code:</strong> SW-${Db.switchfc.get(toId(username))}<br />`;
 			}
