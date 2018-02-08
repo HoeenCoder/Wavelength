@@ -1,8 +1,8 @@
-/***************************
+/****************************
  * Splatoon Plug-in for PS	*
- * Created by Insist			*
+ * Created by Insist		*
  * Assisted by HoeenHero	*
- ***************************/
+ ****************************/
 
 "use strict";
 
@@ -65,7 +65,7 @@ exports.commands = {
 			salmonrun: "sr",
 			sr: function (target, room, user) {
 				if (!target) return this.parse("/splatoonhelp");
-				target = target.trim().substring(0, 1).toUpperCase() + target.trim().substring(1).toLowerCase();
+				target = target.trim().split("-").map(x => { return x.substring(0, 1).toUpperCase() + x.substring(1).toLowerCase(); }).join("-");
 				let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
 				if (!["Intern", "Apprentice", "Part-Timer", "Go-Getter", "Overachiever", "Profreshional"].includes(target)) return this.errorReply(`Invalid Ranking; check your spelling?`);
 				splatProfile.ranks.sr = target;
@@ -213,7 +213,7 @@ exports.commands = {
 	},
 
 	splatoonhelp: [
-		`/splatoon rank [Clam Blitz | Rainmaker | Splat Zones | Tower Control] [rank] - Sets your Splatoon 2 Ranked Battle rank.
+		`/splatoon rank [Clam Blitz | Rainmaker | Splat Zones | Tower Control | Salmon Run] [rank] - Sets your Splatoon 2 Ranked Battle rank.
 		/splatoon weapon [weapon] - Sets your Splatoon 2 Weapon.
 		/splatoon IGN [Splatoon IGN] - Sets your Splatoon 2 IGN.
 		/splatoon splatfest start [1st Splatfest team name], [2nd Splatfest team name] - Initiates a Splatfest of the two teams.  Must have Room Moderator or higher in the Splatoon room.
