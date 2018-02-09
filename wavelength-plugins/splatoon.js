@@ -6,8 +6,6 @@
 
 "use strict";
 
-let SPLATFEST = {alpha: null, bravo: null, active: false};
-
 let weapons = [".52 Gal", ".52 Gal Deco", ".96 Gal", "Aerospray MG", "Aerospray RG", "Bamboozler 14 Mk I", "Bamboozler 14 Mk II", "Blaster", "Carbon Roller", "Clash Blaster", "Clash Blaster Neo", "Classic Squiffer", "Custom Blaster", "Custom E-Liter 4K", "Custom E-Liter 4K Scope", "Custom Goo Tuber", "Custom Hydra Splatling", "Custom Jet Squelcher", "Custom Range Blaster", "Custom Splattershot Jr.", "Dapple Dualies", "Dapple Dualies Nouveau", "Dark Tetra Dualies", "Dualie Squelchers", "Dynamo Roller", "E-Liter 4K", "E-Liter 4K Scope", "Enperry Splat Dualies", "Firefin Splat Charger", "Firefine Splatterscope", "Flingza Roller", "Foil Flingza Roller", "Forge Splattershot Pro", "Foil Squeezer", "Glooga Dualies", "Glooga Dualies Deco", "Gold Dynamo Roller", "Goo Tuber", "H-3 Nozzlenose", "Heavy Splatling", "Heavy Splatling Deco", "Hero Blaster Replica", "Hero Brella Replica", "Hero Charger Replica", "Hero Dualie Replica", "Hero Roller Replica", "Hero Shot Replica", "Hero Slosher Replica", "Hero Splatling Replica", "Herobrush Replica", "Hydra Splatling", "Inkbrush", "Inkbrush Nouveau", "Jet Squelcher", "Krak-On Splat Roller", "L-3 Nozzlenose", "L-3 Nozzlenose D", "Light Tetra Dualies", "Luna Blaster", "Luna Blaster Neo", "Mini Splatling", "Neo Splash-o-matic", "Neo Sploosh-o-matic", "New Squiffer", "N-ZAP '85", "N-ZAP '89", "Octobrush", "Octobrush Nouveau", "Range Blaster", "Rapid Blaster", "Rapid Blaster Deco", "Rapid Blaster Pro", "Slosher", "Slosher Deco", "Sloshing Machine", "Sloshing Machine Neo", "Sorella Brella", "Splash-o-matic", "Splat Brella", "Splat Charger", "Splat Dualies", "Splat Roller", "Splatterscope", "Splattershot", "Splattershot Jr.", "Splattershot Pro", "Sploosh-o-matic", "Squeezer", "Tenta Brella", "Tentatek Splattershot", "Tri-Slosher", "Tri-Slosher Nouveau", "Undercover Brella", "Zink Mini Splatling"];
 
 exports.commands = {
@@ -102,6 +100,7 @@ exports.commands = {
 			on: function (target, room, user) {
 				if (!this.can("ban", null, room)) return this.errorReply(`You must be a Room Moderator or higher to use this command.`);
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
+				let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 				let [team1, team2] = target.split(",").map(p => p.trim());
 				if (!(team1 && team2)) return this.parse("/splatoonhelp");
 				if (SPLATFEST.active) return this.errorReply(`Splatfest is already active.`);
@@ -109,9 +108,8 @@ exports.commands = {
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has enabled Splatfest. The teams of this Splatfest are: ${team1} and ${team2}.`);
 				}
-				// Set Splatfest Teams
-				SPLATFEST.alpha = team1;
-				SPLATFEST.bravo = team2;
+				// Set Splatfest Data
+				Db.splatoon.set("SPLATFEST", {alpha: team1, bravo: team2, active: true});
 			},
 
 			disable: "off",
@@ -121,11 +119,13 @@ exports.commands = {
 			off: function (target, room, user) {
 				if (!this.can("ban", null, room)) return this.errorReply(`You must be a Room Moderator or higher to use this command.`);
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
+				let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 				if (!SPLATFEST.active) return this.errorReply(`Splatfest is not currently active.`);
-				SPLATFEST.active = false;
 				let splatfestUsers = Db.splatoon.keys();
+				// Clear Splatfest Data & Player's Data
 				for (let u of splatfestUsers) {
 					let splatProfile = Db.splatoon.get(u, {ranks: {}});
+					Db.splatoon.set("SPLATFEST", {alpha: null, bravo: null, active: false});
 					if (splatProfile.splatfest) {
 						delete splatProfile.splatfest;
 						Db.splatoon.set(u, splatProfile);
@@ -134,9 +134,6 @@ exports.commands = {
 				if (Rooms("splatoon")) {
 					Rooms("splatoon").addRaw(`${WL.nameColor(user.name, true)} has disabled Splatfest.`);
 				}
-				// Clear splatfest teams
-				SPLATFEST.alpha = null;
-				SPLATFEST.bravo = null;
 			},
 
 			j: "join",
@@ -144,6 +141,7 @@ exports.commands = {
 			jointeam: "join",
 			join: function (target, room, user) {
 				if (!target) return this.parse(`/splatoonhelp`);
+				let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
 				if (toId(SPLATFEST.alpha) !== toId(target) && toId(SPLATFEST.bravo) !== toId(target)) return this.errorReply(`This is not a Splatfest team.`);
 				let splatProfile = Db.splatoon.get(user.userid);
@@ -155,6 +153,7 @@ exports.commands = {
 			teams: "team",
 			team: function (target, room, user) {
 				if (!this.runBroadcast()) return;
+				let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
 				return this.sendReplyBox(`<strong>Splatfest Teams:</strong> ${SPLATFEST.alpha} and ${SPLATFEST.bravo}`);
 			},
@@ -194,9 +193,10 @@ exports.commands = {
 			let targetUser = Users.get(target);
 			let username = (targetUser ? targetUser.name : target);
 			let splatProfile = Db.splatoon.get(toId(username), {ranks: {}});
+			let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 
 			let profile = `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}`;
-			if (splatProfile.ign) profile += ` <strong>In-game Name</strong>: ${splatProfile.ign}`;
+			if (splatProfile.ign) profile += ` <strong>In-Game Name</strong>: ${splatProfile.ign}`;
 			if (splatProfile.level) profile += ` <strong>Level</strong>: ${splatProfile.level}`;
 			profile += `<br />`;
 			if (Db.switchfc.has(toId(username))) {
