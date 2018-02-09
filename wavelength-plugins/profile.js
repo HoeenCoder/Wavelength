@@ -412,7 +412,7 @@ exports.commands = {
 			if (!this.can('lock')) return false;
 			let parts = target.split(',');
 			if (!parts[1]) return this.parse('/backgroundhelp');
-			let targ = parts[0].toLowerCase().trim();
+			let targ = toId(parts[0]);
 			let link = parts[1].trim();
 			Db.backgrounds.set(targ, link);
 			this.sendReply(`This user's background has been set to : `);
@@ -427,7 +427,7 @@ exports.commands = {
 		delete: 'deletebg',
 		deletebg: function (target, room, user) {
 			if (!this.can('lock')) return false;
-			let targ = target.toLowerCase();
+			let targ = toId(target);
 			if (!target) return this.parse('/backgroundhelp');
 			if (!Db.backgrounds.has(targ)) return this.errorReply('This user does not have a custom background.');
 			Db.backgrounds.remove(targ);
