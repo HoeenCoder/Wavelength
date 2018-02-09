@@ -140,9 +140,9 @@ exports.commands = {
 			join: function (target, room, user) {
 				if (!target) return this.parse(`/splatoonhelp`);
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
-				if (!toId(SPLATFEST.alpha) === toId(target) || !toId(SPLATFEST.bravo) === toId(target)) return this.errorReply(`This is not a Splatfest team.`);
+				if (toId(SPLATFEST.alpha) !== toId(target) && toId(SPLATFEST.bravo) !== toId(target)) return this.errorReply(`This is not a Splatfest team.`);
 				let splatProfile = Db.splatoon.get(user.userid);
-				splatProfile.splatfest = target;
+				splatProfile.splatfest = (toId(target) === toId(SPLATFEST.alpha) ? SPLATFEST.alpha : SPLATFEST.bravo);
 				Db.splatoon.set(user.userid, splatProfile);
 				return this.sendReply(`You have successfully joined Splatfest Team "${target}".`);
 			},
@@ -185,17 +185,10 @@ exports.commands = {
 			let username = (targetUser ? targetUser.name : target);
 			let splatProfile = Db.splatoon.get(toId(username), {ranks: {}});
 
-			function IGN() {
-				if (!splatProfile.ign) return ``;
-				return ` (<strong>IGN:</strong> ${splatProfile.ign})`;
-			}
-
-			function splatLevel() {
-				if (!splatProfile.level) return ``;
-				return ` <strong>Level:</strong> ${splatProfile.level}`;
-			}
-
-			let profile = `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}${IGN(toId(username))}${splatLevel(toId(username))}<br />`;
+			let profile = `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}`;
+			if (splatProfile.ign) profile += `<strong>In-game Name</strong>: ${splatProfile.ign}`;
+			if (splatProfile.level) profile += `<strong>Level</strong>: ${splatProfile.level}`;
+			profile += `<br />`;
 			if (Db.switchfc.has(toId(username))) {
 				profile += `<strong>Switch Friend Code:</strong> SW-${Db.switchfc.get(toId(username))}<br />`;
 			}
