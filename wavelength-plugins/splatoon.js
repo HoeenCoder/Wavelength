@@ -72,6 +72,11 @@ exports.commands = {
 				Db.splatoon.set(user.userid, splatProfile);
 				return this.sendReply(`You have successfully set your Salmon Run ranking as "${target}".`);
 			},
+
+			"": "help",
+			help: function (target, room, user) {
+				this.parse(`/splatrankshelp`);
+			},
 		},
 
 		weapon: function (target, room, user) {
@@ -153,6 +158,11 @@ exports.commands = {
 				if (!SPLATFEST.active) return this.errorReply(`There is currently not a Splatfest. :(`);
 				return this.sendReplyBox(`<strong>Splatfest Teams:</strong> ${SPLATFEST.alpha} and ${SPLATFEST.bravo}`);
 			},
+
+			"": "help",
+			help: function (target, room, user) {
+				this.parse(`/splatfesthelp`);
+			},
 		},
 
 		name: "ign",
@@ -186,8 +196,8 @@ exports.commands = {
 			let splatProfile = Db.splatoon.get(toId(username), {ranks: {}});
 
 			let profile = `<div><strong>Name:</strong> ${WL.nameColor(toId(username), true, true)}`;
-			if (splatProfile.ign) profile += `<strong>In-game Name</strong>: ${splatProfile.ign}`;
-			if (splatProfile.level) profile += `<strong>Level</strong>: ${splatProfile.level}`;
+			if (splatProfile.ign) profile += ` <strong>In-game Name</strong>: ${splatProfile.ign}`;
+			if (splatProfile.level) profile += ` <strong>Level</strong>: ${splatProfile.level}`;
 			profile += `<br />`;
 			if (Db.switchfc.has(toId(username))) {
 				profile += `<strong>Switch Friend Code:</strong> SW-${Db.switchfc.get(toId(username))}<br />`;
@@ -234,5 +244,16 @@ exports.commands = {
 		/splatoon splatfest teams - Shows the Splatfest teams.
 		/splatoon randomweapon - Sends a random weapon from Splatoon 2 into chat.
 		/splatoon profile [optional target] - Displays the specified user's Splatoon 2 Profile. Defaults to yourself.`,
+	],
+
+	splatrankshelp: [
+		`/splatoon rank [Clam Blitz | Rainmaker | Splat Zones | Tower Control | Salmon Run] [rank] - Sets your Splatoon 2 Ranked Battle rank.`,
+	],
+
+	splatfesthelp: [
+		`/splatoon splatfest start [1st Splatfest team name], [2nd Splatfest team name] - Initiates a Splatfest of the two teams.  Must have Room Moderator or higher in the Splatoon room. Requires @, &, #, ~.
+		/splatoon splatfest end - Ends the Splatfest. Requires @, &, #, ~.
+		/splatoon splatfest join [Splatfest team name] - Joins the specified Splatfest team.
+		/splatoon splatfest teams - Shows the Splatfest teams.`,
 	],
 };
