@@ -98,7 +98,7 @@ exports.commands = {
 				if (!this.can("ban", null, room)) return this.errorReply(`You must be a Room Moderator or higher to use this command.`);
 				if (room.id !== "splatoon") return this.errorReply(`This command only works in the Splatoon room.`);
 				let [team1, team2] = target.split(",").map(p => p.trim());
-				if (!team2) return this.parse("/splatoonhelp");
+				if (!(team1 && team2)) return this.parse("/splatoonhelp");
 				if (SPLATFEST.active) return this.errorReply(`Splatfest is already active.`);
 				SPLATFEST.active = true;
 				if (Rooms("splatoon")) {
