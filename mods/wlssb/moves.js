@@ -954,7 +954,7 @@ exports.BattleMovedex = {
 		desc: "Traps Opponent for 4-5 turns.",
 		id: "kingscurse",
 		isViable: true,
-		name: "King\'s Curse",
+		name: "King's Curse",
 		pp: 5,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
