@@ -12,16 +12,33 @@ Notes: N/A.
 Rank: N/A.
 
 Lycanium Z
-(Arceus-Dark)
-    Base Stats: 100/100/100/100/100/100
-@ Leftovers
-EVs: 252 HP / 4 Def / 252 Spe
+(Rockruff)
+@ Lycantium Z
+    - Allowed to use Going Down
+        -Going Down: Opponent's team cannot use attacking moves for 3 turns
+EVs: 252 Atk / 4 Def / 252 Spe
 Jolly Nature
-Ability: Bloody Tears
-    - Lowers opponents spa and atk by 1 stage.
-Moves: Drill Peck, Shore Up, Meteor Mash
-Signature Move: Heart of Darkness
-	- Dark type, Physical, 15 PP, 80 BP, 10% chance to inflict dread.
+Ability: Super Shield
+    - All moves are 4x resistant against this pokemon
+Innate Ability: Dank Memer
+    - Uses Memes on Switch in
+        - Memes: Distracts the opponent
+Moves: Accelerock, Earthquake, Swords Dance
+Signature Move: ALL Delete
+	- ??? type, Physical, 5 PP, 100 BP, 20% chance to encore. 0.5% chance to inflict instant death.
+Notes: IDK
+Rank: N/A.
+
+Showdown Helper
+(Celebi)
+Grass/Fairy
+@ Weakness Policy
+EVs: 252 Atk / 4 Def / 252 Spe
+Jolly Nature
+Ability: Filter
+Moves: Quiver Dance, Searing Shot, Giga Drain
+Signature Move: Psychotherapy
+    - 100 BP. Uses defense in damage calculation. 20PP, Heals 10% damage.
 Notes: IDK
 Rank: N/A.
 
@@ -184,7 +201,7 @@ Ability: Stance Change
 Innate Ability: Duality: Immune to fire and water type attacks
 Moves: Swords Dance, Sacred Sword, Shadow Claw and King's Shield.
 Signature Move: Magnet Flare
-	- Steel Type, Physical, 95 BP. 40% chance to burn. 24 PP
+	- Steel Type, Physical, 95 BP. 30% chance to burn. 24 PP
 Notes: N/A.
 Rank: N/A.
 
@@ -200,18 +217,6 @@ Signature Move: Shell Break
 Notes: Fast Physical Sweeper, extremely threatening if it gets a Shell Break up.
 Rank: N/A
 
-HiroZ
-(Genesect)
-@ Choice Scarf
-EVs: 252 Atk / 4 SpA / 252 Spe
-Hasty Nature
-Ability: Download
-Moves: Explosion, Ice Beam and U-Turn.
-Signature Move: Crystallized Ukaku
-	- Dark Type, Special, 140 BP, 100% Accuracy, 10 PP and 30% chance to badly poison the target.
-Notes: N/A.
-Rank: N/A.
-
 Mosmero
 (Gastly)
 @ Life Orb
@@ -225,9 +230,10 @@ Signature Move: Mosmero Beam
 Notes: Hit Quickly & you should be able to take down some enemies.
 Rank: N/A
 
-Wavelength Prince
+Perison
 (Darkrai)
 @ Darkiniumz
+Base Stats: 60/105/60/120/60/105
 EVs: 252 SpA / 252 Spe / 6 HP
 Timid Nature
 Ability: Death Boost
@@ -337,7 +343,7 @@ bunnery5
 EVs 252 Def / 252 SpD / 4 Spe
 Timid Nature
 Ability:  Muscles
-    -+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple
+    - +1 defense, +1 Special defense, -3 attack, +2 special attack on switch in + simple.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
     -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +1 Priority.
@@ -345,15 +351,16 @@ Notes: New
 Rank: N/A
 
 AlfaStorm
-(Hydreigon)
+(Umbreon)
 @ Leftovers
-EVs: 4 Def / 252 Spe / 252 SpA
-Timid Nature
-Ability: Mummy
-Moves: Spacial Rend, Night Daze, Doom Desire
-Signature Move: Infinity Storm
-    -Disappears turn 1. Hits turn 2. Boosts Spa by 2. Flying Type, 100 BP
-Notes: Invisibility Gives a key niche
+EVs: 4 Def / 252 Spd / 252 HP
+Calm Nature
+Ability: Addendum
+    - Causes cursed adjacent foes to lose 7% of their max HP at the end of each turn.
+Moves: Dark Pulse, Kings Shield,Recover
+Signature Move: Dark Spiral
+    - Curses and Traps opponent
+Notes: Idk
 Rank: N/A
 
 SnorlaxTheRain
@@ -366,5 +373,32 @@ Ability: Scraroom
 Moves: Giga Impact, Rest, Curse
 Signature Move: Snorlax Slam
     -120BP, 95% Accuracy, and can be used while sleeping.
+Notes: New
+Rank: N/A
+
+Finny 
+(Totodile) 
+@ Eviolite
+Base Stats: 65/80/80/59/63/58
+EVs: 252 Atk / 4 SpD / 252 Spe  
+Adamant Nature  
+Ability: Clinical Depression  
+    - Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.
+Moves: Waterfall, Aqua Jet, Dragon Dance  
+Signature Move: Dying Inside
+    -Ice/Ghost Type. 100 BP, 95% accuracy, 10PP
+Notes: New
+Rank: N/A
+
+The Dazzler Joe 
+(Tyranitar) 
+@ Assault Vest
+EVs: 184 HP / 252 Atk / 72 Def  
+Adamant Nature  
+Ability: Speedy Gonzales
+    - Raises Speed by 2 on switch in.
+Moves: Crunch, Ice Punch, Earthquake
+Signature Move: King's Curse
+    - Rock Type. 100 BP, 100% accuracy, 5PP. Traps Opponent for 4-5 turns.
 Notes: New
 Rank: N/A
