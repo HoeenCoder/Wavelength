@@ -5481,6 +5481,8 @@ exports.BattleMovedex = {
 				}
 			}
 			source.setItem('');
+			source.lastItem = item.id;
+			source.usedItemThisTurn = true;
 			this.add("-enditem", source, item.name, '[from] move: Fling');
 			this.runEvent('AfterUseItem', source, null, null, item);
 		},
@@ -6737,7 +6739,7 @@ exports.BattleMovedex = {
 				this.add('-singlemove', pokemon, 'Grudge');
 			},
 			onFaint: function (target, source, effect) {
-				if (!source || !effect) return;
+				if (!source || source.fainted || !effect) return;
 				if (effect.effectType === 'Move' && !effect.isFutureMove) {
 					for (const moveSlot of source.moveSlots) {
 						if (moveSlot.id === source.lastMove.id) {
@@ -10988,6 +10990,8 @@ exports.BattleMovedex = {
 			move.basePower = item.naturalGift.basePower;
 			move.type = item.naturalGift.type;
 			pokemon.setItem('');
+			pokemon.lastItem = item.id;
+			pokemon.usedItemThisTurn = true;
 			this.runEvent('AfterUseItem', pokemon, null, null, item);
 		},
 		secondary: false,
@@ -13133,6 +13137,7 @@ exports.BattleMovedex = {
 		onHit: function (pokemon) {
 			if (pokemon.item || !pokemon.lastItem) return false;
 			pokemon.setItem(pokemon.lastItem);
+			pokemon.lastItem = '';
 			this.add('-item', pokemon, pokemon.getItem(), '[from] move: Recycle');
 		},
 		secondary: false,
@@ -16920,7 +16925,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		onTryHit: function (target, source) {
-			return target.hasType(source.getTypes());
+			if (!target.hasType(source.getTypes())) {
+				this.add('-immune', target, '[msg]');
+				return null;
+			}
 		},
 		secondary: false,
 		target: "allAdjacent",

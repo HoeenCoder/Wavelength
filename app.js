@@ -37,9 +37,13 @@
  *   Used to abstract out network connections. sockets.js handles
  *   the actual server and connection set-up.
  *
- * @license MIT license
+ * @license MIT
  */
 'use strict';
+
+// NOTE: This file intentionally doesn't use too many modern JavaScript
+// features, so that it doesn't crash old versions of Node.js, so we
+// can successfully print the "We require Node.js 8+" message.
 
 // Check for version and dependencies
 try {
@@ -81,7 +85,7 @@ if (Config.watchconfig) {
 			if (global.Users) Users.cacheGroupData();
 			Monitor.notice('Reloaded config/config.js');
 		} catch (e) {
-			Monitor.adminlog(`Error reloading config/config.js: ${e.stack}`);
+			Monitor.adminlog("Error reloading config/config.js: " + e.stack);
 		}
 	});
 }
@@ -135,7 +139,12 @@ if (Config.crashguard) {
 		}
 	});
 	process.on('unhandledRejection', err => {
-		throw err;
+		let crashType = require('./lib/crashlogger')(err, 'A main process Promise');
+		if (crashType === 'lockdown') {
+			Rooms.global.startLockdown(err);
+		} else {
+			Rooms.global.reportCrash(err);
+		}
 	});
 }
 

@@ -263,7 +263,7 @@ class Tournament {
 		if (!(user.userid in this.players)) return;
 		if (this.isTournamentStarted) {
 			if (!this.disqualifiedUsers.get(this.players[user.userid])) {
-				this.disqualifyUser(user.userid, user, null);
+				this.disqualifyUser(user.userid, null, null);
 			}
 		} else {
 			this.removeUser(user);
@@ -998,9 +998,16 @@ class Tournament {
 	}
 }
 
-function createTournamentGenerator(generator, args, output) {
+function getGenerator(generator) {
 	generator = toId(generator);
-	let Generator = TournamentGenerators[generator];
+	switch (generator) {
+	case 'elim': generator = 'elimination'; break;
+	case 'rr': generator = 'roundrobin'; break;
+	}
+	return TournamentGenerators[generator];
+}
+function createTournamentGenerator(generator, args, output) {
+	let Generator = getGenerator(generator);
 	if (!Generator) {
 		output.errorReply(generator + " is not a valid type.");
 		output.errorReply("Valid types: " + Object.keys(TournamentGenerators).join(", "));
@@ -1029,11 +1036,7 @@ function createTournament(room, format, generator, playerCap, isRated, args, out
 		output.errorReply("Valid formats: " + Object.values(Dex.formats).filter(f => f.tournamentShow).map(format => format.name).join(", "));
 		return;
 	}
-	switch (generator) {
-	case 'elim': generator = 'elimination'; break;
-	case 'rr': generator = 'roundrobin'; break;
-	}
-	if (!TournamentGenerators[generator]) {
+	if (!getGenerator(generator)) {
 		output.errorReply(generator + " is not a valid type.");
 		output.errorReply("Valid types: " + Object.keys(TournamentGenerators).join(", "));
 		return;
@@ -1639,29 +1642,29 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 Chat.commands.tournamenthelp = function (target, room, user) {
 	if (!this.runBroadcast()) return;
 	return this.sendReplyBox(
-		"- create/new &lt;format>, &lt;type> [, &lt;comma-separated arguments>]: Creates a new tournament in the current room.<br />" +
-		"- settype &lt;type> [, &lt;comma-separated arguments>]: Modifies the type of tournament after it's been created, but before it has started.<br />" +
-		"- cap/playercap &lt;cap>: Sets the player cap of the tournament before it has started.<br />" +
-		"- rules/banlist &lt;comma-separated arguments>: Sets the custom rules for the tournament before it has started.<br />" +
-		"- viewrules/viewbanlist: Shows the custom rules for the tournament.<br />" +
-		"- clearrules/clearbanlist: Clears the custom rules for the tournament before it has started.<br />" +
-		"- name &lt;name>: Sets a custom name for the tournament.<br />" +
-		"- clearname: Clears the custom name of the tournament.<br />" +
-		"- end/stop/delete: Forcibly ends the tournament in the current room.<br />" +
-		"- begin/start: Starts the tournament in the current room.<br />" +
-		"- autostart/setautostart &lt;on|minutes|off>: Sets the automatic start timeout.<br />" +
-		"- dq/disqualify &lt;user>: Disqualifies a user.<br />" +
-		"- autodq/setautodq &lt;minutes|off>: Sets the automatic disqualification timeout.<br />" +
-		"- runautodq: Manually run the automatic disqualifier.<br />" +
-		"- scouting &lt;allow|disallow>: Specifies whether joining tournament matches while in a tournament is allowed.<br />" +
-		"- modjoin &lt;allow|disallow>: Specifies whether players can modjoin their battles.<br />" +
-		"- forcetimer &lt;on|off>: Turn on the timer for tournament battles.<br />" +
-		"- getusers: Lists the users in the current tournament.<br />" +
-		"- on/enable &lt;%|@>: Enables allowing drivers or mods to start tournaments in the current room.<br />" +
-		"- off/disable: Disables allowing drivers and mods to start tournaments in the current room.<br />" +
-		"- announce/announcements &lt;on|off>: Enables/disables tournament announcements for the current room.<br />" +
-		"- banuser/unbanuser &lt;user>: Bans/unbans a user from joining tournaments in this room. Lasts 2 weeks.<br />" +
-		"More detailed help can be found <a href=\"http://www.smogon.com/forums/threads/3570628/#post-6777489\">here</a>"
+		`- create/new &lt;format>, &lt;type> [, &lt;comma-separated arguments>]: Creates a new tournament in the current room.<br />` +
+		`- settype &lt;type> [, &lt;comma-separated arguments>]: Modifies the type of tournament after it's been created, but before it has started.<br />` +
+		`- cap/playercap &lt;cap>: Sets the player cap of the tournament before it has started.<br />` +
+		`- rules/banlist &lt;comma-separated arguments>: Sets the custom rules for the tournament before it has started.<br />` +
+		`- viewrules/viewbanlist: Shows the custom rules for the tournament.<br />` +
+		`- clearrules/clearbanlist: Clears the custom rules for the tournament before it has started.<br />` +
+		`- name &lt;name>: Sets a custom name for the tournament.<br />` +
+		`- clearname: Clears the custom name of the tournament.<br />` +
+		`- end/stop/delete: Forcibly ends the tournament in the current room.<br />` +
+		`- begin/start: Starts the tournament in the current room.<br />` +
+		`- autostart/setautostart &lt;on|minutes|off>: Sets the automatic start timeout.<br />` +
+		`- dq/disqualify &lt;user>: Disqualifies a user.<br />` +
+		`- autodq/setautodq &lt;minutes|off>: Sets the automatic disqualification timeout.<br />` +
+		`- runautodq: Manually run the automatic disqualifier.<br />` +
+		`- scouting &lt;allow|disallow>: Specifies whether joining tournament matches while in a tournament is allowed.<br />` +
+		`- modjoin &lt;allow|disallow>: Specifies whether players can modjoin their battles.<br />` +
+		`- forcetimer &lt;on|off>: Turn on the timer for tournament battles.<br />` +
+		`- getusers: Lists the users in the current tournament.<br />` +
+		`- on/enable &lt;%|@>: Enables allowing drivers or mods to start tournaments in the current room.<br />` +
+		`- off/disable: Disables allowing drivers and mods to start tournaments in the current room.<br />` +
+		`- announce/announcements &lt;on|off>: Enables/disables tournament announcements for the current room.<br />` +
+		`- banuser/unbanuser &lt;user>: Bans/unbans a user from joining tournaments in this room. Lasts 2 weeks.<br />` +
+		`More detailed help can be found <a href="http://www.smogon.com/forums/threads/3570628/#post-6777489">here</a>`
 	);
 };
 

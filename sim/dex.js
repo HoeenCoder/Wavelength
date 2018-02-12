@@ -369,14 +369,20 @@ class ModdedDex {
 		}
 		if (id && this.data.Pokedex.hasOwnProperty(id)) {
 			template = new Data.Template({name}, this.data.Pokedex[id], this.data.FormatsData[id], this.data.Learnsets[id]);
-			if (!template.tier && template.baseSpecies !== template.species) {
-				if (template.speciesid.endsWith('totem')) {
+			if (!template.tier && !template.doublesTier && template.baseSpecies !== template.species) {
+				if (template.baseSpecies === 'Mimikyu') {
+					template.tier = this.data.FormatsData[toId(template.baseSpecies)].tier;
+					template.doublesTier = this.data.FormatsData[toId(template.baseSpecies)].doublesTier;
+				} else if (template.speciesid.endsWith('totem')) {
 					template.tier = this.data.FormatsData[template.speciesid.slice(0, -5)].tier;
+					template.doublesTier = this.data.FormatsData[template.speciesid.slice(0, -5)].doublesTier;
 				} else {
 					template.tier = this.data.FormatsData[toId(template.baseSpecies)].tier;
+					template.doublesTier = this.data.FormatsData[toId(template.baseSpecies)].doublesTier;
 				}
 			}
 			if (!template.tier) template.tier = 'Illegal';
+			if (!template.doublesTier) template.doublesTier = template.tier;
 		} else {
 			template = new Data.Template({name, exists: false});
 		}
@@ -862,8 +868,10 @@ class ModdedDex {
 			case 'pokemontag':
 				// valid pokemontags
 				const validTags = [
-					// pokemon tiers
+					// singles tiers
 					'uber', 'ou', 'bl', 'uu', 'bl2', 'ru', 'bl3', 'nu', 'bl4', 'pu', 'nfe', 'lcuber', 'lc', 'cap', 'caplc', 'capnfe',
+					//doubles tiers
+					'duber', 'dou', 'dbl', 'duu',
 					// custom tags
 					'mega',
 				];
@@ -984,17 +992,17 @@ class ModdedDex {
 
 	/**
 	 * @param {Format} format
-	 * @param {[number, number, number, number]} [seed]
+	 * @param {PRNG | PRNGSeed?} [seed]
 	 */
-	getTeamGenerator(format, seed) {
+	getTeamGenerator(format, seed = null) {
 		const TeamGenerator = require(dexes['base'].forFormat(format).dataDir + '/random-teams');
 		return new TeamGenerator(format, seed);
 	}
 	/**
 	 * @param {Format} format
-	 * @param {[number, number, number, number]} [seed]
+	 * @param {PRNG | PRNGSeed?} [seed]
 	 */
-	generateTeam(format, seed) {
+	generateTeam(format, seed = null) {
 		return this.getTeamGenerator(format, seed).generateTeam();
 	}
 
@@ -1176,10 +1184,14 @@ class ModdedDex {
 
 	/**
 	 * @param {string} buf
-	 * @return {?PokemonSet[]}
+	 * @return {PokemonSet[]?}
 	 */
 	fastUnpackTeam(buf) {
 		if (!buf) return null;
+		if (typeof buf !== 'string') return buf;
+		if (buf.charAt(0) === '[' && buf.charAt(buf.length - 1) === ']') {
+			buf = this.packTeam(JSON.parse(buf));
+		}
 
 		let team = [];
 		let i = 0, j = 0;

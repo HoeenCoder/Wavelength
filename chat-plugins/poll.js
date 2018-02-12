@@ -222,6 +222,7 @@ exports.commands = {
 		new: function (target, room, user, connection, cmd, message) {
 			if (!target) return this.parse('/help poll new');
 			if (target.length > 1024) return this.errorReply("Poll too long.");
+			if (room.battle) return this.errorReply("Battles do not support polls.");
 
 			const supportHTML = cmd === 'htmlcreate';
 			if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
