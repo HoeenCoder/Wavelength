@@ -5,15 +5,13 @@
 
 'use strict';
 
+const FS = require('../lib/fs');
 const CARDS_PER_PACK = 10;
 let origCards = require('../config/cards.json');
 let newCards = {};
-const fs = require('fs');
 
-try {
-	newCards = JSON.parse(fs.readFileSync('config/extracards.json', 'utf8'));
-} catch (e) {
-	if (e.code !== 'ENOENT') throw e;
+if (FS('config/extracards.json').readIfExistsSync()) {
+	newCards = require('../config/extracards.json');
 }
 
 function saveCards() {
@@ -22,10 +20,12 @@ function saveCards() {
 	for (let u in cloned) {
 		if (origCards[u]) delete cloned[u];
 	}
-	fs.writeFile('config/extracards.json', JSON.stringify(cloned), () => {});
+	FS('config/extracards.json').writeUpdate(() => (
+		JSON.stringify(cloned)
+	));
 }
 
-WL.cards = Object.assign(newCards, origCards);
+WL.cards = Object.assign(origCards, newCards);
 
 const PACK_MAKING_DATA = {
 	Common: {chance: 50, limits: [4, 7]},
