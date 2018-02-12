@@ -174,7 +174,7 @@ exports.commands = {
 					return '';
 				}
 				cardsShown++;
-				return `<button name="send" value="/psgo card ${card.id}" style="border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset;"><img src="${card.image}" width="100" title="${card.id}"></button>`;
+				return `<button name="send" value="/psgo card ${card.id}" style="border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset;"><img src="${card.image}" height="120" width="100" title="${card.id}"></button>`;
 			});
 			this.sendReplyBox(`<div style="max-height: 300px; overflow-y: scroll;">${cardsMapping.join('')}</div><br><center><b>${WL.nameColor(toId(target), true)} has ${cards.length} cards</b></center>`);
 		},
