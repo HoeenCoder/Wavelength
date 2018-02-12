@@ -280,10 +280,10 @@ exports.BattleStatuses = {
 	cubsfan38: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&CubsFan38', 'Your favorite Rowlet has arrived to battle!');
+			this.add('c', '~CubsFan38', 'Your favorite Rowlet has arrived to battle!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
+			this.add('c', '~CubsFan38', 'It\'s cold here, I\'m out.');
 		},
 	},
 	mechsteelix: {
