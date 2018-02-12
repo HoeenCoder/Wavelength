@@ -119,6 +119,18 @@ describe('Team Validator', function () {
 		];
 		illegal = TeamValidator('gen2ou').validateTeam(team);
 		assert(illegal);
+
+		team = [
+			{species: 'blissey', moves: ['present', 'healbell']},
+		];
+		illegal = TeamValidator('gen2ou').validateTeam(team);
+		assert.strictEqual(illegal, null);
+
+		team = [
+			{species: 'snorlax', ability: 'immunity', moves: ['curse', 'pursuit']},
+		];
+		illegal = TeamValidator('gen4ou').validateTeam(team);
+		assert.strictEqual(illegal, null);
 	});
 
 	it('should accept VC moves only with Hidden ability and correct IVs', function () {

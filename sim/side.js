@@ -44,13 +44,11 @@ class Side {
 	 * @param {string} name
 	 * @param {Battle} battle
 	 * @param {number} sideNum
-	 * @param {any} team
+	 * @param {PokemonSet[]} team
 	 */
 	constructor(name, battle, sideNum, team) {
 		let sideScripts = battle.data.Scripts.side;
 		if (sideScripts) Object.assign(this, sideScripts);
-
-		this.getChoice = (/**@param {Side} side */side => this.getChoiceInner(side));
 
 		/**@type {Battle} */
 		this.battle = battle;
@@ -117,11 +115,10 @@ class Side {
 		}
 	}
 
-	/**
-	 * @param {Side | boolean} side
-	 */
-	getChoiceInner(side) {
-		if (side !== this && side !== true) return '';
+	getChoice() {
+		if (this.choice.actions.length > 1 && this.choice.actions.every(action => action.choice === 'team')) {
+			return `team ` + this.choice.actions.map(action => action.pokemon.position + 1).join(', ');
+		}
 		return this.choice.actions.map(action => {
 			switch (action.choice) {
 			case 'move':
@@ -185,7 +182,7 @@ class Side {
 	randomActive() {
 		let actives = this.active.filter(active => active && !active.fainted);
 		if (!actives.length) return null;
-		let i = Math.floor(Math.random() * actives.length);
+		let i = Math.floor(this.battle.random() * actives.length);
 		return actives[i];
 	}
 
@@ -261,7 +258,7 @@ class Side {
 	 * @param {AnyObject} update
 	 */
 	emitRequest(update) {
-		this.battle.send('request', `${this.id}\n${JSON.stringify(update)}`);
+		this.battle.send('sideupdate', `${this.id}\n|request|${JSON.stringify(update)}`);
 	}
 
 	/**

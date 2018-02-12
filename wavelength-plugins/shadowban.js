@@ -77,8 +77,8 @@ let checkBannedCache = {};
 exports.checkBanned = function (user) {
 	let userId = toId(user);
 	if (Users(userId).isStaff || Users(userId).isSysop) return false;
-	if (userId in checkBannedCache) return checkBannedCache[userId];
 	if (Users(userId).shadowbanned) return true;
+	if (userId in checkBannedCache) return checkBannedCache[userId];
 	//console.log("Shadow ban cache miss:", userId);
 
 	let targets = Object.keys(getAllAlts(user)).sort();

@@ -83,7 +83,6 @@ class BattlePlayer {
 		}
 	}
 	destroy() {
-		if (this.active) this.simSend('leave');
 		let user = Users(this.userid);
 		if (user) {
 			for (const connection of user.connections) {
@@ -115,9 +114,6 @@ class BattlePlayer {
 	sendRoom(/** @type {string} */ data) {
 		let user = Users(this.userid);
 		if (user) user.sendTo(this.game.id, data);
-	}
-	simSend(/** @type {string} */ action, /** @type {string[]} */ ...rest) {
-		this.game.send(action, this.slot, ...rest);
 	}
 }
 
@@ -189,6 +185,7 @@ class BattleTimer {
 		if (this.settings.accelerate === undefined) {
 			this.settings.accelerate = !timerSettings;
 		}
+		this.settings.dcTimer = !isChallenge;
 
 		for (let slotNum = 0; slotNum < 2; slotNum++) {
 			this.ticksLeft.push(this.settings.startingTicks);
@@ -312,9 +309,17 @@ class BattleTimer {
 
 			if (!isConnected) {
 				// player has disconnected: don't wait longer than 6 ticks (1 minute)
-				this.dcTicksLeft[slotNum] = DISCONNECTION_TICKS;
+				if (this.settings.dcTimer) {
+					this.dcTicksLeft[slotNum] = DISCONNECTION_TICKS;
+				} else {
+					this.dcTicksLeft[slotNum] = NOT_DISCONNECTED - 1;
+				}
 				if (this.timerRequesters.size) {
-					this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected and has a minute to reconnect!`).update();
+					if (this.settings.dcTimer) {
+						this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected and has a minute to reconnect!`).update();
+					} else {
+						this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected!`).update();
+					}
 				}
 			} else {
 				// player has reconnected
@@ -343,7 +348,7 @@ class BattleTimer {
 			if (ticks) continue;
 			if (this.settings.timeoutAutoChoose && this.ticksLeft[slotNum] && this.dcTicksLeft[slotNum] === NOT_DISCONNECTED) {
 				const slot = 'p' + (slotNum + 1);
-				this.battle.send('choose', slot, 'default');
+				this.battle.stream.write(`>${slot} default`);
 				didSomething = true;
 			} else {
 				this.battle.forfeitSlot(slotNum, ' lost due to inactivity.');
@@ -354,9 +359,6 @@ class BattleTimer {
 	}
 }
 
-/**
- * @typedef {'p1' | 'p2'} PlayerSlot
- */
 /**
  * @typedef {{rqid: number, request: string, isWait: 'cantUndo' | true | false, choice: string}} BattleRequestTracker
  */
@@ -369,6 +371,7 @@ class Battle {
 	 */
 	constructor(room, formatid, options) {
 		let format = Dex.getFormat(formatid, true);
+		this.gameid = 'battle';
 		this.id = room.id;
 		/** @type {GameRoom} */
 		this.room = room;
@@ -377,7 +380,12 @@ class Battle {
 		this.allowRenames = (!options.rated && !options.tour);
 
 		this.format = formatid;
-		this.rated = options.rated;
+		/**
+		 * The lower player's rating, for searching purposes.
+		 * 0 for unrated battles. 1 for unknown ratings.
+		 * @type {number}
+		 */
+		this.rated = options.rated || 0;
 		this.started = false;
 		this.ended = false;
 		this.active = false;
@@ -407,8 +415,17 @@ class Battle {
 		this.timer = new BattleTimer(this);
 
 		// data to be logged
+		/**
+		 * Has this player consented to input log export? If so, set this
+		 * to the userid allowed to export.
+		 * @type {[string, string]?}
+		 */
+		this.allowExtraction = null;
+
 		this.logData = null;
 		this.endType = 'normal';
+		this.score = null;
+		this.inputLog = null;
 
 		this.rqid = 1;
 		this.requestCount = 0;
@@ -422,22 +439,29 @@ class Battle {
 			ratedMessage = 'Tournament battle';
 		}
 
-		this.send('init', this.id, this.format, ratedMessage);
+		// @ts-ignore
+		this.room.game = this;
+		this.room.battle = this;
+
+		let battleOptions = {
+			formatid: this.format,
+			id: this.id,
+			rated: ratedMessage,
+			seed: options.seed,
+		};
+		if (options.inputLog) {
+			this.stream.write(options.inputLog);
+		} else {
+			this.stream.write(`>start ` + JSON.stringify(battleOptions));
+		}
 		if (Config.forcetimer) this.timer.start();
 
 		this.listen();
+
+		if (options.p1) this.addPlayer(options.p1, 'p1', options.p1team, true);
+		if (options.p2) this.addPlayer(options.p2, 'p2', options.p2team, true);
 	}
 
-	send(/** @type {string[]} */ ...args) {
-		this.activeIp = Monitor.activeIp;
-		this.stream.write(args.join('|'));
-	}
-	sendFor(/** @type {User} */ user, /** @type {string} */ action, /** @type {string[]} */ ...rest) {
-		let player = this.players[user.userid];
-		if (!player) return;
-
-		this.send(action, player.slot, ...rest);
-	}
 	checkActive() {
 		let active = true;
 		if (this.ended || !this.started) {
@@ -473,7 +497,7 @@ class Battle {
 		request.isWait = true;
 		request.choice = choice;
 
-		this.sendFor(user, 'choose', choice);
+		this.stream.write(`>${player.slot} ${choice}`);
 	}
 	/**
 	 * @param {User} user
@@ -495,13 +519,12 @@ class Battle {
 		}
 		request.isWait = false;
 
-		this.sendFor(user, 'undo');
+		this.stream.write(`>${player.slot} undo`);
 	}
 	/**
 	 * @param {User} user
-	 * @param {string} team
 	 */
-	joinGame(user, team) {
+	joinGame(user) {
 		if (this.playerCount >= 2) {
 			user.popup(`This battle already has two players.`);
 			return false;
@@ -511,7 +534,7 @@ class Battle {
 			return false;
 		}
 
-		if (!this.addPlayer(user, team)) {
+		if (!this.addPlayer(user)) {
 			user.popup(`Failed to join battle.`);
 			return false;
 		}
@@ -543,19 +566,9 @@ class Battle {
 		}
 	}
 	receive(/** @type {string[]} */ lines) {
-		Monitor.activeIp = this.activeIp;
 		switch (lines[0]) {
 		case 'update':
-			this.checkActive();
 			for (const line of lines.slice(1)) {
-				this.room.add(line);
-			}
-			this.room.update();
-			this.timer.nextRequest();
-			break;
-
-		case 'winupdate':
-			for (const line of lines.slice(2)) {
 				this.room.add(line);
 			}
 			if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))]) {
@@ -565,67 +578,56 @@ class Battle {
 					WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), this.room.id, 'p-' + toId(lines[lines.length - 1].split('|')[2]));
 				}
 			}
-			this.started = true;
-			if (!this.ended) {
-				this.ended = true;
-				this.onEnd(lines[1]);
-				this.removeAllPlayers();
-				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
-					let notCom = toId(this.room.p1.name);
-					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
-					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
-					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
-					/*setTimeout(() => {
-						this.room.destroy();
-					}, 10000);*/
-				}
-			}
+			this.room.update();
+			if (!this.ended) this.timer.nextRequest();
 			this.checkActive();
 			break;
 
 		case 'sideupdate': {
-			// @ts-ignore
-			let player = /** @type {BattlePlayer?} */ (this[lines[1]]);
-			if (player) {
-				player.sendRoom(lines[2]);
-				if (lines[2].startsWith(`|error|[Invalid choice] Can't do anything`)) {
-					// ... should not happen
-				} else if (lines[2].startsWith(`|error|[Invalid choice]`)) {
-					let request = this.requests[player.slot];
-					request.isWait = false;
-					request.choice = '';
-				}
-			}
-			break;
-		}
-
-		case 'request': {
-			// @ts-ignore
-			let player = /** @type {BattlePlayer?} */ (this[lines[1]]);
-
-			this.rqid++;
-			if (player) {
-				let request = JSON.parse(lines[2]);
+			let slot = /** @type {PlayerSlot} */ (lines[1]);
+			let player = this[slot];
+			if (lines[2].startsWith(`|error|[Invalid choice] Can't do anything`)) {
+				// ... should not happen
+			} else if (lines[2].startsWith(`|error|[Invalid choice]`)) {
+				let request = this.requests[slot];
+				request.isWait = false;
+				request.choice = '';
+			} else if (lines[2].startsWith(`|request|`)) {
+				this.rqid++;
+				let request = JSON.parse(lines[2].slice(9));
 				request.rqid = this.rqid;
 				const requestJSON = JSON.stringify(request);
-				this.requests[player.slot] = {
+				this.requests[slot] = {
 					rqid: this.rqid,
 					request: requestJSON,
 					isWait: request.wait ? 'cantUndo' : false,
 					choice: '',
 				};
 				this.requestCount++;
-				player.sendRoom(`|request|${requestJSON}`);
+				if (player) player.sendRoom(`|request|${requestJSON}`);
+				break;
 			}
+			if (player) player.sendRoom(lines[2]);
 			break;
 		}
 
-		case 'log':
+		case 'end':
 			this.logData = JSON.parse(lines[1]);
-			break;
-
-		case 'score':
-			this.score = [parseInt(lines[1]), parseInt(lines[2])];
+			this.score = this.logData.score;
+			this.inputLog = this.logData.inputLog;
+			this.started = true;
+			if (!this.ended) {
+				this.ended = true;
+				this.onEnd(this.logData.winner);
+				this.removeAllPlayers();
+				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+					let notCom = toId(this.room.p1.name);
+					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
+					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
+				}
+			}
+			this.checkActive();
 			break;
 
 		case 'caught':
@@ -724,7 +726,6 @@ class Battle {
 			}
 			break;
 		}
-		Monitor.activeIp = null;
 	}
 	/**
 	 * @param {any} winner
@@ -765,7 +766,7 @@ class Battle {
 			this.logData = null;
 		}
 		if (Config.autosavereplays) {
-			let uploader = Users.get(winnerid);
+			let uploader = Users.get(winnerid || p1id);
 			if (uploader && uploader.connections[0]) {
 				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
 			}
@@ -883,7 +884,11 @@ class Battle {
 		player.userid = user.userid;
 		player.name = user.name;
 		delete this.players[oldUserid];
-		player.simSend('join', user.name, user.avatar);
+		const options = {
+			name: user.name,
+			avatar: user.avatar,
+		};
+		this.stream.write(`>player ${player.slot} ` + JSON.stringify(options));
 	}
 	/**
 	 * @param {User} user
@@ -919,13 +924,13 @@ class Battle {
 		}
 		let player = this.players[user.userid];
 		if (!player) return false;
-		player.simSend('win');
+		this.stream.write(`>forcewin ${player.slot}`);
 	}
 	tie() {
-		this.send('tie');
+		this.stream.write(`>forcetie`);
 	}
 	tiebreak() {
-		this.send('tiebreak');
+		this.stream.write(`>tiebreak`);
 	}
 	/**
 	 * @param {User} user
@@ -958,50 +963,62 @@ class Battle {
 		this.room.add(`|-message|${name}${message}`);
 		this.endType = 'forfeit';
 		const otherids = ['p2', 'p1'];
-		this.send('win', otherids[slotNum]);
+		this.stream.write(`>forcewin ${otherids[slotNum]}`);
 		return true;
 	}
 
 	/**
 	 * @param {User} user
+	 * @param {PlayerSlot?} slot
 	 * @param {string} team
 	 */
-	addPlayer(user, team) {
+	addPlayer(user, slot = null, team = '', initializing = false) {
 		if (user.userid in this.players) return false;
 		if (this.playerCount >= this.playerCap) return false;
-		let player = this.makePlayer(user, team);
+		let player = this.makePlayer(user, slot, team);
 		if (!player) return false;
 		this.players[user.userid] = player;
 		this.playerCount++;
 		this.room.auth[user.userid] = Users.PLAYER_SYMBOL;
+		if (user.inRooms.has(this.id)) this.onConnect(user);
 		if (this.playerCount >= 2) {
 			// @ts-ignore
 			this.room.title = `${this.p1.name} vs. ${this.p2.name}`;
 			this.room.send(`|title|${this.room.title}`);
 		}
+		if (!initializing) {
+			this.room.add(`|player|${player.slot}|${user.name}|${user.avatar}`);
+		}
 		return true;
 	}
 
 	/**
 	 * @param {User} user
+	 * @param {PlayerSlot?} slot
 	 * @param {string} team
 	 */
-	makePlayer(user, team) {
-		let slotNum = 0;
-		// @ts-ignore
-		while (this['p' + (slotNum + 1)]) slotNum++;
-		let slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
+	makePlayer(user, slot = null, team = '') {
+		if (!slot) {
+			let slotNum = 0;
+			while (this[/** @type {PlayerSlot} */ ('p' + (slotNum + 1))]) slotNum++;
+			slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
+		}
 		// console.log('joining: ' + user.name + ' ' + slot);
 
+		if (this[slot]) throw new Error(`Player already exists in ${slot} in ${this.id}`);
+		let slotNum = parseInt(slot.charAt(1)) - 1;
 		let player = new BattlePlayer(user, this, slot);
 		this[slot] = player;
 		this.playerNames[slotNum] = player.name;
 
-		let message = '' + user.avatar;
+		let options = {
+			name: player.name,
+			avatar: '' + user.avatar,
+		};
 		if (!this.started) {
-			message += "\n" + team;
+			options.team = team;
 		}
-		player.simSend('join', user.name, message);
+		this.stream.write(`>player ${slot} ` + JSON.stringify(options));
 		if (this.started) this.onUpdateConnection(user);
 		if (this.p1 && this.p2) this.started = true;
 		return player;
@@ -1067,15 +1084,19 @@ if (!PM.isParentProcess) {
 	// This is a child process!
 	// @ts-ignore
 	global.Config = require('./config/config');
-
 	global.Chat = require('./chat');
-	global.Dex = require('./sim/dex');
-	global.toId = Dex.getId;
+	global.__version = require('child_process')
+		.execSync('git merge-base master HEAD')
+		.toString()
+		.trim();
 
 	if (Config.crashguard) {
 		// graceful crash - allow current battles to finish before restarting
 		process.on('uncaughtException', err => {
 			require('./lib/crashlogger')(err, 'A simulator process');
+		});
+		process.on('unhandledRejection', err => {
+			require('./lib/crashlogger')(err, 'A simulator process Promise');
 		});
 	}
 

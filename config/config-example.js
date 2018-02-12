@@ -383,6 +383,8 @@ exports.grouplist = [
 		rangeban: true,
 		disableladder: true,
 		globalonly: true,
+		tournamentsmanagement: true,
+		exportinputlog: true,
 		// Wavelength
 		customcolor: true,
 		badge: true,
@@ -435,6 +437,7 @@ exports.grouplist = [
 		roomonly: true,
 		tournamentsmanagement: true,
 		gamemanagement: true,
+		joinbattle: true,
 		// Wavelength
 		draft: true,
 		masspm: true,

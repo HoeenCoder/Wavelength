@@ -229,7 +229,7 @@ exports.BattleScripts = {
 		if (!sourceEffect || sourceEffect.id === 'pursuit') {
 			let extraPP = 0;
 			for (let i = 0; i < targets.length; i++) {
-				let ppDrop = this.singleEvent('DeductPP', targets[i].getAbility(), targets[i].abilityData, targets[i], pokemon, move);
+				let ppDrop = this.runEvent('DeductPP', targets[i], pokemon, move);
 				if (ppDrop !== true) {
 					extraPP += ppDrop || 0;
 				}
@@ -455,7 +455,7 @@ exports.BattleScripts = {
 			if (stolen) {
 				this.attrLastMove('[still]');
 				this.add('-clearpositiveboost', target, pokemon, 'move: ' + move.name);
-				this.boost(boosts, pokemon);
+				this.boost(boosts, pokemon, pokemon);
 
 				for (let statName in boosts) {
 					boosts[statName] = 0;

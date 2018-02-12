@@ -12,6 +12,19 @@ const AOTDS_FILE = 'config/chat-plugins/thestudio.tsv';
 const FOTDS_FILE = 'config/chat-plugins/tvbf-films.tsv';
 const BOTDS_FILE = 'config/chat-plugins/tvbf-books.tsv';
 const SOTDS_FILE = 'config/chat-plugins/tvbf-shows.tsv';
+const PRENOMS_FILE = 'config/chat-plugins/otd-prenoms.json';
+
+let prenoms = {};
+try {
+	prenoms = require(`../${PRENOMS_FILE}`);
+} catch (e) {
+	if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e;
+}
+if (!prenoms || typeof prenoms !== 'object') prenoms = {};
+
+function savePrenoms() {
+	FS(PRENOMS_FILE).write(JSON.stringify(prenoms));
+}
 
 function toNominationId(nomination) { // toId would return '' for foreign/sadistic nominations
 	return nomination.toLowerCase().replace(/\s/g, '').replace(/\b&\b/g, '');
@@ -23,7 +36,7 @@ class OtdHandler {
 		this.name = name;
 		this.room = room;
 
-		this.nominations = new Map();
+		this.nominations = new Map(prenoms[id]);
 		this.removedNominations = new Map();
 
 		this.voting = false;
@@ -56,13 +69,16 @@ class OtdHandler {
 
 	startVote() {
 		this.voting = true;
-		this.timer = setTimeout(() => this.rollWinner, 20 * MINUTE);
+		this.timer = setTimeout(() => this.rollWinner(), 20 * MINUTE);
 		this.display();
 	}
 
 	finish() {
+		this.voting = false;
 		this.nominations = new Map();
 		this.removedNominations = new Map();
+		delete prenoms[this.id];
+		savePrenoms();
 		clearTimeout(this.timer);
 	}
 
@@ -81,12 +97,26 @@ class OtdHandler {
 			if (toId(user) in value.userids || user.latestIp in value.ips) {
 				user.sendTo(this.room, `Your previous vote for ${value.nomination} will be removed.`);
 				this.nominations.delete(key);
+				if (prenoms[this.id]) {
+					let idx = prenoms[this.id].findIndex(val => val[0] === key);
+					if (idx > -1) {
+						prenoms[this.id].splice(idx, 1);
+						savePrenoms();
+					}
+				}
 			}
 		}
 
 		let obj = {};
 		obj[user.userid] = user.name;
-		this.nominations.set(id, {nomination: nomination, name: user.name, userids: Object.assign(obj, user.prevNames), ips: Object.assign({}, user.ips)});
+
+		let nomObj = {nomination: nomination, name: user.name, userids: Object.assign(obj, user.prevNames), ips: Object.assign({}, user.ips)};
+
+		this.nominations.set(id, nomObj);
+
+		if (!prenoms[this.id]) prenoms[this.id] = [];
+		prenoms[this.id].push([id, nomObj]);
+		savePrenoms();
 
 		user.sendTo(this.room, `Your nomination for ${nomination} was successfully submitted.`);
 
@@ -128,7 +158,8 @@ class OtdHandler {
 		let winner = this.nominations.get(keys[Math.floor(Math.random() * keys.length)]);
 		this.appendWinner(winner.nomination, winner.name);
 
-		this.room.add(Chat.html `|html|<div class="broadcast-blue"><p style="font-weight:bold;text-align:center;font-size:12pt;">Nominations for ${this.name} of the Day are over!</p><p style="tex-align:center;font-size:10pt;">Out of ${keys.length} nominations, we randomly selected <strong>${winner.nomination}</strong> as the winner! (Nomination by ${winner.name})</p></div>`);
+		this.room.add(Chat.html `|uhtml|otd|<div class="broadcast-blue"><p style="font-weight:bold;text-align:center;font-size:12pt;">Nominations for ${this.name} of the Day are over!</p><p style="tex-align:center;font-size:10pt;">Out of ${keys.length} nominations, we randomly selected <strong>${winner.nomination}</strong> as the winner! (Nomination by ${winner.name})</p></div>`);
+		this.room.update();
 
 		this.finish();
 		return true;
@@ -142,6 +173,13 @@ class OtdHandler {
 			if (name in value.userids) {
 				this.removedNominations.set(key, value);
 				this.nominations.delete(key);
+				if (prenoms[this.id]) {
+					let idx = prenoms[this.id].findIndex(val => val[0] === key);
+					if (idx > -1) {
+						prenoms[this.id].splice(idx, 1);
+						savePrenoms();
+					}
+				}
 				success = true;
 			}
 		}
