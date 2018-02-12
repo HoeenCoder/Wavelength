@@ -299,7 +299,7 @@ exports.commands = {
 					return user.sendTo(room, `${change ? `|uhtmlchange|cs${user.userid}|` : `|uhtml|cs${user.userid}|`}${menu}`);
 				}
 				menu += `<div style="width: 49%; display: inline-block;">`;
-				menu += `<img src="${card.image}" title="${card.id}">`;
+				menu += `<img src="${card.image}" title="${card.id}" width="254" height="342">`;
 				menu += `</div><div style="width: 49%; display: inline-block; float: right;">`;
 				let colors = {Common: '#0066ff', Uncommon: '#008000', Rare: '#cc0000', "Ultra Rare": '#800080', Legendary: '#c0c0c0', Mythic: '#998200'};
 				menu += `<font style="font-size: 3em; font-weight: bold;">${card.name}</font><h5>(ID: ${card.id})</h5><font style="font-size: 2em; font-weight: bold; ${colors[card.rarity] ? `color: ${colors[card.rarity]};` : ``}">${card.rarity}</font><br/><strong>Species</strong>: ${card.species}<br/><strong>Type</strong>: ${card.type}<br/>`;
