@@ -8,13 +8,12 @@
  *
  * For the actual battle simulation, see sim/
  *
- * @license MIT license
+ * @license MIT
  */
 
 'use strict';
 
 const FS = require('./lib/fs');
-const ProcessManager = require('./process-manager');
 
 /** 5 seconds */
 const TICK_TIME = 5;
@@ -31,7 +30,8 @@ const DISCONNECTION_TICKS = 13;
 // time after a player disabling the timer before they can re-enable it
 const TIMER_COOLDOWN = 20 * 1000;
 
-global.Config = require('./config/config');
+
+/*global.Config = require('./config/config');
 
 global.Db = require('nef')(require('nef-fs')('config/db'));
 global.WL = require('./WL.js').WL;
@@ -57,9 +57,14 @@ const SimulatorProcess = new SimulatorManager({
 	execFile: __filename,
 	maxProcesses: global.Config ? Config.simulatorprocesses : 1,
 	isChatBased: false,
-});
+});*/
 
 class BattlePlayer {
+	/**
+	 * @param {User} user
+	 * @param {Battle} game
+	 * @param {PlayerSlot} slot
+	 */
 	constructor(user, game, slot) {
 		this.userid = user.userid;
 		this.name = user.name;
@@ -78,7 +83,6 @@ class BattlePlayer {
 		}
 	}
 	destroy() {
-		if (this.active) this.simSend('leave');
 		let user = Users(this.userid);
 		if (user) {
 			for (const connection of user.connections) {
@@ -89,8 +93,8 @@ class BattlePlayer {
 		}
 		this.game[this.slot] = null;
 	}
-	updateSubchannel(user) {
-		if (!user.connections) {
+	updateSubchannel(/** @type {User | Connection} */ user) {
+		if (user instanceof Users.Connection) {
 			// "user" is actually a connection
 			Sockets.subchannelMove(user.worker, this.game.id, this.slotNum + 1, user.socketid);
 			return;
@@ -103,26 +107,26 @@ class BattlePlayer {
 	toString() {
 		return this.userid;
 	}
-	send(data) {
+	send(/** @type {string} */ data) {
 		let user = Users(this.userid);
 		if (user) user.send(data);
 	}
-	sendRoom(data) {
+	sendRoom(/** @type {string} */ data) {
 		let user = Users(this.userid);
 		if (user) user.sendTo(this.game.id, data);
-	}
-	simSend(action, ...rest) {
-		this.game.send(action, this.slot, ...rest);
 	}
 }
 
 class BattleTimer {
+	/**
+	 * @param {Battle} battle
+	 */
 	constructor(battle) {
 		/** @type {Battle} */
 		this.battle = battle;
 
-		/** @type {?NodeJS.Timer} */
-		this.timer = undefined;
+		/** @type {NodeJS.Timer?} */
+		this.timer = null;
 		/** @type {Set<string>} */
 		this.timerRequesters = new Set();
 		/**
@@ -130,7 +134,7 @@ class BattleTimer {
 		 * Starts at 21 per player (210 seconds) in a ladder battle. Goes
 		 * down by 1 every tick (10 seconds). Goes up by 1 every request (2
 		 * if below 15). The player loses if this reaches 0.
-		 * @type {[number]}
+		 * @type {number[]}
 		 */
 		this.ticksLeft = [];
 		/**
@@ -138,7 +142,7 @@ class BattleTimer {
 		 * Set equal to the player's overall timer, but capped at 15 in a
 		 * ladder battle. Goes down by 1 every tick. Tracked separately from
 		 * the overall timer, and the player also loses if this reaches 0.
-		 * @type {[number]}
+		 * @type {number[]}
 		 */
 		this.turnTicksLeft = [];
 		/**
@@ -147,7 +151,7 @@ class BattleTimer {
 		 * disconnects, this will go down by 1 every tick. If the player
 		 * reconnects, this will reset to 7. Tracked separately from the
 		 * overall timer, and the player also loses if this reaches 0.
-		 * @type {[number]}
+		 * @type {number[]}
 		 */
 		this.dcTicksLeft = [];
 
@@ -181,6 +185,7 @@ class BattleTimer {
 		if (this.settings.accelerate === undefined) {
 			this.settings.accelerate = !timerSettings;
 		}
+		this.settings.dcTimer = !isChallenge;
 
 		for (let slotNum = 0; slotNum < 2; slotNum++) {
 			this.ticksLeft.push(this.settings.startingTicks);
@@ -188,7 +193,7 @@ class BattleTimer {
 			this.dcTicksLeft.push(NOT_DISCONNECTED);
 		}
 	}
-	start(requester) {
+	start(/** @type {User} */ requester) {
 		let userid = requester ? requester.userid : 'staff';
 		if (this.timerRequesters.has(userid)) return false;
 		if (this.timer && requester) {
@@ -209,7 +214,7 @@ class BattleTimer {
 		this.battle.room.add(`|inactive|Battle timer is ON: inactive players will automatically lose when time's up.${requestedBy}`).update();
 		return true;
 	}
-	stop(requester) {
+	stop(/** @type {User} */ requester) {
 		if (requester) {
 			if (!this.timerRequesters.has(requester.userid)) return false;
 			this.timerRequesters.delete(requester.userid);
@@ -224,19 +229,19 @@ class BattleTimer {
 		}
 		if (!this.timer) return false;
 		clearTimeout(this.timer);
-		this.timer = undefined;
+		this.timer = null;
 		this.battle.room.add(`|inactiveoff|Battle timer is now OFF.`).update();
 		return true;
 	}
-	waitingForChoice(slot) {
-		return !this.battle.requests[slot][2];
+	waitingForChoice(/** @type {PlayerSlot} */ slot) {
+		return !this.battle.requests[slot].isWait;
 	}
-	nextRequest(isFirst) {
+	nextRequest(isFirst = false) {
 		if (this.timer) clearTimeout(this.timer);
 		if (!this.timerRequesters.size) return;
 		const maxTurnTicks = (isFirst ? this.settings.maxFirstTurnTicks : 0) || this.settings.maxPerTurnTicks;
 		for (const slotNum of this.ticksLeft.keys()) {
-			const slot = 'p' + (slotNum + 1);
+			const slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
 			const player = this.battle[slot];
 
 			let perTurnTicks = this.settings.perTurnTicks;
@@ -266,7 +271,7 @@ class BattleTimer {
 		if (this.timer) clearTimeout(this.timer);
 		if (this.battle.ended) return;
 		for (const slotNum of this.ticksLeft.keys()) {
-			const slot = 'p' + (slotNum + 1);
+			const slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
 
 			if (!this.waitingForChoice(slot)) continue;
 			this.ticksLeft[slotNum]--;
@@ -296,7 +301,7 @@ class BattleTimer {
 	}
 	checkActivity() {
 		for (const slotNum of this.ticksLeft.keys()) {
-			const slot = 'p' + (slotNum + 1);
+			const slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
 			const player = this.battle[slot];
 			const isConnected = player && player.active;
 
@@ -304,9 +309,17 @@ class BattleTimer {
 
 			if (!isConnected) {
 				// player has disconnected: don't wait longer than 6 ticks (1 minute)
-				this.dcTicksLeft[slotNum] = DISCONNECTION_TICKS;
+				if (this.settings.dcTimer) {
+					this.dcTicksLeft[slotNum] = DISCONNECTION_TICKS;
+				} else {
+					this.dcTicksLeft[slotNum] = NOT_DISCONNECTED - 1;
+				}
 				if (this.timerRequesters.size) {
-					this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected and has a minute to reconnect!`).update();
+					if (this.settings.dcTimer) {
+						this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected and has a minute to reconnect!`).update();
+					} else {
+						this.battle.room.add(`|inactive|${this.battle.playerNames[slotNum]} disconnected!`).update();
+					}
 				}
 			} else {
 				// player has reconnected
@@ -335,10 +348,10 @@ class BattleTimer {
 			if (ticks) continue;
 			if (this.settings.timeoutAutoChoose && this.ticksLeft[slotNum] && this.dcTicksLeft[slotNum] === NOT_DISCONNECTED) {
 				const slot = 'p' + (slotNum + 1);
-				this.battle.send('choose', slot, 'default');
+				this.battle.stream.write(`>${slot} default`);
 				didSomething = true;
 			} else {
-				this.battle.forfeit(null, ' lost due to inactivity.', slotNum);
+				this.battle.forfeitSlot(slotNum, ' lost due to inactivity.');
 				return true;
 			}
 		}
@@ -346,25 +359,44 @@ class BattleTimer {
 	}
 }
 
+/**
+ * @typedef {{rqid: number, request: string, isWait: 'cantUndo' | true | false, choice: string}} BattleRequestTracker
+ */
+
 class Battle {
+	/**
+	 * @param {GameRoom} room
+	 * @param {string} formatid
+	 * @param {AnyObject} options
+	 */
 	constructor(room, formatid, options) {
 		let format = Dex.getFormat(formatid, true);
+		this.gameid = 'battle';
 		this.id = room.id;
+		/** @type {GameRoom} */
 		this.room = room;
 		this.title = format.name;
 		if (!this.title.endsWith(" Battle")) this.title += " Battle";
 		this.allowRenames = (!options.rated && !options.tour);
 
 		this.format = formatid;
-		this.rated = options.rated;
+		/**
+		 * The lower player's rating, for searching purposes.
+		 * 0 for unrated battles. 1 for unknown ratings.
+		 * @type {number}
+		 */
+		this.rated = options.rated || 0;
 		this.started = false;
 		this.ended = false;
 		this.active = false;
 
+		/** @type {{[userid: string]: BattlePlayer}} */
 		this.players = Object.create(null);
 		this.playerCount = 0;
 		this.playerCap = 2;
+		/** @type {BattlePlayer?} */
 		this.p1 = null;
+		/** @type {BattlePlayer?} */
 		this.p2 = null;
 
 		// SGgame queue
@@ -376,24 +408,32 @@ class Battle {
 		 * functions that need names for the slots.
 		 */
 		this.playerNames = ["Player 1", "Player 2"];
-		/** {playerid: [rqid, request, isWait, choice]} */
+		/**
+		 * @type {{p1: BattleRequestTracker, p2: BattleRequestTracker}}
+		 */
 		this.requests = {
-			p1: [0, '', 'cantUndo', ''],
-			p2: [0, '', 'cantUndo', ''],
+			p1: /** @type {BattleRequestTracker} */ ({rqid: 0, request: '', isWait: 'cantUndo', choice: ''}),
+			p2: /** @type {BattleRequestTracker} */ ({rqid: 0, request: '', isWait: 'cantUndo', choice: ''}),
 		};
 		this.timer = new BattleTimer(this);
 
 		// data to be logged
+		/**
+		 * Has this player consented to input log export? If so, set this
+		 * to the userid allowed to export.
+		 * @type {[string, string]?}
+		 */
+		this.allowExtraction = null;
+
 		this.logData = null;
 		this.endType = 'normal';
+		this.score = null;
+		this.inputLog = null;
 
 		this.rqid = 1;
 		this.requestCount = 0;
 
-		this.process = SimulatorProcess.acquire();
-		if (this.process.pendingTasks.has(room.id)) {
-			throw new Error(`Battle with ID ${room.id} already exists.`);
-		}
+		this.stream = PM.createStream();
 
 		let ratedMessage = '';
 		if (this.rated) {
@@ -402,21 +442,29 @@ class Battle {
 			ratedMessage = 'Tournament battle';
 		}
 
-		this.send('init', this.format, ratedMessage);
-		this.process.pendingTasks.set(room.id, this);
+		// @ts-ignore
+		this.room.game = this;
+		this.room.battle = this;
+
+		let battleOptions = {
+			formatid: this.format,
+			id: this.id,
+			rated: ratedMessage,
+			seed: options.seed,
+		};
+		if (options.inputLog) {
+			this.stream.write(options.inputLog);
+		} else {
+			this.stream.write(`>start ` + JSON.stringify(battleOptions));
+		}
 		if (Config.forcetimer) this.timer.start();
+
+		this.listen();
+
+		if (options.p1) this.addPlayer(options.p1, 'p1', options.p1team, true);
+		if (options.p2) this.addPlayer(options.p2, 'p2', options.p2team, true);
 	}
 
-	send(...args) {
-		this.activeIp = Monitor.activeIp;
-		this.process.send(`${this.id}|${args.join('|')}`);
-	}
-	sendFor(user, action, ...rest) {
-		let player = this.players[user];
-		if (!player) return;
-
-		this.send(action, player.slot, ...rest);
-	}
 	checkActive() {
 		let active = true;
 		if (this.ended || !this.started) {
@@ -431,44 +479,55 @@ class Battle {
 		this.active = active;
 		if (Rooms.global.battleCount === 0) Rooms.global.automaticKillRequest();
 	}
+	/**
+	 * @param {User} user
+	 * @param {string} data
+	 */
 	choose(user, data) {
-		const player = this.players[user];
+		const player = this.players[user.userid];
 		const [choice, rqid] = data.split('|', 2);
 		if (!player) return;
 		let request = this.requests[player.slot];
-		if (request[2] !== false && request[2] !== true) {
+		if (request.isWait !== false && request.isWait !== true) {
 			player.sendRoom(`|error|[Invalid choice] There's nothing to choose`);
 			return;
 		}
-		if ((this.requests.p1[2] && this.requests.p2[2]) || // too late
-			(rqid && rqid !== '' + request[0])) { // WAY too late
+		if ((this.requests.p1.isWait && this.requests.p2.isWait) || // too late
+			(rqid && rqid !== '' + request.rqid)) { // WAY too late
 			player.sendRoom(`|error|[Invalid choice] Sorry, too late to make a different move; the next turn has already started`);
 			return;
 		}
-		request[2] = true;
-		request[3] = choice;
+		request.isWait = true;
+		request.choice = choice;
 
-		this.sendFor(user, 'choose', choice);
+		this.stream.write(`>${player.slot} ${choice}`);
 	}
+	/**
+	 * @param {User} user
+	 * @param {string} data
+	 */
 	undo(user, data) {
-		const player = this.players[user];
+		const player = this.players[user.userid];
 		const [, rqid] = data.split('|', 2);
 		if (!player) return;
 		let request = this.requests[player.slot];
-		if (request[2] !== true) {
+		if (request.isWait !== true) {
 			player.sendRoom(`|error|[Invalid choice] There's nothing to cancel`);
 			return;
 		}
-		if ((this.requests.p1[2] && this.requests.p2[2]) || // too late
-			(rqid && rqid !== '' + request[0])) { // WAY too late
+		if ((this.requests.p1.isWait && this.requests.p2.isWait) || // too late
+			(rqid && rqid !== '' + request.rqid)) { // WAY too late
 			player.sendRoom(`|error|[Invalid choice] Sorry, too late to cancel; the next turn has already started`);
 			return;
 		}
-		request[2] = false;
+		request.isWait = false;
 
-		this.sendFor(user, 'undo');
+		this.stream.write(`>${player.slot} undo`);
 	}
-	joinGame(user, team) {
+	/**
+	 * @param {User} user
+	 */
+	joinGame(user) {
 		if (this.playerCount >= 2) {
 			user.popup(`This battle already has two players.`);
 			return false;
@@ -478,13 +537,16 @@ class Battle {
 			return false;
 		}
 
-		if (!this.addPlayer(user, team)) {
+		if (!this.addPlayer(user)) {
 			user.popup(`Failed to join battle.`);
 			return false;
 		}
 		this.room.update();
 		return true;
 	}
+	/**
+	 * @param {User} user
+	 */
 	leaveGame(user) {
 		if (!user) return false; // ...
 		if (this.room.rated || this.room.tour) {
@@ -500,22 +562,29 @@ class Battle {
 		return true;
 	}
 
+	async listen() {
+		let next;
+		while ((next = await this.stream.read())) {
+			this.receive(next.split('\n'));
+		}
+	}
+
 	runGameQueue() {
 		if (!Dex.getFormat(this.format).useSGgame) return;
 		if (!this.gameQueue.length) return;
 		while (this.gameQueue.length) {
 			let lines = this.gameQueue.shift();
-			switch (lines[1]) {
+			switch (lines[0]) {
 			case 'caught':
-				lines[2] = lines[2].split('|');
-				let curTeam = Db.players.get(lines[2][0]);
-				let newSet = Users('sgserver').wildTeams[lines[2][0]];
+				lines[1] = lines[1].split('|');
+				let curTeam = Db.players.get(lines[1][0]);
+				let newSet = Users('sgserver').wildTeams[lines[1][0]];
 				newSet = Dex.fastUnpackTeam(newSet)[0];
-				newSet.pokeball = lines[2][1];
-				newSet.ot = toId(lines[2][0]);
+				newSet.pokeball = lines[1][1];
+				newSet.ot = toId(lines[1][0]);
 				if (curTeam.party.length < 6) {
 					curTeam.party.push(newSet);
-					Db.players.set(lines[2][0], curTeam);
+					Db.players.set(lines[1][0], curTeam);
 				} else {
 					let name = (newSet.name || newSet.species);
 					newSet = Dex.packTeam([newSet]);
@@ -527,10 +596,10 @@ class Battle {
 					}
 					this.room.update();
 				}
-				delete Users('sgserver').wildTeams[lines[2][0]];
+				delete Users('sgserver').wildTeams[lines[1][0]];
 				break;
 			case 'takeitem':
-				let raw = lines[2].split('|');
+				let raw = lines[1].split('|');
 				raw[0] = toId(raw[0]);
 				let player = Db.players.get(raw[0]);
 				let item = WL.getItem(raw[1]);
@@ -547,7 +616,7 @@ class Battle {
 				if (!raw[3] && Users(raw[0]).console.curPane === 'bag') Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
 				break;
 			case 'updateExp':
-				let data = lines[2].split(']');
+				let data = lines[1].split(']');
 				let userid = data.shift();
 				let user = Users(userid);
 				let gameObj = Db.players.get(userid);
@@ -602,7 +671,7 @@ class Battle {
 				}
 				break;
 			case 'updateHealth':
-				let d = lines[2].split(']');
+				let d = lines[1].split(']');
 				let uid = d.shift();
 				let playerObj = Db.players.get(uid);
 				for (let i = 0; i < d.length; i++) {
@@ -622,20 +691,10 @@ class Battle {
 		if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[(toId(this.room.p1.name) === 'sgserver' ? toId(this.room.p2.name) : toId(this.room.p1.name))];
 	}
 
-	receive(lines) {
-		Monitor.activeIp = this.activeIp;
-		switch (lines[1]) {
+	receive(/** @type {string[]} */ lines) {
+		switch (lines[0]) {
 		case 'update':
-			this.checkActive();
-			for (const line of lines.slice(2)) {
-				this.room.add(line);
-			}
-			this.room.update();
-			this.timer.nextRequest();
-			break;
-
-		case 'winupdate':
-			for (const line of lines.slice(3)) {
+			for (const line of lines.slice(1)) {
 				this.room.add(line);
 			}
 			if (Rooms.global.FvF && Rooms.global.FvF[toId(WL.getFaction(this.room.p1))]) {
@@ -645,51 +704,56 @@ class Battle {
 					WL.isFvFBattle(toId(this.room.p1), toId(this.room.p2), this.room.id, 'p-' + toId(lines[lines.length - 1].split('|')[2]));
 				}
 			}
-			this.started = true;
-			if (!this.ended) {
-				this.ended = true;
-				this.onEnd(lines[2]);
-				this.removeAllPlayers();
-			}
+			this.room.update();
+			if (!this.ended) this.timer.nextRequest();
 			this.checkActive();
 			break;
 
 		case 'sideupdate': {
-			let player = this[lines[2]];
-			if (player) {
-				player.sendRoom(lines[3]);
-				if (lines[3].startsWith(`|error|[Invalid choice] Can't do anything`)) {
-					// ... should not happen
-				} else if (lines[3].startsWith(`|error|[Invalid choice]`)) {
-					let request = this.requests[player.slot];
-					request[2] = false;
-					request[3] = '';
-				}
-			}
-			break;
-		}
-
-		case 'request': {
-			let player = this[lines[2]];
-
-			this.rqid++;
-			if (player) {
-				let request = JSON.parse(lines[3]);
+			let slot = /** @type {PlayerSlot} */ (lines[1]);
+			let player = this[slot];
+			if (lines[2].startsWith(`|error|[Invalid choice] Can't do anything`)) {
+				// ... should not happen
+			} else if (lines[2].startsWith(`|error|[Invalid choice]`)) {
+				let request = this.requests[slot];
+				request.isWait = false;
+				request.choice = '';
+			} else if (lines[2].startsWith(`|request|`)) {
+				this.rqid++;
+				let request = JSON.parse(lines[2].slice(9));
 				request.rqid = this.rqid;
 				const requestJSON = JSON.stringify(request);
-				this.requests[player.slot] = [this.rqid, requestJSON, request.wait ? 'cantUndo' : false, ''];
+				this.requests[slot] = {
+					rqid: this.rqid,
+					request: requestJSON,
+					isWait: request.wait ? 'cantUndo' : false,
+					choice: '',
+				};
 				this.requestCount++;
-				player.sendRoom(`|request|${requestJSON}`);
+				if (player) player.sendRoom(`|request|${requestJSON}`);
+				break;
 			}
+			if (player) player.sendRoom(lines[2]);
 			break;
 		}
 
-		case 'log':
-			this.logData = JSON.parse(lines[2]);
-			break;
-
-		case 'score':
-			this.score = [parseInt(lines[2]), parseInt(lines[3])];
+		case 'end':
+			this.logData = JSON.parse(lines[1]);
+			this.score = this.logData.score;
+			this.inputLog = this.logData.inputLog;
+			this.started = true;
+			if (!this.ended) {
+				this.ended = true;
+				this.onEnd(this.logData.winner);
+				this.removeAllPlayers();
+				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+					let notCom = toId(this.room.p1.name);
+					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
+					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
+				}
+			}
+			this.checkActive();
 			break;
 
 		case 'caught':
@@ -702,38 +766,39 @@ class Battle {
 			this.runGameQueue();
 			break;
 		}
-		Monitor.activeIp = null;
 	}
+	/**
+	 * @param {any} winner
+	 */
 	async onEnd(winner) {
 		// Declare variables here in case we need them for non-rated battles logging.
 		let p1score = 0.5;
 		const winnerid = toId(winner);
 
 		// Check if the battle was rated to update the ladder, return its response, and log the battle.
+		let p1name = this.playerNames[0];
+		let p2name = this.playerNames[1];
+		let p1id = toId(p1name);
+		let p2id = toId(p2name);
 		if (this.room.rated) {
-			this.room.rated = false;
-			let p1 = this.p1;
-			let p2 = this.p2;
+			this.room.rated = 0;
 
-			if (winnerid === p1.userid) {
+			if (winnerid === p1id) {
 				p1score = 1;
-			} else if (winnerid === p2.userid) {
+			} else if (winnerid === p2id) {
 				p1score = 0;
 			}
-
-			let p1name = p1.name;
-			let p2name = p2.name;
 
 			winner = Users.get(winnerid);
 			if (winner && !winner.registered) {
 				this.room.sendUser(winner, '|askreg|' + winner.userid);
 			}
-			const result = await Ladders(this.format).updateRating(p1name, p2name, p1score, this.room);
-			this.logBattle(...result);
+			const [score, p1rating, p2rating] = await Ladders(this.format).updateRating(p1name, p2name, p1score, this.room);
+			this.logBattle(score, p1rating, p2rating);
 		} else if (Config.logchallenges) {
-			if (winnerid === this.room.p1.userid) {
+			if (winnerid === p1id) {
 				p1score = 1;
-			} else if (winnerid === this.room.p2.userid) {
+			} else if (winnerid === p2id) {
 				p1score = 0;
 			}
 			this.logBattle(p1score);
@@ -741,7 +806,7 @@ class Battle {
 			this.logData = null;
 		}
 		if (Config.autosavereplays) {
-			let uploader = Users.get(winnerid);
+			let uploader = Users.get(winnerid || p1id);
 			if (uploader && uploader.connections[0]) {
 				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
 			}
@@ -756,7 +821,12 @@ class Battle {
 		}
 		this.room.update();
 	}
-	async logBattle(p1score, p1rating, p2rating) {
+	/**
+	 * @param {number} p1score
+	 * @param {AnyObject?} p1rating
+	 * @param {AnyObject?} p2rating
+	 */
+	async logBattle(p1score, p1rating = null, p2rating = null) {
 		if (Dex.getFormat(this.format, true).noLog) return;
 		let logData = this.logData;
 		if (!logData) return;
@@ -794,24 +864,38 @@ class Battle {
 		await FS(logpath + this.room.id + '.log.json').write(JSON.stringify(logData));
 		//console.log(JSON.stringify(logData));
 	}
-	onConnect(user, connection) {
+	/**
+	 * @param {User} user
+	 * @param {Connection?} connection
+	 */
+	onConnect(user, connection = null) {
 		// this handles joining a battle in which a user is a participant,
 		// where the user has already identified before attempting to join
 		// the battle
-		const player = this.players[user];
+		const player = this.players[user.userid];
 		if (!player) return;
 		player.updateSubchannel(connection || user);
 		const request = this.requests[player.slot];
 		if (request) {
-			let data = `|request|${request[1]}`;
-			if (request[3]) data += `\n|sentchoice|${request[3]}`;
+			let data = `|request|${request.request}`;
+			if (request.choice) data += `\n|sentchoice|${request.choice}`;
 			(connection || user).sendTo(this.id, data);
 		}
 		if (!player.active) this.onJoin(user);
 	}
-	onUpdateConnection(user, connection) {
+	/**
+	 * @param {User} user
+	 * @param {Connection?} connection
+	 */
+	onUpdateConnection(user, connection = null) {
 		this.onConnect(user, connection);
 	}
+	/**
+	 * @param {User} user
+	 * @param {string} oldUserid
+	 * @param {boolean} isJoining
+	 * @param {boolean} isForceRenamed
+	 */
 	onRename(user, oldUserid, isJoining, isForceRenamed) {
 		if (user.userid === oldUserid) return;
 		if (!this.players) {
@@ -831,7 +915,7 @@ class Battle {
 			let player = this.players[oldUserid];
 			if (player) {
 				const message = isForceRenamed ? " lost by having an inappropriate name." : " forfeited by changing their name.";
-				this.forfeit(null, message, player.slotNum);
+				this.forfeitSlot(player.slotNum, message);
 			}
 			if (!(user.userid in this.players)) {
 				user.games.delete(this.id);
@@ -844,18 +928,28 @@ class Battle {
 		player.userid = user.userid;
 		player.name = user.name;
 		delete this.players[oldUserid];
-		player.simSend('join', user.name, user.avatar);
+		const options = {
+			name: user.name,
+			avatar: user.avatar,
+		};
+		this.stream.write(`>player ${player.slot} ` + JSON.stringify(options));
 	}
+	/**
+	 * @param {User} user
+	 */
 	onJoin(user) {
-		let player = this.players[user];
+		let player = this.players[user.userid];
 		if (player && !player.active) {
 			player.active = true;
 			this.timer.checkActivity();
 			this.room.add(`|player|${player.slot}|${user.name}|${user.avatar}`);
 		}
 	}
+	/**
+	 * @param {User} user
+	 */
 	onLeave(user) {
-		let player = this.players[user];
+		let player = this.players[user.userid];
 		if (player && player.active) {
 			player.sendRoom(`|request|null`);
 			player.active = false;
@@ -864,82 +958,119 @@ class Battle {
 		}
 	}
 
+	/**
+	 * @param {User} user
+	 */
 	win(user) {
 		if (!user) {
 			this.tie();
 			return true;
 		}
-		let player = this.players[user];
+		let player = this.players[user.userid];
 		if (!player) return false;
-		player.simSend('win');
+		this.stream.write(`>forcewin ${player.slot}`);
 	}
 	tie() {
-		this.send('tie');
+		this.stream.write(`>forcetie`);
 	}
 	tiebreak() {
-		this.send('tiebreak');
+		this.stream.write(`>tiebreak`);
 	}
-	forfeit(user, message, side) {
+	/**
+	 * @param {User} user
+	 * @param {string} message
+	 */
+	forfeit(user, message = '') {
+		if (!this.players) {
+			// should never happen
+			console.log("user is: " + user.name);
+			console.log("  alts: " + Object.keys(user.prevNames));
+			console.log("  battle: " + this.id);
+			return false;
+		}
+		let slotNum = -1;
+		if (user.userid in this.players) slotNum = this.players[user.userid].slotNum;
+		if (slotNum === -1) return false;
+		return this.forfeitSlot(slotNum, message);
+	}
+
+	/**
+	 * @param {number} slotNum
+	 * @param {string} message
+	 */
+	forfeitSlot(slotNum, message = '') {
 		if (this.ended || !this.started) return false;
 
+		let name = this.playerNames[slotNum];
+
 		if (!message) message = ' forfeited.';
-
-		if (side === undefined) {
-			if (!this.players) {
-				// should never happen
-				console.log("user is: " + user.name);
-				console.log("  alts: " + Object.keys(user.prevNames));
-				console.log("  battle: " + this.id);
-				return false;
-			}
-			if (user in this.players) side = this.players[user].slotNum;
-		}
-		if (side === undefined) return false;
-
-		let name = this.playerNames[side];
-
 		this.room.add(`|-message|${name}${message}`);
 		this.endType = 'forfeit';
 		const otherids = ['p2', 'p1'];
-		this.send('win', otherids[side]);
+		this.stream.write(`>forcewin ${otherids[slotNum]}`);
 		return true;
 	}
 
-	addPlayer(user, team) {
+	/**
+	 * @param {User} user
+	 * @param {PlayerSlot?} slot
+	 * @param {string} team
+	 */
+	addPlayer(user, slot = null, team = '', initializing = false) {
 		if (user.userid in this.players) return false;
 		if (this.playerCount >= this.playerCap) return false;
-		let player = this.makePlayer(user, team);
+		let player = this.makePlayer(user, slot, team);
 		if (!player) return false;
 		this.players[user.userid] = player;
 		this.playerCount++;
 		this.room.auth[user.userid] = Users.PLAYER_SYMBOL;
+		if (user.inRooms.has(this.id)) this.onConnect(user);
 		if (this.playerCount >= 2) {
+			// @ts-ignore
 			this.room.title = `${this.p1.name} vs. ${this.p2.name}`;
 			this.room.send(`|title|${this.room.title}`);
+		}
+		if (!initializing) {
+			this.room.add(`|player|${player.slot}|${user.name}|${user.avatar}`);
 		}
 		return true;
 	}
 
-	makePlayer(user, team) {
-		let slotNum = 0;
-		while (this['p' + (slotNum + 1)]) slotNum++;
-		let slot = 'p' + (slotNum + 1);
+	/**
+	 * @param {User} user
+	 * @param {PlayerSlot?} slot
+	 * @param {string} team
+	 */
+	makePlayer(user, slot = null, team = '') {
+		if (!slot) {
+			let slotNum = 0;
+			while (this[/** @type {PlayerSlot} */ ('p' + (slotNum + 1))]) slotNum++;
+			slot = /** @type {PlayerSlot} */ ('p' + (slotNum + 1));
+		}
 		// console.log('joining: ' + user.name + ' ' + slot);
 
+		if (this[slot]) throw new Error(`Player already exists in ${slot} in ${this.id}`);
+		let slotNum = parseInt(slot.charAt(1)) - 1;
 		let player = new BattlePlayer(user, this, slot);
 		this[slot] = player;
 		this.playerNames[slotNum] = player.name;
 
-		let message = '' + user.avatar;
+		let options = {
+			name: player.name,
+			avatar: '' + user.avatar,
+		};
 		if (!this.started) {
-			message += "\n" + team;
+			options.team = team;
 		}
-		player.simSend('join', user.name, message);
+		this.stream.write(`>player ${slot} ` + JSON.stringify(options));
 		if (this.started) this.onUpdateConnection(user);
 		if (this.p1 && this.p2) this.started = true;
 		return player;
 	}
 
+	/**
+	 * @param {User} user
+	 */
 	removePlayer(user) {
 		if (!this.allowRenames) return false;
 		let player = this.players[user.userid];
@@ -962,7 +1093,7 @@ class Battle {
 	}
 
 	destroy() {
-		this.send('dealloc');
+		this.stream.destroy();
 		if (this.active) {
 			Rooms.global.battleCount += -1;
 			this.active = false;
@@ -971,131 +1102,51 @@ class Battle {
 		for (let i in this.players) {
 			this.players[i].destroy();
 		}
+		// @ts-ignore
 		this.players = null;
+		// @ts-ignore
 		this.room = null;
-		this.process.pendingTasks.delete(this.id);
-		this.process.release();
-		this.process = null;
 	}
 }
 
 exports.RoomBattlePlayer = BattlePlayer;
 exports.RoomBattleTimer = BattleTimer;
 exports.RoomBattle = Battle;
-exports.SimulatorManager = SimulatorManager;
-exports.SimulatorProcess = SimulatorProcess;
 
-if (process.send && module === process.mainModule) {
+/*********************************************************
+ * Process manager
+ *********************************************************/
+
+const StreamProcessManager = require('./lib/process-manager').StreamProcessManager;
+
+const PM = new StreamProcessManager(module, () => {
+	const BattleStream = require('./sim/battle-stream').BattleStream;
+	return new BattleStream();
+});
+
+if (!PM.isParentProcess) {
 	// This is a child process!
-
+	// @ts-ignore
+	global.Config = require('./config/config');
 	global.Chat = require('./chat');
-	const Sim = require('./sim');
-	global.Dex = require('./sim/dex');
-	global.toId = Dex.getId;
+	global.__version = require('child_process')
+		.execSync('git merge-base master HEAD')
+		.toString()
+		.trim();
 
 	if (Config.crashguard) {
 		// graceful crash - allow current battles to finish before restarting
 		process.on('uncaughtException', err => {
 			require('./lib/crashlogger')(err, 'A simulator process');
 		});
+		process.on('unhandledRejection', err => {
+			require('./lib/crashlogger')(err, 'A simulator process Promise');
+		});
 	}
 
 	require('./lib/repl').start(`sim-${process.pid}`, cmd => eval(cmd));
-
-	let Battles = new Map();
-
-	// Receive and process a message sent using Simulator.prototype.send in
-	// another process.
-	process.on('message', message => {
-		//console.log('CHILD MESSAGE RECV: "' + message + '"');
-		let startTime = Date.now();
-		let nlIndex = message.indexOf("\n");
-		let more = '';
-		if (nlIndex > 0) {
-			more = message.substr(nlIndex + 1);
-			message = message.substr(0, nlIndex);
-		}
-		let data = message.split('|');
-		if (data[1] === 'init') {
-			const id = data[0];
-			if (!Battles.has(id)) {
-				try {
-					const battle = Sim.construct(data[2], data[3], sendBattleMessage);
-					battle.id = id;
-					Battles.set(id, battle);
-				} catch (err) {
-					if (require('./lib/crashlogger')(err, 'A battle', {
-						message: message,
-					}) === 'lockdown') {
-						let ministack = Chat.escapeHTML(err.stack).split("\n").slice(0, 2).join("<br />");
-						process.send(id + '\nupdate\n|html|<div class="broadcast-red"><b>A BATTLE PROCESS HAS CRASHED:</b> ' + ministack + '</div>');
-					} else {
-						process.send(id + '\nupdate\n|html|<div class="broadcast-red"><b>The battle crashed!</b><br />Don\'t worry, we\'re working on fixing it.</div>');
-					}
-				}
-			}
-		} else if (data[1] === 'dealloc') {
-			const id = data[0];
-			if (Battles.has(id)) {
-				Battles.get(id).destroy();
-
-				// remove from battle list
-				Battles.delete(id);
-			} else {
-				require('./lib/crashlogger')(new Error("Invalid dealloc"), 'A battle', {
-					message: message,
-				});
-			}
-		} else {
-			let battle = Battles.get(data[0]);
-			if (battle) {
-				let prevRequest = battle.currentRequest;
-				let prevRequestDetails = battle.currentRequestDetails || '';
-				try {
-					battle.receive(data, more);
-				} catch (err) {
-					require('./lib/crashlogger')(err, 'A battle', {
-						message: message,
-						currentRequest: prevRequest,
-						log: '\n' + battle.log.join('\n').replace(/\n\|split\n[^\n]*\n[^\n]*\n[^\n]*\n/g, '\n'),
-					});
-
-					let logPos = battle.log.length;
-					battle.add('html', '<div class="broadcast-red"><b>The battle crashed</b><br />You can keep playing but it might crash again.</div>');
-					let nestedError;
-					try {
-						battle.makeRequest(prevRequest, prevRequestDetails);
-					} catch (e) {
-						nestedError = e;
-					}
-					battle.sendUpdates(logPos);
-					if (nestedError) {
-						throw nestedError;
-					}
-				}
-			} else if (data[1] === 'eval') {
-				try {
-					eval(data[2]);
-				} catch (e) {}
-			}
-		}
-		let deltaTime = Date.now() - startTime;
-		if (deltaTime > 1000) {
-			console.log(`[slow battle] ${deltaTime}ms - ${message}\\\\${more}`);
-		}
-	});
-
-	process.on('disconnect', () => {
-		process.exit();
-	});
 } else {
-	// Create the initial set of simulator processes.
-	SimulatorProcess.spawn();
+	PM.spawn(global.Config ? Config.simulatorprocesses : 1);
 }
 
-// Messages sent by this function are received and handled in
-// Battle.prototype.receive in simulator.js (in another process).
-function sendBattleMessage(type, data) {
-	if (Array.isArray(data)) data = data.join("\n");
-	process.send(this.id + "\n" + type + "\n" + data);
-}
+exports.PM = PM;

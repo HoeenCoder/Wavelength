@@ -30,7 +30,25 @@ exports.BattleMovedex = {
 				return false;
 			}
 			this.directDamage(target.maxhp / 2);
-			this.boost({atk: 12});
+			let originalStage = target.boosts.atk;
+			let currentStage = originalStage;
+			let boosts = 0;
+			let loopStage = 0;
+			while (currentStage < 6) {
+				loopStage = currentStage;
+				currentStage++;
+				if (currentStage < 6) currentStage++;
+				target.boosts.atk = loopStage;
+				if (target.getStat('atk', false, true) < 999) {
+					target.boosts.atk = currentStage;
+					continue;
+				}
+				target.boosts.atk = currentStage - 1;
+				break;
+			}
+			boosts = target.boosts.atk - originalStage;
+			target.boosts.atk = originalStage;
+			this.boost({atk: boosts});
 		},
 	},
 	bide: {
@@ -660,6 +678,16 @@ exports.BattleMovedex = {
 			onEnd: function (target) {
 				this.add('-end', target, 'Substitute');
 			},
+		},
+	},
+	swagger: {
+		inherit: true,
+		desc: "Raises the target's Attack by 2 stages and confuses it. This move will miss if the target's Attack cannot be raised.",
+		onTryHit: function (target, pokemon) {
+			if (target.boosts.atk >= 6 || target.getStat('atk', false, true) === 999) {
+				this.add('-miss', pokemon);
+				return null;
+			}
 		},
 	},
 	synthesis: {

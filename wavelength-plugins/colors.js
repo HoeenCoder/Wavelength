@@ -8,7 +8,7 @@
 'use strict';
 
 const FS = require('../lib/fs.js');
-let customColors = FS('config/customcolors.json').readTextIfExistsSync();
+let customColors = FS('config/customcolors.json').readIfExistsSync();
 if (customColors !== '') {
 	customColors = JSON.parse(customColors);
 } else {
@@ -27,7 +27,7 @@ function updateColor() {
 	}
 	newCss += '/* COLORS END */\n';
 
-	let file = FS('config/custom.css').readTextIfExistsSync().split('\n');
+	let file = FS('config/custom.css').readIfExistsSync().split('\n');
 	if (~file.indexOf('/* COLORS START */')) file.splice(file.indexOf('/* COLORS START */'), (file.indexOf('/* COLORS END */') - file.indexOf('/* COLORS START */')) + 1);
 	FS('config/custom.css').writeUpdate(() => (
 		file.join('\n') + newCss
@@ -46,7 +46,7 @@ exports.commands = {
 	customcolour: 'customcolor',
 	customcolor: {
 		set: function (target, room, user) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('customcolor')) return false;
 			target = target.split(',');
 			for (let u = 0; u < target.length; u++) target[u] = target[u].trim();
 			if (!target[1]) return this.parse('/help customcolor');
@@ -59,7 +59,7 @@ exports.commands = {
 			updateColor();
 		},
 		delete: function (target, room, user) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('customcolor')) return false;
 			if (!target) return this.parse('/help customcolor');
 			if (!customColors[toId(target)]) return this.errorReply('/customcolor - ' + target + ' does not have a custom color.');
 			delete customColors[toId(target)];

@@ -183,6 +183,10 @@ class LoginServerInstance {
 			this.requestEnd(error);
 		});
 
+		req.on('error', (/** @type {Error} */ error) => {
+			// ignore; will be handled by the 'close' handler
+		});
+
 		req.setTimeout(LOGIN_SERVER_TIMEOUT, () => {
 			req.abort();
 		});
@@ -220,6 +224,8 @@ let LoginServer = Object.assign(new LoginServerInstance(), {
 FS('./config/custom.css').onModify(() => {
 	LoginServer.request('invalidatecss');
 });
-LoginServer.request('invalidatecss');
+if (!Config.nofswriting) {
+	LoginServer.request('invalidatecss');
+}
 
 module.exports = LoginServer;

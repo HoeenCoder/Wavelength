@@ -222,6 +222,7 @@ exports.commands = {
 		new: function (target, room, user, connection, cmd, message) {
 			if (!target) return this.parse('/help poll new');
 			if (target.length > 1024) return this.errorReply("Poll too long.");
+			if (room.battle) return this.errorReply("Battles do not support polls.");
 
 			const supportHTML = cmd === 'htmlcreate';
 			if (room.poll && room.poll.pollArray.length >= 5) return this.errorReply('There can only be up to 5 polls at a time.');
@@ -323,7 +324,7 @@ exports.commands = {
 				room.poll.pollArray[num].timeoutMins = timeout;
 				room.poll.pollArray[num].timeout = setTimeout(() => {
 					room.poll.end(num);
-					delete room.poll.pollArray[num];
+					room.poll.pollArray.splice(num, 1);
 				}, (timeout * 60000));
 				room.add("The poll timer was turned on: the poll " + room.poll.pollArray[num].pollNum + " will end in " + timeout + " minute(s).");
 				this.modlog('POLL TIMER', null, `#${room.poll.pollArray[num].pollNum} ${timeout} minutes`);
@@ -361,7 +362,7 @@ exports.commands = {
 
 			if (room.poll.pollArray[num].pollNum === parseInt(target) && room.poll.pollArray[num].timeout) clearTimeout(room.poll.pollArray[num].timeout);
 			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.end(num);
-			if (room.poll.pollArray[num].pollNum === parseInt(target)) delete room.poll.pollArray[num];
+			if (room.poll.pollArray[num].pollNum === parseInt(target)) room.poll.pollArray.splice(num, 1);
 
 			this.modlog('POLL END');
 			return this.privateModAction("(A poll was ended by " + user.name + ".)");

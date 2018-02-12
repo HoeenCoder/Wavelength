@@ -296,7 +296,7 @@ exports.commands = {
 		*/
 
 		give: function (target, room, user) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('psgo')) return false;
 			if (!target) return this.parse(`/help psgo give`);
 			let targets = target.split(`,`).map(x => {
 				return x.trim();
@@ -316,7 +316,7 @@ exports.commands = {
 		confirmtakeall: 'take',
 		takeall: 'take',
 		take: function (target, room, user, connection, cmd) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('psgo')) return false;
 			if (!target) return this.parse(`/help psgo take`);
 			let targets = target.split(`,`);
 			for (let u in targets) targets[u] = targets[u].trim();
@@ -376,7 +376,7 @@ exports.commands = {
 		pack: 'packs',
 		packs: {
 			give: function (target, room, user) {
-				if (!this.can('roomowner')) return false;
+				if (!this.can('psgo')) return false;
 				if (!target) return this.parse(`/help psgo packs give`);
 				let targets = target.split(',').map(x => {
 					return x.trim();
@@ -395,7 +395,7 @@ exports.commands = {
 			confirmtakeall: 'take',
 			takeall: 'take',
 			take: function (target, room, user, connection, cmd) {
-				if (!this.can('roomowner')) return false;
+				if (!this.can('psgo')) return false;
 				if (!target) return this.parse(`/help psgo packs take`);
 				let targets = target.split(',').map(x => {
 					return x.trim();

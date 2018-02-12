@@ -237,7 +237,11 @@ exports.commands = {
 		}
 		if (!user.can('makeroom')) {
 			if (currentGroup !== ' ' && !user.can('room' + (Config.groups[currentGroup] ? Config.groups[currentGroup].id : 'voice'), null, room)) {
-				if (user.userid !== room.founder) return this.errorReply(`/${cmd} - Access denied for promoting/demoting from ${(Config.groups[currentGroup] ? Config.groups[currentGroup].name : "an undefined group")}.`);
+				if (user.userid !== room.founder) {
+					return this.errorReply(`/${cmd} - Access denied for promoting/demoting from ${(Config.groups[currentGroup] ? Config.groups[currentGroup].name : "an undefined group")}.`);
+				} else if (user.userid === userid) {
+					return this.errorReply(`/${cmd} - You cant demote yourself from room founder!`);
+				}
 			}
 			if (nextGroup !== ' ' && !user.can('room' + Config.groups[nextGroup].id, null, room)) {
 				return this.errorReply(`/${cmd} - Access denied for promoting/demoting to ${Config.groups[nextGroup].name}.`);
@@ -302,6 +306,7 @@ exports.commands = {
 		if (!target) return this.parse('/help declare');
 		if (!this.can('declare', null, room)) return false;
 		if (!this.canTalk()) return;
+		if (target.length > 2000) return this.errorReply("Declares should not exceed 2000 characters.");
 
 		let color = 'blue';
 		switch (cmd) {
@@ -312,8 +317,9 @@ exports.commands = {
 			color = 'green';
 			break;
 		}
-		this.add('|raw|<div class="broadcast-' + color + '"><b>' + Chat.escapeHTML(target) + '</b></div>');
-		this.logModCommand(user.name + " declared " + target);
+		this.add(`|notify|${room.title} announcement!|${target}`);
+		this.add(`|raw|<div class="broadcast-${color}"><b>${Chat.escapeHTML(target)}</b></div>`);
+		this.modlog('DECLARE', null, target);
 	},
 	declarehelp: ["/declare [message] - Anonymously announces a message. Requires: # * & ~"],
 
@@ -335,8 +341,9 @@ exports.commands = {
 			color = 'green';
 			break;
 		}
-		this.add('|raw|<div class="broadcast-' + color + '">' + target + '</div>');
-		this.logModCommand(user.name + " declared " + target);
+		this.add(`|notify|${room.title} announcement!|${Chat.stripHTML(target)}`);
+		this.add(`|raw|<div class="broadcast-${color}">${target}</div>`);
+		this.modlog(`HTMLDECLARE`, null, target);
 	},
 	htmldeclarehelp: ["/htmldeclare [message] - Anonymously announces a message using safe HTML. Requires: ~"],
 
@@ -363,9 +370,12 @@ exports.commands = {
 			break;
 		}
 		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+			if (id !== 'global') curRoom.addRaw(`<div class="broadcast-${color}">${target}</div>`).update();
 		});
-		this.logModCommand(user.name + " globally declared " + target);
+		Users.users.forEach(u => {
+			if (u.connected) u.send(`|pm|~|${u.group}${u.name}|/raw <div class="broadcast-${color}">${target}</div>`);
+		});
+		this.modlog(`GLOBALDECLARE`, null, target);
 	},
 	globaldeclarehelp: ["/globaldeclare [message] - Anonymously announces a message to every room on the server. Requires: ~"],
 
@@ -382,17 +392,19 @@ exports.commands = {
 
 		let color = 'blue';
 		switch (cmd) {
-		case 'reddeclare':
+		case 'redchatdeclare':
+		case 'redcdeclare':
 			color = 'red';
 			break;
-		case 'greendeclare':
+		case 'greenchatdeclare':
+		case 'greencdeclare':
 			color = 'green';
 			break;
 		}
 		Rooms.rooms.forEach((curRoom, id) => {
-			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw('<div class="broadcast-' + color + '">' + target + '</div>').update();
+			if (id !== 'global' && curRoom.type !== 'battle') curRoom.addRaw(`<div class="broadcast-${color}">${target}</div>`).update();
 		});
-		this.logModCommand(user.name + " globally declared (chat level) " + target);
+		this.modlog(`CHATDECLARE`, null, target);
 	},
 	chatdeclarehelp: ["/cdeclare [message] - Anonymously announces a message to all chatrooms on the server. Requires: ~"],
 

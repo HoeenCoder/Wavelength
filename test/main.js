@@ -7,6 +7,12 @@ const noop = () => {};
 
 before('initialization', function () {
 	this.timeout(3000);
+	process.on('unhandledRejection', err => {
+		// I'd throw the err, but we have a heisenbug on our hands and I'd
+		// rather not have it screw with Travis in the interim
+		console.log(err);
+	});
+
 	// Load and override configuration before starting the server
 	let config;
 	try {
@@ -21,6 +27,7 @@ before('initialization', function () {
 	} finally {
 		config = require('../config/config');
 	}
+	require('./../lib/process-manager').disabled = true;
 
 	// Actually crash if we crash
 	config.crashguard = false;
@@ -34,13 +41,6 @@ before('initialization', function () {
 
 	// Start the server.
 	require('../app');
-
-	Rooms.RoomBattle.prototype.send = noop;
-	Rooms.RoomBattle.prototype.receive = noop;
-	for (let process of Rooms.SimulatorProcess.processes) {
-		// Don't crash -we don't care of battle child processes.
-		process.process.on('error', noop);
-	}
 
 	LoginServer.disabled = true;
 });

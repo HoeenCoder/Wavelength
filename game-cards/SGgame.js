@@ -1306,6 +1306,9 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queue.length || user.console.queueAction) return;
 			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
+			for (let key of user.inRooms) {
+				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
+			}
 			// TODO more battle types than wild pokemon
 			if (!WL.locationData[user.console.location].zones[user.console.zone].wild) {
 				user.console.queue.unshift(`text|There are no wild pokemon here!`);

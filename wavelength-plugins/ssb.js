@@ -912,12 +912,12 @@ exports.commands = {
 			return user.sendTo(room, '|uhtmlchange|ssb' + user.userid + '|' + customMenu());
 		},
 		log: function (target, room, user, connection, cmd, message) {
-			if (!target) target = (user.can('roomowner') ? 'view, all' : 'view, ' + user.userid);
+			if (!target) target = (user.can('ssb') ? 'view, all' : 'view, ' + user.userid);
 			target = target.split(',');
 			switch (target[0]) {
 			case 'view':
-				if (!target[1]) target[1] = (user.can('roomowner') ? 'all' : user.userid);
-				if (toId(target[1]) !== user.userid && !user.can('roomowner')) return this.errorReply('You can only view your own SSBFFA purchases.');
+				if (!target[1]) target[1] = (user.can('ssb') ? 'all' : user.userid);
+				if (toId(target[1]) !== user.userid && !user.can('ssb')) return this.errorReply('You can only view your own SSBFFA purchases.');
 				let output = '<div style="max-height: 300px; overflow: scroll; width: 100%"><table><tr><th style="border: 1px solid black">Name</th><th style="border: 1px solid black">Item</th><th style="border: 1px solid black">Status</th>';
 				if (toId(target[1]) === 'all') {
 					output += '<th style="border: 1px solid black">Options</th><tr/>';
@@ -930,7 +930,7 @@ exports.commands = {
 				} else {
 					target[1] = toId(target[1]);
 					if (!WL.ssb[target[1]]) return this.errorReply(target[1] + ' does not have a SSBFFA pokemon yet.');
-					if (user.can('roomowner')) {
+					if (user.can('ssb')) {
 						output += '<th style="border: 1px solid black">Options</th><tr/>';
 						for (let j in WL.ssb[target[1]].bought) {
 							let buttons = '<button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', complete">Mark as Complete</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', pending">Mark as Pending</button><button class="button" name="send" value="/ssb log mark, ' + WL.ssb[target[1]].userid + ', ' + j + ', remove"><span style="color:red">Remove this purchase</span</button>';
@@ -946,7 +946,7 @@ exports.commands = {
 				return this.sendReplyBox(output);
 				//break;
 			case 'mark':
-				if (!user.can('roomowner')) return this.errorReply('/sbb mark - Access Denied.');
+				if (!user.can('ssb')) return this.errorReply('/sbb mark - Access Denied.');
 				if (!target[3]) return this.parse('/help ssb log');
 				target[1] = toId(target[1]);
 				target[2] = target[2].trim();
@@ -988,7 +988,7 @@ exports.commands = {
 		forceupdate: 'validate',
 		validateall: 'validate',
 		validate: function (target, room, user, connection, cmd, message) {
-			if (!this.can('roomowner')) return;
+			if (!this.can('ssb')) return;
 			if (!target && toId(cmd) !== 'validateall') return this.parse('/help ssb validate');
 			let targetUser = WL.ssb[toId(target)];
 			if (!targetUser && toId(cmd) !== 'validateall') return this.errorReply(target + ' does not have a SSBFFA pokemon yet.');
@@ -1005,53 +1005,62 @@ exports.commands = {
 		},
 		validatehelp: ['/ssb validate [user] - Validate a users SSBFFA pokemon and if anything invalid is found, set it to its default value. Requires: &, ~'],
 
+		setcustommove: "setcmove",
+		givemove: "setcmove",
+		setmove: "setcmove",
 		setcmove: function (target, room, user, connection, message) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('ssb')) return false;
 			if (!target) return this.parse('/help ssb setcmove');
 			let targets = target.split(',');
 			let userid = toId(targets[0]);
 			if (!userid) return this.parse('/help ssb setcmove');
 			let customMove = toId(targets[1]);
 			if (!customMove) return this.errorReply('Must include a move!');
-			if (!Dex.mod('cssb').getMove(customMove).exists) return this.errorReply("Move doesn't exist in the ssbffa mod!");
+			if (!Dex.mod("cssb").getMove(customMove).exists) return this.errorReply("Move doesn't exist in the ssbffa mod!");
 			if (!WL.ssb[userid].bought.cMove) return this.errorReply('They have not bought a custom move!');
 			WL.ssb[userid].selfCustomMove = customMove;
 			writeSSB();
-			return this.sendReply('Move set for ' + userid + '!');
+			return this.sendReply(`Move set for ${userid}!`);
 		},
-		setcmovehelp: ['/ssb setcmove targetUser, move'],
+		setcmovehelp: [`/ssb setcmove [user], [move]`],
 
+		setcustomability: "setcability",
+		giveability: "setcability",
+		setability: "setcability",
 		setcability: function (target, room, user, connection, message) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('ssb')) return false;
 			if (!target) return this.parse('/help ssb setcability');
 			let targets = target.split(',');
 			let userid = toId(targets[0]);
 			if (!userid) return this.errorReply('/help ssb setcability');
 			let customAbility = toId(targets[1]);
-			if (!customAbility) return this.errorReply('/ssb giveability target, ability');
-			if (!Dex.mod('cssb').getAbility(customAbility).exists) return this.errorReply("Ability doesn't exist in the ssbffa mod!");
+			if (!customAbility) return this.errorReply('/ssb giveability [target], [ability]');
+			if (!Dex.mod("cssb").getAbility(customAbility).exists) return this.errorReply("Ability doesn't exist in the ssbffa mod!");
 			if (!WL.ssb[userid].bought.cAbility) return this.errorReply('They have not bought a custom ability!');
 			WL.ssb[userid].cAbility = customAbility;
 			writeSSB();
-			return this.sendReply('Ability set for ' + userid + '!');
+			return this.sendReply(`Ability set for ${userid}!`);
 		},
-		setcabilityhelp: ['/ssb setcmove targetUser, ability'],
+		setcabilityhelp: [`/ssb setcmove [user], [ability]`],
 
+		setcustomitem: "setcitem",
+		giveitem: "setcitem",
+		setitem: "setcitem",
 		setcitem: function (target, room, user, connection, cmd, message) {
-			if (!this.can('roomowner')) return false;
+			if (!this.can('ssb')) return false;
 			if (!target) return this.parse('/help ssb setcitem');
 			let targets = target.split(',');
 			let userid = toId(targets[0]);
 			if (!userid) return this.errorReply('/help ssb givecitem');
 			let item = toId(targets[1]);
 			if (!item) return this.errorReply('Must include an item');
-			if (!Dex.mod('cssb').getItem(item).exists) return this.errorReply("Item doesn't exist in the ssbffa mod!");
+			if (!Dex.mod("cssb").getItem(item).exists) return this.errorReply("Item doesn't exist in the ssbffa mod!");
 			if (!WL.ssb[userid].bought.cItem) return this.errorReply('They have not bought a custom item!');
 			WL.ssb[userid].cItem = item;
 			writeSSB();
-			return this.sendReply('Item set for ' + userid + '!');
+			return this.sendReply(`Item set for ${userid}!`);
 		},
-		setcitemhelp: ['/ssb setcitem targetUser, item'],
+		setcitemhelp: [`/ssb setcitem [user], [item]`],
 
 		'': function (target, room, user, connection, cmd, message) {
 			return this.parse('/help ssb');
