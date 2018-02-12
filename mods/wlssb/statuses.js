@@ -228,7 +228,7 @@ exports.BattleStatuses = {
 				this.add('c|☆' + pokemon.side.name + '|' + msg);
 			} else if (heckle === 10) {
 				let Jackpot = this.random(99998) + 2;
-				this.add("raw|<div class=\"broadcast-blue\"><b>Hey " + pokemon.side.name + "! You just won " + Jackpot + " " + global.currencyPlural + "!<br />Please forfeit this game in order to claim your prize.</b></div>");
+				this.add("raw|<div class=\"broadcast-blue\"><b>Hey " + pokemon.side.name + "! You just won " + Jackpot + " Stardust!<br />Please forfeit this game in order to claim your prize.</b></div>");
 			}
 		},
 	},
