@@ -256,13 +256,13 @@ exports.BattleStatuses = {
 	volco: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
+			this.add('c', '&Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
+			this.add('c', '&Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@Volco', 'Okay then. BACK TO CODING!');
+			this.add('c', '&Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
 	mosmero: {
