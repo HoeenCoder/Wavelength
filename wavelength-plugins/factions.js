@@ -122,18 +122,22 @@ function isFvFBattle(p1, p2, id, status, types, score) {
 						prize2 = prize1;
 						prize1 = 1 * room.fvf.size;
 					}
-					room.add('|raw|' +
-						'<div class="infobox">Congratulations ' + Chat.escapeHTML(winner) + '. You have won the Faction vs Faction!</div>'
-					);
-					room.update();
+					Db.factionbank.set(room.fvf.factions[0].id, Db.factionbank.get(room.fvf.factions[0].id, 0) + prize1);
+					Db.factionbank.set(room.fvf.factions[1].id, Db.factionbank.get(room.fvf.factions[1].id, 0) + prize2);
 					for (let u in room.fvf.factions[0].players) {
+						if (room.fvf.factions[0].name === winner) Db.factionCoins.set(room.fvf.factions[0].players[u], Db.factionCoins.get(room.fvf.factions[0].players[u], 0) + (prize1 / 3));
 						WL.ExpControl.addExp(room.fvf.factions[0].players[u], room.id, prize1);
 					}
 					for (let u in room.fvf.factions[1].players) {
+						if (room.fvf.factions[1].name === winner) Db.factionCoins.set(room.fvf.factions[1].players[u], Db.factionCoins.get(room.fvf.factions[1].players[u], 0) + (prize2 / 3));
 						WL.ExpControl.addExp(room.fvf.factions[1].players[u], room.id, prize2);
 					}
 					factions[toId(winner)].tourwins += 1;
 					write();
+					room.add('|raw|' +
+						'<div class="infobox">Congratulations ' + Chat.escapeHTML(winner) + '. You have won the Faction vs Faction!</div>'
+					);
+					room.update();
 					delete Rooms.global.FvF[toId(room.fvf.factions[0].name)];
 					delete Rooms.global.FvF[toId(room.fvf.factions[1].name)];
 					delete room.fvf;
@@ -158,8 +162,22 @@ function isFvFBattle(p1, p2, id, status, types, score) {
 					fvfDisplay(room);
 					// end
 					let winner = room.fvf.factions[0].name;
+					let prize1 = 5 * room.fvf.size;
+					let prize2 = 1 * room.fvf.size;
 					if (room.fvf.factions[1].wins > room.fvf.factions[0].wins) {
 						winner = room.fvf.factions[1].name;
+						prize2 = prize1;
+						prize1 = 1 * room.fvf.size;
+					}
+					Db.factionbank.set(room.fvf.factions[0].id, Db.factionbank.get(room.fvf.factions[0].id, 0) + prize1);
+					Db.factionbank.set(room.fvf.factions[1].id, Db.factionbank.get(room.fvf.factions[1].id, 0) + prize2);
+					for (let u in room.fvf.factions[0].players) {
+						if (room.fvf.factions[0].name === winner) Db.factionCoins.set(room.fvf.factions[0].players[u], Db.factionCoins.get(room.fvf.factions[0].players[u], 0) + (prize1 / 3));
+						WL.ExpControl.addExp(room.fvf.factions[0].players[u], room.id, prize1);
+					}
+					for (let u in room.fvf.factions[1].players) {
+						if (room.fvf.factions[1].name === winner) Db.factionCoins.set(room.fvf.factions[1].players[u], Db.factionCoins.get(room.fvf.factions[1].players[u], 0) + (prize2 / 3));
+						WL.ExpControl.addExp(room.fvf.factions[1].players[u], room.id, prize2);
 					}
 					factions[toId(winner)].tourwins += 1;
 					write();
