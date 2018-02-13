@@ -488,7 +488,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 		}
 
 		// Generate the team randomly.
-		let pool = Dex.shuffle(Object.keys(sets));
+		let pool = this.shuffle(Object.keys(sets));
 		for (let i = 0; i < 6; i++) {
 			/*if (i === 1) {
 				let monIds = pool.slice(0, 6).map(function (p) {
