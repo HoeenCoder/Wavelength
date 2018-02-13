@@ -967,6 +967,9 @@ exports.commands = {
 		"/faction create (name), (description), (tag[4 char]) - Creates a faction. <br/>" +
 		"/faction delete (name)  - Deletes a faction. <br/>" +
 		"/faction list - List all factions on the server. <br/>" +
+		"/faction shop - displays the factions shop.<br />" +
+		"/faction claimlist - displays what you still have left to claim from the faction shop.<br />" +
+		"/faction claim [item] - Use /faction claimlist to see what you can claim.<br />" +
 		"/faction privatize - Privatize your faction. <br/>" +
 		"/faction profile (faction) - displays a faction's profile. If none specified then defaults to yours. If you are not in one you must specify one. <br/>" +
 		"/faction join (name) - Joins a non-private faction. <br/>" +
