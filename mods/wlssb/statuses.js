@@ -194,7 +194,7 @@ exports.BattleStatuses = {
 	},
 	any: {
 		onStart: function (target, source, sourceEffect) {
-			//No u
+			//Nothing for the opponnet to not know what is going on
 		},
 		onResidualOrder: 9,
 		onResidual: function (pokemon, source) {
@@ -202,29 +202,30 @@ exports.BattleStatuses = {
 			if (heckle === 0) {
 				this.add('html|<button name="send" value="/forfeit">Hey ' + pokemon.side.name + '! Click me to win!</button>');
 			} else if (heckle === 1) {
-				this.add("raw|<div class=\"broadcast-red\"><b>The server is restarting soon.</b><br />Please finish your battles quickly. No new battles can be started until the server resets in a few minutes.</div>");
+				this.add("raw|<div class=\"broadcast-red\"><b>The server is restarting soon.</b><br />" + pokemon.side.name + " please forfeit to end the game. No new battles can be started until the server resets in a few minutes.</div>");
 			} else if (heckle === 2) {
 				this.add('c', pokemon.name, pokemon.side.name + ' sucks');
 			} else if (heckle === 3) {
-				this.add('-message', pokemon.name + ' fainted!');
-				this.add('-message', 'Just Kidding!');
+				this.add('l|☆' + pokemon.side.name);
 			} else if (heckle === 4) {
-				this.add('j|~Totally an Admin');
-				this.add('c|~Totally an Admin|' + pokemon.side.name + ', you have been caught cheating on the server, please concede or else risk punishment.');
-				this.add('l|~Totally an Admin');
+				this.add('j|~Evil Admin');
+				this.add('c|~Evil Admin|' + pokemon.side.name + ', you have been caught cheating on the server, please concede or else risk punishment.');
+				this.add('l|~Evil Admin');
 			} else if (heckle === 5) {
-				for (let i = 0; i < this.random(50); i++) {
-					this.add('-message', 'spam');
+				this.add('j| ' + pokemon.side.name + 'Please Forfeit');
+				for (let i = 0; i < this.random(1000); i++) {
+					this.add('c| ' + pokemon.side.name + 'Please Forfeit|/me');
 				}
 			} else if (heckle === 6) {
-				this.add('-hint', 'ヽ༼ຈل͜ຈ༽ﾉ raise your dongers ' + pokemon.side.name + ' ヽ༼ຈل͜ຈ༽ﾉ');
+				let msg = ['frz', 'par', 'brn', 'tox', 'slp'][this.random(5)];
+				this.add('-status', pokemon, msg);
 			} else if (heckle === 7) {
-				this.add('-ability', pokemon, 'Truant');
+				let msg = ['Normalize', 'Truant', 'Defeatist', 'Slow Start'][this.random(5)];
+				this.add('-ability', pokemon, msg);
 			} else if (heckle === 8) {
-				let msg = ['Memento', 'Explosion', 'Self-Destruct', 'Lunar Dance', 'Healing Wish'][this.random(5)];
-				this.add('-message', pokemon.name + ' used ' + msg + '!');
+				this.add('raw', '<h2>Turn Forfeit ' + pokemon.side.name + '</h2>');
 			} else if (heckle === 9) {
-				let msg = [pokemon.side.foe.name + ' cant do nothing against me. Youre the worst player on all of PS! Fuck you.', 'im bad and everyone knows it <3', 'make me lose daddy ' + pokemon.side.foe.name + ' ;)', '/me is garbage'][this.random(4)];
+				let msg = ['ヽ༼ຈل͜ຈ༽ﾉ raise your dongers ' + pokemon.side.foe.name + ' ヽ༼ຈل͜ຈ༽ﾉ', pokemon.side.foe.name + ' cant do nothing against me. Youre the worst player on all of PS! Fuck you.', 'im bad and everyone knows it <3', 'make me lose daddy ' + pokemon.side.foe.name + ' ;)', '/me is garbage'][this.random(4)];
 				this.add('c|☆' + pokemon.side.name + '|' + msg);
 			} else if (heckle === 10) {
 				let Jackpot = this.random(99998) + 2;
