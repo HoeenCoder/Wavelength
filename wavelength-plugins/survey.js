@@ -248,10 +248,8 @@ exports.commands = {
 			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			if (!target) return this.parse('/help survey answer');
 			if (!user.can('bypassall')) {
-				let lockType = (user.namelocked ? `namelocked` : user.locked ? `locked` : ``);
-				let lockExpiration = Punishments.checkLockExpiration(user.namelocked || user.locked);
-				if (lockType && !room.isHelp) {
-					this.errorReply(`You are ${lockType} and can't answer the survey. ${lockExpiration}`);
+				if (!this.canTalk()) {
+					this.errorReply(`You are locked and can't answer the survey.`);
 					return false;
 				}
 				if (room.isMuted(user)) {
