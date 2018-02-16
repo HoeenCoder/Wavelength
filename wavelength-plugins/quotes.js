@@ -36,11 +36,9 @@ exports.commands = {
 		add: function (target, room, user) {
 			if (!this.can("lock")) return false;
 			let targets = target.split(',');
-			for (let u = 0; u < targets.length; u++) targets[u] = targets[u].trim();
-			if (!targets[1]) return this.errorReply("/quote add (name), (quote). Requires lock permissions.");
-			let name = targets[0];
+			let [name, quote] = target.split(",").map(p => p.trim());
+			if (!name || !quote) return this.errorReply("/quote add (name), (quote). Requires lock permissions.");
 			if (name.length > 18) return this.errorReply("Quote names must be 18 characters or less!");
-			let quote = targets[1];
 			if (quote.length > 300) return this.errorReply("Quotes should remain 300 characters long or less.");
 			quotes[toId(name)] = {
 				name: name,
