@@ -247,25 +247,7 @@ exports.commands = {
 		answer: function (target, room, user) {
 			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			if (!target) return this.parse('/help survey answer');
-			if (!user.can('bypassall')) {
-				if (!this.canTalk()) {
-					this.errorReply(`You are punished and cannot answer the survey.`);
-					return false;
-				}
-				if (room.modchat && !user.authAtLeast(room.modchat, room)) {
-					if (room.modchat === 'autoconfirmed') {
-						this.errorReply(`Because moderated chat is set, your account must be at least one week old and you must have won at least one ladder game to answer the survey.`);
-						return false;
-					}
-					if (room.modchat === 'trusted') {
-						this.errorReply(`Because moderated chat is set, your account must be staff in a public room or have a global rank to sanswer the survey.`);
-						return false;
-					}
-					const groupName = Config.groups[room.modchat] && Config.groups[room.modchat].name || room.modchat;
-					this.errorReply(`Because moderated chat is set, you must be of rank ${groupName} or higher to answer the survey.`);
-					return false;
-				}
-			}
+			if (!this.canTalk()) return false;
 			let targets = target.split(',');
 			targets = targets.map(x => { return x.trim(); });
 			let num = room.survey.obtain(parseInt(targets.shift()));
