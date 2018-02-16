@@ -249,11 +249,7 @@ exports.commands = {
 			if (!target) return this.parse('/help survey answer');
 			if (!user.can('bypassall')) {
 				if (!this.canTalk()) {
-					this.errorReply(`You are locked and can't answer the survey.`);
-					return false;
-				}
-				if (room.isMuted(user)) {
-					this.errorReply(`You are muted and cannot answer the survey.`);
+					this.errorReply(`You are punished and cannot answer the survey.`);
 					return false;
 				}
 				if (room.modchat && !user.authAtLeast(room.modchat, room)) {
