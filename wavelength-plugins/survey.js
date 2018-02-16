@@ -247,6 +247,7 @@ exports.commands = {
 		answer: function (target, room, user) {
 			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			if (!target) return this.parse('/help survey answer');
+			if (!this.canTalk()) return false;
 			let targets = target.split(',');
 			targets = targets.map(x => { return x.trim(); });
 			let num = room.survey.obtain(parseInt(targets.shift()));
