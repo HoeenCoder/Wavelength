@@ -112,7 +112,7 @@ exports.BattleAbilities = {
 
 			this.boost(boost);
 		},
-		onModifyAccuracy: function (accuracy, target, source, move) {
+		onAnyAccuracy: function (accuracy, target, source, move) {
 			if (move && (source === this.effectData.target || target === this.effectData.target)) {
 				return true;
 			}
@@ -254,7 +254,7 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Wavelength Prince
+	//Perison
 	deathboost: {
 		id: "deathboost",
 		name: "Death Boost",
@@ -320,9 +320,9 @@ exports.BattleAbilities = {
 	muscles: {
 		id: "muscles",
 		name: "Muscles",
-		desc: "+3 defense, +3 Special defense, -3 attack, +1.5 special attack on switch in + simple.",
+		desc: "+1 defense, +1 Special defense, -3 attack, +2 special attack on switch in + simple.",
 		onStart: function (pokemon) {
-			this.boost({atk: -4, def: 4, spa: 1, spd: 4});
+			this.boost({atk: -4, def: 1, spa: 2, spd: 1});
 		},
 		onBoost: function (boost, target, source, effect) {
 			if (effect && effect.id === 'zpower') return;
@@ -331,28 +331,14 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Lycanium Z
-	"bloodytears": {
-		desc: "Lowers Opponents offensive stats by 1.",
-		onStart: function (pokemon) {
-			this.add('-ability', pokemon, 'Bloody Tears');
-			this.add('-message', "You feel fear... yet you cannot look away...");
-			let foeactive = pokemon.side.foe.active;
-			let activated = false;
-			for (let i = 0; i < foeactive.length; i++) {
-				if (!foeactive[i] || !this.isAdjacent(foeactive[i], pokemon)) continue;
-				if (!activated) {
-					activated = true;
-				}
-				if (foeactive[i].volatiles['substitute']) {
-					this.add('-immune', foeactive[i], '[msg]');
-				} else {
-					this.boost({atk: -1, spa: -1}, foeactive[i], pokemon);
-				}
-			}
+	//LycaniumZ
+	"supershield": {
+		onEffectiveness: function () {
+			return -2;
 		},
-		id: "bloodytears",
-		name: "Bloody Tears",
+		desc: "All moves are 4x resistant against this pokemon.",
+		id: "supershield",
+		name: "Super Shield",
 	},
 	//SnorlaxTheRain
 	"scraroom": {
@@ -370,6 +356,65 @@ exports.BattleAbilities = {
 				move.ignoreImmunity['Fighting'] = true;
 				move.ignoreImmunity['Normal'] = true;
 			}
+		},
+	},
+	//Finny
+	"clinicaldepression": {
+		desc: "This Pokemon has a random stat raised by 2 stages and another stat lowered by 1 stage at the end of each turn.",
+		shortDesc: "Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.",
+		onResidualOrder: 26,
+		onResidualSubOrder: 1,
+		onResidual: function (pokemon) {
+			let stats = [];
+			let boost = {};
+			for (let statPlus in pokemon.boosts) {
+				if (pokemon.boosts[statPlus] < 6 && statPlus !== 'accuracy' && statPlus !== 'evasion') {
+					stats.push(statPlus);
+				}
+			}
+			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
+			if (randomStat) boost[randomStat] = 2;
+
+			stats = [];
+			for (let statMinus in pokemon.boosts) {
+				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat && statMinus !== 'accuracy' && statMinus !== 'evasion') {
+					stats.push(statMinus);
+				}
+			}
+			randomStat = stats.length ? stats[this.random(stats.length)] : "";
+			if (randomStat) boost[randomStat] = -1;
+
+			this.boost(boost);
+		},
+		id: "clinicaldepression",
+		name: "Clinical Depression",
+	},
+	//Alfastorm
+	"addendum": {
+		desc: "Causes adjacent opposing Pokemon to lose 7% of their maximum HP, rounded down, at the end of each turn if they are cursed.",
+		shortDesc: "Causes cursed adjacent foes to lose 7% of their max HP at the end of each turn.",
+		onResidualOrder: 999,
+		onResidualSubOrder: 1,
+		id: "addendum",
+		name: "Addendum",
+		onResidual: function (pokemon) {
+			if (!pokemon.hp) return;
+			for (let i = 0; i < pokemon.side.foe.active.length; i++) {
+				let target = pokemon.side.foe.active[i];
+				if (!target || !target.hp) continue;
+				if (target.volatiles['curse']) {
+					this.damage(target.maxhp / 14, target, pokemon);
+				}
+			}
+		},
+	},
+	//The Dazzler Joe
+	speedygonzales: {
+		id: "speedygonzales",
+		name: "Speedy Gonzales",
+		desc: "Boosts user's Speed by 1 stages.",
+		onStart: function (pokemon) {
+			this.boost({spe: 2});
 		},
 	},
 };

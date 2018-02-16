@@ -436,7 +436,7 @@ exports.Formats = [
 				pokemon.moves.splice(0, 4);
 				pokemon.moves.push('metronome');
 				pokemon.moveSlots = pokemon.baseMoveSlots;
-				if (Dex.getFormat('[Gen 7] Metronome Battle').banlist.includes(this.getItem(pokemon.item).name)) {
+				if (this.getFormat('[Gen 7] Metronome Battle').banlist.includes(this.getItem(pokemon.item).name)) {
 					pokemon.item = 'leppaberry';
 				}
 			});

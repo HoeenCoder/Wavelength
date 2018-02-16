@@ -26,4 +26,14 @@ exports.BattleItems = {
 			}
 		},
 	},
+	"lycantiumz": {
+		id: "lycantiumz",
+		name: "Lycantium Z",
+		spritenum: 689,
+		onTakeItem: false,
+		zMove: "Going Down",
+		zMoveFrom: "ALL Delete",
+		zMoveUser: ["Rockruff"],
+		desc: "If held by a Rockruff with ALL Delete, it can use Going Down.",
+	},
 };
