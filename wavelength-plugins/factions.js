@@ -16,8 +16,6 @@ try {
 	if (e.code !== 'ENOENT') throw e;
 }
 
-WL.isJoinDateDisabled = true;
-
 function getFaction(user) {
 	user = toId(user);
 	let reply;
@@ -41,6 +39,28 @@ function write() {
 	data += "\n}";
 	fs.writeFileSync('config/factions.json', data);
 }
+
+for (let u in factions) {
+	factions[u].joinDate = {};
+	for (let i in factions[u].users) {
+		if (factions[u].joinDate[factions[u].users[i]]) continue;
+		factions[u].joinDate[factions[u].users[i]] = Date.now() - 7100314200;
+	}
+	if (factions[u].bank) delete factions[u].bank;
+	if (factions[u].nowipe) continue;
+	let coins = Db.factionbank.get(factions[u]);
+	factions[u].nowipe = true;
+	if (!coins) continue;
+	let remainder = Db.factionbank.get(factions[u]) % 20;	
+	if (remainder !== 0) {
+		coins = coins - remainder;
+		let owner = factions[u].ranks['owner'].users[0];
+		Db.money.set(toId(owner), Db.money.get(toId(owner), 0) + remainder);
+	}
+	Db.factionbank.remove(factions[u].id);
+	Db.factionbank.set(factions[u].id, coins / 20);
+}
+write();
 
 function getFactionRank(user) {
 	user = toId(user);
@@ -371,21 +391,6 @@ exports.commands = {
 			let date = new Date(factions[factionId].joinDate[toId(target)]);
 			if (!date) return this.errorReply(`That user doesn't appear to have a join date.`);
 			return this.sendReplyBox(`${toId(target)} joined their faction on ${date}`);
-		},
-
-		addjoindate: function (target, room, user) {
-			if (!this.can('root')) return false;
-			if (WL.isJoinDateDisabled) return this.errorReply(`This command is disabled!`);
-			for (let u in factions) {
-				factions[u].joinDate = {};
-				for (let i in factions[u].users) {
-					factions[u].joinDate[factions[u].users[i]] = Date.now() - 7100314200;
-					delete factions[u].bank;
-				}
-			}
-			write();
-			WL.isJoinDateDisabled = true;
-			return this.sendReply(`Factions now have join dates added to their objects.`);
 		},
 
 		delete: function (target, room, user) {
@@ -866,23 +871,6 @@ exports.commands = {
 				this.sendReplyBox(rankLadder('Richest Factions', 'Faction Coins', keys.slice(0, target), 'coins') + '</div>');
 			},
 
-			// only for the 1 time conversion!!!!!
-			wipe: function (target, room, user) {
-				if (!this.can('root')) return false;
-				let keys = Db.factionbank.keys();
-				for (let u in keys) {
-					let coins = Db.factionbank.get(keys[u]);
-					let remainder = Db.factionbank.get(keys[u]) % 20;
-					if (remainder !== 0) {
-						coins = coins - remainder;
-						let owner = factions[keys[u]].ranks['owner'].users[0];
-						Db.money.set(toId(owner), Db.money.get(toId(owner), 0) + remainder);
-					}
-					Db.factionbank.remove(keys[u]);
-					Db.factionbank.set(keys[u], coins / 20);
-				}
-				return this.sendReply('You have reset all of the factions coins!');
-			},
 		},
 
 		promote: function (target, room, user) {
