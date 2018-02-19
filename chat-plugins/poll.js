@@ -1,7 +1,7 @@
 /*
  * Poll chat plugin
  * By bumbadadabum and Zarel.
- * Redone by Bladicon and WGC for Collapsible Multi-Polls
+ * Redone by Volco and WGC for Collapsible Multi-Polls
  */
 
 'use strict';
@@ -70,7 +70,7 @@ class Poll {
 
 	generateResults(ended, option, num) {
 		let icon = `<span style="border: 1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')}; border-radius: 4px; padding: 3px"><i class="fa fa-bar-chart"></i> ${(ended ? `Poll-${this.pollArray[num].pollNum} ended` : `Poll-${this.pollArray[num].pollNum}`)}</span>`;
-		let totalVotes = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Votes: ${this.pollArray[num].totalVotes}] (Started by ${this.pollArray[num].startedUser} ${Chat.toDurationString(Date.now() - this.pollArray[num].startTime)} ago.)</span>`;
+		let totalVotes = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Votes: ${this.pollArray[num].totalVotes}] (Started by ${this.pollArray[num].startedUser} Started on: ${new Date(this.pollArray[num].startTime)})</span>`;
 		let output = `<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${this.getQuestionMarkup(num)}</strong><psicon pokemon="espeon"></summary>`;
 		output += totalVotes;
 		output += `<div style="padding: 8px 15px;"><font color="red"><small><center>(Options with 0 votes are not shown)</center></small></font>`;
