@@ -9,7 +9,7 @@
 'use strict';
 
 class Survey {
-	constructor(room, question, allowHTML) {
+	constructor(room, question, allowHTML, name) {
 		if (room.surveyNumber) {
 			room.surveyNumber++;
 		} else {
@@ -24,7 +24,7 @@ class Survey {
 			repliers: {},
 			replierIps: {},
 			startTime: Date.now(),
-			startedUser: WL.nameColor(question.username, true, true),
+			startedUser: WL.nameColor(name, true, true),
 			totalReplies: 0,
 			timeout: null,
 			timeoutMins: 0,
@@ -62,7 +62,7 @@ class Survey {
 	}
 
 	generateQuestion(number) {
-		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><img src="https://pldh.net/media/pokecons_action/491.gif" width="32" height="32"></summary>`;
+		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><psicon pokemon="espeon"></summary>`;
 		output += `<div style="margin-top: 3px">Please note that anyone can see what you reply.</div>`;
 		output += `<div style="margin-top: 5px"><button class="button" value="/survey answer" name="send" title="Answer the survey."><strong>Answer the survey</strong></button></div>`;
 		output += `<div style="margin-top: 7px; padding-left: 12px"><button class="button" value="/survey results ${this.surveyArray[number].surveyNum}" name="send" title="View results - you will not be able to answer the survey after viewing results"><small>(View Results)</small></button><small>(you will not be able to answer the survey after viewing results)</small></div>`;
@@ -135,14 +135,14 @@ class Survey {
 
 	generateResults(ended, number) {
 		let icon = `<span style="border: 1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')}; border-radius: 4px; padding: 3px"><i class="fa fa-bar-chart"></i> ${(ended ? `Survey-${this.surveyArray[number].surveyNum} ended` : `Survey-${this.surveyArray[number].surveyNum}`)}</span>`;
-		let totalReplies = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Replies: ${this.surveyArray[number].totalReplies}] (Started by ${this.surveyArray[number].startedUser} ${Chat.toDurationString(Date.now() - this.surveyArray[number].startTime)} ago.)</span></div>`;
-		let output = `<div style="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><img src="https://pldh.net/media/pokecons_action/491.gif" width="32" height="32"></summary>`;
+		let totalReplies = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Replies: ${this.surveyArray[number].totalReplies}] (Started by ${this.surveyArray[number].startedUser} Started on: ${new Date(this.surveyArray[number].startTime)})</span>`;
+		let output = `<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><psicon pokemon="espeon"></summary>`;
 		output += totalReplies;
 		for (let i in this.surveyArray[number].repliers) {
 			if (this.surveyArray[number].repliers[i]) output += `<div>${WL.nameColor(i, true)}: <i>"${Chat.formatText(this.surveyArray[number].repliers[i])}"</i></div><br />`;
 		}
 		if (!ended) output += `<div style="margin-top: 7px; padding-left: 12px"><button value="/survey hideresults ${this.surveyArray[number].surveyNum}" class="button" name="send" title="Hide results - hide the results."><small>(Hide Results)</small></div>`;
-		output += `</details>`;
+		output += `</details></div>`;
 
 		return output;
 	}
@@ -235,11 +235,12 @@ exports.commands = {
 					repliers: {},
 					replierIps: {},
 					timeout: null,
+					startedUser: WL.nameColor(user.name, true, true),
 					timeoutMins: 0,
 				});
 				room.survey.displaySpecific(room.survey.surveyArray.length - 1);
 			} else {
-				room.survey = new Survey(room, target, supportHTML);
+				room.survey = new Survey(room, target, supportHTML, user.name);
 				room.survey.display();
 			}
 
