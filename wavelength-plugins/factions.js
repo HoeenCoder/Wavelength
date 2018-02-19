@@ -51,7 +51,7 @@ for (let u in factions) {
 	let coins = Db.factionbank.get(factions[u]);
 	factions[u].nowipe = true;
 	if (!coins) continue;
-	let remainder = Db.factionbank.get(factions[u]) % 20;	
+	let remainder = Db.factionbank.get(factions[u]) % 20;
 	if (remainder !== 0) {
 		coins = coins - remainder;
 		let owner = factions[u].ranks['owner'].users[0];
