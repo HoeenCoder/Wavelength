@@ -36,7 +36,7 @@ exports.commands = {
 		add: function (target, room, user) {
 			if (!this.can("lock")) return false;
 			let targets = target.split(',');
-			let [name, quote] = target.split(",").map(p => p.trim());
+			let [name, ...quote] = target.split(",").map(p => p.trim());
 			if (!name || !quote) return this.errorReply("/quote add (name), (quote). Requires lock permissions.");
 			if (name.length > 18) return this.errorReply("Quote names must be 18 characters or less!");
 			if (quote.length > 300) return this.errorReply("Quotes should remain 300 characters long or less.");
