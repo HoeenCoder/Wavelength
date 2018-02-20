@@ -538,6 +538,18 @@ exports.commands = {
 		"/nature delete - Removes your Profile Nature.",
 	],
 
+	'!lastactive': true,
+	checkactivity: 'lastactive',
+	lastactive: function (target, room, user) {
+		if (!target) target = user.userid;
+		if (target.length > 18) return this.errorReply("Usernames cannot exceed 18 characters.");
+		if (!this.runBroadcast()) return;
+		let targetUser = Users.get(toId(target));
+		if (!targetUser || !targetUser.connected) return this.errorReply(`${target} is not online. Use /seen to find out how long ago they left.`);
+		return this.sendReplyBox(`${WL.nameColor(targetUser, true, true)} was last active <strong>${Chat.toDurationString(Date.now() - targetUser.lastMessageTime)} ago</strong>.`);
+	},
+	lastactivehelp: ["/lastactive - Shows how long ago it has been since a user has posted a message."],
+
 	'!profile': true,
 	profile: function (target, room, user) {
 		target = toId(target);
