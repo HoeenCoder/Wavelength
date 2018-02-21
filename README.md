@@ -115,7 +115,7 @@ Contributors
 
 - [Insist](https://github.com/DeathlyPlays)
 - [Lycanium-Z](https://github.com/Lycanium-Z)
-- [Arrays](https://github.com/Arrays-Arr)
+- [Volco](https://github.com/Volco)
 - [wgc](https://github.com/wgc-coder)
 
 Special thanks
