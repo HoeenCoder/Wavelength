@@ -315,7 +315,9 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Jolly",
 			},
-			'%wgc': {
+
+			// Global Voices:
+			'+wgc': {
 				species: 'Gengar',
 				ability: 'Levitate',
 				item: 'Spooky Plate',
@@ -328,23 +330,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					def: 4,
 				},
 				nature: 'Timid',
-			},
-
-			// Global Voices:
-			'+ducktown': {
-				species: 'Golduck',
-				ability: 'Cloud Nine',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Scald', 'Ice Beam', 'Psychic',
-				],
-				signatureMove: 'Duck Power',
-				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
-				},
-				nature: 'Modest',
 			},
 			'+Mystifi': {
 				species: 'Clefairy',
