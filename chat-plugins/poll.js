@@ -82,7 +82,7 @@ class Poll {
 		let colors = ['#00FFFF', '#66CCCC', '#388E8E'];
 		while (!i.done) {
 			if (i.value[1].votes && i.value[1].votes !== 0) {
-				let percentage = Math.round((i.value[1].votes * 100) / (this.totalVotes || 1));
+				let percentage = Math.round((i.value[1].votes * 100) / (this.pollArray[num].totalVotes || 1));
 				output += `<tr><td><strong>${(i.value[0] === option ? '<em>' : '')} ${Chat.escapeHTML(i.value[1].name)} ${(i.value[0] === option ? '</em>' : '')}</strong> <small>(${i.value[1].votes} vote${(i.value[1].votes === 1 ? '' : 's')})</small></td><td><span style="font-size: 7pt; background: ${colors[c % 3]}; padding-right: ${(percentage * 3)}px; border-radius: 20px;"></span><small>&nbsp;${percentage}%</small></td></tr>`;
 			}
 			i = iter.next();
