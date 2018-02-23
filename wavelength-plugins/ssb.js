@@ -669,7 +669,7 @@ exports.commands = {
 				}
 				let targetUser = WL.ssb[user.userid];
 				target = target.split(",");
-				if (!toId(target[0])) return user.sendTo(room, `|uhtmlchange|ssb${user.userid}|${oveMenu(user.userid)}`);
+				if (!toId(target[0])) return user.sendTo(room, `|uhtmlchange|ssb${user.userid}|${moveMenu(user.userid)}`);
 				if (toId(target[0]) === "help") return this.sendReply("/ssb edit move [set|remove|custom], [move name] - Set or remove moves. Maximum of 4 moves (3 regular + 1 custom OR 4 regular).");
 				switch (target[0]) {
 				case "set":
