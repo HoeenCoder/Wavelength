@@ -512,13 +512,13 @@ exports.commands = {
 		},
 		blockinvites: function (target, room, user) {
 			if (Db.blockedinvites.get(user.userid)) return this.errorReply('You are already blocking faction invites!');
-			Db.blockinvites.set(user.userid, true);
+			Db.blockedinvites.set(user.userid, true);
 			return this.sendReply('Faction invites are now blocked!');
 		},
 		unblockinvites: function (target, room, user) {
 			if (!Db.blockedinvites.get(user.userid)) return this.errorReply('You are currently not blocking faction invites!');
 			Db.blockedinvites.remove(user.userid);
-			return this.sendReply('Faction  invites are now allowed!');
+			return this.sendReply('Faction invites are now allowed!');
 		},
 		accept: function (target, room, user) {
 			if (!target) return this.errorReply('/faction accept [faction]');
