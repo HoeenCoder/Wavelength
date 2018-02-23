@@ -268,27 +268,6 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Dragon",
 	},
-	// ducktown
-	duckpower: {
-		category: "Status",
-		id: "duckpower",
-		isNonstandard: true,
-		name: "Duck Power",
-		pp: 5,
-		priority: 0,
-		boosts: {
-			spa: 8,
-			spd: 8,
-		},
-		desc: "Boosts user's SpA and SpD by 8 stages, and sets Rain Dance",
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Calm Mind", source);
-		},
-		weather: 'raindance',
-		target: "self",
-		type: "Water",
-	},
 	// Admewn
 	mewtation: {
 		category: "Status",
@@ -488,6 +467,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {reflectable: 1},
 		sideCondition: 'memes',
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Nasty Plot", source);
+		},
 		effect: {
 			// this is a side condition
 			onStart: function (side) {
