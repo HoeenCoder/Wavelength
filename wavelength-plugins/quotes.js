@@ -35,9 +35,8 @@ exports.commands = {
 	quote: {
 		add: function (target, room, user) {
 			if (!this.can("lock")) return false;
-			let targets = target.split(',');
 			let [name, ...quote] = target.split(",").map(p => p.trim());
-			if (!name || !quote) return this.errorReply("/quote add (name), (quote). Requires lock permissions.");
+			if (!name || !quote) return this.parse("/quotehelp");
 			if (name.length > 18) return this.errorReply("Quote names must be 18 characters or less!");
 			if (quote.length > 300) return this.errorReply("Quotes should remain 300 characters long or less.");
 			quotes[toId(name)] = {
@@ -51,7 +50,7 @@ exports.commands = {
 
 		delete: function (target, room, user) {
 			if (!this.can("lock")) return false;
-			if (!target) return this.errorReply("This command requires a target.");
+			if (!target) return this.parse("/quotehelp");
 			let quoteid = toId(target);
 			if (!quotes[quoteid]) return this.errorReply(`${target} is not currently registered as a quote.`);
 			delete quotes[quoteid];
@@ -81,7 +80,7 @@ exports.commands = {
 		list: "viewquotes",
 		viewquotes: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			let reply = `<b><u>Quotes (${Object.keys(quotes).length})</u></b><br />`;
+			let reply = `<strong><u>Quotes (${Object.keys(quotes).length})</u></strong><br />`;
 			for (let quote in quotes) reply += `<strong>${quote}</strong><br />`;
 			this.sendReplyBox(`<div class="infobox infobox-limited">${reply}</div>`);
 		},
