@@ -143,18 +143,6 @@ Signature Move: Rocket Punch
 Notes: Fast Special Sweeper.
 Rank: N/A.
 
-ducktown
-(Golduck)
-@ Leftovers
-EVs: 252 SpA / 4 HP / 252 Spe
-Modest Nature
-Ability: Cloud Nine
-Moves: Scald, Ice Beam and Psychic.
-Signature Move: Duck Power
-	- Water Type, Status, 5 PP, Rain Dance and boosts SpA and SpD by 8 stages.
-Notes: N/A.
-Rank: N/A.
-
 Serperiorater
 (Serperior)
 @ Leftovers
