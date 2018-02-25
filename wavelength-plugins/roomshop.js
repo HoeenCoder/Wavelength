@@ -114,7 +114,7 @@ exports.commands = {
 			if (!Db.roomshop.has(room.id)) return this.errorReply(`${room.title} does not have a roomshop.`);
 			let display = `<div style="max-height: 200px; width: 100%; overflow: scroll;"><table><tr><center><h1>${room.title}'s Shop!</h1></center></tr>`;
 			for (let i in roomshop.items) {
-				display += `<tr><td style="border: 2px solid #000000; width: 20%; text-align: center"><button class="button" name="send" value="/roomshop buy ${roomshop.items[i].name}">Buy Item: ${roomshop.items[i].name}</button></td><td style="border: 2px solid #000000; width: 20%; text-align: center"> Price: ${roomshop.items[i].price} ${moneyName}${Chat.plural(roomshop.items[i].price)}</td></tr>`;
+				display += `<tr><td style="border: 2px solid #000000; width: 20%; text-align: center"><button class="button" name="send" value="/roomshop buy ${roomshop.items[i].name}">Buy Item: ${roomshop.items[i].name}</button></td><td style="border: 2px solid #000000; width: 20%; text-align: center"> Price: ${roomshop.items[i].price} ${currencyName}${Chat.plural(roomshop.items[i].price)}</td></tr>`;
 			}
 			display += `</table></div>`;
 			return this.sendReplyBox(display);
@@ -132,14 +132,14 @@ exports.commands = {
 			// Take payments and record payments from the user
 			Economy.readMoney(user.userid, money => {
 				if (money < cost) {
-					this.errorReply(`You do not have enough ${moneyName} to purchase ${target}.`);
+					this.errorReply(`You do not have enough ${currencyName} to purchase ${target}.`);
 					return;
 				}
 				Economy.writeMoney(user.userid, -cost, () => {
-					Economy.logTransaction(`${user.name} bought ${target} from ${room.title}'s roomshop for ${cost} ${moneyName}${Chat.plural(cost)}.`);
+					Economy.logTransaction(`${user.name} bought ${target} from ${room.title}'s roomshop for ${cost} ${currencyName}${Chat.plural(cost)}.`);
 				});
 				Economy.writeMoney(bank, cost, () => {
-					Economy.logTransaction(`${user.name} bought ${target} from ${room.title}'s roomshop for ${cost} ${moneyName}${Chat.plural(cost)}.`);
+					Economy.logTransaction(`${user.name} bought ${target} from ${room.title}'s roomshop for ${cost} ${currencyName}${Chat.plural(cost)}.`);
 				});
 			});
 			if (FS("logs/roomshops").readdirSync()) FS("logs/roomshops").mkdirpSync();
@@ -153,7 +153,7 @@ exports.commands = {
 				}
 			});
 
-			return this.sendReply(`You have bought "${target}" for ${cost} ${moneyName}${Chat.plural(cost)} from ${room.title}'s Room Shop.`);
+			return this.sendReply(`You have bought "${target}" for ${cost} ${currencyName}${Chat.plural(cost)} from ${room.title}'s Room Shop.`);
 		},
 
 		logs: "transactions",
