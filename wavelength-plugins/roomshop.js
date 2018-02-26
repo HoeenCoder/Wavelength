@@ -147,7 +147,7 @@ exports.commands = {
 
 			let msg = `${user.name} has purchased ${target}.`;
 
-			for (let u in room.users) { {
+			for (let u in room.users) {
 				if (room.auth[u] === "#") {
 					user.send(`|pm|~${room.title}'s Shop Alert|${user.getIdentity()}|${msg}`);
 				}
