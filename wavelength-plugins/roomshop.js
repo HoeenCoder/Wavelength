@@ -151,7 +151,7 @@ exports.commands = {
 				if (room.auth[u] === "#") {
 					user.send(`|pm|~${room.title}'s Shop Alert|${user.getIdentity()}|${msg}`);
 				}
-			};
+			}
 
 			return this.sendReply(`You have bought "${target}" for ${cost} ${currencyName}${Chat.plural(cost)} from ${room.title}'s Room Shop.`);
 		},
