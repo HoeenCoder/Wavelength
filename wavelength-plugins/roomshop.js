@@ -147,8 +147,8 @@ exports.commands = {
 
 			let msg = `${user.name} has purchased ${target}.`;
 
-			Users.users.forEach(function (user) {
-				if (room.auth[user] === "#" || room.auth[user] === "&") {
+			for (let u in room.users) { {
+				if (room.auth[u] === "#") {
 					user.send(`|pm|~${room.title}'s Shop Alert|${user.getIdentity()}|${msg}`);
 				}
 			});
