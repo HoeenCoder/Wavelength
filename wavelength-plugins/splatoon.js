@@ -225,7 +225,7 @@ exports.commands = {
 				let splatProfile = Db.splatoon.get(user.userid, {ranks: {}});
 				let SPLATFEST = Db.splatoon.get("SPLATFEST", {alpha: null, bravo: null, active: false});
 				if (!shirts.includes(target)) return this.errorReply(`Invalid shirt; check your spelling? [case sensitive]`);
-				if (target === "Splatfest Tee" && !SPLATFEST.active && !splatProfile.splatfest) return this.errorReply(`Your Splatfest Tee has been returned, since there is no longer a Splatfest or you haven't joined a Splatfest team yet.`)
+				if (target === "Splatfest Tee" && !SPLATFEST.active && !splatProfile.splatfest) return this.errorReply(`Your Splatfest Tee has been returned, since there is no longer a Splatfest or you haven't joined a Splatfest team yet.`);
 				splatProfile.clothing = target;
 				Db.splatoon.set(user.userid, splatProfile);
 				return this.sendReply(`Your Splatoon 2 shirt has been set to "${target}".`);
@@ -272,7 +272,7 @@ exports.commands = {
 			if (splatProfile.ranks.rm) profile += `<strong>Rainmaker:</strong> ${splatProfile.ranks.rm}<br />`;
 			if (splatProfile.ranks.sz) profile += `<strong>Splat Zones:</strong> ${splatProfile.ranks.sz}<br />`;
 			if (splatProfile.ranks.tc) profile += `<strong>Tower Control:</strong> ${splatProfile.ranks.tc}<br />`;
-			if (splatProfile.ranks.sr)  profile += `<strong>Salmon Run:</strong> ${splatProfile.ranks.sr}<br />`;
+			if (splatProfile.ranks.sr) profile += `<strong>Salmon Run:</strong> ${splatProfile.ranks.sr}<br />`;
 			profile += `</div>`;
 			this.sendReplyBox(profile);
 		},
