@@ -209,6 +209,6 @@ exports.BattleAbilities = {
 				this.getStatCallback = null;
 			},
 		},
-		desc: "On switch-in, user activates permanent trick room, uses will-o-wisp, gains 2x def and spd.",
+		desc: "On switch-in, user activates permanent Trick Room, uses Will-o-Wisp, gains 2x Def and SpD.",
 	},
 };
