@@ -184,4 +184,35 @@ exports.BattleAbilities = {
 		},
 		desc: "If the user is statused, their SpA, SpD, and Spe is multiplied by 1.5x.",
 	},
+	// Redroller
+	"graveyard": {
+		id: "graveyard",
+		name: "Graveyard",
+		onStart: function (pokemon, target, effect) {
+			this.addPseudoWeather('graveyard', pokemon);
+			this.pseudoWeather['graveyard'].duration = 0;
+			this.useMove('willowisp', pokemon);
+			this.boost({def: 2, spd: 2});
+		},
+		effect: {
+			duration: 0,
+			durationCallback: function (source, effect) {
+				return 0;
+			},
+			onStart: function (target, source) {
+				this.add('-fieldstart', 'move: Trick Room', '[of] ' + source);
+				this.getStatCallback = function (stat, statName) {
+					// If stat is speed and does not overflow (Trick Room Glitch) return negative speed.
+					if (statName === 'spe' && stat <= 1809) return -stat;
+					return stat;
+				};
+			},
+			onResidualOrder: 23,
+			onEnd: function () {
+				this.add('-fieldend', 'move: Trick Room');
+				this.getStatCallback = null;
+			},
+		},
+		desc: "On switch-in, user activates permanent trick room, uses will-o-wisp, gains 2x def and spd.",
+	},
 };
