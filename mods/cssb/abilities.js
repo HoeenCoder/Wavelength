@@ -190,15 +190,11 @@ exports.BattleAbilities = {
 		name: "Graveyard",
 		onStart: function (pokemon, target, effect) {
 			this.addPseudoWeather('graveyard', pokemon);
-			this.pseudoWeather['graveyard'].duration = 0;
 			this.useMove('willowisp', pokemon);
 			this.boost({def: 2, spd: 2});
 		},
 		effect: {
 			duration: 0,
-			durationCallback: function (source, effect) {
-				return 0;
-			},
 			onStart: function (target, source) {
 				this.add('-fieldstart', 'move: Trick Room', '[of] ' + source);
 				this.getStatCallback = function (stat, statName) {
