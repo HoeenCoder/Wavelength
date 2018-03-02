@@ -573,7 +573,7 @@ exports.Formats = [
 		desc: ["The new tiering format that nobody wanted! This format is much more chaotic compared to OU and will be tiered differently. Ran by Lycanium Z. "],
 		column: 2,
 
-		mod: 'gen7',
+		mod: 'lu',
 		ruleset: ['Pokemon', 'Standard LU', 'Team Preview'],
 		banlist: ['Arceus', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Gengar-Mega', 'Giratina', 'Gothitelle', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-White', 'Lucario-Mega', 'Lunala', 'Mewtwo', 'Necrozma-Dusk-Mane', 'Necrozma-Ultra', 'Palkia', 'Rayquaza', 'Reshiram', 'Salamence-Mega', 'Shaymin-Sky', 'Xerneas', 'Yveltal', 'Zekrom', 'Power Construct'],
 	},
