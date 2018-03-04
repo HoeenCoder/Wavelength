@@ -1,4 +1,5 @@
 'use strict';
+
 exports.BattleFormats = {
 	standardlu: {
 		effectType: 'ValidatorRule',
