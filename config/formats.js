@@ -574,7 +574,7 @@ exports.Formats = [
 		column: 2,
 
 		mod: 'lu',
-		ruleset: ['Pokemon', 'Standard LU', 'Team Preview'],
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
 		banlist: ['Arceus', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Gengar-Mega', 'Giratina', 'Gothitelle', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-White', 'Lucario-Mega', 'Lunala', 'Mewtwo', 'Necrozma-Dusk-Mane', 'Necrozma-Ultra', 'Palkia', 'Rayquaza', 'Reshiram', 'Salamence-Mega', 'Shaymin-Sky', 'Xerneas', 'Yveltal', 'Zekrom', 'Power Construct'],
 	},
 	{
