@@ -1,16 +1,16 @@
 'use strict';
 
 exports.BattleFormats = {
-	standardlu: {
+	standard: {
 		effectType: 'ValidatorRule',
-		name: 'Standard LU',
+		name: 'Standard',
 		desc: ["The standard ruleset for LU."],
-		ruleset: ['Status Clause Mod', 'Species Clause', 'Nickname Clause', 'OHKO Clause', 'Moody Clause', 'LU Evasion Moves Clause', 'Endless Battle Clause', 'Cancel Mod'],
+		ruleset: ['Status Clause Mod', 'Species Clause', 'Nickname Clause', 'OHKO Clause', 'Moody Clause', 'Evasion Moves Clause', 'Endless Battle Clause', 'Cancel Mod'],
 		banlist: ['Unreleased', 'Illegal', 'Leppa Berry'],
 	},
-	luevasionmovesclause: {
+	evasionmovesclause: {
 		effectType: 'ValidatorRule',
-		name: 'Evasion Moves Clause (LU)',
+		name: 'Evasion Moves Clause',
 		desc: ["Bans moves that consistently raise the user's evasion when used as well as Acupressure."],
 		banlist: ['Minimize', 'Double Team', 'Acupressure'],
 		onStart: function () {
