@@ -553,7 +553,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Worse than Dath.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Worse than Death.",
 		],
 
 		mod: 'stacked',
