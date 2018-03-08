@@ -529,7 +529,7 @@ exports.Formats = [
 		desc: [
 			"You may have thought this was Pokemon Showdown, but I must reassure you that you were mistaken, welcome to DIGIMON SHOWDOWN",
 			"Ahem, but in all seriousness, the following developers listed below created Digimon in Pokemon Showdown, so why not just try it out :D",
-			"Ashley the Pikachu (Head Researcher, Began the project, Attack Manual, Type Chart Manual, Music Selection and Music HTML, Sprite Selection), Insist (Head Developer), AlphaStorm (Animations), Gligars (Assisted other developers), HoeenHero (Assisted with Mechanics)",
+			"Ashley the Pikachu (Head Researcher, Began the project, Attack Manual, Type Chart Manual, Music Selection and Music HTML, Sprite Selection), Insist (Head Developer), Alfastorm (Animations), Worse than Death (Assisted other developers), HoeenHero (Assisted with Mechanics)",
 		],
 
 		mod: "digimon",
@@ -543,7 +543,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Doubles Monotype",
 		desc: [
-			"All the Pok&eacute;mon on a team must share a type. The battle is fought in the Doubles Format. Banlist is the same as Doubles OU. Requested by Ashley the Pikachu. \"Coded\" by Gligars.",
+			"All the Pok&eacute;mon on a team must share a type. The battle is fought in the Doubles Format. Banlist is the same as Doubles OU. Requested by Ashley the Pikachu.",
 		],
 
 		mod: 'gen7',
@@ -553,7 +553,7 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Lycanium Z.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Worse than Death.",
 		],
 
 		mod: 'stacked',
@@ -562,11 +562,20 @@ exports.Formats = [
 	{
 		name: "[Gen 7] Weather Wars",
 		desc: [
-			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by Lycanium Z.",
+			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by Worse than Death.",
 		],
 
 		mod: 'oldweather',
 		ruleset: ['[Gen 7] OU'],
+	},
+	{
+		name: "[Gen 7] LU",
+		desc: ["The new tiering format that nobody wanted! This format is much more chaotic compared to OU and will be tiered differently. Ran by Worse than Death. "],
+		column: 2,
+
+		mod: 'lu',
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
+		banlist: ['Arceus', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Gengar-Mega', 'Giratina', 'Gothitelle', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-White', 'Lucario-Mega', 'Lunala', 'Mewtwo', 'Necrozma-Dusk-Mane', 'Necrozma-Ultra', 'Palkia', 'Rayquaza', 'Reshiram', 'Salamence-Mega', 'Shaymin-Sky', 'Xerneas', 'Yveltal', 'Zekrom', 'Power Construct'],
 	},
 	{
 		name: "[Gen 7] TsuMeta (BETA)",
