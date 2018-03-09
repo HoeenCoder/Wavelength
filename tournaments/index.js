@@ -36,6 +36,7 @@ class Tournament {
 		this.id = room.id;
 		this.room = room;
 		this.title = Dex.getFormat(format).name + ' tournament';
+		this.isTournament = true;
 		this.allowRenames = false;
 		this.players = Object.create(null);
 		this.playerCount = 0;
@@ -287,7 +288,7 @@ class Tournament {
 			return;
 		}
 
-		if (this.checkBanned(user)) {
+		if (this.checkBanned(user) || Punishments.isBattleBanned(user)) {
 			output.sendReply('|tournament|error|Banned');
 			return;
 		}

@@ -18,7 +18,7 @@ exports.BattleStatuses = {
 		inherit: true,
 		onBeforeMovePriority: 2,
 		onBeforeMove: function (pokemon) {
-			if (this.random(4) === 0) {
+			if (this.randomChance(1, 4)) {
 				this.add('cant', pokemon, 'par');
 				return false;
 			}
@@ -57,7 +57,7 @@ exports.BattleStatuses = {
 			if (move.flags['defrost']) pokemon.cureStatus();
 		},
 		onResidual: function (pokemon) {
-			if (this.random(256) < 25) pokemon.cureStatus();
+			if (this.randomChance(25, 256)) pokemon.cureStatus();
 		},
 	},
 	psn: {
@@ -116,7 +116,7 @@ exports.BattleStatuses = {
 				return;
 			}
 			this.add('-activate', pokemon, 'confusion');
-			if (this.random(2) === 0) {
+			if (this.randomChance(1, 2)) {
 				return;
 			}
 			move = {
@@ -183,7 +183,7 @@ exports.BattleStatuses = {
 		onStallMove: function () {
 			let counter = Math.floor(this.effectData.counter) || 127;
 			this.debug("Success chance: " + Math.round(counter * 1000 / 255) / 10 + "% (" + counter + "/255)");
-			return (this.random(255) < counter);
+			return this.randomChance(counter, 255);
 		},
 		onRestart: function () {
 			this.effectData.counter /= 2;
