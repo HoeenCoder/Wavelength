@@ -41,7 +41,7 @@ function write() {
 }
 
 for (let u in factions) {
-	factions[u].joinDate = {};
+	if (!factions[u].joinDate) factions[u].joinDate = {};
 	for (let i in factions[u].users) {
 		if (factions[u].joinDate[factions[u].users[i]]) continue;
 		factions[u].joinDate[factions[u].users[i]] = Date.now() - 7100314200;
@@ -710,7 +710,7 @@ exports.commands = {
 			display += '<tr><td style="border: 2px solid #070e96; width: 20%; text-align: center"><button name="send" value="/factions buy backgroundmusic">Background and music tokens</button></td><td style="border: 2px solid #070e96; width: 70%; text-align: center">Buys background and music tokens for everyone in the faction</td><td style="border: 2px solid #070e96; width: 10%; text-align: center">' + (userCount <= 15 ? 10 * userCount : (10 * userCount) + (-2 * userCount)) + '</td></tr>';
 			display += '<tr><td style="border: 2px solid #070e96; width: 20%; text-align: center"><button name="send" value="/factions buy avatars">Avatars</button></td><td style="border: 2px solid #070e96; width: 70%; text-align: center">Buys Avatars for everyone in the faction</td><td style="border: 2px solid #070e96; width: 10%; text-align: center">' + (userCount <= 15 ? 20 * userCount : (20 * userCount) + (-2 * userCount)) + '</td></tr>';
 			display += '<tr><td style="border: 2px solid #070e96; width: 20%; text-align: center"><button name="send" value="/factions buy xpbooster2x">XP booster 2x</button></td><td style="border: 2px solid #070e96; width: 70%; text-align: center">Buys 2x XP booster for everyone in the faction</td><td style="border: 2px solid #070e96; width: 10%; text-align: center">' + (userCount <= 15 ? 50 * userCount : (50 * userCount) + (-8 * userCount)) + '</td></tr>';
-			display += '<tr><td style="border: 2px solid #070e96; width: 20%; text-align: center"><button name="send" value="/factions buy xpbooster3x">XP booster 3x</button></td><td style="border: 2px solid #070e96; width: 70%; text-align: center">Buys 3x XP booster for everyone in the faction (only works for a Faction vs Faction)</td><td style="border: 2px solid #070e96; width: 10%; text-align: center">' + (userCount <= 15 ? 65 * userCount : (65 * userCount) + (-6 * userCount)) + '</td></tr>';
+			// display += '<tr><td style="border: 2px solid #070e96; width: 20%; text-align: center"><button name="send" value="/factions buy xpbooster3x">XP booster 3x</button></td><td style="border: 2px solid #070e96; width: 70%; text-align: center">Buys 3x XP booster for everyone in the faction (only works for a Faction vs Faction)</td><td style="border: 2px solid #070e96; width: 10%; text-align: center">' + (userCount <= 15 ? 65 * userCount : (65 * userCount) + (-6 * userCount)) + '</td></tr>';
 			display += '</table></div>';
 			return this.sendReplyBox(display);
 		},
@@ -743,11 +743,11 @@ exports.commands = {
 			} else if (toId(target) === 'xpbooster2x' && userCount > 15) {
 				price = (50 * userCount) + (-8 * userCount);
 			}
-			if (toId(target) === 'xpbooster3x' && userCount < 15) {
+			/*if (toId(target) === 'xpbooster3x' && userCount < 15) {
 				price = 65 * userCount;
 			} else if (toId(target) === 'xpbooster3x' && userCount > 15) {
 				price = (65 * userCount) + (-6 * userCount);
-			}
+			}*/
 			if (Db.factionbank.get(factionId, 0) < price) return this.errorReply(`You do not have enough faction coins in the bank!`);
 			if (!factions[factionId].boughtItems) factions[factionId].boughtItems = {};
 			let broke = false;
