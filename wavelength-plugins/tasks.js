@@ -1,7 +1,7 @@
-/********************************
- * Tasks (To-Do/Jobs) Plug-in	*
- * Created for Pokemon Showdown *
- * Created by Insist			*
+/*********************************
+ * Tasks (To-Do/Jobs) Plug-in		*
+ * Created for Pokemon Showdown	*
+ * Created by Insist					*
  ********************************/
 
 "use strict";
@@ -64,8 +64,7 @@ exports.commands = {
 		task: "list",
 		list: function (fullCmd, room, user) {
 			if (!isDev(user.userid) && !this.can("bypassall")) return false;
-			if (!this.runBroadcast()) return;
-			if (this.broadcasting && room.id !== "development") return this.errorReply(`You may only broadcast this command in Development.`);
+			if (room && room.id === 'development' && !this.runBroadcast()) return;
 			if (!Db.tasks.keys().length) return this.errorReply(`There are currently no tasks on this server.`);
 			let taskList = Db.tasks.get("development", {issues: {}});
 			let display = `<table><tr><center><h1>Wavelength's Tasks List:</h1></center></tr>`;
