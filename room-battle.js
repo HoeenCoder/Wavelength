@@ -1020,7 +1020,10 @@ class Battle {
 		}
 		this.stream.write(`>player ${slot} ` + JSON.stringify(options));
 		if (this.started) this.onUpdateConnection(user);
-		if (this.p1 && this.p2) this.started = true;
+		if (this.p1 && this.p2) {
+			this.started = true;
+			Rooms.global.onCreateBattleRoom(Users(this.p1.userid), Users(this.p2.userid), this.room, {rated: this.rated});
+		}
 		return player;
 	}
 
@@ -1085,10 +1088,14 @@ if (!PM.isParentProcess) {
 	// @ts-ignore
 	global.Config = require('./config/config');
 	global.Chat = require('./chat');
-	global.__version = require('child_process')
-		.execSync('git merge-base master HEAD')
-		.toString()
-		.trim();
+	global.__version = '';
+	try {
+		const execSync = require('child_process').execSync;
+		const out = execSync('git merge-base master HEAD', {
+			stdio: ['ignore', 'pipe', 'ignore'],
+		});
+		global.__version = ('' + out).trim();
+	} catch (e) {}
 
 	if (Config.crashguard) {
 		// graceful crash - allow current battles to finish before restarting

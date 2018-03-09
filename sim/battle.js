@@ -190,7 +190,7 @@ class Battle extends Dex.ModdedDex {
 
 		const inputOptions = {formatid: options.formatid, seed: this.prng.seed};
 		if (this.rated) inputOptions.rated = this.rated;
-		if (global.__version !== undefined) {
+		if (global.__version) {
 			this.inputLog.push(`>version ${global.__version}`);
 		}
 		this.inputLog.push(`>start ` + JSON.stringify(inputOptions));
@@ -221,6 +221,14 @@ class Battle extends Dex.ModdedDex {
 	 */
 	random(m, n) {
 		return this.prng.next(m, n);
+	}
+
+	/**
+	 * @param {number} numerator
+	 * @param {number} denominator
+	 */
+	randomChance(numerator, denominator) {
+		return this.prng.randomChance(numerator, denominator);
 	}
 
 	resetRNG() {
@@ -1099,11 +1107,11 @@ class Battle extends Dex.ModdedDex {
 			statuses.push({status: item, callback: item[callbackType], statusData: thing.itemData, end: thing.clearItem, thing: thing});
 			this.resolveLastPriority(statuses, callbackType);
 		}
-		let baseSpecies = this.getEffect(thing.template.baseSpecies);
+		let species = thing.baseTemplate;
 		// @ts-ignore
-		if (baseSpecies[callbackType] !== undefined) {
+		if (species[callbackType] !== undefined) {
 			// @ts-ignore
-			statuses.push({status: baseSpecies, callback: baseSpecies[callbackType], statusData: thing.speciesData, end: function () {}, thing: thing});
+			statuses.push({status: species, callback: species[callbackType], statusData: thing.speciesData, end: function () {}, thing: thing});
 			this.resolveLastPriority(statuses, callbackType);
 		}
 
@@ -1614,32 +1622,34 @@ class Battle extends Dex.ModdedDex {
 				if (!pokemon.knownType || this.getImmunity('trapped', pokemon)) {
 					this.runEvent('MaybeTrapPokemon', pokemon);
 				}
-				// Disable the faculty to cancel switches if a foe may have a trapping ability
-				for (const source of pokemon.side.foe.active) {
-					if (!source || source.fainted) continue;
-					let template = (source.illusion || source).template;
-					if (!template.abilities) continue;
-					for (let abilitySlot in template.abilities) {
-						// @ts-ignore
-						let abilityName = template.abilities[abilitySlot];
-						if (abilityName === source.ability) {
-							// pokemon event was already run above so we don't need
-							// to run it again.
-							continue;
+				// canceling switches would leak information
+				// if a foe might have a trapping ability
+				if (this.gen > 2) {
+					for (const source of pokemon.side.foe.active) {
+						if (!source || source.fainted) continue;
+						let template = (source.illusion || source).template;
+						if (!template.abilities) continue;
+						for (let abilitySlot in template.abilities) {
+							// @ts-ignore
+							let abilityName = template.abilities[abilitySlot];
+							if (abilityName === source.ability) {
+								// pokemon event was already run above so we don't need
+								// to run it again.
+								continue;
+							}
+							const ruleTable = this.getRuleTable(this.getFormat());
+							if (!ruleTable.has('-illegal') && !this.getFormat().team) {
+								// hackmons format
+								continue;
+							} else if (abilitySlot === 'H' && template.unreleasedHidden) {
+								// unreleased hidden ability
+								continue;
+							}
+							let ability = this.getAbility(abilityName);
+							if (ruleTable.has('-ability:' + ability.id)) continue;
+							if (pokemon.knownType && !this.getImmunity('trapped', pokemon)) continue;
+							this.singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source);
 						}
-						const ruleTable = this.getRuleTable(this.getFormat());
-						if (!ruleTable.has('-illegal') && !this.getFormat().team) {
-							// hackmons format
-							continue;
-						} else if (abilitySlot === 'H' && template.unreleasedHidden) {
-							// unreleased hidden ability
-							continue;
-						}
-						let ability = this.getAbility(abilityName);
-						if (ruleTable.has('-' + ability.id)) continue;
-						if (pokemon.knownType && !this.getImmunity('trapped', pokemon)) continue;
-						this.singleEvent('FoeMaybeTrapPokemon',
-							ability, {}, pokemon, source);
 					}
 				}
 
@@ -1703,7 +1713,7 @@ class Battle extends Dex.ModdedDex {
 		const ruleTable = this.getRuleTable(this.getFormat());
 		if (ruleTable.has('endlessbattleclause')) {
 			if (oneStale) {
-				let activationWarning = ` - If all active Pok&eacute;mon go in an endless loop, Endless Battle Clause will activate.`;
+				let activationWarning = ` - If all active Pok\u00e9mon go in an endless loop, Endless Battle Clause will activate.`;
 				if (allStale) activationWarning = ``;
 				let loopReason = ``;
 				switch (oneStale.isStaleSource) {
@@ -2220,7 +2230,7 @@ class Battle extends Dex.ModdedDex {
 		move.crit = move.willCrit || false;
 		if (move.willCrit === undefined) {
 			if (critRatio) {
-				move.crit = (this.random(critMult[critRatio]) === 0);
+				move.crit = this.randomChance(1, critMult[critRatio]);
 			}
 		}
 

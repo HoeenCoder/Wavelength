@@ -181,7 +181,7 @@ exports.commands = {
 				}
 				Economy.writeMoney(user.userid, item.price * -1, () => {
 					Economy.readMoney(user.userid, amount => {
-						Economy.logTransaction(user.name + " has purchased a " + item.name + " for " + item.price + " " + (item.price === 1 ? global.currencyName : global.currenyPlural) + ". They now have " + amount + " " + (userMoney === 1 ? global.currencyName : global.currenyPlural));
+						Economy.logTransaction(user.name + " has purchased a " + item.name + " for " + item.price + " " + (item.price === 1 ? global.currencyName : global.currencyPlural) + ". They now have " + amount + " " + (userMoney === 1 ? global.currencyName : global.currencyPlural));
 						switch (item.id) {
 						case 'customsymbol':
 							user.canCustomSymbol = true;

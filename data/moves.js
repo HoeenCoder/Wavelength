@@ -784,7 +784,7 @@ exports.BattleMovedex = {
 			onBeforeMovePriority: 2,
 			onBeforeMove: function (pokemon, target, move) {
 				this.add('-activate', pokemon, 'move: Attract', '[of] ' + this.effectData.source);
-				if (this.random(2) === 0) {
+				if (this.randomChance(1, 2)) {
 					this.add('cant', pokemon, 'Attract');
 					return false;
 				}
@@ -5500,7 +5500,6 @@ exports.BattleMovedex = {
 		desc: "The target restores 1/2 of its maximum HP, rounded half up. If the terrain is Grassy Terrain, the target instead restores 2/3 of its maximum HP, rounded half down.",
 		shortDesc: "Heals the target by 50% of its max HP.",
 		id: "floralhealing",
-		isViable: true,
 		name: "Floral Healing",
 		pp: 10,
 		priority: 0,
@@ -14117,6 +14116,7 @@ exports.BattleMovedex = {
 		desc: "Has a 30% chance to burn the target.",
 		shortDesc: "30% chance to burn adjacent Pokemon.",
 		id: "searingshot",
+		isViable: true,
 		name: "Searing Shot",
 		pp: 5,
 		priority: 0,
@@ -18581,6 +18581,7 @@ exports.BattleMovedex = {
 		desc: "Hits two to five times. Has a 1/3 chance to hit two or three times, and a 1/6 chance to hit four or five times. If one of the hits breaks the target's substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit five times. Base power is 20 if the user is Ash-Greninja.",
 		shortDesc: "Hits 2-5 times in one turn.",
 		id: "watershuriken",
+		isViable: true,
 		name: "Water Shuriken",
 		pp: 20,
 		priority: 1,
@@ -19171,7 +19172,7 @@ exports.BattleMovedex = {
 		name: "Magikarp's Revenge",
 		pp: 10,
 		priority: 0,
-		flags: {contact: 1, recharge: 1, protect: 1, mirror: 1},
+		flags: {contact: 1, recharge: 1, protect: 1, mirror: 1, heal: 1},
 		noSketch: true,
 		drain: [1, 2],
 		onTry: function (pokemon) {

@@ -511,7 +511,7 @@ exports.BattleAbilities = {
 		onAfterDamage: function (damage, target, source, move) {
 			if (!source || source.volatiles['disable']) return;
 			if (source !== target && move && move.effectType === 'Move' && !move.isFutureMove) {
-				if (this.random(10) < 3) {
+				if (this.randomChance(3, 10)) {
 					source.addVolatile('disable', this.effectData.target);
 				}
 			}
@@ -526,7 +526,7 @@ exports.BattleAbilities = {
 		shortDesc: "30% chance of infatuating Pokemon of the opposite gender if they make contact.",
 		onAfterDamage: function (damage, target, source, move) {
 			if (move && move.flags['contact']) {
-				if (this.random(10) < 3) {
+				if (this.randomChance(3, 10)) {
 					source.addVolatile('attract', this.effectData.target);
 				}
 			}
@@ -905,7 +905,7 @@ exports.BattleAbilities = {
 		shortDesc: "30% chance a Pokemon making contact with this Pokemon will be burned.",
 		onAfterDamage: function (damage, target, source, move) {
 			if (move && move.flags['contact']) {
-				if (this.random(10) < 3) {
+				if (this.randomChance(3, 10)) {
 					source.trySetStatus('brn', target);
 				}
 			}
@@ -1266,7 +1266,7 @@ exports.BattleAbilities = {
 		onResidualOrder: 26,
 		onResidualSubOrder: 1,
 		onResidual: function (pokemon) {
-			if (this.isWeather(['sunnyday', 'desolateland']) || this.random(2) === 0) {
+			if (this.isWeather(['sunnyday', 'desolateland']) || this.randomChance(1, 2)) {
 				if (pokemon.hp && !pokemon.item && this.getItem(pokemon.lastItem).isBerry) {
 					pokemon.setItem(pokemon.lastItem);
 					pokemon.lastItem = '';
@@ -1290,7 +1290,7 @@ exports.BattleAbilities = {
 				return;
 			}
 			for (let i = 0; i < allyActive.length; i++) {
-				if (allyActive[i] && allyActive[i].hp && this.isAdjacent(pokemon, allyActive[i]) && allyActive[i].status && this.random(10) < 3) {
+				if (allyActive[i] && allyActive[i].hp && this.isAdjacent(pokemon, allyActive[i]) && allyActive[i].status && this.randomChance(3, 10)) {
 					this.add('-activate', pokemon, 'ability: Healer');
 					allyActive[i].cureStatus();
 				}
@@ -1354,6 +1354,7 @@ exports.BattleAbilities = {
 		onModifyAtk: function (atk) {
 			return this.modify(atk, 1.5);
 		},
+		onModifyMovePriority: -1,
 		onModifyMove: function (move) {
 			if (move.category === 'Physical' && typeof move.accuracy === 'number') {
 				move.accuracy *= 0.8;
@@ -2026,7 +2027,7 @@ exports.BattleAbilities = {
 		name: "Mummy",
 		onAfterDamage: function (damage, target, source, move) {
 			if (source && source !== target && move && move.flags['contact'] && source.ability !== 'mummy') {
-				let oldAbility = source.setAbility('mummy');
+				let oldAbility = source.setAbility('mummy', target);
 				if (oldAbility) {
 					this.add('-activate', target, 'ability: Mummy', this.getAbility(oldAbility).name, '[of] ' + source);
 				}
@@ -2388,7 +2389,7 @@ exports.BattleAbilities = {
 		shortDesc: "30% chance a Pokemon making contact with this Pokemon will be poisoned.",
 		onAfterDamage: function (damage, target, source, move) {
 			if (move && move.flags['contact']) {
-				if (this.random(10) < 3) {
+				if (this.randomChance(3, 10)) {
 					source.trySetStatus('psn', target);
 				}
 			}
@@ -2939,7 +2940,7 @@ exports.BattleAbilities = {
 		onResidualOrder: 5,
 		onResidualSubOrder: 1,
 		onResidual: function (pokemon) {
-			if (pokemon.hp && pokemon.status && this.random(3) === 0) {
+			if (pokemon.hp && pokemon.status && this.randomChance(1, 3)) {
 				this.debug('shed skin');
 				this.add('-activate', pokemon, 'ability: Shed Skin');
 				pokemon.cureStatus();
@@ -3289,7 +3290,7 @@ exports.BattleAbilities = {
 		shortDesc: "30% chance a Pokemon making contact with this Pokemon will be paralyzed.",
 		onAfterDamage: function (damage, target, source, move) {
 			if (move && move.flags['contact']) {
-				if (this.random(10) < 3) {
+				if (this.randomChance(3, 10)) {
 					source.trySetStatus('par', target);
 				}
 			}
@@ -3967,7 +3968,7 @@ exports.BattleAbilities = {
 		shortDesc: "If a physical attack hits this Pokemon, Defense is lowered by 1, Speed is raised by 2.",
 		onAfterDamage: function (damage, target, source, move) {
 			if (move.category === 'Physical') {
-				this.boost({def: -1, spe: 2});
+				this.boost({def: -1, spe: 2}, target, target);
 			}
 		},
 		id: "weakarmor",

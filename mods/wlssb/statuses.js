@@ -48,18 +48,6 @@ exports.BattleStatuses = {
 			this.add('c', '@Ashley the Pikachu', 'PikaPikaaaa');
 		},
 	},
-	ducktown: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+ducktown', 'Beware! You are entering a town of ducks!');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+ducktown', 'My other ducks will come attack you!');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+ducktown', 'Quack Quack Quaaaaaa...');
-		},
-	},
 	hoeenhero: {
 		exists: true,
 		onStart: function () {
@@ -70,18 +58,6 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '~HoeenHero', 'Hey! Thats more hax than I get to use >:(');
-		},
-	},
-	hiroz: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '@HiroZ', 'Your wing isn\'t able to fly anywhere!');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '@HiroZ', 'Crawl like the insect you are, I\'ll be back!');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '@HiroZ', 'Argh... scumbag...');
 		},
 	},
 	admewn: {
@@ -99,17 +75,16 @@ exports.BattleStatuses = {
 	mystifi: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Mystifi', '__I\'ll HM01 u faster then sanic m89__');
+			this.add('c', '+Mystifi', '__I\'ll HM01 u faster then sanic m89__');
 		},
-		onSwitchOut: function (pokemon) {},
 		onFaint: function (pokemon) {
-			this.add('c', '~Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
+			this.add('c', '+Mystifi', '**WOW U HACKER I\'M REPORTING YOU TO ZAREL**');
 		},
 	},
 	krakenmare: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Kraken Mare', 'Today, I prove Gardevoir as the best Pokmeon!');
+			this.add('c', '~Kraken Mare', 'Today, I prove Gardevoir as the best Pokemon!');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '~Kraken Mare', 'I shall spare you today, young one!');
@@ -186,32 +161,63 @@ exports.BattleStatuses = {
 	lycaniumz: {
 		exists: true,
 		onStart: function (pokemon) {
-			pokemon.types = ["Dark"];
-			this.add('c', '%Lycanium Z', '...Hi...');
+			let msg = ['The diginoob is here!', 'Im here!', 'hellur', 'Le overpowered dude has arrived', 'Tell meicoo that tamers spoilers: the d-reaper is a character', 'time for a new discussion!', 'hey princess luna pass me a pastry based weapon of death!'][this.random(7)];
+			this.add('c', '%Lycanium Z', msg);
+			this.useMove('memes', pokemon);
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'I gotta know when to stop, and its now.');
+			this.add('c', '%Lycanium Z', 'Brb dming swagn for more dank memes');
 		},
-		onFaint: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'Oh well, I tried.');
+		onFaint: function (pokemon, target) {
+			let msg = ['I blame darth', 'Andy sux :<', 'gg i sux lol bye', '...and back to deadness', 'figures >_>', 'nO'][this.random(5)];
+			this.add('c', '%Lycanium Z', msg);
 		},
 	},
-	dread: {
+	instantdeath: {
 		// this is a volatile status
 		onStart: function (target, source, sourceEffect) {
-			this.add('-start', target, 'Dread');
-			this.add('-message', target.name + ' will die in 3 turns!');
-			this.effectData.time = 4;
-		},
-		onEnd: function (target) {
-			this.add('-end', target, 'Dread');
+			this.add('-start', target, 'Instant Death');
 			target.faint();
 		},
-		onResidual: function (pokemon) {
-			pokemon.volatiles.dread.time--;
-			if (!pokemon.volatiles.dread.time) {
-				pokemon.removeVolatile('Dread');
-				return;
+	},
+	any: {
+		onStart: function (target, source, sourceEffect) {
+			//Nothing for the opponnet to not know what is going on
+		},
+		onResidualOrder: 9,
+		onResidual: function (pokemon, source) {
+			let heckle = this.random(11);
+			if (heckle === 0) {
+				this.add('html|<button name="send" value="/forfeit">Hey ' + pokemon.side.name + '! Click me to win!</button>');
+			} else if (heckle === 1) {
+				this.add("raw|<div class=\"broadcast-red\"><b>The server is restarting soon.</b><br />" + pokemon.side.name + " please forfeit to end the game. No new battles can be started until the server resets in a few minutes.</div>");
+			} else if (heckle === 2) {
+				this.add('c', pokemon.name, pokemon.side.name + ' sucks');
+			} else if (heckle === 3) {
+				this.add('l|☆' + pokemon.side.name);
+			} else if (heckle === 4) {
+				this.add('j|~Evil Admin');
+				this.add('c|~Evil Admin|' + pokemon.side.name + ', you have been caught cheating on the server, please concede or else risk punishment.');
+				this.add('l|~Evil Admin');
+			} else if (heckle === 5) {
+				this.add('j| ' + pokemon.side.name + 'Please Forfeit');
+				for (let i = 0; i < this.random(1000); i++) {
+					this.add('c| ' + pokemon.side.name + 'Please Forfeit|/me');
+				}
+			} else if (heckle === 6) {
+				let msg = ['frz', 'par', 'brn', 'tox', 'slp'][this.random(5)];
+				this.add('-status', pokemon, msg);
+			} else if (heckle === 7) {
+				let msg = ['Normalize', 'Truant', 'Defeatist', 'Slow Start'][this.random(5)];
+				this.add('-ability', pokemon, msg);
+			} else if (heckle === 8) {
+				this.add('raw', '<h2>Turn Forfeit ' + pokemon.side.name + '</h2>');
+			} else if (heckle === 9) {
+				let msg = ['ヽ༼ຈل͜ຈ༽ﾉ raise your dongers ' + pokemon.side.foe.name + ' ヽ༼ຈل͜ຈ༽ﾉ', pokemon.side.foe.name + ' cant do nothing against me. Youre the worst player on all of PS! Fuck you.', 'im bad and everyone knows it <3', 'make me lose daddy ' + pokemon.side.foe.name + ' ;)', '/me is garbage'][this.random(4)];
+				this.add('c|☆' + pokemon.side.name + '|' + msg);
+			} else if (heckle === 10) {
+				let Jackpot = this.random(99998) + 2;
+				this.add("raw|<div class=\"broadcast-blue\"><b>Hey " + pokemon.side.name + "! You just won " + Jackpot + " Stardust!<br />Please forfeit this game in order to claim your prize.</b></div>");
 			}
 		},
 	},
@@ -239,13 +245,13 @@ exports.BattleStatuses = {
 	volco: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '@Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
+			this.add('c', '&Volco', 'So you summoned me... while I\'m coding? Fine I\'ll battle... but I wont like it!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '@Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
+			this.add('c', '&Volco', 'I\'m taking a break to code some stuff while in class. #IDontLikeClass');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '@Volco', 'Okay then. BACK TO CODING!');
+			this.add('c', '&Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
 	mosmero: {
@@ -263,10 +269,10 @@ exports.BattleStatuses = {
 	cubsfan38: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '&CubsFan38', 'Your favorite Rowlet has arrived to battle!');
+			this.add('c', '~CubsFan38', 'Your favorite Rowlet has arrived to battle!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '&CubsFan38', 'It\'s cold here, I\'m out.');
+			this.add('c', '~CubsFan38', 'It\'s cold here, I\'m out.');
 		},
 	},
 	mechsteelix: {
@@ -372,6 +378,41 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+SnorlaxTheRain', 'Even though u have won, I will still sleep and regain my energy in order to fight against u once more!');
+		},
+	},
+	showdownhelper: {
+		exists: true,
+		onStart: function (pokemon) {
+			this.add('c', ' Lexi Lynn', 'i love you hypershaymin');
+			this.add('-start', pokemon, 'typechange', 'Grass/Fairy');
+			pokemon.types = ["Grass", "Fairy"];
+		},
+		onFaint: function (pokemon) {
+			this.add('c', ' hypershaymin', 'ok');
+		},
+	},
+	finny: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '^Finny', 'Thats pretty juicy');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '^Finny', 'Oop');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '^Finny', 'Hello darkness my old friend');
+		},
+	},
+	thedazzlerjoe: {
+		exists: true,
+		onStart: function () {
+			this.add('c', '+The Dazzler Joe', 'HellJoe! Ready for some puns?');
+		},
+		onSwitchOut: function (pokemon) {
+			this.add('c', '+The Dazzler Joe', 'I\'m Absol-utely out of here!');
+		},
+		onFaint: function (pokemon) {
+			this.add('c', '+The Dazzler Joe', 'It\'s time to... GtfJoe');
 		},
 	},
 };
