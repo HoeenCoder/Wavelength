@@ -720,7 +720,7 @@ exports.commands = {
 			if (!getFaction(user.userid)) return false;
 			if (toId(getFactionRank(user.userid)) !== 'owner') return false;
 			let userCount = factions[toId(getFaction(user.userid))].users.length;
-			let items = ['icons', 'backgroundmusic', 'avatars', 'xpbooster2x', 'xpbooster3x'];
+			let items = ['icons', 'backgroundmusic', 'avatars', 'xpbooster2x'];
 			if (items.indexOf(toId(target)) === -1) return this.errorReply(`Shop items are ${items.join(', ')}`);
 			let price = 1; // place holder price that is changed
 			if (toId(target) === 'icons' && userCount < 15) {
