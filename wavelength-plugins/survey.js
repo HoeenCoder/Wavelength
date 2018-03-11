@@ -235,6 +235,7 @@ exports.commands = {
 					repliers: {},
 					replierIps: {},
 					timeout: null,
+					startTime: Date.now(),
 					startedUser: WL.nameColor(user.name, true, true),
 					timeoutMins: 0,
 				});
