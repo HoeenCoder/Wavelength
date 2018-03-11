@@ -56,7 +56,7 @@ for (let u in factions) {
 		coins = coins - remainder;
 		let owner = factions[u].ranks['owner'].users[0];
 		Economy.writeMoney(toId(owner), remainder);
-		Economy.logTransaction(`${owner} has earned ${remainder} ${moneyName}${Chat.plural(moneyPlural)}!`);
+		Economy.logTransaction(`${owner} has earned ${remainder} ${currencyName}${Chat.plural(currencyPlural)}!`);
 	}
 	Db.factionbank.remove(factions[u].id);
 	Db.factionbank.set(factions[u].id, coins / 20);
