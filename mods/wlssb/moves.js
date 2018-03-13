@@ -27,6 +27,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Geomancy", target);
 		},
 		target: "normal",
+		accuracy: true,
 		type: "Psychic",
 	},
 	// Almighty Bronzong
@@ -51,6 +52,7 @@ exports.BattleMovedex = {
 		},
 		drain: [7, 20], //35%
 		target: "self",
+		accuracy: true,
 		type: "Fire",
 	},
 	// Kraken Mare
@@ -85,7 +87,6 @@ exports.BattleMovedex = {
 			return move.basePower + 10 * pokemon.positiveBoosts();
 		},
 		id: "shatterbreak",
-		isViable: true,
 		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko.",
 		isNonstandard: true,
 		name: "Shatter Break",
@@ -155,6 +156,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Leaf Storm", target);
 		},
 		target: "normal",
+		accuracy: 100,
 		type: "Grass",
 	},
 	// Ashley the Pikachu
@@ -199,6 +201,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Thrash", target);
 		},
 		target: "normal",
+		accuracy: 100,
 		type: "Normal",
 	},
 	// Mystifi
@@ -220,6 +223,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Charm", source);
 		},
 		target: "self",
+		accuracy: true,
 		type: "Fairy",
 	},
 	// Auction
@@ -266,6 +270,7 @@ exports.BattleMovedex = {
 		},
 		desc: "Raises user's Attack and Speed by 1 stage, and heals health by 5/20 maximum HP",
 		target: "self",
+		accuracy: true,
 		type: "Dragon",
 	},
 	// Admewn
@@ -322,6 +327,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Waterfall", target);
 		},
 		target: "Normal",
+		accuracy: true,
 		type: "Water",
 	},
 	//Tidal Wave Bot
@@ -329,6 +335,7 @@ exports.BattleMovedex = {
 		category: "Status",
 		id: "serverguardian",
 		isViable: true,
+		accuracy: true,
 		isNonstandard: true,
 		name: "Server Guardian",
 		pp: 10,
@@ -374,6 +381,7 @@ exports.BattleMovedex = {
 			this.add('-anim', source, "Shell Smash", source);
 		},
 		target: "self",
+		accuracy: true,
 		type: "Water",
 	},
 	// Lycanium Z
@@ -833,7 +841,6 @@ exports.BattleMovedex = {
 	},
 	// Alfastorm
 	"darkspiral": {
-		num: 212,
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
@@ -920,7 +927,7 @@ exports.BattleMovedex = {
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Memento", target);
-			this.add('-anim', source, "Haze", target);
+			this.add('-anim', source, "Blizzard", target);
 		},
 		priority: 0,
 		secondary: false,
