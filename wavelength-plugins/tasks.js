@@ -34,7 +34,7 @@ exports.commands = {
 		add: function (target, room, user) {
 			if (!isDev(user.userid) && !this.can("bypassall")) return false;
 			let [issue, ...description] = target.split(",").map(p => p.trim());
-			let task = Db.tasks.get("development", {issues: {}});
+			let task = Db.tasks.get("development");
 			if (!issue || !description) return this.parse("/taskshelp");
 			if (task.issues[toId(issue)]) return this.errorReply(`This issue title already exists.`);
 			if (issue.length < 1 || issue.length > 30) return this.errorReply(`The issue title should not exceed 30 characters long. Feel free to continue in the description.`);
@@ -51,7 +51,7 @@ exports.commands = {
 		delete: function (target, room, user) {
 			if (!isDev(user.userid) && !this.can("bypassall")) return false;
 			target = toId(target);
-			let task = Db.tasks.get("development", {issues: {}});
+			let task = Db.tasks.get("development");
 			if (!target) return this.parse(`/taskshelp`);
 			if (!task.issues[target]) return this.errorReply(`The issue "${target}" has not been reported.`);
 			delete task.issues[target];
@@ -62,11 +62,11 @@ exports.commands = {
 		"": "list",
 		tasks: "list",
 		task: "list",
-		list: function (fullCmd, room, user) {
+		list: function (target, room, user) {
 			if (!isDev(user.userid) && !this.can("bypassall")) return false;
 			if (room && room.id === 'development' && !this.runBroadcast()) return;
 			if (!Db.tasks.keys().length) return this.errorReply(`There are currently no tasks on this server.`);
-			let taskList = Db.tasks.get("development", {issues: {}});
+			let taskList = Db.tasks.get("development");
 			let display = `<table><tr><center><h1>Wavelength's Tasks List:</h1></center></tr>`;
 			for (let i in taskList.issues) {
 				display += `<tr><td style="border: 2px solid #000000; width: 20%; text-align: center">Employer: <button class="button" name="parseCommand" value="/user ${taskList.issues[i].employer}">${WL.nameColor(taskList.issues[i].employer, true, true)}</button></td><td style="border: 2px solid #000000; width: 20%; text-align: center">Issue Title: ${taskList.issues[i].issue}</td><td style="border: 2px solid #000000; width: 20%; text-align: center">Description: ${taskList.issues[i].description}</td></tr>`;
