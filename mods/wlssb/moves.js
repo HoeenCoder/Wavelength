@@ -171,7 +171,6 @@ exports.BattleMovedex = {
 		desc: "No additional effects",
 		priority: 0.1,
 		target: "normal",
-		accuracy: true,
 		flags: {protect: 1, mirror: 1},
 		type: "Fire",
 		onPrepareHit: function (target, source) {
