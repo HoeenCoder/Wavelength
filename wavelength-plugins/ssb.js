@@ -358,7 +358,7 @@ class SSB {
 		move = Dex.getMove(toId(move));
 		if (!move.exists) return self.errorReply(`The move "${move.name}" does not exist.`); //Only normal moves here.
 		if (this.movepool.length + (this.cMove === false ? 0 : 1) >= MAX_MOVEPOOL_SIZE) return self.errorReply(`You already have ${MAX_MOVEPOOL_SIZE} moves.`);
-		let result = await TeamValidatorAsync("gen7ou").validateTeam(Dex.packTeam([{species: this.species, ability: this.ability, moves: [move]}]));
+		let result = await TeamValidatorAsync("gen7ou").validateTeam(Dex.packTeam([{species: this.species, moves: [move]}]));
 		if (result.substring(0, 1) === "0") return self.errorReply(`${this.species} cannot learn ${move.name}.`);
 		if (this.movepool.indexOf(move.name) > -1) return self.errorReply(`${this.species} already knows ${move.name}.`);
 		this.movepool.push(move.name);
