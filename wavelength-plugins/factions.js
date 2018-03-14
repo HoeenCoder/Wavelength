@@ -8,14 +8,30 @@
 'use strict';
 
 /****** General Faction Functions Start ******/
-let factions = {};
-const fs = require('fs');
-try {
-	factions = JSON.parse(fs.readFileSync('config/factions.json', 'utf8'));
-} catch (e) {
-	if (e.code !== 'ENOENT') throw e;
+const FS = require("../lib/fs.js");
+
+let factions = FS("config/factions.json").readIfExistsSync();
+
+if (factions !== "") {
+	factions = JSON.parse(factions);
+} else {
+	factions = {};
 }
 
+function write() {
+	FS("config/factions.json").writeUpdate(() => (
+		JSON.stringify(factions)
+	));
+	let data = "{\n";
+	for (let u in factions) {
+		data += '\t"' + u + '": ' + JSON.stringify(factions[u]) + ",\n";
+	}
+	data = data.substr(0, data.length - 2);
+	data += "\n}";
+	FS("config/factions.json").writeUpdate(() => (
+		data
+	));
+}
 function getFaction(user) {
 	user = toId(user);
 	let reply;
@@ -28,17 +44,6 @@ function getFaction(user) {
 	return reply;
 }
 WL.getFaction = getFaction;
-
-function write() {
-	if (Object.keys(factions).length < 1) return fs.writeFileSync('config/factions.json', JSON.stringify(factions));
-	let data = "{\n";
-	for (let u in factions) {
-		data += '\t"' + u + '": ' + JSON.stringify(factions[u]) + ",\n";
-	}
-	data = data.substr(0, data.length - 2);
-	data += "\n}";
-	fs.writeFileSync('config/factions.json', data);
-}
 
 for (let u in factions) {
 	if (!factions[u].joinDate) factions[u].joinDate = {};
