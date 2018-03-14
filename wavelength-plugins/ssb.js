@@ -3,6 +3,7 @@
 global.TeamValidator = require("../sim/team-validator");
 let FS = require("../lib/fs");
 let ssbWrite = true; //if false, do not write to JSON
+let noRead = false; //if true, do not read from JSON
 const MAX_MOVEPOOL_SIZE = 4;
 let customMovepool = ["Stretch", "Flame Tower", "Rain Spear", "Healing Herbs", "Electro Drive", "Hailstorm", "Beat Down", "Nuclear Waste", "Terratremor", "Ventilation", "Psychic Shield", "Swarm Charge", "Rock Cannon", "Spook", "Imperial Rampage", "Shadow Run", "Magnorang", "Majestic Dust"]; //Add default custom move names here.
 let typeList = ["Normal", "Fire", "Water", "Grass", "Electric", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
