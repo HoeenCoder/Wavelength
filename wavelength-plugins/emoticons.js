@@ -2,41 +2,45 @@
 Emoticon plugin
 This plugin allows you to use emoticons in both chat rooms (as long as they are enabled in the room) and private messages.
 */
-'use strict';
+"use strict";
 
-const fs = require('fs');
-let emoticons = {'feelsbd': 'http://i.imgur.com/TZvJ1lI.png'};
-let emoteRegex = new RegExp('feelsbd', 'g');
+const FS = require("../lib/fs.js");
+
+let emoticons = {"feelsbd": "http://i.imgur.com/TZvJ1lI.png"};
+let emoteRegex = new RegExp("feelsbd", "g");
 WL.ignoreEmotes = {};
 try {
-	WL.ignoreEmotes = JSON.parse(fs.readFileSync('config/ignoreemotes.json', 'utf8'));
+	WL.ignoreEmotes = JSON.parse(FS(`config/ignoreemotes.json`).readIfExistsSync());
 } catch (e) {}
 
 function loadEmoticons() {
 	try {
-		emoticons = JSON.parse(fs.readFileSync('config/emoticons.json', 'utf8'));
+		emoticons = JSON.parse(FS(`config/emoticons.json`).readIfExistsSync());
 		emoteRegex = [];
 		for (let emote in emoticons) {
 			emoteRegex.push(escapeRegExp(emote));
 		}
-		emoteRegex = new RegExp('(' + emoteRegex.join('|') + ')', 'g');
+		emoteRegex = new RegExp(`(${emoteRegex.join(`|`)})`, `g`);
 	} catch (e) {}
 }
 loadEmoticons();
 
 function saveEmoticons() {
-	fs.writeFileSync('config/emoticons.json', JSON.stringify(emoticons));
+	FS(`config/emoticons.json`).writeSync(JSON.stringify(emoticons));
 	emoteRegex = [];
 	for (let emote in emoticons) {
 		emoteRegex.push(emote);
 	}
-	emoteRegex = new RegExp('(' + emoteRegex.join('|') + ')', 'g');
+	emoteRegex = new RegExp(`(${emoteRegex.join(`|`)})`, `g`);
 }
 
-function parseEmoticons(message) {
+function parseEmoticons(message, room) {
 	if (emoteRegex.test(message)) {
+		let size = 50;
+		let lobby = Rooms(`lobby`);
+		if (lobby && lobby.emoteSize) size = lobby.emoteSize;
 		message = WL.parseMessage(message).replace(emoteRegex, function (match) {
-			return `<img src="${emoticons[match]}" title="${match}" height="40" width="40">`;
+			return `<img src="${emoticons[match]}" title="${match}" height="${((room && room.emoteSize) ? room.emoteSize : size)}" width="${((room && room.emoteSize) ? room.emoteSize : size)}">`;
 		});
 		return message;
 	}
@@ -45,53 +49,69 @@ function parseEmoticons(message) {
 WL.parseEmoticons = parseEmoticons;
 
 exports.commands = {
-	blockemote: 'ignoreemotes',
-	blockemotes: 'ignoreemotes',
-	blockemoticon: 'ignoreemotes',
-	blockemoticons: 'ignoreemotes',
+	blockemote: "ignoreemotes",
+	blockemotes: "ignoreemotes",
+	blockemoticon: "ignoreemotes",
+	blockemoticons: "ignoreemotes",
 	ignoreemotes: function (target, room, user) {
 		this.parse(`/emoticons ignore`);
 	},
 
-	unblockemote: 'unignoreemotes',
-	unblockemotes: 'unignoreemotes',
-	unblockemoticon: 'unignoreemotes',
-	unblockemoticons: 'unignoreemotes',
+	unblockemote: "unignoreemotes",
+	unblockemotes: "unignoreemotes",
+	unblockemoticon: "unignoreemotes",
+	unblockemoticons: "unignoreemotes",
 	unignoreemotes: function (target, room, user) {
 		this.parse(`/emoticons unignore`);
 	},
 
-	emoticons: 'emoticon',
-	emote: 'emoticon',
-	emotes: 'emoticon',
+	emoticons: "emoticon",
+	emote: "emoticon",
+	emotes: "emoticon",
 	emoticon: {
 		add: function (target, room, user) {
-			let parts = target.split(',');
-			for (let u in parts) parts[u] = parts[u].trim();
-			if (!this.can('emote')) return false;
-			if (!parts[1]) return this.sendReply(`Usage: /emoticon add [name], [url] - Remember to resize the image first! (recommended 30x30)`);
-			if (emoticons[parts[0]]) return this.sendReply(`"${parts[0]}" is already an emoticon.`);
-			emoticons[parts[0]] = parts[1];
+			if (!this.can(`emote`)) return false;
+			if (!target) return this.sendReply("Usage: /emoticons add [name], [url]");
+
+			let targetSplit = target.split(",");
+			for (let u in targetSplit) targetSplit[u] = targetSplit[u].trim();
+
+			if (!targetSplit[1]) return this.sendReply("Usage: /emoticons add [name], [url]");
+
+			if (targetSplit[0].length > 10) return this.errorReply("Emoticons may not be longer than 10 characters.");
+			if (emoticons[targetSplit[0]]) return this.errorReply(targetSplit[0] + " is already an emoticon.");
+
+			emoticons[targetSplit[0]] = targetSplit[1];
 			saveEmoticons();
-			this.sendReply(`|raw|The emoticon "${Chat.escapeHTML(parts[0])}" has been added: <img src="${parts[1]}" width="40" height="40">`);
-			Rooms('upperstaff').add(`|raw|${WL.nameColor(user.name, true)} has added the emote "${Chat.escapeHTML(parts[0])}": <img width="40" height="40" src="${parts[1]}">`).update();
-			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has added the emote "${Chat.escapeHTML(parts[0])}": <img width="40" height="40" src="${parts[1]}">`);
+
+			let size = 50;
+			let lobby = Rooms(`lobby`);
+			if (lobby && lobby.emoteSize) size = lobby.emoteSize;
+			if (room.emoteSize) size = room.emoteSize;
+
+			this.sendReply(`|raw|The emoticon ${Chat.escapeHTML(targetSplit[0])} has been added: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
+			if (Rooms("upperstaff")) Rooms("upperstaff").add(`|raw|${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(targetSplit[0])}: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
+			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(targetSplit[0])}: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
 		},
 
-		remove: 'delete',
-		rem: 'delete',
-		del: 'delete',
-		delete: function (target, room, user) {
-			if (!this.can('emote')) return false;
-			if (!target) return this.sendReply(`Usage: /emoticon del [name]`);
-			if (!emoticons[target]) return this.sendReply(`The emoticon "${target}" does not exist.`);
+		delete: "del",
+		remove: "del",
+		rem: "del",
+		del: function (target, room, user) {
+			if (!this.can(`emote`)) return false;
+			if (!target) return this.sendReply("Usage: /emoticons remove [name]");
+			if (!emoticons[target]) return this.errorReply("That emoticon does not exist.");
+
 			delete emoticons[target];
 			saveEmoticons();
-			this.sendReply(`The emoticon "${target}" has been removed.`);
+
+			this.sendReply("That emoticon has been removed.");
+			if (Rooms("upperstaff")) Rooms("upperstaff").add(`|raw|${WL.nameColor(user.name, true)} has removed the emoticon ${Chat.escapeHTML(target)}.`);
+			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has removed the emoticon ${Chat.escapeHTML(target)}.`);
 		},
 
 		toggle: function (target, room, user) {
-			if (!this.can('editroom', null, room)) return this.sendReply(`Access denied.`);
+			if (!this.can("emote", null, room)) return this.sendReply(`Access denied.`);
 			if (!room.disableEmoticons) {
 				room.disableEmoticons = true;
 				Rooms.global.writeChatRoomData();
@@ -105,33 +125,61 @@ exports.commands = {
 			}
 		},
 
-		'': 'view',
-		list: 'view',
-		view: function (target, room, user) {
+		view: "list",
+		list: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			let reply = `<b><u>Emoticons (${Object.keys(emoticons).length})</u></b><br />`;
-			for (let emote in emoticons) reply += `(${emote} <img src="${emoticons[emote]}" height="40" width="40">) `;
+
+			let size = 50;
+			let lobby = Rooms("lobby");
+			if (lobby && lobby.emoteSize) size = lobby.emoteSize;
+			if (room.emoteSize) size = room.emoteSize;
+
+			let reply = `<strong><u>Emoticons (${Object.keys(emoticons).length})</u></strong><br />`;
+			for (let emote in emoticons) reply += `(${emote} <img src="${emoticons[emote]}" height="${size}" width="${size}">)`;
 			this.sendReply(`|raw|<div class="infobox infobox-limited">${reply}</div>`);
 		},
 
 		ignore: function (target, room, user) {
-			if (WL.ignoreEmotes[user.userid]) return this.errorReply("You are already ignoring emoticons.");
+			if (WL.ignoreEmotes[user.userid]) return this.errorReply(`You are already ignoring emoticons.`);
 			WL.ignoreEmotes[user.userid] = true;
-			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
+			FS(`config/ignoreemotes.json`).writeSync(JSON.stringify(WL.ignoreEmotes));
 			this.sendReply(`You are now ignoring emoticons.`);
 		},
 
 		unignore: function (target, room, user) {
-			if (!WL.ignoreEmotes[user.userid]) return this.errorReply("You aren't ignoring emoticons.");
+			if (!WL.ignoreEmotes[user.userid]) return this.errorReply(`You aren't ignoring emoticons.`);
 			delete WL.ignoreEmotes[user.userid];
-			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
+			FS(`config/ignoreemotes.json`).writeSync(JSON.stringify(WL.ignoreEmotes));
 			this.sendReply(`You are no longer ignoring emoticons.`);
 		},
 
+		size: function (target, room, user) {
+			if (room.id === `lobby` && !this.can(`emote`) || room.id !== `lobby` && !this.can(`emote`, null, room)) return false;
+			if (!target) return this.sendReply(`Usage: /emoticons size [number]`);
+
+			let size = Math.round(Number(target));
+			if (isNaN(size)) return this.errorReply(`"${target}" is not a valid number.`);
+			if (size < 1) return this.errorReply(`Size may not be less than 1.`);
+			if (size > 200) return this.errorReply(`Size may not be more than 200.`);
+
+			room.emoteSize = size;
+			room.chatRoomData.emoteSize = size;
+			Rooms.global.writeChatRoomData();
+			this.privateModAction(`${user.name} has changed emoticon size in this room to ${size}.`);
+		},
+
+		"": "help",
 		help: function (target, room, user) {
-			this.parse(`/help emoticons`);
+			this.parse("/emoticonshelp");
 		},
 	},
+
+	randemote: function (target, room, user, connection) {
+		if (!this.canTalk()) return;
+		let e = Object.keys(emoticons)[Math.floor(Math.random() * Object.keys(emoticons).length)];
+		this.parse(e);
+	},
+
 	emoticonshelp: [
 		`Emoticon Commands:
 		/emoticon may be substituted with /emoticons, /emotes, or /emote
@@ -142,7 +190,8 @@ exports.commands = {
 		/emoticon ignore - Ignores emoticons in chat messages.
 		/emoticon unignore - Unignores emoticons in chat messages.
 		/emoticon help - Displays this help command.
-		Emoticon Plugin by: jd`,
+		/emoticon size [size] - Changes the size of emoticons in the current room.
+		/randemote - Randomly sends an emote from the emoticon list.`,
 	],
 };
 
