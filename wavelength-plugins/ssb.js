@@ -1,7 +1,7 @@
 "use strict";
 
 global.TeamValidator = require("../sim/team-validator");
-let fs = require("fs");
+let FS = require("../lib/fs");
 let ssbWrite = true; //if false, do not write to JSON
 let noRead = false; //if true, do not read from JSON
 const MAX_MOVEPOOL_SIZE = 4;
@@ -18,7 +18,7 @@ const BANS = {
 
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
-	fs.writeFile("config/ssb.json", JSON.stringify(WL.ssb), () => {});
+	FS("config/ssb.json").write(JSON.stringify(WL.ssb));
 };
 
 //Shamlessly ripped from teambuilder client.
@@ -580,9 +580,9 @@ class SSB {
 
 //Load JSON
 try {
-	fs.accessSync("config/ssb.json", fs.F_OK);
+	FS("config/ssb.json").readIfExistsSync();
 } catch (e) {
-	fs.writeFile("config/ssb.json", "{}", function (err) {
+	FS("config/ssb.json").write("{}", function (err) {
 		if (err) {
 			console.error(`Error while loading SSBFFA: ${err}`);
 			ssbWrite = false;
@@ -595,23 +595,16 @@ try {
 
 //We need to load data after the SSB class is declared.
 try {
-	if (!noRead) {
-		let raw = JSON.parse(fs.readFileSync("config/ssb.json", "utf8"));
-		WL.ssb = global.ssb = {};
-		//parse JSON back into the SSB class.
-		for (let key in raw) {
-			WL.ssb[key] = new SSB(raw[key].userid, raw[key].name);
-			for (let key2 in WL.ssb[key]) {
-				WL.ssb[key][key2] = raw[key][key2];
-			}
-		}
-	} else {
-		WL.ssb = global.ssb = {};
-	}
-} catch (e) {
-	console.error(`Error loading SSBFFA: ${e.stack}`);
 	WL.ssb = global.ssb = {};
-	ssbWrite = false;
+	WL.ssb = FS("config/ssb.json").readIfExistsSync();
+	if (!WL.ssb) {
+		FS("config/ssb.json").write("{}");
+		WL.ssb = {};
+	} else {
+		WL.ssb = JSON.parse(WL.ssb);
+	}
+} catch(e) {
+	if (e.code !== "ENOENT") throw e;
 }
 
 exports.commands = {
