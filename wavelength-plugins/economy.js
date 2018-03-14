@@ -1,6 +1,6 @@
 'use strict';
 
-const FS = require('../lib/fs');
+const FS = require("../lib/fs.js");
 
 // This should be the default amount of money users have.
 // Ideally, this should be zero.
@@ -255,7 +255,7 @@ exports.commands = {
 		if (!target) return this.sendReply("Usage: /moneylog [number] to view the last x lines OR /moneylog [text] to search for text.");
 		let word = false;
 		if (isNaN(Number(target))) word = true;
-		let lines = fs.readFileSync('logs/transactions.log', 'utf8').split('\n').reverse();
+		let lines = FS('logs/transactions.log').readIfExistsSync().split('\n').reverse();
 		let output = '';
 		let count = 0;
 		let regex = new RegExp(target.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "gi"); // eslint-disable-line no-useless-escape
