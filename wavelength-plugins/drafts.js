@@ -1,6 +1,6 @@
-/********************************
+/*********************************
  * Draft Management by Execute.	*
- * Rewrote by Insist			*
+ * Rewrote by Insist					*
  ********************************/
 "use strict";
 
@@ -33,7 +33,7 @@ class Draft {
 		this.originalOrder.push(teamname);
 		let fileName = `${this.room}draft`;
 		Db[fileName].set("teams", this.teams);
-		this.room.add(`|html|<div style="${greencss}">The <strong>${teamname}</strong> are now apart of the draft and is managed by ${Server.nameColor(manager, true)}</div>`);
+		this.room.add(`|html|<div style="${greencss}">The <strong>${teamname}</strong> are now apart of the draft and is managed by ${WL.nameColor(manager, true)}</div>`);
 		this.log(`${teamname} is now apart of the draft and is managed by ${manager}.`);
 	}
 
@@ -72,7 +72,7 @@ class Draft {
 		this.draftedMons.push(pk);
 		if (this.order.length === this.order.indexOf(this.turn) + 1) {
 			if (this.teams[this.turn].draftpicks.length === this.maxMons) {
-				this.room.add(`|html|<div style="${greencss}">${Server.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}!</strong></div>`);
+				this.room.add(`|html|<div style="${greencss}">${WL.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}!</strong></div>`);
 				this.room.add(`|html|<div style="${redcss}">Everyone has received ${this.maxMons} Draft Picks.<br /> The Draft is over! We hope you are happy with your draft picks :)`);
 				this.room.add(`|html|<div style="${greencss}"><strong>Final Picks:</strong><br />${this.show()}</div>`);
 				delete drafts[this.room];
@@ -80,12 +80,12 @@ class Draft {
 			} else if (this.snake === true) {
 				let reverseOrder = this.order.reverse();
 				this.turn = reverseOrder[0];
-				this.room.add(`|html|<div style="${greencss}">${Server.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}.</strong><br />It is now <strong>${this.turn}'s</strong> turn.</div>`);
+				this.room.add(`|html|<div style="${greencss}">${WL.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}.</strong><br />It is now <strong>${this.turn}'s</strong> turn.</div>`);
 				this.room.add(`|html|<div style="${greencss}"><strong>${this.turn}</strong> currently has: ${this.iconize(this.teams[this.turn].draftpicks)}</div>`);
 				this.log(`${user} has drafted ${pk}.`);
 			} else {
 				this.turn = this.order[0];
-				this.room.add(`|html|<div style="${greencss}">${Server.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}.</strong><br />It is now <strong>${this.turn}'s turn</strong>.</div>`);
+				this.room.add(`|html|<div style="${greencss}">${WL.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}.</strong><br />It is now <strong>${this.turn}'s turn</strong>.</div>`);
 				this.room.add(`|html|<div style="${greencss}"><strong>${this.turn}</strong> currently has: ${this.iconize(this.teams[this.turn].draftpicks)}</div>`);
 				this.log(`${user} has drafted ${pk}.`);
 			}
