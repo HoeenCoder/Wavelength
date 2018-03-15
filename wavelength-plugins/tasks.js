@@ -75,7 +75,7 @@ exports.commands = {
 				display += `<td style="border: 2px solid #000000; width: 20%; text-align: center"><button class="button" name="parseCommand" value="/user ${taskList.issues[i].employer}">${WL.nameColor(taskList.issues[i].employer, true, true)}</button></td>`;
 				display += `<td style="border: 2px solid #000000; width: 20%; text-align: center">${taskList.issues[i].issue}</td>`;
 				display += `<td style="border: 2px solid #000000; width: 20%; text-align: center">${taskList.issues[i].description}</td>`;
-				display += `<td style="border: 2px solid #000000; width: 20%; text-align: center">${taskList.issues[i].priority}</td>`
+				display += `<td style="border: 2px solid #000000; width: 20%; text-align: center">${taskList.issues[i].priority}</td>`;
 				display += `</tr>`;
 			}
 			display += `</table></center>`;
