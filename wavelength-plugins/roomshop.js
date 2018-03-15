@@ -112,11 +112,15 @@ exports.commands = {
 			if (!this.runBroadcast()) return;
 			let roomshop = Db.roomshop.get(room.id, {items: {}});
 			if (!Db.roomshop.has(room.id)) return this.errorReply(`${room.title} does not have a roomshop.`);
-			let display = `<div style="max-height: 200px; width: 100%; overflow: scroll;"><table><tr><center><h1>${room.title}'s Shop!</h1></center></tr>`;
+			let display = `<div style="max-height: 200px; width: 100%; overflow: scroll;"><center><h1>${room.title}'s Room Shop</h1><table border="1" cellspacing ="0" cellpadding="3"><tr><td>Item</td><td>Description</td><td>Cost</td></tr>`;
 			for (let i in roomshop.items) {
-				display += `<tr><td style="border: 2px solid #000000; width: 20%; text-align: center"><button class="button" name="send" value="/roomshop buy ${roomshop.items[i].name}">Buy Item: ${roomshop.items[i].name}</button></td><td style="border: 2px solid #000000; width: 20%; text-align: center"> Price: ${roomshop.items[i].price} ${currencyName}${Chat.plural(roomshop.items[i].price)}</td></tr>`;
+				display += `<tr>`;
+				display += `<td><button class="button" name="send" value="/roomshop buy ${roomshop.items[i].name}">${roomshop.items[i].name}</button></td>`;
+				display += `<td>${roomshop.items[i].desc}</td>`;
+				display += `<td>${roomshop.items[i].price} ${roomshop.items[i].price > 1 ? currencyPlural : currencyName}</td>`;
+				display += `</tr>`;
 			}
-			display += `</table></div>`;
+			display += `</table></center></div>`;
 			return this.sendReplyBox(display);
 		},
 
