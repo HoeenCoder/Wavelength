@@ -42,7 +42,7 @@ exports.commands = {
 			if (isNaN(priority) || priority > 6 || priority < 1) return this.errorReply(`The priority should be an integer between 1-6; 1 being the highest priority.`);
 			task.issues[toId(issue)] = {"id": toId(issue), "issue": issue, "description": description, "employer": user.userid, "priority": priority};
 			Db.tasks.set("development", task);
-			alertDevs(`${WL.nameColor(user.name, true, true)} has filed an issue. Issue: ${issue}. Description: ${description}.`);
+			alertDevs(`${WL.nameColor(user.name, true, true)} has filed an issue. Issue: ${issue}. Description: ${description}. Priority: ${priority}.`);
 			return this.sendReply(`The task "${issue}" has been added to the server task list.`);
 		},
 
