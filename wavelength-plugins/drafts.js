@@ -91,7 +91,7 @@ class Draft {
 			}
 		} else {
 			this.turn = this.order[this.order.indexOf(this.turn) + 1];
-			this.room.add(`|html|<div style="${greencss}">${Server.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}!</strong><br />It is now <strong>${this.turn}</strong>'s turn.</div>`);
+			this.room.add(`|html|<div style="${greencss}">${WL.nameColor(user.name, true)} has drafted the Pokemon: <strong>${pk}!</strong><br />It is now <strong>${this.turn}</strong>'s turn.</div>`);
 			this.room.add(`|html|<div style="${greencss}"><strong>${this.turn}</strong> currently has: ${this.iconize(this.teams[this.turn].draftpicks)}</div>`);
 			this.log(`${user} has drafted ${pk}.`);
 		}
