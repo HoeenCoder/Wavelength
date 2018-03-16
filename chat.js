@@ -290,7 +290,7 @@ class CommandContext {
 			if (this.pmTarget) {
 				Chat.sendPM(message, this.user, this.pmTarget);
 			} else {
-				let emoticons = WL.parseEmoticons(message);
+				let emoticons = WL.parseEmoticons(message, this.room);
 				if (emoticons && !this.room.disableEmoticons) {
 					if (Users.ShadowBan.checkBanned(this.user)) {
 						Users.ShadowBan.addMessage(this.user, "To " + this.room.id, message);
@@ -1169,7 +1169,7 @@ Chat.parse = function (message, room, user, connection) {
  */
 Chat.sendPM = function (message, user, pmTarget, onlyRecipient = null) {
 	let noEmotes = message;
-	let emoticons = WL.parseEmoticons(message);
+	let emoticons = WL.parseEmoticons(message, this.room);
 	if (emoticons) message = "/html " + emoticons;
 	let buf = `|pm|${user.getIdentity()}|${pmTarget.getIdentity()}|${(WL.ignoreEmotes[user.userid] ? noEmotes : message)}`;
 	// TODO is onlyRecipient a user? If so we should check if they are ignoring emoticions.
