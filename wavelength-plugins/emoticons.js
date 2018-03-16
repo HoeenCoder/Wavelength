@@ -36,7 +36,7 @@ function saveEmoticons() {
 
 function parseEmoticons(message, room) {
 	if (emoteRegex.test(message)) {
-		let size = 50;
+		let size = 40;
 		let lobby = Rooms(`lobby`);
 		if (lobby && lobby.emoteSize) size = lobby.emoteSize;
 		message = WL.parseMessage(message).replace(emoteRegex, function (match) {
@@ -84,7 +84,7 @@ exports.commands = {
 			emoticons[targetSplit[0]] = targetSplit[1];
 			saveEmoticons();
 
-			let size = 50;
+			let size = 40;
 			let lobby = Rooms(`lobby`);
 			if (lobby && lobby.emoteSize) size = lobby.emoteSize;
 			if (room.emoteSize) size = room.emoteSize;
@@ -159,8 +159,8 @@ exports.commands = {
 
 			let size = Math.round(Number(target));
 			if (isNaN(size)) return this.errorReply(`"${target}" is not a valid number.`);
-			if (size < 1) return this.errorReply(`Size may not be less than 1.`);
-			if (size > 200) return this.errorReply(`Size may not be more than 200.`);
+			if (size < 15) return this.errorReply(`Size may not be less than 15.`);
+			if (size > 100) return this.errorReply(`Size may not be more than 100.`);
 
 			room.emoteSize = size;
 			room.chatRoomData.emoteSize = size;
@@ -176,6 +176,7 @@ exports.commands = {
 
 	randemote: function (target, room, user, connection) {
 		if (!this.canTalk()) return;
+		if (!room.isOfficial) return this.errorReply(`You may only use this command in unofficial rooms.`);
 		let e = Object.keys(emoticons)[Math.floor(Math.random() * Object.keys(emoticons).length)];
 		this.parse(e);
 	},
