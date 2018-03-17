@@ -515,7 +515,7 @@ class SSB {
 					i--;
 					continue;
 				}
-				let result = await TeamValidatorAsync("gen7ou").validateTeam(Dex.packTeam([{species: this.species, ability: this.ability, moves: [move]}]));
+				let result = await TeamValidatorAsync("gen7ou").validateTeam(Dex.packTeam([{species: this.species, moves: [move]}]));
 				if (result.startsWith("0")) {
 					result = result.slice(1);
 					msg.push(result.split("\n"));
