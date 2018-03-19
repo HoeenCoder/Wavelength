@@ -237,6 +237,7 @@ exports.commands = {
 					timeout: null,
 					startTime: Date.now(),
 					startedUser: WL.nameColor(user.name, true, true),
+					totalReplies: 0,
 					timeoutMins: 0,
 				});
 				room.survey.displaySpecific(room.survey.surveyArray.length - 1);
