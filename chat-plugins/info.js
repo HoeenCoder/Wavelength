@@ -122,6 +122,20 @@ exports.commands = {
 					if (punishment[3]) buf += Chat.html` (reason: ${punishment[3]})`;
 				}
 			}
+			let battlebanned = Punishments.isBattleBanned(targetUser);
+			if (battlebanned) {
+				buf += `<br />BATTLEBANNED: ${battlebanned[1]}`;
+				let expiresIn = new Date(battlebanned[2]).getTime() - Date.now();
+				let expiresDays = Math.round(expiresIn / 1000 / 60 / 60 / 24);
+				let expiresText = '';
+				if (expiresDays >= 1) {
+					expiresText = `in around ${Chat.count(expiresDays, "days")}`;
+				} else {
+					expiresText = `soon`;
+				}
+				if (expiresIn > 1) buf += ` (expires ${expiresText})`;
+				if (battlebanned[3]) buf += Chat.html` (reason: ${battlebanned[3]})`;
+			}
 			if (targetUser.semilocked) {
 				buf += `<br />Semilocked: ${targetUser.semilocked}`;
 			}
@@ -632,7 +646,7 @@ exports.commands = {
 		target = target.trim();
 		let mod = target.split(',');
 		mod = Dex.mod(toId(mod[mod.length - 1])) || Dex;
-		let targets = target.split(/ ?[,/ ] ?/);
+		let targets = target.split(/ ?[,/] ?/);
 		let pokemon = mod.getTemplate(targets[0]);
 		let type1 = mod.getType(targets[0]);
 		let type2 = mod.getType(targets[1]);

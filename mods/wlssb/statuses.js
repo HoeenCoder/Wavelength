@@ -48,18 +48,6 @@ exports.BattleStatuses = {
 			this.add('c', '@Ashley the Pikachu', 'PikaPikaaaa');
 		},
 	},
-	ducktown: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '+ducktown', 'Beware! You are entering a town of ducks!');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '+ducktown', 'My other ducks will come attack you!');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '+ducktown', 'Quack Quack Quaaaaaa...');
-		},
-	},
 	hoeenhero: {
 		exists: true,
 		onStart: function () {

@@ -34,7 +34,7 @@ exports.BattleStatuses = {
 		},
 		onBeforeMovePriority: 1,
 		onBeforeMove: function (pokemon) {
-			if (this.random(4) === 0) {
+			if (this.randomChance(1, 4)) {
 				this.add('cant', pokemon, 'par');
 				return false;
 			}
@@ -91,7 +91,7 @@ exports.BattleStatuses = {
 		onBeforeMovePriority: 10,
 		onBeforeMove: function (pokemon, target, move) {
 			if (move.flags['defrost']) return;
-			if (this.random(5) === 0) {
+			if (this.randomChance(1, 5)) {
 				pokemon.cureStatus();
 				return;
 			}
@@ -168,7 +168,7 @@ exports.BattleStatuses = {
 				return;
 			}
 			this.add('-activate', pokemon, 'confusion');
-			if (this.random(3) > 0) {
+			if (!this.randomChance(1, 3)) {
 				return;
 			}
 			this.activeTarget = pokemon;
@@ -287,12 +287,12 @@ exports.BattleStatuses = {
 			this.effectData.move = this.activeMove.id;
 		},
 		onBeforeMove: function (pokemon, target, move) {
-			if (!pokemon.getItem().isChoice || !pokemon.hasMove(this.effectData.move)) {
+			if (!pokemon.getItem().isChoice) {
 				pokemon.removeVolatile('choicelock');
 				return;
 			}
-			if (move.id !== this.effectData.move && move.id !== 'struggle') {
-				// Fails even if the Choice item is being ignored, and no PP is lost
+			if (!pokemon.ignoringItem() && move.id !== this.effectData.move && move.id !== 'struggle') {
+				// Fails unless the Choice item is being ignored, and no PP is lost
 				this.addMove('move', pokemon, move.name);
 				this.attrLastMove('[still]');
 				this.add('-fail', pokemon);
@@ -404,7 +404,7 @@ exports.BattleStatuses = {
 			// However, just in case, use 1 if it is undefined.
 			let counter = this.effectData.counter || 1;
 			this.debug("Success chance: " + Math.round(100 / counter) + "%");
-			return (this.random(counter) === 0);
+			return this.randomChance(1, counter);
 		},
 		onRestart: function () {
 			if (this.effectData.counter < this.effect.counterMax) {
