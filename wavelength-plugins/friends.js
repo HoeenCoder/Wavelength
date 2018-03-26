@@ -6,7 +6,6 @@
 'use strict';
 
 function onlineFriends(user) {
-	let friends = Db.friends.get(user);
 	let list = Db.friends.get(user).filter(friend => Users(friend) && Users(friend).connected);
 	if (list.length) user.send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${list.join(', ')}`);
 }
@@ -45,8 +44,8 @@ exports.commands = {
 			if (!friends.length) return this.sendReplyBox(`You have no friends.`);
 			let display = `<center>Friends<br />`;
 			for (const friend of friends) {
-   			let online = Users(friend) && Users(friend).connected;
-   			display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
+				let online = Users(friend) && Users(friend).connected;
+				display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
 			}
 			display += `Total Friends: ${friends.length}</center>`;
 			return this.sendReplyBox(display);
