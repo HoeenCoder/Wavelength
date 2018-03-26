@@ -7,11 +7,8 @@
 
 function onlineFriends(user) {
 	let friends = Db.friends.get(user);
-	let list = [];
-	friends.forEach(friend => {
-		if (Users(friend).connected) list.push(friend);
-	});
-	if (list.length) user.send(`|pm| WL Friend Manager|You have ${list.length} friends online: ${list.join(', ')}`);
+	let list = Db.friends.get(user).filter(friend => Users(friend) && Users(friend).connected);
+	if (list.length) user.send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${list.join(', ')}`);
 }
 WL.onlineFriends = onlineFriends;
 
@@ -30,10 +27,15 @@ exports.commands = {
 		addhelp: [`/friends add (user) - adds a user as your friend they must be online.`],
 
 		remove: function (target, room, user) {
-			if (!target) return this.parse(`/help friends remove`);
-			if (Db.friends.get(user.userid, []).indexOf(toId(target)) === -1) return this.errorReply(`You did not add them as a friend.`);
-			Db.friends.get(user.userid, []).splice(Db.friends.get(user.userid, []).indexOf(toId(target)), 1);
-			return this.sendReply(`You have removed ${toId(target)} from your friend list`);
+			let targetFriend = toId(target);
+			if (!targetFriend) return this.parse('/help', true);
+			let friends = Db.friends.get(user.userid, []);
+			if (!friends.length) return this.errorReply("You currently don't have any added friends.");
+			let friendIndex = friends.findIndex(friend => targetFriend === friend);
+			if (friendIndex <= 0) return this.errorReply("You did not add them as a friend.");
+			friends.splice(friendIndex, 1);
+			Db.friends.set(user.userid, friends);
+			this.sendReply(`You have removed ${target} from your friends list.`);
 		},
 		removehelp: [`/friends remove (user) - removes a user from your friend list.`],
 
@@ -42,8 +44,9 @@ exports.commands = {
 			let friends = Db.friends.get(user.userid, []);
 			if (!friends.length) return this.sendReplyBox(`You have no friends.`);
 			let display = `<center>Friends<br />`;
-			for (let u in friends) {
-				display += `${WL.nameColor(friends[u], true)}: ${(Users(friends[u])) && Users(friends[u]).connected ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
+			for (const friend of friends) {
+   			let online = Users(friend) && Users(friend).connected;
+   			display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
 			}
 			display += `Total Friends: ${friends.length}</center>`;
 			return this.sendReplyBox(display);
