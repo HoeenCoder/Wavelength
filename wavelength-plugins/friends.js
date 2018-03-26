@@ -1,0 +1,68 @@
+/****************************
+ * Friend List
+ * Original idea from WGC
+ * Coded by Volco
+ * *************************/
+'use strict';
+
+function onlineFriends(user) {
+	let friends = Db.friends.get(user);
+	let list = [];
+	friends.forEach(friend => {
+		if (Users(friend).connected) list.push(friend);
+	});
+	if (list.length) user.send(`|pm| WL Friend Manager|You have ${list.length} friends online: ${list.join(', ')}`);
+}
+WL.onlineFriends = onlineFriends;
+
+exports.commands = {
+	friend: 'friends',
+	friends: {
+		add: function (target, room, user) {
+			if (!target) return this.parse(`/help friends add`);
+			let targetUser = toId(target);
+			if (user.userid === targetUser) return this.errorReply(`You cannot add yourself!`);
+			if (targetUser.length < 1 || targetUser.length > 19) return this.errorReply(`Names should be more than 1 character and less than 19 characters long.`);
+			if (Db.friends.get(user.userid, []).indexOf(targetUser) !== -1) return this.errorReply(`You already added them!`);
+			Db.friends.set(user.userid, Db.friends.get(user.userid, []).concat([targetUser]));
+			return this.sendReply(`You have added ${targetUser} as a friend!`);
+		},
+		addhelp: [`/friends add (user) - adds a user as your friend they must be online.`],
+
+		remove: function (target, room, user) {
+			if (!target) return this.parse(`/help friends remove`);
+			if (Db.friends.get(user.userid, []).indexOf(toId(target)) === -1) return this.errorReply(`You did not add them as a friend.`);
+			Db.friends.get(user.userid, []).splice(Db.friends.get(user.userid, []).indexOf(toId(target)), 1);
+			return this.sendReply(`You have removed ${toId(target)} from your friend list`);
+		},
+		removehelp: [`/friends remove (user) - removes a user from your friend list.`],
+
+		list: function (target, room, user) {
+			if (!this.runBroadcast()) return;
+			let friends = Db.friends.get(user.userid, []);
+			if (!friends.length) return this.sendReplyBox(`You have no friends.`);
+			let display = `<center>Friends<br />`;
+			for (let u in friends) {
+				display += `${WL.nameColor(friends[u], true)}: ${(Users(friends[u])) && Users(friends[u]).connected ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
+			}
+			display += `Total Friends: ${friends.length}</center>`;
+			return this.sendReplyBox(display);
+		},
+
+		removeall: function (target, room, user) {
+			if (!Db.friends.get(user.userid, []).length) return this.errorReply(`You have no friends.`);
+			Db.friends.set(user.userid, []);
+			return this.sendReply(`You have removed all of your friends.`);
+		},
+
+		'': 'help',
+		help: function (target, room, user) {
+			this.parse(`/help friends`);
+		},
+	},
+	friendshelp: [`/friends add (user) - adds a user as your friend they must be online.
+    /friends remove (user) - removes a user from your friend list.
+    /friends list - displays your list of friends.
+    /friends removeall - removes all of your friends.`,
+	],
+};
