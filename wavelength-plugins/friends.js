@@ -19,7 +19,7 @@ exports.commands = {
 			let targetUser = toId(target);
 			if (user.userid === targetUser) return this.errorReply(`You cannot add yourself!`);
 			if (targetUser.length < 1 || targetUser.length > 19) return this.errorReply(`Names should be more than 1 character and less than 19 characters long.`);
-			if (Db.friends.get(user.userid, []).indexOf(targetUser) !== -1) return this.errorReply(`You already added them!`);
+			if (Db.friends.get(user.userid, []).includes(targetUser)) return this.errorReply(`You already added them!`);
 			Db.friends.set(user.userid, Db.friends.get(user.userid, []).concat([targetUser]));
 			return this.sendReply(`You have added ${targetUser} as a friend!`);
 		},
