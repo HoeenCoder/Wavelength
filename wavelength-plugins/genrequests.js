@@ -29,8 +29,8 @@ exports.commands = {
 		give: "add",
 		add: function (target, room, user) {
 			if (!this.can("lock")) return false;
-			if (!target || target.length > 18) return this.errorReply(`This command requires a target with a maximum of 18 characters.`);
 			let approvedGenner = toId(target);
+			if (!approvedGenner || approvedGenner.length > 18) return this.errorReply(`This command requires a target with a maximum of 18 characters.`);
 			Db.genners.set(approvedGenner, 1);
 			this.sendReply(`|html|${WL.nameColor(approvedGenner, true)} has been successfully been approved as a genner.`);
 			if (Users.get(approvedGenner)) Users(approvedGenner).popup(`|html|You have been approved as a genner by ${WL.nameColor(user.name, true)}.`);
@@ -68,9 +68,9 @@ exports.commands = {
 		list: function (target, room, user) {
 			if (!Db.genners.keys().length) return this.errorReply('There are currently zero approved genners.');
 			let display = [];
-			Db.genners.keys().forEach(approvedGenners => {
-				display.push(WL.nameColor(approvedGenners, (Users(approvedGenners) && Users(approvedGenners).connected)));
-			});
+			for (const approvedGenners of Db.genners.keys()) {
+			   display.push(WL.nameColor(approvedGenners, Users(approvedGenners) && Users(approvedGenners).connected));
+			}
 			this.popupReply(`|html|<strong><u><font size="3"><center>Approved Genners:</center></font></u></strong>${display.join(',')}`);
 		},
 
