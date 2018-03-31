@@ -291,7 +291,7 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
-	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
+	gameData: JSON.parse(FS('config/SGGame/pokemon.json').readIfExistsSync()),
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
 		let type = this.getEXPType(pokemon);
@@ -479,7 +479,7 @@ exports.WL = {
 		if (data.item) return data.item;
 		return false;
 	},
-	itemData: JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8')),
+	itemData: JSON.parse(FS('config/SGGame/items.json').readIfExistsSync()),
 	getItem: function (id) {
 		id = toId(id);
 		if (!this.itemData[id]) return false;
