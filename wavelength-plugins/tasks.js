@@ -42,7 +42,7 @@ exports.commands = {
 			if (issue.length < 1 || issue.length > 30) return this.errorReply(`The issue title should not exceed 30 characters long. Feel free to continue in the description.`);
 			if (description.length < 1 || description.length > 100) return this.errorReply(`The description should not exceed 100 characters long.`);
 			if (isNaN(priority) || priority > 6 || priority < 1) return this.errorReply(`The priority should be an integer between 1-6; 1 being the highest priority.`);
-			tasks.issues[id] = {id, issue, description, employer: user.userid, priority};
+			task.issues[id] = {id, issue, description, employer: user.userid, priority};
 			Db.tasks.set("development", task);
 			alertDevs(`${WL.nameColor(user.name, true, true)} has filed an issue. Issue: ${issue}. Description: ${description}. Priority: ${priority}.`);
 			return this.sendReply(`The task "${issue}" has been added to the server task list.`);
