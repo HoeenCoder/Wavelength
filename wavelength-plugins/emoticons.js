@@ -20,7 +20,7 @@ function loadEmoticons() {
 		for (let emote in emoticons) {
 			emoteRegex.push(escapeRegExp(emote));
 		}
-		emoteRegex = new RegExp(`(${emoteRegex.join(`|`)})`, `g`);
+		emoteRegex = new RegExp(`(${emoteRegex.join('|')})`, 'g');
 	} catch (e) {}
 }
 loadEmoticons();
@@ -31,7 +31,7 @@ function saveEmoticons() {
 	for (let emote in emoticons) {
 		emoteRegex.push(emote);
 	}
-	emoteRegex = new RegExp(`(${emoteRegex.join(`|`)})`, `g`);
+	emoteRegex = new RegExp(`(${emoteRegex.join('|')})`, 'g');
 }
 
 function parseEmoticons(message, room) {
@@ -71,17 +71,13 @@ exports.commands = {
 	emoticon: {
 		add: function (target, room, user) {
 			if (!this.can(`emote`)) return false;
-			if (!target) return this.sendReply("Usage: /emoticons add [name], [url]");
+			let [name, url] = target.split(",").map(p => p.trim());
+			if (!(name && url)) return this.parse('/help', true);
 
-			let targetSplit = target.split(",");
-			for (let u in targetSplit) targetSplit[u] = targetSplit[u].trim();
+			if (name.length > 10) return this.errorReply("Emoticons may not be longer than 10 characters.");
+			if (emoticons[name]) return this.errorReply(`${name} is already an emoticon.`);
 
-			if (!targetSplit[1]) return this.sendReply("Usage: /emoticons add [name], [url]");
-
-			if (targetSplit[0].length > 10) return this.errorReply("Emoticons may not be longer than 10 characters.");
-			if (emoticons[targetSplit[0]]) return this.errorReply(targetSplit[0] + " is already an emoticon.");
-
-			emoticons[targetSplit[0]] = targetSplit[1];
+			emoticons[name] = url;
 			saveEmoticons();
 
 			let size = 40;
@@ -89,9 +85,9 @@ exports.commands = {
 			if (lobby && lobby.emoteSize) size = lobby.emoteSize;
 			if (room.emoteSize) size = room.emoteSize;
 
-			this.sendReply(`|raw|The emoticon ${Chat.escapeHTML(targetSplit[0])} has been added: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
-			if (Rooms("upperstaff")) Rooms("upperstaff").add(`|raw|${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(targetSplit[0])}: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
-			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(targetSplit[0])}: <img src="${targetSplit[1]}" width="${size}" height="${size}">`);
+			this.sendReply(`|raw|The emoticon ${Chat.escapeHTML(name)} has been added: <img src="${url}" width="${size}" height="${size}">`);
+			if (Rooms("upperstaff")) Rooms("upperstaff").add(`|raw|${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(name)}: <img src="${url}" width="${size}" height="${size}">`);
+			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has added the emoticon ${Chat.escapeHTML(name)}: <img src="${url}" width="${size}" height="${size}">`);
 		},
 
 		delete: "del",
