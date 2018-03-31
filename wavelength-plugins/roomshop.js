@@ -76,17 +76,14 @@ exports.commands = {
 		additem: "add",
 		add: function (target, room, user) {
 			if (!this.can("roommod", null, room)) return false;
-			target = target.split(",").map(p => p.trim());
 			let roomshop = Db.roomshop.get(room.id, {items: {}});
 			if (Object.keys(roomshop.items).length > 12) return this.errorReply(`${room.title} has already reached the maximum amount of items allowed.`);
-			let item = target[0];
-			let price = target[1];
-			let desc = target[2];
-			if (!desc) return this.parse(`/help roomshop`);
+			let [item, price, ...desc] = target.split(",").map(p => p.trim());
+			if (!(item && price && desc)) return this.parse("/help", true);
 			if (item.length < 1 || item.length > 20) return this.errorReply(`The item name should be between 1-20 characters long.`);
 			if (isNaN(price)) return this.errorReply(`The price for the item must be an integer.`);
 			if (desc.length < 1 || desc.length > 50) return this.errorReply(`The description for an item must be between 1-50 characters long.`);
-			roomshop.items[toId(item)] = {id: toId(item), name: item, price: price, desc: desc};
+			roomshop.items[toId(item)] = {id: toId(item), name: item, price: price, desc: desc.join(", ")};
 			Db.roomshop.set(room.id, roomshop);
 			room.add(`${item} was added to the roomshop.`);
 			this.privateModAction(`${user.name} has added "${item}" into the roomshop.`);
@@ -181,9 +178,7 @@ exports.commands = {
 			FS(file).read().then(data => {
 				data = data.split('\n');
 				if (target && matching) {
-					data = data.filter(function (line) {
-						return line.toLowerCase().indexOf(target.toLowerCase()) >= 0;
-					});
+					data = data.filter(line => line.toLowerCase().includes(target.toLowerCase()));
 				}
 				user.popup(`|wide|${topMsg + data.slice(-(numLines + 1)).join('\n')}`);
 			});
