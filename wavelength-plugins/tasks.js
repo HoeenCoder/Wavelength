@@ -16,9 +16,10 @@ function isDev(user) {
 
 function alertDevs(message) {
 	let developers = Db.devs.keys();
-	for (let u in developers) {
-		if (!Users(developers[u]) || !Users(developers[u]).connected) continue;
-		Users(developers[u]).send(`|pm|~Developer Alert|~|/raw ${message}`);
+	for (const name of developers) {
+		const u = Users(name);
+		if (!(u && u.connected)) continue;
+		u.send(`|pm|~Developer Alert|~|/raw ${message}`);
 	}
 	if (Rooms(`development`)) Rooms(`development`).add(`|c|~Developer Alert|/raw ${message}`).update();
 }
@@ -35,12 +36,13 @@ exports.commands = {
 			if (!isDev(user.userid) && !this.can("bypassall")) return false;
 			let [issue, priority, ...description] = target.split(",").map(p => p.trim());
 			let task = Db.tasks.get("development");
-			if (!issue || !priority || !description) return this.parse("/taskshelp");
-			if (task.issues[toId(issue)]) return this.errorReply(`This issue title already exists.`);
+			if (!(issue && priority && description)) return this.parse("/taskshelp");
+			let id = toId(issue);
+			if (task.issues[id]) return this.errorReply(`This issue title already exists.`);
 			if (issue.length < 1 || issue.length > 30) return this.errorReply(`The issue title should not exceed 30 characters long. Feel free to continue in the description.`);
 			if (description.length < 1 || description.length > 100) return this.errorReply(`The description should not exceed 100 characters long.`);
 			if (isNaN(priority) || priority > 6 || priority < 1) return this.errorReply(`The priority should be an integer between 1-6; 1 being the highest priority.`);
-			task.issues[toId(issue)] = {"id": toId(issue), "issue": issue, "description": description, "employer": user.userid, "priority": priority};
+			tasks.issues[id] = {id, issue, description, employer: user.userid, priority};
 			Db.tasks.set("development", task);
 			alertDevs(`${WL.nameColor(user.name, true, true)} has filed an issue. Issue: ${issue}. Description: ${description}. Priority: ${priority}.`);
 			return this.sendReply(`The task "${issue}" has been added to the server task list.`);
@@ -56,7 +58,7 @@ exports.commands = {
 			if (!target) return this.parse(`/taskshelp`);
 			if (!task.issues[target]) return this.errorReply(`The issue "${target}" has not been reported.`);
 			delete task.issues[target];
-			Db.tasks.set(task);
+			Db.tasks.set("development", task);
 			return this.sendReply(`The task "${target}" has been deleted.`);
 		},
 
