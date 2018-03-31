@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleAliases = {
+/**@type {{[k: string]: string}} */
+let BattleAliases = {
 	// formats
 	"randbats": "[Gen 7] Random Battle",
 	"uber": "[Gen 7] Ubers",
@@ -23,7 +24,8 @@ exports.BattleAliases = {
 	"cc2v2": "[Gen 7] Challenge Cup 2v2",
 	"hc": "[Gen 7] Hackmons Cup",
 	"monorandom": "[Gen 7] Monotype Random Battle",
-	"bf": "[Gen 6] Battle Factory",
+	"bf": "[Gen 7] Battle Factory",
+	"gen6bf": "[Gen 6] Battle Factory",
 
 	//SpacialGaze
 	"digimon": "[Gen 7] Digimon Showdown",
@@ -847,3 +849,5 @@ exports.BattleAliases = {
 	// there's no need to type out the other Japanese names
 	// I'll autogenerate them at some point
 };
+
+exports.BattleAliases = BattleAliases;

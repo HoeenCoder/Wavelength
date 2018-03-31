@@ -272,6 +272,7 @@ exports.commands = {
 					totalVotes: 0,
 					timeout: null,
 					timeoutMins: 0,
+					startTime: Date.now(),
 					startedUser: WL.nameColor(user.name, true, true),
 					options: new Map(),
 				});

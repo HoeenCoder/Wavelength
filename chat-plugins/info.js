@@ -1342,7 +1342,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox(
 			`New to competitive Pok&eacute;mon?<br />` +
-			`- <a href="http://www.smogon.com/forums/posts/6774481/">Beginner's Guide to Pok&eacute;mon Showdown</a><br />` +
+			`- <a href="http://www.smogon.com/forums/threads/3496279/">Beginner's Guide to Pok&eacute;mon Showdown</a><br />` +
 			`- <a href="http://www.smogon.com/dp/articles/intro_comp_pokemon">An introduction to competitive Pok&eacute;mon</a><br />` +
 			`- <a href="http://www.smogon.com/bw/articles/bw_tiers">What do 'OU', 'UU', etc mean?</a><br />` +
 			`- <a href="http://www.smogon.com/xyhub/tiers">What are the rules for each format? What is 'Sleep Clause'?</a>`
@@ -1484,14 +1484,16 @@ exports.commands = {
 			}
 			let formatType = (format.gameType || "singles");
 			formatType = formatType.charAt(0).toUpperCase() + formatType.slice(1).toLowerCase();
-			if (!format.desc) {
+			if (!format.desc && !format.threads) {
 				if (format.effectType === 'Format') {
 					return this.sendReplyBox("No description found for this " + formatType + " " + format.section + " format." + "<br />" + rulesetHtml);
 				} else {
 					return this.sendReplyBox("No description found for this rule." + "<br />" + rulesetHtml);
 				}
 			}
-			return this.sendReplyBox(format.desc.join("<br />") + "<br />" + rulesetHtml);
+			let descHtml = format.desc ? [format.desc] : [];
+			if (format.threads) descHtml = descHtml.concat(format.threads);
+			return this.sendReplyBox(descHtml.join("<br />") + "<br />" + rulesetHtml);
 		}
 
 		let tableStyle = `border:1px solid gray; border-collapse:collapse`;
@@ -1508,7 +1510,9 @@ exports.commands = {
 			for (const section of sections[sectionId].formats) {
 				let format = Dex.getFormat(section);
 				let nameHTML = Chat.escapeHTML(format.name);
-				let descHTML = format.desc ? format.desc.join("<br />") : "&mdash;";
+				let desc = format.desc ? [format.desc] : [];
+				if (format.threads) desc = desc.concat(format.threads);
+				let descHTML = desc.length ? desc.join("<br />") : "&mdash;";
 				buf.push(`<tr><td style="border:1px solid gray">${nameHTML}</td><td style="border: 1px solid gray; margin-left:10px">${descHTML}</td></tr>`);
 			}
 		}
@@ -1684,6 +1688,7 @@ exports.commands = {
 	analysis: 'smogdex',
 	strategy: 'smogdex',
 	smogdex: function (target, room, user) {
+		if (!target) return this.parse('/help smogdex');
 		if (!this.runBroadcast()) return;
 
 		let targets = target.split(',');

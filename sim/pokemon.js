@@ -96,7 +96,9 @@ class Pokemon {
 		this.moveThisTurn = '';
 
 		// For Stomping Tantrum
+		/**@type {boolean | undefined} */
 		this.moveLastTurnResult = undefined;
+		/**@type {boolean | undefined} */
 		this.moveThisTurnResult = undefined;
 
 		this.lastDamage = 0;
@@ -151,8 +153,8 @@ class Pokemon {
 		this.knownType = true;
 
 		if (this.set.moves) {
-			for (let i = 0; i < this.set.moves.length; i++) {
-				let move = this.battle.getMove(this.set.moves[i]);
+			for (const moveid of this.set.moves) {
+				let move = this.battle.getMove(moveid);
 				if (!move.id) continue;
 				if (move.id === 'hiddenpower' && move.type !== 'Normal') {
 					if (!set.hpType) set.hpType = move.type;
@@ -171,11 +173,7 @@ class Pokemon {
 			}
 		}
 
-		/** @type {string?} */
-		// @ts-ignore
 		this.canMegaEvo = this.battle.canMegaEvo(this);
-		/** @type {string?} */
-		// @ts-ignore
 		this.canUltraBurst = this.battle.canUltraBurst(this);
 
 		if (!this.set.evs) {
@@ -234,6 +232,12 @@ class Pokemon {
 		this.hp = this.hp || this.maxhp;
 
 		this.staleWarned = false;
+		this.showCure = false;
+
+		// OMs
+
+		/**@type {string | undefined} */
+		this.originalSpecies = undefined;
 	}
 	get moves() {
 		return this.moveSlots.map(moveSlot => moveSlot.id);
@@ -404,16 +408,16 @@ class Pokemon {
 		case 'allySide':
 		case 'allyTeam':
 			if (!move.target.startsWith('foe')) {
-				for (let i = 0; i < this.side.active.length; i++) {
-					if (!this.side.active[i].fainted) {
-						targets.push(this.side.active[i]);
+				for (const allyActive of this.side.active) {
+					if (!allyActive.fainted) {
+						targets.push(allyActive);
 					}
 				}
 			}
 			if (!move.target.startsWith('ally')) {
-				for (let i = 0; i < this.side.foe.active.length; i++) {
-					if (!this.side.foe.active[i].fainted) {
-						targets.push(this.side.foe.active[i]);
+				for (const foeActive of this.side.foe.active) {
+					if (!foeActive.fainted) {
+						targets.push(foeActive);
 					}
 				}
 			}
@@ -421,17 +425,17 @@ class Pokemon {
 		case 'allAdjacent':
 		case 'allAdjacentFoes':
 			if (move.target === 'allAdjacent') {
-				for (let i = 0; i < this.side.active.length; i++) {
+				for (const allyActive of this.side.active) {
 					// @ts-ignore
-					if (this.battle.isAdjacent(this, this.side.active[i])) {
-						targets.push(this.side.active[i]);
+					if (this.battle.isAdjacent(this, allyActive)) {
+						targets.push(allyActive);
 					}
 				}
 			}
-			for (let i = 0; i < this.side.foe.active.length; i++) {
+			for (const foeActive of this.side.foe.active) {
 				// @ts-ignore
-				if (this.battle.isAdjacent(this, this.side.foe.active[i])) {
-					targets.push(this.side.foe.active[i]);
+				if (this.battle.isAdjacent(this, foeActive)) {
+					targets.push(foeActive);
 				}
 			}
 			break;
@@ -457,9 +461,9 @@ class Pokemon {
 			if (move.pressureTarget) {
 				// At the moment, this is the only supported target.
 				if (move.pressureTarget === 'foeSide') {
-					for (let i = 0; i < this.side.foe.active.length; i++) {
-						if (this.side.foe.active[i] && !this.side.foe.active[i].fainted) {
-							targets.push(this.side.foe.active[i]);
+					for (const foeActive of this.side.foe.active) {
+						if (foeActive && !foeActive.fainted) {
+							targets.push(foeActive);
 						}
 					}
 				}
@@ -478,9 +482,10 @@ class Pokemon {
 
 	/**
 	 * @param {string | Move} move
-	 * @param {number} [amount]
+	 * @param {?number} [amount]
+	 * @param {?Pokemon | false} [target]
 	 */
-	deductPP(move, amount) {
+	deductPP(move, amount, target) {
 		move = this.battle.getMove(move);
 		let ppData = this.getMoveData(move);
 		if (!ppData) return false;
@@ -492,9 +497,8 @@ class Pokemon {
 			ppData.pp = 0;
 		}
 		if (ppData.virtual) {
-			let foeActive = this.side.foe.active;
-			for (let i = 0; i < foeActive.length; i++) {
-				if (foeActive[i].isStale >= 2) {
+			for (const foeActive of this.side.foe.active) {
+				if (foeActive.isStale >= 2) {
 					if (move.selfSwitch) this.isStalePPTurns++;
 					return true;
 				}
@@ -516,7 +520,7 @@ class Pokemon {
 
 	/**
 	 * @param {string | Move} move
-	 * @param {number} damage
+	 * @param {number | false} damage
 	 * @param {Pokemon} source
 	 */
 	gotAttacked(move, damage, source) {
@@ -553,12 +557,11 @@ class Pokemon {
 					id: 'recharge',
 				}];
 			}
-			for (let i = 0; i < this.moveSlots.length; i++) {
-				let moveEntry = this.moveSlots[i];
-				if (moveEntry.id !== lockedMove) continue;
+			for (const moveSlot of this.moveSlots) {
+				if (moveSlot.id !== lockedMove) continue;
 				return [{
-					move: moveEntry.move,
-					id: moveEntry.id,
+					move: moveSlot.move,
+					id: moveSlot.id,
 				}];
 			}
 			// does this happen?
@@ -569,29 +572,27 @@ class Pokemon {
 		}
 		let moves = [];
 		let hasValidMove = false;
-		for (let i = 0; i < this.moveSlots.length; i++) {
-			let moveEntry = this.moveSlots[i];
-
-			let moveName = moveEntry.move;
-			if (moveEntry.id === 'hiddenpower') {
+		for (const moveSlot of this.moveSlots) {
+			let moveName = moveSlot.move;
+			if (moveSlot.id === 'hiddenpower') {
 				moveName = 'Hidden Power ' + this.hpType;
 				if (this.battle.gen < 6) moveName += ' ' + this.hpPower;
-			} else if (moveEntry.id === 'return') {
+			} else if (moveSlot.id === 'return') {
 				// @ts-ignore
 				moveName = 'Return ' + this.battle.getMove('return').basePowerCallback(this);
-			} else if (moveEntry.id === 'frustration') {
+			} else if (moveSlot.id === 'frustration') {
 				// @ts-ignore
 				moveName = 'Frustration ' + this.battle.getMove('frustration').basePowerCallback(this);
 			}
-			let target = moveEntry.target;
-			if (moveEntry.id === 'curse') {
+			let target = moveSlot.target;
+			if (moveSlot.id === 'curse') {
 				if (!this.hasType('Ghost')) {
-					target = this.battle.getMove('curse').nonGhostTarget || moveEntry.target;
+					target = this.battle.getMove('curse').nonGhostTarget || moveSlot.target;
 				}
 			}
-			let disabled = moveEntry.disabled;
+			let disabled = moveSlot.disabled;
 			// @ts-ignore
-			if (moveEntry.pp <= 0 || disabled && this.side.active.length >= 2 && this.battle.targetTypeChoices(target)) {
+			if (moveSlot.pp <= 0 || disabled && this.side.active.length >= 2 && this.battle.targetTypeChoices(target)) {
 				disabled = true;
 			} else if (disabled === 'hidden' && restrictData) {
 				disabled = false;
@@ -601,9 +602,9 @@ class Pokemon {
 			}
 			moves.push({
 				move: moveName,
-				id: moveEntry.id,
-				pp: moveEntry.pp,
-				maxpp: moveEntry.maxpp,
+				id: moveSlot.id,
+				pp: moveSlot.pp,
+				maxpp: moveSlot.maxpp,
 				target: target,
 				disabled: disabled,
 			});
@@ -637,7 +638,6 @@ class Pokemon {
 		if (!lockedMove) {
 			if (this.canMegaEvo) data.canMegaEvo = true;
 			if (this.canUltraBurst) data.canUltraBurst = true;
-			// @ts-ignore
 			let canZMove = this.battle.canZMove(this);
 			if (canZMove) data.canZMove = canZMove;
 		}
@@ -711,7 +711,7 @@ class Pokemon {
 			if (this.volatiles[i].linkedPokemon) {
 				delete pokemon.volatiles[i].linkedPokemon;
 				delete pokemon.volatiles[i].linkedStatus;
-				for (let linkedPoke of this.volatiles[i].linkedPokemon) {
+				for (const linkedPoke of this.volatiles[i].linkedPokemon) {
 					let linkedPokeLinks = linkedPoke.volatiles[this.volatiles[i].linkedStatus].linkedPokemon;
 					linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
 				}
@@ -719,7 +719,6 @@ class Pokemon {
 		}
 		pokemon.clearVolatile();
 		for (let i in this.volatiles) {
-			// @ts-ignore
 			this.battle.singleEvent('Copy', this.getVolatile(i), this.volatiles[i], this);
 		}
 	}
@@ -727,9 +726,9 @@ class Pokemon {
 	/**
 	 * @param {Pokemon} pokemon
 	 * @param {Pokemon} user
-	 * @param {Effect} effect
+	 * @param {?Effect} [effect]
 	 */
-	transformInto(pokemon, user, effect) {
+	transformInto(pokemon, user, effect = null) {
 		let template = pokemon.template;
 		if (pokemon.fainted || pokemon.illusion || (pokemon.volatiles['substitute'] && this.battle.gen >= 5)) {
 			return false;
@@ -753,18 +752,17 @@ class Pokemon {
 		this.set.ivs = (this.battle.gen >= 5 ? this.set.ivs : pokemon.set.ivs);
 		this.hpType = (this.battle.gen >= 5 ? this.hpType : pokemon.hpType);
 		this.hpPower = (this.battle.gen >= 5 ? this.hpPower : pokemon.hpPower);
-		for (let i = 0; i < pokemon.moveSlots.length; i++) {
-			let moveData = pokemon.moveSlots[i];
-			let moveName = moveData.move;
-			if (moveData.id === 'hiddenpower') {
+		for (const moveSlot of pokemon.moveSlots) {
+			let moveName = moveSlot.move;
+			if (moveSlot.id === 'hiddenpower') {
 				moveName = 'Hidden Power ' + this.hpType;
 			}
 			this.moveSlots.push({
 				move: moveName,
-				id: moveData.id,
-				pp: moveData.maxpp === 1 ? 1 : 5,
-				maxpp: this.battle.gen >= 5 ? (moveData.maxpp === 1 ? 1 : 5) : moveData.maxpp,
-				target: moveData.target,
+				id: moveSlot.id,
+				pp: moveSlot.maxpp === 1 ? 1 : 5,
+				maxpp: this.battle.gen >= 5 ? (moveSlot.maxpp === 1 ? 1 : 5) : moveSlot.maxpp,
+				target: moveSlot.target,
 				disabled: false,
 				used: false,
 				virtual: true,
@@ -779,7 +777,6 @@ class Pokemon {
 		} else {
 			this.battle.add('-transform', this, pokemon);
 		}
-		// @ts-ignore
 		this.setAbility(pokemon.ability, this, true);
 
 		// Change formes based on held items (for Transform)
@@ -897,13 +894,13 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string} type
+	 * @param {string | string[]} type
 	 */
 	hasType(type) {
 		if (!type) return false;
 		if (Array.isArray(type)) {
-			for (let i = 0; i < type.length; i++) {
-				if (this.hasType(type[i])) return true;
+			for (const typeid of type) {
+				if (this.hasType(typeid)) return true;
 			}
 		} else {
 			if (this.getTypes().includes(type)) return true;
@@ -954,9 +951,9 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {boolean} isHidden
+	 * @param {boolean} [isHidden]
 	 */
-	tryTrap(isHidden) {
+	tryTrap(isHidden = false) {
 		if (this.runStatusImmunity('trapped')) {
 			if (this.trapped && isHidden) return true;
 			this.trapped = isHidden ? 'hidden' : true;
@@ -981,7 +978,7 @@ class Pokemon {
 
 	/**
 	 * @param {string} moveid
-	 * @param {boolean} [isHidden]
+	 * @param {boolean | string} [isHidden]
 	 * @param {Effect} [sourceEffect]
 	 */
 	disableMove(moveid, isHidden, sourceEffect) {
@@ -990,7 +987,7 @@ class Pokemon {
 		}
 		moveid = toId(moveid);
 
-		for (let moveSlot of this.moveSlots) {
+		for (const moveSlot of this.moveSlots) {
 			if (moveSlot.id === moveid && moveSlot.disabled !== true) {
 				moveSlot.disabled = (isHidden || true);
 				moveSlot.disabledSource = (sourceEffect ? sourceEffect.fullname : '');
@@ -1038,7 +1035,7 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string} status
+	 * @param {string | Effect} status
 	 * @param {Pokemon?} source
 	 * @param {Effect?} sourceEffect
 	 */
@@ -1048,9 +1045,9 @@ class Pokemon {
 
 	/**
 	 * Unlike clearStatus, gives cure message
-	 * @param {boolean} silent
+	 * @param {boolean} [silent]
 	 */
-	cureStatus(silent) {
+	cureStatus(silent = false) {
 		if (!this.hp || !this.status) return false;
 		this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
 		this.setStatus('');
@@ -1133,8 +1130,8 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {Pokemon} source
-	 * @param {Effect} sourceEffect
+	 * @param {Pokemon} [source]
+	 * @param {Effect} [sourceEffect]
 	 */
 	eatItem(source, sourceEffect) {
 		if (!this.hp || !this.isActive) return false;
@@ -1162,8 +1159,8 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {Pokemon} source
-	 * @param {Effect} sourceEffect
+	 * @param {Pokemon} [source]
+	 * @param {Effect} [sourceEffect]
 	 */
 	useItem(source, sourceEffect) {
 		if ((!this.hp && !this.getItem().isGem) || !this.isActive) return false;
@@ -1198,7 +1195,7 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {Pokemon} source
+	 * @param {Pokemon} [source]
 	 */
 	takeItem(source) {
 		if (!this.isActive) return false;
@@ -1218,13 +1215,13 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string |Item} item
+	 * @param {string | Item} item
 	 * @param {Pokemon} [source]
 	 * @param {Effect} [effect]
 	 */
 	setItem(item, source, effect) {
 		if (!this.hp || !this.isActive) return false;
-		item = this.battle.getItem(item);
+		if (typeof item === 'string') item = this.battle.getItem(item);
 
 		let effectid;
 		if (this.battle.effect) effectid = this.battle.effect.id;
@@ -1261,13 +1258,13 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {string} abilityName
-	 * @param {Pokemon} [source]
+	 * @param {string | Ability} ability
+	 * @param {?Pokemon} [source]
 	 * @param {boolean} [isFromFormeChange]
 	 */
-	setAbility(abilityName, source, isFromFormeChange) {
+	setAbility(ability, source, isFromFormeChange) {
 		if (!this.hp) return false;
-		let ability = this.battle.getAbility(abilityName);
+		if (typeof ability === 'string') ability = this.battle.getAbility(ability);
 		let oldAbility = this.ability;
 		if (!isFromFormeChange) {
 			if (['illusion', 'battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange'].includes(ability.id)) return false;
@@ -1408,7 +1405,7 @@ class Pokemon {
 	 */
 	removeLinkedVolatiles(linkedStatus, linkedPokemon) {
 		linkedStatus = linkedStatus.toString();
-		for (let linkedPoke of linkedPokemon) {
+		for (const linkedPoke of linkedPokemon) {
 			if (linkedPoke.volatiles[linkedStatus]) {
 				linkedPoke.volatiles[linkedStatus].linkedPokemon.splice(linkedPoke.volatiles[linkedStatus].linkedPokemon.indexOf(this), 1);
 				if (linkedPoke.volatiles[linkedStatus].linkedPokemon.length === 0) {
@@ -1456,9 +1453,9 @@ class Pokemon {
 	 * newType can be an array, but this is for OMs only. The game in
 	 * reality doesn't support setting a type to more than one type.
 	 * @param {string | string[]} newType
-	 * @param {boolean} enforce
+	 * @param {boolean} [enforce]
 	 */
-	setType(newType, enforce) {
+	setType(newType, enforce = false) {
 		// First type of Arceus, Silvally cannot be normally changed
 		if (!enforce && (this.template.num === 493 || this.template.num === 773)) return false;
 
@@ -1497,9 +1494,9 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {boolean} negateImmunity
+	 * @param {boolean} [negateImmunity]
 	 */
-	isGrounded(negateImmunity) {
+	isGrounded(negateImmunity = false) {
 		if ('gravity' in this.battle.pseudoWeather) return true;
 		if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
 		if ('smackdown' in this.volatiles) return true;
@@ -1514,11 +1511,16 @@ class Pokemon {
 	}
 
 	isSemiInvulnerable() {
-		if (this.volatiles['fly'] || this.volatiles['bounce'] || this.volatiles['skydrop'] || this.volatiles['dive'] || this.volatiles['dig'] || this.volatiles['phantomforce'] || this.volatiles['shadowforce']) {
+		if (this.volatiles['fly'] || this.volatiles['bounce'] || this.volatiles['dive'] || this.volatiles['dig'] || this.volatiles['phantomforce'] || this.volatiles['shadowforce'] || this.isSkyDropped()) {
 			return true;
 		}
-		for (let i = 0; i < this.side.foe.active.length; i++) {
-			if (this.side.foe.active[i].volatiles['skydrop'] && this.side.foe.active[i].volatiles['skydrop'].source === this) {
+		return false;
+	}
+
+	isSkyDropped() {
+		if (this.volatiles['skydrop']) return true;
+		for (const foeActive of this.side.foe.active) {
+			if (foeActive.volatiles['skydrop'] && foeActive.volatiles['skydrop'].source === this) {
 				return true;
 			}
 		}
@@ -1526,15 +1528,14 @@ class Pokemon {
 	}
 
 	/**
-	 * @param {Move} move
+	 * @param {string | Move} move
 	 */
 	runEffectiveness(move) {
 		let totalTypeMod = 0;
-		let types = this.getTypes();
-		for (let i = 0; i < types.length; i++) {
-			let typeMod = this.battle.getEffectiveness(move, types[i]);
-			typeMod = this.battle.singleEvent('Effectiveness', move, null, types[i], move, null, typeMod);
-			totalTypeMod += this.battle.runEvent('Effectiveness', this, types[i], move, typeMod);
+		for (const type of this.getTypes()) {
+			let typeMod = this.battle.getEffectiveness(move, type);
+			typeMod = this.battle.singleEvent('Effectiveness', move, null, type, move, null, typeMod);
+			totalTypeMod += this.battle.runEvent('Effectiveness', this, type, move, typeMod);
 		}
 		return totalTypeMod;
 	}
