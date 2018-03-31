@@ -292,7 +292,7 @@ function runDexsearch(target, cmd, canAll, message) {
 			if (group[cat][param] === undefined) {
 				if (uniqueTraits.includes(cat)) {
 					for (let currentParam in group[cat]) {
-						if (group[cat][currentParam] !== isNotSearch) return `A Pok&eacute;mon cannot have multiple ${cat}.`;
+						if (group[cat][currentParam] !== isNotSearch && !isNotSearch) return `A Pok&eacute;mon cannot have multiple ${cat}.`;
 					}
 				}
 				continue;
@@ -576,7 +576,7 @@ function runDexsearch(target, cmd, canAll, message) {
 			searches.push(orGroup);
 		}
 	}
-	if (showAll && searches.length === 0 && megaSearch === null) return {reply: "No search parameters other than 'all' were found. Try '/help dexsearch' for more information on this command."};
+	if (showAll && searches.length === 0 && megaSearch === null && !maxGen) return {reply: "No search parameters other than 'all' were found. Try '/help dexsearch' for more information on this command."};
 	if (!maxGen) maxGen = 7;
 	let mod = Dex.mod('gen' + maxGen);
 	let dex = {};
@@ -719,7 +719,7 @@ function runDexsearch(target, cmd, canAll, message) {
 		}
 	}
 	let results = [];
-	for (let mon in dex) {
+	for (const mon of Object.keys(dex).sort()) {
 		if (dex[mon].baseSpecies && results.includes(dex[mon].baseSpecies)) continue;
 		results.push(dex[mon].species);
 	}
@@ -1152,7 +1152,8 @@ function runMovesearch(target, cmd, canAll, message) {
 
 			for (let searchStatus in alts.volatileStatus) {
 				let canStatus = !!((dex[move].secondary && dex[move].secondary.volatileStatus === searchStatus) ||
-								   (dex[move].secondaries && dex[move].secondaries.some(entry => entry.volatileStatus === searchStatus)));
+								   (dex[move].secondaries && dex[move].secondaries.some(entry => entry.volatileStatus === searchStatus)) ||
+								   (dex[move].volatileStatus === searchStatus));
 				if (canStatus === alts.volatileStatus[searchStatus]) {
 					matched = true;
 					break;
@@ -1474,6 +1475,10 @@ function runLearn(target, cmd) {
 
 	let lsetProblem;
 	for (const arg of targets) {
+		if (['ha', 'hidden', 'hiddenability'].includes(toId(arg))) {
+			lsetData.isHidden = true;
+			continue;
+		}
 		move = validator.dex.getMove(arg);
 		if (!move.exists || move.id === 'magikarpsrevenge') {
 			return {error: `Move '${move.id}' not found.`};

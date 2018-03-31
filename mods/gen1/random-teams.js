@@ -33,7 +33,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 
 		for (let i = 0; i < 6; i++) {
 			// Choose forme.
-			let poke = formes[i][this.random(formes[i].length)];
+			let poke = this.sample(formes[i]);
 			let template = this.getTemplate(poke);
 
 			// Level balance: calculate directly from stats rather than using some silly lookup table.
@@ -152,7 +152,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 			case 'NFE':
 				// Don't add pre-evo mon if already 4 or more non-OUs, or if already 3 or more non-OUs with one being a shitmon
 				// Regardless, pre-evo mons are slightly less common.
-				if (nuCount > 3 || (hasShitmon && nuCount > 2) || this.random(3) === 0) continue;
+				if (nuCount > 3 || (hasShitmon && nuCount > 2) || this.randomChance(1, 3)) continue;
 				break;
 			case 'Uber':
 				// If you have one of the worst mons we allow luck to give you all Ubers.
@@ -160,7 +160,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 				break;
 			default:
 				// OUs are fine. Otherwise 50% chance to skip mon if already 4 or more non-OUs.
-				if (uuTiers.includes(tier) && pokemonPool.length > 1 && (nuCount > 3 && this.random(2) >= 1)) continue;
+				if (uuTiers.includes(tier) && pokemonPool.length > 1 && (nuCount > 3 && this.randomChance(1, 2))) continue;
 			}
 
 			let skip = false;
@@ -168,7 +168,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 			// Limit 2 of any type as well. Diversity and minor weakness count.
 			// The second of a same type has halved chance of being added.
 			for (const type of template.types) {
-				if (typeCount[type] > 1 || (typeCount[type] === 1 && this.random(2) && pokemonPool.length > 1)) {
+				if (typeCount[type] > 1 || (typeCount[type] === 1 && this.randomChance(1, 2) && pokemonPool.length > 1)) {
 					skip = true;
 					break;
 				}
@@ -246,7 +246,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 
 		// Either add all moves or add none
 		if (template.comboMoves) {
-			if (this.random(2) === 0) {
+			if (this.randomChance(1, 2)) {
 				moves = moves.concat(template.comboMoves);
 			}
 		}
@@ -254,7 +254,7 @@ class RandomGen1Teams extends RandomGen2Teams {
 		// Add one of the semi-mandatory moves
 		// Often, these are used so that the Pokemon only gets one of the less useful moves
 		if (moves.length < 4 && template.exclusiveMoves) {
-			moves.push(template.exclusiveMoves[this.random(template.exclusiveMoves.length)]);
+			moves.push(this.sample(template.exclusiveMoves));
 		}
 
 		// Add the mandatory move. SD Mew and Amnesia Snorlax are exceptions.

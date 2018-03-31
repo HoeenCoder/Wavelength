@@ -43,4 +43,6 @@ before('initialization', function () {
 	require('../app');
 
 	LoginServer.disabled = true;
+
+	Ladders.disabled = true;
 });

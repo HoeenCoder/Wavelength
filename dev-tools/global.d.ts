@@ -2,6 +2,7 @@ import * as BattleType from './../sim/battle'
 import * as BattleStreamType from './../sim/battle-stream'
 import * as DataType from './../sim/dex-data'
 import * as DexType from './../sim/dex'
+import * as SimType from './../sim/index'
 import * as PokemonType from './../sim/pokemon'
 import * as PRNGType from './../sim/prng'
 import * as SideType from './../sim/side'
@@ -14,11 +15,12 @@ import * as UsersType from './../users'
 import * as PunishmentsType from './../punishments'
 import * as StreamsType from './../lib/streams'
 import * as child_process from 'child_process'
+import * as ChatType from './../chat'
 
 declare global {
 	// modules
 	const Dex: typeof DexType
-	const Chat: any
+	const Chat: typeof ChatType
 	const Punishments: typeof PunishmentsType
 	const Ladders: typeof LaddersType
 	const LadderStoreT: typeof LadderStoreType
@@ -40,6 +42,7 @@ declare global {
 	const Pokemon: typeof PokemonType
 	const PRNG: typeof PRNGType
 	const Side: typeof SideType
+	const Sim: typeof SimType
 	const TeamValidator: typeof TeamValidatorType
 	const Validator: typeof TeamValidatorType.Validator
 	const BattleStream: typeof BattleStreamType.BattleStream
@@ -61,8 +64,8 @@ declare global {
 	const GlobalRoom: typeof RoomsType.GlobalRoom
 	const ChatRoom: typeof RoomsType.ChatRoomTypeForTS
 	const GameRoom: typeof RoomsType.GameRoom
-	const Room: typeof RoomsType.ChatRoom
 	const BasicRoom: typeof RoomsType.BasicRoom
+	const BasicChatRoom: typeof RoomsType.ChatRoom
 	const RoomGame: typeof RoomsType.RoomGame
 	const RoomBattle: typeof RoomsType.RoomBattle
 	const Rooms: typeof RoomsType

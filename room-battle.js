@@ -167,6 +167,8 @@ class BattleTimer {
 		const hasLongTurns = Dex.getFormat(battle.format, true).gameType !== 'singles';
 		const isChallenge = (!battle.rated && !battle.room.tour);
 		const timerSettings = Dex.getFormat(battle.format, true).timer;
+		/**@type {{perTurnTicks: number, startingTicks: number, maxPerTurnTicks: number, maxFirstTurnTicks: number, dcTimer: boolean, starting?: number, perTurn?: number, maxPerTurn?: number, maxFirstTurn?: number, timeoutAutoChoose?: boolean, accelerate?: boolean}} */
+		// @ts-ignore
 		this.settings = Object.assign({}, timerSettings);
 		if (this.settings.perTurn === undefined) {
 			this.settings.perTurn = hasLongTurns ? 25 : 10;
@@ -377,7 +379,7 @@ class Battle {
 		this.room = room;
 		this.title = format.name;
 		if (!this.title.endsWith(" Battle")) this.title += " Battle";
-		this.allowRenames = (!options.rated && !options.tour);
+		this.allowRenames = options.allowRenames !== undefined ? !!options.allowRenames : (!options.rated && !options.tour);
 
 		this.format = formatid;
 		/**
@@ -1064,7 +1066,10 @@ class Battle {
 		}
 		this.stream.write(`>player ${slot} ` + JSON.stringify(options));
 		if (this.started) this.onUpdateConnection(user);
-		if (this.p1 && this.p2) this.started = true;
+		if (this.p1 && this.p2) {
+			this.started = true;
+			Rooms.global.onCreateBattleRoom(Users(this.p1.userid), Users(this.p2.userid), this.room, {rated: this.rated});
+		}
 		return player;
 	}
 
@@ -1129,10 +1134,14 @@ if (!PM.isParentProcess) {
 	// @ts-ignore
 	global.Config = require('./config/config');
 	global.Chat = require('./chat');
-	global.__version = require('child_process')
-		.execSync('git merge-base master HEAD')
-		.toString()
-		.trim();
+	global.__version = '';
+	try {
+		const execSync = require('child_process').execSync;
+		const out = execSync('git merge-base master HEAD', {
+			stdio: ['ignore', 'pipe', 'ignore'],
+		});
+		global.__version = ('' + out).trim();
+	} catch (e) {}
 
 	if (Config.crashguard) {
 		// graceful crash - allow current battles to finish before restarting

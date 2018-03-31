@@ -97,6 +97,10 @@ class Ladder extends LadderStore {
 			connection.popup(message);
 			return null;
 		}
+		if (Punishments.isBattleBanned(user)) {
+			connection.popup(`You are barred from starting any new games until your battle ban expires.`);
+			return null;
+		}
 		if (Dex.getFormat(this.formatid).useSGgame) {
 			if (!user.console || user.console.gameId !== 'SGgame' || !Db.players.get(userid) || Db.players.get(userid).party.length <= 0) {
 				connection.popup(`You need to start SGgame before you can play this format.`);

@@ -24,22 +24,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Mystifi': {
-				species: 'Clefairy',
-				ability: 'Analytic',
-				item: 'Eviolite',
-				gender: 'F',
-				moves: [
-					['Calm Mind', 'Cosmic Power'][variant], 'Soft-Boiled', 'Stored Power',
-				],
-				signatureMove: 'Mystic Mirage',
-				evs: {
-					hp: 252,
-					def: 252,
-					spd: 4,
-				},
-				nature: 'Bold',
-			},
 			'~Kraken Mare': {
 				species: 'Gardevoir-Mega',
 				ability: 'Krakens Boost',
@@ -87,7 +71,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Wavelength Prince': {
+			'~Perison': {
 				species: 'Darkrai',
 				ability: 'Death Boost',
 				item: 'Darkiniumz',
@@ -101,6 +85,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					hp: 6,
 				},
 				nature: 'Timid',
+			},
+			'~CubsFan38': {
+				species: 'Rowlet',
+				ability: 'Night Owl',
+				item: 'Eviolite',
+				gender: 'M',
+				moves: ['Leaf Blade', 'Brave Bird', 'Swords Dance',
+				],
+				signatureMove: 'Moonlight Escape',
+				evs: {
+					spd: 4,
+					atk: 252,
+					spe: 252,
+				},
+				nature: 'Jolly',
 			},
 			// Global Leaders:
 			'&Opple': {
@@ -133,22 +132,49 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Impish',
 			},
-			'&CubsFan38': {
-				species: 'Rowlet',
-				ability: 'Night Owl',
-				item: 'Eviolite',
+			'&Volco': {
+				species: 'Gallade-Mega',
+				ability: 'Shadow Fist',
+				item: 'Leftovers',
 				gender: 'M',
-				moves: ['Leaf Blade', 'Brave Bird', 'Swords Dance',
-				],
-				signatureMove: 'Moonlight Escape',
+				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
+				signatureMove: 'Invisible Punch',
 				evs: {
-					spd: 4,
+					hp: 4,
 					atk: 252,
 					spe: 252,
 				},
 				nature: 'Jolly',
 			},
-
+			//Captains
+			'^Showdown Helper': {
+				species: 'Celebi',
+				ability: 'Filter',
+				item: 'Weakness Policy',
+				moves: ['Searing Shot', 'Quiver Dance', 'Giga Drain',
+				],
+				signatureMove: 'Psychotherapy',
+				evs: {
+					def: 120,
+					hp: 252,
+					spd: 136,
+				},
+				nature: 'Bold',
+			},
+			'^Finny': {
+				species: 'Totodile',
+				ability: 'clinicaldepression',
+				item: 'Eviolite',
+				moves: ['Dragon Dance', 'Waterfall', 'Aqua Jet',
+				],
+				signatureMove: 'Dying Inside',
+				evs: {
+					atk: 252,
+					spe: 252,
+					spd: 4,
+				},
+				nature: 'Adamant',
+			},
 			//Global Bots
 			'*Stabby the Krabby': {
 				species: 'Krabby',
@@ -217,6 +243,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			'@C733937 123': {
 				species: 'Skuntank',
 				ability: 'Unaware',
+				shiny: true,
 				item: 'Shuca Berry',
 				gender: 'M',
 				moves: ['Gunk Shot', 'Crunch', 'Sacred Fire',
@@ -243,20 +270,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-			'@HiroZ': {
-				species: 'Genesect',
-				ability: 'Download',
-				item: 'Choice Scarf',
-				moves: ['U-turn', 'Ice Beam', 'Explosion',
-				],
-				signatureMove: 'Crystallized Ukaku',
-				evs: {
-					atk: 252,
-					spe: 252,
-					spa: 4,
-				},
-				nature: 'Hasty',
-			},
 			'@TheRittz': {
 				species: 'Venusaur-Mega',
 				ability: 'Paradoxical Prowess',
@@ -271,20 +284,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spd: 128,
 				},
 				nature: 'Calm',
-			},
-			'@Volco': {
-				species: 'Gallade-Mega',
-				ability: 'Shadow Fist',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Drain Punch', 'Ice Punch', 'Swords Dance'],
-				signatureMove: 'Invisible Punch',
-				evs: {
-					hp: 4,
-					atk: 252,
-					spe: 252,
-				},
-				nature: 'Jolly',
 			},
 			// Global Drivers:
 			'%Serperiorater': {
@@ -303,20 +302,22 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%Lycanium Z': {
-				species: "Arceus-Dark",
-				ability: "Bloody Tears",
-				item: "Leftovers",
+				species: "Rockruff",
+				ability: "Super Shield",
+				item: "Lycantium Z",
 				gender: "M",
-				moves: ['Drill Peck', 'Shore Up', 'Meteor Mash'],
-				signatureMove: "Heart of Darkness",
+				moves: ['Accelerock', 'Earthquake', 'Swords Dance'],
+				signatureMove: "ALL Delete",
 				evs: {
 					spe: 252,
-					hp: 252,
+					atk: 252,
 					def: 4,
 				},
 				nature: "Jolly",
 			},
-			'%wgc': {
+
+			// Global Voices:
+			'+wgc': {
 				species: 'Gengar',
 				ability: 'Levitate',
 				item: 'Spooky Plate',
@@ -330,22 +331,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-
-			// Global Voices:
-			'+ducktown': {
-				species: 'Golduck',
-				ability: 'Cloud Nine',
-				item: 'Leftovers',
-				gender: 'M',
-				moves: ['Scald', 'Ice Beam', 'Psychic',
+			'+Mystifi': {
+				species: 'Clefairy',
+				ability: 'Analytic',
+				item: 'Eviolite',
+				gender: 'F',
+				moves: [
+					['Calm Mind', 'Cosmic Power'][variant], 'Soft-Boiled', 'Stored Power',
 				],
-				signatureMove: 'Duck Power',
+				signatureMove: 'Mystic Mirage',
 				evs: {
-					spa: 252,
-					spe: 252,
-					hp: 4,
+					hp: 252,
+					def: 252,
+					spd: 4,
 				},
-				nature: 'Modest',
+				nature: 'Bold',
 			},
 			'+Almighty Bronzong': {
 				species: 'Bronzong',
@@ -422,18 +422,19 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'+AlfaStorm': {
-				species: 'Hydreigon',
-				ability: 'Mummy',
+				species: 'Umbreon',
+				ability: 'Addendum',
 				item: 'Leftovers',
 				gender: 'M',
-				moves: ['nightdaze', 'spacialrend', 'doomdesire'],
-				signatureMove: 'Infinity Storm',
+				shiny: true,
+				moves: ['Dark Pulse', 'Kings Shield', 'Recover'],
+				signatureMove: 'Dark Spiral',
 				evs: {
 					def: 4,
-					spa: 252,
-					spe: 252,
+					spd: 252,
+					hp: 252,
 				},
-				nature: 'Timid',
+				nature: 'Calm',
 			},
 			'+SnorlaxTheRain': {
 				species: 'Snorlax',
@@ -449,6 +450,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
+			'+The Dazzler Joe': {
+				species: 'Tyranitar',
+				ability: 'Speedy Gonzales',
+				item: 'Assault Vest',
+				gender: 'M',
+				shiny: true,
+				moves: ['crunch', 'earthquake', 'icepunch'],
+				signatureMove: 'King\'s Curse',
+				evs: {
+					hp: 184,
+					atk: 252,
+					def: 72,
+				},
+				nature: 'Adamant',
+			},
 		};
 		// convert moves to ids.
 		for (let k in sets) {
@@ -457,7 +473,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 		}
 
 		// Generate the team randomly.
-		let pool = Dex.shuffle(Object.keys(sets));
+		let pool = this.shuffle(Object.keys(sets));
 		for (let i = 0; i < 6; i++) {
 			/*if (i === 1) {
 				let monIds = pool.slice(0, 6).map(function (p) {

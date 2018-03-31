@@ -79,6 +79,53 @@ class PRNG {
 	}
 
 	/**
+	 * Flip a coin (two-sided die), returning true or false.
+	 *
+	 * This function returns true with probability `P`, where `P = numerator
+	 * / denominator`. This function returns false with probability `1 - P`.
+         *
+         * The numerator must be a non-negative integer (`>= 0`).
+         *
+         * The denominator must be a positive integer (`> 0`).
+	 *
+	 * @param {number} numerator - the top part of the probability fraction
+	 * @param {number} denominator - the bottom part of the probability fraction
+	 * @return {boolean} - randomly true or false
+	 */
+	randomChance(numerator, denominator) {
+		return this.next(denominator) < numerator;
+	}
+
+	/**
+	 * Return a random item from the given array.
+	 *
+	 * This function chooses items in the array with equal probability.
+	 *
+	 * If there are duplicate items in the array, each duplicate is
+	 * considered separately. For example, sample(['x', 'x', 'y']) returns
+	 * 'x' 67% of the time and 'y' 33% of the time.
+	 *
+	 * The array must contain at least one item.
+	 *
+	 * The array must not be sparse.
+	 *
+	 * @param {ReadonlyArray<T>} items - the items to choose from
+	 * @return {T} - a random item from items
+	 * @template T
+	 */
+	sample(items) {
+		if (items.length === 0) {
+			throw new RangeError(`Cannot sample an empty array`);
+		}
+		const index = this.next(items.length);
+		const item = items[index];
+		if (item === undefined && !Object.prototype.hasOwnProperty.call(items, index)) {
+			throw new RangeError(`Cannot sample a sparse array`);
+		}
+		return item;
+	}
+
+	/**
 		The RNG is a Linear Congruential Generator (LCG) in the form: `x_{n + 1} = (a x_n + c) % m`
 
 		Where: `x_0` is the seed, `x_n` is the random number after n iterations,

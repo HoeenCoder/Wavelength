@@ -41,7 +41,7 @@ function saveBreedingData() {
 }
 
 function toPokemonId(str) {
-	return str.toLowerCase().replace(/é/g, 'e').replace(/[^a-z0-9 /]/g, '');
+	return str.toLowerCase().replace(/é/g, 'e').replace(/[^a-z0-9 -/]/g, '');
 }
 
 class Giveaway {
@@ -320,7 +320,7 @@ class LotteryGiveaway extends Giveaway {
 	generateReminder(joined) {
 		let cmd = (joined ? 'Leave' : 'Join');
 		let button = `<button style="margin:4px;" name="send" value="/giveaway ${toId(cmd)}lottery"><font size=1><b>${cmd}</b></font></button>`;
-		return this.generateWindow(`The lottery drawing will occur in 2 minutes, and with ${this.maxwinners} winner${Chat.plural(this.maxwinners)}!<br />${button}</p>`);
+		return this.generateWindow(`The lottery drawing will occur in 2 minutes, and with ${Chat.count(this.maxwinners, "winners")}!<br />${button}</p>`);
 	}
 
 	display() {
@@ -762,7 +762,7 @@ let commands = {
 		if (!count) return this.sendReplyBox("This Pokémon has never been given away.");
 		let recent = count.filter(val => val + RECENT_THRESHOLD > Date.now()).length;
 
-		this.sendReplyBox(`This Pokémon has been given away ${count.length} time${Chat.plural(count)}, a total of ${recent} time${Chat.plural(recent)} in the past month.`);
+		this.sendReplyBox(`This Pokémon has been given away ${Chat.count(count, "times")}, a total of ${Chat.count(recent, "times")} in the past month.`);
 	},
 	'': 'help',
 	help: function (target, room, user) {
@@ -841,7 +841,7 @@ let breedingcontests = {
 		let entry = breedingData.winners[contest];
 		return this.sendReplyBox(`<div class="broadcast-blue"><p style="text-align:center;font-size:14pt;font-weight:bold;margin-bottom:2px;">Breeding contest: <a href="${entry.link}"><b>${Chat.escapeHTML(entry.name)}</b></a>. Winner: <b>${Chat.escapeHTML(entry.winner)}</b></p>` +
 			`<table style="margin-left:auto;margin-right:auto;"><tr>` +
-			`<td style="text-align:center;width:15%">${Giveaway.getSprite(entry.description)[1]}</td><td style="text-align:center;width:40%">${Chat.parseText(entry.description)}</td>` +
+			`<td style="text-align:center;width:15%">${Giveaway.getSprite(`shiny ${entry.description}`)[1]}</td><td style="text-align:center;width:40%">${Chat.formatText(entry.description, true)}</td>` +
 			(entry.comment ? `<td style="text-align:center;width:35%"><b>Breeder's comments:</b><br/><i>${Chat.escapeHTML(entry.comment)}</i></td>` : '') +
 			`</tr></table></div>`);
 	},

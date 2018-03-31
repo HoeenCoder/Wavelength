@@ -197,7 +197,7 @@ exports.BattleScripts = {
 		} else {
 			accuracy = this.runEvent('Accuracy', target, pokemon, move, accuracy);
 		}
-		if (accuracy !== true && accuracy !== 255 && this.random(256) >= accuracy) {
+		if (accuracy !== true && accuracy !== 255 && !this.randomChance(accuracy, 256)) {
 			this.attrLastMove('[miss]');
 			this.add('-miss', pokemon);
 			damage = false;
@@ -209,7 +209,7 @@ exports.BattleScripts = {
 			let hits = move.multihit;
 			if (hits.length) {
 				if (hits[0] === 2 && hits[1] === 5) {
-					hits = [2, 2, 2, 3, 3, 3, 4, 5][this.random(8)];
+					hits = this.sample([2, 2, 2, 3, 3, 3, 4, 5]);
 				} else {
 					hits = this.random(hits[0], hits[1] + 1);
 				}
@@ -400,7 +400,7 @@ exports.BattleScripts = {
 				// Unlike gen 1, though, paralysis works for all unless the target is immune to direct move (ie. ground-types and t-wave).
 				if (!(secondary.status && ['brn', 'frz'].includes(secondary.status) && target && target.hasType(move.type))) {
 					let effectChance = Math.floor(secondary.chance * 255 / 100);
-					if (typeof secondary.chance === 'undefined' || this.random(256) <= effectChance) {
+					if (typeof secondary.chance === 'undefined' || this.randomChance(effectChance, 256)) {
 						this.moveHit(target, pokemon, move, secondary, true, isSelf);
 					}
 				}
@@ -485,7 +485,7 @@ exports.BattleScripts = {
 		move.crit = move.willCrit || false;
 		if (typeof move.willCrit === 'undefined') {
 			if (move.critRatio) {
-				move.crit = (this.random(critMult[move.critRatio]) === 0);
+				move.crit = this.randomChance(1, critMult[move.critRatio]);
 			}
 		}
 

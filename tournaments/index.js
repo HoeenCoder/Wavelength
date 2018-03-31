@@ -36,6 +36,7 @@ class Tournament {
 		this.id = room.id;
 		this.room = room;
 		this.title = Dex.getFormat(format).name + ' tournament';
+		this.isTournament = true;
 		this.allowRenames = false;
 		this.players = Object.create(null);
 		this.playerCount = 0;
@@ -131,8 +132,7 @@ class Tournament {
 		let unbans = [];
 		let addedRules = [];
 		let removedRules = [];
-		for (let i = 0; i < this.customRules.length; i++) {
-			let ban = this.customRules[i];
+		for (const ban of this.customRules) {
 			let charAt0 = ban.charAt(0);
 			if (charAt0 === '+') {
 				unbans.push(ban.substr(1));
@@ -157,8 +157,8 @@ class Tournament {
 			if (this.autoDisqualifyTimer) clearTimeout(this.autoDisqualifyTimer);
 			this.inProgressMatches.forEach(match => {
 				if (match) {
-					delete match.room.tour;
-					delete match.room.parent;
+					match.room.tour = null;
+					match.room.parent = null;
 					match.room.addRaw("<div class=\"broadcast-red\"><b>The tournament was forcefully ended.</b><br />You can finish playing, but this battle is no longer considered a tournament battle.</div>");
 				}
 			});
@@ -287,7 +287,7 @@ class Tournament {
 			return;
 		}
 
-		if (this.checkBanned(user)) {
+		if (this.checkBanned(user) || Punishments.isBattleBanned(user)) {
 			output.sendReply('|tournament|error|Banned');
 			return;
 		}
@@ -794,6 +794,7 @@ class Tournament {
 		if (!this.pendingChallenges.get(player)) return;
 
 		let room = Rooms.createBattle(this.teambuilderFormat, {
+			isPrivate: this.room.isPrivate,
 			p1: from,
 			p1team: challenge.team,
 			p2: user,
@@ -845,15 +846,17 @@ class Tournament {
 	onBattleJoin(room, user) {
 		if (this.scouting || this.isEnded || user.latestIp === room.p1.latestIp || user.latestIp === room.p2.latestIp) return;
 		if (user.can('makeroom')) return;
-		let users = this.generator.getUsers(true);
-		for (let i = 0; i < users.length; i++) {
-			let otherUser = Users.get(users[i].userid);
+		for (const targetUser of this.generator.getUsers(true)) {
+			let otherUser = Users.get(targetUser.userid);
 			if (otherUser && otherUser.latestIp === user.latestIp) {
 				return "Scouting is banned: tournament players can't watch other tournament battles.";
 			}
 		}
 	}
 	onBattleWin(room, winnerid) {
+		room.tour = null;
+		room.parent = null;
+
 		let from = this.players[room.p1.userid];
 		let to = this.players[room.p2.userid];
 		let winner = this.players[winnerid];

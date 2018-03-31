@@ -580,7 +580,7 @@ exports.BattleMovedex = {
 				}
 			}
 			let randomMove = '';
-			if (moves.length) randomMove = moves[this.random(moves.length)];
+			if (moves.length) randomMove = this.sample(moves);
 			if (!randomMove) return false;
 			this.useMove(randomMove, pokemon);
 		},
@@ -700,6 +700,27 @@ exports.BattleMovedex = {
 			} else {
 				this.heal(pokemon.maxhp / 2);
 			}
+		},
+	},
+	thief: {
+		inherit: true,
+		onAfterHit: function () {},
+		secondary: {
+			chance: 100,
+			onAfterHit: function (target, source) {
+				if (source.item || source.volatiles['gem']) {
+					return;
+				}
+				let yourItem = target.takeItem(source);
+				if (!yourItem) {
+					return;
+				}
+				if (!source.setItem(yourItem)) {
+					target.item = yourItem.id; // bypass setItem so we don't break choicelock or anything
+					return;
+				}
+				this.add('-item', source, yourItem, '[from] move: Thief', '[of] ' + target);
+			},
 		},
 	},
 	thrash: {

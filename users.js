@@ -24,6 +24,7 @@
  */
 
 'use strict';
+/** @typedef {GlobalRoom | GameRoom | ChatRoom} Room */
 
 const PLAYER_SYMBOL = '\u2606';
 const HOST_SYMBOL = '\u2605';
@@ -572,7 +573,7 @@ class User {
 	}
 	/**
 	 * @param {string} minAuth
-	 * @param {Room?} room
+	 * @param {BasicChatRoom?} room
 	 */
 	authAtLeast(minAuth, room = null) {
 		if (!minAuth || minAuth === ' ') return true;
@@ -589,7 +590,7 @@ class User {
 	/**
 	 * @param {string} permission
 	 * @param {string | User?} target user or group symbol
-	 * @param {Room?} room
+	 * @param {BasicChatRoom?} room
 	 * @return {boolean}
 	 */
 	can(permission, target = null, room = null) {
@@ -1071,22 +1072,13 @@ class User {
 		this.updateReady(connection);
 	}
 	debugData() {
-		let str = '' + this.group + this.name + ' (' + this.userid + ')';
-		for (let i = 0; i < this.connections.length; i++) {
-			let connection = this.connections[i];
-			str += ' socket' + i + '[';
-			let first = true;
-			for (let j of connection.inRooms) {
-				if (first) {
-					first = false;
-				} else {
-					str += ', ';
-				}
-				str += j;
-			}
-			str += ']';
+		let str = `${this.group}${this.name} (${this.userid})`;
+		for (const [i, connection] of this.connections.entries()) {
+			str += ` socket${i}[`;
+			str += [...connection.inRooms].join(`, `);
+			str += `]`;
 		}
-		if (!this.connected) str += ' (DISCONNECTED)';
+		if (!this.connected) str += ` (DISCONNECTED)`;
 		return str;
 	}
 	/**
@@ -1208,8 +1200,8 @@ class User {
 			Db.ontime.set(this.userid, Db.ontime.get(this.userid, 0) + (Date.now() - Ontime[this.userid]));
 			delete Ontime[this.userid];
 		}
-		for (let i = 0; i < this.connections.length; i++) {
-			if (this.connections[i] === connection) {
+		for (const [i, connected] of this.connections.entries()) {
+			if (connected === connection) {
 				// console.log('DISCONNECT: ' + this.userid);
 				if (this.connections.length <= 1) {
 					this.markInactive();
@@ -1264,12 +1256,14 @@ class User {
 		this.inRooms.clear();
 	}
 	/**
+	 * If this user is included in the returned list of alts (i.e. when forPunishment is true), they will always be the first element of that list.
 	 * @param {boolean} includeTrusted
 	 * @param {boolean} forPunishment
 	 */
 	getAltUsers(includeTrusted, forPunishment) {
 		let alts = findUsers([this.getLastId()], Object.keys(this.ips), {includeTrusted: includeTrusted, forPunishment: forPunishment});
-		if (!forPunishment) alts = alts.filter(user => user !== this);
+		alts = alts.filter(user => user !== this);
+		if (forPunishment) alts.unshift(this);
 		return alts;
 	}
 	getLastName() {
@@ -1293,6 +1287,7 @@ class User {
 		if (!room && roomid.startsWith('view-')) {
 			// it's a page!
 			let parts = roomid.split('-');
+			/** @type {any} */
 			let handler = Chat.pages;
 			parts.shift();
 			while (handler) {
@@ -1331,35 +1326,25 @@ class User {
 			}
 		}
 
+		if (!this.can('bypassall') && Punishments.isRoomBanned(this, room.id)) {
+			connection.sendTo(roomid, `|noinit|joinfailed|You are banned from the room "${roomid}".`);
+			return false;
+		}
+
 		if (Rooms.aliases.get(roomid) === room.id) {
 			connection.send(`>${roomid}\n|deinit`);
 		}
 
-		let joinResult = this.joinRoom(room, connection);
-		if (!joinResult) {
-			if (joinResult === null) {
-				connection.sendTo(roomid, `|noinit|joinfailed|You are banned from the room "${roomid}".`);
-				return false;
-			}
-			connection.sendTo(roomid, `|noinit|joinfailed|You do not have permission to join "${roomid}".`);
-			return false;
-		}
+		this.joinRoom(room, connection);
 		return true;
 	}
 	/**
-	 * @param {string | GlobalRoom | GameRoom | ChatRoom} room
+	 * @param {string | Room} roomid
 	 * @param {Connection?} connection
 	 */
-	joinRoom(room, connection = null) {
-		room = Rooms(room);
-		if (!room) return false;
-		if (!this.can('bypassall')) {
-			// check if user has permission to join
-			if (room.staffRoom && !this.isStaff) return false;
-			if (Punishments.isRoomBanned(this, room.id)) {
-				return null;
-			}
-		}
+	joinRoom(roomid, connection = null) {
+		const room = Rooms(roomid);
+		if (!room) throw new Error(`Room not found: ${roomid}`);
 		if (!connection) {
 			for (const curConnection of this.connections) {
 				// only join full clients, not pop-out single-room
@@ -1369,7 +1354,7 @@ class User {
 					this.joinRoom(room, curConnection);
 				}
 			}
-			return true;
+			return;
 		}
 		if (!connection.inRooms.has(room.id)) {
 			if (!this.inRooms.has(room.id)) {
@@ -1379,11 +1364,10 @@ class User {
 			connection.joinRoom(room);
 			room.onConnect(this, connection);
 		}
-		return true;
 	}
 	/**
 	 * @param {GlobalRoom | GameRoom | ChatRoom | string} room
-	 * @param {?Connection} connection
+	 * @param {Connection?} connection
 	 * @param {boolean} force
 	 */
 	leaveRoom(room, connection = null, force = false) {

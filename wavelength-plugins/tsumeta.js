@@ -16,7 +16,7 @@ if (proposals !== '') {
 	proposals = {};
 }
 
-function write() {
+function writeProposals() {
 	FS('config/proposals.json').writeUpdate(() => (
 		JSON.stringify(proposals)
 	));
@@ -84,7 +84,7 @@ exports.commands = {
 		alert: "message",
 		pm: "message",
 		message: function (target, room, user) {
-			if (user.userid !== "desokoro" && !this.can("bypassall")) return this.errorReply(`This command is reserved for Desokoro only.`);
+			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro only.`);
 			if (!target) return this.parse("/tsumetahelp");
 			let councilMembers = Db.councilmember.keys();
 			for (let u in councilMembers) {
@@ -112,9 +112,31 @@ exports.commands = {
 				creator: user.name,
 				desc: changes,
 			};
-			write();
+			writeProposals();
 		},
 
+		modify: "editproposal",
+		edit: "editproposal",
+		modifyproposal: "editproposal",
+		editproposal: function (target, room, user) {
+			if (!isTsuMetaCouncil(user.userid)) return this.errorReply('You are not in the TsuMeta council, or have been suspended.');
+			if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
+			let [proposal, ...newDesc] = target.split(',').map(p => p.trim());
+			if (!proposal || !newDesc) return this.parse('/tsumetahelp');
+			let proposalid = toId(proposal);
+			if (!proposals[proposalid]) return this.errorReply(`This proposal doesn't exist!`);
+			if (proposal.length > 500) return this.errorReply("Please keep your changes to a maximum of 500 characters.");
+			if (proposals[proposalid].creator !== user.userid && user.userid !== "desokoro" && (user.userid !== 'xcmr' || !Db.councilmember.has("xcmr"))) return this.errorReply(`Only the creator "${proposals[proposalid].creator}" can modify this proposal.`);
+			proposals[proposalid].desc = newDesc.join(', ');
+			writeProposals();
+			this.sendReplyBox(`You have successfully modified proposal <strong>${proposals[proposalid].idea}'s</strong> description to:<br />${proposals[proposalid].desc}`);
+			if (Rooms('tsumetacommittee')) {
+				Rooms('tsumetacommittee').add(`|c|~TsuMeta Council|${user.name} has edited ${proposals[proposalid].idea}'s description.`).update();
+			}
+		},
+
+		show: "proposals",
+		display: "proposals",
 		ideas: "proposals",
 		proposed: "proposals",
 		showproposals: "proposals",
@@ -144,13 +166,13 @@ exports.commands = {
 			if (!proposals[proposalid]) return this.errorReply(`This proposal doesn't exist!`);
 			if (user.userid === "xcmr" && Db.councilmember.has("xcmr")) {
 				delete proposals[proposalid];
-				write();
+				writeProposals();
 				this.sendReply(`Proposal ${target} has been deleted.`);
 				return true;
 			}
 			if (user.userid !== "desokoro") return this.errorReply(`This command is reserved for Desokoro.`);
 			delete proposals[proposalid];
-			write();
+			writeProposals();
 			this.sendReply(`Proposal ${target} has been deleted.`);
 		},
 
@@ -159,7 +181,7 @@ exports.commands = {
 			if (!this.runBroadcast()) return;
 			let reply = `<b><u>Proposals (${Object.keys(proposals).length})</u></b><br />`;
 			for (let proposal in proposals) reply += `(<strong>${proposal}</strong>)<br />`;
-			this.sendReply(`|raw|<div class="infobox infobox-limited">${reply}</div>`);
+			this.sendReplyBox(`<div class="infobox infobox-limited">${reply}</div>`);
 		},
 
 		suspend: function (target, room, user) {
@@ -209,17 +231,18 @@ exports.commands = {
 	},
 
 	tsumetahelp: [
-		`/tsumeta give [user] - Gives a user the TsuMeta Council Member status.`,
-		`/tsumeta take [user] - Removes a user's TsuMeta Council Member status.`,
-		`/tsumeta list - Shows the list of TsuMeta Council Members.`,
-		`/tsumeta alert [message] - Sends a message to all online users from the TsuMeta Council. Only for Desokoro.`,
-		`/tsumeta propose [what you modified], [change requested] - Proposes a change for the TsuMeta metagame. Must be in the TsuMeta Council to use.`,
-		`/tsumeta proposals [optional proposal ID] - Checks the specified proposal ID, if not specified generates a random one from the proposals index.`,
-		`/tsumeta deleteproposal [proposal] - Deletes the specified proposal. Reserved for Desokoro and xcmr.`,
-		`/tsumeta viewproposals - Shows the list of proposals.`,
-		`/tsumeta suspend [target] - Suspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.`,
-		`/tsumeta unsuspend [target] - Unsuspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.`,
-		`/tsumeta forums - Displays the official TsuMeta Website.`,
-		`/tsumeta help - Displays this help command.`,
+		`/tsumeta give [user] - Gives a user the TsuMeta Council Member status.
+		/tsumeta take [user] - Removes a user's TsuMeta Council Member status.
+		/tsumeta list - Shows the list of TsuMeta Council Members.
+		/tsumeta alert [message] - Sends a message to all online users from the TsuMeta Council. Only for Desokoro.
+		/tsumeta propose [what you modified], [change requested] - Proposes a change for the TsuMeta metagame. Must be in the TsuMeta Council to use this command.
+		/tsumeta edit [proposal], [description update] - Edits a proposal. Must be the submitter of the proposal, Desokoro, or xcmr.
+		/tsumeta proposals [optional proposal ID] - Checks the specified proposal ID, if not specified generates a random one from the proposals index.
+		/tsumeta deleteproposal [proposal] - Deletes the specified proposal. Reserved for Desokoro and xcmr.
+		/tsumeta viewproposals - Shows the list of proposals.
+		/tsumeta suspend [target] - Suspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.
+		/tsumeta unsuspend [target] - Unsuspends a user from proposing/participating in the TsuMeta council. Only for Desokoro and xcmr.
+		/tsumeta forums - Displays the official TsuMeta Website.
+		/tsumeta help - Displays this help command.`,
 	],
 };

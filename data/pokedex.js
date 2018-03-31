@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattlePokedex = {
+/**@type {{[k: string]: TemplateData}} */
+let BattlePokedex = {
 	bulbasaur: {
 		num: 1,
 		species: "Bulbasaur",
@@ -3887,18 +3888,6 @@ exports.BattlePokedex = {
 		abilities: {0: "Own Tempo", 1: "Technician", H: "Moody"},
 		heightm: 1.2,
 		weightkg: 58,
-		color: "White",
-		eggGroups: ["Field"],
-		otherFormes: ["pokestarsmeargle"],
-	},
-	pokestarsmeargle: {
-		num: -5000,
-		species: "Pokestar Smeargle",
-		types: ["Normal"],
-		baseStats: {hp: 55, atk: 20, def: 35, spa: 20, spd: 45, spe: 75},
-		abilities: {0: "Own Tempo", 1: "Technician", H: "Moody"},
-		heightm: 1.5,
-		weightkg: 61,
 		color: "White",
 		eggGroups: ["Field"],
 	},
@@ -10794,6 +10783,7 @@ exports.BattlePokedex = {
 		weightkg: 28,
 		color: "White",
 		eggGroups: ["Field"],
+		otherForms: ["furfroudandy", "furfroudebutante", "furfroudiamond", "furfrouheart", "furfroukabuki", "furfroulareine", "furfroumatron", "furfroupharaoh", "furfroustar"],
 	},
 	espurr: {
 		num: 677,
@@ -13769,6 +13759,17 @@ exports.BattlePokedex = {
 		evos: ["kerfluffle"],
 		eggGroups: ["Fairy", "Human-Like"],
 	},
+	pokestarsmeargle: {
+		num: -5000,
+		species: "Pokestar Smeargle",
+		types: ["Normal"],
+		baseStats: {hp: 55, atk: 20, def: 35, spa: 20, spd: 45, spe: 75},
+		abilities: {0: "Own Tempo", 1: "Technician", H: "Moody"},
+		heightm: 1.5,
+		weightkg: 61,
+		color: "White",
+		eggGroups: ["Field"],
+	},
 	pokestarufo: {
 		num: -5001,
 		species: "Pokestar UFO",
@@ -13977,3 +13978,5 @@ exports.BattlePokedex = {
 		eggGroups: ["Undiscovered"],
 	},
 };
+
+exports.BattlePokedex = BattlePokedex;

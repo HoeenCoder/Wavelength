@@ -172,7 +172,7 @@ exports.BattleScripts = {
 		accuracy = this.runEvent('Accuracy', target, pokemon, move, accuracy);
 
 		// Stadium fixes the 1/256 accuracy bug.
-		if (accuracy !== true && this.random(256) > accuracy) {
+		if (accuracy !== true && !this.randomChance(accuracy + 1, 256)) {
 			this.attrLastMove('[miss]');
 			this.add('-miss', pokemon);
 			damage = false;
@@ -186,7 +186,7 @@ exports.BattleScripts = {
 				if (hits.length) {
 					// Yes, it's hardcoded... meh
 					if (hits[0] === 2 && hits[1] === 5) {
-						hits = [2, 2, 3, 3, 4, 5][this.random(6)];
+						hits = this.sample([2, 2, 3, 3, 4, 5]);
 					} else {
 						hits = this.random(hits[0], hits[1] + 1);
 					}
@@ -389,7 +389,7 @@ exports.BattleScripts = {
 				// If a move that was not fire-type would exist on Gen 1, it could burn a Pokémon.
 				if (!(secondary.status && ['par', 'brn', 'frz'].includes(secondary.status) && target && target.hasType(move.type))) {
 					let effectChance = Math.floor(secondary.chance * 255 / 100);
-					if (typeof secondary.chance === 'undefined' || this.random(256) <= effectChance) {
+					if (typeof secondary.chance === 'undefined' || this.randomChance(effectChance + 1, 256)) {
 						this.moveHit(target, pokemon, move, secondary, true, isSelf);
 					}
 				}
@@ -508,7 +508,7 @@ exports.BattleScripts = {
 			// We compare our critical hit chance against a random number between 0 and 255.
 			// If the random number is lower, we get a critical hit. This means there is always a 1/255 chance of not hitting critically.
 			if (critChance > 0) {
-				move.crit = (this.random(256) < critChance);
+				move.crit = this.randomChance(critChance, 256);
 			}
 		}
 		// There is a critical hit.

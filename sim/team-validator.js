@@ -11,29 +11,6 @@
 const Dex = require('./dex');
 const toId = Dex.getId;
 
-/**
- * Keeps track of how a pokemon with a given set might be obtained.
- *
- * `sources` is a list of possible PokemonSources, and a nonzero
- * sourcesBefore means the Pokemon is compatible with all possible
- * PokemonSources from that gen or earlier.
- *
- * `limitedEgg` tracks moves that can only be obtained from an egg with
- * another father in gen 2-5. If there are multiple such moves,
- * potential fathers need to be checked to see if they can actually
- * learn the move combination in question.
- *
- * @typedef {Object} PokemonSources
- * @property {PokemonSource[]} sources
- * @property {number} sourcesBefore
- * @property {string} [babyOnly]
- * @property {string} [sketchMove] limit 1 in fakemon Sketch-as-egg-move formats
- * @property {string} [hm] limit 1 HM transferred from gen 4 to 5
- * @property {string[]} [restrictiveMoves]
- * @property {(string | 'self')[]} [limitedEgg] list of egg moves
- * @property {true} [fastCheck]
- */
-
 class Validator {
 	/**
 	 * @param {string | Format} format
@@ -91,13 +68,13 @@ class Validator {
 		}
 
 		let teamHas = {};
-		for (let i = 0; i < team.length; i++) { // Changing this loop to for-of would require another loop/map statement to do removeNicknames
-			if (!team[i]) return [`You sent invalid team data. If you're not using a custom client, please report this as a bug.`];
-			let setProblems = (format.validateSet || this.validateSet).call(this, team[i], teamHas);
+		for (const set of team) { // Changing this loop to for-of would require another loop/map statement to do removeNicknames
+			if (!set) return [`You sent invalid team data. If you're not using a custom client, please report this as a bug.`];
+			let setProblems = (format.validateSet || this.validateSet).call(this, set, teamHas);
 			if (setProblems) {
 				problems = problems.concat(setProblems);
 			}
-			if (removeNicknames) team[i].name = dex.getTemplate(team[i].species).baseSpecies;
+			if (removeNicknames) set.name = dex.getTemplate(set.species).baseSpecies;
 		}
 
 		for (const [rule, source, limit, bans] of ruleTable.complexTeamBans) {
@@ -256,15 +233,13 @@ class Validator {
 			postMegaTemplate = dex.getTemplate(item.megaStone);
 		}
 		if (['Mega', 'Mega-X', 'Mega-Y'].includes(postMegaTemplate.forme)) {
-			banReason = ruleTable.check('pokemontag:mega', setHas);
-			const megaTemplateOverride = ruleTable.has('+pokemon:' + postMegaTemplate.id);
-			if (megaTemplateOverride) {
-				templateOverride = true;
-			} else if (banReason) {
-				problems.push(`Mega evolutions are ${banReason}.`);
-			} else {
-				banReason = ruleTable.check('pokemon:' + postMegaTemplate.id, setHas);
-				if (banReason) problems.push(`${postMegaTemplate.species} is ${banReason}.`);
+			templateOverride = ruleTable.has('+pokemon:' + postMegaTemplate.id);
+			banReason = ruleTable.check('pokemon:' + postMegaTemplate.id, setHas);
+			if (banReason) {
+				problems.push(`${postMegaTemplate.species} is ${banReason}.`);
+			} else if (!templateOverride) {
+				banReason = ruleTable.check('pokemontag:mega', setHas);
+				if (banReason) problems.push(`Mega evolutions are ${banReason}.`);
 			}
 		}
 		if (!templateOverride && postMegaTemplate.tier) {
@@ -454,18 +429,9 @@ class Validator {
 			problems.push(`${name} has exactly 0 EVs - did you forget to EV it? (If this was intentional, add exactly 1 to one of your EVs, which won't change its stats but will tell us that it wasn't a mistake).`);
 		}
 
+		lsetData.isHidden = isHidden;
 		let lsetProblems = this.reconcileLearnset(template, lsetData, lsetProblem, name);
 		if (lsetProblems) problems.push(...lsetProblems);
-
-		if (isHidden && lsetData.sourcesBefore < 5) {
-			lsetData.sources = lsetData.sources.filter(source =>
-				parseInt(source.charAt(0)) >= 5
-			);
-			lsetData.sourcesBefore = 0;
-			if (!lsetData.sources.length) {
-				problems.push(`${name} has a hidden ability - it can't have moves only learned before gen 5.`);
-			}
-		}
 
 		if (!lsetData.sourcesBefore && lsetData.sources.length && lsetData.sources.every(source => 'SVD'.includes(source.charAt(1)))) {
 			// Every source is restricted
@@ -504,18 +470,18 @@ class Validator {
 				} else {
 					problems.push(`${template.species} is only obtainable from events - it needs to match one of its events, such as:`);
 				}
-				let eventData = eventPokemon[0];
+				let eventInfo = eventPokemon[0];
 				const minPastGen = (format.requirePlus ? 7 : format.requirePentagon ? 6 : 1);
 				let eventNum = 1;
-				for (let i = 0; i < eventPokemon.length; i++) {
-					if (eventPokemon[i].generation <= dex.gen && eventPokemon[i].generation >= minPastGen) {
-						eventData = eventPokemon[i];
+				for (const [i, eventData] of eventPokemon.entries()) {
+					if (eventData.generation <= dex.gen && eventData.generation >= minPastGen) {
+						eventInfo = eventData;
 						eventNum = i + 1;
 						break;
 					}
 				}
 				let eventName = eventPokemon.length > 1 ? ` #${eventNum}` : ``;
-				let eventProblems = this.validateEvent(set, eventData, eventTemplate, ` to be`, `from its event${eventName}`);
+				let eventProblems = this.validateEvent(set, eventInfo, eventTemplate, ` to be`, `from its event${eventName}`);
 				// @ts-ignore TypeScript overload syntax bug
 				if (eventProblems) problems.push(...eventProblems);
 			}
@@ -792,7 +758,7 @@ class Validator {
 			if (problem.type === 'incompatibleAbility') {
 				problemString += ` can only be learned in past gens without Hidden Abilities.`;
 			} else if (problem.type === 'incompatible') {
-				problemString = `${name}'s moves ${lsetData.restrictiveMoves.join(', ')} are incompatible.`;
+				problemString = `${name}'s moves ${(lsetData.restrictiveMoves || []).join(', ')} are incompatible.`;
 			} else if (problem.type === 'oversketched') {
 				let plural = (parseInt(problem.maxSketches) === 1 ? '' : 's');
 				problemString += ` can't be Sketched because it can only Sketch ${problem.maxSketches} move${plural}.`;
@@ -807,6 +773,17 @@ class Validator {
 		}
 
 		if (problems.length) return problems;
+
+		if (lsetData.isHidden) {
+			lsetData.sources = lsetData.sources.filter(source =>
+				parseInt(source.charAt(0)) >= 5
+			);
+			if (lsetData.sourcesBefore < 5) lsetData.sourcesBefore = 0;
+			if (!lsetData.sourcesBefore && !lsetData.sources.length) {
+				problems.push(`${name} has a hidden ability - it can't have moves only learned before gen 5.`);
+				return problems;
+			}
+		}
 
 		if (lsetData.limitedEgg && lsetData.limitedEgg.length > 1 && !lsetData.sourcesBefore && lsetData.sources) {
 			// console.log("limitedEgg 1: " + lsetData.limitedEgg);

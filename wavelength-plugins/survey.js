@@ -1,6 +1,6 @@
 /***********************************
 	Survey commands for
-	wavelength.psim.us
+	Pokemon Showdown
 	coded by HoeenHero
 	Multi-Surveys
 	coded by Insist and Volco
@@ -9,7 +9,7 @@
 'use strict';
 
 class Survey {
-	constructor(room, question, allowHTML) {
+	constructor(room, question, allowHTML, name) {
 		if (room.surveyNumber) {
 			room.surveyNumber++;
 		} else {
@@ -23,6 +23,8 @@ class Survey {
 			allowHTML: allowHTML,
 			repliers: {},
 			replierIps: {},
+			startTime: Date.now(),
+			startedUser: WL.nameColor(name, true, true),
 			totalReplies: 0,
 			timeout: null,
 			timeoutMins: 0,
@@ -60,7 +62,7 @@ class Survey {
 	}
 
 	generateQuestion(number) {
-		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></summary>`;
+		let output = `<div class="infobox"><details><summary style="margin: 2px 0 5px 0"><span style="border:1px solid #6A6;color:#484;border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i> Survey-${this.surveyArray[number].surveyNum}</span> <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><psicon pokemon="espeon"></summary>`;
 		output += `<div style="margin-top: 3px">Please note that anyone can see what you reply.</div>`;
 		output += `<div style="margin-top: 5px"><button class="button" value="/survey answer" name="send" title="Answer the survey."><strong>Answer the survey</strong></button></div>`;
 		output += `<div style="margin-top: 7px; padding-left: 12px"><button class="button" value="/survey results ${this.surveyArray[number].surveyNum}" name="send" title="View results - you will not be able to answer the survey after viewing results"><small>(View Results)</small></button><small>(you will not be able to answer the survey after viewing results)</small></div>`;
@@ -132,13 +134,16 @@ class Survey {
 	}
 
 	generateResults(ended, number) {
-		let icon = `<span style="border:1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')};border-radius:4px;padding:0 3px"><i class="fa fa-bar-chart"></i>${(ended ? `Survey-${this.surveyArray[number].surveyNum} ended` : `Survey-${this.surveyArray[number].surveyNum}`)}</span>`;
-		let output = `<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size:11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong></summary>`;
+		let icon = `<span style="border: 1px solid #${(ended ? '777;color:#555' : '6A6;color:#484')}; border-radius: 4px; padding: 3px"><i class="fa fa-bar-chart"></i> ${(ended ? `Survey-${this.surveyArray[number].surveyNum} ended` : `Survey-${this.surveyArray[number].surveyNum}`)}</span>`;
+		let totalReplies = `<br /><span style="font-style: italic; font-size: 9pt; color: #79330A;">[Total Replies: ${this.surveyArray[number].totalReplies}] (Started by ${this.surveyArray[number].startedUser} Started on: ${new Date(this.surveyArray[number].startTime)})</span>`;
+		let output = `<div class="infobox"><details open><summary style="margin: 2px 0 5px 0">${icon} <strong style="font-size: 11pt">${(this.surveyArray[number].allowHTML ? this.surveyArray[number].question : Chat.escapeHTML(this.surveyArray[number].question))}</strong><psicon pokemon="espeon"></summary>`;
+		output += totalReplies;
 		for (let i in this.surveyArray[number].repliers) {
-			if (this.surveyArray[number].repliers[i]) output += `<div>${WL.nameColor(i, true)}: <i>"${Chat.formatText(this.surveyArray[number].repliers[i])}"</i><div><br/>`;
+			if (this.surveyArray[number].repliers[i]) output += `<div>${WL.nameColor(i, true)}: <i>"${Chat.formatText(this.surveyArray[number].repliers[i])}"</i></div><br />`;
 		}
 		if (!ended) output += `<div style="margin-top: 7px; padding-left: 12px"><button value="/survey hideresults ${this.surveyArray[number].surveyNum}" class="button" name="send" title="Hide results - hide the results."><small>(Hide Results)</small></div>`;
 		output += `</details></div>`;
+
 		return output;
 	}
 
@@ -230,11 +235,14 @@ exports.commands = {
 					repliers: {},
 					replierIps: {},
 					timeout: null,
+					startTime: Date.now(),
+					startedUser: WL.nameColor(user.name, true, true),
+					totalReplies: 0,
 					timeoutMins: 0,
 				});
 				room.survey.displaySpecific(room.survey.surveyArray.length - 1);
 			} else {
-				room.survey = new Survey(room, target, supportHTML);
+				room.survey = new Survey(room, target, supportHTML, user.name);
 				room.survey.display();
 			}
 
@@ -247,6 +255,7 @@ exports.commands = {
 		answer: function (target, room, user) {
 			if (!room.survey) return this.errorReply("There are no surveys running in this room.");
 			if (!target) return this.parse('/help survey answer');
+			if (!this.canTalk()) return false;
 			let targets = target.split(',');
 			targets = targets.map(x => { return x.trim(); });
 			let num = room.survey.obtain(parseInt(targets.shift()));
@@ -320,6 +329,7 @@ exports.commands = {
 			}
 			room.survey.update(num);
 			this.sendReply(`${targets[0]}'s answer was removed from survey number ${num}.`);
+			this.roomlog(`${user.name} removed ${targets[0]}'s survey answer in number ${num}.`);
 		},
 		removehelp: ["/survey remove [user], [survey number] - Removes a user's reply and prevents them from sending in a new one for the specified survey. Requires: % @ # & ~"],
 
@@ -387,14 +397,14 @@ exports.commands = {
 		},
 	},
 	surveyhelp: [
-		"/survey allows rooms to run their own surveys. These surveys are limited to five surveys at a time per room.",
-		"Accepts the following commands:",
-		"/survey create [question] - Create a survey. Allows up to 5 surveys. Requires % @ # & ~",
-		"/survey answer [survey number], [answer] - Answers the specified survey.",
-		"/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already.",
-		"/survey display (survey number) - Display the specified survey. If no ID is specified, displays all surveys.",
-		"/survey remove [user], [survey number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~",
-		"/survey end [survey number] - Ends the specified survey and displays the results. Requires: % @ # & ~",
-		"/survey timer [minutes | clear], [survey number] - Sets a timer for the specified survey to automatically end. Require % @ # & ~",
+		`/survey allows rooms to run their own surveys. These surveys are limited to five surveys at a time per room.
+		Accepts the following commands:
+		/survey create [question] - Create a survey. Allows up to 5 surveys. Requires % @ # & ~.
+		/survey answer [number], [answer] - Answers the specified survey.
+		/survey results [survey number] - View the results of the specified survey. You can't go back and answer if you haven't already.
+		/survey display (survey number) - Display the specified survey. If no ID is specified, displays all surveys.
+		/survey remove [user], [survey number] - Removes a user's reply from the specified survey and prevents them from sending in a new one for this survey. Requires: % @ # & ~.
+		/survey end [survey number] - Ends the specified survey and displays the results. Requires: % @ # & ~.
+		/survey timer [minutes | clear], [survey number] - Sets a timer for the specified survey to automatically end. Require % @ # & ~.`,
 	],
 };

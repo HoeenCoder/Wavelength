@@ -16,7 +16,7 @@ exports.BattleMovedex = {
 				}
 			}
 			if (stats.length) {
-				let randomStat = stats[this.random(stats.length)];
+				let randomStat = this.sample(stats);
 				let boost = {};
 				boost[randomStat] = 2;
 				this.boost(boost);
@@ -49,7 +49,7 @@ exports.BattleMovedex = {
 				}
 			}
 			let randomMove = '';
-			if (moves.length) randomMove = moves[this.random(moves.length)];
+			if (moves.length) randomMove = this.sample(moves);
 			if (!randomMove) {
 				return false;
 			}
@@ -646,6 +646,7 @@ exports.BattleMovedex = {
 					target.setStatus('');
 					this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
 					target.side.removeSideCondition('healingwish');
+					target.lastMove = this.lastMove;
 				} else {
 					target.switchFlag = true;
 				}
@@ -756,6 +757,7 @@ exports.BattleMovedex = {
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
 					target.side.removeSideCondition('lunardance');
+					target.lastMove = this.lastMove;
 				} else {
 					target.switchFlag = true;
 				}
