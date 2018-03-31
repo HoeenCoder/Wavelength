@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleLearnsets = {
+/**@type {{[k: string]: {learnset: {[k: string]: MoveSource[]}}}} */
+let BattleLearnsets = {
 	missingno: {learnset: {
 		blizzard: ["5L1"],
 		bubblebeam: ["5L1"],
@@ -4748,12 +4749,12 @@ exports.BattleLearnsets = {
 		bodyslam: ["7V", "3T"],
 		brickbreak: ["7M", "6M", "5M", "5S26", "4M", "3M"],
 		captivate: ["4M"],
-		celebrate: ["7S43", "6S41", "6S31"],
+		celebrate: ["7S43", "7S48", "6S41", "6S31"],
 		charge: ["7E"],
 		chargebeam: ["7M", "6M", "5M", "4M"],
 		charm: ["6S36"],
 		confide: ["7M", "6M"],
-		counter: ["3T"],
+		counter: ["7S48", "3T"],
 		covet: ["7T", "6T", "5T"],
 		curse: ["7V"],
 		defensecurl: ["7V", "3T"],
@@ -4811,6 +4812,7 @@ exports.BattleLearnsets = {
 		rage: ["7V"],
 		raindance: ["7M", "7V", "6M", "5M", "4M", "3M"],
 		reflect: ["7V"],
+		refresh: ["7S48"],
 		rest: ["7M", "7V", "6M", "5M", "4M", "4S19", "3M"],
 		return: ["7M", "7S44", "7V", "6M", "6S42", "5M", "4M", "3M"],
 		reversal: ["7E"],
@@ -4833,6 +4835,7 @@ exports.BattleLearnsets = {
 		surf: ["7S47", "6S41", "6S33", "4S16", "4S14", "4S11", "4S9", "3S7", "3S5", "3S3"],
 		swagger: ["7M", "7V", "6M", "5M", "4M", "3T"],
 		sweetkiss: ["6S36"],
+		sweetscent: ["7S48"],
 		swift: ["7V", "4T", "3T"],
 		tailwhip: ["7L1", "7V", "6L1", "6S38", "5L5", "5S28", "4L5", "4S22", "4S20", "4S17", "4S15", "4S12", "4S9", "3L6", "3S10", "3S4", "3S3", "3S2", "3S1"],
 		takedown: ["7V"],
@@ -18893,12 +18896,13 @@ exports.BattleLearnsets = {
 		bellydrum: ["7L44", "7V", "6L44", "5L17", "4L17", "3L13"],
 		bide: ["7V"],
 		blizzard: ["7M", "7V", "7V", "6M", "5M", "4M", "3M"],
-		block: ["7T", "7L41", "6T", "6L41", "5T", "5L41", "4T", "4L36", "3L37"],
-		bodyslam: ["7L25", "7V", "7V", "6L25", "5L36", "4L33", "3T", "3L33", "3S0"],
+		block: ["7T", "7L41", "7S1", "6T", "6L41", "5T", "5L41", "4T", "4L36", "3L37"],
+		bodyslam: ["7L25", "7V", "7S1", "6L25", "5L36", "4L33", "3T", "3L33", "3S0"],
 		brickbreak: ["7M", "6M", "5M", "4M", "3M"],
 		bubblebeam: ["7V"],
 		bulldoze: ["7M", "6M", "5M"],
 		captivate: ["4M"],
+		celebrate: ["7S1"],
 		charm: ["7E", "6E", "5E", "4E", "3E"],
 		chipaway: ["7L17", "6L17", "5L25"],
 		confide: ["7M", "6M"],
@@ -18982,7 +18986,7 @@ exports.BattleLearnsets = {
 		strength: ["7V", "7V", "6M", "5M", "4M", "3M"],
 		submission: ["7V"],
 		substitute: ["7M", "7V", "6M", "5M", "4M", "4E", "3T", "3E"],
-		sunnyday: ["7M", "7V", "6M", "5M", "4M", "3M"],
+		sunnyday: ["7M", "7V", "7S1", "6M", "5M", "4M", "3M"],
 		superpower: ["7T", "6T", "5T", "4T"],
 		surf: ["7M", "7V", "7V", "6M", "5M", "4M", "3M"],
 		swagger: ["7M", "7V", "6M", "5M", "4M", "3T"],
@@ -22175,7 +22179,7 @@ exports.BattleLearnsets = {
 		perishsong: ["7E", "7V", "6E", "5E", "4E", "3E"],
 		playrough: ["7L23", "6L23"],
 		poweruppunch: ["6M"],
-		present: ["7V", "6E", "5E", "4E", "3E"],
+		present: ["7E", "7V", "6E", "5E", "4E", "3E"],
 		protect: ["7M", "7V", "6M", "5M", "4M", "3M"],
 		raindance: ["7M", "7L31", "7V", "6M", "6L31", "5M", "5L32", "4M", "4L32", "3M", "3L36"],
 		refresh: ["7E", "6E", "5E", "4E"],
@@ -64129,3 +64133,5 @@ exports.BattleLearnsets = {
 		workup: ["7M"],
 	}},
 };
+
+exports.BattleLearnsets = BattleLearnsets;

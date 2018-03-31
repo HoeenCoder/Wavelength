@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleItems = {
+/**@type {{[k: string]: ItemData}} */
+let BattleItems = {
 	"abomasite": {
 		id: "abomasite",
 		name: "Abomasite",
@@ -2516,7 +2517,9 @@ exports.BattleItems = {
 			basePower: 130,
 		},
 		onEffectiveness: function (typeMod, target, type, move) {
+			// @ts-ignore
 			if (target.volatiles['ingrain'] || target.volatiles['smackdown'] || this.getPseudoWeather('gravity')) return;
+			// @ts-ignore
 			if (move.type === 'Ground' && target.hasType('Flying')) return 0;
 		},
 		// airborneness negation implemented in sim/pokemon.js:Pokemon#isGrounded
@@ -2678,8 +2681,8 @@ exports.BattleItems = {
 		onModifyMove: function (move) {
 			if (move.category !== "Status") {
 				if (!move.secondaries) move.secondaries = [];
-				for (let i = 0; i < move.secondaries.length; i++) {
-					if (move.secondaries[i].volatileStatus === 'flinch') return;
+				for (const secondary of move.secondaries) {
+					if (secondary.volatileStatus === 'flinch') return;
 				}
 				move.secondaries.push({
 					chance: 10,
@@ -2839,10 +2842,9 @@ exports.BattleItems = {
 			if (moveSlot.pp > moveSlot.maxpp) moveSlot.pp = moveSlot.maxpp;
 			this.add('-activate', pokemon, 'item: Leppa Berry', moveSlot.move, '[consumed]');
 			if (pokemon.item !== 'leppaberry') {
-				let foeActive = pokemon.side.foe.active;
 				let foeIsStale = false;
-				for (let i = 0; i < foeActive.length; i++) {
-					if (foeActive[i].hp && foeActive[i].isStale >= 2) {
+				for (const foeActive of pokemon.side.foe.active) {
+					if (foeActive.hp && foeActive.isStale >= 2) {
 						foeIsStale = true;
 						break;
 					}
@@ -3171,6 +3173,7 @@ exports.BattleItems = {
 			if (this.activeMove.id !== 'knockoff' && this.activeMove.id !== 'thief' && this.activeMove.id !== 'covet') return false;
 		},
 		isUnreleased: true,
+		num: 0,
 		gen: 2,
 		desc: "Cannot be given to or taken from a Pokemon, except by Covet/Knock Off/Thief.",
 	},
@@ -3287,11 +3290,11 @@ exports.BattleItems = {
 			basePower: 10,
 			effect: function (pokemon) {
 				let conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
-				for (let i = 0; i < conditions.length; i++) {
-					if (pokemon.volatiles[conditions[i]]) {
-						for (let j = 0; j < conditions.length; j++) {
-							pokemon.removeVolatile(conditions[j]);
-							if (conditions[i] === 'attract' && conditions[j] === 'attract') {
+				for (const firstCondition of conditions) {
+					if (pokemon.volatiles[firstCondition]) {
+						for (const secondCondition of conditions) {
+							pokemon.removeVolatile(secondCondition);
+							if (firstCondition === 'attract' && secondCondition === 'attract') {
 								this.add('-end', pokemon, 'move: Attract', '[from] item: Mental Herb');
 							}
 						}
@@ -3302,12 +3305,12 @@ exports.BattleItems = {
 		},
 		onUpdate: function (pokemon) {
 			let conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
-			for (let i = 0; i < conditions.length; i++) {
-				if (pokemon.volatiles[conditions[i]]) {
+			for (const firstCondition of conditions) {
+				if (pokemon.volatiles[firstCondition]) {
 					if (!pokemon.useItem()) return;
-					for (let j = 0; j < conditions.length; j++) {
-						pokemon.removeVolatile(conditions[j]);
-						if (conditions[i] === 'attract' && conditions[j] === 'attract') {
+					for (const secondCondition of conditions) {
+						pokemon.removeVolatile(secondCondition);
+						if (firstCondition === 'attract' && secondCondition === 'attract') {
 							this.add('-end', pokemon, 'move: Attract', '[from] item: Mental Herb');
 						}
 					}
@@ -4209,11 +4212,11 @@ exports.BattleItems = {
 		},
 		onAttractPriority: -1,
 		onAttract: function (target, source, effect) {
-			if (target !== source && target === this.activePokemon && this.activeMove.flags['contact']) return false;
+			if (target !== source && target === this.activePokemon && this.activeMove && this.activeMove.flags['contact']) return false;
 		},
 		onBoostPriority: -1,
 		onBoost: function (boost, target, source, effect) {
-			if (target !== source && target === this.activePokemon && this.activeMove.flags['contact']) {
+			if (target !== source && target === this.activePokemon && this.activeMove && this.activeMove.flags['contact']) {
 				if (effect && effect.effectType === 'Ability') {
 					// Ability activation always happens for boosts
 					this.add('-activate', target, 'item: Protective Pads');
@@ -4223,7 +4226,7 @@ exports.BattleItems = {
 		},
 		onDamagePriority: -1,
 		onDamage: function (damage, target, source, effect) {
-			if (target !== source && target === this.activePokemon && this.activeMove.flags['contact']) {
+			if (target !== source && target === this.activePokemon && this.activeMove && this.activeMove.flags['contact']) {
 				if (effect && effect.effectType === 'Ability') {
 					this.add('-activate', source, effect.fullname);
 					this.add('-activate', target, 'item: Protective Pads');
@@ -4232,7 +4235,7 @@ exports.BattleItems = {
 			}
 		},
 		onSetAbility: function (ability, target, source, effect) {
-			if (target !== source && target === this.activePokemon && this.activeMove.flags['contact']) {
+			if (target !== source && target === this.activePokemon && this.activeMove && this.activeMove.flags['contact']) {
 				if (effect && effect.effectType === 'Ability') {
 					this.add('-activate', source, effect.fullname);
 					this.add('-activate', target, 'item: Protective Pads');
@@ -4241,7 +4244,7 @@ exports.BattleItems = {
 			}
 		},
 		onSetStatus: function (status, target, source, effect) {
-			if (target !== source && target === this.activePokemon && this.activeMove.flags['contact']) return false;
+			if (target !== source && target === this.activePokemon && this.activeMove && this.activeMove.flags['contact']) return false;
 		},
 		num: 880,
 		gen: 7,
@@ -4442,8 +4445,8 @@ exports.BattleItems = {
 		onModifyMove: function (move) {
 			if (move.category !== "Status") {
 				if (!move.secondaries) move.secondaries = [];
-				for (let i = 0; i < move.secondaries.length; i++) {
-					if (move.secondaries[i].volatileStatus === 'flinch') return;
+				for (const secondary of move.secondaries) {
+					if (secondary.volatileStatus === 'flinch') return;
 				}
 				move.secondaries.push({
 					chance: 10,
@@ -5255,7 +5258,7 @@ exports.BattleItems = {
 				}
 			}
 			if (stats.length) {
-				let randomStat = stats[this.random(stats.length)];
+				let randomStat = this.sample(stats);
 				let boost = {};
 				boost[randomStat] = 2;
 				this.boost(boost);
@@ -5358,6 +5361,7 @@ exports.BattleItems = {
 		onHit: function (target, source, move) {
 			if (source && source !== target && !source.item && move && move.flags['contact']) {
 				let barb = target.takeItem();
+				// @ts-ignore
 				source.setItem(barb);
 				// no message for Sticky Barb changing hands
 			}
@@ -5899,6 +5903,7 @@ exports.BattleItems = {
 			pokemon.addVolatile('confusion');
 			pokemon.setItem('');
 		},
+		num: 0,
 		gen: 2,
 		isNonstandard: 'gen2',
 		desc: "(Gen 2) On switch-in, raises holder's Attack by 2 and confuses it. Single use.",
@@ -6121,8 +6126,8 @@ exports.BattleItems = {
 			if (pokemon.item !== 'leppaberry') {
 				let foeActive = pokemon.side.foe.active;
 				let foeIsStale = false;
-				for (let i = 0; i < 1; i++) {
-					if (foeActive.isStale >= 2) {
+				for (let i = 0; i < foeActive.length; i++) {
+					if (foeActive[i].isStale >= 2) {
 						foeIsStale = true;
 						break;
 					}
@@ -6232,3 +6237,5 @@ exports.BattleItems = {
 		desc: "If held by a Crucibelle, this item allows it to Mega Evolve in battle.",
 	},
 };
+
+exports.BattleItems = BattleItems;

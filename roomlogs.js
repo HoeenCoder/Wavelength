@@ -189,9 +189,9 @@ class Roomlog {
 	uhtmlchange(message) {
 		let thirdPipe = message.indexOf('|', 13);
 		let originalStart = '|uhtml|' + message.slice(13, thirdPipe + 1);
-		for (let i = 0; i < this.log.length; i++) {
-			if (this.log[i].startsWith(originalStart)) {
-				this.log[i] = originalStart + message.slice(thirdPipe + 1);
+		for (let line of this.log) {
+			if (line.startsWith(originalStart)) {
+				line = originalStart + message.slice(thirdPipe + 1);
 				break;
 			}
 		}
