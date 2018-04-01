@@ -22,6 +22,7 @@ function write() {
 	FS("config/factions.json").writeUpdate(() => (
 		JSON.stringify(factions)
 	));
+	if (Object.keys(factions).length < 1) return;
 	let data = "{\n";
 	for (let u in factions) {
 		data += '\t"' + u + '": ' + JSON.stringify(factions[u]) + ",\n";
