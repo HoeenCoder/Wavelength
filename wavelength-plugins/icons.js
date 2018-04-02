@@ -10,7 +10,7 @@ let iconsData = FS("config/icons.json").readIfExistsSync();
 let icons = {};
 
 if (iconsData) {
-	icons = JSON.parse(icons);
+	icons = JSON.parse(iconsData);
 }
 
 function updateIcons() {
