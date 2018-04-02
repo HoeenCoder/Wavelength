@@ -63,7 +63,6 @@ exports.commands = {
 
 		remove: "delete",
 		delete: function (target, room, user) {
-			if (!this.can("lock")) return false;
 			if (!this.can('icon')) return false;
 			target = toId(target);
 			if (!icons[toId(target)]) return this.errorReply(`/icon - ${target} does not have an icon.`);
