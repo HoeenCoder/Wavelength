@@ -6,8 +6,8 @@
 'use strict';
 
 function onlineFriends(user) {
-	let list = Db.friends.get(user).filter(friend => Users(friend) && Users(friend).connected);
-	if (list.length) user.send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${list.join(', ')}`);
+	let list = Db.friends.get(user, []).filter(friend => Users(friend) && Users(friend).connected);
+	if (list.length) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${list.join(', ')}`);
 }
 WL.onlineFriends = onlineFriends;
 
@@ -27,7 +27,7 @@ exports.commands = {
 
 		remove: function (target, room, user) {
 			let targetFriend = toId(target);
-			if (!targetFriend) return this.parse('/help', true);
+			if (!targetFriend) return this.parse(`/help friends remove`);
 			let friends = Db.friends.get(user.userid, []);
 			if (!friends.length) return this.errorReply("You currently don't have any added friends.");
 			let friendIndex = friends.findIndex(friend => targetFriend === friend);
