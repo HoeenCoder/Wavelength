@@ -7,7 +7,7 @@
 
 function onlineFriends(user) {
 	let list = Db.friends.get(user, []).filter(friend => Users(friend) && Users(friend).connected);
-	if (list.length) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${list.join(', ')}`);
+	if (list.length) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${Chat.toListString(list)}`);
 }
 WL.onlineFriends = onlineFriends;
 
@@ -44,8 +44,15 @@ exports.commands = {
 			if (!friends.length) return this.sendReplyBox(`You have no friends.`);
 			let display = `<center>Friends<br />`;
 			for (const friend of friends) {
+				let seen = Db.seen.get(friend);
+				let offline;
+				if (!seen) {
+					offline = "<font color='red'>never been online</font></b> on this server.";
+				} else {
+					offline = "last seen <b>" + Chat.toDurationString(Date.now() - seen, {precision: true}) + "</b> ago.";
+				}
 				let online = Users(friend) && Users(friend).connected;
-				display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline</font>'}<br />`;
+				display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline (' + offline + ')</font>'}<br />`;
 			}
 			display += `Total Friends: ${friends.length}</center>`;
 			return this.sendReplyBox(display);
