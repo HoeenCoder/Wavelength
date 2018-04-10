@@ -91,7 +91,7 @@ exports.commands = {
 
 	taskhelp: "taskshelp",
 	taskshelp: [
-		`/tasks add [issue|TODO], [description of what needs to be done] - Adds an item to the server's tasks list. Must be a Registered Developer on the server.
+		`/tasks add [issue|TODO], [priority 1-6] [description of what needs to be done] - Adds an item to the server's tasks list. Must be a Registered Developer on the server.
 		/tasks delete [issue] - Deletes an item from the server's task list. Must be a Registered Developer.
 		/tasks list - Displays the server's task list. Must be a Registered Developer; may only be broadcasted in Development rooms.
 		/tasks help - Displays this help command.`,
