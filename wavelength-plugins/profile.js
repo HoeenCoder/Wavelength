@@ -64,7 +64,7 @@ function tsumetaCheck(user) {
 function lastActive(user) {
 	if (!Users(user)) return false;
 	user = Users(user);
-	return (user && user.lastMessageTime ? Chat.toDurationString(Date.now() - user.lastMessageTime, {precision: true}) : "hasn't talked yet");
+	return (user && user.lastPublicMessage ? Chat.toDurationString(Date.now() - user.lastPublicMessage, {precision: true}) : "hasn't talked yet");
 }
 
 function showBadges(user) {
@@ -546,7 +546,7 @@ exports.commands = {
 		if (!this.runBroadcast()) return;
 		let targetUser = Users.get(toId(target));
 		if (!targetUser || !targetUser.connected) return this.errorReply(`${target} is not online. Use /seen to find out how long ago they left.`);
-		return this.sendReplyBox(`${WL.nameColor(targetUser, true, true)} was last active <strong>${Chat.toDurationString(Date.now() - targetUser.lastMessageTime)} ago</strong>.`);
+		return this.sendReplyBox(`${WL.nameColor(targetUser, true, true)} was last active <strong>${Chat.toDurationString(Date.now() - targetUser.lastPublicMessage)} ago.</strong>`);
 	},
 	lastactivehelp: ["/lastactive - Shows how long ago it has been since a user has posted a message."],
 
