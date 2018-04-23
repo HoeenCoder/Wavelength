@@ -919,6 +919,7 @@ class User {
 		if (Tells.inbox[userid]) Tells.sendTell(userid, this);
 		Ontime[userid] = Date.now();
 		WL.showNews(userid, this);
+		WL.onlineFriends(userid);
 		return true;
 	}
 	/**
