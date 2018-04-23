@@ -363,6 +363,7 @@ exports.github = {
 //     - psgo: manage PSGO
 //     - pmall: send a masspm to a room or globally
 //     - ssb: manage super staff bros free for all
+//     - roomshop: manage room shops
 
 exports.grouplist = [
 	{
@@ -479,6 +480,7 @@ exports.grouplist = [
 		game: true,
 		// Wavelength
 		news: true,
+		roomshop: true,
 	},
 	{
 		symbol: '%',

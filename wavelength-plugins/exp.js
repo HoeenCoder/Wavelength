@@ -135,7 +135,7 @@ class ExpFunctions {
 						break;
 					case 35:
 						Economy.writeMoney(user.userid, 50);
-						Economy.logTransaction(`${user.name} has earned 50 ${currencyPlural} for reaching level ${level}.`);
+						Economy.logTransaction(`${user.name} received 50 ${currencyPlural} for leveling up to Level ${level}.`);
 						reward = `50 ${currencyPlural}.`;
 						break;
 					case 40:
@@ -144,8 +144,17 @@ class ExpFunctions {
 						Monitor.adminlog(`${user.name} has earned a chatroom for reaching level ${level}!`);
 						reward = `a Chatroom. To claim your chatroom, Contact a Leader (&) or Administrator (~).`;
 						break;
+					case 45:
+						Economy.logTransaction(`${user.name} received a Roomshop for reaching level ${level}.`);
+						WL.messageSeniorStaff(`${user.name} has earned a Roomshop for reaching level ${level}!`);
+						Monitor.adminlog(`${user.name} has earned a Roomshop for reaching level ${level}!`);
+						if (!user.tokens) user.tokens = {};
+						user.tokens.roomshop = true;
+						reward = `a Roomshop. To claim your Roomshop, use the command /usetoken roomshop, [room for room shop].`;
+						break;
 					default:
 						Economy.writeMoney(user.userid, Math.ceil(level * 0.5));
+						Economy.logTransaction(`${user.name} has received ${Math.ceil(level * 0.5)} ${(Math.ceil(level * 0.5) === 1 ? currencyName : currencyPlural)} for reaching level ${level}.`);
 						reward = `${Math.ceil(level * 0.5)} ${(Math.ceil(level * 0.5) === 1 ? currencyName : currencyPlural)}.`;
 					}
 					user.sendTo(room, `|html|<center><font size=4><strong><i>Level Up!</i></strong></font><br />You have reached level ${level}, and have earned ${reward}</strong></center>`);
@@ -194,7 +203,8 @@ exports.commands = {
 					"Level 25 unlocks a free Emote. <br /><br />" +
 					"Level 30 unlocks a free Custom Color.  <br /><br />" +
 					"Level 35 unlocks 50 " + currencyPlural + ". <br /><br />" +
-					"Level 40 unlocks a free Chatroom. <br /><br />"
+					"Level 40 unlocks a free Chatroom. <br /><br />" +
+					"Level 45 unlocks a free Room Shop.<br /><br />"
 				);
 			});
 		}
