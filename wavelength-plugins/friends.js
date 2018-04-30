@@ -74,7 +74,7 @@ exports.commands = {
 		},
 		
 		toggle: 'toggleNotifs',
-		toggleNotifs: function (target, room, user) {
+		togglenotifs: function (target, room, user) {
 			if (!Db.stopFriendNotifs.get(user.userid)) {
 				Db.stopFriendNotifs.remove(user.userid);
 				return this.sendReply('You have now disabled friend notifications');
@@ -93,6 +93,6 @@ exports.commands = {
     /friends remove (user) - removes a user from your friend list.
     /friends list - displays your list of friends.
     /friends removeall - removes all of your friends.
-    /friends toggleNotifs - enables / disables friend notifications based on current setting (alias: /friends toggle)`,
+    /friends togglenotifs - enables / disables friend notifications based on current setting (alias: /friends toggle)`,
 	],
 };
