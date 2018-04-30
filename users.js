@@ -901,6 +901,7 @@ class User {
 
 			Rooms.global.checkAutojoin(user);
 			WL.giveDailyReward(user);
+			WL.friendLogin(user);
 			Chat.loginfilter(user, this, userType);
 			return true;
 		}
@@ -920,6 +921,7 @@ class User {
 		Ontime[userid] = Date.now();
 		WL.showNews(userid, this);
 		WL.onlineFriends(userid);
+		WL.friendLogin(this);
 		return true;
 	}
 	/**
