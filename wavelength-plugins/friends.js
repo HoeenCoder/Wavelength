@@ -72,7 +72,7 @@ exports.commands = {
 			Db.friends.set(user.userid, []);
 			return this.sendReply(`You have removed all of your friends.`);
 		},
-		
+
 		toggle: 'toggleNotifs',
 		togglenotifs: function (target, room, user) {
 			if (!Db.stopFriendNotifs.get(user.userid)) {
