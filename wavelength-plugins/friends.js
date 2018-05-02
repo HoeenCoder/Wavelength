@@ -7,7 +7,7 @@
 
 function onlineFriends(user) {
 	let list = Db.friends.get(user, []).filter(friend => Users(friend) && Users(friend).connected);
-	if (list.length && !Db('stopFriendNotifs').get(user)) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${Chat.toListString(list)}`);
+	if (list.length && !Db.stopFriendNotifs.get(user)) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${Chat.toListString(list)}`);
 }
 WL.onlineFriends = onlineFriends;
 
