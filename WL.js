@@ -334,7 +334,7 @@ exports.WL = {
 			return Math.round(((((2 * template.baseStats[stat] + pokemon.ivs[stat] + (pokemon.evs[stat] / 4)) * pokemon.level) / 100) + 5) * natureMod);
 		}
 	},
-	gameData: JSON.parse(fs.readFileSync('config/SGGame/pokemon.json', 'utf8')),
+	gameData: JSON.parse(FS('config/SGGame/pokemon.json').readIfExistsSync()),
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
 		let type = this.getEXPType(pokemon);
@@ -522,7 +522,7 @@ exports.WL = {
 		if (data.item) return data.item;
 		return false;
 	},
-	itemData: JSON.parse(fs.readFileSync('config/SGGame/items.json', 'utf8')),
+	itemData: JSON.parse(FS('config/SGGame/items.json').readIfExistsSync()),
 	getItem: function (id) {
 		id = toId(id);
 		if (!this.itemData[id]) return false;
@@ -830,7 +830,7 @@ exports.WL = {
 		return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-sheet.png?a1) no-repeat scroll -' + left + 'px -' + top + 'px' + fainted;
 	},
 	loadPokemon: function () {
-		let raw = fs.readFileSync('./config/SGGame/encounters.txt', 'utf-8').split('\n');
+		let raw = FS('./config/SGGame/encounters.txt').readIfExistsSync().split('\n');
 		let ignoring = false, location = null, zone = null, type = null;
 		const types = ['grass', 'water', 'cave', 'fish'];
 		for (let i = 0; i < raw.length; i++) {

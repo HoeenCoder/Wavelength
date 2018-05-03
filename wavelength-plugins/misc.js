@@ -380,8 +380,9 @@ exports.commands = {
 		if (target.length < 2) return this.parse('/help usetoken');
 		target[0] = toId(target[0]);
 		if (target[0] === 'intro') target[0] = 'disableintroscroll';
+		if (target[0] === 'shop') target[0] = 'roomshop';
 		let msg = '';
-		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll', 'music', 'background'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
+		if (['avatar', 'declare', 'icon', 'color', 'emote', 'title', 'disableintroscroll', 'music', 'background', 'roomshop'].indexOf(target[0]) === -1) return this.parse('/help usetoken');
 		if (!user.tokens || !user.tokens[target[0]] && !user.can('bypassall')) return this.errorReply('You need to buy this from the shop first.');
 		target[1] = target[1].trim();
 
@@ -453,6 +454,14 @@ exports.commands = {
 			msg += `<button class="button" name="send" value="/music set ${user.userid}, ${target[1]}, ${target[2]}">Set music</button></center>`;
 			delete user.tokens[target[0]];
 			return WL.messageSeniorStaff(msg);
+		case "roomshop":
+			if (!target[1]) return this.errorReply("/usetoken roomshop, [room name]");
+			if (!Rooms(roomid)) return this.errorReply(`${roomid} is not a room.`);
+			if (Db.roomshop.has(roomid)) return this.errorReply(`${roomid} already has a Room Shop.`);
+			msg += `/html <center>${WL.nameColor(user.name, true)} has redeemed a Room Shop token.<br />`;
+			msg += `<button class="button" name="send" value="/roomshop ${target[1]}">Create Room <strong>"${target[1]}"</strong></button></center>`;
+			delete user.tokens[target[0]];
+			return WL.messageSeniorStaff(msg);
 		default:
 			return this.errorReply('An error occured in the command.'); // This should never happen.
 		}
@@ -461,7 +470,7 @@ exports.commands = {
 		'/usetoken [token], [argument(s)] - Redeems a token from the shop. Accepts the following arguments: ',
 		'/usetoken avatar, [image] | /usetoken declare, [message] | /usetoken color, [hex code]',
 		'/usetoken icon [image] | /usetoken title, [name], [hex code] | /usetoken emote, [name], [image]',
-		'/usetoken disableintroscroll [room name] | /usetoken background, [img] | /usetoken music, [song], [name]',
+		'/usetoken disableintroscroll [room name] | /usetoken background, [img] | /usetoken music, [song], [name] | /usetoken roomshop, [room name]',
 	],
 
 	bonus: 'dailybonus',
