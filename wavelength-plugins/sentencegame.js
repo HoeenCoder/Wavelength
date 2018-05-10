@@ -1,8 +1,8 @@
-/****************************
+/***************************
  * Sentence Games for PS!	*
- * Inspired by fender & ASL	*
- * Rewrote by Insist		*
- ****************************/
+ * Inspired by fender & ASL*
+ * Rewrote by Insist			*
+ ***************************/
 
 "use strict";
 
@@ -24,7 +24,7 @@ class SentenceGame {
 		this.wordCount = wordCount;
 		this.sentence = [];
 		this.lastUser = null;
-		this.room.addRaw(`<div style="broadcast-green"><h2 style="font-weight: bold">A Sentence Game has been created with ${this.wordCount} words!</h2><small style="font-style: italic">You may add words by using /sentence aw [word].</small></div>`);
+		this.room.addRaw(`<div class="broadcast-green"><h2 style="font-weight: bold">A Sentence Game has been created with ${this.wordCount} words!</h2><small style="font-style: italic">You may add words by using /sentence aw [word].</small></div>`);
 	}
 
 	addWord(user, word, self) {
