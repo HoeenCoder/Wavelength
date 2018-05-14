@@ -52,9 +52,9 @@ function display(result, user, slotOne, slotTwo, slotThree) {
 	display += `<img style="padding: 3px; border: 1px inset gold; border-radius: 5px; box-shadow: inset 1px 1px 5px white;" src="${slotsTrozei[slotThree]}"; title="${slotThree}"></center>`;
 	display += `<font style="color: white;"><br />`;
 	if (!result) {
-		display += `Aww... bad luck, ${Server.nameColor(user, true)}. Better luck next time!`;
+		display += `Aww... bad luck, ${WL.nameColor(user, true)}. Better luck next time!`;
 	} else {
-		display += `Congratulations, ${Server.nameColor(user, true)}. You have won ${slots[slotOne]} ${moneyPlural}!`;
+		display += `Congratulations, ${WL.nameColor(user, true)}. You have won ${slots[slotOne]} ${currencyPlural}!`;
 	}
 	return display + `</font></div>`;
 }
@@ -69,11 +69,11 @@ exports.commands = {
 
 			Economy.readMoney(user.userid, money => {
 				if (money < 3) {
-					this.errorReply(`You do not have 3 ${moneyPlural} to spin the slots.`);
+					this.errorReply(`You do not have 3 ${currencyPlural} to spin the slots.`);
 					return;
 				}
 				Economy.writeMoney(user.userid, -3, () => {
-					Economy.logTransaction(`${user.name} spent 3 ${moneyPlural} to spin the slots.`);
+					Economy.logTransaction(`${user.name} spent 3 ${currencyPlural} to spin the slots.`);
 				});
 
 				const result = spin();
@@ -82,7 +82,7 @@ exports.commands = {
 
 				if (chancePercentage >= chancesGenerated) {
 					Economy.writeMoney(user.userid, slots[result]);
-					Economy.logTransaction(`${user.name} has won ${slots[result]} ${moneyPlural} from playing slots.`);
+					Economy.logTransaction(`${user.name} has won ${slots[result]} ${currencyPlural} from playing slots.`);
 					return this.sendReplyBox(display(true, user.name, result, result, result));
 				}
 
@@ -104,7 +104,7 @@ exports.commands = {
 		rewards: function (target) {
 			if (!this.runBroadcast()) return;
 			if (!target) {
-				let display = `The Slot Winnings for the Following Pokemon are (in ${moneyPlural}):<br />`;
+				let display = `The Slot Winnings for the Following Pokemon are (in ${currencyPlural}):<br />`;
 				for (let slot of availableSlots) {
 					display += `${Dex.getTemplate(slot).species}: ${slots[slot]}<br />`;
 				}
@@ -112,7 +112,7 @@ exports.commands = {
 			} else {
 				target = Dex.getTemplate(target);
 				if (!slots[target.id]) return this.errorReply(`There are no rewards for a streak of ${target.exists ? target.species : target}.`);
-				this.sendReplyBox(`<strong>The reward for getting a streak of ${target.species} is ${slots[target.id]} ${moneyPlural}.</strong>`);
+				this.sendReplyBox(`<strong>The reward for getting a streak of ${target.species} is ${slots[target.id]} ${currencyPlural}.</strong>`);
 			}
 		},
 
@@ -123,8 +123,8 @@ exports.commands = {
 	},
 
 	slotshelp: [
-		`Slots is a Casino game that awards the user with varying amount of ${moneyPlural} depending on the streak of Pokemon the user gets.
-		/slots spin - Spins the Slot Machine. Requires 3 ${moneyPlural}.
+		`Slots is a Casino game that awards the user with varying amount of ${currencyPlural} depending on the streak of Pokemon the user gets.
+		/slots spin - Spins the Slot Machine. Requires 3 ${currencyPlural}.
 		/slots rewards - Lists the rewards for getting specific Pokemon streaks.
 		/slots help - Displays the list of Slot-related commands.`,
 	],
