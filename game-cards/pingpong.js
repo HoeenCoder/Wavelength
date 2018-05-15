@@ -119,8 +119,6 @@ class PingPong extends Console.Console {
 		if (this.game) {
 			let game = PINGPONG_GAMES[this.game];
 			if (!game) return;
-			let isHost = game.host.userid === this.userid;
-			if (isHost && !game.options.pvp) return game.endGame(null);
 			game.leave(Users(this.userid), true);
 		}
 	}
@@ -178,7 +176,7 @@ class PingPongGame {
 		this.players.splice(this.players.indexOf(user.userid), 1);
 		if (!["pre-signups", "signups"].includes(this.state) && this.options.pvp && user.console.team) {
 			this.teams[user.console.team].players.splice(this.teams[user.console.team].players.indexOf(user.userid), 1);
-			if (this.teams["alpha"].players.length < 1 || this.teams["bravo"].players.length < 1 || this.players.length < 2) return this.endGame(null); // End the game since there is no competition
+			if (this.teams["alpha"].players.length < 1 || this.teams["bravo"].players.length < 1 || this.players.length < 2) return this.endGame(true); // End the game since there is no competition
 			if (this.hasBall === user.userid) {
 				if (user.console.team === "alpha") {
 					let team = this.teams["alpha"].players;
@@ -195,14 +193,18 @@ class PingPongGame {
 				}
 			}
 		}
-		if (!["pre-signups", "signups"].includes(this.state) && !this.options.pvp) return this.endGame(null);
+		if (!this.options.pvp) return this.endGame(true);
 		user.console.game = null;
-		if (this.state === "pre-signups" && this.host.userid === user.userid) {
-			delete PINGPONG_GAMES[this.id];
-			if (user && user.console) {
-				user.send(`>view-gameconsole\n|deinit`);
-				delete user.console;
+		user.console.update(...user.console.buildScreen("home"));
+		if (["pre-signups", "signups"].includes(this.state) && this.host.userid === user.userid) {
+			for (let player of this.players) {
+				player = Users(player);
+				if (player && player.console) {
+					player.send(`>view-gameconsole\n|deinit`);
+					delete player.console;
+				}
 			}
+			delete PINGPONG_GAMES[this.id];
 		}
 		// Only send the players back to the awaitingPlayers screen if they were still in signups state
 		if (this.state === "signups") this.updateAll("awaitingPlayers");
@@ -380,43 +382,46 @@ class PingPongGame {
 		let semifinalRound = this.options.pointsToWin - 1;
 		let newPointsToWin = this.options.pointsToWin + 2;
 		if (this.teams["alpha"].points === this.teams["bravo"].points && semifinalRound === this.teams[team].points) this.options.pointsToWin = newPointsToWin;
-		if (team === "alpha" && this.teams[team].points === this.options.pointsToWin) return this.endGame(true);
-		if (team === "bravo" && this.teams[team].points === this.options.pointsToWin) return this.endGame(false);
+		if (team === "alpha" && this.teams[team].points === this.options.pointsToWin) return this.endGame(false, true);
+		if (team === "bravo" && this.teams[team].points === this.options.pointsToWin) return this.endGame(false, false);
 	}
 
-	endGame(win) {
+	endGame(forced, win) {
 		if (!PINGPONG_GAMES[this.id]) return;
 		clearTimeout(this.timer);
 		// Only give rewards if its a non-bot fight
-		if (this.options.pvp) {
-			if (win) {
-				for (let alphaTeam of this.teams["alpha"].players) {
-					alphaTeam = Users(alphaTeam);
-					if (alphaTeam && alphaTeam.connected) Users(alphaTeam).popup(`|html|<center>You have won the game of Ping Pong! Congratulations, you and your teammates have earned 5 EXP and 2 ${currencyPlural}.<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
-					WL.ExpControl.addExp(alphaTeam.userid, null, 5);
-					Economy.writeMoney(alphaTeam.userid, 2);
-					Economy.logTransaction(`${alphaTeam.name} has won 2 ${currencyPlural} and 5 EXP for winning a game of Ping Pong!`);
+		if (!forced) {
+			if (this.options.pvp) {
+				if (win) {
+					for (let alphaTeam of this.teams["alpha"].players) {
+						alphaTeam = Users(alphaTeam);
+						if (alphaTeam && alphaTeam.connected) Users(alphaTeam).popup(`|html|<center>You have won the game of Ping Pong! Congratulations, you and your teammates have earned 5 EXP and 2 ${currencyPlural}.<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
+						WL.ExpControl.addExp(alphaTeam.userid, null, 5);
+						Economy.writeMoney(alphaTeam.userid, 2);
+						Economy.logTransaction(`${alphaTeam.name} has won 2 ${currencyPlural} and 5 EXP for winning a game of Ping Pong!`);
+					}
+				} else {
+					for (let bravoTeam of this.teams["bravo"].players) {
+						bravoTeam = Users(bravoTeam);
+						if (bravoTeam && bravoTeam.connected) Users(bravoTeam).popup(`|html|<center>You have won the game of Ping Pong! Congratulations, you and your teammates have earned 5 EXP and 2 ${currencyPlural}.<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
+						WL.ExpControl.addExp(bravoTeam.userid, null, 5);
+						Economy.writeMoney(bravoTeam.userid, 2);
+						Economy.logTransaction(`${bravoTeam.name} has won 2 ${currencyPlural} and 5 EXP for winning a game of Ping Pong!`);
+					}
 				}
 			} else {
-				for (let bravoTeam of this.teams["bravo"].players) {
-					bravoTeam = Users(bravoTeam);
-					if (bravoTeam && bravoTeam.connected) Users(bravoTeam).popup(`|html|<center>You have won the game of Ping Pong! Congratulations, you and your teammates have earned 5 EXP and 2 ${currencyPlural}.<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
-					WL.ExpControl.addExp(bravoTeam.userid, null, 5);
-					Economy.writeMoney(bravoTeam.userid, 2);
-					Economy.logTransaction(`${bravoTeam.name} has won 2 ${currencyPlural} and 5 EXP for winning a game of Ping Pong!`);
+				if (win) {
+					if (Users(this.host) && Users(this.host).connected) Users(this.host).popup(`|html|<center>Congratulations, you beat the COM!<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
+				} else {
+					if (Users(this.host) && Users(this.host).connected) Users(this.host).popup(`|html|<center>RIP, you lost to the COM :(<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
 				}
-			}
-		} else {
-			if (win) {
-				if (Users(this.host) && Users(this.host).connected) Users(this.host).popup(`|html|<center>Congratulations, you beat the COM!<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
-			} else {
-				if (Users(this.host) && Users(this.host).connected) Users(this.host).popup(`|html|<center>RIP, you lost to the COM :(<br /><button class="button" name="send" value="/pingpong init">Play Another Game!</button></center>`);
 			}
 		}
 		for (let player of this.players) {
 			player = Users(player);
 			if (player && player.console) {
 				player.send(`>view-gameconsole\n|deinit`);
+				if (forced) player.popup(`|html|<center><h2>The game was forcefully ended.</h2><button class="button" name="send" value="/pingpong init">I want to play again!</button></center>`);
 				delete player.console; // Delete the console, they can reinitialize it if they want to
 			}
 		}
@@ -478,8 +483,9 @@ exports.commands = {
 				user.console.update(...user.console.buildScreen("setup"));
 				break;
 			case "timer":
-				if (isNaN(num) || num < 5 || num > 15) return false;
-				game.options.timer = num;
+				let seconds = parseInt(target.shift());
+				if (isNaN(seconds) || seconds < 5 || seconds > 15) return false;
+				game.options.timer = seconds;
 				user.console.update(...user.console.buildScreen("setup"));
 				break;
 			case "pvp":
