@@ -919,7 +919,7 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== "hockey") return false;
 			let game = HOCKEY_GAMES[user.console.game];
 			if (!game || game.host.userid !== user.userid || game.phase !== "pre-signups") return;
-			target = target.split(",").map(x => { return x.trim() });
+			target = target.split(",").map(x => { return x.trim(); });
 			switch (target.shift()) {
 			case "cap":
 				target = parseInt(target[0]);
@@ -1006,7 +1006,7 @@ exports.commands = {
 		join: function (target, room, user) {
 			if (!user.console || user.console.gameId !== "hockey") return false;
 			if (user.console.game) return;
-			target = target.split(",").map(x => { return x.trim() });
+			target = target.split(",").map(x => { return x.trim(); });
 			if (!target[0]) {
 				// search for a game
 				return user.console.update(...user.console.buildScreen("search"));
@@ -1066,7 +1066,7 @@ exports.commands = {
 			if (!user.console || user.console.gameId !== "hockey") return false;
 			if (!user.console.game) return false;
 			let game = HOCKEY_GAMES[user.console.game];
-			target = target.split(",").map(x => { return x.trim() });
+			target = target.split(",").map(x => { return x.trim(); });
 			let player = target[0];
 			let team = target[1];
 			if (!player || !team) return false;
