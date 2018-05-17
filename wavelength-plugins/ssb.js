@@ -577,23 +577,23 @@ class SSB {
 	}
 }
 
+const ssbData = {};
+
 //Load JSON
 try {
-	FS("config/ssb.json").readIfExistsSync();
-} catch (e) {
-	FS("config/ssb.json").write("{}", function (err) {
-		if (err) {
-			console.error(`Error while loading SSBFFA: ${err}`);
-			ssbWrite = false;
-		} else {
-			console.log("config/ssb.json not found, creating a new one...");
-		}
-	});
+	ssbData = FS("config/ssb.json").readIfExistsSync();
+	if (!ssbData) {
+		// Create file
+		FS("config/ssb.json").writeSync("{}");
+		ssbData = {};
+	} else {
+		ssbData = JSON.parse(ssbData);
+	}
 }
 
 //We need to load data after the SSB class is declared.
 try {
-	WL.ssb = global.ssb = {};
+	WL.ssb = global.ssb = ssbData;
 	WL.ssb = FS("config/ssb.json").readIfExistsSync();
 	if (!WL.ssb) {
 		FS("config/ssb.json").write("{}");
