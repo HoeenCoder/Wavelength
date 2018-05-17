@@ -59,12 +59,12 @@ class RPSGame {
 	sendGameInformation(player, opponent) {
 		let pmPost = `/html <div class="broadcast-green"><center>You have been matched up with ${WL.nameColor(opponent.name, true)}<br />`;
 		pmPost += `<strong>What is your choice?</strong><br />`;
-		pmPost += `<button name="send" value="/rps choose R ${this.gameId}">Rock</button>`;
-		pmPost += `<button name="send" value="/rps choose P ${this.gameId}">Paper</button>`;
-		pmPost += `<button name="send" value="/rps choose S ${this.gameId}">Scissors</button>`;
+		pmPost += `<button name="send" value="/rps choose R ${this.gameId}"><i class="fa fa-hand-rock-o"></i>Rock</button>`;
+		pmPost += `<button name="send" value="/rps choose P ${this.gameId}"><i class="fa fa-hand-paper-o"></i> Paper</button>`;
+		pmPost += `<button name="send" value="/rps choose S ${this.gameId}"><i class="fa fa-hand-scissors-o"></i>Scissors</button>`;
 		if (this.gameType === "ladderRPSLS") {
-			pmPost += `<button name="send" value="/rpsls choose L ${this.gameId}">Lizard</button>`;
-			pmPost += `<button name="send" value="/rpsls choose SP ${this.gameId}">Spock</button>`;
+			pmPost += `<button name="send" value="/rpsls choose L ${this.gameId}"><i class="fa fa-hand-lizard-o"></i>Lizard</button>`;
+			pmPost += `<button name="send" value="/rpsls choose SP ${this.gameId}"><i class="fa fa-hand-spock-o"></i>Spock</button>`;
 		}
 		pmPost += `</center><br /><br />`;
 		pmPost += `You have 60 seconds to make your choice.</center></div>`;
@@ -313,55 +313,42 @@ exports.commands = {
 		},
 
 		"!rank": true,
+		rpslspoints: "rank",
 		points: "rank",
+		rpslsranking: "rank",
 		ranking: "rank",
-		rank: function (target, room, user) {
+		rpslsrank: "rank",
+		rank: function (target, room, user, connection, cmd) {
 			if (!this.runBroadcast()) return false;
 			if (!target) target = user.userid;
 			target = toId(target);
-			let userRank = Db.rpsrank.get(toId(target), 1000);
-			this.sendReplyBox(`<strong>Rank - ${WL.nameColor(target, true)}: ${userRank}</strong>`);
-		},
-
-		"!rpslsrank": true,
-		rpslspoints: "rpslsrank",
-		rpslsranking: "rpslsrank",
-		rpslsrank: function (target, room, user) {
-			if (!this.runBroadcast()) return false;
-			if (!target) target = user.userid;
-			target = toId(target);
-			let userRank = Db.rpslsrank.get(toId(target), 1000);
+			let rpslsCommands = ["rpslsrank", "rpslsranking", "rpslspoints"];
+			let file = Db.rpsrank;
+			if (rpslsCommands.includes(cmd)) file = Db.rpslsrank;
+			let userRank = file.get(toId(target), 1000);
 			this.sendReplyBox(`<strong>Rank - ${WL.nameColor(target, true)}: ${userRank}</strong>`);
 		},
 
 		"!ladder": true,
+		rpslsleaderboard: "ladder",
+		rpsleaderboard: "ladder",
 		leaderboard: "ladder",
-		ladder: function (target) {
+		rpslsladder: "ladder",
+		rpsladder: "ladder",
+		ladder: function (target, room, user, connection, cmd) {
 			if (!this.runBroadcast()) return false;
+			let rpslsCommands = ["rpslsleaderboard", "rpslsladder"];
+			let file = Db.rpsrank;
+			if (rpslsCommands.includes(cmd)) file = Db.rpslsrank;
 			if (!target) target = 100;
 			target = Number(target);
 			if (isNaN(target)) target = 100;
-			let keys = Db.rpsrank.keys().map(name => {
-				return {name: name, points: Db.rpsrank.get(name)};
+			let keys = file.keys().map(name => {
+				return {name: name, points: file.get(name)};
 			});
-			if (!keys.length) return this.errorReply(`There is currently no ranked data for RPS at this moment.`);
+			if (!keys.length) return this.errorReply(`There is currently no ranked data for RPS${!rpslsCommands.includes(cmd) ? `` : `LS`} at this moment.`);
 			keys.sort(function (a, b) { return b.points - a.points; });
-			this.sendReplyBox(rankLadder("RPS Ladder", "Points", keys.slice(0, target), "points"));
-		},
-
-		"!rpslsladder": true,
-		rpslsleaderboard: "rpslsladder",
-		rpslsladder: function (target) {
-			if (!this.runBroadcast()) return false;
-			if (!target) target = 100;
-			target = Number(target);
-			if (isNaN(target)) target = 100;
-			let keys = Db.rpslsrank.keys().map(name => {
-				return {name: name, points: Db.rpslsrank.get(name)};
-			});
-			if (!keys.length) return this.errorReply(`There is currently no ranked data for RPSLS at this moment.`);
-			keys.sort(function (a, b) { return b.points - a.points; });
-			this.sendReplyBox(rankLadder("RPSLS Ladder", "Points", keys.slice(0, target), "points"));
+			this.sendReplyBox(rankLadder(`RPS${!rpslsCommands.includes(cmd) ? `` : `LS`} Ladder`, "Points", keys.slice(0, target), "points"));
 		},
 
 		"": "help",
