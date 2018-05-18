@@ -490,12 +490,12 @@ let Formats = [
 	},
 	{
 		name: "[Gen 7] Digimon Showdown",
-		desc: [
-			"Use Digimon in this battle instead of Pokemon!",
-			`&bullet; <a href="dank memes">Digimon Showdown</a>`,
+		desc: `The Digimon Metagame!`,
+		threads: [
+			`&bullet; <a href="TBA">Digimon Showdown</a>`,
 		],
 
-		mod: "digimon",
+		mod: 'digimon',
 		gameType: 'triples',
 		team: "randomDigimon",
 		ruleset: ['Cancel Mod', 'HP Percentage Mod'],
