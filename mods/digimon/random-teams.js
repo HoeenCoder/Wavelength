@@ -238,8 +238,8 @@ class RandomDigimonTeams extends RandomTeams {
 				baseSignatureMove: "puppyhowl",
 				signatureMove: "Puppy Howl",
 			},
-			"Shamamon": {
-				species: "Shamamon",
+			"Shamanmon": {
+				species: "Shamanmon",
 				ability: "Virus",
 				moves: ['charmperfume', 'rootbind', 'rockfall', 'musclecharge', 'warcry', 'reboundstrike', 'megatonpunch', 'shadowfall', 'pooptoss'],
 				baseSignatureMove: "dancingbone",

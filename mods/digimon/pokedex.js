@@ -446,9 +446,9 @@ let BattlePokedex = {
 		color: "Yellow",
 		eggGroups: ["Undiscovered"],
 	},
-	shamamon: {
+	shamanmon: {
 		num: -2037,
-		species: "Shamamon",
+		species: "Shamanmon",
 		types: ["Evil", "Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 78, atk: 50, def: 40, spa: 49, spd: 39, spe: 39},
