@@ -856,22 +856,22 @@ class RandomDigimonTeams extends RandomTeams {
 				baseSignatureMove: "modestlystun",
 				signatureMove: "Modestly Stun",
 			},
-			"MeicrackmonVM": {
+			"MeicrackmonViciousMode": {
 				name: "Meicrackmon",
-				species: "meicrackmonvm",
+				species: "meicrackmonviciousmode",
 				ability: "Virus",
 				moves: ['warcry', 'windcutter', 'fightingaura', 'megatonpunch', 'mechanicalclaw', 'venomdisaster', 'shadowfall', 'evilsquall', 'blackout'],
 				baseSignatureMove: "berserkthinking",
 				signatureMove: "Berserk Thinking",
 			},
-			"MetalGreymon": {
-				species: "metalgreymon",
+			"MetalGreymonVaccine": {
+				species: "metalgreymonvaccine",
 				ability: "Vaccine",
 				moves: ['burningheart', 'heatbreath', 'firetower', 'infinityburn', 'musclecharge', 'sonicjab', 'reboundstrike', 'busterdrive', 'mechanicalclaw', 'gigawattlaser', 'deleteprogram'],
 				baseSignatureMove: "gigadestroyer",
 				signatureMove: "Giga Destroyer",
 			},
-			"MetalGreymonV": {
+			"MetalGreymonVIrus": {
 				name: "MetalGreymon",
 				species: "metalgreymonvirus",
 				ability: "Virus",
@@ -1013,16 +1013,16 @@ class RandomDigimonTeams extends RandomTeams {
 				baseSignatureMove: "tomahawkstinger",
 				signatureMove: "Tomahawk Stinger",
 			},
-			"Cherubimon": {
-				species: "Cherubimonevil",
+			"CherubimonEvil": {
+				species: "CherubimonEvil",
 				ability: "Virus",
 				moves: ['wingshoes', 'thunderjustice', 'megalospark', 'megatonpunch', 'blackout', 'chaoscloud', 'shadowfall', 'evilsquall', 'dgdimension', 'gigawattlaser'],
 				baseSignatureMove: "lightningspear",
 				signatureMove: "Lightning Spear",
 			},
-			"CherubimonG": {
+			"CherubimonGood": {
 				name: "Cherubimon",
-				species: "Cherubimongood",
+				species: "CherubimonGood",
 				ability: "Vaccine",
 				moves: ['wingshoes', 'thunderjustice', 'megalospark', 'megatonpunch', 'holybreath', 'saintray', 'holyjudgment', 'shiningnova', 'dgdimension', 'gigawattlaser'],
 				baseSignatureMove: "heavensjudgment",

@@ -1502,9 +1502,9 @@ let BattlePokedex = {
 		color: "Brown",
 		eggGroups: ["Undiscovered"],
 	},
-	meicrackmonvm: {
+	meicrackmonviciousmode: {
 		num: -2125,
-		species: "MeicrackmonVM",
+		species: "MeicrackmonViciousMode",
 		types: ["Battle", "Evil"],
 		gender: "N",
 		baseStats: {hp: 126, atk: 88, def: 61, spa: 86, spd: 62, spe: 78},
@@ -1514,9 +1514,9 @@ let BattlePokedex = {
 		color: "Brown",
 		eggGroups: ["Undiscovered"],
 	},
-	metalgreymon: {
+	metalgreymonvaccine: {
 		num: -2126,
-		species: "MetalGreymon",
+		species: "MetalGreymonVaccine",
 		types: ["Flame", "Mech", "Battle"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 91, def: 78, spa: 68, spd: 70, spe: 67},
@@ -1528,7 +1528,7 @@ let BattlePokedex = {
 	},
 	metalgreymonvirus: {
 		num: -2127,
-		species: "MetalGreymon(Virus)",
+		species: "MetalGreymonVirus",
 		types: ["Flame", "Mech", "Evil"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 91, def: 78, spa: 68, spd: 70, spe: 67},
@@ -1768,7 +1768,7 @@ let BattlePokedex = {
 	},
 	cherubimonevil: {
 		num: -2147,
-		species: "Cherubimon(Evil)",
+		species: "CherubimonEvil",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 223, atk: 121, def: 73, spa: 110, spd: 98, spe: 90},
@@ -1780,7 +1780,7 @@ let BattlePokedex = {
 	},
 	cherubimongood: {
 		num: -2148,
-		species: "Cherubimon(Good)",
+		species: "CherubimonGood",
 		types: ["Holy", "Air"],
 		gender: "N",
 		baseStats: {hp: 209, atk: 117, def: 80, spa: 106, spd: 105, spe: 86},
