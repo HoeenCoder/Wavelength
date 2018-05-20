@@ -194,9 +194,9 @@ let BattlePokedex = {
 		color: "Yellow",
 		eggGroups: ["Undiscovered"],
 	},
-	aruramon: {
+	aruraumon: {
 		num: -2016,
-		species: "Aruramon",
+		species: "Aruraumon",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 72, atk: 49, def: 42, spa: 47, spd: 42, spe: 41},

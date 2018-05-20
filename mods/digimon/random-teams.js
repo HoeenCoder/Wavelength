@@ -91,8 +91,8 @@ class RandomDigimonTeams extends RandomTeams {
 				baseSignatureMove: "pepperbreath",
 				signatureMove: "Pepper Breath",
 			},
-			"Aruramon": {
-				species: "Aruramon",
+			"Aruraumon": {
+				species: "Aruraumon",
 				ability: "Virus",
 				moves: ['charmperfume', 'rootbind', 'venomdisaster', 'waterblitz', 'superstinkyjet', 'shadowfall', 'blackout'],
 				baseSignatureMove: "nemesisivy",
