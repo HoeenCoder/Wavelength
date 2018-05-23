@@ -1,9 +1,8 @@
 "use strict";
 
 global.TeamValidator = require("../sim/team-validator");
-let fs = require("fs");
+const FS = require("../lib/fs");
 let ssbWrite = true; //if false, do not write to JSON
-let noRead = false; //if true, do not read from JSON
 const MAX_MOVEPOOL_SIZE = 4;
 let customMovepool = ["Stretch", "Flame Tower", "Rain Spear", "Healing Herbs", "Electro Drive", "Hailstorm", "Beat Down", "Nuclear Waste", "Terratremor", "Ventilation", "Psychic Shield", "Swarm Charge", "Rock Cannon", "Spook", "Imperial Rampage", "Shadow Run", "Magnorang", "Majestic Dust"]; //Add default custom move names here.
 let typeList = ["Normal", "Fire", "Water", "Grass", "Electric", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
@@ -18,7 +17,7 @@ const BANS = {
 
 global.writeSSB = function () {
 	if (!ssbWrite) return false; //Prevent corruptions
-	fs.writeFile("config/ssb.json", JSON.stringify(WL.ssb), () => {});
+	FS("config/ssb.json").write(JSON.stringify(WL.ssb));
 };
 
 //Shamlessly ripped from teambuilder client.
@@ -75,7 +74,7 @@ function buildMenu(userid) {
 		speciesName = `${toId(split[0])}-${speciesName.substring(toId(split[0]).length)}`;
 	}
 	let output = ``;
-	output += `<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/${(Dex.getTemplate(toId(WL.ssb[userid].species)).gen === 7 ? `bw` : `xydex`)} ${(WL.ssb[userid].shiny ? `-shiny` : ``)}/${speciesName}.png); background-position: -2px -3px; background-repeat: no-repeat;">`;
+	output += `<div class="setchart" style="height: 155px; background-image:url(//play.pokemonshowdown.com/sprites/${(Dex.getTemplate(toId(WL.ssb[userid].species)).gen === 7 ? `bw` : `xydex`)}${(WL.ssb[userid].shiny ? `-shiny` : ``)}/${speciesName}.png); background-position: -2px -3px; background-repeat: no-repeat;">`;
 	output += `<div class="setcol setcol-icon"><div class="setcell-sprite"></div><div class="setcell setcell-pokemon"><label>Pokémon</label><button class="textbox chartinput" style="width: 104px; height: 20px; text-align: left" name="send" value="/ssb edit species">${WL.ssb[userid].species}</button></div></div>`;
 	output += `<div class="setcol setcol-details"><div class="setrow"><div class="setcell setcell-details"><label>Details</label><button class="textbox setdetails" tabindex="-1" name="send" value="/ssb edit details"><span class="detailcell detailcell-first"><label>Level</label>${WL.ssb[userid].level}</span><span class="detailcell"><label>Gender</label>${(WL.ssb[userid].gender === `random` ? `-` : WL.ssb[userid].gender)}</span><span class="detailcell"><label>Happiness</label>${WL.ssb[userid].happiness}</span><span class="detailcell"><label>Shiny</label>${(WL.ssb[userid].shiny ? `Yes` : `No`)}</span></button><span class="itemicon" style="background: none"></span></div></div><div class="setrow"><div class="setcell setcell-item"><label>Item</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit item">${(WL.ssb[userid].item ? WL.ssb[userid].item : ``)}</button></div><div class="setcell setcell-ability"><label>Ability</label><button class="textbox chartinput" style="width:104px; height: 20px; text-align: left" name="send" value="/ssb edit ability">${WL.ssb[userid].ability}</button></div></div></div>`;
 	output += `<div class="setcol setcol-moves"><div class="setcell"><label>Moves</label><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">${(WL.ssb[userid].movepool[0] ? WL.ssb[userid].movepool[0] : ``)}</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">${(WL.ssb[userid].movepool[1] ? WL.ssb[userid].movepool[1] : ``)}</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">${(WL.ssb[userid].movepool[2] ? WL.ssb[userid].movepool[2] : ``)}</button></div><div class="setcell"><button class="textbox chartinput" style="width:129px; height: 20px; text-align: left; overflow: hidden" name="send" value="/ssb edit move">${(WL.ssb[userid].cMove ? WL.ssb[userid].cMove : (WL.ssb[userid].movepool[3] ? WL.ssb[userid].movepool[3] : ``))}</button></div></div>`;
@@ -578,40 +577,32 @@ class SSB {
 	}
 }
 
+const ssbData = {};
+
 //Load JSON
 try {
-	fs.accessSync("config/ssb.json", fs.F_OK);
-} catch (e) {
-	fs.writeFile("config/ssb.json", "{}", function (err) {
-		if (err) {
-			console.error(`Error while loading SSBFFA: ${err}`);
-			ssbWrite = false;
-		} else {
-			console.log("config/ssb.json not found, creating a new one...");
-		}
-	});
-	noRead = true;
+	ssbData = FS("config/ssb.json").readIfExistsSync();
+	if (!ssbData) {
+		// Create file
+		FS("config/ssb.json").writeSync("{}");
+		ssbData = {};
+	} else {
+		ssbData = JSON.parse(ssbData);
+	}
 }
 
 //We need to load data after the SSB class is declared.
 try {
-	if (!noRead) {
-		let raw = JSON.parse(fs.readFileSync("config/ssb.json", "utf8"));
-		WL.ssb = global.ssb = {};
-		//parse JSON back into the SSB class.
-		for (let key in raw) {
-			WL.ssb[key] = new SSB(raw[key].userid, raw[key].name);
-			for (let key2 in WL.ssb[key]) {
-				WL.ssb[key][key2] = raw[key][key2];
-			}
-		}
+	WL.ssb = global.ssb = ssbData;
+	WL.ssb = FS("config/ssb.json").readIfExistsSync();
+	if (!WL.ssb) {
+		FS("config/ssb.json").write("{}");
+		WL.ssb = {};
 	} else {
-		WL.ssb = global.ssb = {};
+		WL.ssb = JSON.parse(WL.ssb);
 	}
 } catch (e) {
-	console.error(`Error loading SSBFFA: ${e.stack}`);
-	WL.ssb = global.ssb = {};
-	ssbWrite = false;
+	if (e.code !== "ENOENT") throw e;
 }
 
 exports.commands = {
