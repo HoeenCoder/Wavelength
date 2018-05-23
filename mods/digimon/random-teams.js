@@ -850,6 +850,7 @@ class RandomDigimonTeams extends RandomTeams {
 				signatureMove: "Lightning Javelin",
 			},
 			"Meicrackmon": {
+				name: "Meicrackmon",
 				species: "meicrackmon",
 				ability: "Vaccine",
 				moves: ['warcry', 'windcutter', 'fightingaura', 'megatonpunch', 'mechanicalclaw', 'venomdisaster', 'holyjudgment', 'saintray', 'holybreath'],
@@ -865,13 +866,14 @@ class RandomDigimonTeams extends RandomTeams {
 				signatureMove: "Berserk Thinking",
 			},
 			"MetalGreymonVaccine": {
+				name: "MetalGreymon",
 				species: "metalgreymonvaccine",
 				ability: "Vaccine",
 				moves: ['burningheart', 'heatbreath', 'firetower', 'infinityburn', 'musclecharge', 'sonicjab', 'reboundstrike', 'busterdrive', 'mechanicalclaw', 'gigawattlaser', 'deleteprogram'],
 				baseSignatureMove: "gigadestroyer",
 				signatureMove: "Giga Destroyer",
 			},
-			"MetalGreymonVIrus": {
+			"MetalGreymonVirus": {
 				name: "MetalGreymon",
 				species: "metalgreymonvirus",
 				ability: "Virus",
@@ -1014,6 +1016,7 @@ class RandomDigimonTeams extends RandomTeams {
 				signatureMove: "Tomahawk Stinger",
 			},
 			"CherubimonEvil": {
+				name: "Cherubimon",
 				species: "CherubimonEvil",
 				ability: "Virus",
 				moves: ['wingshoes', 'thunderjustice', 'megalospark', 'megatonpunch', 'blackout', 'chaoscloud', 'shadowfall', 'evilsquall', 'dgdimension', 'gigawattlaser'],
