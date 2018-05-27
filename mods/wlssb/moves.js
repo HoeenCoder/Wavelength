@@ -753,41 +753,6 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Normal",
 	},
-	//wgc
-	"hazereborn": {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		desc: "Inverts the target's stat stages and a 40% chance to freeze.",
-		id: "hazereborn",
-		name: "Haze Reborn",
-		pp: 20,
-		priority: 0,
-		flags: {protect: 1, reflectable: 1, mirror: 1, mystery: 1},
-		onHit: function (target) {
-			let success = false;
-			for (let i in target.boosts) {
-				if (target.boosts[i] === 0) continue;
-				target.boosts[i] = -target.boosts[i];
-				success = true;
-			}
-			if (!success) return false;
-			this.add('-invertboost', target, '[from] move: Haze Reborn');
-		},
-		secondary: {
-			chance: 40,
-			status: 'frz',
-		},
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Glaciate", source);
-			this.add('-anim', source, "Dark Void", target);
-		},
-		target: "normal",
-		type: "Ice",
-		zMoveBoost: {spa: 1},
-		contestType: "Clever",
-	},
 	//bunnery5
 	bunneryhatesyouseed: {
 		category: "Status",
@@ -886,55 +851,6 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
-	},
-	//Showdown Helper
-	"psychotherapy": {
-		accuracy: 100,
-		basePower: 100,
-		category: "Special",
-		desc: "Hits defense stat. Drains 10% of Damage Dealt.",
-		id: "psychotherapy",
-		isViable: true,
-		name: "Psychotherapy",
-		pp: 20,
-		priority: 0,
-		flags: {protect: 1, mirror: 1, heal: 1},
-		defensiveCategory: "Physical",
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Psystrike", target);
-		},
-		drain: [1, 10],
-		target: "normal",
-		type: "Fairy",
-		zMovePower: 195,
-		contestType: "Clever",
-	},
-	// Finny
-	"dyinginside": {
-		accuracy: 95,
-		basePower: 100,
-		category: "Physical",
-		desc: "This move combines Ghost in its type effectiveness against the target. Damage doubles and no accuracy check is done if the target has used Minimize while active.",
-		shortDesc: "Combines Ghost in its type effectiveness.",
-		id: "dyinginside",
-		name: "Dying Inside",
-		pp: 10,
-		flags: {protect: 1, mirror: 1},
-		onEffectiveness: function (typeMod, type, move) {
-			return typeMod + this.getEffectiveness('Ghost', type);
-		},
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Memento", target);
-			this.add('-anim', source, "Blizzard", target);
-		},
-		priority: 0,
-		secondary: false,
-		target: "normal",
-		type: "Ice",
-		zMovePower: 170,
-		contestType: "Clever",
 	},
 	//The Dazzler Joe
 	"kingscurse": {
