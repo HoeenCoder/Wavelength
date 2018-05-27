@@ -26,6 +26,7 @@ exports.BattleItems = {
 			}
 		},
 	},
+	// SSBN-640
 	"lycantiumz": {
 		id: "lycantiumz",
 		name: "Lycantium Z",
