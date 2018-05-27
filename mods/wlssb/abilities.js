@@ -358,37 +358,6 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//Finny
-	"clinicaldepression": {
-		desc: "This Pokemon has a random stat raised by 2 stages and another stat lowered by 1 stage at the end of each turn.",
-		shortDesc: "Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.",
-		onResidualOrder: 26,
-		onResidualSubOrder: 1,
-		onResidual: function (pokemon) {
-			let stats = [];
-			let boost = {};
-			for (let statPlus in pokemon.boosts) {
-				if (pokemon.boosts[statPlus] < 6 && statPlus !== 'accuracy' && statPlus !== 'evasion') {
-					stats.push(statPlus);
-				}
-			}
-			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = 2;
-
-			stats = [];
-			for (let statMinus in pokemon.boosts) {
-				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat && statMinus !== 'accuracy' && statMinus !== 'evasion') {
-					stats.push(statMinus);
-				}
-			}
-			randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = -1;
-
-			this.boost(boost);
-		},
-		id: "clinicaldepression",
-		name: "Clinical Depression",
-	},
 	//Alfastorm
 	"addendum": {
 		desc: "Causes adjacent opposing Pokemon to lose 7% of their maximum HP, rounded down, at the end of each turn if they are cursed.",
