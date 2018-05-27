@@ -384,7 +384,7 @@ exports.BattleMovedex = {
 		accuracy: true,
 		type: "Water",
 	},
-	// Lycanium Z
+	// SSBN-640
 	"alldelete": {
 		accuracy: 100,
 		basePower: 100,
