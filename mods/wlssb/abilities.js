@@ -331,7 +331,7 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//LycaniumZ
+	//SSBN-640
 	"supershield": {
 		onEffectiveness: function () {
 			return -2;
