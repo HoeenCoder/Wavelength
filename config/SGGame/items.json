@@ -955,6 +955,12 @@
         "name": "Alpha Ticket",
         "slot": "keyitems"
     },
+    "mainticket": {
+        "id": "mainticket",
+        "name": "Main Island Ticket",
+        "slot": "keyitems",
+        "ticket": "mainisland"
+    },
     "recoveredgoods": {
         "id": "recoveredgoods",
         "name": "Recovered Goods",

@@ -263,10 +263,6 @@ exports.commands = {
 		return this.parse('/hotpatch validator');
 	},
 
-	hw: function (target, room, user) {
-		return this.parse('/hotpatch wavelength');
-	},
-
 	'!regdate': true,
 	regdate: function (target, room, user, connection) {
 		if (!target) target = user.name;

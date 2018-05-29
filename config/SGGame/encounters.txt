@@ -25,20 +25,28 @@ Blank lines are ignored as well
 
 LOCATION mainisland|5
 TYPE GRASS
-// rattata: 40%, yungoos: 30%, patrat: 20%, zigzagoon: 10%
-rattata,2,4,3
-rattata,3,5
-yungoos,2,4,2
-yungoos,3,5
-zigzagoon,2,5
-patrat,2,4
-patrat,3,5
+// rattata: 30%, pidove: 30%, pidgey: 20%, wingull: 15%, trubbish: 5%
+// Each appearence = 5%
+rattata,2,4,5
+rattata,3,6
+pidove,2,4,5
+pidove,3,6
+pidgey,2,4,2
+pidgey,3,5,2
+wingull,3,5,2
+wingull,4,7
+trubbish,4,7
 
 LOCATION mainisland|6
 TYPE GRASS
-// sentret: 60%, bidoof: 30%, bunnelby: 10%
-sentret,2,4,5
-sentret,4,6
-bidoof,2,4
-bidoof,3,5,2
-bunnelby,3,5
+// slowpoke: 30%, wingull: 30%, krabby: 20%, shellos: 10%, clauncher: 5%, skrelp: 5%
+// Each appearence = 5%
+slowpoke,2,4,5
+slowpoke,3,6
+wingull,2,4,5
+wingull,3,6
+krabby,2,4,2
+krabby,3,5,2
+shellos,3,5,2
+clauncher,4,7
+skrelp,4,7

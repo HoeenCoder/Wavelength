@@ -69,6 +69,9 @@ class SGgame extends Console.Console {
 		case "pokemoncenter":
 			output += `<center>${checkButton('Heal Party', 'heal')} ${checkButton('PC', 'pc')} <button class="button" name="send" value="/sggame building pokemoncenter, exit">Leave</button>`;
 			break;
+		case "marina":
+			output += `<center>${checkButton('Confirm Travel', 'travel')} <button class="button" name="send" value="/sggame building marina, exit">Leave</button></center>`;
+			break;
 		}
 		return output;
 	}
@@ -651,7 +654,7 @@ class Player {
 		// Time played, not ingame time
 		this.time = 0;
 		// players bag - object containing objects that contain items as keys and the number held as values
-		this.bag = {items: {}, medicine: {}, pokeballs: {}, berries: {}, tms: {}, keyitems: {alphaticket: 1}};
+		this.bag = {items: {}, medicine: {}, pokeballs: {}, berries: {}, tms: {}, keyitems: {alphaticket: 1, mainticket: 1}};
 		// players pc - Array of boxes (arrays), max of 30 boxes, 30 pokemon per box, stored as strings
 		this.pc = [[], [], [], [], [], [], [], [], [], []];
 		// players party - Array of pokemon objects

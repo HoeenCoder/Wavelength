@@ -11,7 +11,7 @@
  * onEnter(game) - Triggers whenever the player enters this location or zone.
  * onBuilding(game, buildingId, action) - Triggered by interaction with a building with the `/sggame building` command.
  * buildingId is the id of the building, and action is the action the user is trying to take.
- * wild poekmon are handled in encounters.txt
+ * wild pokemon are handled in encounters.txt
  *
  */
 
@@ -44,11 +44,48 @@ function pokemonCenter(game, id, action) {
 	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('pokemoncenter', options));
 }
 
+function marina(game, id, action, area, confirm) {
+	let player = Db.players.get(game.userid);
+	let out = `<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h3>Marina - Travel to where?</h3></center>`;
+	out += `<div style="height: 91%; border-top: 0.2em solid black; overflow: scroll; display: block;"><div><b style="float: left">Island</b><b style="float: right"></b></div><br>`;
+	for (let i in player.bag.keyitems) {
+		let item = WL.getItem(i);
+		if (!item || !item.ticket || item.ticket === game.location) continue;
+		if (item.ticket === area) {
+			out += `<button style="background: #0B9; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${WL.locationData[item.ticket].name}</span><span style="float: right">${WL.locationData[item.ticket].shortDesc || 'Selected'}</span></button>`;
+		} else {
+			out += `<button name="send" value="/sggame building ${id}, travel, ${item.ticket}" style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${WL.locationData[item.ticket].name}</span><span style="float: right">${WL.locationData[item.ticket].shortDesc || 'Click to travel here'}</span></button>`;
+		}
+	}
+	out += '</div></div>';
+	let options = {travel: ''};
+	switch (action) {
+	case 'enter':
+		if (player.stage === 0) return false;
+		game.curPane = id;
+		break;
+	case 'exit':
+		game.curPane = null;
+		return game.update(game.buildCSS(), game.buildMap(), game.buildBase());
+	case 'travel':
+		if (!area || !WL.locationData[area]) break;
+		if (confirm) {
+			game.curPane = null;
+			game.warp(`${area}|${WL.locationData[area].entry}`);
+			return;
+		}
+		options.travel = `/sggame building ${id}, travel, ${area}, confirm`;
+		break;
+	}
+	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('marina', options));
+}
+
 exports.locations = {
 	"welcome": {
 		"id": "welcome",
 		"name": "Welcome to SGgame!",
 		"type": "",
+		"entry": "0",
 		"code": 0,
 		"zones": {
 			"0": {
@@ -69,10 +106,8 @@ exports.locations = {
 		"id": "mainisland",
 		"name": "Main Island",
 		"type": "",
+		"entry": "3",
 		"code": 1,
-		"onFirstEnter": function (game) {
-			game.queue.push('text|Welcome to the Main Island!');
-		},
 		"zones": {
 			"0": {
 				"subTitle": "",
@@ -161,22 +196,11 @@ exports.locations = {
 				"css": "background: url(https://i.imgur.com/BLBDRGJ.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"buildings": {
-					//"marina": "Marina",
+					"marina": "Marina",
 				},
-				"onBuilding": function (game, id, action) {
+				"onBuilding": function (game, id, action, area, confirm) {
 					if (id !== 'marina') return;
-					switch (action) {
-					case 'enter':
-
-						break;
-					case 'exit':
-
-						break;
-					case 'travel':
-
-						break;
-					}
-					return false;
+					return marina(game, id, action, area, confirm);
 				},
 				"exits": {
 					"up": null,
@@ -188,7 +212,7 @@ exports.locations = {
 			"4": {
 				"subTitle": "Warehouses",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/Z12Bkvo.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://i.imgur.com/8ik75KF.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>Thief</b>: No! The door to the warehouse is locked!<br/>I just hope I can get away before...', 'text|<b>Thief</b>: Yikes! I\'ve been found! Well, I\'m not going down without a fight.<br/>Bring it on!', 'callback');
@@ -237,7 +261,7 @@ exports.locations = {
 			},
 			"5": {
 				"html": "",
-				"css": "",
+				"css": "background: url(https://i.imgur.com/92EDoGs.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onTryEnter": function (game) {
 					if (Db.players.get(game.userid).stage < 1) {
@@ -256,13 +280,24 @@ exports.locations = {
 			},
 			"6": {
 				"html": "",
-				"css": "",
+				"css": "background: url(https://i.imgur.com/asnGUWy.png) no-repeat center center; background-size: 100% 100%;",
+				"base": "",
+				"exits": {
+					"up": "mainisland|7",
+					"left": null,
+					"right": "mainisland|5",
+					"down": null,
+				},
+			},
+			"7": {
+				"html": "",
+				"css": "background: url(https://i.imgur.com/o6oulcb.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"exits": {
 					"up": null,
 					"left": null,
-					"right": "mainisland|5",
-					"down": null,
+					"right": null,
+					"down": "mainisland|6",
 				},
 			},
 		},

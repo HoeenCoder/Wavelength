@@ -7,6 +7,13 @@ const Autolinker = require('autolinker');
 let regdateCache = {};
 
 exports.WL = {
+	uncache: function () {
+		// Add more files to here as they are called by require() so they are reloaded by /hotpatch chat
+		const caches = ['./config/SGGame/locations.js'];
+		for (let cache of caches) {
+			Chat.uncache(cache);
+		}
+	},
 	nameColor: function (name, bold, userGroup) {
 		let userGroupSymbol = Users.usergroups[toId(name)] ? '<b><font color=#948A88>' + Users.usergroups[toId(name)].substr(0, 1) + '</font></b>' : "";
 		return (userGroup ? userGroupSymbol : "") + (bold ? "<b>" : "") + "<font color=" + WL.hashColor(name) + ">" + (Users(name) && Users(name).connected && Users.getExact(name) ? Chat.escapeHTML(Users.getExact(name).name) : Chat.escapeHTML(name)) + "</font>" + (bold ? "</b>" : "");
@@ -850,8 +857,8 @@ exports.WL = {
 			switch (action) {
 			case 'LOCATION':
 				// new location
-				location = line.split(' ')[1].split('|')[0];
-				zone = line.split(' ')[1].split('|')[1];
+				location = toId(line.split(' ')[1].split('|')[0]);
+				zone = toId(line.split(' ')[1].split('|')[1]);
 				type = null;
 				if (!WL.locationData[location] || !WL.locationData[location].zones[zone]) throw new Error(`Error while parsing encounter data: Unable to find location "${location}|${zone}".`, `config/SGgame/encounters.txt`, `${i + 1}:10`);
 				WL.locationData[location].zones[zone].wild = {};
@@ -868,10 +875,11 @@ exports.WL = {
 				if (!location || !zone) throw new Error(`Error while parsing encounter data: No location set`, `config/SGgame/encounters.txt`, i + 1);
 				if (!type) throw new Error(`Error while parsing encounter data: No encounter type set`, `config/SGgame/encounters.txt`, i + 1);
 				let obj = {}, data = line.split(',');
+				let species = null;
 				for (let j = 0; j < data.length; j++) {
 					switch (j) {
 					case 0:
-						let species = Dex.getTemplate(data[j]);
+						species = Dex.getTemplate(data[j]);
 						if (!species.exists) throw new Error(`Error while parsing encounter data: Unkown species: ${data[j]}`, `config/SGgame/encounters.txt`, `${i + 1}:1`);
 						obj.species = species.id;
 						continue;

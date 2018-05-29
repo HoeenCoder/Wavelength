@@ -2762,7 +2762,7 @@ exports.commands = {
 		if (!this.can('hotpatch')) return;
 
 		const lock = Monitor.hotpatchLock;
-		const hotpatches = ['chat', 'formats', 'loginserver', 'punishments', 'dnsbl', 'wavelength'];
+		const hotpatches = ['chat', 'formats', 'loginserver', 'punishments', 'dnsbl'];
 
 		try {
 			if (target === 'all') {
@@ -2789,6 +2789,7 @@ exports.commands = {
 				Chat.uncacheDir('./chat-plugins');
 				Chat.uncacheDir('./wavelength-plugins');
 				Chat.uncacheDir('./game-cards');
+				WL.uncache();
 				Chat.uncache('./WL');
 				global.WL = require('./WL').WL;
 				global.Console = require('./console');
