@@ -68,14 +68,13 @@ function lastActive(user) {
 }
 
 function showBadges(user) {
-	// Disabled
-	/*if (Db.userBadges.has(toId(user))) {
+	if (Db.userBadges.has(toId(user))) {
 		let badges = Db.userBadges.get(toId(user));
 		let css = `border:none; background:none; padding:0;`;
 		if (typeof badges !== 'undefined' && badges !== null) {
 			let output = `<td><div style="float: right; background: rgba(69, 76, 80, 0.4); text-align: center; border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset; margin: 0px 3px;">`;
 			output += ` <table style="${css}"> <tr>`;
-			for (let i = 0; i < badges.length; i++) {
+			for (let i in badges) {
 				if (i !== 0 && i % 4 === 0) output += `</tr> <tr>`;
 				output += `<td><button style="${css}" name="send" value="/badges info, ${badges[i]}">` +
 				`<img src="${Db.badgeData.get(badges[i])[1]}" height="16" width="16" alt="${badges[i]}" title="${badges[i]}"></button></td>`;
@@ -83,7 +82,7 @@ function showBadges(user) {
 			output += `</tr> </table></div></td>`;
 			return output;
 		}
-	}*/
+	}
 	return ``;
 }
 
