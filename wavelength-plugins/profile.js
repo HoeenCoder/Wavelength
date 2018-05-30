@@ -76,8 +76,8 @@ function showBadges(user) {
 			output += ` <table style="${css}"> <tr>`;
 			for (let i in badges) {
 				if (i !== 0 && i % 4 === 0) output += `</tr> <tr>`;
-				output += `<td><button style="${css}" name="send" value="/badges info, ${badges[i]}">` +
-				`<img src="${Db.badgeData.get(badges[i])[1]}" height="16" width="16" alt="${badges[i]}" title="${badges[i]}"></button></td>`;
+				output += `<td><button style="${css}" name="send" value="/badges info ${badges[i]}">` +
+				`<img src="${Db.badgeData.get(badges[i]).img}" height="16" width="16" alt="${badges[i]}" title="${badges[i]}"></button></td>`;
 			}
 			output += `</tr> </table></div></td>`;
 			return output;
