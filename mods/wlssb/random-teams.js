@@ -146,35 +146,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Jolly',
 			},
-			//Captains
-			'^Showdown Helper': {
-				species: 'Celebi',
-				ability: 'Filter',
-				item: 'Weakness Policy',
-				moves: ['Searing Shot', 'Quiver Dance', 'Giga Drain',
-				],
-				signatureMove: 'Psychotherapy',
-				evs: {
-					def: 120,
-					hp: 252,
-					spd: 136,
-				},
-				nature: 'Bold',
-			},
-			'^Finny': {
-				species: 'Totodile',
-				ability: 'clinicaldepression',
-				item: 'Eviolite',
-				moves: ['Dragon Dance', 'Waterfall', 'Aqua Jet',
-				],
-				signatureMove: 'Dying Inside',
-				evs: {
-					atk: 252,
-					spe: 252,
-					spd: 4,
-				},
-				nature: 'Adamant',
-			},
 			//Global Bots
 			'*Stabby the Krabby': {
 				species: 'Krabby',
@@ -301,7 +272,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-			'%Lycanium Z': {
+			'%SSBN-640': {
 				species: "Rockruff",
 				ability: "Super Shield",
 				item: "Lycantium Z",
@@ -317,20 +288,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 			},
 
 			// Global Voices:
-			'+wgc': {
-				species: 'Gengar',
-				ability: 'Levitate',
-				item: 'Spooky Plate',
-				gender: 'M',
-				moves: ['Moongeist Beam', 'Sludge Wave', 'Secret Sword'],
-				signatureMove: 'Haze Reborn',
-				evs: {
-					spe: 252,
-					spa: 252,
-					def: 4,
-				},
-				nature: 'Timid',
-			},
 			'+Mystifi': {
 				species: 'Clefairy',
 				ability: 'Analytic',

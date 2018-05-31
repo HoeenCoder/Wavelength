@@ -11,7 +11,7 @@ Signature Move: Scripting
 Notes: N/A.
 Rank: N/A.
 
-Lycanium Z
+SSBN-640
 (Rockruff)
 @ Lycantium Z
     - Allowed to use Going Down
@@ -26,19 +26,6 @@ Innate Ability: Dank Memer
 Moves: Accelerock, Earthquake, Swords Dance
 Signature Move: ALL Delete
 	- ??? type, Physical, 5 PP, 100 BP, 20% chance to encore. 0.5% chance to inflict instant death.
-Notes: IDK
-Rank: N/A.
-
-Showdown Helper
-(Celebi)
-Grass/Fairy
-@ Weakness Policy
-EVs: 252 Atk / 4 Def / 252 Spe
-Jolly Nature
-Ability: Filter
-Moves: Quiver Dance, Searing Shot, Giga Drain
-Signature Move: Psychotherapy
-    - 100 BP. Uses defense in damage calculation. 20PP, Heals 10% damage.
 Notes: IDK
 Rank: N/A.
 
@@ -284,20 +271,6 @@ Signature Move: Kitty Crush
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: N/A
 
-wgc
-(Gengar)
-@ Spooky Plate
-EVs: 252 SpA / 4 Def / 252 Spe
-Timid Nature
-Ability: Levitate
-Innate Ability: Spooky Setup
-	- Boosts Special attack by 1 stage if it faints an opponent
-Moves: Moongeist Beam, Sludge Wave and Sacred Sword.
-Signature Move: Haze Reborn
-	- Ice Type, 20 PP, Inverts Targets stat changes. 40% chance to freeze.
-Notes: N/A.
-Rank: N/A.
-
 Tidal Wave Bot
 (Magikarp, Steel/Electric Typing, Shiny)
 @ Guardian's Amulet
@@ -361,20 +334,6 @@ Ability: Scraroom
 Moves: Giga Impact, Rest, Curse
 Signature Move: Snorlax Slam
     -120BP, 95% Accuracy, and can be used while sleeping.
-Notes: New
-Rank: N/A
-
-Finny 
-(Totodile) 
-@ Eviolite
-Base Stats: 65/80/80/59/63/58
-EVs: 252 Atk / 4 SpD / 252 Spe  
-Adamant Nature  
-Ability: Clinical Depression  
-    - Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.
-Moves: Waterfall, Aqua Jet, Dragon Dance  
-Signature Move: Dying Inside
-    -Ice/Ghost Type. 100 BP, 95% accuracy, 10PP
 Notes: New
 Rank: N/A
 

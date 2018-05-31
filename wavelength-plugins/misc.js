@@ -184,7 +184,7 @@ exports.commands = {
 			"<u><b>Contributors:</b></u><br />" +
 			"- " + WL.nameColor('Ashley the Pikachu', true) + " (Spriting, Digimon Project)<br />" +
 			"- " + WL.nameColor('Insist', true) + " (Development)<br />" +
-			"- " + WL.nameColor('Lycanium Z', true) + " (Development)<br />" +
+			"- " + WL.nameColor('SSBN-640', true) + " (Development)<br />" +
 			"- " + WL.nameColor('wgc', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
@@ -535,7 +535,7 @@ exports.commands = {
 		if (toId(target) === 'rittz') return this.sendReplyBox(getMonData('therittz'));
 		if (['stk', 'stabby'].includes(toId(target))) return this.sendReplyBox(getMonData('stabbythekrabby'));
 		if (['twb', 'tidal'].includes(toId(target))) return this.sendReplyBox(getMonData('tidalwavebot'));
-		if (['lyc', 'lycan', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('lycaniumz'));
+		if (['ssbn', 'lycaniumz', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('ssbn640'));
 		if (!targetData) return this.errorReply("The staffmon '" + toId(target) + "' could not be found.");
 		return this.sendReplyBox(targetData);
 	},

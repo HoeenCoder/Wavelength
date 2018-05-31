@@ -513,7 +513,7 @@ let Formats = [
 	{
 		name: "[Gen 7] Stacked",
 		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by Worse than Death.",
+			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by SSBN-640.",
 		],
 
 		mod: 'stacked',
@@ -522,7 +522,7 @@ let Formats = [
 	{
 		name: "[Gen 7] Weather Wars",
 		desc: [
-			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by Worse than Death.",
+			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by SSBN-640.",
 		],
 
 		mod: 'oldweather',
@@ -530,7 +530,7 @@ let Formats = [
 	},
 	{
 		name: "[Gen 7] LU",
-		desc: ["The new tiering format that nobody wanted! This format is much more chaotic compared to OU and will be tiered differently. Ran by Worse than Death. "],
+		desc: ["The new tiering format that nobody wanted! This format is much more chaotic compared to OU and will be tiered differently. Ran by SSBN-640."],
 		column: 2,
 
 		mod: 'lu',
