@@ -75,10 +75,10 @@ exports.commands = {
 
 		toggle: 'toggleNotifs',
 		togglenotifs: function (target, room, user) {
-			if (!Db.stopFriendNotifs.get(user.userid)) {
+			if (!Db.stopFriendNotifs.has(user.userid)) {
 				Db.stopFriendNotifs.remove(user.userid);
 				return this.sendReply('You have now disabled friend notifications');
-			} else if (Db.stopFriendNotifs.get(user.userid)) {
+			} else if (Db.stopFriendNotifs.has(user.userid)) {
 				Db.stopFriendNotifs.set(user.userid, true);
 				return this.sendReply('You have now disabled friend notifications');
 			}
