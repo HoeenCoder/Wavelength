@@ -12,20 +12,15 @@ Notes: N/A.
 Rank: N/A.
 
 SSBN-640
-(Rockruff)
-@ Lycantium Z
-    - Allowed to use Going Down
-        -Going Down: Opponent's team cannot use attacking moves for 3 turns
-EVs: 252 Atk / 4 Def / 252 Spe
-Jolly Nature
-Ability: Super Shield
-    - All moves are 4x resistant against this pokemon
-Innate Ability: Dank Memer
-    - Uses Memes on Switch in
-        - Memes: Distracts the opponent
-Moves: Accelerock, Earthquake, Swords Dance
-Signature Move: ALL Delete
-	- ??? type, Physical, 5 PP, 100 BP, 20% chance to encore. 0.5% chance to inflict instant death.
+(Meowstic)
+@ Leftovers
+EVs: 252 HP / 4 Def / 252 SpD
+Sassy Nature
+Ability: Twisted Virtues
+    - All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type.
+Moves: Cotton Guard, Rest, Calm Mind
+Signature Move: Foolish Desrtuction
+	- Calls a random move 3 times.
 Notes: IDK
 Rank: N/A.
 
@@ -88,7 +83,7 @@ Ability: Ready to Stab
     - On entry, +1 Attack and Speed.
 Moves: Crabhammer, Swords Dance, Knock Off
 Signature Move: Stab Stab
-    -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch.
+    -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch, and +1 Priority.
 Notes: Stabby Stabby!
 Rank: N/A.
 
@@ -113,7 +108,7 @@ Naughty Nature
 Ability: Serene Grace
 Moves: Roost, Coil, Rock Slide, Glare and Body Slam.
 Signature Move: Getting Trolled
-	- Normal Type, Physical, 60 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +1 Priority.
+	- Normal Type, Physical, 60 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +2 Priority.
 Notes: N/A.
 Rank: N/A.
 
@@ -126,7 +121,7 @@ Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
 Moves: Thunderbolt, Surf and HP Ice.
 Signature Move: Rocket Punch
-	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +0.1 Priority.
+	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +1 Priority.
 Notes: Fast Special Sweeper.
 Rank: N/A.
 
@@ -267,7 +262,7 @@ Ability: Feline Fury
     - Scrappy & +2 Attack on switch in.
 Moves: Topsy-Turvy, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    - Hits all types neutral, Normal Type, 70 BP, 95% accuracy, +1 Priority. 60% chance to boost def and spd by 1.
+    - Hits all types neutral, Normal Type, 70 BP, 95% accuracy, +2 Priority. 60% chance to boost def and spd by 1.
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: N/A
 
@@ -307,7 +302,7 @@ Ability:  Muscles
     - +1 defense, +1 Special defense, -3 attack, +2 special attack on switch in + simple.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
-    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +1 Priority.
+    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +2 Priority.
 Notes: New
 Rank: N/A
 

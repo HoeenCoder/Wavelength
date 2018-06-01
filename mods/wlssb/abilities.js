@@ -332,13 +332,54 @@ exports.BattleAbilities = {
 		},
 	},
 	//SSBN-640
-	"supershield": {
-		onEffectiveness: function () {
-			return -2;
+	"twistedvirtues": {
+		onModifyPriority: function (priority, pokemon, target, move) {
+			if (move && move.category === 'Status') {
+				return priority + 1;
+			}
 		},
-		desc: "All moves are 4x resistant against this pokemon.",
-		id: "supershield",
-		name: "Super Shield",
+		onStart: function (pokemon) {
+			this.add('-activate', pokemon, 'ability: Twisted Virtues');
+			this.add('-start', pokemon, 'typeadd', 'Poison');
+			this.addPseudoWeather('twistedvirtues');
+			this.add('message', 'Darkness has became light!');
+			for (let s in this.sides) {
+				const thisSide = this.sides[s];
+				for (let p in thisSide.active) {
+					const pokemon = thisSide.active[p];
+					if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+						pokemon.setType('Fairy');
+						this.add('-start', pokemon, 'typechange', 'Fairy');
+					}
+				}
+			}
+		},
+		effect: {
+			onUpdate: function (pokemon) {
+				if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+					pokemon.setType('Fairy');
+					this.add('-start', pokemon, 'typechange', 'Fairy');
+				}
+			},
+			onSwitchIn: function (pokemon) {
+				if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+					pokemon.setType('Fairy');
+					this.add('-start', pokemon, 'typechange', 'Fairy');
+				}
+			},
+			onModifyMove: function (move, pokemon) {
+				if (move.type === 'Dark' && !(move.isZ && move.category !== 'Status')) {
+					move.type = 'Fairy';
+				}
+			},
+		},
+		onEnd: function (pokemon) {
+			this.removePseudoWeather('twistedvirtues');
+			this.add('message', 'The light disappeared!');
+		},
+		desc: "All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type.",
+		id: "twsitedvirtues",
+		name: "Twisted Virtues",
 	},
 	//SnorlaxTheRain
 	"scraroom": {

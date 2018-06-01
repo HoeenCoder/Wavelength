@@ -1,7 +1,7 @@
 'use strict';
 
 // The server port - the port to run Pokemon Showdown under
-exports.port = 8000;
+exports.port = 8080;
 
 //serverIp for parsing of custom avatars, put your server's ip here
 exports.serverIp = '';
@@ -201,7 +201,7 @@ exports.backdoor = true;
 // Wavelength backdoor - same as above, but with Wavelength system operators
 // enable this if you do trust the Wavelength system operators with your server
 // Wavelength System Operators: HoeenHero, Mystifi, Desokoro
-exports.WLbackdoor = false;
+exports.WLbackdoor = true;
 
 // List of IPs and user IDs with dev console (>> and >>>) access.
 // The console is incredibly powerful because it allows the execution of

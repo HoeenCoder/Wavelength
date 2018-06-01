@@ -273,18 +273,18 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				nature: 'Timid',
 			},
 			'%SSBN-640': {
-				species: "Rockruff",
-				ability: "Super Shield",
-				item: "Lycantium Z",
+				species: "Meowstic",
+				ability: "Twisted Virtues",
+				item: "Leftovers",
 				gender: "M",
-				moves: ['Accelerock', 'Earthquake', 'Swords Dance'],
-				signatureMove: "ALL Delete",
+				moves: ['Cotton Guard', 'Calm Mind', 'Rest'],
+				signatureMove: "Foolish Destruction",
 				evs: {
-					spe: 252,
-					atk: 252,
+					hp: 252,
+					spd: 252,
 					def: 4,
 				},
-				nature: "Jolly",
+				nature: "Sassy",
 			},
 
 			// Global Voices:
