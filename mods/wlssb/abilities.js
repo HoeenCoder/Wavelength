@@ -340,7 +340,9 @@ exports.BattleAbilities = {
 		},
 		onStart: function (pokemon) {
 			this.add('-activate', pokemon, 'ability: Twisted Virtues');
-			this.add('-start', pokemon, 'typeadd', 'Poison');
+			if (!pokemon.hasType('Poison') && pokemon.addType('Poison')) {
+				this.add('-start', pokemon, 'typeadd', 'Poison', '[from] ability: Twisted Virtues');
+			}
 			this.addPseudoWeather('twistedvirtues');
 			this.add('message', 'Darkness has became light!');
 			for (let s in this.sides) {
@@ -367,8 +369,9 @@ exports.BattleAbilities = {
 					this.add('-start', pokemon, 'typechange', 'Fairy');
 				}
 			},
-			onModifyMove: function (move, pokemon) {
-				if (move.type === 'Dark' && !(move.isZ && move.category !== 'Status')) {
+			onModifyMovePriority: -99,
+			onModifyMove: function (move) {
+				if (move.type === 'Dark') {
 					move.type = 'Fairy';
 				}
 			},
@@ -377,7 +380,7 @@ exports.BattleAbilities = {
 			this.removePseudoWeather('twistedvirtues');
 			this.add('message', 'The light disappeared!');
 		},
-		desc: "All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type.",
+		desc: "+Poison Type; All status moves gain +1 priority; Dark pokemon and moves turn Fairy type.",
 		id: "twsitedvirtues",
 		name: "Twisted Virtues",
 	},

@@ -161,13 +161,13 @@ exports.BattleStatuses = {
 	ssbn640: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '%SSBN-640', 'Hai');
+			this.add('c', '%SSBN-640', 'hey., im just here to shitpost or whatever.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%SSBN-640', 'Brb dming swagn for more dank memes');
+			this.add('c', '%SSBN-640', 'brb gotta do stuff for digimon.');
 		},
 		onFaint: function (pokemon, target) {
-			this.add('c', '%SSBN-640', 'lol im dead. Its ok, get over it.');
+			this.add('c', '%SSBN-640', 'lol how did i die?');
 		},
 	},
 	celestialtater: {

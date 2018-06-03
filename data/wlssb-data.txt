@@ -17,7 +17,7 @@ SSBN-640
 EVs: 252 HP / 4 Def / 252 SpD
 Sassy Nature
 Ability: Twisted Virtues
-    - All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type.
+    - All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type. User gains the poison type.
 Moves: Cotton Guard, Rest, Calm Mind
 Signature Move: Foolish Desrtuction
 	- Calls a random move 3 times.
