@@ -14,7 +14,7 @@ WL.onlineFriends = onlineFriends;
 function friendLogin(user) {
 	if (!user.named) return;
 	Users.users.forEach(people => {
-		if (Db.friends.get(people.userid, []).indexOf(user.userid) && !Db.stopFriendNotifs.get(people.userid)) people.send(`|pm| WL Friend Manager|~|${user.name} has just logged in!`);
+		if (Db.friends.get(people.userid, []).indexOf(user.userid) !== -1 && !Db.stopFriendNotifs.get(people.userid)) people.send(`|pm| WL Friend Manager|~|${user.name} has just logged in!`);
 	});
 }
 
