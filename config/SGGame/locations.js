@@ -15,13 +15,20 @@
  *
  */
 
+// Common buildings throught the game
+
+// Heals your pokemon, has a PC, where trading takes place
 function pokemonCenter(game, id, action) {
 	let player = Db.players.get(game.userid);
 	let out = '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h2>Pokemon Center</h2>Pardon the empty screen while we work on SGgame.<br/>Use the buttons bellow to interact.';
 	let options = {heal: '/sggame building ' + id + ', heal', pc: '/sggame pc'};
 	switch (action) {
 	case 'enter':
-		if (player.party.length < 1) return false;
+		if (player.party.length < 1) {
+			game.queue.unshift(`text|You can't enter a pokemon center without pokemon!`);
+			game.update(...game.next());
+			return false;
+		}
 		game.curPane = id;
 		break;
 	case 'exit':
@@ -44,6 +51,7 @@ function pokemonCenter(game, id, action) {
 	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('pokemoncenter', options));
 }
 
+// Used to travel to different islands
 function marina(game, id, action, area, confirm) {
 	let player = Db.players.get(game.userid);
 	let out = `<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h3>Marina - Travel to where?</h3></center>`;
@@ -61,7 +69,11 @@ function marina(game, id, action, area, confirm) {
 	let options = {travel: ''};
 	switch (action) {
 	case 'enter':
-		if (player.stage === 0) return false;
+		if (player.stage === 0) {
+			game.queue.unshift(`text|The marina isn't open right now.<br>Try coming back later.`);
+			game.update(...game.next());
+			return false;
+		}
 		game.curPane = id;
 		break;
 	case 'exit':
@@ -90,6 +102,7 @@ exports.locations = {
 		"zones": {
 			"0": {
 				"subTitle": "",
+				"id": "welcome|0",
 				"html": "<center><br/><br/><br/><br/><img src=\"http://i.imgur.com/tfYS6TN.png\"/></center>",
 				"css": "",
 				"base": "",
@@ -111,6 +124,7 @@ exports.locations = {
 		"zones": {
 			"0": {
 				"subTitle": "",
+				"id": "mainisland|0",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/MxvBu5l.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -130,6 +144,7 @@ exports.locations = {
 			},
 			"1": {
 				"subTitle": "",
+				"id": "mainisland|1",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/V89bwNV.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -142,6 +157,7 @@ exports.locations = {
 			},
 			"2": {
 				"subTitle": "",
+				"id": "mainisland|2",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/qkUTywK.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -192,6 +208,7 @@ exports.locations = {
 			},
 			"3": {
 				"subTitle": "Marina",
+				"id": "mainisland|3",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/BLBDRGJ.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -211,6 +228,7 @@ exports.locations = {
 			},
 			"4": {
 				"subTitle": "Warehouses",
+				"id": "mainisland|4",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/8ik75KF.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -260,6 +278,8 @@ exports.locations = {
 				},
 			},
 			"5": {
+				"subTitle": "",
+				"id": "mainisland|5",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/92EDoGs.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -279,6 +299,8 @@ exports.locations = {
 				},
 			},
 			"6": {
+				"subTitle": "",
+				"id": "mainisland|6",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/asnGUWy.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
@@ -290,9 +312,14 @@ exports.locations = {
 				},
 			},
 			"7": {
+				"subTitle": "",
+				"id": "mainisland|7",
 				"html": "",
 				"css": "background: url(https://i.imgur.com/o6oulcb.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
+				"onFirstEnter": function (game) {
+					game.queue.push('text|<b>?</b>: Looking for a good place to train and battle?', 'text|<b>?</b>: Well your in the right place!<br>Click the Battle button to challenge a trainer.');
+				},
 				"exits": {
 					"up": null,
 					"left": null,

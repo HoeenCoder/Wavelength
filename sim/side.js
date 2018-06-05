@@ -7,6 +7,7 @@
 'use strict';
 
 const Pokemon = require('./pokemon');
+const WL = require('./WL').WL;
 
 /**
  * An object representing a single action that can be chosen.

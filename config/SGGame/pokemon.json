@@ -7,7 +7,7 @@
 			"trigger": null,
 			"evolvesTo": null
 		},
-		"baseExp": 0,
+		"baseExp": 1,
 		"evDrops": {
 			"hp": 0,
 			"atk": 0,

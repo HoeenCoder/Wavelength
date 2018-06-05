@@ -21,6 +21,8 @@
  * @property {boolean} [virtual]
  */
 
+const WL = require('./WL').WL;
+
 class Pokemon {
 	/**
 	 * @param {string | AnyObject} set

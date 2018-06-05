@@ -403,6 +403,7 @@ class Battle {
 
 		// SGgame queue
 		this.gameQueue = [];
+		this.trainerId = options.trainerId || null;
 
 		/**
 		 * p1 and p2 may be null in unrated games, but playerNames retains
@@ -816,6 +817,11 @@ class Battle {
 		if (Dex.getFormat(this.format).useSGgame) {
 			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
 			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
+			const player = Db.players.get(notCom.userid);
+			if (this.trainerId && !player.battled.includes(this.trainerId) && notCom.userid === winnerid) {
+				player.battled.push(this.trainerId);
+				Db.players.set(notCom.userid, player);
+			}
 		}
 		const parentGame = this.room.parent && this.room.parent.game;
 		if (parentGame && parentGame.onBattleWin) {

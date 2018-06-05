@@ -555,13 +555,14 @@ class Ladder extends LadderStore {
 			formatTable.delete(user.userid);
 			if (!Users('sgserver')) WL.makeCOM();
 			let trainerTeam = Users('sgserver').trainerTeams[user.userid];
-			if (!trainerTeam) return;
+			if (!trainerTeam || !trainerTeam.team) return;
 			Rooms.createBattle(formatid, {
 				p1: Users('sgserver'),
-				p1team: trainerTeam,
+				p1team: trainerTeam.team,
 				p2: user,
 				p2team: newSearch.team,
 				rated: false,
+				trainerId: trainerTeam.id || null,
 			});
 			return;
 		}

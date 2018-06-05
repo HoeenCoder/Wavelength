@@ -299,23 +299,47 @@ exports.WL = {
 		return data;
 		//return "|lotad|||astonish,growl,absorb|Hasty|||30,21,21,28,29,19||6|0";
 	},
-	makeComTeam: function (average, count) {
+	makeComTeam: function (location, count) {
 		// TODO random trainers / replace this
-		if (!average || isNaN(parseInt(average))) average = 10;
-		if (typeof average !== 'number') average = parseInt(average);
-		if (!count || isNaN(parseInt(count))) count = 1;
-		if (typeof count !== 'number') count = parseInt(count);
-		let numPokes = Math.ceil(Math.random() * 6) || 2;
-		average += ((count - numPokes) * 3);
-		let team = '';
+		if (!location.trainers || location.trainers.type !== 'random') throw new Error(`Trying to generate a random team for a location that does not support random teams: ${location.id}`);
+		let trainer = location.trainers.trainers.slice()[Math.floor(Math.random() * location.trainers.trainers.length)];
+		if (!trainer.team.startsWith('random')) return trainer;
+		let details = trainer.team.slice().split(',');
+		trainer.team = '';
+		let numPokes = parseInt(details[1]);
+		if (!numPokes || isNaN(numPokes)) numPokes = Math.ceil(Math.random() * 6);
+		let teamAverage = parseInt(details[2]);
+		if (!teamAverage || isNaN(teamAverage)) teamAverage = 10 + ((count - numPokes) * 3);
+		const isNot = details[3][0] === '!';
+		const types = isNot ? Object.keys(Dex.data.TypeChart).map(toId).filter(type => !details[3].substring(1).split('|').includes(type)) : details[3].split('|');
+		const allowLegends = !!details[4];
+		const validPokemon = Object.keys(Dex.data.Pokedex).slice().filter(species => {
+			let template = Dex.getTemplate(species);
+			if (['illegal', 'cap', 'caplc', 'capnfe'].includes(toId(template.tier))) return false;
+			if (template.forme) return false; // other formes supported by the pokemon generator
+			if (types.length) {
+				let hasOne = false;
+				for (let i = 0; i < types.length; i++) {
+					if (template.types.slice().map(toId).includes(types[i])) {
+						hasOne = true;
+						break;
+					}
+				}
+				if (!hasOne) return false;
+			}
+			if (template.evoLevel > teamAverage) return false;
+			if ((template.eggGroups[0] === 'Undiscovered' || template.species === 'Manaphy') && !template.prevo && !template.nfe && template.species !== 'Unown' && template.baseSpecies !== 'Pikachu' && !allowLegends) return false;
+			return true;
+		});
 		for (numPokes; numPokes > 0; numPokes--) {
-			let species = null;
-			do {
-				species = Object.keys(Dex.data.Pokedex)[Math.floor(Math.random() * Object.keys(Dex.data.Pokedex).length)];
-			} while (!this.gameData[toId(species)]);
-			team += this.makeWildPokemon(null, null, null, {min: (average - 5), max: (average + 5), species: species}) + (numPokes === 1 ? '' : ']');
+			let level = Math.round(Math.random() * ((teamAverage + 2) - (teamAverage - 2))) + (teamAverage - 2);
+			if (level < 0) level = 1;
+			if (level > 100) level = 100;
+			let options = {allowOtherFormes: true, level: level};
+			options.species = validPokemon[Math.floor(Math.random() * validPokemon.length)];
+			trainer.team += `${(trainer.team ? ']' : '')}${WL.makeWildPokemon(null, null, null, options)}`;
 		}
-		return team;
+		return trainer;
 	},
 	teamAverage: function (team) {
 		if (typeof team === "string") team = Dex.fastUnpackTeam(team);
@@ -580,262 +604,6 @@ exports.WL = {
 		}
 		return moves;
 	},
-	// Ripped from client, modified for SGgame
-	getPokemonIcon: function (pokemon) {
-		let base = pokemon;
-		pokemon = Dex.getTemplate(pokemon);
-		let resourcePrefix = "//play.pokemonshowdown.com/";
-		let num = 0;
-		if (base === 'pokeball') {
-			return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-pokeball-sheet.png) no-repeat scroll -0px 4px';
-		} else if (base === 'pokeball-statused') {
-			return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-pokeball-sheet.png) no-repeat scroll -40px 4px';
-		} else if (base === 'pokeball-none') {
-			return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-pokeball-sheet.png) no-repeat scroll -80px 4px';
-		}
-		let id = toId(base);
-		//if (pokemon && pokemon.species) id = toId(pokemon.species);
-		if (pokemon && pokemon.volatiles && pokemon.volatiles.formechange && !pokemon.volatiles.transform) id = toId(pokemon.volatiles.formechange[2]);
-		if (pokemon && pokemon.num !== undefined) num = pokemon.num;
-		if (num < 0) num = 0;
-		if (num > 807) num = 0;
-		let altNums = {
-			egg: 816 + 1,
-			pikachubelle: 816 + 2,
-			pikachulibre: 816 + 3,
-			pikachuphd: 816 + 4,
-			pikachupopstar: 816 + 5,
-			pikachurockstar: 816 + 6,
-			pikachucosplay: 816 + 7,
-			// unown gap
-			castformrainy: 816 + 35,
-			castformsnowy: 816 + 36,
-			castformsunny: 816 + 37,
-			deoxysattack: 816 + 38,
-			deoxysdefense: 816 + 39,
-			deoxysspeed: 816 + 40,
-			burmysandy: 816 + 41,
-			burmytrash: 816 + 42,
-			wormadamsandy: 816 + 43,
-			wormadamtrash: 816 + 44,
-			cherrimsunshine: 816 + 45,
-			shelloseast: 816 + 46,
-			gastrodoneast: 816 + 47,
-			rotomfan: 816 + 48,
-			rotomfrost: 816 + 49,
-			rotomheat: 816 + 50,
-			rotommow: 816 + 51,
-			rotomwash: 816 + 52,
-			giratinaorigin: 816 + 53,
-			shayminsky: 816 + 54,
-			unfezantf: 816 + 55,
-			basculinbluestriped: 816 + 56,
-			darmanitanzen: 816 + 57,
-			deerlingautumn: 816 + 58,
-			deerlingsummer: 816 + 59,
-			deerlingwinter: 816 + 60,
-			sawsbuckautumn: 816 + 61,
-			sawsbucksummer: 816 + 62,
-			sawsbuckwinter: 816 + 63,
-			frillishf: 816 + 64,
-			jellicentf: 816 + 65,
-			tornadustherian: 816 + 66,
-			thundurustherian: 816 + 67,
-			landorustherian: 816 + 68,
-			kyuremblack: 816 + 69,
-			kyuremwhite: 816 + 70,
-			keldeoresolute: 816 + 71,
-			meloettapirouette: 816 + 72,
-			vivillonarchipelago: 816 + 73,
-			vivilloncontinental: 816 + 74,
-			vivillonelegant: 816 + 75,
-			vivillonfancy: 816 + 76,
-			vivillongarden: 816 + 77,
-			vivillonhighplains: 816 + 78,
-			vivillonicysnow: 816 + 79,
-			vivillonjungle: 816 + 80,
-			vivillonmarine: 816 + 81,
-			vivillonmodern: 816 + 82,
-			vivillonmonsoon: 816 + 83,
-			vivillonocean: 816 + 84,
-			vivillonpokeball: 816 + 85,
-			vivillonpolar: 816 + 86,
-			vivillonriver: 816 + 87,
-			vivillonsandstorm: 816 + 88,
-			vivillonsavanna: 816 + 89,
-			vivillonsun: 816 + 90,
-			vivillontundra: 816 + 91,
-			pyroarf: 816 + 92,
-			flabebeblue: 816 + 93,
-			flabebeorange: 816 + 94,
-			flabebewhite: 816 + 95,
-			flabebeyellow: 816 + 96,
-			floetteblue: 816 + 97,
-			floetteeternal: 816 + 98,
-			floetteorange: 816 + 99,
-			floettewhite: 816 + 100,
-			floetteyellow: 816 + 101,
-			florgesblue: 816 + 102,
-			florgesorange: 816 + 103,
-			florgeswhite: 816 + 104,
-			florgesyellow: 816 + 105,
-			// furfrou gap
-			meowsticf: 816 + 115,
-			aegislashblade: 816 + 116,
-			hoopaunbound: 816 + 118,
-			rattataalola: 816 + 119,
-			raticatealola: 816 + 120,
-			raichualola: 816 + 121,
-			sandshrewalola: 816 + 122,
-			sandslashalola: 816 + 123,
-			vulpixalola: 816 + 124,
-			ninetalesalola: 816 + 125,
-			diglettalola: 816 + 126,
-			dugtrioalola: 816 + 127,
-			meowthalola: 816 + 128,
-			persianalola: 816 + 129,
-			geodudealola: 816 + 130,
-			graveleralola: 816 + 131,
-			golemalola: 816 + 132,
-			grimeralola: 816 + 133,
-			mukalola: 816 + 134,
-			exeggutoralola: 816 + 135,
-			marowakalola: 816 + 136,
-			greninjaash: 816 + 137,
-			zygarde10: 816 + 138,
-			zygardecomplete: 816 + 139,
-			oricoriopompom: 816 + 140,
-			oricoriopau: 816 + 141,
-			oricoriosensu: 816 + 142,
-			lycanrocmidnight: 816 + 143,
-			wishiwashischool: 816 + 144,
-			miniormeteor: 816 + 145,
-			miniororange: 816 + 146,
-			minioryellow: 816 + 147,
-			miniorgreen: 816 + 148,
-			miniorblue: 816 + 149,
-			miniorviolet: 816 + 150,
-			miniorindigo: 816 + 151,
-			magearnaoriginal: 816 + 152,
-			pikachuoriginal: 816 + 153,
-			pikachuhoenn: 816 + 154,
-			pikachusinnoh: 816 + 155,
-			pikachuunova: 816 + 156,
-			pikachukalos: 816 + 157,
-			pikachualola: 816 + 158,
-			pikachupartner: 816 + 159,
-			lycanrocdusk: 816 + 160,
-			necrozmaduskmane: 816 + 161,
-			necrozmadawnwings: 816 + 162,
-			necrozmaultra: 816 + 163,
-
-			venusaurmega: 984 + 0,
-			charizardmegax: 984 + 1,
-			charizardmegay: 984 + 2,
-			blastoisemega: 984 + 3,
-			beedrillmega: 984 + 4,
-			pidgeotmega: 984 + 5,
-			alakazammega: 984 + 6,
-			slowbromega: 984 + 7,
-			gengarmega: 984 + 8,
-			kangaskhanmega: 984 + 9,
-			pinsirmega: 984 + 10,
-			gyaradosmega: 984 + 11,
-			aerodactylmega: 984 + 12,
-			mewtwomegax: 984 + 13,
-			mewtwomegay: 984 + 14,
-			ampharosmega: 984 + 15,
-			steelixmega: 984 + 16,
-			scizormega: 984 + 17,
-			heracrossmega: 984 + 18,
-			houndoommega: 984 + 19,
-			tyranitarmega: 984 + 20,
-			sceptilemega: 984 + 21,
-			blazikenmega: 984 + 22,
-			swampertmega: 984 + 23,
-			gardevoirmega: 984 + 24,
-			sableyemega: 984 + 25,
-			mawilemega: 984 + 26,
-			aggronmega: 984 + 27,
-			medichammega: 984 + 28,
-			manectricmega: 984 + 29,
-			sharpedomega: 984 + 30,
-			cameruptmega: 984 + 31,
-			altariamega: 984 + 32,
-			banettemega: 984 + 33,
-			absolmega: 984 + 34,
-			glaliemega: 984 + 35,
-			salamencemega: 984 + 36,
-			metagrossmega: 984 + 37,
-			latiasmega: 984 + 38,
-			latiosmega: 984 + 39,
-			kyogreprimal: 984 + 40,
-			groudonprimal: 984 + 41,
-			rayquazamega: 984 + 42,
-			lopunnymega: 984 + 43,
-			garchompmega: 984 + 44,
-			lucariomega: 984 + 45,
-			abomasnowmega: 984 + 46,
-			gallademega: 984 + 47,
-			audinomega: 984 + 48,
-			dianciemega: 984 + 49,
-
-			syclant: 1152 + 0,
-			revenankh: 1152 + 1,
-			pyroak: 1152 + 2,
-			fidgit: 1152 + 3,
-			stratagem: 1152 + 4,
-			arghonaut: 1152 + 5,
-			kitsunoh: 1152 + 6,
-			cyclohm: 1152 + 7,
-			colossoil: 1152 + 8,
-			krilowatt: 1152 + 9,
-			voodoom: 1152 + 10,
-			tomohawk: 1152 + 11,
-			necturna: 1152 + 12,
-			mollux: 1152 + 13,
-			aurumoth: 1152 + 14,
-			malaconda: 1152 + 15,
-			cawmodore: 1152 + 16,
-			volkraken: 1152 + 17,
-			plasmanta: 1152 + 18,
-			naviathan: 1152 + 19,
-			crucibelle: 1152 + 20,
-			crucibellemega: 1152 + 21,
-			kerfluffle: 1152 + 22,
-			pajantom: 1152 + 23,
-
-			syclar: 1176 + 0,
-			embirch: 1176 + 1,
-			flarelm: 1176 + 2,
-			breezi: 1176 + 3,
-			scratchet: 1176 + 4,
-			necturine: 1176 + 5,
-			cupra: 1176 + 6,
-			argalis: 1176 + 7,
-			brattler: 1176 + 8,
-			cawdet: 1176 + 9,
-			volkritter: 1176 + 10,
-			snugglow: 1176 + 11,
-			floatoy: 1176 + 12,
-			caimanoe: 1176 + 13,
-			pluffle: 1176 + 14,
-		};
-
-		if (altNums[id]) {
-			num = altNums[id];
-		}
-
-		if (pokemon && pokemon.gender === 'F') {
-			if (id === 'unfezant' || id === 'frillish' || id === 'jellicent' || id === 'meowstic' || id === 'pyroar') {
-				num = altNums[id + 'f'];
-			}
-		}
-		let top = Math.floor(num / 12) * 30;
-		let left = (num % 12) * 40;
-		let fainted = (pokemon && pokemon.fainted ? ';opacity:.4' : '');
-		return 'background:transparent url(' + resourcePrefix + 'sprites/smicons-sheet.png?a1) no-repeat scroll -' + left + 'px -' + top + 'px' + fainted;
-	},
 	loadPokemon: function () {
 		let raw = FS('./config/SGGame/encounters.txt').readIfExistsSync().split('\n');
 		let ignoring = false, location = null, zone = null, type = null;
@@ -907,6 +675,131 @@ exports.WL = {
 			}
 		}
 		this.pokemonLoaded = true;
+	},
+	loadTrainers: function () {
+		let raw = FS('./config/SGGame/trainers.txt').readIfExistsSync().split('\n');
+		let ignoring = false, location = null, zone = null, type = null, allIds = [];
+		for (let i = 0; i < raw.length; i++) {
+			let line = raw[i];
+			switch (line.substring(0, 2)) {
+			case '//':
+				continue;
+			case '/*':
+				ignoring = true;
+				continue;
+			case '*/':
+				ignoring = false;
+				continue;
+			}
+			if (ignoring || !toId(line)) continue;
+			let action = line.split(' ')[0];
+			switch (action) {
+			case 'LOCATION':
+				// new location
+				location = toId(line.split(' ')[1].split('|')[0]);
+				zone = toId(line.split(' ')[1].split('|')[1]);
+				type = null;
+				if (!WL.locationData[location] || !WL.locationData[location].zones[zone]) throw new Error(`Error while parsing trainer data: Unable to find location "${location}|${zone}".`, `config/SGgame/trainers.txt`);
+				WL.locationData[location].zones[zone].trainers = {type: null, trainers: []};
+				continue;
+			case 'TYPE':
+				// set type
+				if (!location || !zone) throw new Error(`Error while parsing trainer data: No location set`, `config/SGgame/trainers.txt`);
+				if (!['preset', 'random'].includes(toId(line.split(' ')[1]))) throw new Error(`Error while parsing trainer data: Invalid type: "${type}"`, `config/SGgame/trainers.txt`);
+				type = toId(line.split(' ')[1]);
+				WL.locationData[location].zones[zone].trainers.type = type;
+				continue;
+			default:
+				// data
+				if (!location || !zone) throw new Error(`Error while parsing trainer data: No location set`, `config/SGgame/trainer.txt`);
+				if (!type) throw new Error(`Error while parsing trainer data: No trainer battle type set`, `config/SGgame/trainers.txt`);
+				let obj = {}, data = line.split(',');
+				for (let j = 0; j < data.length; j++) {
+					// Trainer info
+					switch (j) {
+					case 0:
+						// Trainer Prefix
+						if (toId(data[j]) === 'random' && type !== 'random') throw new Error(`Error while parsing trainer data: Trying to use a random trainer prefix with type PRESET`, `config/SGgame/trainer.txt`);
+						obj.prefix = data[j].trim();
+						break;
+					case 1:
+						// Trainer Name
+						if (toId(data[j]) === 'random' && type !== 'random') throw new Error(`Error while parsing trainer data: Trying to use a random trainer name with type PRESET`, `config/SGgame/trainer.txt`);
+						obj.name = data[j].trim();
+						break;
+					case 2:
+						// Trainer ID
+						if (allIds.includes(data[j].trim())) throw new Error(`Error while parsing trainer data: Trainer ID used twice: ${data[j].trim()}`, `config/SGgame/trainer.txt`);
+						allIds.push(data[j].trim());
+						obj.id = data[j].trim();
+						break;
+					case 3:
+						// Requirement to battle this trainer before advancing
+						if (toId(data[j]) === 'true') {
+							if (type === 'random') throw new Error(`Error while parsing trainer data: Requiring a trainer battle with type RANDOM`, `config/SGgame/trainer.txt`);
+							obj.required = true;
+						}
+					}
+				}
+				// Team data
+				i++; // Next line
+				line = raw[i];
+				data = line.split(',');
+				let randomGeneration = (toId(data[0]) === 'random');
+				if (randomGeneration) {
+					// Validate random setup
+					let team = 'random,';
+					let num;
+					for (let j = 1; j < data.length; j++) {
+						switch (j) {
+						case 1:
+							if (!toId(data[j])) {
+								team += ',';
+								break; // Empty block, skip
+							}
+							num = parseInt(data[j]);
+							if (isNaN(num) || num < 1 || num > 6) throw new Error(`Error while parsing trainer data: Invalid amount of pokemon on a random team: ${data[j]}`, `config/SGgame/trainer.txt`);
+							team += num + ',';
+							break;
+						case 2:
+							if (!toId(data[j])) {
+								team += ',';
+								break; // Empty block, skip
+							}
+							num = parseInt(data[j]);
+							if (isNaN(num) || num < 1 || num > 100) throw new Error(`Error while parsing trainer data: Invalid level average on a random team: ${data[j]}`, `config/SGgame/trainer.txt`);
+							team += num + ',';
+							break;
+						case 3:
+							if (!toId(data[j])) {
+								team += ',';
+								break; // Empty block, skip
+							}
+							const isNot = data[j].startsWith('!');
+							const types = Object.keys(Dex.data.TypeChart).map(toId);
+							let selectedTypes = data[j].slice(isNot ? 1 : 0).split('|').map(toId);
+							for (let type = 0; type < selectedTypes.length; type++) {
+								if (!types.includes(selectedTypes[type])) throw new Error(`Error while parsing trainer data: Invalid type in pool of ${isNot ? 'im' : ''}possible types: ${selectedTypes[type]}`, `config/SGgame/trainer.txt`);
+							}
+							if (selectedTypes.length === types.length && isNot) throw new Error(`Error while parsing trainer data: You cannot disallow all types at once`, `config/SGgame/trainer.txt`);
+							team += (isNot ? '!' : '') + selectedTypes.join('|') + ',';
+							break;
+						case 4:
+							if (toId(data[j])) team += 'true';
+							break;
+						}
+					}
+					obj.team = team;
+				} else {
+					// Packed team
+					let valid = Dex.fastUnpackTeam(line.trim());
+					if (!valid) throw new Error(`Error while parsing trainer data: Invalid team provided: ${line.trim()}`, `config/SGgame/trainer.txt`);
+					obj.team = line.trim();
+				}
+				WL.locationData[location].zones[zone].trainers.trainers.push(obj);
+			}
+		}
+		this.trainersLoaded = true;
 	},
 };
 

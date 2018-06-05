@@ -42,7 +42,11 @@ class SGgame extends Console.Console {
 				output += `<button class="button" name="send" value="/sggame building ${keys[i]}, enter">${buildings[keys[i]]}</button> `;
 			}
 		}
-		if (WL.locationData[this.location].zones[this.zone].wild) output += `${buildings ? `` : `<br/>`}<button class="button" name="send" value="/sggame battle wild">Search for Wild Pokemon</button>`;
+		if (location.zones[this.zone].wild || location.zones[this.zone].trainers) {
+			output += `${buildings ? `` : `<br/>`}`;
+			if (location.zones[this.zone].wild) output += `<button class="button" name="send" value="/sggame battle wild">Search for Wild Pokemon</button>`;
+			if (location.zones[this.zone].trainers) output += `<button class="button" name="send" value="/sggame battle trainer">Battle a trainer</button>`;
+		}
 		if (!addOn) return output;
 		output += "<br/>";
 		let checkButton = function (title, prop, command) {
@@ -72,21 +76,25 @@ class SGgame extends Console.Console {
 		case "marina":
 			output += `<center>${checkButton('Confirm Travel', 'travel')} <button class="button" name="send" value="/sggame building marina, exit">Leave</button></center>`;
 			break;
+		case "battle":
+			output += `<center><button class="button" name="send" value="/sggame battle close">Close</button></center>`;
+			break;
 		}
 		return output;
 	}
 
 	warp(location) {
-		location = location.split('|').map(x => {
-			return toId(x);
-		});
+		location = location.split('|').map(toId);
 		if (this.location === location[0] && this.zone === parseInt(location[1])) return false;
 		if (!WL.locationData[location[0]] || !WL.locationData[location[0]].zones[location[1]]) throw new Error('LOCATION NOT FOUND: ' + location[0] + ' (Zone: ' + location[1] + ') while: Warping to a new location');
 		if (WL.locationData[location[0]].hasOwnProperty('onTryEnter') && this.location !== location[0] && !WL.locationData[location[0]].onTryEnter(this)) return false;
 		if (WL.locationData[location[0]].zones[location[1]].hasOwnProperty('onTryEnter') && !WL.locationData[location[0]].zones[location[1]].onTryEnter(this)) return false;
+		let player = Db.players.get(this.userid);
+		if (!player.visited[location[0]] || !player.visited[location[0]][location[1]]) {
+			if (!this.checkTrainers()) return false;
+		}
 		this.location = location[0];
 		this.zone = location[1];
-		let player = Db.players.get(this.userid);
 		if (!player.visited.hasOwnProperty(this.location) && this.location !== player.location) {
 			player.visited[this.location] = {};
 			if (WL.locationData[this.location].hasOwnProperty('onFirstEnter')) WL.locationData[this.location].onFirstEnter(this);
@@ -159,6 +167,20 @@ class SGgame extends Console.Console {
 		let location = WL.locationData[this.location];
 		if (!location.zones[this.zone].exits.down) return;
 		return this.warp(location.zones[this.zone].exits.down);
+	}
+
+	checkTrainers() {
+		const player = Db.players.get(this.userid);
+		let trainers = WL.locationData[this.location].zones[this.zone].trainers;
+		if (!trainers || trainers.type === 'random') return true;
+		for (let i = 0; i < trainers.trainers.length; i++) {
+			if (trainers.trainers[i].required && !player.battled.includes(trainers.trainers[i].id)) {
+				this.queue.unshift(`text|It looks like I have to battle one or more trainers before I can move on...`);
+				this.update(...this.next());
+				return false;
+			}
+		}
+		return true;
 	}
 
 	next(hideButton) {
@@ -302,11 +324,9 @@ class SGgame extends Console.Console {
 		for (let i = 0; i < 5; i++) {
 			output += '<tr style="width: 100%;">';
 			for (let j = 0; j < 6; j++) {
-				let bg = user.pc[(box - 1)][count];
-				let species;
-				if (bg) species = (user.pc[(box - 1)][count].split('|')[1] ? user.pc[(box - 1)][count].split('|')[1] : user.pc[(box - 1)][count].split('|')[0]);
-				bg = (bg ? WL.getPokemonIcon(species) : 'background: none');
-				output += '<td style="width: 15%; height: 20%;"><button style="' + bg + '; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '"></button></td>';
+				let species = user.pc[(box - 1)][count];
+				if (species) species = (user.pc[(box - 1)][count].split('|')[1] ? user.pc[(box - 1)][count].split('|')[1] : user.pc[(box - 1)][count].split('|')[0]);
+				output += '<td style="width: 15%; height: 20%;"><button style="background: none; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px;" name="send" value="/sggame pc ' + box + ', ' + count + '">' + (species ? '<psicon pokemon="' + species + '"/>' : '') + '</button></td>';
 				count++;
 			}
 			output += "</tr>";
@@ -359,9 +379,7 @@ class SGgame extends Console.Console {
 		} else {
 			// Show the users party
 			for (let i = 0; i < 6; i++) {
-				let bg = 'background: none';
-				if (user.party[i]) bg = WL.getPokemonIcon(user.party[i].species);
-				output += '<button name="send" value="/sggame pc party|' + box + ', ' + i + '" style="' + bg + '; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px; margin-bottom: 0.4em;"></button> ';
+				output += '<button name="send" value="/sggame pc party|' + box + ', ' + i + '" style="background: none; width: 50px; height: 32px; border: 1px solid #AAA; border-radius: 5px; margin-bottom: 0.4em;">' + (user.party[i] ? '<psicon pokemon="' + user.party[i].species + '"/>' : '') + '</button> ';
 			}
 		}
 		output += '</div></div>';
@@ -430,7 +448,7 @@ class SGgame extends Console.Console {
 				pmon = player.party[i];
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background: none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + pmon.species + '"/></div>';
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
 					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon, 'hp');
@@ -449,7 +467,7 @@ class SGgame extends Console.Console {
 				pmon = player.party[i];
 				if (pmon) {
 					output += '<button name="send" value="/sggame pokemon move, ' + (details ? details + ', ' : '') + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(pmon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background-none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + pmon.species + '"/></div>';
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
 					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon, 'hp');
@@ -498,7 +516,7 @@ class SGgame extends Console.Console {
 				pmon2 = player.party[i];
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background: none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + pmon2.species + '"/></div>';
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
 					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon2, 'hp');
@@ -517,7 +535,7 @@ class SGgame extends Console.Console {
 				pmon2 = player.party[i];
 				if (pmon2) {
 					output += '<button name="send" value="/sggame bag ' + details + ', ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(pmon2.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background: none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + pmon2.species + '"/></div>';
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
 					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon2, 'hp');
@@ -566,7 +584,7 @@ class SGgame extends Console.Console {
 				mon = player.party[i];
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background-none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + mon.species + '"/></div>';
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>';
 					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(mon, 'hp');
@@ -585,7 +603,7 @@ class SGgame extends Console.Console {
 				mon = player.party[i];
 				if (mon) {
 					output += '<button name="send" value="/sggame pokemon summary, ' + i + '" style="border: 2px solid #000; border-radius: 5px; background-color: #0B9; width: 85%; height: 25%">';
-					output += '<div style="' + WL.getPokemonIcon(mon.species) + '; width: 35px; height: 50%; display: inline-block; float: left;"></div>';
+					output += '<div style="background: none; width: 35px; height: 50%; display: inline-block; float: left;"><psicon pokemon="' + mon.species + '"/></div>';
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?');
 					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(mon, 'hp');
@@ -602,25 +620,40 @@ class SGgame extends Console.Console {
 		return output;
 	}
 
-	battle(type, pokemon) {
+	battle(type, options = {}) {
 		let output = this.buildMap();
-		output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>';
-		if (!type) {
-			output += '<h2>Battle</h2><button class="button" name="send" value="/sggame battle wild">Search for a wild pokemon</button><br/>';
-			output += '<button class="button" name="send" value="/sggame battle trainer">Battle a COM trainer</button><br/>';
-			output += '<button class="button" name="send" value="/sggame battle search">Battle other players on the SGgame Anything Goes ladder</button>';
-		} else if (type === 'wild') {
-			if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to battle.</b></div>';
-			if (typeof pokemon === 'string') pokemon = Dex.fastUnpackTeam(pokemon)[0];
-			let sprite = Dex.getTemplate(pokemon.species).spriteid;
-			output += '<img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + (sprite || toId(pokemon.species)) + '.gif" alt="' + pokemon.species + '"/><br/>';
-			output += '<b>A wild ' + (pokemon.shiny ? 'SHINY' : '') + ' ' + pokemon.species + ' appeared!<br/>(Level: ' + pokemon.level + ', Gender: ' + (pokemon.gender || 'N') + ')<br/>';
-			output += (pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/sggame battle wild, confirm">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>') + ' <button class="button" name="send" value="/sggame battle wild, flee">Flee!</button>';
+		output += `<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center>`;
+		if (type === 'wild') {
+			if (!options.pokemon) return `<div style="color:red"><b>An error has occured when trying to battle.</b></div>`;
+			if (typeof options.pokemon === 'string') options.pokemon = Dex.fastUnpackTeam(options.pokemon)[0];
+			let sprite = Dex.getTemplate(options.pokemon.species).spriteid;
+			output += `<img src="http://play.pokemonshowdown.com/sprites/xyani${(options.pokemon.shiny ? '-shiny' : '')}/${(sprite || toId(options.pokemon.species))}.gif" alt="${options.pokemon.species}"/><br/>`;
+			output += `<b>A wild ${(options.pokemon.shiny ? 'SHINY' : '')} ${options.pokemon.species} appeared!<br/>(Level: ${options.pokemon.level}, Gender: '${(options.pokemon.gender || 'N')})<br/>`;
+			output += `${(options.pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/sggame battle wild, confirm">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>')} <button class="button" name="send" value="/sggame battle wild, flee">Flee!</button>`;
 		} else if (type === 'trainer') {
-			if (!pokemon) return '<div style="color:red"><b>An error has occured when trying to battle.</b></div>';
-			output += '<br/><br/><b>SG Server would like to battle.<br/><br/><button class="button" name="send" value="/sggame battle trainer, confirm">Accept</button> <button class="button" name="send" value="/sggame battle trainer, reject">Reject</button>';
+			const location = WL.locationData[this.location].zones[this.zone];
+			const isPreset = location.trainers.type === 'preset';
+			if (isPreset) {
+				const sortedTrainers = location.trainers.trainers.slice().sort((a, b) => {
+					if (a.required && !b.required) return -1;
+					if (!a.required && b.required) return 1;
+					return 0;
+				});
+				output += `<h2>Trainers in the area</h2>`;
+				let atLeastOne = false;
+				const player = Db.players.get(this.userid);
+				for (let t = 0; t < sortedTrainers.length; t++) {
+					if (player.battled.includes(sortedTrainers[t].id)) continue;
+					atLeastOne = true;
+					output += `<button class="button" name="send" value="/sggame battle trainer, id, ${sortedTrainers[t].id}">${sortedTrainers[t].prefix} ${sortedTrainers[t].name}</button> ${sortedTrainers[t].required ? '(must defeat to advance)' : ''}<br/>`;
+				}
+				if (!atLeastOne) output += `<b>No Trainers Found</b>`;
+			} else {
+				// random trainers with unlimited battles / human battle option
+				output += `<h2>Battle Spot</h2><b>Select what kind of trainer to battle</b><br/><button class="button" name="send" value="/sggame battle trainer, random">Battle a COM</button> <button class="button" name="send" value="/sggame battle trainer, search">Battle another player</button>`;
+			}
 		}
-		output += '</center></div>';
+		output += `</center></div>`;
 		return output;
 	}
 
@@ -642,6 +675,9 @@ class SGgame extends Console.Console {
 		}
 	}
 }
+
+if (!WL.pokemonLoaded) WL.loadPokemon();
+if (!WL.trainersLoaded) WL.loadTrainers();
 
 class Player {
 	constructor(user, starter) {
@@ -669,6 +705,8 @@ class Player {
 		this.visited = {};
 		this.visited[user.console.location] = {};
 		this.visited[user.console.location][user.console.zone] = true;
+		// IDs of COMs the player has battled
+		this.battled = [];
 		// Stage - incremented at various points to indicate progress in the game
 		this.stage = 0;
 		// More to come...
@@ -1308,71 +1346,87 @@ exports.commands = {
 		battle: function (target, room, user, connection) {
 			if (!user.console || user.console.gameId !== 'SGgame') return;
 			if (user.console.queue.length || user.console.queueAction) return;
-			if (!Db.players.get(user.userid).party.length) return user.popup('You have no pokemon to battle with!');
+			let player = Db.players.get(user.userid);
+			if (!player.party.length) return user.popup('You have no pokemon to battle with!');
+
 			for (let key of user.inRooms) {
 				if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
 			}
-			// TODO more battle types than wild pokemon
-			if (!WL.locationData[user.console.location].zones[user.console.zone].wild) {
-				user.console.queue.unshift(`text|There are no wild pokemon here!`);
-				user.console.update(...user.console.next());
-				return;
-			}
-			if (toId(target) === 'close' && user.console.curPane === 'battle') {
+			const location = WL.locationData[user.console.location].zones[user.console.zone];
+			if (!location.wild && !location.trainers) return;
+			if (user.console.curPane && user.console.curPane !== 'battle') return;
+			user.console.curPane = 'battle';
+			if (!Users('sgserver')) WL.makeCOM();
+			target = target.split(',');
+			switch (toId(target[0])) {
+			case 'wild':
+				if (!location.wild) return;
+				if (!toId(target[1])) {
+					// TODO support multiple types of encounters (ex: tall grass, surfing, fishing...)
+					Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(user.console.location, user.console.zone, 'grass');
+					return user.console.update(user.console.buildCSS(), user.console.battle('wild', {pokemon: Users('sgserver').wildTeams[user.userid]}), user.console.buildBase('battle'));
+				}
+				if (toId(target[1]) === 'confirm') {
+					if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/sggame battle wild');
+					user.console.curPane = null;
+					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
+					this.parse('/search gen7wildpokemonalpha');
+				} else {
+					Users('sgserver').wildTeams[user.userid] = null;
+					// Temporarly stopped returning to the main battle menu
+					this.parse('/sggame battle close');
+				}
+				break;
+			case 'trainer':
+				if (!location.trainers) return;
+				const isPreset = location.trainers.type === 'preset';
+				if (!target[1]) {
+					// Battle selection screen
+					return user.console.update(user.console.buildCSS(), user.console.battle('trainer'), user.console.buildBase('battle'));
+				}
+				let trainer = null;
+				switch (toId(target[1])) {
+				case 'id':
+					if (!isPreset) return this.parse('/sggame battle trainer');
+					const trainerId = target[2] ? target[2].trim() : '';
+					if (!trainerId || player.battled.includes(trainerId)) return this.parse('/sggame battle trainer');
+					for (let t = 0; t < location.trainers.trainers.length; t++) {
+						if (location.trainers.trainers[t].id === trainerId) {
+							trainer = location.trainers.trainers[t];
+							break;
+						}
+					}
+					if (!trainer) return this.parse('/sggame battle trainer');
+					// launch battle
+					Users('sgserver').trainerTeams[user.userid] = {team: trainer.team, id: trainerId};
+					user.console.curPane = null;
+					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
+					this.parse('/search gen7trainerbattlealpha');
+					break;
+				case 'random':
+					if (isPreset) return this.parse('/sggame battle trainer');
+					trainer = WL.makeComTeam(location, player.party.length);
+					Users('sgserver').trainerTeams[user.userid] = {team: trainer.team};
+					user.console.curPane = null;
+					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
+					this.parse('/search gen7trainerbattlealpha');
+					break;
+				case 'search':
+					if (isPreset) return this.parse('/sggame battle trainer');
+					Users('sgserver').wildTeams[user.userid] = null;
+					Users('sgserver').trainerTeams[user.userid] = null;
+					user.console.curPane = null;
+					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
+					this.parse('/search gen7sggameanythinggoes');
+					break;
+				}
+				break;
+			case 'close':
+			default:
 				Users('sgserver').wildTeams[user.userid] = null;
 				Users('sgserver').trainerTeams[user.userid] = null;
 				user.console.curPane = null;
 				return user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
-			}
-			if (user.console.curPane && user.console.curPane !== 'battle') return;
-			user.console.curPane = 'battle';
-			if (!Users('sgserver')) WL.makeCOM();
-			if (!toId(target)) {
-				return this.parse('/sggame battle wild'); // Force to wild pokemon at this time.
-				//return user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
-			} else {
-				target = target.split(',');
-				switch (toId(target[0])) {
-				case 'wild':
-				default:
-					if (!toId(target[1])) {
-						// TODO support multiple types of encounters (ex: tall grass, surfing, fishing...)
-						Users('sgserver').wildTeams[user.userid] = WL.makeWildPokemon(user.console.location, user.console.zone, 'grass');
-						return user.console.update(user.console.buildCSS(), user.console.battle('wild', Users('sgserver').wildTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
-					}
-					if (toId(target[1]) === 'confirm') {
-						if (!Users('sgserver').wildTeams[user.userid]) return this.parse('/sggame battle wild');
-						user.console.curPane = null;
-						user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
-						this.parse('/search gen7wildpokemonalpha');
-					} else {
-						Users('sgserver').wildTeams[user.userid] = null;
-						// Temporarly stopped returning to the main battle menu
-						this.parse('/sggame battle close');
-						//user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
-					}
-					break;
-				/*case 'trainer':
-					if (!target[1]) {
-						Users('sgserver').trainerTeams[user.userid] = WL.makeComTeam(WL.teamAverage(Db.players.get(user.userid).party), Db.players.get(user.userid).party.length);
-						return user.console.update(user.console.buildCSS(), user.console.battle('trainer', Users('sgserver').trainerTeams[user.userid]), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
-					}
-					if (toId(target[1]) === 'confirm') {
-						if (!Users('sgserver').trainerTeams[user.userid]) return this.parse('/sggame battle trainer');
-						user.console.curPane = null;
-						user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
-						this.parse('/search gen7trainerbattlealpha');
-					} else {
-						Users('sgserver').trainerTeams[user.userid] = null;
-						user.console.update(user.console.buildCSS(), user.console.battle(), user.console.defaultBottomHTML + '<br/><center><button class="button" name="send" value="/sggame battle close">Close</button></center>');
-					}
-					break;
-				case 'search':
-					user.console.curPane = null;
-					user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
-					this.parse('/search gen7sggameanythinggoes');
-					break;*/
-				}
 			}
 		},
 

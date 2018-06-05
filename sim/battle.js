@@ -12,7 +12,7 @@ const Data = require('./dex-data');
 const PRNG = require('./prng');
 const Side = require('./side');
 const Pokemon = require('./pokemon');
-const WL = require('./WL.js').WL;
+const WL = require('./WL').WL;
 
 /**
  * An object representing a Pokemon that has fainted

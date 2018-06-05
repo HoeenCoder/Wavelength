@@ -1,0 +1,71 @@
+/*
+SGgame - Computer Controled Trainers (COMs)
+This file holds raw data for COM trainers in SGgame
+The following is an example of a layout of COM trainer battles in a specific zone. Messages in {} braces are information about the example, not part of the example
+
+LOCATION LOCATION|ZONE {the location id and zone id number seperated with a | ex: mainisland|0}
+TYPE TYPE {PRESET or RANDOM}
+{Preset trainers - Only challengeable once in the area, may or may not be required to advance}
+{Random trainers - Used in locations where players can battle against trainers as many times as they please for training purposes}
+type,name,id,required {The trainers type (prefix, ex: Youngster), followed by their name (ex: Joey), a UNIQUE TO ALL TRAINERS identifier, true OR false (determines if the player MUST defeat this trainer to advance, the last two tags are IGNORED if the type is RANDOM)}
+{id needs to be UNIQUE accross all trainers in the game, and is not automatically generated to prevent glitches}
+team {The trainers team, in packed string forme}
+{repeat adding more trainers as needed}
+{the team slot also supports a random generation option}
+type,name,required {type is required, name can be left blank to randomly select a name from a pool}
+random,# of pokemon,average level,type limit,allow legends
+{first, random tells the COM generator that this team needs to be randomly generated when the battle is started, all other options are optional, and can be left blank if they arent wanted}
+{eg:}
+random,,5
+{# of pokemon: the number of pokemon to give to the COM (1-6)}
+{average level: the average level of the pokemon on the team, (levels can be up to 2 higher, or 2 lower than this)}
+{type limit: | seperated types that the pokemon this trainer has MUST have. All pokemon on the team will have at least one of these types. Add ! to the front to PREVENT this trainer from having pokemon with one or more of these types.}
+{eg: only ghost and fire types}
+random,,,ghost|fire
+{eg: NOT steel types}
+random,,,!steel
+{allow legends: By default legendary pokemon will not appear in COM trainer parties, set this to true to allow them}
+
+Other information:
+Starting a line with /* signals the start of a multi-line comment
+Starting a line with */ signals the end of a multi-line comment
+Starting a line with // signals a single line comment
+Blank lines are ignored as well
+*/
+
+/*
+Our ID naming system:
+locationname-zoneid-number
+
+number increases with each trainer in that zone (start at 1, then 2, ect)
+*/
+
+LOCATION mainisland|5
+TYPE PRESET
+
+Preschooler,Sarah,mainisland-5-1,true
+|lillipup|||tackle,leer|||F|10,25,12,16,17,14||5|
+
+LOCATION mainisland|6
+TYPE PRESET
+
+Maid,Monica,mainisland-6-1,false
+|cleffa||1|pound,charm,encore||||||5|]|azurill|||splash,watergun,tailwhip,watersport||||,0,,,,||5|]|igglybuff||1|sing,charm,defensecurl,pound||||||5|
+Parsol Lady,Riley,mainisland-6-2,false
+|growlithe|||bite,roar,ember||||||6|]|litten|||scratch,ember,growl||||||6|
+
+LOCATION mainisland|7
+TYPE RANDOM
+
+Youngster,Joey
+|rattata|oranberry|1|quickattack,tackle,tailwhip|||M|6,3,25,6,23,29|S|5|
+Youngster
+random,1,5,normal
+Youngster
+random,2,4,normal
+Bug Catcher
+random,3,3,bug
+Bird Keeper
+random,1,6,flying
+Bird Keeper
+random,2,4,flying

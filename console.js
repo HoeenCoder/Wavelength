@@ -42,6 +42,9 @@ class Console {
 		}
 		this.update(this.curScreen[0], this.curScreen[1], this.curScreen[2]);
 	}
+	restore() {
+		this.update(...this.curScreen);
+	}
 	// Overwrite these to use them.
 	up(data) {}
 	down(data) {}
@@ -49,6 +52,17 @@ class Console {
 	right(data) {}
 	onKill() {}
 }
+
+exports.pages = {
+	gameconsole: function (query, user, connection) {
+		if (!user.named) return Rooms.RETRY_AFTER_LOGIN;
+		if (!user.console) {
+			user.console = new Console(user);
+			user.console.init();
+		}
+		user.console.restore();
+	},
+};
 
 exports.commands = {
 	console: {
