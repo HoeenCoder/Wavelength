@@ -13,7 +13,7 @@ let FS = require('../lib/fs');
 let monData;
 
 try {
-	monData = FS("data/ssb-data.txt").readIfExistsSync().toString().split("\n\n");
+	monData = FS("data/wlssb-data.txt").readIfExistsSync().toString().split("\n\n");
 } catch (e) {
 	console.error(e);
 }
