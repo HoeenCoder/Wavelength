@@ -344,6 +344,7 @@ class SSB {
 				return false;
 			}
 		} else {
+			if (toId(this.cAbility) === ability.id) return true;
 			for (let i in Dex.getTemplate(this.species).abilities) {
 				if (toId(Dex.getTemplate(this.species).abilities[i]) === ability.id) {
 					this.ability = ability.name;
