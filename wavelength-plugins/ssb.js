@@ -344,14 +344,18 @@ class SSB {
 				return false;
 			}
 		} else {
-			if (toId(this.cAbility) === ability.id) return true;
-			for (let i in Dex.getTemplate(this.species).abilities) {
-				if (toId(Dex.getTemplate(this.species).abilities[i]) === ability.id) {
-					this.ability = ability.name;
-					return true;
+			if (this.cAbility && toId(this.cAbility) === ability.id && this.bought.cAbility) {
+				this.ability = this.cAbility;
+				return true;
+			} else {
+				for (let i in Dex.getTemplate(this.species).abilities) {
+					if (toId(Dex.getTemplate(this.species).abilities[i]) === ability.id) {
+						this.ability = ability.name;
+						return true;
+					}
 				}
+				return false;
 			}
-			return false;
 		}
 	}
 
