@@ -286,6 +286,21 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: "Sassy",
 			},
+			'%AlfaStorm': {
+				species: 'Umbreon',
+				ability: 'Addendum',
+				item: 'Leftovers',
+				gender: 'M',
+				shiny: true,
+				moves: ['Dark Pulse', 'Kings Shield', 'Recover'],
+				signatureMove: 'Dark Spiral',
+				evs: {
+					def: 4,
+					spd: 252,
+					hp: 252,
+				},
+				nature: 'Calm',
+			},
 
 			// Global Voices:
 			'+Mystifi': {
@@ -377,21 +392,6 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 					spe: 4,
 				},
 				nature: 'Timid',
-			},
-			'+AlfaStorm': {
-				species: 'Umbreon',
-				ability: 'Addendum',
-				item: 'Leftovers',
-				gender: 'M',
-				shiny: true,
-				moves: ['Dark Pulse', 'Kings Shield', 'Recover'],
-				signatureMove: 'Dark Spiral',
-				evs: {
-					def: 4,
-					spd: 252,
-					hp: 252,
-				},
-				nature: 'Calm',
 			},
 			'+SnorlaxTheRain': {
 				species: 'Snorlax',
