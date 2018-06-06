@@ -161,7 +161,7 @@ exports.BattleStatuses = {
 	ssbn640: {
 		exists: true,
 		onStart: function (pokemon) {
-			this.add('c', '%SSBN-640', 'hey., im just here to shitpost or whatever.');
+			this.add('c', '%SSBN-640', 'hey, im just here to shitpost or whatever.');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '%SSBN-640', 'brb gotta do stuff for digimon.');
@@ -303,10 +303,10 @@ exports.BattleStatuses = {
 	alfastorm: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+AlfaStorm', 'Hello, prepare to face my wrath!');
+			this.add('c', '%AlfaStorm', 'Hello, prepare to face my wrath!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+AlfaStorm', 'You\'ll regret doing this to me!');
+			this.add('c', '%AlfaStorm', 'You\'ll regret doing this to me!');
 		},
 	},
 	SnorlaxTheRain: {
