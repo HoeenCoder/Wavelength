@@ -73,7 +73,7 @@ class ExpFunctions {
 	nextLevel(user) {
 		let curExp = Db.exp.get(toId(user), 0);
 		let lvl = this.level(toId(user));
-		return Math.floor(Math.pow(lvl, multiply) * minLevelExp) - curExp;
+		return Math.ceil(Math.pow(lvl, multiply) * minLevelExp) - curExp;
 	}
 
 	addExp(user, room, amount) {
