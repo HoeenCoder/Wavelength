@@ -30,7 +30,7 @@ Volco
 EVs: 4 HP / 252 Atk / 252 Spe
 Jolly Nature
 Ability: Shadow Fist
-	- Changes type to Ghost/Fighting + Iron Fist.
+	- Changes type to Ghost/Fighting + Iron Fist. Boosts Def and SpD one stage
 Moves: Drain Punch, Ice Punch, Swords Dance.
 Signature Move: Invisible Punch
 	- Ghost type, Physical, 10 PP, 90 BP, Heals 1/4 damage dealt.
