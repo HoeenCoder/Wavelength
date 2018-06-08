@@ -51,14 +51,15 @@ Rank: N/A.
 
 C733937 123
 (Skuntank)
-@ Shuca Berry
+@ Epic Berry
+    - Power of a white herb, shuca berry, focus sash and pinch berry.
 EVs: 252 Atk / 4 SpD / 252 HP
 Adamant Nature
 Ability: Unaware
 Innate Ability: Psyched Up: Uses Psych up on switch in
 Moves: Crunch, Gunk Shot, Sacred Fire
 Signature Move: Shatter Break
-	- Physical, Fairy Type, 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent.
+	- Physical, Fairy Type, 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent. Uses fighting type in damage calculation.
 Notes: N/A.
 Rank: N/A.
 

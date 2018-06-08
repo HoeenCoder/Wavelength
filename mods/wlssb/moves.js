@@ -87,7 +87,7 @@ exports.BattleMovedex = {
 			return move.basePower + 10 * pokemon.positiveBoosts();
 		},
 		id: "shatterbreak",
-		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko.",
+		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko. +Fighting.",
 		isNonstandard: true,
 		name: "Shatter Break",
 		pp: 12,
@@ -120,8 +120,9 @@ exports.BattleMovedex = {
 				pokemon.removeVolatile('shatterbreak');
 			},
 		},
-		onEffectiveness: function (typeMod, type) {
-			if (type === 'Steel') return 1;
+		onEffectiveness: function (typeMod, type, move) {
+			// @ts-ignore
+			return typeMod + this.getEffectiveness('Fighting', type);
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');

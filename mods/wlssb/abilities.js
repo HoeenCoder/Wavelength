@@ -191,6 +191,7 @@ exports.BattleAbilities = {
 		onStart: function (pokemon) {
 			this.add('-start', pokemon, 'typechange', 'Fighting/Ghost');
 			pokemon.types = ["Fighting", "Ghost"];
+			this.boost({def: 1, spd: 1});
 		},
 		onBasePowerPriority: 8,
 		onBasePower: function (basePower, attacker, defender, move) {
