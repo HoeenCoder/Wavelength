@@ -11,34 +11,16 @@ Signature Move: Scripting
 Notes: N/A.
 Rank: N/A.
 
-Lycanium Z
-(Rockruff)
-@ Lycantium Z
-    - Allowed to use Going Down
-        -Going Down: Opponent's team cannot use attacking moves for 3 turns
-EVs: 252 Atk / 4 Def / 252 Spe
-Jolly Nature
-Ability: Super Shield
-    - All moves are 4x resistant against this pokemon
-Innate Ability: Dank Memer
-    - Uses Memes on Switch in
-        - Memes: Distracts the opponent
-Moves: Accelerock, Earthquake, Swords Dance
-Signature Move: ALL Delete
-	- ??? type, Physical, 5 PP, 100 BP, 20% chance to encore. 0.5% chance to inflict instant death.
-Notes: IDK
-Rank: N/A.
-
-Showdown Helper
-(Celebi)
-Grass/Fairy
-@ Weakness Policy
-EVs: 252 Atk / 4 Def / 252 Spe
-Jolly Nature
-Ability: Filter
-Moves: Quiver Dance, Searing Shot, Giga Drain
-Signature Move: Psychotherapy
-    - 100 BP. Uses defense in damage calculation. 20PP, Heals 10% damage.
+SSBN-640
+(Meowstic)
+@ Leftovers
+EVs: 252 HP / 4 Def / 252 SpD
+Sassy Nature
+Ability: Twisted Virtues
+    - All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type. User gains the poison type.
+Moves: Cotton Guard, Rest, Calm Mind
+Signature Move: Foolish Desrtuction
+	- Calls a random move 3 times.
 Notes: IDK
 Rank: N/A.
 
@@ -48,7 +30,7 @@ Volco
 EVs: 4 HP / 252 Atk / 252 Spe
 Jolly Nature
 Ability: Shadow Fist
-	- Changes type to Ghost/Fighting + Iron Fist.
+	- Changes type to Ghost/Fighting + Iron Fist. Boosts Def and SpD one stage
 Moves: Drain Punch, Ice Punch, Swords Dance.
 Signature Move: Invisible Punch
 	- Ghost type, Physical, 10 PP, 90 BP, Heals 1/4 damage dealt.
@@ -69,14 +51,15 @@ Rank: N/A.
 
 C733937 123
 (Skuntank)
-@ Shuca Berry
+@ Epic Berry
+    - Power of a white herb, shuca berry, focus sash and pinch berry.
 EVs: 252 Atk / 4 SpD / 252 HP
 Adamant Nature
 Ability: Unaware
 Innate Ability: Psyched Up: Uses Psych up on switch in
 Moves: Crunch, Gunk Shot, Sacred Fire
 Signature Move: Shatter Break
-	- Physical, Fairy Type, 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent.
+	- Physical, Fairy Type, 60 + every positive boost the user has times 10. raises a random stat on KO'ing the opponent. Uses fighting type in damage calculation.
 Notes: N/A.
 Rank: N/A.
 
@@ -101,7 +84,7 @@ Ability: Ready to Stab
     - On entry, +1 Attack and Speed.
 Moves: Crabhammer, Swords Dance, Knock Off
 Signature Move: Stab Stab
-    -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch.
+    -Steel Type, 60 BP, Always Hits, Attacks Twice, 20% chance to flinch, and +1 Priority.
 Notes: Stabby Stabby!
 Rank: N/A.
 
@@ -111,7 +94,7 @@ Desokoro
 EVs: 252 Atk / 4 HP / 252 Spe
 Adamant Nature
 Ability: Wave Call
-    -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage and wave call gain +0.1 priority for two turns on switch in.
+    -If either the user is statused or its HP is below 1/2 of its max HP, the user's Water type moves & Speed get boosted by 2x. Also takes .1x Electric damage and wave call goes first in its priority bracket for two turns on switch in.
 Moves: Dragon Dance, Bounce and Substitute.
 Signature Move: Tsunami Crash
 	-Water Type, Physical, 135 BP, 8 PP and 35% chance to flinch the target.
@@ -126,7 +109,7 @@ Naughty Nature
 Ability: Serene Grace
 Moves: Roost, Coil, Rock Slide, Glare and Body Slam.
 Signature Move: Getting Trolled
-	- Normal Type, Physical, 60 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +1 Priority.
+	- Normal Type, Physical, 60 BP, 20 PP and 30% chance to paralyze, confuse, or flinch the target. +2 Priority.
 Notes: N/A.
 Rank: N/A.
 
@@ -139,7 +122,7 @@ Modest Nature
 EVs: 252 SpA / 4 HP / 252 Spe
 Moves: Thunderbolt, Surf and HP Ice.
 Signature Move: Rocket Punch
-	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +0.1 Priority.
+	- Fire Type, Special, 100 BP, 100% Accuracy, 10 PP and +1 Priority.
 Notes: Fast Special Sweeper.
 Rank: N/A.
 
@@ -280,23 +263,9 @@ Ability: Feline Fury
     - Scrappy & +2 Attack on switch in.
 Moves: Topsy-Turvy, Fake Out, Knock Off,
 Signature Move: Kitty Crush
-    - Hits all types neutral, Normal Type, 70 BP, 95% accuracy, +1 Priority. 60% chance to boost def and spd by 1.
+    - Hits all types neutral, Normal Type, 70 BP, 95% accuracy, +2 Priority. 60% chance to boost def and spd by 1.
 Notes: Solid counter to most with its Scrappy and Kitty Crush combo.
 Rank: N/A
-
-wgc
-(Gengar)
-@ Spooky Plate
-EVs: 252 SpA / 4 Def / 252 Spe
-Timid Nature
-Ability: Levitate
-Innate Ability: Spooky Setup
-	- Boosts Special attack by 1 stage if it faints an opponent
-Moves: Moongeist Beam, Sludge Wave and Sacred Sword.
-Signature Move: Haze Reborn
-	- Ice Type, 20 PP, Inverts Targets stat changes. 40% chance to freeze.
-Notes: N/A.
-Rank: N/A.
 
 Tidal Wave Bot
 (Magikarp, Steel/Electric Typing, Shiny)
@@ -334,7 +303,7 @@ Ability:  Muscles
     - +1 defense, +1 Special defense, -3 attack, +2 special attack on switch in + simple.
 Moves: Stored Power, Cosmic Power, Hydro Pump
 Signature Move: Bunnery Hates You Seed
-    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +1 Priority.
+    -Leech Seed + Stored Power & Cosmic Power now have +1 Priority. +2 Priority.
 Notes: New
 Rank: N/A
 
@@ -361,20 +330,6 @@ Ability: Scraroom
 Moves: Giga Impact, Rest, Curse
 Signature Move: Snorlax Slam
     -120BP, 95% Accuracy, and can be used while sleeping.
-Notes: New
-Rank: N/A
-
-Finny 
-(Totodile) 
-@ Eviolite
-Base Stats: 65/80/80/59/63/58
-EVs: 252 Atk / 4 SpD / 252 Spe  
-Adamant Nature  
-Ability: Clinical Depression  
-    - Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.
-Moves: Waterfall, Aqua Jet, Dragon Dance  
-Signature Move: Dying Inside
-    -Ice/Ghost Type. 100 BP, 95% accuracy, 10PP
 Notes: New
 Rank: N/A
 

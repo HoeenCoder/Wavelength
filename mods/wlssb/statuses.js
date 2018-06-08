@@ -158,67 +158,16 @@ exports.BattleStatuses = {
 			}
 		},
 	},
-	lycaniumz: {
+	ssbn640: {
 		exists: true,
 		onStart: function (pokemon) {
-			let msg = ['The diginoob is here!', 'Im here!', 'hellur', 'Le overpowered dude has arrived', 'Tell meicoo that tamers spoilers: the d-reaper is a character', 'time for a new discussion!', 'hey princess luna pass me a pastry based weapon of death!'][this.random(7)];
-			this.add('c', '%Lycanium Z', msg);
-			this.useMove('memes', pokemon);
+			this.add('c', '%SSBN-640', 'hey, im just here to shitpost or whatever.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%Lycanium Z', 'Brb dming swagn for more dank memes');
+			this.add('c', '%SSBN-640', 'brb gotta do stuff for digimon.');
 		},
 		onFaint: function (pokemon, target) {
-			let msg = ['I blame darth', 'Andy sux :<', 'gg i sux lol bye', '...and back to deadness', 'figures >_>', 'nO'][this.random(5)];
-			this.add('c', '%Lycanium Z', msg);
-		},
-	},
-	instantdeath: {
-		// this is a volatile status
-		onStart: function (target, source, sourceEffect) {
-			this.add('-start', target, 'Instant Death');
-			target.faint();
-		},
-	},
-	any: {
-		onStart: function (target, source, sourceEffect) {
-			//Nothing for the opponnet to not know what is going on
-		},
-		onResidualOrder: 9,
-		onResidual: function (pokemon, source) {
-			let heckle = this.random(11);
-			if (heckle === 0) {
-				this.add('html|<button name="send" value="/forfeit">Hey ' + pokemon.side.name + '! Click me to win!</button>');
-			} else if (heckle === 1) {
-				this.add("raw|<div class=\"broadcast-red\"><b>The server is restarting soon.</b><br />" + pokemon.side.name + " please forfeit to end the game. No new battles can be started until the server resets in a few minutes.</div>");
-			} else if (heckle === 2) {
-				this.add('c', pokemon.name, pokemon.side.name + ' sucks');
-			} else if (heckle === 3) {
-				this.add('l|☆' + pokemon.side.name);
-			} else if (heckle === 4) {
-				this.add('j|~Evil Admin');
-				this.add('c|~Evil Admin|' + pokemon.side.name + ', you have been caught cheating on the server, please concede or else risk punishment.');
-				this.add('l|~Evil Admin');
-			} else if (heckle === 5) {
-				this.add('j| ' + pokemon.side.name + 'Please Forfeit');
-				for (let i = 0; i < this.random(1000); i++) {
-					this.add('c| ' + pokemon.side.name + 'Please Forfeit|/me');
-				}
-			} else if (heckle === 6) {
-				let msg = ['frz', 'par', 'brn', 'tox', 'slp'][this.random(5)];
-				this.add('-status', pokemon, msg);
-			} else if (heckle === 7) {
-				let msg = ['Normalize', 'Truant', 'Defeatist', 'Slow Start'][this.random(5)];
-				this.add('-ability', pokemon, msg);
-			} else if (heckle === 8) {
-				this.add('raw', '<h2>Turn Forfeit ' + pokemon.side.name + '</h2>');
-			} else if (heckle === 9) {
-				let msg = ['ヽ༼ຈل͜ຈ༽ﾉ raise your dongers ' + pokemon.side.foe.name + ' ヽ༼ຈل͜ຈ༽ﾉ', pokemon.side.foe.name + ' cant do nothing against me. Youre the worst player on all of PS! Fuck you.', 'im bad and everyone knows it <3', 'make me lose daddy ' + pokemon.side.foe.name + ' ;)', '/me is garbage'][this.random(4)];
-				this.add('c|☆' + pokemon.side.name + '|' + msg);
-			} else if (heckle === 10) {
-				let Jackpot = this.random(99998) + 2;
-				this.add("raw|<div class=\"broadcast-blue\"><b>Hey " + pokemon.side.name + "! You just won " + Jackpot + " Stardust!<br />Please forfeit this game in order to claim your prize.</b></div>");
-			}
+			this.add('c', '%SSBN-640', 'lol how did i die?');
 		},
 	},
 	celestialtater: {
@@ -299,16 +248,16 @@ exports.BattleStatuses = {
 			this.add('c', '@TheRittz', '__fled from the scene__');
 		},
 	},
-	wavelengthprince: {
+	perison: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Wavelength Prince', 'You think I came for the battle, when it\'s really your soul I want.');
+			this.add('c', '~Perison', 'You think I came for the battle, when it\'s really your soul I want.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Wavelength Prince', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+			this.add('c', '~Perison', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '~Wavelength Prince', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+			this.add('c', '~Perison', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
 		},
 	},
 	xcmr: {
@@ -321,14 +270,6 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+xcmr', 'What!? That was a high roll!');
-		},
-	},
-	wgc: {
-		exists: true,
-		onSourceFaint: function (target, source, effect) {
-			if (effect && effect.effectType === 'Move') {
-				this.boost({spa: 1}, source);
-			}
 		},
 	},
 	bunnery5: {
@@ -362,10 +303,10 @@ exports.BattleStatuses = {
 	alfastorm: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '+AlfaStorm', 'Hello, prepare to face my wrath!');
+			this.add('c', '%AlfaStorm', 'Hello, prepare to face my wrath!');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '+AlfaStorm', 'You\'ll regret doing this to me!');
+			this.add('c', '%AlfaStorm', 'You\'ll regret doing this to me!');
 		},
 	},
 	SnorlaxTheRain: {
@@ -378,29 +319,6 @@ exports.BattleStatuses = {
 		},
 		onFaint: function (pokemon) {
 			this.add('c', '+SnorlaxTheRain', 'Even though u have won, I will still sleep and regain my energy in order to fight against u once more!');
-		},
-	},
-	showdownhelper: {
-		exists: true,
-		onStart: function (pokemon) {
-			this.add('c', ' Lexi Lynn', 'i love you hypershaymin');
-			this.add('-start', pokemon, 'typechange', 'Grass/Fairy');
-			pokemon.types = ["Grass", "Fairy"];
-		},
-		onFaint: function (pokemon) {
-			this.add('c', ' hypershaymin', 'ok');
-		},
-	},
-	finny: {
-		exists: true,
-		onStart: function () {
-			this.add('c', '^Finny', 'Thats pretty juicy');
-		},
-		onSwitchOut: function (pokemon) {
-			this.add('c', '^Finny', 'Oop');
-		},
-		onFaint: function (pokemon) {
-			this.add('c', '^Finny', 'Hello darkness my old friend');
 		},
 	},
 	thedazzlerjoe: {

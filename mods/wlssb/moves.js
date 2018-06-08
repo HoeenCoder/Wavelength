@@ -87,7 +87,7 @@ exports.BattleMovedex = {
 			return move.basePower + 10 * pokemon.positiveBoosts();
 		},
 		id: "shatterbreak",
-		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko.",
+		desc: "Base Power is calculated like stored power. Raises one stat randomly on ko. +Fighting.",
 		isNonstandard: true,
 		name: "Shatter Break",
 		pp: 12,
@@ -120,8 +120,9 @@ exports.BattleMovedex = {
 				pokemon.removeVolatile('shatterbreak');
 			},
 		},
-		onEffectiveness: function (typeMod, type) {
-			if (type === 'Steel') return 1;
+		onEffectiveness: function (typeMod, type, move) {
+			// @ts-ignore
+			return typeMod + this.getEffectiveness('Fighting', type);
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
@@ -169,7 +170,7 @@ exports.BattleMovedex = {
 		name: "Rocket Punch",
 		pp: 10,
 		desc: "No additional effects",
-		priority: 0.1,
+		priority: 1,
 		target: "normal",
 		flags: {protect: 1, mirror: 1},
 		type: "Fire",
@@ -195,7 +196,7 @@ exports.BattleMovedex = {
 		},
 		flags: {protect: 1, mirror: 1, contact: 1},
 		desc: "30% chance to paralyze, and/or flinch, or confuse foe.",
-		priority: 1,
+		priority: 2,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Thrash", target);
@@ -374,7 +375,7 @@ exports.BattleMovedex = {
 		},
 		desc: "Boosts SpA, Atk, Spe by 2 stages, Acc by 1 stage, Lowers Def and SpD by 1 stage",
 		pp: 5,
-		priority: 1,
+		priority: 2,
 		onPrepareHit: function (target, source) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "Brick Break", source);
@@ -384,115 +385,55 @@ exports.BattleMovedex = {
 		accuracy: true,
 		type: "Water",
 	},
-	// Lycanium Z
-	"alldelete": {
-		accuracy: 100,
-		basePower: 100,
-		category: "Physical",
-		desc: "0.5% chance of instant death. 20% chance Encore.",
-		id: "alldelete",
-		name: "ALL Delete",
-		pp: 5,
-		priority: 0,
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Judgment", target);
-		},
-		onHit: function (target) {
-			if (this.random(5) === 1) {
-				target.addVolatile('Encore');
-			}
-			if (this.random(200) === 1) {
-				target.addVolatile('instantdeath');
-			}
-		},
-		flags: {protect: 1, mirror: 1},
-		target: "normal",
-		type: "???",
-		secondary: false,
-		zMovePower: 100,
-		contestType: "Cool",
-	},
-	"goingdown": {
+	// SSBN-640
+	"foolishdestruction": {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		shortDesc: "Target cannot attack for 5 turns. User faints.",
-		id: "goingdown",
-		name: "Going Down",
-		pp: 1,
-		isZ: "lycantiumz",
-		priority: 999,
-		flags: {authentic: 1},
-		selfdestruct: "ifHit",
-		sideCondition: 'goingdown',
+		shortDesc: "Attempts to pick a random move 3 times",
+		id: "foolishdestruction",
+		name: "Foolish Destruction",
+		pp: 30,
+		priority: 0,
+		flags: {},
+		sleepUsable: true,
+		noMetronome: ['banefulbunker', 'foolishdestruction', 'afteryou', 'assist', 'belch', 'bestow', 'celebrate', 'copycat', 'counter', 'covet', 'craftyshield', 'destinybond', 'detect', 'endure', 'focuspunch', 'followme', 'happyhour', 'helpinghand', 'holdhands', 'hyperspacefury', 'kingsshield', 'matblock', 'mefirst', 'metronome', 'mimic', 'mirrorcoat', 'mirrormove', 'naturepower', 'protect', 'quash', 'quickguard', 'ragepowder', 'sketch', 'sleeptalk', 'snarl', 'snatch', 'snore', 'spikyshield', 'struggle', 'switcheroo', 'thief', 'trick', 'wideguard'],
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Taunt", target);
-			this.add('-anim', source, "Memento", target);
-			this.add('-anim', target, "Explosion", target);
-		},
-		effect: {
-			duration: 4,
-			onStart: function (side) {
-				this.add('-sidestart', side, 'move: Going Down');
-				this.add('-message', side.name + ' cannot attack for 3 turns!');
-			},
-			onDisableMove: function (pokemon) {
-				for (const moveSlot of pokemon.moveSlots) {
-					if (this.getMove(moveSlot.id).category !== 'Status' && this.getMove(moveSlot.id).id !== 'struggle') {
-						pokemon.disableMove(moveSlot.id);
-					}
-				}
-			},
-			onBeforeMovePriority: 5,
-			onBeforeMove: function (attacker, defender, move) {
-				if (!move.isZ && move.category !== 'Status' && move.id !== 'struggle') {
-					this.add('cant', attacker, 'move: Going Down', move);
-					return false;
-				}
-			},
-			onResidualOrder: 22,
-			onResidualSubOrder: 4,
-			onEnd: function (side) {
-				this.add('-sideend', side, 'move: Going Down');
-				this.add('-message', side.name + ' can attack again!');
-			},
-		},
-		secondary: false,
-		target: "normal",
-		type: "Dark",
-		contestType: "Tough",
-	},
-	"memes": {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		shortDesc: "Unconcentrates the Opponent.",
-		id: "memes",
-		name: "Memes",
-		pp: 20,
-		priority: 0,
-		flags: {reflectable: 1},
-		sideCondition: 'memes',
-		onPrepareHit: function (target, source) {
-			this.attrLastMove('[still]');
+			this.add('-anim', source, "Quiver Dance", source);
 			this.add('-anim', source, "Nasty Plot", source);
 		},
-		effect: {
-			// this is a side condition
-			onStart: function (side) {
-				this.add('-sidestart', side, 'move: Memes');
-			},
-			onSwitchIn: function (pokemon) {
-				pokemon.addVolatile('any', '[Silent]');
-			},
+		onHit: function (target, source, effect) {
+			let moves = [];
+			for (let i in exports.BattleMovedex) {
+				let move = exports.BattleMovedex[i];
+				if (i !== move.id) continue;
+				if (move.isZ || move.isNonstandard) continue;
+				// @ts-ignore
+				if (effect.noMetronome.includes(move.id)) continue;
+				if (this.getMove(i).gen > this.gen) continue;
+				moves.push(move);
+			}
+			let r1 = '';
+			let r2 = '';
+			let r3 = '';
+			if (moves.length) {
+				moves.sort((a, b) => a.num - b.num);
+				r1 = this.sample(moves).id;
+				r2 = this.sample(moves).id;
+				r3 = this.sample(moves).id;
+			}
+			if (!r1 || !r2 || !r3) {
+				return false;
+			}
+			this.useMove(r1, target);
+			this.useMove(r2, target);
+			this.useMove(r3, target);
 		},
 		secondary: false,
-		target: "foeSide",
-		type: "Rock",
-		zMoveBoost: {def: 1},
-		contestType: "Cool",
+		target: "self",
+		type: "Normal",
+		contestType: "Cute",
 	},
 	//Stabby the Krabby
 	"stabstab": {
@@ -513,7 +454,7 @@ exports.BattleMovedex = {
 			this.add('c|*Stabby the Krabby|Stabby Stabby!');
 		},
 		pp: 5,
-		priority: 0.1,
+		priority: 1,
 		multihit: [2, 2],
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
@@ -725,7 +666,7 @@ exports.BattleMovedex = {
 		name: "Kitty Crush",
 		pp: 5,
 		noPPBoosts: true,
-		priority: 1,
+		priority: 2,
 		flags: {protect: 1, mirror: 1, contact: 1},
 		secondary: {
 			chance: 60,
@@ -753,41 +694,6 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Normal",
 	},
-	//wgc
-	"hazereborn": {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		desc: "Inverts the target's stat stages and a 40% chance to freeze.",
-		id: "hazereborn",
-		name: "Haze Reborn",
-		pp: 20,
-		priority: 0,
-		flags: {protect: 1, reflectable: 1, mirror: 1, mystery: 1},
-		onHit: function (target) {
-			let success = false;
-			for (let i in target.boosts) {
-				if (target.boosts[i] === 0) continue;
-				target.boosts[i] = -target.boosts[i];
-				success = true;
-			}
-			if (!success) return false;
-			this.add('-invertboost', target, '[from] move: Haze Reborn');
-		},
-		secondary: {
-			chance: 40,
-			status: 'frz',
-		},
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Glaciate", source);
-			this.add('-anim', source, "Dark Void", target);
-		},
-		target: "normal",
-		type: "Ice",
-		zMoveBoost: {spa: 1},
-		contestType: "Clever",
-	},
 	//bunnery5
 	bunneryhatesyouseed: {
 		category: "Status",
@@ -800,7 +706,7 @@ exports.BattleMovedex = {
 		isNonstandard: true,
 		pp: 6,
 		noPPBoosts: true,
-		priority: 1,
+		priority: 2,
 		flags: {mirror: 1, protect: 1},
 		volatileStatus: 'leechseed',
 		effect: {
@@ -886,55 +792,6 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
-	},
-	//Showdown Helper
-	"psychotherapy": {
-		accuracy: 100,
-		basePower: 100,
-		category: "Special",
-		desc: "Hits defense stat. Drains 10% of Damage Dealt.",
-		id: "psychotherapy",
-		isViable: true,
-		name: "Psychotherapy",
-		pp: 20,
-		priority: 0,
-		flags: {protect: 1, mirror: 1, heal: 1},
-		defensiveCategory: "Physical",
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Psystrike", target);
-		},
-		drain: [1, 10],
-		target: "normal",
-		type: "Fairy",
-		zMovePower: 195,
-		contestType: "Clever",
-	},
-	// Finny
-	"dyinginside": {
-		accuracy: 95,
-		basePower: 100,
-		category: "Physical",
-		desc: "This move combines Ghost in its type effectiveness against the target. Damage doubles and no accuracy check is done if the target has used Minimize while active.",
-		shortDesc: "Combines Ghost in its type effectiveness.",
-		id: "dyinginside",
-		name: "Dying Inside",
-		pp: 10,
-		flags: {protect: 1, mirror: 1},
-		onEffectiveness: function (typeMod, type, move) {
-			return typeMod + this.getEffectiveness('Ghost', type);
-		},
-		onPrepareHit: function (target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "Memento", target);
-			this.add('-anim', source, "Blizzard", target);
-		},
-		priority: 0,
-		secondary: false,
-		target: "normal",
-		type: "Ice",
-		zMovePower: 170,
-		contestType: "Clever",
 	},
 	//The Dazzler Joe
 	"kingscurse": {
