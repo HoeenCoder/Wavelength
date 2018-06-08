@@ -38,20 +38,16 @@ exports.BattleItems = {
 		},
 		onDamage: function (damage, target, source, effect) {
 			if (target.hp === target.maxhp && damage >= target.hp && effect && effect.effectType === 'Move' && !source.volatiles['sash']) {
-				if (target.useItem()) {
-					return target.hp - 1;
-					source.addVolatile('sash');
-				}
+				source.addVolatile('sash');
+				return target.hp - 1;
 			}
 		},
 		onSourceModifyDamage: function (damage, source, target, move) {
 			if (move.type === 'Ground' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6)) && !source.volatiles['shuca']) {
-				if (target.eatItem()) {
-					this.debug('-50% reduction');
-					this.add('-enditem', target, this.effect, '[weaken]');
-					return this.chainModify(0.5);
-					source.addVolatile('shuca');
-				}
+				this.debug('-50% reduction');
+				this.add('-enditem', target, this.effect, '[weaken]');
+				source.addVolatile('shuca');
+				return this.chainModify(0.5);
 			}
 		},
 		onUpdate: function (pokemon) {
