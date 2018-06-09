@@ -825,7 +825,6 @@ let BattlePokedex = {
 		num: -2063,
 		species: "Greymon",
 		stage: "Champion",
-		stage: "Champion",
 		types: ["Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 77, def: 62, spa: 58, spd: 54, spe: 54},
