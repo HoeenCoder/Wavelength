@@ -5,6 +5,7 @@ let BattlePokedex = {
 	botamon: {
 		num: -2000,
 		species: "Botamon",
+		stage: "Fresh",
 		types: ["Flame"],
 		gender: "N",
 		baseStats: {hp: 44, atk: 28, def: 21, spa: 31, spd: 18, spe: 19},
@@ -17,6 +18,7 @@ let BattlePokedex = {
 	dodomon: {
 		num: -2001,
 		species: "Dodomon",
+		stage: "Fresh",
 		types: ["Battle"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 35, def: 24, spa: 34, spd: 35, spe: 21},
@@ -29,6 +31,7 @@ let BattlePokedex = {
 	kuramon: {
 		num: -2002,
 		species: "Kuramon",
+		stage: "Fresh",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 23, def: 18, spa: 23, spd: 19, spe: 19},
@@ -41,6 +44,7 @@ let BattlePokedex = {
 	poyomon: {
 		num: -2003,
 		species: "Poyomon",
+		stage: "Fresh",
 		types: ["Air"],
 		gender: "N",
 		baseStats: {hp: 47, atk: 19, def: 21, spa: 25, spd: 25, spe: 17},
@@ -53,6 +57,7 @@ let BattlePokedex = {
 	punimon: {
 		num: -2004,
 		species: "Punimon",
+		stage: "Fresh",
 		types: ["Air"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 34, def: 20, spa: 25, spd: 20, spe: 25},
@@ -65,6 +70,7 @@ let BattlePokedex = {
 	yuramon: {
 		num: -2005,
 		species: "Yuramon",
+		stage: "Fresh",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 46, atk: 19, def: 24, spa: 17, spd: 24, spe: 18},
@@ -77,6 +83,7 @@ let BattlePokedex = {
 	bukamon: {
 		num: -2006,
 		species: "Bukamon",
+		stage: "In-Training",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 25, def: 17, spa: 25, spd: 19, spe: 27},
@@ -89,6 +96,7 @@ let BattlePokedex = {
 	dorimon: {
 		num: -2007,
 		species: "Dorimon",
+		stage: "In-Training",
 		types: ["Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 50, atk: 35, def: 27, spa: 34, spd: 27, spe: 25},
@@ -101,6 +109,7 @@ let BattlePokedex = {
 	koromon: {
 		num: -2008,
 		species: "Koromon",
+		stage: "In-Training",
 		types: ["Flame"],
 		gender: "N",
 		baseStats: {hp: 44, atk: 31, def: 23, spa: 23, spd: 23, spe: 19},
@@ -113,6 +122,7 @@ let BattlePokedex = {
 	motimon: {
 		num: -2009,
 		species: "Motimon",
+		stage: "In-Training",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 41, atk: 29, def: 19, spa: 29, spd: 20, spe: 18},
@@ -125,6 +135,7 @@ let BattlePokedex = {
 	nyaromon: {
 		num: -2010,
 		species: "Nyaromon",
+		stage: "In-Training",
 		types: ["Holy"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 25, def: 16, spa: 27, spd: 17, spe: 21},
@@ -137,6 +148,7 @@ let BattlePokedex = {
 	tanemon: {
 		num: -2011,
 		species: "Tanemon",
+		stage: "In-Training",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 42, atk: 25, def: 19, spa: 25, spd: 21, spe: 20},
@@ -149,6 +161,7 @@ let BattlePokedex = {
 	tokomon: {
 		num: -2012,
 		species: "Tokomon",
+		stage: "In-Training",
 		types: ["Battle"],
 		gender: "N",
 		baseStats: {hp: 40, atk: 24, def: 17, spa: 24, spd: 19, spe: 25},
@@ -161,6 +174,7 @@ let BattlePokedex = {
 	tsumemon: {
 		num: -2013,
 		species: "Tsumemon",
+		stage: "In-Training",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 50, atk: 37, def: 26, spa: 37, spd: 27, spe: 26},
@@ -173,6 +187,7 @@ let BattlePokedex = {
 	tsunomon: {
 		num: -2014,
 		species: "Tsunomon",
+		stage: "In-Training",
 		types: ["Air", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 43, atk: 34, def: 22, spa: 25, spd: 22, spe: 25},
@@ -185,6 +200,7 @@ let BattlePokedex = {
 	agumon: {
 		num: -2015,
 		species: "Agumon",
+		stage: "Rookie",
 		types: ["Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 74, atk: 56, def: 41, spa: 41, spd: 35, spe: 38},
@@ -197,6 +213,7 @@ let BattlePokedex = {
 	aruraumon: {
 		num: -2016,
 		species: "Aruraumon",
+		stage: "Rookie",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 72, atk: 49, def: 42, spa: 47, spd: 42, spe: 41},
@@ -209,6 +226,7 @@ let BattlePokedex = {
 	betamon: {
 		num: -2017,
 		species: "Betamon",
+		stage: "Rookie",
 		types: ["Aqua", "Air"],
 		gender: "N",
 		baseStats: {hp: 57, atk: 51, def: 33, spa: 48, spd: 44, spe: 35},
@@ -221,6 +239,7 @@ let BattlePokedex = {
 	biyomon: {
 		num: -2018,
 		species: "Biyomon",
+		stage: "Rookie",
 		types: ["Flame", "Air"],
 		gender: "N",
 		baseStats: {hp: 66, atk: 47, def: 35, spa: 47, spd: 34, spe: 49},
@@ -233,6 +252,7 @@ let BattlePokedex = {
 	clearagumon: {
 		num: -2019,
 		species: "ClearAgumon",
+		stage: "Rookie",
 		types: ["Mech", "Holy"],
 		gender: "N",
 		baseStats: {hp: 74, atk: 52, def: 44, spa: 52, spd: 42, spe: 39},
@@ -245,6 +265,7 @@ let BattlePokedex = {
 	demidevimon: {
 		num: -2020,
 		species: "DemiDevimon",
+		stage: "Rookie",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 67, atk: 49, def: 45, spa: 50, spd: 45, spe: 43},
@@ -257,6 +278,7 @@ let BattlePokedex = {
 	dokunemon: {
 		num: -2021,
 		species: "Dokunemon",
+		stage: "Rookie",
 		types: ["Nature", "Air"],
 		gender: "N",
 		baseStats: {hp: 71, atk: 54, def: 43, spa: 52, spd: 43, spe: 37},
@@ -269,6 +291,7 @@ let BattlePokedex = {
 	dorumon: {
 		num: -2022,
 		species: "Dorumon",
+		stage: "Rookie",
 		types: ["Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 85, atk: 53, def: 45, spa: 52, spd: 45, spe: 35},
@@ -281,6 +304,7 @@ let BattlePokedex = {
 	elecmon: {
 		num: -2023,
 		species: "Elecmon",
+		stage: "Rookie",
 		types: ["Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 75, atk: 53, def: 35, spa: 51, spd: 35, spe: 33},
@@ -293,6 +317,7 @@ let BattlePokedex = {
 	gabumon: {
 		num: -2024,
 		species: "Gabumon",
+		stage: "Rookie",
 		types: ["Flame", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 76, atk: 58, def: 39, spa: 56, spd: 39, spe: 42},
@@ -305,6 +330,7 @@ let BattlePokedex = {
 	goburimon: {
 		num: -2025,
 		species: "Goburimon",
+		stage: "Rookie",
 		types: ["Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 79, atk: 55, def: 48, spa: 43, spd: 43, spe: 33},
@@ -317,6 +343,7 @@ let BattlePokedex = {
 	gomamon: {
 		num: -2026,
 		species: "Gomamon",
+		stage: "Rookie",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 72, atk: 50, def: 44, spa: 50, spd: 42, spe: 37},
@@ -329,6 +356,7 @@ let BattlePokedex = {
 	gotsumon: {
 		num: -2027,
 		species: "Gotsumon",
+		stage: "Rookie",
 		types: ["Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 88, atk: 52, def: 54, spa: 54, spd: 40, spe: 32},
@@ -341,6 +369,7 @@ let BattlePokedex = {
 	kunemon: {
 		num: -2028,
 		species: "Kunemon",
+		stage: "Rookie",
 		types: ["Nature", "Air"],
 		gender: "N",
 		baseStats: {hp: 66, atk: 50, def: 45, spa: 48, spd: 45, spe: 35},
@@ -353,6 +382,7 @@ let BattlePokedex = {
 	modokibetamon: {
 		num: -2029,
 		species: "ModokiBetamon",
+		stage: "Rookie",
 		types: ["Air", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 54, atk: 52, def: 33, spa: 49, spd: 45, spe: 37},
@@ -365,6 +395,7 @@ let BattlePokedex = {
 	muchomon: {
 		num: -2030,
 		species: "Muchomon",
+		stage: "Rookie",
 		types: ["Flame", "Aqua", "Nature"],
 		gender: "N",
 		baseStats: {hp: 64, atk: 47, def: 36, spa: 47, spd: 34, spe: 47},
@@ -377,6 +408,7 @@ let BattlePokedex = {
 	otamamon: {
 		num: -2031,
 		species: "Otamamon",
+		stage: "Rookie",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 70, atk: 50, def: 31, spa: 47, spd: 42, spe: 35},
@@ -389,6 +421,7 @@ let BattlePokedex = {
 	palmon: {
 		num: -2032,
 		species: "Palmon",
+		stage: "Rookie",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 69, atk: 50, def: 38, spa: 47, spd: 38, spe: 41},
@@ -401,6 +434,7 @@ let BattlePokedex = {
 	patamon: {
 		num: -2033,
 		species: "Patamon",
+		stage: "Rookie",
 		types: ["Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 64, atk: 46, def: 37, spa: 44, spd: 37, spe: 51},
@@ -413,6 +447,7 @@ let BattlePokedex = {
 	penguinmon: {
 		num: -2034,
 		species: "Penguinmon",
+		stage: "Rookie",
 		types: ["Aqua", "Nature"],
 		gender: "N",
 		baseStats: {hp: 72, atk: 50, def: 43, spa: 50, spd: 41, spe: 40},
@@ -425,6 +460,7 @@ let BattlePokedex = {
 	psychemon: {
 		num: -2035,
 		species: "Psychemon",
+		stage: "Rookie",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 76, atk: 58, def: 40, spa: 56, spd: 40, spe: 41},
@@ -437,6 +473,7 @@ let BattlePokedex = {
 	salamon: {
 		num: -2036,
 		species: "Salamon",
+		stage: "Rookie",
 		types: ["Holy"],
 		gender: "N",
 		baseStats: {hp: 70, atk: 38, def: 37, spa: 51, spd: 39, spe: 41},
@@ -449,6 +486,7 @@ let BattlePokedex = {
 	shamanmon: {
 		num: -2037,
 		species: "Shamanmon",
+		stage: "Rookie",
 		types: ["Evil", "Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 78, atk: 50, def: 40, spa: 49, spd: 39, spe: 39},
@@ -461,6 +499,7 @@ let BattlePokedex = {
 	snowagumon: {
 		num: -2038,
 		species: "SnowAgumon",
+		stage: "Rookie",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 66, atk: 51, def: 44, spa: 38, spd: 38, spe: 36},
@@ -473,6 +512,7 @@ let BattlePokedex = {
 	snowgoburimon: {
 		num: -2039,
 		species: "SnowGoburimon",
+		stage: "Rookie",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 74, atk: 53, def: 41, spa: 41, spd: 37, spe: 41},
@@ -485,6 +525,7 @@ let BattlePokedex = {
 	tentomon: {
 		num: -2040,
 		species: "Tentomon",
+		stage: "Rookie",
 		types: ["Air", "Nature"],
 		gender: "N",
 		baseStats: {hp: 71, atk: 45, def: 47, spa: 50, spd: 40, spe: 42},
@@ -497,6 +538,7 @@ let BattlePokedex = {
 	toyagumon: {
 		num: -2041,
 		species: "ToyAgumon",
+		stage: "Rookie",
 		types: ["Mech", "Flame"],
 		gender: "N",
 		baseStats: {hp: 76, atk: 48, def: 47, spa: 49, spd: 45, spe: 37},
@@ -509,6 +551,7 @@ let BattlePokedex = {
 	tsukaimon: {
 		num: -2042,
 		species: "Tsukaimon",
+		stage: "Rookie",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 68, atk: 47, def: 39, spa: 45, spd: 39, spe: 50},
@@ -521,6 +564,7 @@ let BattlePokedex = {
 	airdramon: {
 		num: -2043,
 		species: "Airdramon",
+		stage: "Champion",
 		types: ["Air", "Flame"],
 		gender: "N",
 		baseStats: {hp: 98, atk: 57, def: 62, spa: 54, spd: 61, spe: 63},
@@ -533,6 +577,7 @@ let BattlePokedex = {
 	akatorimon: {
 		num: -2044,
 		species: "Akatorimon",
+		stage: "Champion",
 		types: ["AIr", "Flame"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 64, def: 62, spa: 64, spd: 54, spe: 54},
@@ -545,6 +590,7 @@ let BattlePokedex = {
 	angemon: {
 		num: -2045,
 		species: "Angemon",
+		stage: "Champion",
 		types: ["Holy", "Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 64, def: 52, spa: 64, spd: 50, spe: 59},
@@ -557,6 +603,7 @@ let BattlePokedex = {
 	bakemon: {
 		num: -2046,
 		species: "Bakemon",
+		stage: "Champion",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 104, atk: 42, def: 56, spa: 58, spd: 62, spe: 56},
@@ -569,6 +616,7 @@ let BattlePokedex = {
 	birdramon: {
 		num: -2047,
 		species: "Birdramon",
+		stage: "Champion",
 		types: ["Flame", "Air"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 62, def: 50, spa: 62, spd: 49, spe: 60},
@@ -581,6 +629,7 @@ let BattlePokedex = {
 	blackgatomon: {
 		num: -2048,
 		species: "BlackGatomon",
+		stage: "Champion",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 98, atk: 49, def: 44, spa: 66, spd: 49, spe: 60},
@@ -593,6 +642,7 @@ let BattlePokedex = {
 	centarumon: {
 		num: -2049,
 		species: "Centarumon",
+		stage: "Champion",
 		types: ["Mech", "Flame", "Holy"],
 		gender: "N",
 		baseStats: {hp: 101, atk: 64, def: 65, spa: 64, spd: 57, spe: 59},
@@ -605,6 +655,7 @@ let BattlePokedex = {
 	coelamon: {
 		num: -2050,
 		species: "Coelamon",
+		stage: "Champion",
 		types: ["Aqua", "Nature", "Mech"],
 		gender: "N",
 		baseStats: {hp: 110, atk: 60, def: 58, spa: 52, spd: 51, spe: 54},
@@ -617,6 +668,7 @@ let BattlePokedex = {
 	darkrizamon: {
 		num: -2051,
 		species: "Darkrizamon",
+		stage: "Champion",
 		types: ["Flame", "Evil"],
 		gender: "N",
 		baseStats: {hp: 107, atk: 76, def: 54, spa: 76, spd: 62, spe: 52},
@@ -629,6 +681,7 @@ let BattlePokedex = {
 	devimon: {
 		num: -2052,
 		species: "Devimon",
+		stage: "Champion",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 111, atk: 53, def: 50, spa: 72, spd: 55, spe: 53},
@@ -641,6 +694,7 @@ let BattlePokedex = {
 	dolphmon: {
 		num: -2053,
 		species: "Dolphmon",
+		stage: "Champion",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 98, atk: 56, def: 58, spa: 56, spd: 50, spe: 58},
@@ -653,6 +707,7 @@ let BattlePokedex = {
 	dorugamon: {
 		num: -2054,
 		species: "Dorugamon",
+		stage: "Champion",
 		types: ["Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 75, def: 68, spa: 73, spd: 67, spe: 54},
@@ -665,6 +720,7 @@ let BattlePokedex = {
 	drimogemon: {
 		num: -2055,
 		species: "Drimogemon",
+		stage: "Champion",
 		types: ["Nature", "Mech"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 73, def: 64, spa: 64, spd: 56, spe: 49},
@@ -677,6 +733,7 @@ let BattlePokedex = {
 	flarerizamon: {
 		num: -2056,
 		species: "Flarerizamon",
+		stage: "Champion",
 		types: ["Flame"],
 		gender: "N",
 		baseStats: {hp: 108, atk: 74, def: 52, spa: 74, spd: 60, spe: 54},
@@ -689,6 +746,7 @@ let BattlePokedex = {
 	frigimon: {
 		num: -2057,
 		species: "Frigimon",
+		stage: "Champion",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 104, atk: 59, def: 68, spa: 59, spd: 67, spe: 45},
@@ -701,6 +759,7 @@ let BattlePokedex = {
 	fugamon: {
 		num: -2058,
 		species: "Fugamon",
+		stage: "Champion",
 		types: ["Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 76, def: 58, spa: 77, spd: 58, spe: 52},
@@ -713,6 +772,7 @@ let BattlePokedex = {
 	garurumon: {
 		num: -2059,
 		species: "Garurumon",
+		stage: "Champion",
 		types: ["Aqua", "Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 111, atk: 60, def: 54, spa: 68, spd: 52, spe: 56},
@@ -725,6 +785,7 @@ let BattlePokedex = {
 	gatomon: {
 		num: -2060,
 		species: "Gatomon",
+		stage: "Champion",
 		types: ["Holy"],
 		gender: "N",
 		baseStats: {hp: 101, atk: 49, def: 47, spa: 65, spd: 51, spe: 57},
@@ -737,6 +798,7 @@ let BattlePokedex = {
 	gekomon: {
 		num: -2061,
 		species: "Gekomon",
+		stage: "Champion",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 56, def: 54, spa: 55, spd: 56, spe: 54},
@@ -749,6 +811,7 @@ let BattlePokedex = {
 	geremon: {
 		num: -2062,
 		species: "Geremon",
+		stage: "Champion",
 		types: ["Filth", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 61, def: 66, spa: 62, spd: 66, spe: 48},
@@ -761,6 +824,7 @@ let BattlePokedex = {
 	greymon: {
 		num: -2063,
 		species: "Greymon",
+		stage: "Champion",
 		types: ["Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 77, def: 62, spa: 58, spd: 54, spe: 54},
@@ -773,6 +837,7 @@ let BattlePokedex = {
 	guardromon: {
 		num: -2064,
 		species: "Guardromon",
+		stage: "Champion",
 		types: ["Mech", "Flame"],
 		gender: "N",
 		baseStats: {hp: 115, atk: 62, def: 70, spa: 71, spd: 52, spe: 49},
@@ -785,6 +850,7 @@ let BattlePokedex = {
 	gururumon: {
 		num: -2065,
 		species: "Gururumon",
+		stage: "Champion",
 		types: ["Evil", "Battle", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 108, atk: 60, def: 51, spa: 68, spd: 50, spe: 61},
@@ -797,6 +863,7 @@ let BattlePokedex = {
 	hyogamon: {
 		num: -2066,
 		species: "Hyogamon",
+		stage: "Champion",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 110, atk: 74, def: 62, spa: 76, spd: 62, spe: 48},
@@ -809,6 +876,7 @@ let BattlePokedex = {
 	icedevimon: {
 		num: -2067,
 		species: "IceDevimon",
+		stage: "Champion",
 		types: ["Evil", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 108, atk: 68, def: 60, spa: 70, spd: 60, spe: 50},
@@ -821,6 +889,7 @@ let BattlePokedex = {
 	icemon: {
 		num: -2068,
 		species: "Icemon",
+		stage: "Champion",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 54, def: 69, spa: 55, spd: 68, spe: 50},
@@ -833,6 +902,7 @@ let BattlePokedex = {
 	ikkakumon: {
 		num: -2069,
 		species: "Ikkakumon",
+		stage: "Champion",
 		types: ["Aqua", "Mech"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 79, def: 64, spa: 74, spd: 63, spe: 45},
@@ -845,6 +915,7 @@ let BattlePokedex = {
 	junglemojyamon: {
 		num: -2070,
 		species: "JungleMojyamon",
+		stage: "Champion",
 		types: ["Battle", "Nature"],
 		gender: "N",
 		baseStats: {hp: 108, atk: 70, def: 62, spa: 62, spd: 62, spe: 56},
@@ -857,6 +928,7 @@ let BattlePokedex = {
 	kabuterimon: {
 		num: -2071,
 		species: "Kabuterimon",
+		stage: "Champion",
 		types: ["Air", "Nature"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 64, def: 68, spa: 71, spd: 68, spe: 54},
@@ -869,6 +941,7 @@ let BattlePokedex = {
 	kokatorimon: {
 		num: -2072,
 		species: "Kokatorimon",
+		stage: "Champion",
 		types: ["Air", "Filth"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 68, def: 51, spa: 68, spd: 44, spe: 54},
@@ -881,6 +954,7 @@ let BattlePokedex = {
 	kuwagamon: {
 		num: -2073,
 		species: "Kuwagamon",
+		stage: "Champion",
 		types: ["Nature", "Battle", "Air"],
 		gender: "N",
 		baseStats: {hp: 107, atk: 72, def: 48, spa: 74, spd: 48, spe: 55},
@@ -893,6 +967,7 @@ let BattlePokedex = {
 	leomon: {
 		num: -2074,
 		species: "Leomon",
+		stage: "Champion",
 		types: ["Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 79, def: 52, spa: 60, spd: 46, spe: 50},
@@ -905,6 +980,7 @@ let BattlePokedex = {
 	meicoomon: {
 		num: -2075,
 		species: "Meicoomon",
+		stage: "Champion",
 		types: ["Battle"],
 		gender: "N",
 		baseStats: {hp: 98, atk: 68, def: 46, spa: 68, spd: 47, spe: 60},
@@ -917,6 +993,7 @@ let BattlePokedex = {
 	meramon: {
 		num: -2076,
 		species: "Meramon",
+		stage: "Champion",
 		types: ["Flame"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 80, def: 47, spa: 59, spd: 42, spe: 51},
@@ -929,6 +1006,7 @@ let BattlePokedex = {
 	mikemon: {
 		num: -2077,
 		species: "Mikemon",
+		stage: "Champion",
 		types: ["Battle"],
 		gender: "N",
 		baseStats: {hp: 104, atk: 50, def: 47, spa: 66, spd: 51, spe: 54},
@@ -941,6 +1019,7 @@ let BattlePokedex = {
 	mojyamon: {
 		num: -2078,
 		species: "Mojyamon",
+		stage: "Champion",
 		types: ["Battle", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 105, atk: 63, def: 68, spa: 55, spd: 68, spe: 45},
@@ -953,6 +1032,7 @@ let BattlePokedex = {
 	monochromon: {
 		num: -2079,
 		species: "Monochromon",
+		stage: "Champion",
 		types: ["Flame", "Nature"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 76, def: 66, spa: 66, spd: 58, spe: 49},
@@ -965,6 +1045,7 @@ let BattlePokedex = {
 	morishellmon: {
 		num: -2080,
 		species: "MoriShellmon",
+		stage: "Champion",
 		types: ["Aqua", "Nature"],
 		gender: "N",
 		baseStats: {hp: 110, atk: 68, def: 67, spa: 68, spd: 59, spe: 45},
@@ -977,6 +1058,7 @@ let BattlePokedex = {
 	mudfrigimon: {
 		num: -2081,
 		species: "MudFrigimon",
+		stage: "Champion",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 102, atk: 64, def: 66, spa: 64, spd: 65, spe: 44},
@@ -989,6 +1071,7 @@ let BattlePokedex = {
 	nanimon: {
 		num: -2082,
 		species: "Nanimon",
+		stage: "Champion",
 		types: ["Filth", "Battle"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 62, def: 57, spa: 71, spd: 43, spe: 47},
@@ -1001,6 +1084,7 @@ let BattlePokedex = {
 	ninjamon: {
 		num: -2083,
 		species: "Ninjamon",
+		stage: "Champion",
 		types: ["Nature", "Battle", "Flame"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 72, def: 52, spa: 63, spd: 52, spe: 60},
@@ -1013,6 +1097,7 @@ let BattlePokedex = {
 	nisedrimogemon: {
 		num: -2084,
 		species: "NiseDrimogemon",
+		stage: "Champion",
 		types: ["Nature", "Mech"],
 		gender: "N",
 		baseStats: {hp: 109, atk: 62, def: 62, spa: 54, spd: 54, spe: 51},
@@ -1025,6 +1110,7 @@ let BattlePokedex = {
 	numemon: {
 		num: -2085,
 		species: "Numemon",
+		stage: "Champion",
 		types: ["Filth", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 96, atk: 55, def: 49, spa: 51, spd: 65, spe: 46},
@@ -1037,6 +1123,7 @@ let BattlePokedex = {
 	ogremon: {
 		num: -2086,
 		species: "Ogremon",
+		stage: "Champion",
 		types: ["Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 76, def: 64, spa: 78, spd: 64, spe: 47},
@@ -1049,6 +1136,7 @@ let BattlePokedex = {
 	piddomon: {
 		num: -2087,
 		species: "Piddomon",
+		stage: "Champion",
 		types: ["Holy", "Air", "Flame"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 68, def: 53, spa: 64, spd: 52, spe: 56},
@@ -1061,6 +1149,7 @@ let BattlePokedex = {
 	platinumsukamon: {
 		num: -2088,
 		species: "PlatinumSukamon",
+		stage: "Champion",
 		types: ["Mech", "Filth"],
 		gender: "N",
 		baseStats: {hp: 115, atk: 70, def: 64, spa: 70, spd: 66, spe: 45},
@@ -1073,6 +1162,7 @@ let BattlePokedex = {
 	redvegiemon: {
 		num: -2089,
 		species: "RedVegiemon",
+		stage: "Champion",
 		types: ["Nature", "Flame"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 68, def: 54, spa: 70, spd: 54, spe: 51},
@@ -1085,6 +1175,7 @@ let BattlePokedex = {
 	rockmon: {
 		num: -2090,
 		species: "Rockmon",
+		stage: "Champion",
 		types: ["Mech"],
 		gender: "N",
 		baseStats: {hp: 107, atk: 70, def: 60, spa: 70, spd: 58, spe: 38},
@@ -1097,6 +1188,7 @@ let BattlePokedex = {
 	saberdramon: {
 		num: -2091,
 		species: "Saberdramon",
+		stage: "Champion",
 		types: ["AIr", "Evil"],
 		gender: "N",
 		baseStats: {hp: 99, atk: 76, def: 48, spa: 63, spd: 47, spe: 60},
@@ -1121,6 +1213,7 @@ let BattlePokedex = {
 	seadramon: {
 		num: -2093,
 		species: "Seadramon",
+		stage: "Champion",
 		types: ["Aqua", "Flame"],
 		gender: "N",
 		baseStats: {hp: 101, atk: 70, def: 60, spa: 70, spd: 63, spe: 49},
@@ -1133,6 +1226,7 @@ let BattlePokedex = {
 	shellmon: {
 		num: -2094,
 		species: "Shellmon",
+		stage: "Champion",
 		types: ["Aqua", "Nature"],
 		gender: "N",
 		baseStats: {hp: 114, atk: 69, def: 68, spa: 69, spd: 60, spe: 42},
@@ -1145,6 +1239,7 @@ let BattlePokedex = {
 	shimaunimon: {
 		num: -2095,
 		species: "ShimaUnimon",
+		stage: "Champion",
 		types: ["Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 93, atk: 62, def: 50, spa: 70, spd: 44, spe: 60},
@@ -1157,6 +1252,7 @@ let BattlePokedex = {
 	soulmon: {
 		num: -2096,
 		species: "Soulmon",
+		stage: "Champion",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 104, atk: 33, def: 55, spa: 66, spd: 66, spe: 54},
@@ -1169,6 +1265,7 @@ let BattlePokedex = {
 	sukamon: {
 		num: -2097,
 		species: "Sukamon",
+		stage: "Champion",
 		types: ["Flith"],
 		gender: "N",
 		baseStats: {hp: 106, atk: 55, def: 59, spa: 56, spd: 59, spe: 52},
@@ -1181,6 +1278,7 @@ let BattlePokedex = {
 	tankmon: {
 		num: -2098,
 		species: "Tankmon",
+		stage: "Champion",
 		types: ["Mech", "Flame"],
 		gender: "N",
 		baseStats: {hp: 115, atk: 69, def: 68, spa: 75, spd: 51, spe: 50},
@@ -1193,6 +1291,7 @@ let BattlePokedex = {
 	togemon: {
 		num: -2099,
 		species: "Togemon",
+		stage: "Champion",
 		types: ["Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 111, atk: 72, def: 64, spa: 70, spd: 64, spe: 47},
@@ -1205,6 +1304,7 @@ let BattlePokedex = {
 	tyrannomon: {
 		num: -2100,
 		species: "Tyrannomon",
+		stage: "Champion",
 		types: ["Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 112, atk: 75, def: 52, spa: 73, spd: 52, spe: 50},
@@ -1217,6 +1317,7 @@ let BattlePokedex = {
 	unimon: {
 		num: -2101,
 		species: "Unimon",
+		stage: "Champion",
 		types: ["Air", "Holy"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 64, def: 50, spa: 64, spd: 44, spe: 58},
@@ -1229,6 +1330,7 @@ let BattlePokedex = {
 	vegiemon: {
 		num: -2102,
 		species: "Vegiemon",
+		stage: "Champion",
 		types: ["Nature"],
 		gender: "N",
 		baseStats: {hp: 102, atk: 54, def: 62, spa: 55, spd: 62, spe: 49},
@@ -1241,6 +1343,7 @@ let BattlePokedex = {
 	weedmon: {
 		num: -2103,
 		species: "Weedmon",
+		stage: "Champion",
 		types: ["Nature", "Filth"],
 		gender: "N",
 		baseStats: {hp: 104, atk: 68, def: 55, spa: 69, spd: 55, spe: 47},
@@ -1253,6 +1356,7 @@ let BattlePokedex = {
 	yanmamon: {
 		num: -2104,
 		species: "Yanmamon",
+		stage: "Champion",
 		types: ["Air", "Nature"],
 		gender: "N",
 		baseStats: {hp: 100, atk: 61, def: 54, spa: 70, spd: 47, spe: 53},
@@ -1265,6 +1369,7 @@ let BattlePokedex = {
 	andromon: {
 		num: -2105,
 		species: "Andromon",
+		stage: "Ultimate",
 		types: ["Mech", "Air"],
 		gender: "N",
 		baseStats: {hp: 144, atk: 79, def: 82, spa: 88, spd: 61, spe: 66},
@@ -1277,6 +1382,7 @@ let BattlePokedex = {
 	angewomon: {
 		num: -2106,
 		species: "Angewomon",
+		stage: "Ultimate",
 		types: ["Holy", "Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 148, atk: 66, def: 60, spa: 87, spd: 66, spe: 76},
@@ -1289,6 +1395,7 @@ let BattlePokedex = {
 	beastmon: {
 		num: -2107,
 		species: "Beastmon",
+		stage: "Ultimate",
 		types: ["Evil", "Battle"],
 		gender: "N",
 		baseStats: {hp: 138, atk: 90, def: 60, spa: 79, spd: 53, spe: 81},
@@ -1301,6 +1408,7 @@ let BattlePokedex = {
 	blackweregarurumon: {
 		num: -2108,
 		species: "BlackWereGarurumon",
+		stage: "Ultimate",
 		types: ["Evil", "Battle", "Nature"],
 		gender: "N",
 		baseStats: {hp: 147, atk: 86, def: 77, spa: 87, spd: 77, spe: 76},
@@ -1313,6 +1421,7 @@ let BattlePokedex = {
 	bluemeramon: {
 		num: -2109,
 		species: "BlueMeramon",
+		stage: "Ultimate",
 		types: ["Flame", "Aqua"],
 		gender: "N",
 		baseStats: {hp: 157, atk: 87, def: 66, spa: 88, spd: 66, spe: 71},
@@ -1325,6 +1434,7 @@ let BattlePokedex = {
 	digitamamon: {
 		num: -2110,
 		species: "Digitamamon",
+		stage: "Ultimate",
 		types: ["Filth", "Evil"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 80, def: 87, spa: 59, spd: 78, spe: 58},
@@ -1337,6 +1447,7 @@ let BattlePokedex = {
 	dorugreymon: {
 		num: -2111,
 		species: "DoruGreymon",
+		stage: "Ultimate",
 		types: ["Battle", "Mech", "Flame"],
 		gender: "N",
 		baseStats: {hp: 155, atk: 91, def: 82, spa: 88, spd: 81, spe: 70},
@@ -1349,6 +1460,7 @@ let BattlePokedex = {
 	etemon: {
 		num: -2112,
 		species: "Etemon",
+		stage: "Ultimate",
 		types: ["Nature", "Battle", "Filth"],
 		gender: "N",
 		baseStats: {hp: 136, atk: 76, def: 84, spa: 78, spd: 84, spe: 62},
@@ -1361,6 +1473,7 @@ let BattlePokedex = {
 	garudamon: {
 		num: -2113,
 		species: "Garudamon",
+		stage: "Ultimate",
 		types: ["Air", "Flame", "Battle"],
 		gender: "N",
 		baseStats: {hp: 144, atk: 86, def: 66, spa: 86, spd: 66, spe: 77},
@@ -1373,6 +1486,7 @@ let BattlePokedex = {
 	gigadramon: {
 		num: -2114,
 		species: "Gigadramon",
+		stage: "Ultimate",
 		types: ["Mech", "Air", "Evil"],
 		gender: "N",
 		baseStats: {hp: 153, atk: 82, def: 84, spa: 93, spd: 63, spe: 70},
@@ -1385,6 +1499,7 @@ let BattlePokedex = {
 	giromon: {
 		num: -2115,
 		species: "Giromon",
+		stage: "Ultimate",
 		types: ["Mech", "Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 143, atk: 93, def: 69, spa: 82, spd: 69, spe: 65},
@@ -1397,6 +1512,7 @@ let BattlePokedex = {
 	iceleomon: {
 		num: -2116,
 		species: "IceLeomon",
+		stage: "Ultimate",
 		types: ["Aqua", "Battle"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 101, def: 69, spa: 76, spd: 61, spe: 66},
@@ -1409,6 +1525,7 @@ let BattlePokedex = {
 	ladydevimon: {
 		num: -2117,
 		species: "LadyDevimon",
+		stage: "Ultimate",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 145, atk: 66, def: 62, spa: 90, spd: 69, spe: 72},
@@ -1421,6 +1538,7 @@ let BattlePokedex = {
 	lillymon: {
 		num: -2118,
 		species: "Lillymon",
+		stage: "Ultimate",
 		types: ["Nature", "Air"],
 		gender: "N",
 		baseStats: {hp: 140, atk: 75, def: 72, spa: 74, spd: 72, spe: 76},
@@ -1433,6 +1551,7 @@ let BattlePokedex = {
 	magnaangemon: {
 		num: -2119,
 		species: "MagnaAngemon",
+		stage: "Ultimate",
 		types: ["Holy", "Air", "Mech"],
 		gender: "N",
 		baseStats: {hp: 147, atk: 89, def: 53, spa: 80, spd: 69, spe: 76},
@@ -1445,6 +1564,7 @@ let BattlePokedex = {
 	mamemon: {
 		num: -2120,
 		species: "Mamemon",
+		stage: "Ultimate",
 		types: ["Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 146, atk: 78, def: 78, spa: 86, spd: 59, spe: 68},
@@ -1457,6 +1577,7 @@ let BattlePokedex = {
 	megadramon: {
 		num: -2121,
 		species: "Megadramon",
+		stage: "Ultimate",
 		types: ["Mech", "Air", "Evil"],
 		gender: "N",
 		baseStats: {hp: 150, atk: 90, def: 78, spa: 69, spd: 70, spe: 64},
@@ -1469,6 +1590,7 @@ let BattlePokedex = {
 	megakabuterimon: {
 		num: -2122,
 		species: "MegaKabuterimon",
+		stage: "Ultimate",
 		types: ["Air", "Nature"],
 		gender: "N",
 		baseStats: {hp: 159, atk: 90, def: 81, spa: 68, spd: 72, spe: 63},
@@ -1481,6 +1603,7 @@ let BattlePokedex = {
 	megaseadramon: {
 		num: -2123,
 		species: "MegaSeadramon",
+		stage: "Ultimate",
 		types: ["Aqua", "Air", "Flame"],
 		gender: "N",
 		baseStats: {hp: 151, atk: 86, def: 70, spa: 85, spd: 70, spe: 70},
@@ -1493,6 +1616,7 @@ let BattlePokedex = {
 	meicrackmon: {
 		num: -2124,
 		species: "Meicrackmon",
+		stage: "Ultimate",
 		types: ["Battle", "Holy"],
 		gender: "N",
 		baseStats: {hp: 126, atk: 88, def: 61, spa: 86, spd: 62, spe: 78},
@@ -1505,6 +1629,7 @@ let BattlePokedex = {
 	meicrackmonviciousmode: {
 		num: -2125,
 		species: "MeicrackmonViciousMode",
+		stage: "Ultimate",
 		types: ["Battle", "Evil"],
 		gender: "N",
 		baseStats: {hp: 126, atk: 88, def: 61, spa: 86, spd: 62, spe: 78},
@@ -1517,6 +1642,7 @@ let BattlePokedex = {
 	metalgreymonvaccine: {
 		num: -2126,
 		species: "MetalGreymonVaccine",
+		stage: "Ultimate",
 		types: ["Flame", "Mech", "Battle"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 91, def: 78, spa: 68, spd: 70, spe: 67},
@@ -1529,6 +1655,7 @@ let BattlePokedex = {
 	metalgreymonvirus: {
 		num: -2127,
 		species: "MetalGreymonVirus",
+		stage: "Ultimate",
 		types: ["Flame", "Mech", "Evil"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 91, def: 78, spa: 68, spd: 70, spe: 67},
@@ -1541,6 +1668,7 @@ let BattlePokedex = {
 	metalmamemon: {
 		num: -2128,
 		species: "MetalMamemon",
+		stage: "Ultimate",
 		types: ["Mech", "Battle"],
 		gender: "N",
 		baseStats: {hp: 141, atk: 87, def: 80, spa: 86, spd: 80, spe: 71},
@@ -1553,6 +1681,7 @@ let BattlePokedex = {
 	meteormon: {
 		num: -2129,
 		species: "Meteormon",
+		stage: "Ultimate",
 		types: ["Nature", "Flame"],
 		gender: "N",
 		baseStats: {hp: 155, atk: 74, def: 86, spa: 81, spd: 65, spe: 72},
@@ -1565,6 +1694,7 @@ let BattlePokedex = {
 	monzaemon: {
 		num: -2130,
 		species: "Monzaemon",
+		stage: "Ultimate",
 		types: ["Battle", "Filth", "Holy"],
 		gender: "N",
 		baseStats: {hp: 154, atk: 62, def: 75, spa: 82, spd: 82, spe: 60},
@@ -1577,6 +1707,7 @@ let BattlePokedex = {
 	myotismon: {
 		num: -2131,
 		species: "Myotismon",
+		stage: "Ultimate",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 156, atk: 66, def: 73, spa: 88, spd: 81, spe: 64},
@@ -1589,6 +1720,7 @@ let BattlePokedex = {
 	piximon: {
 		num: -2132,
 		species: "Piximon",
+		stage: "Ultimate",
 		types: ["Holy", "Nature", "Air"],
 		gender: "N",
 		baseStats: {hp: 136, atk: 75, def: 72, spa: 74, spd: 72, spe: 75},
@@ -1601,6 +1733,7 @@ let BattlePokedex = {
 	shogungekomon: {
 		num: -2133,
 		species: "ShogunGekomon",
+		stage: "Ultimate",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 150, atk: 82, def: 84, spa: 85, spd: 84, spe: 59},
@@ -1613,6 +1746,7 @@ let BattlePokedex = {
 	skullgreymon: {
 		num: -2134,
 		species: "SkullGreymon",
+		stage: "Ultimate",
 		types: ["Evil"],
 		gender: "N",
 		baseStats: {hp: 158, atk: 98, def: 84, spa: 74, spd: 76, spe: 60},
@@ -1625,6 +1759,7 @@ let BattlePokedex = {
 	tekkamon: {
 		num: -2135,
 		species: "Tekkamon",
+		stage: "Ultimate",
 		types: ["Mech", "Battle", "Evil"],
 		gender: "N",
 		baseStats: {hp: 140, atk: 81, def: 77, spa: 71, spd: 77, spe: 70},
@@ -1637,6 +1772,7 @@ let BattlePokedex = {
 	vademon: {
 		num: -2136,
 		species: "Vademon",
+		stage: "Ultimate",
 		types: ["Nature", "Mech"],
 		gender: "N",
 		baseStats: {hp: 136, atk: 90, def: 60, spa: 82, spd: 80, spe: 62},
@@ -1649,6 +1785,7 @@ let BattlePokedex = {
 	vermilimon: {
 		num: -2137,
 		species: "Vermilimon",
+		stage: "Ultimate",
 		types: ["Flame", "Nature"],
 		gender: "N",
 		baseStats: {hp: 149, atk: 90, def: 84, spa: 78, spd: 74, spe: 66},
@@ -1661,6 +1798,7 @@ let BattlePokedex = {
 	warumonzaemon: {
 		num: -2138,
 		species: "WaruMonzaemon",
+		stage: "Ultimate",
 		types: ["Battle", "Filth", "Evil"],
 		gender: "N",
 		baseStats: {hp: 152, atk: 62, def: 74, spa: 82, spd: 80, spe: 64},
@@ -1673,6 +1811,7 @@ let BattlePokedex = {
 	waruseadramon: {
 		num: -2139,
 		species: "WaruSeadramon",
+		stage: "Ultimate",
 		types: ["Evil", "Aqua", "Air"],
 		gender: "N",
 		baseStats: {hp: 151, atk: 67, def: 64, spa: 89, spd: 70, spe: 68},
@@ -1685,6 +1824,7 @@ let BattlePokedex = {
 	weregarurumon: {
 		num: -2140,
 		species: "WereGarurumon",
+		stage: "Ultimate",
 		types: ["Battle", "Nature"],
 		gender: "N",
 		baseStats: {hp: 145, atk: 85, def: 68, spa: 85, spd: 67, spe: 77},
@@ -1697,6 +1837,7 @@ let BattlePokedex = {
 	whamon: {
 		num: -2141,
 		species: "Whamon",
+		stage: "Ultimate",
 		types: ["Aqua"],
 		gender: "N",
 		baseStats: {hp: 161, atk: 86, def: 82, spa: 86, spd: 80, spe: 60},
@@ -1709,6 +1850,7 @@ let BattlePokedex = {
 	zudomon: {
 		num: -2142,
 		species: "Zudomon",
+		stage: "Ultimate",
 		types: ["Aqua", "Battle", "Air"],
 		gender: "N",
 		baseStats: {hp: 157, atk: 92, def: 82, spa: 92, spd: 81, spe: 59},
@@ -1721,6 +1863,7 @@ let BattlePokedex = {
 	alphamon: {
 		num: -2143,
 		species: "Alphamon",
+		stage: "Mega",
 		types: ["Holy", "Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 212, atk: 122, def: 116, spa: 122, spd: 112, spe: 94},
@@ -1733,6 +1876,7 @@ let BattlePokedex = {
 	blackmetalgarurumon: {
 		num: -2144,
 		species: "BlackMetalGarurumon",
+		stage: "Mega",
 		types: ["Evil", "Aqua", "Mech"],
 		gender: "N",
 		baseStats: {hp: 210, atk: 113, def: 76, spa: 103, spd: 58, spe: 91},
@@ -1745,6 +1889,7 @@ let BattlePokedex = {
 	blackwargreymon: {
 		num: -2145,
 		species: "BlackWarGreymon",
+		stage: "Mega",
 		types: ["Flame", "Mech", "Evil"],
 		gender: "N",
 		baseStats: {hp: 215, atk: 116, def: 93, spa: 90, spd: 80, spe: 85},
@@ -1757,6 +1902,7 @@ let BattlePokedex = {
 	boltmon: {
 		num: -2146,
 		species: "Boltmon",
+		stage: "Mega",
 		types: ["Mech", "Battle", "Air"],
 		gender: "N",
 		baseStats: {hp: 219, atk: 115, def: 96, spa: 86, spd: 87, spe: 84},
@@ -1769,6 +1915,7 @@ let BattlePokedex = {
 	cherubimonevil: {
 		num: -2147,
 		species: "CherubimonEvil",
+		stage: "Mega",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 223, atk: 121, def: 73, spa: 110, spd: 98, spe: 90},
@@ -1781,6 +1928,7 @@ let BattlePokedex = {
 	cherubimongood: {
 		num: -2148,
 		species: "CherubimonGood",
+		stage: "Mega",
 		types: ["Holy", "Air"],
 		gender: "N",
 		baseStats: {hp: 209, atk: 117, def: 80, spa: 106, spd: 105, spe: 86},
@@ -1793,6 +1941,7 @@ let BattlePokedex = {
 	devitamamon: {
 		num: -2149,
 		species: "Devitamamon",
+		stage: "Mega",
 		types: ["Filth", "Evil"],
 		gender: "N",
 		baseStats: {hp: 210, atk: 114, def: 100, spa: 112, spd: 100, spe: 87},
@@ -1805,6 +1954,7 @@ let BattlePokedex = {
 	dorugoramon: {
 		num: -2150,
 		species: "Dorugoramon",
+		stage: "Mega",
 		types: ["Flame", "Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 215, atk: 116, def: 96, spa: 113, spd: 115, spe: 82},
@@ -1817,6 +1967,7 @@ let BattlePokedex = {
 	ebemon: {
 		num: -2151,
 		species: "Ebemon",
+		stage: "Mega",
 		types: ["Mech", "Air"],
 		gender: "N",
 		baseStats: {hp: 211, atk: 87, def: 78, spa: 112, spd: 90, spe: 76},
@@ -1829,6 +1980,7 @@ let BattlePokedex = {
 	herculeskabuterimon: {
 		num: -2152,
 		species: "HerculesKabuterimon",
+		stage: "Mega",
 		types: ["Air", "Nature", "Battle"],
 		gender: "N",
 		baseStats: {hp: 215, atk: 102, def: 104, spa: 119, spd: 104, spe: 92},
@@ -1841,6 +1993,7 @@ let BattlePokedex = {
 	hiandromon: {
 		num: -2153,
 		species: "HiAndromon",
+		stage: "Mega",
 		types: ["Mech", "Air"],
 		gender: "N",
 		baseStats: {hp: 207, atk: 111, def: 94, spa: 100, spd: 70, spe: 85},
@@ -1853,6 +2006,7 @@ let BattlePokedex = {
 	lilithmon: {
 		num: -2154,
 		species: "Lilithmon",
+		stage: "Mega",
 		types: ["Evil", "Nature"],
 		gender: "N",
 		baseStats: {hp: 219, atk: 66, def: 80, spa: 119, spd: 102, spe: 92},
@@ -1865,6 +2019,7 @@ let BattlePokedex = {
 	machinedramon: {
 		num: -2155,
 		species: "Machinedramon",
+		stage: "Mega",
 		types: ["Mech", "Air"],
 		gender: "N",
 		baseStats: {hp: 216, atk: 104, def: 99, spa: 116, spd: 74, spe: 83},
@@ -1877,6 +2032,7 @@ let BattlePokedex = {
 	magnadramon: {
 		num: -2156,
 		species: "Magnadramon",
+		stage: "Mega",
 		types: ["Holy", "Flame"],
 		gender: "N",
 		baseStats: {hp: 217, atk: 117, def: 97, spa: 116, spd: 100, spe: 94},
@@ -1889,6 +2045,7 @@ let BattlePokedex = {
 	marineangemon: {
 		num: -2157,
 		species: "MarineAngemon",
+		stage: "Mega",
 		types: ["Aqua", "Holy"],
 		gender: "N",
 		baseStats: {hp: 195, atk: 60, def: 83, spa: 94, spd: 82, spe: 86},
@@ -1901,6 +2058,7 @@ let BattlePokedex = {
 	metaletemon: {
 		num: -2158,
 		species: "MetalEtemon",
+		stage: "Mega",
 		types: ["Filth", "Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 196, atk: 86, def: 96, spa: 97, spd: 72, spe: 79},
@@ -1913,6 +2071,7 @@ let BattlePokedex = {
 	metalgarurumon: {
 		num: -2159,
 		species: "MetalGarurumon",
+		stage: "Mega",
 		types: ["Aqua", "Mech"],
 		gender: "N",
 		baseStats: {hp: 209, atk: 112, def: 81, spa: 110, spd: 81, spe: 88},
@@ -1925,6 +2084,7 @@ let BattlePokedex = {
 	metalseadramon: {
 		num: -2160,
 		species: "MetalSeadramon",
+		stage: "Mega",
 		types: ["Aqua", "Mech", "Air"],
 		gender: "N",
 		baseStats: {hp: 212, atk: 108, def: 71, spa: 96, spd: 94, spe: 80},
@@ -1937,6 +2097,7 @@ let BattlePokedex = {
 	ophanimon: {
 		num: -2161,
 		species: "Ophanimon",
+		stage: "Mega",
 		types: ["Holy", "Air", "Battle"],
 		gender: "N",
 		baseStats: {hp: 206, atk: 83, def: 99, spa: 119, spd: 98, spe: 92},
@@ -1949,6 +2110,7 @@ let BattlePokedex = {
 	phoenixmon: {
 		num: -2162,
 		species: "Phoenixmon",
+		stage: "Mega",
 		types: ["Flame", "Air", "Holy"],
 		gender: "N",
 		baseStats: {hp: 217, atk: 86, def: 86, spa: 114, spd: 94, spe: 94},
@@ -1961,6 +2123,7 @@ let BattlePokedex = {
 	princemamemon: {
 		num: -2163,
 		species: "PrinceMamemon",
+		stage: "Mega",
 		types: ["Mech", "Battle"],
 		gender: "N",
 		baseStats: {hp: 201, atk: 95, def: 100, spa: 94, spd: 100, spe: 80},
@@ -1973,6 +2136,7 @@ let BattlePokedex = {
 	raguelmon: {
 		num: -2164,
 		species: "Raguelmon",
+		stage: "Mega",
 		types: ["Battle", "Evil"],
 		gender: "N",
 		baseStats: {hp: 215, atk: 109, def: 76, spa: 105, spd: 116, spe: 96},
@@ -1985,6 +2149,7 @@ let BattlePokedex = {
 	rasielmon: {
 		num: -2165,
 		species: "Rasielmon",
+		stage: "Mega",
 		types: ["Battle", "Holy"],
 		gender: "N",
 		baseStats: {hp: 216, atk: 105, def: 76, spa: 109, spd: 116, spe: 96},
@@ -1997,6 +2162,7 @@ let BattlePokedex = {
 	rosemon: {
 		num: -2166,
 		species: "Rosemon",
+		stage: "Mega",
 		types: ["Nature", "Air"],
 		gender: "N",
 		baseStats: {hp: 195, atk: 102, def: 80, spa: 101, spd: 80, spe: 86},
@@ -2009,6 +2175,7 @@ let BattlePokedex = {
 	saberleomon: {
 		num: -2167,
 		species: "SaberLeomon",
+		stage: "Mega",
 		types: ["Battle", "Nature", "Holy"],
 		gender: "N",
 		baseStats: {hp: 208, atk: 112, def: 80, spa: 111, spd: 80, spe: 88},
@@ -2021,6 +2188,7 @@ let BattlePokedex = {
 	seraphimon: {
 		num: -2168,
 		species: "Seraphimon",
+		stage: "Mega",
 		types: ["Holy", "Air"],
 		gender: "N",
 		baseStats: {hp: 211, atk: 110, def: 71, spa: 122, spd: 93, spe: 94},
@@ -2033,6 +2201,7 @@ let BattlePokedex = {
 	venommyotismon: {
 		num: -2169,
 		species: "VenomMyotismon",
+		stage: "Mega",
 		types: ["Evil", "Air"],
 		gender: "N",
 		baseStats: {hp: 217, atk: 120, def: 105, spa: 92, spd: 94, spe: 80},
@@ -2045,6 +2214,7 @@ let BattlePokedex = {
 	vikemon: {
 		num: -2170,
 		species: "Vikemon",
+		stage: "Mega",
 		types: ["Aqua", "Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 221, atk: 114, def: 98, spa: 103, spd: 89, spe: 78},
@@ -2057,6 +2227,7 @@ let BattlePokedex = {
 	wargreymon: {
 		num: -2171,
 		species: "WarGreymon",
+		stage: "Mega",
 		types: ["Flame", "Battle", "Mech"],
 		gender: "N",
 		baseStats: {hp: 214, atk: 114, def: 98, spa: 86, spd: 87, spe: 82},
