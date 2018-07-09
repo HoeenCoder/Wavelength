@@ -850,7 +850,6 @@ class RandomDigimonTeams extends RandomTeams {
 				signatureMove: "Lightning Javelin",
 			},
 			"Meicrackmon": {
-				name: "Meicrackmon",
 				species: "meicrackmon",
 				ability: "Vaccine",
 				moves: ['warcry', 'windcutter', 'fightingaura', 'megatonpunch', 'mechanicalclaw', 'venomdisaster', 'holyjudgment', 'saintray', 'holybreath'],
