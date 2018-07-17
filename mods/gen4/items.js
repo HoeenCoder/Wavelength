@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleItems = {
+/**@type {{[k: string]: ModdedItemData}} */
+let BattleItems = {
 	"adamantorb": {
 		inherit: true,
 		onBasePower: function (basePower, user, target, move) {
@@ -47,6 +48,7 @@ exports.BattleItems = {
 					priority: action.priority + 0.1,
 					pokemon: action.pokemon,
 					move: action.move,
+					// @ts-ignore
 					target: action.target,
 				});
 			}
@@ -203,7 +205,8 @@ exports.BattleItems = {
 				this.effectData.numConsecutive = 0;
 				this.effectData.lastMove = '';
 			},
-			onBeforeMove: function (pokemon, target, move) {
+			onTryMovePriority: -2,
+			onTryMove: function (pokemon, target, move) {
 				if (!pokemon.hasItem('metronome')) {
 					pokemon.removeVolatile('metronome');
 					return;
@@ -248,3 +251,5 @@ exports.BattleItems = {
 		},
 	},
 };
+
+exports.BattleItems = BattleItems;

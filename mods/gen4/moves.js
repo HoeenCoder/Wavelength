@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleMovedex = {
+/**@type {{[k: string]: ModdedMoveData}} */
+let BattleMovedex = {
 	acupressure: {
 		inherit: true,
 		desc: "Raises a random stat by 2 stages as long as the stat is not already at stage 6. The user can choose to use this move on itself or an ally. Fails if no stat stage can be raised or if the user or ally has a substitute.",
@@ -64,6 +65,7 @@ exports.BattleMovedex = {
 		inherit: true,
 		basePower: 10,
 		basePowerCallback: function (pokemon, target, move) {
+			// @ts-ignore
 			if (!move.allies.length) return null;
 			return 10;
 		},
@@ -79,8 +81,10 @@ exports.BattleMovedex = {
 			duration: 1,
 			onModifyAtkPriority: -101,
 			onModifyAtk: function (atk, pokemon, defender, move) {
+				// @ts-ignore
 				this.add('-activate', pokemon, 'move: Beat Up', '[of] ' + move.allies[0].name);
 				this.event.modifier = 1;
+				// @ts-ignore
 				return move.allies.shift().template.baseStats.atk;
 			},
 			onFoeModifyDefPriority: -101,
@@ -127,6 +131,8 @@ exports.BattleMovedex = {
 						this.add('-miss', pokemon, target);
 						return false;
 					}
+					/**@type {Move} */
+					// @ts-ignore
 					let moveData = {
 						id: 'bide',
 						name: "Bide",
@@ -193,7 +199,24 @@ exports.BattleMovedex = {
 	},
 	conversion: {
 		inherit: true,
+		desc: "The user's type changes to match the original type of one of its known moves besides this move and Curse, at random, but not either of its current types. Fails if the user cannot change its type, or if this move would only be able to select one of the user's current types.",
 		flags: {},
+		onHit: function (target) {
+			let possibleTypes = target.moveSlots.map(moveSlot => {
+				let move = this.getMove(moveSlot.id);
+				if (move.id !== 'conversion' && move.id !== 'curse' && !target.hasType(move.type)) {
+					return move.type;
+				}
+				return '';
+			}).filter(type => type);
+			if (!possibleTypes.length) {
+				return false;
+			}
+			let type = this.sample(possibleTypes);
+
+			if (!target.setType(type)) return false;
+			this.add('-start', target, 'typechange', type);
+		},
 	},
 	copycat: {
 		inherit: true,
@@ -232,6 +255,7 @@ exports.BattleMovedex = {
 				delete move.volatileStatus;
 				delete move.onHit;
 				move.self = {boosts: {atk: 1, def: 1, spe: -1}};
+				// @ts-ignore
 				move.target = move.nonGhostTarget;
 			} else if (target.volatiles['substitute']) {
 				delete move.volatileStatus;
@@ -327,14 +351,17 @@ exports.BattleMovedex = {
 			if (target.side.sideConditions['futuremove'].positions[target.position]) {
 				return false;
 			}
-			let damage = this.getDamage(source, target, {
+			/**@type {Move} */
+			// @ts-ignore
+			let moveData = {
 				name: "Doom Desire",
 				basePower: 120,
 				category: "Special",
 				flags: {},
 				willCrit: false,
 				type: '???',
-			}, true);
+			};
+			let damage = this.getDamage(source, target, moveData, true);
 			target.side.sideConditions['futuremove'].positions[target.position] = {
 				duration: 3,
 				move: 'doomdesire',
@@ -397,7 +424,7 @@ exports.BattleMovedex = {
 			onStart: function (target) {
 				let noEncore = ['encore', 'mimic', 'mirrormove', 'sketch', 'struggle', 'transform'];
 				let moveIndex = target.lastMove ? target.moves.indexOf(target.lastMove.id) : -1;
-				if (!target.lastMove || noEncore.includes(target.lastMove.id) || (target.moveSlots[moveIndex] && target.moveSlots[moveIndex].pp <= 0)) {
+				if (!target.lastMove || noEncore.includes(target.lastMove.id) || !target.moveSlots[moveIndex] || target.moveSlots[moveIndex].pp <= 0) {
 					// it failed
 					this.add('-fail', target);
 					delete target.volatiles['encore'];
@@ -530,14 +557,17 @@ exports.BattleMovedex = {
 			if (target.side.sideConditions['futuremove'].positions[target.position]) {
 				return false;
 			}
-			let damage = this.getDamage(source, target, {
+			/**@type {Move} */
+			// @ts-ignore
+			let moveData = {
 				name: "Future Sight",
 				basePower: 80,
 				category: "Special",
 				flags: {},
 				willCrit: false,
 				type: '???',
-			}, true);
+			};
+			let damage = this.getDamage(source, target, moveData, true);
 			target.side.sideConditions['futuremove'].positions[target.position] = {
 				duration: 3,
 				move: 'futuresight',
@@ -593,6 +623,7 @@ exports.BattleMovedex = {
 			duration: 5,
 			durationCallback: function (target, source, effect) {
 				if (source && source.hasAbility('persistent')) {
+					this.add('-activate', source, 'ability: Persistent', effect);
 					return 7;
 				}
 				return 5;
@@ -856,7 +887,7 @@ exports.BattleMovedex = {
 		onTryHit: function () { },
 		onHit: function (pokemon) {
 			let noMirror = ['acupressure', 'aromatherapy', 'assist', 'chatter', 'copycat', 'counter', 'curse', 'doomdesire', 'feint', 'focuspunch', 'futuresight', 'gravity', 'hail', 'haze', 'healbell', 'helpinghand', 'lightscreen', 'luckychant', 'magiccoat', 'mefirst', 'metronome', 'mimic', 'mirrorcoat', 'mirrormove', 'mist', 'mudsport', 'naturepower', 'perishsong', 'psychup', 'raindance', 'reflect', 'roleplay', 'safeguard', 'sandstorm', 'sketch', 'sleeptalk', 'snatch', 'spikes', 'spitup', 'stealthrock', 'struggle', 'sunnyday', 'tailwind', 'toxicspikes', 'transform', 'watersport'];
-			if (!pokemon.lastAttackedBy || !pokemon.lastAttackedBy.pokemon.lastMove || noMirror.includes(pokemon.lastAttackedBy.move) || !pokemon.lastAttackedBy.pokemon.hasMove(pokemon.lastAttackedBy.move)) {
+			if (!pokemon.lastAttackedBy || !pokemon.lastAttackedBy.pokemon.lastMove || !pokemon.lastAttackedBy.move || noMirror.includes(pokemon.lastAttackedBy.move) || !pokemon.lastAttackedBy.pokemon.hasMove(pokemon.lastAttackedBy.move)) {
 				return false;
 			}
 			this.useMove(pokemon.lastAttackedBy.move, pokemon);
@@ -885,6 +916,21 @@ exports.BattleMovedex = {
 			} else {
 				this.heal(pokemon.maxhp / 2);
 			}
+		},
+	},
+	mudsport: {
+		inherit: true,
+		desc: "Until the user is no longer active, all Electric-type attacks used by any active Pokemon have their power halved. Fails if this move is already in effect; not stackable.",
+		shortDesc: "Weakens Electric-type attacks to 1/2 their power.",
+		effect: {
+			noCopy: true,
+			onStart: function (pokemon) {
+				this.add('-start', pokemon, 'move: Mud Sport');
+			},
+			onBasePowerPriority: 3,
+			onAnyBasePower: function (basePower, user, target, move) {
+				if (move.type === 'Electric') return this.chainModify(0.5);
+			},
 		},
 	},
 	odorsleuth: {
@@ -1128,7 +1174,8 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 3,
 			durationCallback: function (target, source, effect) {
-				if (source && source.ability === 'persistent') {
+				if (source && source.hasAbility('persistent')) {
+					this.add('-activate', source, 'ability: Persistent', effect);
 					return 5;
 				}
 				return 3;
@@ -1237,6 +1284,21 @@ exports.BattleMovedex = {
 		inherit: true,
 		recoil: [1, 3],
 	},
+	watersport: {
+		inherit: true,
+		desc: "Until the user is no longer active, all Fire-type attacks used by any active Pokemon have their power halved. Fails if this move is already in effect; not stackable.",
+		shortDesc: "Weakens Fire-type attacks to 1/2 their power.",
+		effect: {
+			noCopy: true,
+			onStart: function (pokemon) {
+				this.add('-start', pokemon, 'move: Water Sport');
+			},
+			onBasePowerPriority: 3,
+			onAnyBasePower: function (basePower, user, target, move) {
+				if (move.type === 'Fire') return this.chainModify(0.5);
+			},
+		},
+	},
 	whirlpool: {
 		inherit: true,
 		accuracy: 70,
@@ -1256,6 +1318,7 @@ exports.BattleMovedex = {
 			duration: 2,
 			onResidualOrder: 0,
 			onEnd: function (side) {
+				// @ts-ignore
 				let target = side.active[this.effectData.sourcePosition];
 				if (!target.fainted) {
 					let source = this.effectData.source;
@@ -1289,3 +1352,5 @@ exports.BattleMovedex = {
 		},
 	},
 };
+
+exports.BattleMovedex = BattleMovedex;

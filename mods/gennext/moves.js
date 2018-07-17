@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleMovedex = {
+/**@type {{[k: string]: ModdedMoveData}} */
+let BattleMovedex = {
 	/******************************************************************
 	Perfect accuracy moves:
 	- base power increased to 90
@@ -676,7 +677,12 @@ exports.BattleMovedex = {
 					}
 					this.add('-end', pokemon, 'Bide');
 					let target = this.effectData.sourceSide.active[this.effectData.sourcePosition];
-					this.moveHit(target, pokemon, 'bide', {damage: this.effectData.totalDamage * 2});
+					/**@type {Move} */
+					// @ts-ignore
+					let moveData = {
+						damage: this.effectData.totalDamage * 2,
+					};
+					this.moveHit(target, pokemon, 'bide', moveData);
 					return false;
 				}
 				this.add('-activate', pokemon, 'Bide');
@@ -774,8 +780,7 @@ exports.BattleMovedex = {
 			};
 			let tmpAtkEVs;
 			let Atk2SpA;
-			if (pokemon.template.speciesid === 'meloettapirouette' && pokemon.formeChange('Meloetta')) {
-				this.add('-formechange', pokemon, 'Meloetta');
+			if (pokemon.template.speciesid === 'meloettapirouette' && pokemon.formeChange('Meloetta', this.effect, false, '[msg]')) {
 				tmpAtkEVs = pokemon.set.evs.atk;
 				pokemon.set.evs.atk = pokemon.set.evs.spa;
 				pokemon.set.evs.spa = tmpAtkEVs;
@@ -785,8 +790,7 @@ exports.BattleMovedex = {
 					atk: Atk2SpA,
 					spa: -Atk2SpA,
 				}, pokemon);
-			} else if (pokemon.formeChange('Meloetta-Pirouette')) {
-				this.add('-formechange', pokemon, 'Meloetta-Pirouette');
+			} else if (pokemon.formeChange('Meloetta-Pirouette', this.effect, false, '[msg]')) {
 				tmpAtkEVs = pokemon.set.evs.atk;
 				pokemon.set.evs.atk = pokemon.set.evs.spa;
 				pokemon.set.evs.spa = tmpAtkEVs;
@@ -1224,6 +1228,7 @@ exports.BattleMovedex = {
 		onModifyMove: function (move) {
 			switch (this.effectiveWeather()) {
 			case 'sunnyday':
+				// @ts-ignore
 				move.secondary.chance = 60;
 				break;
 			}
@@ -1236,6 +1241,7 @@ exports.BattleMovedex = {
 		onModifyMove: function (move) {
 			switch (this.effectiveWeather()) {
 			case 'sunnyday':
+				// @ts-ignore
 				move.secondary.chance = 60;
 				break;
 			}
@@ -2086,3 +2092,5 @@ exports.BattleMovedex = {
 		},
 	},
 };
+
+exports.BattleMovedex = BattleMovedex;
