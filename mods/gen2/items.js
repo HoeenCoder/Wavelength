@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleItems = {
+/**@type {{[k: string]: ModdedItemData}} */
+let BattleItems = {
 	brightpowder: {
 		inherit: true,
 		desc: "An attack against the holder has its accuracy out of 255 lowered by 20.",
@@ -18,6 +19,15 @@ exports.BattleItems = {
 		inherit: true,
 		desc: "No competitive use.",
 		onBasePower: function () {},
+	},
+	dragonscale: {
+		inherit: true,
+		onBasePower: function (basePower, user, target, move) {
+			if (move.type === 'Dragon') {
+				return basePower * 1.1;
+			}
+		},
+		desc: "Holder's Dragon-type attacks have 1.1x power. Evolves Seadra (trade).",
 	},
 	focusband: {
 		inherit: true,
@@ -91,10 +101,6 @@ exports.BattleItems = {
 		inherit: true,
 		isNonstandard: false,
 	},
-	dragonscale: {
-		inherit: true,
-		isNonstandard: false,
-	},
 	goldberry: {
 		inherit: true,
 		isNonstandard: false,
@@ -132,3 +138,5 @@ exports.BattleItems = {
 		isNonstandard: false,
 	},
 };
+
+exports.BattleItems = BattleItems;

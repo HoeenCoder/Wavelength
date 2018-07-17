@@ -24,63 +24,6 @@ const WL = require('./WL.js').WL;
  */
 
 /**
- * A move action
- *
- * @typedef {Object} MoveAction
- * @property {'move' | 'beforeTurnMove'} choice - action type
- * @property {number} priority - priority of the action (lower first)
- * @property {number} speed - speed of pokemon using move (higher first if priority tie)
- * @property {Pokemon} pokemon - the pokemon doing the move
- * @property {number} targetLoc - location of the target, relative to pokemon's side
- * @property {string} moveid - a move to use (move action only)
- * @property {Move} move - a move to use (move action only)
- * @property {boolean | 'done'} mega - true if megaing or ultra bursting
- * @property {string | undefined} zmove - if zmoving, the name of the zmove
- * @property {Effect?} sourceEffect - effect that called the move (eg Instruct) if any
- */
-/**
- * A switch action
- *
- * @typedef {Object} SwitchAction
- * @property {'switch' | 'instaswitch'} choice - action type
- * @property {number} priority - priority of the action (lower first)
- * @property {number} speed - speed of pokemon switching (higher first if priority tie)
- * @property {Pokemon} pokemon - the pokemon doing the switch
- * @property {Pokemon} target - pokemon to switch to
- * @property {Effect?} sourceEffect - effect that called the switch (eg U-turn) if any
- */
-/**
- * A Team Preview choice action
- *
- * @typedef {Object} TeamAction
- * @property {'team'} choice - action type
- * @property {number} priority - priority of the action (lower first)
- * @property {1} speed - unused for this action type
- * @property {Pokemon} pokemon - the pokemon switching
- * @property {number} index - new index
- */
-/**
- * A generic action not done by a pokemon
- *
- * @typedef {Object} FieldAction
- * @property {'start' | 'residual' | 'pass' | 'beforeTurn'} choice - action type
- * @property {number} priority - priority of the action (lower first)
- * @property {1} speed - unused for this action type
- * @property {null} pokemon - unused for this action type
- */
-/**
- * A generic action done by a single pokemon
- *
- * @typedef {Object} PokemonAction
- * @property {'megaEvo' | 'shift' | 'runPrimal' | 'runSwitch' | 'event' | 'runUnnerve'} choice - action type
- * @property {number} priority - priority of the action (lower first)
- * @property {number} speed - speed of pokemon doing action (higher first if priority tie)
- * @property {Pokemon} pokemon - the pokemon doing action
- */
-/** @typedef {MoveAction | SwitchAction | TeamAction | FieldAction | PokemonAction} Action */
-
-
-/**
  * @typedef {Object} PlayerOptions
  * @property {string} [name]
  * @property {string} [avatar]
@@ -144,7 +87,7 @@ class Battle extends Dex.ModdedDex {
 		this.gameType = (format.gameType || 'singles');
 		this.reportExactHP = !!format.debug;
 
-		/** @type {Action[]} */
+		/** @type {Actions["Action"][]} */
 		this.queue = [];
 		/** @type {FaintedPokemon[]} */
 		this.faintQueue = [];
@@ -181,6 +124,9 @@ class Battle extends Dex.ModdedDex {
 		this.reportPercentages = false;
 		this.supportCancel = false;
 		this.events = null;
+
+		// old-gens
+		this.lastDamage = 0;
 
 		this.abilityOrder = 0;
 		/** @type {boolean} */
@@ -793,7 +739,7 @@ class Battle extends Dex.ModdedDex {
 	 *   they're useful for functions called by the event handler.
 	 *
 	 * @param {string} eventid
-	 * @param {?Pokemon | Side | Battle} target
+	 * @param {?Pokemon | Side | Battle} [target]
 	 * @param {?string | Pokemon | false} [source]
 	 * @param {?Effect | string} [effect]
 	 * @param {any} [relayVar]
@@ -971,7 +917,7 @@ class Battle extends Dex.ModdedDex {
 	 * @param {Pokemon | Side | Battle} thing
 	 * @param {string} callbackType
 	 * @param {string} foeCallbackType
-	 * @param {?string | Pokemon | Side | Battle | false} foeThing
+	 * @param {?string | Pokemon | Side | Battle | false} [foeThing]
 	 */
 	getRelevantEffects(thing, callbackType, foeCallbackType, foeThing) {
 		let statuses = this.getRelevantEffectsInner(thing, callbackType, foeCallbackType, foeThing, true, false);
@@ -983,7 +929,7 @@ class Battle extends Dex.ModdedDex {
 	 * @param {string | Pokemon | Side | Battle} thing
 	 * @param {string} callbackType
 	 * @param {?string} foeCallbackType
-	 * @param {?string | Pokemon | Side | Battle | false} foeThing
+	 * @param {?string | Pokemon | Side | Battle | false} [foeThing]
 	 * @param {boolean} bubbleUp
 	 * @param {boolean} bubbleDown
 	 * @param {string} [getAll]
@@ -1611,6 +1557,21 @@ class Battle extends Dex.ModdedDex {
 					} else {
 						pokemon.lastAttackedBy = null;
 					}
+					if (this.gen >= 7) pokemon.knownType = true; // If it was an illusion, it's not any more
+				}
+
+				if (this.gen >= 7) {
+					// In Gen 7, the real type of every Pokemon is visible to all players via the bottom screen while making choices
+					const seenPokemon = pokemon.illusion || pokemon;
+					const realTypeString = seenPokemon.getTypes(true).join('/');
+					if (realTypeString !== seenPokemon.apparentType) {
+						this.add('-start', pokemon, 'typechange', realTypeString, '[silent]');
+						seenPokemon.apparentType = realTypeString;
+						if (pokemon.addedType) {
+							// The typechange message removes the added type, so put it back
+							this.add('-start', pokemon, 'typeadd', pokemon.addedType, '[silent]');
+						}
+					}
 				}
 
 				pokemon.trapped = pokemon.maybeTrapped = false;
@@ -1868,14 +1829,14 @@ class Battle extends Dex.ModdedDex {
 	}
 
 	/**
-	 * @param {AnyObject} boost
-	 * @param {Pokemon} [target]
+	 * @param {SparseBoostsTable} boost
+	 * @param {Pokemon?} [target]
 	 * @param {Pokemon?} [source]
 	 * @param {Effect | string?} [effect]
 	 * @param {boolean} [isSecondary]
 	 * @param {boolean} isSelf
 	 */
-	boost(boost, target, source = null, effect = null, isSecondary = false, isSelf = false) {
+	boost(boost, target = null, source = null, effect = null, isSecondary = false, isSelf = false) {
 		if (this.event) {
 			if (!target) target = this.event.target;
 			if (!source) source = this.event.source;
@@ -1890,9 +1851,11 @@ class Battle extends Dex.ModdedDex {
 		let boosted = false;
 		for (let i in boost) {
 			let currentBoost = {};
+			// @ts-ignore
 			currentBoost[i] = boost[i];
 			let boostBy = target.boostBy(currentBoost);
 			let msg = '-boost';
+			// @ts-ignore
 			if (boost[i] < 0) {
 				msg = '-unboost';
 				boostBy = -boostBy;
@@ -1938,12 +1901,12 @@ class Battle extends Dex.ModdedDex {
 
 	/**
 	 * @param {number} damage
-	 * @param {Pokemon} [target]
+	 * @param {Pokemon?} [target]
 	 * @param {Pokemon?} [source]
 	 * @param {Effect | string?} [effect]
 	 * @param {boolean} [instafaint]
 	 */
-	damage(damage, target, source = null, effect = null, instafaint = false) {
+	damage(damage, target = null, source = null, effect = null, instafaint = false) {
 		if (this.event) {
 			if (!target) target = this.event.target;
 			if (!source) source = this.event.source;
@@ -1968,7 +1931,7 @@ class Battle extends Dex.ModdedDex {
 		}
 		if (damage !== 0) damage = this.clampIntRange(damage, 1);
 		damage = target.damage(damage, source, effect);
-		if (source) source.lastDamage = damage;
+		if (source && effect.effectType === 'Move') source.lastDamage = damage;
 		let name = effect.fullname;
 		if (name === 'tox') name = 'psn';
 		switch (effect.id) {
@@ -2057,10 +2020,10 @@ class Battle extends Dex.ModdedDex {
 		damage = Math.floor(damage);
 		// for things like Liquid Ooze, the Heal event still happens when nothing is healed.
 		damage = this.runEvent('TryHeal', target, source, effect, damage);
-		if (!damage) return 0;
-		if (!target || !target.hp) return 0;
+		if (!damage) return damage;
+		if (!target || !target.hp) return false;
 		if (!target.isActive) return false;
-		if (target.hp >= target.maxhp) return 0;
+		if (target.hp >= target.maxhp) return false;
 		let finalDamage = target.heal(damage, source, effect);
 		switch (effect.id) {
 		case 'leechseed':
@@ -2299,7 +2262,7 @@ class Battle extends Dex.ModdedDex {
 	 * @param {Pokemon} pokemon
 	 * @param {Pokemon} target
 	 * @param {Move} move
-	 * @param {boolean} suppressMessages
+	 * @param {boolean} [suppressMessages]
 	 */
 	modifyDamage(baseDamage, pokemon, target, move, suppressMessages = false) {
 		if (!move.type) move.type = '???';
@@ -2368,7 +2331,7 @@ class Battle extends Dex.ModdedDex {
 		// Final modifier. Modifiers that modify damage after min damage check, such as Life Orb.
 		baseDamage = this.runEvent('ModifyDamage', pokemon, target, move, baseDamage);
 
-		if (move.isZ && move.zBrokeProtect) {
+		if (move.zPowered && move.zBrokeProtect) {
 			baseDamage = this.modify(baseDamage, 0.25);
 			this.add('-zbroken', target);
 		}
@@ -2599,7 +2562,7 @@ class Battle extends Dex.ModdedDex {
 	 *
 	 * @param {AnyObject} action
 	 * @param {boolean} [midTurn]
-	 * @return {Action}
+	 * @return {Actions["Action"]}
 	 */
 	resolveAction(action, midTurn = false) {
 		if (!action) throw new Error(`Action not passed to resolveAction`);
@@ -2737,7 +2700,7 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * Makes the passed action happen next (skipping speed order).
 	 *
-	 * @param {MoveAction | SwitchAction} action
+	 * @param {Actions["MoveAction"] | Actions["SwitchAction"]} action
 	 * @param {Pokemon} [source]
 	 * @param {Effect} [sourceEffect]
 	 */
@@ -2819,7 +2782,7 @@ class Battle extends Dex.ModdedDex {
 	}
 
 	/**
-	 * @param {Action} action
+	 * @param {Actions["Action"]} action
 	 */
 	runAction(action) {
 		// returns whether or not we ended in a callback
@@ -3121,7 +3084,7 @@ class Battle extends Dex.ModdedDex {
 			// In Gen 7, the action order is recalculated for a Pokémon that mega evolves.
 			const moveIndex = this.queue.findIndex(queuedAction => queuedAction.pokemon === action.pokemon && queuedAction.choice === 'move');
 			if (moveIndex >= 0) {
-				const moveAction = /** @type {MoveAction} */ (this.queue.splice(moveIndex, 1)[0]);
+				const moveAction = /** @type {Actions["MoveAction"]} */ (this.queue.splice(moveIndex, 1)[0]);
 				moveAction.mega = 'done';
 				this.insertQueue(moveAction, true);
 			}
@@ -3477,10 +3440,10 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {string | Move} move
 	 * @param {Pokemon} target
-	 * @param {number | undefined} [targetLoc]
-	 * @param {?Effect | undefined} [sourceEffect]
-	 * @param {string | undefined} [zMove]
-	 * @param {boolean | undefined} [externalMove]
+	 * @param {number} [targetLoc]
+	 * @param {?Effect} [sourceEffect]
+	 * @param {string} [zMove]
+	 * @param {boolean} [externalMove]
 	 */
 	runMove(move, target, targetLoc, sourceEffect, zMove, externalMove) {
 		throw new Error(`The runMove function needs to be implemented in scripts.js or the battle format.`);
@@ -3489,9 +3452,9 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {string | Move} move
 	 * @param {Pokemon} target
-	 * @param {Pokemon | false | undefined} [source]
-	 * @param {?Effect | undefined} [sourceEffect]
-	 * @param {string | undefined} [zMove]
+	 * @param {Pokemon | false} [source]
+	 * @param {?Effect} [sourceEffect]
+	 * @param {string} [zMove]
 	 * @return {boolean}
 	 */
 	useMove(move, target, source, sourceEffect, zMove) {
@@ -3501,9 +3464,9 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {string | Move} move
 	 * @param {Pokemon} target
-	 * @param {Pokemon | false | undefined} [source]
-	 * @param {?Effect | undefined} [sourceEffect]
-	 * @param {string | undefined} [zMove]
+	 * @param {Pokemon | false} [source]
+	 * @param {?Effect} [sourceEffect]
+	 * @param {string} [zMove]
 	 * @return {boolean}
 	 */
 	useMoveInner(move, target, source, sourceEffect, zMove) {
@@ -3523,10 +3486,10 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {?Pokemon} target
 	 * @param {Pokemon} pokemon
-	 * @param {Move} move
-	 * @param {MoveData | undefined} [moveData]
-	 * @param {boolean | undefined} [isSecondary]
-	 * @param {boolean | undefined} [isSelf]
+	 * @param {string | Move} move
+	 * @param {Move} [moveData]
+	 * @param {boolean} [isSecondary]
+	 * @param {boolean} [isSelf]
 	 * @return {number | false}
 	 */
 	moveHit(target, pokemon, move, moveData, isSecondary, isSelf) {
@@ -3567,6 +3530,9 @@ class Battle extends Dex.ModdedDex {
 	}
 
 	/**
+	 * This function is also used for Ultra Bursting.
+	 * Takes the Pokemon that will Mega Evolve or Ultra Burst as a parameter.
+	 * Returns false if the Pokemon cannot Mega Evolve or Ultra Burst, otherwise returns true.
 	 * @param {Pokemon} pokemon
 	 * @return {boolean}
 	 */
@@ -3577,7 +3543,7 @@ class Battle extends Dex.ModdedDex {
 	/**
 	 * @param {Move} move
 	 * @param {Pokemon} pokemon
-	 * @param {boolean | undefined} [skipChecks]
+	 * @param {boolean} [skipChecks]
 	 * @return {string | undefined}
 	 */
 	getZMove(move, pokemon, skipChecks) {

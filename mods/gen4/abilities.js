@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleAbilities = {
+/**@type {{[k: string]: ModdedAbilityData}} */
+let BattleAbilities = {
 	"angerpoint": {
 		inherit: true,
 		desc: "If this Pokemon, or its substitute, is struck by a critical hit, its Attack is raised by 12 stages.",
@@ -104,6 +105,7 @@ exports.BattleAbilities = {
 	"forewarn": {
 		inherit: true,
 		onStart: function (pokemon) {
+			/**@type {Move[]} */
 			let warnMoves = [];
 			let warnBp = 1;
 			for (const target of pokemon.side.foe.active) {
@@ -271,6 +273,7 @@ exports.BattleAbilities = {
 			if (move.secondaries) {
 				this.debug('doubling secondary chance');
 				for (const secondary of move.secondaries) {
+					// @ts-ignore
 					secondary.chance *= 2;
 				}
 			}
@@ -280,6 +283,7 @@ exports.BattleAbilities = {
 		shortDesc: "This Pokemon's stat stages are considered doubled during stat calculations.",
 		onModifyBoost: function (boosts) {
 			for (let key in boosts) {
+				// @ts-ignore
 				boosts[key] *= 2;
 			}
 		},
@@ -300,7 +304,7 @@ exports.BattleAbilities = {
 		inherit: true,
 		onTakeItem: function (item, pokemon, source) {
 			if (this.suppressingAttackEvents() && pokemon !== this.activePokemon) return;
-			if ((source && source !== pokemon) || this.activeMove.id === 'knockoff') {
+			if ((source && source !== pokemon) || (this.activeMove && this.activeMove.id === 'knockoff')) {
 				this.add('-activate', pokemon, 'ability: Sticky Hold');
 				return false;
 			}
@@ -344,8 +348,21 @@ exports.BattleAbilities = {
 			let id = status.id;
 			if (id === 'slp' || id === 'frz') return;
 			if (id === 'tox') id = 'psn';
-			source.trySetStatus(id);
+			source.trySetStatus(id, target);
 		},
+	},
+	"thickfat": {
+		shortDesc: "The power of Fire- and Ice-type attacks against this Pokemon is halved.",
+		onBasePowerPriority: 1,
+		onSourceBasePower: function (basePower, attacker, defender, move) {
+			if (move.type === 'Ice' || move.type === 'Fire') {
+				return this.chainModify(0.5);
+			}
+		},
+		id: "thickfat",
+		name: "Thick Fat",
+		rating: 3.5,
+		num: 47,
 	},
 	"torrent": {
 		desc: "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its Water-type attacks have their power multiplied by 1.5.",
@@ -395,3 +412,5 @@ exports.BattleAbilities = {
 		},
 	},
 };
+
+exports.BattleAbilities = BattleAbilities;

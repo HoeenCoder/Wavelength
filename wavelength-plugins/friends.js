@@ -6,10 +6,19 @@
 'use strict';
 
 function onlineFriends(user) {
-	let list = Db.friends.get(user, []).filter(friend => Users(friend) && Users(friend).connected);
-	if (list.length) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${Chat.toListString(list)}`);
+	let list = Db.friends.get(user, []).filter(friend => Users(friend) && Users(friend).connected && Users(friend).userid === friend);
+	if (list.length && !Db.stopFriendNotifs.get(user)) Users(user).send(`|pm| WL Friend Manager|~|You have ${list.length} friends online: ${Chat.toListString(list)}`);
 }
 WL.onlineFriends = onlineFriends;
+
+function friendLogin(user) {
+	if (!user.named) return;
+	Users.users.forEach(people => {
+		if (Db.friends.get(people.userid, []).indexOf(user.userid) !== -1 && !Db.stopFriendNotifs.get(people.userid)) people.send(`|pm| WL Friend Manager|~|${user.name} has just logged in!`);
+	});
+}
+
+WL.friendLogin = friendLogin;
 
 exports.commands = {
 	friend: 'friends',
@@ -64,6 +73,17 @@ exports.commands = {
 			return this.sendReply(`You have removed all of your friends.`);
 		},
 
+		toggle: 'toggleNotifs',
+		togglenotifs: function (target, room, user) {
+			if (!Db.stopFriendNotifs.has(user.userid)) {
+				Db.stopFriendNotifs.remove(user.userid);
+				return this.sendReply('You have now disabled friend notifications');
+			} else if (Db.stopFriendNotifs.has(user.userid)) {
+				Db.stopFriendNotifs.set(user.userid, true);
+				return this.sendReply('You have now disabled friend notifications');
+			}
+		},
+
 		'': 'help',
 		help: function (target, room, user) {
 			this.parse(`/help friends`);
@@ -72,6 +92,7 @@ exports.commands = {
 	friendshelp: [`/friends add (user) - adds a user as your friend they must be online.
     /friends remove (user) - removes a user from your friend list.
     /friends list - displays your list of friends.
-    /friends removeall - removes all of your friends.`,
+    /friends removeall - removes all of your friends.
+    /friends togglenotifs - enables / disables friend notifications based on current setting (alias: /friends toggle)`,
 	],
 };

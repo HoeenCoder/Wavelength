@@ -75,6 +75,8 @@ class BasicRoom {
 		this.muteTimer = null;
 
 		this.lastUpdate = 0;
+		this.lastBroadcast = '';
+		this.lastBroadcastTime = 0;
 
 		// room settings
 
@@ -103,10 +105,12 @@ class BasicRoom {
 		this.filterStretching = false;
 		this.filterEmojis = false;
 		this.filterCaps = false;
+		this.mafiaEnabled = false;
 		/** @type {Set<string>?} */
 		this.privacySetter = null;
 		/** @type {Map<string, ChatRoom>?} */
 		this.subRooms = null;
+		this.gameNumber = 0;
 	}
 
 	/**
@@ -390,6 +394,8 @@ class GlobalRoom extends BasicRoom {
 		this.active = false;
 		/** @type {null} */
 		this.chatRoomData = null;
+		/**@type {boolean | 'pre' | 'ddos'} */
+		this.lockdown = false;
 
 		this.battleCount = 0;
 		this.lastReportedCrash = 0;
@@ -775,7 +781,7 @@ class GlobalRoom extends BasicRoom {
 	}
 	/**
 	 * @param {User} user
-	 * @param {Connection} connection
+	 * @param {Connection} [connection]
 	 */
 	checkAutojoin(user, connection) {
 		if (!user.named) return;
@@ -1300,6 +1306,11 @@ class BasicChatRoom extends BasicRoom {
 			delete this.users[i];
 		}
 
+		if (this.parent && this.parent.subRooms) {
+			this.parent.subRooms.delete(this.id);
+			if (!this.parent.subRooms.size) this.parent.subRooms = null;
+		}
+
 		Rooms.global.deregisterChatRoom(this.id);
 		Rooms.global.delistChatRoom(this.id);
 
@@ -1476,7 +1487,7 @@ class GameRoom extends BasicChatRoom {
 }
 
 /**
- * @param {string | Room | undefined} roomid
+ * @param {string | Room} [roomid]
  * @return {Room}
  */
 function getRoom(roomid) {
@@ -1593,7 +1604,8 @@ let Rooms = Object.assign(getRoom, {
 	battleModlogStream: FS('logs/modlog/modlog_battle.txt').createAppendStream(),
 	groupchatModlogStream: FS('logs/modlog/modlog_groupchat.txt').createAppendStream(),
 
-	global: (/** @type {any} */ (null)),
+	// @ts-ignore
+	global: (/** @type {GlobalRoom} */ (null)),
 	/** @type {?ChatRoom} */
 	lobby: null,
 

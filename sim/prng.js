@@ -66,8 +66,8 @@ class PRNG {
 	next(from, to) {
 		this.seed = this.nextFrame(this.seed); // Advance the RNG
 		let result = (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-		from = Math.floor(from);
-		to = Math.floor(to);
+		if (from) from = Math.floor(from);
+		if (to) to = Math.floor(to);
 		if (!from) {
 			result = result / 0x100000000;
 		} else if (!to) {
@@ -229,7 +229,7 @@ class PRNG {
 
 // The following commented-out function is designed to emulate the on-cartridge
 // PRNG for Gens 3 and 4, as described in
-// http://www.smogon.com/ingame/rng/pid_iv_creation#pokemon_random_number_generator
+// https://www.smogon.com/ingame/rng/pid_iv_creation#pokemon_random_number_generator
 // This RNG uses a 32-bit initial seed
 // m and n are converted to integers via Math.floor. If the result is NaN, they
 // are ignored.
