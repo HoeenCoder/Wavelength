@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleMovedex = {
+/**@type {{[k: string]: ModdedMoveData}} */
+let BattleMovedex = {
 	absorb: {
 		inherit: true,
 		flags: {protect: 1, mirror: 1},
@@ -112,7 +113,7 @@ exports.BattleMovedex = {
 			chance: 10,
 			volatileStatus: 'confusion',
 		},
-		flags: {protect: 1, mirror: 1, sound: 1, distance: 1},
+		flags: {protect: 1, sound: 1, distance: 1},
 	},
 	clamp: {
 		inherit: true,
@@ -120,7 +121,7 @@ exports.BattleMovedex = {
 	},
 	conversion: {
 		inherit: true,
-		desc: "The user's type changes to match the original type of one of its four moves besides this move, at random, but not either of its current types. Fails if the user cannot change its type, or if this move would only be able to select one of the user's current types.",
+		desc: "The user's type changes to match the original type of one of its known moves besides this move, at random, but not either of its current types. Fails if the user cannot change its type, or if this move would only be able to select one of the user's current types.",
 		shortDesc: "Changes user's type to match a known move.",
 		onHit: function (target) {
 			let possibleTypes = target.moveSlots.map(moveSlot => {
@@ -217,6 +218,7 @@ exports.BattleMovedex = {
 	feint: {
 		inherit: true,
 		desc: "If this move is successful, it breaks through the target's Detect or Protect for this turn, allowing other Pokemon to attack the target normally. If the target is an opponent and its side is protected by Quick Guard or Wide Guard, that protection is also broken for this turn and other Pokemon may attack the opponent's side normally.",
+		flags: {},
 	},
 	finalgambit: {
 		inherit: true,
@@ -538,6 +540,10 @@ exports.BattleMovedex = {
 		inherit: true,
 		accuracy: 85,
 		basePower: 100,
+	},
+	metronome: {
+		inherit: true,
+		desc: "A random move is selected for use, other than After You, Assist, Bestow, Chatter, Copycat, Counter, Covet, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Freeze Shock, Helping Hand, Ice Burn, Me First, Metronome, Mimic, Mirror Coat, Mirror Move, Nature Power, Protect, Quash, Quick Guard, Rage Powder, Relic Song, Secret Sword, Sketch, Sleep Talk, Snarl, Snatch, Snore, Struggle, Switcheroo, Techno Blast, Thief, Transform, Trick, V-create, or Wide Guard.",
 	},
 	minimize: {
 		inherit: true,
@@ -1057,3 +1063,5 @@ exports.BattleMovedex = {
 		desc: "Prevents the target from switching for four or five turns; seven turns if the user is holding Grip Claw. Causes damage to the target equal to 1/16 of its maximum HP (1/8 if the user is holding Binding Band), rounded down, at the end of each turn during effect. The target can still switch out if it is holding Shed Shell or uses Baton Pass, U-turn, or Volt Switch. The effect ends if either the user or the target leaves the field, or if the target uses Rapid Spin. This effect is not stackable or reset by using this or another partial-trapping move.",
 	},
 };
+
+exports.BattleMovedex = BattleMovedex;

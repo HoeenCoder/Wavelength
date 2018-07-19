@@ -233,6 +233,55 @@ class RuleTable extends Map {
 		if (source === undefined) return '';
 		return source ? `banned by ${source}` : `banned`;
 	}
+
+	/**
+	 * @param {[string, string, number, string[]][]} complexBans
+	 * @param {string} rule
+	 * @return {number}
+	 */
+	getComplexBanIndex(complexBans, rule) {
+		let ruleId = toId(rule);
+		let complexBanIndex = -1;
+		for (let i = 0; i < complexBans.length; i++) {
+			if (toId(complexBans[i][0]) === ruleId) {
+				complexBanIndex = i;
+				break;
+			}
+		}
+		return complexBanIndex;
+	}
+
+	/**
+	 * @param {string} rule
+	 * @param {string} source
+	 * @param {number} limit
+	 * @param {string[]} bans
+	 */
+	addComplexBan(rule, source, limit, bans) {
+		let complexBanIndex = this.getComplexBanIndex(this.complexBans, rule);
+		if (complexBanIndex !== -1) {
+			if (this.complexBans[complexBanIndex][2] === Infinity) return;
+			this.complexBans[complexBanIndex] = [rule, source, limit, bans];
+		} else {
+			this.complexBans.push([rule, source, limit, bans]);
+		}
+	}
+
+	/**
+	 * @param {string} rule
+	 * @param {string} source
+	 * @param {number} limit
+	 * @param {string[]} bans
+	 */
+	addComplexTeamBan(rule, source, limit, bans) {
+		let complexBanTeamIndex = this.getComplexBanIndex(this.complexTeamBans, rule);
+		if (complexBanTeamIndex !== -1) {
+			if (this.complexTeamBans[complexBanTeamIndex][2] === Infinity) return;
+			this.complexTeamBans[complexBanTeamIndex] = [rule, source, limit, bans];
+		} else {
+			this.complexTeamBans.push([rule, source, limit, bans]);
+		}
+	}
 }
 
 class Format extends Effect {
@@ -419,6 +468,38 @@ class Item extends Effect {
 		 * @type {string | undefined}
 		 */
 		this.megaEvolves = this.megaEvolves;
+		/**
+		 * If this is a Z crystal: true if the Z Crystal is generic
+		 * (e.g. Firium Z). If species-specific, the name
+		 * (e.g. Inferno Overdrive) of the Z Move this crystal allows
+		 * the use of.
+		 * undefined, if not a Z crystal.
+		 * @type {boolean | string | undefined}
+		*/
+		this.zMove = this.zMove;
+		/**
+		 * If this is a generic Z crystal: The type (e.g. Fire) of the
+		 * Z Move this crystal allows the use of (e.g. Fire)
+		 * undefined, if not a generic Z crystal
+		 * @type {string | undefined}
+		 */
+		this.zMoveType = this.zMoveType;
+		/**
+		 * If this is a species-specific Z crystal: The name
+		 * (e.g. Play Rough) of the move this crystal requires its
+		 * holder to know to use its Z move.
+		 * undefined, if not a species-specific Z crystal
+		 * @type {string | undefined}
+		 */
+		this.zMoveFrom = this.zMoveFrom;
+		/**
+		 * If this is a species-specific Z crystal: An array of the
+		 * species of Pokemon that can use this crystal's Z move.
+		 * Note that these are the full names, e.g. 'Mimikyu-Busted'
+		 * undefined, if not a species-specific Z crystal
+		 * @type {string[] | undefined}
+		 */
+		this.zMoveUser = this.zMoveUser;
 		/**
 		 * Is this item a Berry?
 		 * @type {boolean}

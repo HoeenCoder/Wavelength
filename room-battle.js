@@ -198,8 +198,8 @@ class BattleTimer {
 	start(/** @type {User} */ requester) {
 		let userid = requester ? requester.userid : 'staff';
 		if (this.timerRequesters.has(userid)) return false;
-		if (this.timer && requester) {
-			this.battle.room.add(`|inactive|${requester.name} also wants the timer to be on.`).update();
+		if (this.timer) {
+			this.battle.room.add(`|inactive|${requester ? requester.name : userid} also wants the timer to be on.`).update();
 			this.timerRequesters.add(userid);
 			return false;
 		}
@@ -1074,7 +1074,11 @@ class Battle {
 		if (this.started) this.onUpdateConnection(user);
 		if (this.p1 && this.p2) {
 			this.started = true;
-			Rooms.global.onCreateBattleRoom(Users(this.p1.userid), Users(this.p2.userid), this.room, {rated: this.rated});
+			const user1 = Users(this.p1.userid);
+			const user2 = Users(this.p2.userid);
+			if (!user1) throw new Error(`User ${this.p1.userid} not found on ${this.id} battle creation`);
+			if (!user2) throw new Error(`User ${this.p2.userid} not found on ${this.id} battle creation`);
+			Rooms.global.onCreateBattleRoom(user1, user2, this.room, {rated: this.rated});
 		}
 		return player;
 	}

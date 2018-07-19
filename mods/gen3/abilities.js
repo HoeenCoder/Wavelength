@@ -1,6 +1,7 @@
 'use strict';
 
-exports.BattleAbilities = {
+/**@type {{[k: string]: ModdedAbilityData}} */
+let BattleAbilities = {
 	"cutecharm": {
 		inherit: true,
 		desc: "There is a 1/3 chance a Pokemon making contact with this Pokemon will become infatuated if it is of the opposite gender.",
@@ -21,11 +22,11 @@ exports.BattleAbilities = {
 			if (move && move.flags['contact'] && !source.status) {
 				let r = this.random(300);
 				if (r < 10) {
-					source.setStatus('slp');
+					source.setStatus('slp', target);
 				} else if (r < 20) {
-					source.setStatus('par');
+					source.setStatus('par', target);
 				} else if (r < 30) {
-					source.setStatus('psn');
+					source.setStatus('psn', target);
 				}
 			}
 		},
@@ -177,3 +178,5 @@ exports.BattleAbilities = {
 		shortDesc: "This Pokemon is only damaged by supereffective moves and indirect damage.",
 	},
 };
+
+exports.BattleAbilities = BattleAbilities;

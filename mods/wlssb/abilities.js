@@ -191,6 +191,7 @@ exports.BattleAbilities = {
 		onStart: function (pokemon) {
 			this.add('-start', pokemon, 'typechange', 'Fighting/Ghost');
 			pokemon.types = ["Fighting", "Ghost"];
+			this.boost({def: 1, spd: 1});
 		},
 		onBasePowerPriority: 8,
 		onBasePower: function (basePower, attacker, defender, move) {
@@ -331,14 +332,58 @@ exports.BattleAbilities = {
 			}
 		},
 	},
-	//LycaniumZ
-	"supershield": {
-		onEffectiveness: function () {
-			return -2;
+	//SSBN-640
+	"twistedvirtues": {
+		onModifyPriority: function (priority, pokemon, target, move) {
+			if (move && move.category === 'Status') {
+				return priority + 1;
+			}
 		},
-		desc: "All moves are 4x resistant against this pokemon.",
-		id: "supershield",
-		name: "Super Shield",
+		onStart: function (pokemon) {
+			this.add('-activate', pokemon, 'ability: Twisted Virtues');
+			if (!pokemon.hasType('Poison') && pokemon.addType('Poison')) {
+				this.add('-start', pokemon, 'typeadd', 'Poison', '[from] ability: Twisted Virtues');
+			}
+			this.addPseudoWeather('twistedvirtues');
+			this.add('message', 'Darkness has became light!');
+			for (let s in this.sides) {
+				const thisSide = this.sides[s];
+				for (let p in thisSide.active) {
+					const pokemon = thisSide.active[p];
+					if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+						pokemon.setType('Fairy');
+						this.add('-start', pokemon, 'typechange', 'Fairy');
+					}
+				}
+			}
+		},
+		effect: {
+			onUpdate: function (pokemon) {
+				if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+					pokemon.setType('Fairy');
+					this.add('-start', pokemon, 'typechange', 'Fairy');
+				}
+			},
+			onSwitchIn: function (pokemon) {
+				if ((pokemon.types[0] === 'Dark' || pokemon.types[1] === 'Dark') && pokemon.hp) {
+					pokemon.setType('Fairy');
+					this.add('-start', pokemon, 'typechange', 'Fairy');
+				}
+			},
+			onModifyMovePriority: -99,
+			onModifyMove: function (move) {
+				if (move.type === 'Dark') {
+					move.type = 'Fairy';
+				}
+			},
+		},
+		onEnd: function (pokemon) {
+			this.removePseudoWeather('twistedvirtues');
+			this.add('message', 'The light disappeared!');
+		},
+		desc: "+Poison Type; All status moves gain +1 priority; Dark pokemon and moves turn Fairy type.",
+		id: "twsitedvirtues",
+		name: "Twisted Virtues",
 	},
 	//SnorlaxTheRain
 	"scraroom": {
@@ -357,37 +402,6 @@ exports.BattleAbilities = {
 				move.ignoreImmunity['Normal'] = true;
 			}
 		},
-	},
-	//Finny
-	"clinicaldepression": {
-		desc: "This Pokemon has a random stat raised by 2 stages and another stat lowered by 1 stage at the end of each turn.",
-		shortDesc: "Raises a random stat by 2 and lowers another stat by 1 at the end of each turn.",
-		onResidualOrder: 26,
-		onResidualSubOrder: 1,
-		onResidual: function (pokemon) {
-			let stats = [];
-			let boost = {};
-			for (let statPlus in pokemon.boosts) {
-				if (pokemon.boosts[statPlus] < 6 && statPlus !== 'accuracy' && statPlus !== 'evasion') {
-					stats.push(statPlus);
-				}
-			}
-			let randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = 2;
-
-			stats = [];
-			for (let statMinus in pokemon.boosts) {
-				if (pokemon.boosts[statMinus] > -6 && statMinus !== randomStat && statMinus !== 'accuracy' && statMinus !== 'evasion') {
-					stats.push(statMinus);
-				}
-			}
-			randomStat = stats.length ? stats[this.random(stats.length)] : "";
-			if (randomStat) boost[randomStat] = -1;
-
-			this.boost(boost);
-		},
-		id: "clinicaldepression",
-		name: "Clinical Depression",
 	},
 	//Alfastorm
 	"addendum": {

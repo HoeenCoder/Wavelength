@@ -299,7 +299,9 @@ class Tournament {
 		}
 
 		if (!isAllowAlts) {
-			for (const otherUser of this.generator.getUsers()) {
+			for (let otherUser of this.generator.getUsers()) {
+				if (!otherUser) continue;
+				otherUser = Users(otherUser.userid);
 				if (otherUser && otherUser.latestIp === user.latestIp) {
 					output.sendReply('|tournament|error|AltUserAlreadyAdded');
 					return;
@@ -569,7 +571,8 @@ class Tournament {
 		if (matchFrom) {
 			this.generator.setUserBusy(matchFrom.to, false);
 			this.inProgressMatches.set(player, null);
-			delete matchFrom.room.tour;
+			matchFrom.room.tour = null;
+			matchFrom.room.parent = null;
 			if (matchFrom.room.battle) matchFrom.room.battle.forfeit(player.userid);
 		}
 
@@ -580,7 +583,8 @@ class Tournament {
 		if (matchTo) {
 			this.generator.setUserBusy(matchTo, false);
 			let matchRoom = this.inProgressMatches.get(matchTo).room;
-			delete matchRoom.tour;
+			matchRoom.tour = null;
+			matchRoom.parent = null;
 			if (matchRoom.battle) matchRoom.battle.forfeit(player.userid);
 			this.inProgressMatches.set(matchTo, null);
 		}
@@ -1133,7 +1137,7 @@ let commands = {
 			if (tournament.customRules.length < 1) {
 				return this.errorReply("The tournament does not have any custom rules.");
 			}
-			this.sendReplyBox("This tournament includes:<br />" + tournament.getCustomRules());
+			this.sendReply("|html|<div class='infobox infobox-limited'>This tournament includes:<br />" + tournament.getCustomRules() + "</div>");
 		},
 	},
 	creation: {
@@ -1222,8 +1226,8 @@ let commands = {
 				return this.errorReply("The custom rules cannot be changed once the tournament has started.");
 			}
 			if (tournament.setCustomRules(params, this)) {
-				this.room.addRaw("<div class='infobox'>This tournament includes:<br />" + tournament.getCustomRules() + "</div>");
-				this.privateModAction("(" + user.name + " set the tournament's custom rules to " + tournament.customRules.join(", ") + ".)");
+				this.room.addRaw("<div class='infobox infobox-limited'>This tournament includes:<br />" + tournament.getCustomRules() + "</div>");
+				this.privateModAction("(" + user.name + " updated the tournament's custom rules.)");
 				this.modlog('TOUR RULES', null, tournament.customRules.join(", "));
 			}
 		},
@@ -1483,7 +1487,7 @@ let commands = {
 
 			Punishments.roomUnpunish(this.room, targetUser, 'TOURBAN');
 			tournament.removeBannedUser(targetUser);
-			this.privateModAction(`${targetUser.name || targetUserid} was unbanned from joining tournaments by ${user.name}.`, `TOURUNBAN: [${targetUser ? targetUser.getLastId() : targetUserid}] by ${user.userid}`);
+			this.privateModAction(`${targetUser.name || targetUserid} was unbanned from joining tournaments by ${user.name}.`);
 			this.modlog('TOUR UNBAN', targetUser, null, {noip: 1, noalts: 1});
 		},
 	},
@@ -1517,7 +1521,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 	} else if (cmd === 'help') {
 		return this.parse('/help tournament');
 	} else if (this.meansYes(cmd)) {
-		if (!this.can('tournamentsmanagement', null, room)) return;
+		if (!this.can('gamemanagement', null, room)) return;
 		let rank = params[0];
 		if (rank && rank === '@') {
 			if (room.toursEnabled === true) return this.errorReply("Tournaments are already enabled for @ and above in this room.");
@@ -1539,7 +1543,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 			return this.errorReply("Tournament enable setting not recognized.  Valid options include [%|@].");
 		}
 	} else if (this.meansNo(cmd)) {
-		if (!this.can('tournamentsmanagement', null, room)) return;
+		if (!this.can('gamemanagement', null, room)) return;
 		if (!room.toursEnabled) {
 			return this.errorReply("Tournaments are already disabled.");
 		}
@@ -1550,7 +1554,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		}
 		return this.sendReply("Tournaments are now disabled.");
 	} else if (cmd === 'announce' || cmd === 'announcements') {
-		if (!this.can('tournamentsmanagement', null, room)) return;
+		if (!this.can('gamemanagement', null, room)) return;
 		if (!Config.tourannouncements.includes(room.id)) {
 			return this.errorReply("Tournaments in this room cannot be announced.");
 		}
@@ -1585,9 +1589,9 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		if (room.toursEnabled === true) {
 			if (!this.can('tournaments', null, room)) return;
 		} else if (room.toursEnabled === '%') {
-			if (!this.can('tournamentsmoderation', null, room)) return;
+			if (!this.can('gamemoderation', null, room)) return;
 		} else {
-			if (!user.can('tournamentsmanagement', null, room)) {
+			if (!user.can('gamemanagement', null, room)) {
 				return this.errorReply("Tournaments are disabled in this room (" + room.id + ").");
 			}
 		}
@@ -1619,9 +1623,9 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 			if (room.toursEnabled === true) {
 				if (!this.can('tournaments', null, room)) return;
 			} else if (room.toursEnabled === '%') {
-				if (!this.can('tournamentsmoderation', null, room)) return;
+				if (!this.can('gamemoderation', null, room)) return;
 			} else {
-				if (!user.can('tournamentsmanagement', null, room)) {
+				if (!user.can('gamemanagement', null, room)) {
 					return this.errorReply("Tournaments are disabled in this room (" + room.id + ").");
 				}
 			}
@@ -1629,7 +1633,7 @@ Chat.commands.tournament = function (paramString, room, user, connection) {
 		}
 
 		if (commands.moderation[cmd]) {
-			if (!user.can('tournamentsmoderation', null, room)) {
+			if (!user.can('gamemoderation', null, room)) {
 				return this.errorReply(cmd + " -  Access denied.");
 			}
 			commandHandler = typeof commands.moderation[cmd] === 'string' ? commands.moderation[commands.moderation[cmd]] : commands.moderation[cmd];
@@ -1667,7 +1671,7 @@ Chat.commands.tournamenthelp = function (target, room, user) {
 		`- off/disable: Disables allowing drivers and mods to start tournaments in the current room.<br />` +
 		`- announce/announcements &lt;on|off>: Enables/disables tournament announcements for the current room.<br />` +
 		`- banuser/unbanuser &lt;user>: Bans/unbans a user from joining tournaments in this room. Lasts 2 weeks.<br />` +
-		`More detailed help can be found <a href="http://www.smogon.com/forums/threads/3570628/#post-6777489">here</a>`
+		`More detailed help can be found <a href="https://www.smogon.com/forums/threads/3570628/#post-6777489">here</a>`
 	);
 };
 
