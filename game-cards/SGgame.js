@@ -2,7 +2,7 @@
 
 class SGgame extends Console.Console {
 	constructor(user, muted) {
-		super(user, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="http://i.imgur.com/tfYS6TN.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/console kill">Power</button>', muted);
+		super(user, 'background: linear-gradient(green, white); color: #000;', '<center><br/><br/><br/><br/><img src="https://play.pokemonshowdown.com/sprites/trainers/hoeenhero.png"/></center><!--split-->', '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <a href="https://github.com/HoeenCoder/Wavelength/issues/215" target="_blank"><button class="button notifying">Report Bug</button></a> <button class="button" name="send" value="/console kill">Power</button>', muted);
 		// Lines of text to be displayed
 		this.title = 'SGgame';
 		this.gameId = 'SGgame';
@@ -832,7 +832,7 @@ exports.commands = {
 				Object.assign(newPlayer, Db.players.get(user.userid));
 				Db.players.set(user.userid, newPlayer);
 			}
-			if (player.party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+			if (player.party.length > 0) user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <a href="https://github.com/HoeenCoder/Wavelength/issues/215" target="_blank"><button class="button notifying">Report Bug</button></a> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 			user.console.init();
 			user.console.warp(Db.players.get(user.userid).location + "|" + Db.players.get(user.userid).zone);
 		}
