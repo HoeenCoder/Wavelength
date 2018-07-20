@@ -116,7 +116,14 @@ class Side {
 				} else if (this.team[i].hp >= 1) {
 					this.pokemon[i].sethp(this.team[i].hp);
 				}
-				if (this.team[i].status) this.pokemon[i].setStatus(this.team[i].status);
+				if (this.team[i].status) {
+					// Using Pokemon#setStatus without the pokemon on the field on client causes a crash
+					// Set it manually for now
+					//this.pokemon[i].setStatus(this.team[i].status);
+					let status = this.battle.getEffect(this.team[i].status);
+					this.pokemon[i].status = status.id;
+					this.pokemon[i].statusData = {id: status.id, target: this.pokemon[i]};
+				}
 			}
 		}
 		this.pokemonLeft = this.pokemon.length;

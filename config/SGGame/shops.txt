@@ -1,0 +1,59 @@
+/*
+SGgame - Shops
+This file holds raw data for the shops in SGgame
+The following is an example of a layout for a shop. Messages in {} braces are information about the example, not part of the example
+
+LOCATION LOCATION|ZONE {the location id and zone id number seperated with a | ex: mainisland|0}
+SHOPID id {Id of the shop, signifies the start of a new shop for the location, each shop in a location has a differnet Id.}
+{The id MUST match the building id (in locations.js) or things will crash}
+item,price,once {The id of the item being sold, its price in poke, and if the item can only be bought once ever (used for TMs)}
+{ex:}
+waterstone,5000
+tm01,20000,true
+*/
+
+LOCATION mainisland|2
+SHOPID oldmerchant
+pokeball,200
+greatball,600
+ultraball,1200
+potion,300
+superpotion,700
+hyperpotion,1200
+antidote,100
+parlyzheal,200
+awakening,200
+iceheal,250
+burnheal,250
+fullheal,600
+
+SHOPID raregoods
+tm21,1000,true
+tm27,1000,true
+tm16,3000,true
+tm17,3000,true
+tm33,3000,true
+firestone,2100
+thunderstone,2100
+waterstone,2100
+leafstone,2100
+linkcable,3150
+moonstone,4200
+sunstone,4200
+duskstone,4200
+dawnstone,4200
+shinystone,4200
+icestone,4200
+
+/*
+Hmm... lots of stones. Maybe shouldn't have tms and stones together... but meh, 'tis fine for now.
+Beefed up due to few shops. Future additons will allow this one to focus more low end later.
+*/
+
+/*
+Future Bug island shop. Specialized for bug island. (And slightly more due to not being an offical store)
+LOCATION bugisland|?
+pokeball,250
+potion,350
+antidote,150
+*/

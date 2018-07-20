@@ -818,8 +818,10 @@ class Battle {
 			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
 			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
 			const player = Db.players.get(notCom.userid);
-			if (this.trainerId && !player.battled.includes(this.trainerId) && notCom.userid === winnerid) {
-				player.battled.push(this.trainerId);
+			if (this.trainerId && notCom.userid === winnerid) {
+				player.poke += 500; // TODO scale winnings to difficulty
+				this.room.add(`|message|${notCom.name} got 500 poké for winning!`);
+				if (!player.battled.includes(this.trainerId)) player.battled.push(this.trainerId);
 				Db.players.set(notCom.userid, player);
 			}
 		}

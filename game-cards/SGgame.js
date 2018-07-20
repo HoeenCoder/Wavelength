@@ -71,7 +71,10 @@ class SGgame extends Console.Console {
 			output += '<button class="button" name="send" value="/sggame bag close">Close</button></center>';
 			break;
 		case "pokemoncenter":
-			output += `<center>${checkButton('Heal Party', 'heal')} ${checkButton('PC', 'pc')} <button class="button" name="send" value="/sggame building pokemoncenter, exit">Leave</button>`;
+			output += `<center>${checkButton('Heal Party', 'heal')} ${checkButton('PC', 'pc')} <button class="button" name="send" value="/sggame building pokemoncenter, exit">Leave</button></center>`;
+			break;
+		case "shop":
+			output += `<center><b>Pok&eacute;</b>: ${Db.players.get(this.userid).poke} ${checkButton('Buy 1', 'buy1')} ${checkButton('Buy 5', 'buy5')} ${checkButton('Buy 10', 'buy10')} <button class="button" name="send" value="/sggame building ${data.id}, exit">Leave</button></center>`;
 			break;
 		case "marina":
 			output += `<center>${checkButton('Confirm Travel', 'travel')} <button class="button" name="send" value="/sggame building marina, exit">Leave</button></center>`;
@@ -496,7 +499,7 @@ class SGgame extends Console.Console {
 			output += '<b>Level</b>:' + pokemon.level + '<br/>';
 			let nextLevel2 = WL.calcExp(pokemon.species, pokemon.level + 1), curLevel2 = WL.calcExp(pokemon.species, pokemon.level);
 			output += '<b>Exp</b>:' + Math.round(pokemon.exp) + ' / ' + Math.round(nextLevel2) + '<br/>';
-			output += '<div style="width: 10em; height: 1em; display: inline-block; backgorund: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + (pokemon.level >= 100 ? '100' : Math.round(((pokemon.exp - curLevel2) / (nextLevel2 - curLevel2)) * 100)) + '%; background: lightblue; float: left"></div></div>';
+			output += '<div style="width: 10em; height: 1em; display: inline-block; backgorund: transparent; border: 1px solid grey"><div style="height: 100%; width: ' + (pokemon.level >= 100 ? '100' : Math.round(((pokemon.exp - curLevel2) / (nextLevel2 - curLevel2)) * 100)) + '%; background: lightblue; float: left"></div></center></div>';
 			let move2 = null;
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
@@ -686,7 +689,7 @@ class Player {
 		this.version = user.console.version;
 		this.userid = user.userid;
 		// In-game currency
-		this.poke = 0;
+		this.poke = 2000;
 		// Time played, not ingame time
 		this.time = 0;
 		// players bag - object containing objects that contain items as keys and the number held as values
@@ -1094,6 +1097,33 @@ exports.commands = {
 					} else {
 						if (item.use.onlyBattle) return this.parse('/sggame bag ' + target[0] + ', ' + target[1]);
 						let hadEffect = false;
+						if (item.use.healHP) {
+							let maxhp = WL.getStat(player.party[target[3]], 'hp');
+							let orgHp = player.party[target[3]].hp;
+							if (player.party[target[3]].hp && player.party[target[3]].hp < maxhp) {
+								if (item.use.healHP === true) {
+									delete player.party[target[3]].hp;
+								} else {
+									player.party[target[3]].hp += item.use.healHP;
+									if (player.party[target[3]].hp > maxhp) delete player.party[target[3]].hp;
+								}
+								user.console.queue.push(`text|${player.party[target[3]].name || player.party[target[3]].species}'s HP was restored by ${(player.party[target[3]].hp || maxhp) - orgHp} points.<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ${target[0]}, ${target[1]}">Return to bag</button>`);
+								hadEffect = true;
+							}
+						}
+						if (item.use.healStatus && player.party[target[3]].status) {
+							if (item.use.healStatus === true) {
+								delete player.party[target[3]].status;
+								hadEffect = true;
+							} else {
+								let canHeal = item.use.healStatus.split('|');
+								if (canHeal.includes(player.party[target[3]].status)) {
+									delete player.party[target[3]].status;
+									hadEffect = true;
+								}
+							}
+							if (hadEffect) user.console.queue.push(`text|${player.party[target[3]].name || player.party[target[3]].species}'s status was restored.<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ${target[0]}, ${target[1]}">Return to bag</button>`);
+						}
 						if (item.use.level) {
 							let pokemon = Dex.getTemplate(player.party[target[3]].species);
 							if (player.party[target[3]] && player.party[target[3]].level < 100) {
@@ -1436,8 +1466,7 @@ exports.commands = {
 			let parts = target.split(',').map(x => { return x.trim(); });
 			let buildings = WL.locationData[user.console.location].zones[user.console.zone].buildings;
 			if (!buildings || !Object.keys(buildings).includes(parts[0])) return;
-			if (!parts[1]) parts[1] = 'enter';
-			if (parts[1] !== 'enter' && user.console.curPane !== parts[0]) parts[1] = 'enter';
+			if (!parts[1] || (parts[1] !== 'enter' && user.console.curPane !== parts[0])) parts[1] = 'enter';
 			return WL.locationData[user.console.location].zones[user.console.zone].onBuilding(...[user.console].concat(parts));
 		},
 	},

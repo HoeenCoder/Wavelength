@@ -1194,10 +1194,10 @@ class ModdedDex {
 			if (set.pokeball || set.hpType || set.exp || set.ot || set.hp || set.status) {
 				buf += ',' + set.hpType;
 				buf += ',' + toId(set.pokeball);
-				buf += ',' + set.exp || '0';
-				buf += ',' + set.ot || '';
-				buf += ',' + set.hp || '';
-				buf += ',' + (set.status && ['psn', 'tox', 'brn', 'par', 'slp', 'frz'].includes(set.status)) ? set.status : '';
+				buf += ',' + (set.exp || '0');
+				buf += ',' + (set.ot || '');
+				buf += ',' + (set.hp || '');
+				buf += ',' + ((set.status && ['psn', 'tox', 'brn', 'par', 'slp', 'frz'].includes(set.status)) ? set.status : '');
 			}
 		}
 

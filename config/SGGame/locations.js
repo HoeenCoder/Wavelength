@@ -92,6 +92,65 @@ function marina(game, id, action, area, confirm) {
 	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('marina', options));
 }
 
+// Shop
+function shop(game, id, action, item = null, amount = 1, shopkeeper = "Pokemart Clerk") {
+	let player = Db.players.get(game.userid);
+	let shop = WL.getShop(player.location, player.zone, id);
+	if (!shop) throw new Error(`Can't find shop data for ${player.location}|${player.zone} when trying to load a shop.`);
+	let options = {id: id};
+	if (item && !(item in shop)) {
+		item = null;
+		amount = 1;
+	}
+	if (item) item = WL.getItem(item);
+	if (amount) {
+		amount = parseInt(amount);
+		if (!amount) amount = 1;
+	}
+	switch (action) {
+	case 'enter':
+		if (player.stage === 0) {
+			game.queue.unshift(`text|${shopkeeper === "Old Merchant" ? `<b>Old Merchant</b>: I have nothing to sell you right now because it was all stolen!<br/>Please hurry and get my good back!` : `Strange... the shop appears to be closed.`}.`);
+			game.update(...game.next());
+			return false;
+		}
+		game.curPane = id;
+		break;
+	case 'exit':
+		game.curPane = null;
+		return game.update(game.buildCSS(), game.buildMap(), game.buildBase());
+	case 'select':
+		let price = shop[item.id][0];
+		if (player.poke >= price && (!player.bag[item.slot][item.id] || !shop[item.id][1])) options.buy1 = `/sggame building ${id}, buy, ${item.id}, 1`;
+		if (player.poke >= price * 5 && !shop[item.id][1]) options.buy5 = `/sggame building ${id}, buy, ${item.id}, 5`;
+		if (player.poke >= price * 10 && !shop[item.id][1]) options.buy10 = `/sggame building ${id}, buy, ${item.id}, 10`;
+		break;
+	case 'buy':
+		let cost = shop[item.id][0] * amount;
+		if (player.poke < cost) break;
+		player.poke -= cost;
+		if (!player.bag[item.slot][item.id]) player.bag[item.slot][item.id] = 0;
+		player.bag[item.slot][item.id] += amount;
+		Db.players.set(game.userid, player);
+		item = null;
+		break;
+	}
+	let out = `<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h3>${WL.locationData[player.location].zones[player.zone].buildings[id]}</h3></center>`;
+	out += `<div style="height: 91%; border-top: 0.2em solid black; overflow: scroll; display: block;"><div><b style="float: left">Item</b><b style="float: right">Cost</b></div><br>`;
+	let keys = Object.keys(shop);
+	for (let i = 0; i < keys.length; i++) {
+		let curItem = WL.getItem(keys[i]);
+		if (!curItem) throw new Error(`Invalid item in shop: ${keys[i]} location: ${player.location}|${player.zone}`);
+		if (item && curItem.id === item.id) {
+			out += `<button style="background: #0B9; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${curItem.name}</span><span style="float: right">${shop[keys[i]][0]}</span></button>`;
+		} else {
+			out += `<button name="send" value="/sggame building ${id}, select, ${curItem.id}" style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${curItem.name}</span><span style="float: right">${shop[keys[i]][0]}</span></button>`;
+		}
+	}
+	out += '</div></div>';
+	return game.update(game.buildCSS(), game.buildMap() + out, game.buildBase('shop', options));
+}
+
 exports.locations = {
 	"welcome": {
 		"id": "welcome",
@@ -103,7 +162,7 @@ exports.locations = {
 			"0": {
 				"subTitle": "",
 				"id": "welcome|0",
-				"html": "<center><br/><br/><br/><br/><img src=\"http://i.imgur.com/tfYS6TN.png\"/></center>",
+				"html": "<center><br/><br/><br/><br/><img src=\"https://play.pokemonshowdown.com/sprites/trainers/hoeenhero.png\"/></center>",
 				"css": "",
 				"base": "",
 				"exits": {
@@ -126,7 +185,7 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|0",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/MxvBu5l.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s8.postimg.cc/7g0qdu5h1/mainisland-0.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"buildings": {
 					"pokemoncenter": "Pokemon Center",
@@ -146,7 +205,7 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|1",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/V89bwNV.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s8.postimg.cc/ydunfkxtx/mainisland-1.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"exits": {
 					"up": "mainisland|0",
@@ -159,8 +218,12 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|2",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/qkUTywK.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s8.postimg.cc/evzzzno1h/mainisland-2.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
+				"buildings": {
+					"oldmerchant": "Old Merchant's Shop",
+					"raregoods": "Rare Goods",
+				},
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>Old Merchant</b>: Someone please help me! I\'ve been robbed!', 'text|<b>Old Merchant</b>: You there! Yes you, you have to help me! That thief took most of my goods. Go after him and get them back for me!', 'text|<b>Old Merchant</b>: Wait, you don\'t have a Pokemon? Okay, you can use one of mine. Come over here and pick quickly. If you help me maybe I\'ll let you keep it too.');
 					let msg = '';
@@ -199,6 +262,10 @@ exports.locations = {
 						Db.players.set(game.userid, player);
 					}
 				},
+				"onBuilding": function (game, id, action, item, amount) {
+					if (!['oldmerchant', 'raregoods'].includes(id)) return;
+					return shop(game, id, action, item, amount, id === 'pokemart' ? "Old Merchant" : "Merchant");
+				},
 				"exits": {
 					"up": "mainisland|1",
 					"left": "mainisland|4",
@@ -210,7 +277,7 @@ exports.locations = {
 				"subTitle": "Marina",
 				"id": "mainisland|3",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/BLBDRGJ.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s8.postimg.cc/lz7vf9e1h/mainisland-3.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"buildings": {
 					"marina": "Marina",
@@ -230,7 +297,7 @@ exports.locations = {
 				"subTitle": "Warehouses",
 				"id": "mainisland|4",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/8ik75KF.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s8.postimg.cc/jhw4801ut/mainisland-4.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>Thief</b>: No! The door to the warehouse is locked!<br/>I just hope I can get away before...', 'text|<b>Thief</b>: Yikes! I\'ve been found! Well, I\'m not going down without a fight.<br/>Bring it on!', 'callback');
@@ -281,7 +348,7 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|5",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/92EDoGs.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s33.postimg.cc/fgxeabn67/Main_5.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onTryEnter": function (game) {
 					if (Db.players.get(game.userid).stage < 1) {
@@ -302,7 +369,7 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|6",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/asnGUWy.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s33.postimg.cc/fgxeacxgv/Main_6.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"exits": {
 					"up": "mainisland|7",
@@ -315,7 +382,7 @@ exports.locations = {
 				"subTitle": "",
 				"id": "mainisland|7",
 				"html": "",
-				"css": "background: url(https://i.imgur.com/o6oulcb.png) no-repeat center center; background-size: 100% 100%;",
+				"css": "background: url(https://s33.postimg.cc/k2tiipqpr/Main_7_maybe_2.png) no-repeat center center; background-size: 100% 100%;",
 				"base": "",
 				"onFirstEnter": function (game) {
 					game.queue.push('text|<b>?</b>: Looking for a good place to train and battle?', 'text|<b>?</b>: Well your in the right place!<br>Click the Battle button to challenge a trainer.');

@@ -801,6 +801,60 @@ exports.WL = {
 		}
 		this.trainersLoaded = true;
 	},
+	loadShops: function () {
+		let raw = FS('./config/SGGame/shops.txt').readIfExistsSync().split('\n');
+		let ignoring = false, location = null, zone = null, id = null;
+		for (let i = 0; i < raw.length; i++) {
+			let line = raw[i];
+			switch (line.substring(0, 2)) {
+			case '//':
+				continue;
+			case '/*':
+				ignoring = true;
+				continue;
+			case '*/':
+				ignoring = false;
+				continue;
+			}
+			if (ignoring || !toId(line)) continue;
+			let action = line.split(' ')[0];
+			switch (action) {
+			case 'LOCATION':
+				// new location
+				location = toId(line.split(' ')[1].split('|')[0]);
+				zone = toId(line.split(' ')[1].split('|')[1]);
+				if (!WL.locationData[location] || !WL.locationData[location].zones[zone]) throw new Error(`Error while parsing shop data: Unable to find location "${location}|${zone}".`, `config/SGgame/shops.txt`);
+				WL.locationData[location].zones[zone].shops = {};
+				id = null;
+				continue;
+			case 'SHOPID':
+				// new shop
+				if (!location || !zone) throw new Error(`Error while parsing shop data: No location set when setting shop id`, `config/SGgame/shops.txt`);
+				if (this.locationData[location].zones[zone].shops[toId(line.split(' ')[1])]) throw new Error(`Error while parsing shop data: Duplicate shop id in "${location}|${zone}": ${toId(line.split(' ')[1])}.`, `config/SGgame/shops.txt`);
+				id = toId(line.split(' ')[1]);
+				WL.locationData[location].zones[zone].shops[id] = {};
+				continue;
+			default:
+				// data
+				if (!location || !zone) throw new Error(`Error while parsing shop data: No location set when parsing shop data`, `config/SGgame/shops.txt`);
+				if (!id) throw new Error(`Error while parsing shop data: No shop id set`, `config/SGgame/shops.txt`);
+				let data = line.split(',');
+				let item = WL.getItem(data[0]);
+				if (!item) throw new Error(`Error while parsing shop data: Item ${data[0]} does not exist`, `config/SGgame/shops.txt`);
+				if (item.slot === 'keyitems') throw new Error(`Error while parsing shop data: Item ${data[0]} is a key item and cannot be sold`, `config/SGgame/shops.txt`);
+				let price = parseInt(data[1]);
+				if (!price || price < 0) throw new Error(`Error while parsing shop data: Item ${data[0]} has an invalid price (must be a integer that is greater than 0)`, `config/SGgame/shops.txt`);
+				let once = !!data[2];
+				this.locationData[location].zones[zone].shops[id][item.id] = [price, once];
+			}
+		}
+		this.shopsLoaded = true;
+	},
+	getShop: function (location, zone, id) {
+		if (!this.shopsLoaded) this.loadShops();
+		if (!this.locationData[location] || !this.locationData[location].zones[zone] || !this.locationData[location].zones[zone].shops || !this.locationData[location].zones[zone].shops[id]) return false;
+		return this.locationData[location].zones[zone].shops[id];
+	},
 };
 
 // last two functions needed to make sure WL.regdate() fully works
