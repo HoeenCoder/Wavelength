@@ -7,92 +7,92 @@ let BattleLearnsets = {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dodomon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	kuramon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	poyomon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	punimon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	yuramon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	//In Training
 	bukamon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dorimon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	koromon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	motimon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	nyaromon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tanemon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tokomon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tsumemon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tsunomon: {
 		learnset: {
 			acidbubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	//Rookie
 	agumon: {
@@ -106,7 +106,7 @@ let BattleLearnsets = {
 			windcutter: ["7M"],
 			pepperbreath: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	aruraumon: {
 		learnset: {
@@ -119,7 +119,7 @@ let BattleLearnsets = {
 			blackout: ["7M"],
 			nemesisivy: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	betamon: {
 		learnset: {
@@ -131,7 +131,7 @@ let BattleLearnsets = {
 			oceanwave: ["7M"],
 			electricshock: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	biyomon: {
 		learnset: {
@@ -146,7 +146,7 @@ let BattleLearnsets = {
 			rootbind: ["7M"],
 			spiraltwister: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	clearagumon: {
 		learnset: {
@@ -159,7 +159,7 @@ let BattleLearnsets = {
 			gigawattlaser: ["7M"],
 			preciousflame: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	demidevimon: {
 		learnset: {
@@ -172,7 +172,7 @@ let BattleLearnsets = {
 			cootieskick: ["7M"],
 			demidart: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dokunemon: {
 		learnset: {
@@ -185,7 +185,7 @@ let BattleLearnsets = {
 			blackout: ["7M"],
 			wormvenom: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dorumon: {
 		learnset: {
@@ -199,7 +199,7 @@ let BattleLearnsets = {
 			antiattackfield: ["7M"],
 			metalcannon: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	elecmon: {
 		learnset: {
@@ -211,7 +211,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			superthunderstrike: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gabumon: {
 		learnset: {
@@ -224,7 +224,7 @@ let BattleLearnsets = {
 			sonicjab: ["7M"],
 			blueblaster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	goburimon: {
 		learnset: {
@@ -239,7 +239,7 @@ let BattleLearnsets = {
 			pooptoss: ["7M"],
 			goblinstrike: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gomamon: {
 		learnset: {
@@ -252,7 +252,7 @@ let BattleLearnsets = {
 			reboundstrike: ["7M"],
 			marchingfishes: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gotsumon: {
 		learnset: {
@@ -265,7 +265,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			rockfist: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	kunemon: {
 		learnset: {
@@ -278,7 +278,7 @@ let BattleLearnsets = {
 			superstinkyjet: ["7M"],
 			electricthread: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	modokibetamon: {
 		learnset: {
@@ -291,7 +291,7 @@ let BattleLearnsets = {
 			waterblitz: ["7M"],
 			aquatower: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	muchomon: {
 		learnset: {
@@ -303,7 +303,7 @@ let BattleLearnsets = {
 			firewall: ["7M"],
 			tropicalbeak: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	otamamon: {
 		learnset: {
@@ -316,7 +316,7 @@ let BattleLearnsets = {
 			warcry: ["7M"],
 			lullabybubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	palmon: {
 		learnset: {
@@ -329,7 +329,7 @@ let BattleLearnsets = {
 			confusedstorm: ["7M"],
 			poisonivy: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	patamon: {
 		learnset: {
@@ -342,7 +342,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			boombubble: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	penguinmon: {
 		learnset: {
@@ -354,7 +354,7 @@ let BattleLearnsets = {
 			earthcoat: ["7M"],
 			eternalslapping: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	psychemon: {
 		learnset: {
@@ -368,7 +368,7 @@ let BattleLearnsets = {
 			sonicjab: ["7M"],
 			coloredsparkle: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	salamon: {
 		learnset: {
@@ -381,7 +381,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			puppyhowl: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	shamanmon: {
 		learnset: {
@@ -396,7 +396,7 @@ let BattleLearnsets = {
 			pooptoss: ["7M"],
 			dancingbone: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	snowagumon: {
 		learnset: {
@@ -409,7 +409,7 @@ let BattleLearnsets = {
 			windcutter: ["7M"],
 			littleblizzard: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	snowgoburimon: {
 		learnset: {
@@ -423,7 +423,7 @@ let BattleLearnsets = {
 			pooptoss: ["7M"],
 			snowgobbolt: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tentomon: {
 		learnset: {
@@ -437,7 +437,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			supershocker: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	toyagumon: {
 		learnset: {
@@ -450,7 +450,7 @@ let BattleLearnsets = {
 			giganticlaser: ["7M"],
 			plasticblaze: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tsukaimon: {
 		learnset: {
@@ -463,7 +463,7 @@ let BattleLearnsets = {
 			chaoscloud: ["7M"],
 			evilspell: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	//Champion
 	airdramon: {
@@ -478,7 +478,7 @@ let BattleLearnsets = {
 			holybreath: ["7M"],
 			spinningneedle: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	akatorimon: {
 		learnset: {
@@ -491,7 +491,7 @@ let BattleLearnsets = {
 			guerrillapoop: ["7M"],
 			scarredeye: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	angemon: {
 		learnset: {
@@ -506,7 +506,7 @@ let BattleLearnsets = {
 			holyjudgment: ["7M"],
 			handoffate: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	bakemon: {
 		learnset: {
@@ -521,7 +521,7 @@ let BattleLearnsets = {
 			thunderjustice: ["7M"],
 			evilcharm: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	birdramon: {
 		learnset: {
@@ -536,7 +536,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			meteorwing: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	blackgatomon: {
 		learnset: {
@@ -549,7 +549,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			darkpaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	centarumon: {
 		learnset: {
@@ -563,7 +563,7 @@ let BattleLearnsets = {
 			gigawattlaser: ["7M"],
 			solarray: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	coelamon: {
 		learnset: {
@@ -577,7 +577,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			variabledarts: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	darkrizamon: {
 		learnset: {
@@ -591,7 +591,7 @@ let BattleLearnsets = {
 			mechanicalclaw: ["7M"],
 			dreadfire: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	devimon: {
 		learnset: {
@@ -606,7 +606,7 @@ let BattleLearnsets = {
 			deathhand: ["7M"],
 			protect: ["7M"],
 
-		}
+		},
 	},
 	dolphmon: {
 		learnset: {
@@ -622,7 +622,7 @@ let BattleLearnsets = {
 			pulseblast: ["7M"],
 			protect: ["7M"],
 
-		}
+		},
 	},
 	dorugamon: {
 		learnset: {
@@ -637,7 +637,7 @@ let BattleLearnsets = {
 			antiattackfield: ["7M"],
 			powermetal: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	drimogemon: {
 		learnset: {
@@ -649,7 +649,7 @@ let BattleLearnsets = {
 			rockfall: ["7M"],
 			drillspin: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	flarerizamon: {
 		learnset: {
@@ -663,7 +663,7 @@ let BattleLearnsets = {
 			mechanicalclaw: ["7M"],
 			blazebuster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	frigimon: {
 		learnset: {
@@ -676,7 +676,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			subzeroicepunch: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	fugamon: {
 		learnset: {
@@ -690,7 +690,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			evilhurricane: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	garurumon: {
 		learnset: {
@@ -705,7 +705,7 @@ let BattleLearnsets = {
 			aurorafreeze: ["7M"],
 			howlingblaster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gatomon: {
 		learnset: {
@@ -718,7 +718,7 @@ let BattleLearnsets = {
 			confusedstorm: ["7M"],
 			lightningpaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gekomon: {
 		learnset: {
@@ -731,7 +731,7 @@ let BattleLearnsets = {
 			charmperfume: ["7M"],
 			symphonycrusher: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	geremon: {
 		learnset: {
@@ -746,7 +746,7 @@ let BattleLearnsets = {
 			extremepoopdeath: ["7M"],
 			hypersmell: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	greymon: {
 		learnset: {
@@ -759,7 +759,7 @@ let BattleLearnsets = {
 			megalospark: ["7M"],
 			megaflame: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	guardromon: {
 		learnset: {
@@ -774,7 +774,7 @@ let BattleLearnsets = {
 			thunderjustice: ["7M"],
 			guardianbarrage: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gururumon: {
 		learnset: {
@@ -789,7 +789,7 @@ let BattleLearnsets = {
 			aurorafreeze: ["7M"],
 			chaosblaster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	hyogamon: {
 		learnset: {
@@ -803,7 +803,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			snowpunch: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	icedevimon: {
 		learnset: {
@@ -817,7 +817,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			frozenclaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	icemon: {
 		learnset: {
@@ -830,7 +830,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			iceballbomb: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ikkakumon: {
 		learnset: {
@@ -843,7 +843,7 @@ let BattleLearnsets = {
 			reboundstrike: ["7M"],
 			harpoontorpedo: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	junglemojyamon: {
 		learnset: {
@@ -857,7 +857,7 @@ let BattleLearnsets = {
 			poopfling: ["7M"],
 			junglebone: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	kabuterimon: {
 		learnset: {
@@ -871,7 +871,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			electroshocker: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	kokatorimon: {
 		learnset: {
@@ -884,7 +884,7 @@ let BattleLearnsets = {
 			guerrillapoop: ["7M"],
 			frozenfireshot: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	kuwagamon: {
 		learnset: {
@@ -897,7 +897,7 @@ let BattleLearnsets = {
 			blackout: ["7M"],
 			scissorclaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	leomon: {
 		learnset: {
@@ -912,7 +912,7 @@ let BattleLearnsets = {
 			burningheart: ["7M"],
 			fistofthebeastking: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	meicoomon: {
 		learnset: {
@@ -926,7 +926,7 @@ let BattleLearnsets = {
 			saintray: ["7M"],
 			xscratch: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	meramon: {
 		learnset: {
@@ -940,7 +940,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			burningfist: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	mikemon: {
 		learnset: {
@@ -953,7 +953,7 @@ let BattleLearnsets = {
 			bug: ["7M"],
 			catclaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	mojyamon: {
 		learnset: {
@@ -967,7 +967,7 @@ let BattleLearnsets = {
 			poopfling: ["7M"],
 			boneboomerang: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	monochromon: {
 		learnset: {
@@ -980,7 +980,7 @@ let BattleLearnsets = {
 			busterdrive: ["7M"],
 			volcanicstrike: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	morishellmon: {
 		learnset: {
@@ -993,7 +993,7 @@ let BattleLearnsets = {
 			sonicjab: ["7M"],
 			mindfog: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	mudfrigimon: {
 		learnset: {
@@ -1006,7 +1006,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			mudball: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	nanimon: {
 		learnset: {
@@ -1020,7 +1020,7 @@ let BattleLearnsets = {
 			blackout: ["7M"],
 			poopdunk: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ninjamon: {
 		learnset: {
@@ -1033,7 +1033,7 @@ let BattleLearnsets = {
 			reboundstrike: ["7M"],
 			dancingleaves: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	nisedrimogemon: {
 		learnset: {
@@ -1047,7 +1047,7 @@ let BattleLearnsets = {
 			reverseprogram: ["7M"],
 			fakedrillspin: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	numemon: {
 		learnset: {
@@ -1062,7 +1062,7 @@ let BattleLearnsets = {
 			extremepoopdeath: ["7M"],
 			numesludge: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ogremon: {
 		learnset: {
@@ -1076,7 +1076,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			pummelwhack: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	piddomon: {
 		learnset: {
@@ -1091,7 +1091,7 @@ let BattleLearnsets = {
 			holyjudgment: ["7M"],
 			firefeather: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	platinumsukamon: {
 		learnset: {
@@ -1107,7 +1107,7 @@ let BattleLearnsets = {
 			extremepoopdeath: ["7M"],
 			raremetalpoop: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	redvegiemon: {
 		learnset: {
@@ -1120,7 +1120,7 @@ let BattleLearnsets = {
 			earthcoat: ["7M"],
 			chilipepperpummel: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	rockmon: {
 		learnset: {
@@ -1133,7 +1133,7 @@ let BattleLearnsets = {
 			sonicjab: ["7M"],
 			antidigibeam: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	saberdramon: {
 		learnset: {
@@ -1147,7 +1147,7 @@ let BattleLearnsets = {
 			evilfantasy: ["7M"],
 			nightroar: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	sandyanmamon: {
 		learnset: {
@@ -1162,7 +1162,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			stunray: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	seadramon: {
 		learnset: {
@@ -1175,7 +1175,7 @@ let BattleLearnsets = {
 			holybreath: ["7M"],
 			iceblast: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	shellmon: {
 		learnset: {
@@ -1188,7 +1188,7 @@ let BattleLearnsets = {
 			sonicjab: ["7M"],
 			hydropressure: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	shimaunimon: {
 		learnset: {
@@ -1205,7 +1205,7 @@ let BattleLearnsets = {
 			busterdrive: ["7M"],
 			lustershot: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	soulmon: {
 		learnset: {
@@ -1219,7 +1219,7 @@ let BattleLearnsets = {
 			aurorafreeze: ["7M"],
 			necromagic: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	sukamon: {
 		learnset: {
@@ -1234,7 +1234,7 @@ let BattleLearnsets = {
 			hideandseek: ["7M"],
 			poop: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tankmon: {
 		learnset: {
@@ -1249,7 +1249,7 @@ let BattleLearnsets = {
 			upgrade: ["7M"],
 			hypercannon: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	togemon: {
 		learnset: {
@@ -1264,7 +1264,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			needlespray: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tyrannomon: {
 		learnset: {
@@ -1278,7 +1278,7 @@ let BattleLearnsets = {
 			rockfall: ["7M"],
 			blazeblaster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	unimon: {
 		learnset: {
@@ -1293,7 +1293,7 @@ let BattleLearnsets = {
 			musclecharge: ["7M"],
 			aerialattack: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	vegiemon: {
 		learnset: {
@@ -1306,7 +1306,7 @@ let BattleLearnsets = {
 			earthcoat: ["7M"],
 			sweetbreath: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	weedmon: {
 		learnset: {
@@ -1319,7 +1319,7 @@ let BattleLearnsets = {
 			earthcoat: ["7M"],
 			deadlyweed: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	yanmamon: {
 		learnset: {
@@ -1334,7 +1334,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			thunderray: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	//Ultimate
 	andromon: {
@@ -1350,7 +1350,7 @@ let BattleLearnsets = {
 			bug: ["7M"],
 			spiralsword: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	angewomon: {
 		learnset: {
@@ -1366,7 +1366,7 @@ let BattleLearnsets = {
 			warcry: ["7M"],
 			celestialarrow: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	beastmon: {
 		learnset: {
@@ -1380,7 +1380,7 @@ let BattleLearnsets = {
 			icestatue: ["7M"],
 			vampirewave: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	blackweregarurumon: {
 		learnset: {
@@ -1397,7 +1397,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			fullmoonkick: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	bluemeramon: {
 		learnset: {
@@ -1411,7 +1411,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			coldflame: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	digitamamon: {
 		learnset: {
@@ -1425,7 +1425,7 @@ let BattleLearnsets = {
 			upgrade: ["7M"],
 			nightmaresyndrome: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dorugreymon: {
 		learnset: {
@@ -1440,7 +1440,7 @@ let BattleLearnsets = {
 			antiattackfield: ["7M"],
 			metalmeteor: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	etemon: {
 		learnset: {
@@ -1454,7 +1454,7 @@ let BattleLearnsets = {
 			extremepoopdeath: ["7M"],
 			loveserenade: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	garudamon: {
 		learnset: {
@@ -1469,7 +1469,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			shadowwing: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	gigadramon: {
 		learnset: {
@@ -1483,7 +1483,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			energyshot: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	giromon: {
 		learnset: {
@@ -1497,7 +1497,7 @@ let BattleLearnsets = {
 			firewall: ["7M"],
 			deadlybomb: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	iceleomon: {
 		learnset: {
@@ -1512,7 +1512,7 @@ let BattleLearnsets = {
 			burningheart: ["7M"],
 			fistofice: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ladydevimon: {
 		learnset: {
@@ -1528,7 +1528,7 @@ let BattleLearnsets = {
 			warcry: ["7M"],
 			darknesswave: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	lillymon: {
 		learnset: {
@@ -1543,7 +1543,7 @@ let BattleLearnsets = {
 			holybreath: ["7M"],
 			flowercannon: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	magnaangemon: {
 		learnset: {
@@ -1561,7 +1561,7 @@ let BattleLearnsets = {
 			wingshoes: ["7M"],
 			gateofdestiny: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	mamemon: {
 		learnset: {
@@ -1577,7 +1577,7 @@ let BattleLearnsets = {
 			burningheart: ["7M"],
 			smilebomber: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	megadramon: {
 		learnset: {
@@ -1591,7 +1591,7 @@ let BattleLearnsets = {
 			firetower: ["7M"],
 			genocideattack: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	megakabuterimon: {
 		learnset: {
@@ -1605,7 +1605,7 @@ let BattleLearnsets = {
 			bug: ["7M"],
 			hornbuster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	megaseadramon: {
 		learnset: {
@@ -1620,7 +1620,7 @@ let BattleLearnsets = {
 			megalospark: ["7M"],
 			lightningjavelin: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	meicrackmon: {
 		learnset: {
@@ -1635,7 +1635,7 @@ let BattleLearnsets = {
 			holybreath: ["7M"],
 			modestlystun: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	meicrackmonviciousmode: {
 		learnset: {
@@ -1650,7 +1650,7 @@ let BattleLearnsets = {
 			blackout: ["7M"],
 			modestlystun: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metalgreymonvaccine: {
 		learnset: {
@@ -1667,7 +1667,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			gigadestroyer: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metalgreymonvirus: {
 		learnset: {
@@ -1684,7 +1684,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			revengeflame: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metalmamemon: {
 		learnset: {
@@ -1700,7 +1700,7 @@ let BattleLearnsets = {
 			burningheart: ["7M"],
 			energybomb: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	meteormon: {
 		learnset: {
@@ -1713,7 +1713,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			galacticflare: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	monzaemon: {
 		learnset: {
@@ -1728,7 +1728,7 @@ let BattleLearnsets = {
 			charmperfume: ["7M"],
 			heartsattack: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	myotismon: {
 		learnset: {
@@ -1744,7 +1744,7 @@ let BattleLearnsets = {
 			reverseprogram: ["7M"],
 			grislywing: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	piximon: {
 		learnset: {
@@ -1761,7 +1761,7 @@ let BattleLearnsets = {
 			bug: ["7M"],
 			pitbomb: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	shogungekomon: {
 		learnset: {
@@ -1776,7 +1776,7 @@ let BattleLearnsets = {
 			charmperfume: ["7M"],
 			musicalfist: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	skullgreymon: {
 		learnset: {
@@ -1794,7 +1794,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			oblivionbird: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	tekkamon: {
 		learnset: {
@@ -1808,7 +1808,7 @@ let BattleLearnsets = {
 			firewall: ["7M"],
 			fragbomb: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	vademon: {
 		learnset: {
@@ -1822,7 +1822,7 @@ let BattleLearnsets = {
 			cootieskick: ["7M"],
 			unidentifiedflyingkiss: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	vermilimon: {
 		learnset: {
@@ -1836,7 +1836,7 @@ let BattleLearnsets = {
 			busterdrive: ["7M"],
 			volcanicstrikes: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	warumonzaemon: {
 		learnset: {
@@ -1850,7 +1850,7 @@ let BattleLearnsets = {
 			charmperfume: ["7M"],
 			heartbreakattack: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	waruseadramon: {
 		learnset: {
@@ -1865,7 +1865,7 @@ let BattleLearnsets = {
 			evilsquall: ["7M"],
 			evilicicle: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	weregarurumon: {
 		learnset: {
@@ -1882,7 +1882,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			wolfclaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	whamon: {
 		learnset: {
@@ -1898,7 +1898,7 @@ let BattleLearnsets = {
 			saintheal: ["7M"],
 			tidalwave: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	zudomon: {
 		learnset: {
@@ -1913,7 +1913,7 @@ let BattleLearnsets = {
 			reboundstrike: ["7M"],
 			vulcanshammer: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	//Mega
 	alphamon: {
@@ -1933,7 +1933,7 @@ let BattleLearnsets = {
 			bladeofthedragonking: ["7M"],
 			protect: ["7M"],
 			sheercold: [],
-		}
+		},
 	},
 	blackmetalgarurumon: {
 		learnset: {
@@ -1948,7 +1948,7 @@ let BattleLearnsets = {
 			aurorafreeze: ["7M"],
 			garurutomahawk: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	blackwargreymon: {
 		learnset: {
@@ -1965,7 +1965,7 @@ let BattleLearnsets = {
 			evilfantasy: ["7M"],
 			blacktornado: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	boltmon: {
 		learnset: {
@@ -1979,7 +1979,7 @@ let BattleLearnsets = {
 			infinityburn: ["7M"],
 			tomahawkstinger: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	cherubimonevil: {
 		learnset: {
@@ -1995,7 +1995,7 @@ let BattleLearnsets = {
 			gigawattlaser: ["7M"],
 			lightningspear: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	cherubimongood: {
 		learnset: {
@@ -2011,7 +2011,7 @@ let BattleLearnsets = {
 			gigawattlaser: ["7M"],
 			heavensjudgment: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	devitamamon: {
 		learnset: {
@@ -2025,7 +2025,7 @@ let BattleLearnsets = {
 			firetower: ["7M"],
 			blackdeathcloud: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	dorugoramon: {
 		learnset: {
@@ -2043,7 +2043,7 @@ let BattleLearnsets = {
 			gigawattlaser: ["7M"],
 			bravemetal: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ebemon: {
 		learnset: {
@@ -2057,7 +2057,7 @@ let BattleLearnsets = {
 			cootieskick: ["7M"],
 			brainrupture: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	herculeskabuterimon: {
 		learnset: {
@@ -2073,7 +2073,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			gigablaster: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	hiandromon: {
 		learnset: {
@@ -2091,7 +2091,7 @@ let BattleLearnsets = {
 			megatonpunch: ["7M"],
 			atomicray: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	lilithmon: {
 		learnset: {
@@ -2107,7 +2107,7 @@ let BattleLearnsets = {
 			mechanicalclaw: ["7M"],
 			phantompain: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	machinedramon: {
 		learnset: {
@@ -2123,7 +2123,7 @@ let BattleLearnsets = {
 			gigafreeze: ["7M"],
 			infinitycannon: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	magnadramon: {
 		learnset: {
@@ -2138,7 +2138,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			firetornado: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	marineangemon: {
 		learnset: {
@@ -2156,7 +2156,7 @@ let BattleLearnsets = {
 			earthcoat: ["7M"],
 			oceanlove: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metaletemon: {
 		learnset: {
@@ -2170,7 +2170,7 @@ let BattleLearnsets = {
 			extremepoopdeath: ["7M"],
 			darkrecital: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metalgarurumon: {
 		learnset: {
@@ -2185,7 +2185,7 @@ let BattleLearnsets = {
 			aurorafreeze: ["7M"],
 			icewolfclaw: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	metalseadramon: {
 		learnset: {
@@ -2200,7 +2200,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			riverofpower: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	ophanimon: {
 		learnset: {
@@ -2216,7 +2216,7 @@ let BattleLearnsets = {
 			warcry: ["7M"],
 			edensjavelin: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	phoenixmon: {
 		learnset: {
@@ -2233,7 +2233,7 @@ let BattleLearnsets = {
 			infinityburn: ["7M"],
 			starlightexplosion: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	princemamemon: {
 		learnset: {
@@ -2249,7 +2249,7 @@ let BattleLearnsets = {
 			poopattackfield: ["7M"],
 			smilewarhead: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	raguelmon: {
 		learnset: {
@@ -2265,7 +2265,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			darknesszone: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	rasielmon: {
 		learnset: {
@@ -2281,7 +2281,7 @@ let BattleLearnsets = {
 			dgdimension: ["7M"],
 			knowledgestream: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	rosemon: {
 		learnset: {
@@ -2296,7 +2296,7 @@ let BattleLearnsets = {
 			shiningnova: ["7M"],
 			thornwhip: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	saberleomon: {
 		learnset: {
@@ -2314,7 +2314,7 @@ let BattleLearnsets = {
 			shiningnova: ["7M"],
 			howlingcrusher: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	seraphimon: {
 		learnset: {
@@ -2332,7 +2332,7 @@ let BattleLearnsets = {
 			wingshoes: ["7M"],
 			strikeofthesevenstars: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	venommyotismon: {
 		learnset: {
@@ -2348,7 +2348,7 @@ let BattleLearnsets = {
 			deleteprogram: ["7M"],
 			venominfusion: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	vikemon: {
 		learnset: {
@@ -2364,7 +2364,7 @@ let BattleLearnsets = {
 			holyflash: ["7M"],
 			arcticblizzard: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 	wargreymon: {
 		learnset: {
@@ -2381,7 +2381,7 @@ let BattleLearnsets = {
 			fightingaura: ["7M"],
 			terraforce: ["7M"],
 			protect: ["7M"],
-		}
+		},
 	},
 };
 
