@@ -608,6 +608,10 @@ exports.BattleMovedex = {
 				volatileStatus: 'aquaring',
 			},
 		},
+		onPrepareHit: function (target, source) {
+			this.attrLastMove('[still]');
+			this.add('-anim', source, "Bullet Seed", target);
+		},
 		onHit: function (target) {
 			this.add('c|@TheRittz|Feel the annoyingness!');
 		},
