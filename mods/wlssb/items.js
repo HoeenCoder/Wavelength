@@ -50,7 +50,7 @@ exports.BattleItems = {
 				return this.chainModify(0.5);
 			}
 		},
-		onUpdate: function (pokemon) {
+		onUpdate: function (pokemon, source) {
 			let activate = false;
 			let boosts = {};
 			for (let i in pokemon.boosts) {
@@ -59,16 +59,16 @@ exports.BattleItems = {
 					boosts[i] = 0;
 				}
 			}
-			if (activate && !pokemon.volatiles['herb']) {
+			if (activate && !source.volatiles['herb']) {
 				pokemon.setBoost(boosts);
 				this.add('-clearnegativeboost', pokemon, '[silent]');
 				pokemon.addVolatile('herb');
 			}
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony')) && !pokemon.volatiles['med']) {
+			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony')) && !source.volatiles['med']) {
 				this.heal(pokemon.maxhp / 2);
 				pokemon.addVolatile('med');
 			}
-			if (pokemon.volatiles['med'] && pokemon.volatiles['herb'] && pokemon.volatiles['shuca'] && pokemon.volatiles['sash']) {
+			if (source.volatiles['med'] && source.volatiles['herb'] && source.volatiles['shuca'] && source.volatiles['sash']) {
 				pokemon.useItem();
 			}
 		},
