@@ -499,6 +499,7 @@ exports.grouplist = [
 		bypassblocks: 'u%@&~',
 		receiveauthmessages: true,
 		gamemoderation: true,
+		tournaments: true,
 		jeopardy: true,
 		joinbattle: true,
 		minigame: true,
