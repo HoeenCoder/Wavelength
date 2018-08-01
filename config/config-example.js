@@ -475,7 +475,6 @@ exports.grouplist = [
 		forcerename: true,
 		ip: true,
 		alts: '@u',
-		tournaments: true,
 		game: true,
 		// Wavelength
 		news: true,
