@@ -1932,7 +1932,6 @@ let BattleLearnsets = {
 			thunderjustice: ["7M"],
 			bladeofthedragonking: ["7M"],
 			protect: ["7M"],
-			sheercold: [],
 		},
 	},
 	blackmetalgarurumon: {
