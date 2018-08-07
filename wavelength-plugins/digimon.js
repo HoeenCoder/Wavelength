@@ -157,9 +157,9 @@ exports.commands = {
 	digipedia: function (target, room, user, connection, cmd) {
 		let mod = Dex.mod('digimon');
 		/*
-			/digimonsearch Section:value, Section:value
-			/digisearchdisplay digimon
-			*/
+		/digimonsearch Section:value, Section:value
+		/digisearchdisplay digimon
+		*/
 		if (cmd !== 'digisearchdisplay') user.lastDigiSearch = target;
 		let change = !!target || cmd === 'searchchange';
 		let choices = {
@@ -245,103 +245,103 @@ exports.commands = {
 					let type1 = 0;
 					switch (template.types[0]) {
 					case 'Flame':
-						type1 = 'https://i.imgur.com/a6oFkDS.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516538866860043/Flame_Mini.png';
 						break;
 					case 'Aqua':
-						type1 = 'https://i.imgur.com/ayarN5z.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516531518570514/Aqua_Mini.png';
 						break;
 					case 'Air':
-						type1 = 'https://i.imgur.com/yqvTCm3.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516530251890691/Air.png';
 						break;
 					case 'Nature':
-						type1 = 'https://i.imgur.com/WAdVaGt.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516544126517268/Nature_Mini.png';
 						break;
 					case 'Holy':
-						type1 = 'https://i.imgur.com/N6YpSjl.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516540829794304/Holy_Mini.png';
 						break;
 					case 'Evil':
-						type1 = 'https://i.imgur.com/9e5TwqI.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516535398039562/Evil_Mini.png';
 						break;
 					case 'Battle':
-						type1 = 'https://i.imgur.com/ERTSIU9.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516533489631233/Battle_Mini.png';
 						break;
 					case 'Mech':
-						type1 = 'https://i.imgur.com/QLFeGOW.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516542780145666/Mech_Mini.png';
 						break;
 					case 'Filth':
-						type1 = 'https://i.imgur.com/X0Fx3FQ.png';
+						type1 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516536895406100/Filth_Mini.png';
 						break;
 					}
 					let type2 = 0;
 					switch (template.types[1]) {
 					case 'Flame':
-						type2 = 'https://i.imgur.com/a6oFkDS.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516538866860043/Flame_Mini.png';
 						break;
 					case 'Aqua':
-						type2 = 'https://i.imgur.com/ayarN5z.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516531518570514/Aqua_Mini.png';
 						break;
 					case 'Air':
-						type2 = 'https://i.imgur.com/yqvTCm3.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516530251890691/Air.png';
 						break;
 					case 'Nature':
-						type2 = 'https://i.imgur.com/WAdVaGt.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516544126517268/Nature_Mini.png';
 						break;
 					case 'Holy':
-						type2 = 'https://i.imgur.com/N6YpSjl.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516540829794304/Holy_Mini.png';
 						break;
 					case 'Evil':
-						type2 = 'https://i.imgur.com/9e5TwqI.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516535398039562/Evil_Mini.png';
 						break;
 					case 'Battle':
-						type2 = 'https://i.imgur.com/ERTSIU9.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516533489631233/Battle_Mini.png';
 						break;
 					case 'Mech':
-						type2 = 'https://i.imgur.com/QLFeGOW.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516542780145666/Mech_Mini.png';
 						break;
 					case 'Filth':
-						type2 = 'https://i.imgur.com/X0Fx3FQ.png';
+						type2 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516536895406100/Filth_Mini.png';
 						break;
 					}
 					let type3 = 0;
 					switch (template.types[2]) {
 					case 'Flame':
-						type3 = 'https://i.imgur.com/a6oFkDS.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516538866860043/Flame_Mini.png';
 						break;
 					case 'Aqua':
-						type3 = 'https://i.imgur.com/ayarN5z.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516531518570514/Aqua_Mini.png';
 						break;
 					case 'Air':
-						type3 = 'https://i.imgur.com/yqvTCm3.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516530251890691/Air.png';
 						break;
 					case 'Nature':
-						type3 = 'https://i.imgur.com/WAdVaGt.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516544126517268/Nature_Mini.png';
 						break;
 					case 'Holy':
-						type3 = 'https://i.imgur.com/N6YpSjl.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516540829794304/Holy_Mini.png';
 						break;
 					case 'Evil':
-						type3 = 'https://i.imgur.com/9e5TwqI.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516535398039562/Evil_Mini.png';
 						break;
 					case 'Battle':
-						type3 = 'https://i.imgur.com/ERTSIU9.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516533489631233/Battle_Mini.png';
 						break;
 					case 'Mech':
-						type3 = 'https://i.imgur.com/QLFeGOW.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516542780145666/Mech_Mini.png';
 						break;
 					case 'Filth':
-						type3 = 'https://i.imgur.com/X0Fx3FQ.png';
+						type3 = 'https://cdn.discordapp.com/attachments/357714356915666954/476516536895406100/Filth_Mini.png';
 						break;
 					}
 					let ability = template.abilities[0];
 					switch (ability) {
 					case 'Vaccine':
-						ability = 'https://i.imgur.com/fYpKKQv.png';
+						ability = 'https://cdn.discordapp.com/attachments/357714356915666954/476520365506428928/Vaccine.png';
 						break;
 					case 'Virus':
-						ability = 'https://i.imgur.com/uotEvKJ.png';
+						ability = 'https://cdn.discordapp.com/attachments/357714356915666954/476520361719103488/Virus.png';
 						break;
 					case 'Data':
-						ability = 'https://i.imgur.com/gIZPRX0.png';
+						ability = 'https://cdn.discordapp.com/attachments/357714356915666954/476520363598282754/Data.png';
 						break;
 					}
 					if (!template.types[1]) {
