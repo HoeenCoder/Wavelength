@@ -111,8 +111,8 @@ global.Users = require('./users');
 
 global.Punishments = require('./punishments');
 
-global.WL = require('./WL.js').WL;
-global.Console = require('./console.js');
+global.WL = require('./WL').WL;
+global.GameConsole = require('./console').GameConsole;
 global.Chat = require('./chat');
 global.Rooms = require('./rooms');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-class Console {
+class GameConsole {
 	constructor(user, css, html, bottom, muted, sound) {
 		this.title = 'Game Console';
 		this.userid = user.userid;
@@ -57,7 +57,7 @@ exports.pages = {
 	gameconsole: function (query, user, connection) {
 		if (!user.named) return Rooms.RETRY_AFTER_LOGIN;
 		if (!user.console) {
-			user.console = new Console(user);
+			user.console = new GameConsole(user);
 			user.console.init();
 		}
 		user.console.restore();
@@ -91,7 +91,7 @@ exports.commands = {
 			if (user.console && cmd !== 'forcestart') return;
 			if (cmd === 'forcestart') this.parse('/console kill');
 			if (!target || Object.keys(WL.gameList).indexOf(toId(target)) === -1) {
-				user.console = new Console(user);
+				user.console = new GameConsole(user);
 				return user.console.init();
 			}
 			return this.parse(WL.gameList[toId(target)].startCommand);
@@ -104,4 +104,4 @@ exports.commands = {
 		},
 	},
 };
-exports.Console = Console;
+exports.GameConsole = GameConsole;

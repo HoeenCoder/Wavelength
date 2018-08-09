@@ -16,7 +16,7 @@
 		"Users": false, "Punishments": false, "Rooms": false, "Verifier": false, "Chat": false,
 		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false, "Ladders": false,
         "TeamValidatorAsync": false, "WL": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false,
-        "currencyPlural": false, "writeSSB": false, "Ontime": false, "rankLadder": false, "Console": false,
+        "currencyPlural": false, "writeSSB": false, "Ontime": false, "rankLadder": false, "GameConsole": false
 	},
 	"extends": "eslint:recommended",
 	"rules": {

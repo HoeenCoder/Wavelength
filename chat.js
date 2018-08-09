@@ -1285,7 +1285,7 @@ Chat.loadPlugins = function () {
 		Object.assign(commands, wavelengthplugin.commands);
 		Object.assign(pages, wavelengthplugin.pages);
 	}
-	// Load games for Console
+	// Load games for GameConsole
 	WL.gameList = {};
 	for (let file of FS('game-cards').readdirSync()) {
 		if (file.substr(-3) !== '.js') continue;

@@ -2813,7 +2813,7 @@ const commands = {
 				WL.uncache();
 				Chat.uncache('./WL');
 				global.WL = require('./WL').WL;
-				global.Console = require('./console');
+				global.GameConsole = require('./console').GameConsole;
 				global.Chat = require('./chat');
 
 				let runningTournaments = Tournaments.tournaments;
