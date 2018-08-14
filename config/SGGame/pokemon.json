@@ -8406,7 +8406,7 @@
 		"rate": "125",
 		"evolution": {
 			"trigger": null,
-			"evolvesTo": "dribflim"
+			"evolvesTo": "drifblim"
 		},
 		"baseExp": 70,
 		"evDrops": {
