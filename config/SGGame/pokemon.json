@@ -399,7 +399,7 @@
 	"raticate": {
 		"expType": "mediumfast",
 		"num": 20,
-		"rate": "127*",
+		"rate": "127",
 		"evolution": {
 			"trigger": "level",
 			"level": 20,
@@ -499,10 +499,10 @@
 	"pikachu": {
 		"expType": "mediumfast",
 		"num": 25,
-		"rate": "190*",
+		"rate": "190",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": "raichu|raichualola"
 		},
 		"baseExp": 112,
@@ -699,7 +699,7 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": "clefable"
 		},
 		"baseExp": 113,
@@ -711,7 +711,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 140
 	},
 	"clefable": {
 		"expType": "fast",
@@ -731,7 +732,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 140
 	},
 	"vulpix": {
 		"expType": "mediumfast",
@@ -778,7 +780,7 @@
 		"rate": "170",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": "clefable"
 		},
 		"baseExp": 95,
@@ -2258,7 +2260,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 140
 	},
 	"tangela": {
 		"expType": "mediumfast",
@@ -2836,7 +2839,7 @@
 		"rate": "25",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": null
 		},
 		"baseExp": 189,
@@ -2867,7 +2870,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"zapdos": {
 		"expType": "slow",
@@ -2886,7 +2890,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"moltres": {
 		"expType": "slow",
@@ -2905,7 +2910,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"dratini": {
 		"expType": "slow",
@@ -2924,7 +2930,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"dragonair": {
 		"expType": "slow",
@@ -2944,7 +2951,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"dragonite": {
 		"expType": "slow",
@@ -2965,7 +2973,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"mewtwo": {
 		"expType": "slow",
@@ -2984,7 +2993,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"mew": {
 		"expType": "mediumslow",
@@ -3003,7 +3013,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"chikorita": {
 		"expType": "mediumslow",
@@ -3347,7 +3358,7 @@
 		"rate": "90",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evoMove": "crosspoison",
 			"evolvesTo": null
 		},
@@ -3438,7 +3449,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 140
 	},
 	"igglybuff": {
 		"expType": "fast",
@@ -3484,7 +3496,7 @@
 		"rate": "75",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": "togekiss"
 		},
 		"baseExp": 142,
@@ -3625,7 +3637,7 @@
 		"rate": "190",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": "azumarill"
 		},
 		"baseExp": 88,
@@ -3881,7 +3893,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"time": "day",
 			"evoMove": "confusion",
 			"evolvesTo": null
@@ -3903,7 +3915,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"time": "night",
 			"evoMove": "pursuit",
 			"evolvesTo": null
@@ -3917,7 +3929,8 @@
 			"spd": 2,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"murkrow": {
 		"expType": "mediumslow",
@@ -3936,7 +3949,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"slowking": {
 		"expType": "mediumfast",
@@ -3975,7 +3989,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"unown": {
 		"expType": "mediumfast",
@@ -4266,7 +4281,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"teddiursa": {
 		"expType": "mediumfast",
@@ -4523,7 +4539,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"houndoom": {
 		"expType": "slow",
@@ -4543,7 +4560,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"kingdra": {
 		"expType": "mediumfast",
@@ -4786,7 +4804,7 @@
 		"rate": "30",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": null
 		},
 		"baseExp": 608,
@@ -4798,7 +4816,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 140
 	},
 	"raikou": {
 		"expType": "slow",
@@ -4817,7 +4836,8 @@
 			"spd": 0,
 			"spe": 2
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"entei": {
 		"expType": "slow",
@@ -4836,7 +4856,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"suicune": {
 		"expType": "slow",
@@ -4855,7 +4876,8 @@
 			"spd": 2,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"larvitar": {
 		"expType": "slow",
@@ -4874,7 +4896,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"pupitar": {
 		"expType": "slow",
@@ -4894,7 +4917,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"tyranitar": {
 		"expType": "slow",
@@ -4914,7 +4938,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"lugia": {
 		"expType": "slow",
@@ -4933,7 +4958,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"hooh": {
 		"expType": "slow",
@@ -4952,7 +4978,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"celebi": {
 		"expType": "mediumslow",
@@ -4971,7 +4998,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"treecko": {
 		"expType": "mediumslow",
@@ -5551,7 +5579,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"kirlia": {
 		"expType": "slow",
@@ -5571,7 +5600,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"gardevoir": {
 		"expType": "slow",
@@ -5591,7 +5621,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"surskit": {
 		"expType": "mediumfast",
@@ -5987,7 +6018,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"mawile": {
 		"expType": "fast",
@@ -6025,7 +6057,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"lairon": {
 		"expType": "slow",
@@ -6045,7 +6078,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"aggron": {
 		"expType": "slow",
@@ -6065,7 +6099,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"meditite": {
 		"expType": "mediumfast",
@@ -6227,7 +6262,7 @@
 		"rate": "150",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"time": "day",
 			"evolvesTo": "roserade"
 		},
@@ -6299,7 +6334,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"sharpedo": {
 		"expType": "slow",
@@ -6320,7 +6356,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"wailmer": {
 		"expType": "fluctuating",
@@ -6557,7 +6594,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"cacturne": {
 		"expType": "mediumslow",
@@ -6578,7 +6616,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"swablu": {
 		"expType": "erratic",
@@ -6989,7 +7028,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"banette": {
 		"expType": "fast",
@@ -7009,7 +7049,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"duskull": {
 		"expType": "fast",
@@ -7028,7 +7069,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"dusclops": {
 		"expType": "fast",
@@ -7049,7 +7091,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"tropius": {
 		"expType": "slow",
@@ -7076,7 +7119,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"time": "night",
 			"evolvesTo": null
 		},
@@ -7108,7 +7151,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"wynaut": {
 		"expType": "mediumfast",
@@ -7344,7 +7388,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"shelgon": {
 		"expType": "slow",
@@ -7365,7 +7410,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"salamence": {
 		"expType": "slow",
@@ -7386,7 +7432,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"beldum": {
 		"expType": "slow",
@@ -7405,7 +7452,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"metang": {
 		"expType": "slow",
@@ -7426,7 +7474,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"metagross": {
 		"expType": "slow",
@@ -7447,7 +7496,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"regirock": {
 		"expType": "slow",
@@ -7466,7 +7516,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"regice": {
 		"expType": "slow",
@@ -7485,7 +7536,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"registeel": {
 		"expType": "slow",
@@ -7504,7 +7556,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"latias": {
 		"expType": "slow",
@@ -7523,7 +7576,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 90
 	},
 	"latios": {
 		"expType": "slow",
@@ -7542,12 +7596,13 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 90
 	},
 	"kyogre": {
 		"expType": "slow",
 		"num": 382,
-		"rate": "3*",
+		"rate": "3",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -7561,12 +7616,13 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"groudon": {
 		"expType": "slow",
 		"num": 383,
-		"rate": "3*",
+		"rate": "3",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -7580,12 +7636,13 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"rayquaza": {
 		"expType": "slow",
 		"num": 384,
-		"rate": "45*",
+		"rate": "45",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -7599,7 +7656,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"jirachi": {
 		"expType": "slow",
@@ -7618,7 +7676,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"deoxys": {
 		"expType": "slow",
@@ -7637,7 +7696,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"turtwig": {
 		"expType": "mediumslow",
@@ -7998,7 +8058,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 100
 	},
 	"luxray": {
 		"expType": "mediumslow",
@@ -8260,7 +8321,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 100
 	},
 	"buizel": {
 		"expType": "mediumfast",
@@ -8398,7 +8460,8 @@
 			"spd": 0,
 			"spe": 2
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 100
 	},
 	"drifloon": {
 		"expType": "fluctuating",
@@ -8456,7 +8519,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 0
 	},
 	"lopunny": {
 		"expType": "mediumfast",
@@ -8464,7 +8528,7 @@
 		"rate": "60",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evoMove": "return",
 			"evolvesTo": null
 		},
@@ -8477,7 +8541,8 @@
 			"spd": 0,
 			"spe": 2
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 140
 	},
 	"mismagius": {
 		"expType": "fast",
@@ -8497,7 +8562,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"honchkrow": {
 		"expType": "mediumslow",
@@ -8517,7 +8583,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"glameow": {
 		"expType": "fast",
@@ -8713,7 +8780,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 140
 	},
 	"chatot": {
 		"expType": "mediumslow",
@@ -8732,7 +8800,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"spiritomb": {
 		"expType": "mediumfast",
@@ -8858,7 +8927,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"time": "day",
 			"evoMove": "aurasphere",
 			"evolvesTo": null
@@ -8969,7 +9038,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 100
 	},
 	"toxicroak": {
 		"expType": "mediumfast",
@@ -9126,7 +9196,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"magnezone": {
 		"expType": "mediumfast",
@@ -9308,7 +9379,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"glaceon": {
 		"expType": "mediumfast",
@@ -9329,7 +9401,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"gliscor": {
 		"expType": "mediumslow",
@@ -9412,7 +9485,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"probopass": {
 		"expType": "mediumfast",
@@ -9453,7 +9527,8 @@
 			"spd": 2,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"froslass": {
 		"expType": "mediumfast",
@@ -9513,7 +9588,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 140
 	},
 	"mesprit": {
 		"expType": "slow",
@@ -9532,7 +9608,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 140
 	},
 	"azelf": {
 		"expType": "slow",
@@ -9551,7 +9628,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 140
 	},
 	"dialga": {
 		"expType": "slow",
@@ -9570,7 +9648,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"palkia": {
 		"expType": "slow",
@@ -9589,7 +9668,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"heatran": {
 		"expType": "slow",
@@ -9608,7 +9688,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"regigigas": {
 		"expType": "slow",
@@ -9627,7 +9708,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"giratina": {
 		"expType": "slow",
@@ -9646,7 +9728,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"cresselia": {
 		"expType": "slow",
@@ -9665,7 +9748,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"phione": {
 		"expType": "slow",
@@ -9722,7 +9806,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"shaymin": {
 		"expType": "mediumslow",
@@ -9741,7 +9826,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"arceus": {
 		"expType": "slow",
@@ -9760,7 +9846,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"victini": {
 		"expType": "slow",
@@ -9779,7 +9866,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"snivy": {
 		"expType": "mediumslow",
@@ -10436,7 +10524,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evolvesTo": null
 		},
 		"baseExp": 149,
@@ -10711,7 +10799,7 @@
 		"rate": "45",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evoMove": "slash",
 			"evolvesTo": null
 		},
@@ -11058,7 +11146,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"scrafty": {
 		"expType": "mediumfast",
@@ -12062,7 +12151,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"fraxure": {
 		"expType": "slow",
@@ -12082,7 +12172,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"haxorus": {
 		"expType": "slow",
@@ -12102,7 +12193,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"cubchoo": {
 		"expType": "mediumfast",
@@ -12336,7 +12428,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"bisharp": {
 		"expType": "mediumfast",
@@ -12356,7 +12449,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"bouffalant": {
 		"expType": "mediumfast",
@@ -12434,7 +12528,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"mandibuzz": {
 		"expType": "slow",
@@ -12455,7 +12550,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"heatmor": {
 		"expType": "mediumfast",
@@ -12512,7 +12608,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"zweilous": {
 		"expType": "slow",
@@ -12532,7 +12629,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"hydreigon": {
 		"expType": "slow",
@@ -12552,7 +12650,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"larvesta": {
 		"expType": "slow",
@@ -12611,7 +12710,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"terrakion": {
 		"expType": "slow",
@@ -12630,7 +12730,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"virizion": {
 		"expType": "slow",
@@ -12649,7 +12750,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"tornadus": {
 		"expType": "slow",
@@ -12668,7 +12770,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 90
 	},
 	"thundurus": {
 		"expType": "slow",
@@ -12687,12 +12790,13 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 90
 	},
 	"reshiram": {
 		"expType": "slow",
 		"num": 643,
-		"rate": "3*",
+		"rate": "3",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -12706,12 +12810,13 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"zekrom": {
 		"expType": "slow",
 		"num": 644,
-		"rate": "3*",
+		"rate": "3",
 		"evolution": {
 			"trigger": null,
 			"evolvesTo": null
@@ -12725,7 +12830,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"landorus": {
 		"expType": "slow",
@@ -12744,7 +12850,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 90
 	},
 	"kyurem": {
 		"expType": "slow",
@@ -12763,7 +12870,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"keldeo": {
 		"expType": "slow",
@@ -12782,7 +12890,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"meloetta": {
 		"expType": "slow",
@@ -12801,7 +12910,8 @@
 			"spd": 1,
 			"spe": 1
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"genesect": {
 		"expType": "slow",
@@ -12820,7 +12930,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"chespin": {
 		"expType": "mediumslow",
@@ -13910,7 +14021,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 35
 	},
 	"sliggoo": {
 		"expType": "slow",
@@ -13930,7 +14042,8 @@
 			"spd": 2,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 35
 	},
 	"goodra": {
 		"expType": "slow",
@@ -13951,7 +14064,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 35
 	},
 	"klefki": {
 		"expType": "fast",
@@ -14145,7 +14259,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"yveltal": {
 		"expType": "slow",
@@ -14164,7 +14279,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"zygarde": {
 		"expType": "slow",
@@ -14183,7 +14299,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"diancie": {
 		"expType": "slow",
@@ -14221,7 +14338,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"volcanion": {
 		"expType": "slow",
@@ -14240,7 +14358,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 100
 	},
 	"rowlet": {
 		"expType": "mediumslow",
@@ -15254,7 +15373,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 0
 	},
 	"silvally": {
 		"expType": "slow",
@@ -15262,7 +15382,7 @@
 		"rate": "3",
 		"evolution": {
 			"trigger": "level",
-			"happiness": 255,
+			"happiness": 220,
 			"evoMove": "multiattack",
 			"evolvesTo": null
 		},
@@ -15275,7 +15395,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"minior": {
 		"expType": "mediumslow",
@@ -15583,7 +15704,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 0
 	},
 	"cosmoem": {
 		"expType": "slow",
@@ -15604,7 +15726,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 2,
+		"basehappiness": 0
 	},
 	"solgaleo": {
 		"expType": "slow",
@@ -15625,7 +15748,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"lunala": {
 		"expType": "slow",
@@ -15646,7 +15770,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"nihilego": {
 		"expType": "slow",
@@ -15665,7 +15790,8 @@
 			"spd": 3,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"buzzwole": {
 		"expType": "slow",
@@ -15684,7 +15810,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"pheromosa": {
 		"expType": "slow",
@@ -15703,7 +15830,8 @@
 			"spd": 0,
 			"spe": 3
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"xurkitree": {
 		"expType": "slow",
@@ -15722,7 +15850,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"celesteela": {
 		"expType": "slow",
@@ -15741,7 +15870,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"kartana": {
 		"expType": "slow",
@@ -15760,7 +15890,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"guzzlord": {
 		"expType": "slow",
@@ -15779,7 +15910,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"necrozma": {
 		"expType": "slow",
@@ -15798,7 +15930,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"magearna": {
 		"expType": "slow",
@@ -15817,7 +15950,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"marshadow": {
 		"expType": "slow",
@@ -15836,7 +15970,8 @@
 			"spd": 0,
 			"spe": 1
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"poipole": {
 		"expType": "slow",
@@ -15855,7 +15990,8 @@
 			"spd": 1,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 0
 	},
 	"naganadel": {
 		"expType": "slow",
@@ -15876,7 +16012,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"stakataka": {
 		"expType": "slow",
@@ -15895,7 +16032,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"blacephalon": {
 		"expType": "slow",
@@ -15914,7 +16052,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"zeraora": {
 		"expType": "slow",
@@ -15933,7 +16072,8 @@
 			"spd": 0,
 			"spe": 3
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"venusaurmega": {
 		"id": "venusaurmega",
@@ -16178,7 +16318,7 @@
 		"evolution": {
 		    "trigger": "level",
 			"evoMove": "swift",
-		    "happiness": 255
+		    "happiness": 220
 		}
 	},
 	"alakazammega": {

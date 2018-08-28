@@ -241,7 +241,7 @@ class SGgame extends GameConsole {
 			}
 			poke = Db.players.get(this.userid).party[Number(msg.split('|')[1])];
 			this.queueAction = msg;
-			return ['background: linear-gradient(blue, white); color: #000;', '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (poke.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(poke.species).spriteid + '.gif" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000; background-color: #fff;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', this.buildBase()];
+			return ['background: linear-gradient(blue, white); color: #000;', '<br/><br/><br/><br/><br/><center><img src="' + WL.getSprite(poke.species, poke.shiny) + '" alt="' + poke.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000; background-color: #fff;">What? ' + (poke.name || poke.species) + ' is evolving! <button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo"><u>&#9733;</u></button></div>', this.buildBase()];
 			//break;
 		default:
 			throw new Error('Invalid type: ' + type + '. While running (console).next()');
@@ -346,8 +346,7 @@ class SGgame extends GameConsole {
 				if (isNaN(slot) || slot < 0 || slot > 5) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (user.party[slot]) {
-					let species = Dex.getTemplate(user.party[slot].species).spriteid;
-					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (user.party[slot].shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
+					bg = 'background: url(' + WL.getSprite(user.party[slot].species, user.party[slot].shiny) + ') no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((user.party[slot].name && user.party[slot].name !== user.party[slot].species) ? user.party[slot].name + '<br/>(' + user.party[slot].species + ')' : user.party[slot].species) + '</b> Lvl ' + (user.party[slot].level) + '<br/>';
 				if (action === 'release') {
@@ -365,8 +364,7 @@ class SGgame extends GameConsole {
 				if (!data) return output + 'Error</div></div>';
 				let bg = 'background: none;';
 				if (data) {
-					let species = Dex.getTemplate(data.species).spriteid;
-					bg = 'background: url(//play.pokemonshowdown.com/sprites/xyani' + (data.shiny ? '-shiny' : '') + '/' + species + '.gif) no-repeat top center;';
+					bg = 'background: url(' + WL.getSprite(data.species, data.shiny) + ') no-repeat top center;';
 				}
 				output += '<div style="width: 100%; height: 85%; ' + bg + ' text-align: center;"><br/><br/><br/><br/><br/><br/><b>' + ((data.name && data.name !== data.species) ? data.name + '<br/>(' + data.species + ')' : data.species) + '</b> Lvl ' + (data.level) + '<br/>';
 				if (action === 'release') {
@@ -402,7 +400,7 @@ class SGgame extends GameConsole {
 			if (!template.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="' + WL.getSprite(pokemon.species, pokemon.shiny) + '" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[0] + '.png" alt="' + template.types[0] + '"/>' + (template.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template.types[1] + '.png" alt="' + template.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -455,7 +453,7 @@ class SGgame extends GameConsole {
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
 					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon, 'hp');
-					if (!pmon.hp) pmon.hp = maxhp;
+					if (typeof pmon.hp !== 'number') pmon.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon.hp / maxhp) * 100) + '%; background: ' + (pmon.hp > maxhp / 2 ? 'limegreen' : (pmon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += pmon.hp + '/' + maxhp + (pmon.item ? ' (' + pmon.item + ')' : ' (no item)');
 					output += '</button>';
@@ -474,7 +472,7 @@ class SGgame extends GameConsole {
 					output += '<b>' + (pmon.name && pmon.name !== pmon.species ? pmon.name + '(' + pmon.species + ')' : pmon.species) + '</b> Lvl ' + (pmon.level || '?');
 					output += ((pmon.status || pmon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon.status || 'fnt'] + '">' + (pmon.status ? pmon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon, 'hp');
-					if (!pmon.hp) pmon.hp = maxhp;
+					if (typeof pmon.hp !== 'number') pmon.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon.hp / maxhp) * 100) + '%; background: ' + (pmon.hp > maxhp / 2 ? 'limegreen' : (pmon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += pmon.hp + '/' + maxhp + (pmon.item ? ' (' + pmon.item + ')' : ' (no item)');
 					output += '</button>';
@@ -490,7 +488,7 @@ class SGgame extends GameConsole {
 			if (!template2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="' + WL.getSprite(pokemon.species, pokemon.shiny) + '" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[0] + '.png" alt="' + template2.types[0] + '"/>' + (template2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + template2.types[1] + '.png" alt="' + template2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -523,7 +521,7 @@ class SGgame extends GameConsole {
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
 					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon2, 'hp');
-					if (!pmon2.hp) pmon2.hp = maxhp;
+					if (typeof pmon2.hp !== 'number') pmon2.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon2.hp / maxhp) * 100) + '%; background: ' + (pmon2.hp > maxhp / 2 ? 'limegreen' : (pmon2.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += pmon2.hp + '/' + maxhp + (pmon2.item ? ' (' + pmon2.item + ')' : ' (no item)');
 					output += '</button>';
@@ -542,7 +540,7 @@ class SGgame extends GameConsole {
 					output += '#' + (i + 1) + ' <b>' + (pmon2.name && pmon2.name !== pmon2.species ? pmon2.name + ' (' + pmon2.species + ')' : pmon2.species) + '</b> Lvl ' + (pmon2.level || '?');
 					output += ((pmon2.status || pmon2.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[pmon2.status || 'fnt'] + '">' + (pmon2.status ? pmon2.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(pmon2, 'hp');
-					if (!pmon2.hp) pmon2.hp = maxhp;
+					if (typeof pmon2.hp !== 'number') pmon2.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((pmon2.hp / maxhp) * 100) + '%; background: ' + (pmon2.hp > maxhp / 2 ? 'limegreen' : (pmon2.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += pmon2.hp + '/' + maxhp + (pmon2.item ? ' (' + pmon2.item + ')' : ' (no item)');
 					output += '</button>';
@@ -558,7 +556,7 @@ class SGgame extends GameConsole {
 			if (!tempalte2.exists) return '<div style="color:red">An error has occured</div>';
 			output += '<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);">';
 			output += '<div style="display: inline-block; float: left; width: 50%; height: 100%;">';
-			output += '<center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + toId(pokemon.species) + '.gif" alt="' + pokemon.species + '"/><br/>';
+			output += '<center><img src="' + WL.getSprite(pokemon.species, pokemon.shiny) + '" alt="' + pokemon.species + '"/><br/>';
 			output += '<b>Name</b>:' + (pokemon.name && pokemon.name !== pokemon.species ? pokemon.name + '(' + pokemon.species + ')' : pokemon.species) + '<br/>';
 			output += '<b>Type</b>: <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[0] + '.png" alt="' + tempalte2.types[0] + '"/>' + (tempalte2.types[1] ? ' <img src="http://play.pokemonshowdown.com/sprites/types/' + tempalte2.types[1] + '.png" alt="' + tempalte2.types[1] + '"/>' : '') + '<br/>';
 			output += '<b>Ability</b>: ' + pokemon.ability + '<br/>';
@@ -591,7 +589,7 @@ class SGgame extends GameConsole {
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?') + '<br/>';
 					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(mon, 'hp');
-					if (!mon.hp) mon.hp = maxhp;
+					if (typeof mon.hp !== 'number') mon.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((mon.hp / maxhp) * 100) + '%; background: ' + (mon.hp > maxhp / 2 ? 'limegreen' : (mon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += mon.hp + '/' + maxhp + (mon.item ? ' (' + mon.item + ')' : ' (no item)');
 					output += '</button>';
@@ -610,7 +608,7 @@ class SGgame extends GameConsole {
 					output += '#' + (i + 1) + ' <b>' + (mon.name && mon.name !== mon.species ? mon.name + ' (' + mon.species + ')' : mon.species) + '</b> Lvl ' + (mon.level || '?');
 					output += ((mon.status || mon.hp <= 0) ? '<span style="border: 0; border-radius: 5px; padding: 1px 2px; color: #FFF; background: ' + statusColors[mon.status || 'fnt'] + '">' + (mon.status ? mon.status.toUpperCase() : 'FNT') + '</span> ' : '');
 					maxhp = WL.getStat(mon, 'hp');
-					if (!mon.hp) mon.hp = maxhp;
+					if (typeof mon.hp !== 'number') mon.hp = maxhp;
 					output += '<div style="width: 10em; height: 1em; display: inline-block; background: grey"><div style="height: 100%; width: ' + Math.round((mon.hp / maxhp) * 100) + '%; background: ' + (mon.hp > maxhp / 2 ? 'limegreen' : (mon.hp > maxhp / 5 ? 'yellow' : 'red')) + '"></div></div><br/>';
 					output += mon.hp + '/' + maxhp + (mon.item ? ' (' + mon.item + ')' : ' (no item)');
 					output += '</button>';
@@ -629,8 +627,7 @@ class SGgame extends GameConsole {
 		if (type === 'wild') {
 			if (!options.pokemon) return `<div style="color:red"><b>An error has occured when trying to battle.</b></div>`;
 			if (typeof options.pokemon === 'string') options.pokemon = Dex.fastUnpackTeam(options.pokemon)[0];
-			let sprite = Dex.getTemplate(options.pokemon.species).spriteid;
-			output += `<img src="http://play.pokemonshowdown.com/sprites/xyani${(options.pokemon.shiny ? '-shiny' : '')}/${(sprite || toId(options.pokemon.species))}.gif" alt="${options.pokemon.species}"/><br/>`;
+			output += `<img src="${WL.getSprite(options.pokemon.species, options.pokemon.shiny)}" alt="${options.pokemon.species}"/><br/>`;
 			output += `<b>A wild ${(options.pokemon.shiny ? 'SHINY' : '')} ${options.pokemon.species} appeared!<br/>(Level: ${options.pokemon.level}, Gender: '${(options.pokemon.gender || 'N')})<br/>`;
 			output += `${(options.pokemon.species !== 'missingno' ? '<button class="button"  name="send" value="/sggame battle wild, confirm">Battle!</button>' : '<b>You shouldn\'t battle an error!</b>')} <button class="button" name="send" value="/sggame battle wild, flee">Flee!</button>`;
 		} else if (type === 'trainer') {
@@ -732,8 +729,8 @@ class Player {
 
 	boxPoke(pokemon, box) {
 		if (typeof pokemon !== 'string') {
-			if (pokemon[0].hp) delete pokemon[0].hp;
-			if (pokemon[0].status) delete pokemon[0].status;
+			if (typeof pokemon[0].hp === 'number') delete pokemon[0].hp;
+			if (typeof pokemon[0].status === 'number') delete pokemon[0].status;
 			pokemon = Dex.packTeam(pokemon);
 			if (!pokemon) return false;
 		}
@@ -864,7 +861,7 @@ exports.commands = {
 		}
 		switch (cmd) {
 		case 'pickstarter':
-			user.console.update(user.console.buildCSS(), "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do you want to pick the <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='http://play.pokemonshowdown.com/sprites/xyani/" + toId(target) + ".gif'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/cancelpickstarter'>No</button></div>", user.console.buildBase());
+			user.console.update(user.console.buildCSS(), "<br /><br /><br /><br /><br /><div style='background-color:rgba(0, 0, 0, 0.4); border-radius:8px; text-align:center'><b><font size='3'>Do you want to pick the <font color='" + typeColor + "'>" + type + " type " + target + " </font></b>?<br /><img src='" + WL.getSprite(toId(target)) + "'><br /><button class='button' name='send' value='/confirmpickstarter " + target + "'>Yes</button>&nbsp;&nbsp;<button class='button' name='send' value='/cancelpickstarter'>No</button></div>", user.console.buildBase());
 			user.lastCommand = 'pickstarter';
 			break;
 		case 'confirmpickstarter':
@@ -999,10 +996,10 @@ exports.commands = {
 					delete user.console.shed;
 				}
 				Db.players.set(user.userid, obj);
-				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + temp.spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Congratulations! Your ' + (pokemon.name === pokemon.species ? temp.prevo : pokemon.name) + ' evolved into ' + action[2] + '!<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="' + WL.getSprite(action[2], pokemon.shiny) + '" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Congratulations! Your ' + (pokemon.name === pokemon.species ? temp.prevo : pokemon.name) + ' evolved into ' + action[2] + '!<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
 			} else if (target === 'stop') {
 				if (user.console.shed) delete user.console.shed;
-				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="http://play.pokemonshowdown.com/sprites/xyani' + (pokemon.shiny ? '-shiny' : '') + '/' + Dex.getTemplate(action[2]).spriteid + '.gif" alt="' + action[2] + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Huh? ' + (pokemon.name || pokemon.species) + ' stopped evolving.<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
+				return user.console.update(user.console.curScreen[0], '<br/><br/><br/><br/><br/><center><img src="' + WL.getSprite(pokemon.species, pokemon.shiny) + '" alt="' + pokemon.species + '"/></center><div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; color: #000;">Huh? ' + (pokemon.name || pokemon.species) + ' stopped evolving.<button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame evo finish"><u>&#9733;</u></button></div>', null);
 			} else if (target === 'finish') {
 				user.console.queueAction = null;
 				user.console.lastNextAction = null;
@@ -1100,7 +1097,7 @@ exports.commands = {
 						if (item.use.healHP) {
 							let maxhp = WL.getStat(player.party[target[3]], 'hp');
 							let orgHp = player.party[target[3]].hp;
-							if (player.party[target[3]].hp && player.party[target[3]].hp < maxhp) {
+							if (typeof player.party[target[3]].hp === 'number' && player.party[target[3]].hp < maxhp) {
 								if (item.use.healHP === true) {
 									delete player.party[target[3]].hp;
 								} else {

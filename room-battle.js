@@ -593,9 +593,9 @@ class Battle {
 					newSet = Dex.packTeam([newSet]);
 					let response = curTeam.boxPoke(newSet, 1);
 					if (response) {
-						this.room.push(name + ' was sent to box ' + response + '.');
+						this.room.add(name + ' was sent to box ' + response + '.');
 					} else {
-						this.room.push(name + ' was released because your PC is full...');
+						this.room.add(name + ' was released because your PC is full...');
 					}
 					this.room.update();
 				}
@@ -818,12 +818,14 @@ class Battle {
 			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
 			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
 			const player = Db.players.get(notCom.userid);
-			if (this.trainerId && notCom.userid === winnerid) {
+			if (Dex.getFormat(this.format).isTrainerBattle && notCom.userid === winnerid) {
 				player.poke += 500; // TODO scale winnings to difficulty
 				this.room.add(`|message|${notCom.name} got 500 poké for winning!`);
-				if (!player.battled.includes(this.trainerId)) player.battled.push(this.trainerId);
-				Db.players.set(notCom.userid, player);
 			}
+			if (this.trainerId && notCom.userid === winnerid) {
+				if (!player.battled.includes(this.trainerId)) player.battled.push(this.trainerId);
+			}
+			Db.players.set(notCom.userid, player);
 		}
 		const parentGame = this.room.parent && this.room.parent.game;
 		if (parentGame && parentGame.onBattleWin) {

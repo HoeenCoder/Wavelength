@@ -1196,7 +1196,7 @@ class ModdedDex {
 				buf += ',' + toId(set.pokeball);
 				buf += ',' + (set.exp || '0');
 				buf += ',' + (set.ot || '');
-				buf += ',' + (set.hp || '');
+				buf += ',' + (typeof set.hp === 'number' ? set.hp : '');
 				buf += ',' + ((set.status && ['psn', 'tox', 'brn', 'par', 'slp', 'frz'].includes(set.status)) ? set.status : '');
 			}
 		}

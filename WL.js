@@ -118,6 +118,17 @@ exports.WL = {
 		Economy.writeMoney(user.userid, reward);
 		user.send('|popup||wide||html| <center><u><b><font size="3">Wavelength Daily Bonus</font></b></u><br>You have been awarded ' + reward + ' Stardust.<br>' + showDailyRewardAni(reward) + '<br>Because you have connected to the server for the past ' + (reward === 1 ? 'Day' : reward + ' Days') + '.</center>');
 	},
+
+	getSprite: function (pokemon, shiny) {
+		if (!pokemon) return false;
+		let template = Dex.getTemplate(pokemon);
+		let spriteId = toId(pokemon);
+		if (template.id !== spriteId) {
+			let idx = spriteId.indexOf(template.id);
+			spriteId = template.id + '-' + spriteId.slice(idx + template.id.length);
+		}
+		return `//play.pokemonshowdown.com/sprites/xyani${shiny ? '-shiny' : ''}/${spriteId}.gif`;
+	},
 	makeCOM: function () {
 		if (Users('sgserver')) return false; // Already exists!
 		let user = new Users.User({user: false, send: function () {}, inRooms: new Set(), worker: {send: function () {}}, socketid: false, ip: '127.0.0.1', protocal: '', autojoin: '', isCOM: true}); // Fake connection object, fill it with whats needed to prevent crashes
@@ -193,7 +204,7 @@ exports.WL = {
 				return "ERROR!|missingno|||hiddenpower|Serious|||0,0,0,0,0,0||1|0,,pokeball,0,hoeenhero";
 			}
 		}
-		let data = (forme ? toId(forme) : pokemon.id) + "|||";
+		let data = forme ? `${pokemon.id}|${toId(forme)}||` : `${pokemon.id}|||`;
 		let ability = Math.round(Math.random());
 		if (ability === 1 && !pokemon.abilities[1]) ability = 0; //TODO hidden abilities?
 		if (exact && exact.ability) {
@@ -357,12 +368,12 @@ exports.WL = {
 		if (!pokemon.evs) pokemon.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 		if (stat === 'hp') {
 			if (template.speciesid === 'shedinja') return 1;
-			return Math.round((((2 * template.baseStats.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10);
+			return Math.floor((((2 * template.baseStats.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10);
 		} else {
 			let natureMod = 1, nature = Dex.getNature(pokemon.nature);
 			if (nature.plus === stat) natureMod = 1.1;
 			if (nature.minus === stat) natureMod = 0.9;
-			return Math.round(((((2 * template.baseStats[stat] + pokemon.ivs[stat] + (pokemon.evs[stat] / 4)) * pokemon.level) / 100) + 5) * natureMod);
+			return Math.floor(((((2 * template.baseStats[stat] + pokemon.ivs[stat] + (pokemon.evs[stat] / 4)) * pokemon.level) / 100) + 5) * natureMod);
 		}
 	},
 	gameData: JSON.parse(FS('config/SGGame/pokemon.json').readIfExistsSync()),
@@ -476,20 +487,7 @@ exports.WL = {
 				if (!base.baseStats) base = Dex.getTemplate(base.baseSpecies).baseStats;
 				if (!pokemon.evs) pokemon.evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 				for (let i = 0; i < toCheck.length; i++) {
-					if (toCheck[i] === 'hp') {
-						if (pokemon.species === 'shedinja') stats[i] = 1;
-						stats[i] = (((2 * base.hp + pokemon.ivs.hp + (pokemon.evs.hp / 4)) * pokemon.level) / 100) + pokemon.level + 10;
-					} else {
-						let n = Dex.getNature(pokemon.nature);
-						if (n.plus === toCheck[i]) {
-							n = 1.1;
-						} else if (n.minus === toCheck[i]) {
-							n = 0.9;
-						} else {
-							n = 1;
-						}
-						stats[i] = (((((2 * base[toCheck[i]] + pokemon.ivs[toCheck[i]] + (pokemon.evs[toCheck[i]] / 4)) * pokemon.level) / 100) + 5) * n);
-					}
+					stats[i] = this.getStat(pokemon, toCheck[i]);
 				}
 				if (symbol === '>' && stats[0] < stats[1]) continue;
 				if (symbol === '=' && stats[0] !== stats[1]) continue;

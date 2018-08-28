@@ -116,7 +116,7 @@ class Ladder extends LadderStore {
 			if (!Dex.getFormat(this.formatid).noExp) {
 				let able = false;
 				for (let i = 0; i < team.length; i++) {
-					if (team[i].hp > 0) {
+					if (typeof team[i].hp !== 'number' || team[i].hp > 0) {
 						able = true;
 						break;
 					}

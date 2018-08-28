@@ -36,8 +36,8 @@ function pokemonCenter(game, id, action) {
 		return game.update(game.buildCSS(), game.buildMap(), game.buildBase());
 	case 'heal':
 		for (let i = 0; i < player.party.length; i++) {
-			if (player.party[i].hp) delete player.party[i].hp;
-			if (player.party[i].status) delete player.party[i].status;
+			if (typeof player.party[i].hp !== undefined) delete player.party[i].hp;
+			if (typeof player.party[i].status !== undefined) delete player.party[i].status;
 		}
 		Db.players.set(game.userid, player);
 		delete options.heal;
@@ -245,7 +245,7 @@ exports.locations = {
 					game.queue.push('text|' + msg + '|hide', 'text|<b>Old Merchant</b>: Okay, you have a Pokemon. So go after that thief, there\'s no time to waste! He went to the west (&#8592;) towards the warehouses!|callback');
 					game.callback = function (user) {
 						//<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button class="button" name="send" value="/sggame pc">PC Boxes</button> <button name="send" value="/sggame battle" class="button">Battle!</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>
-						user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
+						user.console.defaultBottomHTML = '<center><!--mutebutton--><button name="send" value="/console sound" class="button">' + (user.console.muted ? 'Unmute' : 'Mute') + '</button><!--endmute--> <button name="send" value="/console shift" class="button">Shift</button> <button class="button" name="send" value="/sggame pokemon">Pokemon</button> <button class="button" name="send" value="/sggame bag">Bag</button> <a href="https://github.com/HoeenCoder/Wavelength/issues/215" target="_blank"><button class="button notifying">Report Bug</button></a> <button name="send" value="/resetalpha" class="button">Reset</button> <button class="button" name="send" value="/console kill">Power</button>';
 						user.console.callback = null;
 						user.console.queueAction = null;
 						user.console.lastNextAction = null;
