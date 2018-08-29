@@ -686,6 +686,14 @@ class Battle {
 					} else if (playerObj.party[cur[0]].status) {
 						delete playerObj.party[cur[0]].status;
 					}
+					if (cur[3]) {
+						let pps = cur[3].split(',').map(Number);
+						let hasNaN = pps.filter(m => isNaN(m));
+						if (hasNaN.length > 0) throw new Error(`Received NaN PP for a move when updating health for ${uid} (party slot ${cur[0]}): ${cur[3]}`);
+						playerObj.party[cur[0]].pp = pps;
+					} else if (playerObj.party[cur[0]].pp) {
+						delete playerObj.party[cur[0]].pp;
+					}
 				}
 				Db.players.set(uid, playerObj);
 				break;

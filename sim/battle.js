@@ -2897,6 +2897,7 @@ class Battle extends Dex.ModdedDex {
 				}
 				if (action.target.hp + heal > action.target.maxhp) heal = action.target.maxhp - action.target.hp;
 				if (heal > 0) {
+					this.add('-message', `${action.side.name} used a ${action.item.name}!`);
 					this.heal(heal, action.target, null, {fullname: action.item.name});
 					hadEffect = true;
 				}
@@ -2904,16 +2905,19 @@ class Battle extends Dex.ModdedDex {
 			if (action.item.use.healStatus) {
 				if (action.target.status || action.target.volatiles['confusion']) {
 					if (action.item.use.healStatus === true) {
+						this.add('-message', `${action.side.name} used a ${action.item.name}!`);
 						action.target.cureStatus();
 						action.target.removeVolatile('confusion');
 						hadEffect = true;
 					} else {
 						let canHeal = action.item.use.healStatus.split('|');
 						if (canHeal.indexOf(action.target.status) > -1) {
+							this.add('-message', `${action.side.name} used a ${action.item.name}!`);
 							action.target.cureStatus();
 							hadEffect = true;
 						}
 						if (canHeal.indexOf('confusion') > -1 && ('confusion' in action.target.volatiles)) {
+							if (!hadEffect) this.add('-message', `${action.side.name} used a ${action.item.name}!`);
 							action.target.removeVolatile('confusion');
 							hadEffect = true;
 						}
@@ -2921,12 +2925,22 @@ class Battle extends Dex.ModdedDex {
 				}
 			}
 			if (action.item.use.healPP) {
-				let move = action.target.moveset[action.move];
+				let move = action.target.moveSlots[action.move];
 				if (move.pp < move.maxpp) {
-					move.pp += action.item.use.healPP;
-					if (move.pp > move.maxpp) move.pp = move.maxpp;
+					this.add('-message', `${action.side.name} used a ${action.item.name}!`);
+					let points = move.maxpp - move.pp;
+					if (action.item.use.healPP === true) {
+						move.pp = move.maxpp;
+					} else {
+						move.pp += action.item.use.healPP;
+						if (move.pp > move.maxpp) {
+							move.pp = move.maxpp;
+						} else {
+							points = action.item.use.healPP;
+						}
+					}
 					hadEffect = true;
-					this.add('', (action.target.name || action.target.species) + "'s " + move.id + " had its PP restored by " + action.item.use.healPP + "!");
+					this.add('-message', `${(action.target.name || action.target.species)}'s PP for the move ${move.name} was restored by ${points} points!`);
 				}
 			}
 			/*if (action.item.use.revive) {
@@ -2944,7 +2958,6 @@ class Battle extends Dex.ModdedDex {
 				}
 			}*/
 			if (hadEffect) {
-				this.add('message', action.side.name + " used a " + action.item.name + "!");
 				this.send('takeitem', toId(action.side.name) + "|" + action.item.id + "|" + action.target.slot);
 				this.add('');
 			}

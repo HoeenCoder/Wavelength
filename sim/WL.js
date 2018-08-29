@@ -284,7 +284,16 @@ exports.WL = {
 		if (toId(name) === 'sgserver') return '';
 		let buf = toId(name) + ']';
 		for (let i = 0; i < pokemon.length; i++) {
-			buf += pokemon[i].slot + '|' + pokemon[i].hp + (pokemon[i].status ? '|' + pokemon[i].status : '') + (i + 1 >= pokemon.length ? '' : ']');
+			buf += `${pokemon[i].slot}|${pokemon[i].hp}|${pokemon[i].status || ''}|`;
+			let ppBuf = ``;
+			let lostPP = false;
+			for (let j = 0; j < pokemon[i].moveSlots.length; j++) {
+				ppBuf += pokemon[i].moveSlots[j].pp;
+				if (j !== 3) ppBuf += `,`;
+				if (pokemon[i].moveSlots[j].pp < pokemon[i].moveSlots[j].maxpp) lostPP = true;
+			}
+			if (lostPP) buf += ppBuf;
+			if (i + 1 !== pokemon.length) buf += ']';
 		}
 		return buf;
 	},

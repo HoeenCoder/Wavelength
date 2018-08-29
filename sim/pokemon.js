@@ -283,6 +283,13 @@ class Pokemon {
 
 		this.clearVolatile();
 
+		// PP for SGgame
+		if (this.battle.getFormat().useSGgame && !this.battle.getFormat().noExp && this.set.pp) {
+			for (let i = 0; i < this.moveSlots.length; i++) {
+				this.moveSlots[i].pp = this.set.pp[i];
+			}
+		}
+
 		/**
 		 * Keeps track of what type the client sees for this Pokemon
 		 * @type {string}

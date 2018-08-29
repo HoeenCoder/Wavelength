@@ -38,6 +38,7 @@ function pokemonCenter(game, id, action) {
 		for (let i = 0; i < player.party.length; i++) {
 			if (typeof player.party[i].hp !== undefined) delete player.party[i].hp;
 			if (typeof player.party[i].status !== undefined) delete player.party[i].status;
+			if (typeof player.party[i].pp !== undefined) delete player.party[i].pp;
 		}
 		Db.players.set(game.userid, player);
 		delete options.heal;
@@ -56,15 +57,18 @@ function marina(game, id, action, area, confirm) {
 	let player = Db.players.get(game.userid);
 	let out = `<div style="display: inline-block; position: absolute; bottom: 0; overflow: hidden; border: 0.2em solid #000; border-radius: 5px; width: 99%; height: 98%; color: #000; background-color: rgba(255, 255, 255, 0.8);"><center><h3>Marina - Travel to where?</h3></center>`;
 	out += `<div style="height: 91%; border-top: 0.2em solid black; overflow: scroll; display: block;"><div><b style="float: left">Island</b><b style="float: right"></b></div><br>`;
+	let validTicket = false;
 	for (let i in player.bag.keyitems) {
 		let item = WL.getItem(i);
 		if (!item || !item.ticket || item.ticket === game.location) continue;
+		validTicket = true;
 		if (item.ticket === area) {
 			out += `<button style="background: #0B9; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${WL.locationData[item.ticket].name}</span><span style="float: right">${WL.locationData[item.ticket].shortDesc || 'Selected'}</span></button>`;
 		} else {
 			out += `<button name="send" value="/sggame building ${id}, travel, ${item.ticket}" style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">${WL.locationData[item.ticket].name}</span><span style="float: right">${WL.locationData[item.ticket].shortDesc || 'Click to travel here'}</span></button>`;
 		}
 	}
+	if (!validTicket) out += `<button style="background: none; border: none; border-top: 0.1em solid #001; width: 100%;"><span style="float: left">You have no valid tickets</span><span style="float: right"></span></button>`;
 	out += '</div></div>';
 	let options = {travel: ''};
 	switch (action) {
@@ -306,7 +310,7 @@ exports.locations = {
 						Rooms.createBattle('gen7trainerbattlealpha', {
 							p1: Users('sgserver'),
 							p2: user,
-							p1team: 'purrloin|||0|growl|Quirky||M|29,18,19,0,27,4||5|70,,pokeball,125,',
+							p1team: 'purrloin|||0|scratch,growl|Quirky||M|29,18,19,0,27,4||5|70,,pokeball,125,',
 							p2team: Dex.packTeam(Db.players.get(user.userid).party),
 							rated: false,
 						});

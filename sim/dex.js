@@ -1191,13 +1191,14 @@ class ModdedDex {
 				buf += '|';
 			}
 
-			if (set.pokeball || set.hpType || set.exp || set.ot || set.hp || set.status) {
+			if (set.pokeball || set.hpType || set.exp || set.ot || set.hp || set.status || set.pp) {
 				buf += ',' + set.hpType;
 				buf += ',' + toId(set.pokeball);
 				buf += ',' + (set.exp || '0');
 				buf += ',' + (set.ot || '');
 				buf += ',' + (typeof set.hp === 'number' ? set.hp : '');
 				buf += ',' + ((set.status && ['psn', 'tox', 'brn', 'par', 'slp', 'frz'].includes(set.status)) ? set.status : '');
+				buf += ',' + ((set.pp && set.pp.length > 0) ? set.pp.join('|') : '');
 			}
 		}
 
@@ -1318,9 +1319,9 @@ class ModdedDex {
 			j = buf.indexOf(']', i);
 			let misc;
 			if (j < 0) {
-				if (i < buf.length) misc = buf.substring(i).split(',', 7);
+				if (i < buf.length) misc = buf.substring(i).split(',', 8);
 			} else {
-				if (i !== j) misc = buf.substring(i, j).split(',', 7);
+				if (i !== j) misc = buf.substring(i, j).split(',', 8);
 			}
 			if (misc) {
 				set.happiness = (misc[0] ? Number(misc[0]) : 255);
@@ -1330,6 +1331,7 @@ class ModdedDex {
 				set.ot = misc[4];
 				if (misc[5]) set.hp = Number(misc[5]);
 				if (misc[6]) set.status = misc[6];
+				if (misc[7]) set.pp = misc[7].split('|').map(Number);
 			}
 			if (j < 0) break;
 			i = j + 1;

@@ -415,7 +415,9 @@ class SGgame extends GameConsole {
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
 				move = Dex.getMove(pokemon.moves[m]);
-				output += '<button name="send" value="/dt ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + move.pp + '/' + move.pp + '</small>&nbsp;</button><br/><br/><br/>';
+				let maxpp = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
+				let curPP = pokemon.pp ? pokemon.pp[m] : maxpp;
+				output += '<button name="send" value="/dt ' + move.id + '" class="type-' + move.type + '">' + move.name + '<br/><small class="type">' + move.type + '</small> <small class="pp">' + curPP + '/' + maxpp + '</small>&nbsp;</button><br/><br/><br/>';
 			}
 			output += '</center></div></div></div>';
 			break;
@@ -502,7 +504,9 @@ class SGgame extends GameConsole {
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
 				move2 = Dex.getMove(pokemon.moves[m]);
-				output += '<button name="send" value="/sggame learn ' + move2.id + '" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + move2.pp + '/' + move2.pp + '</small>&nbsp;</button><br/><br/><br/>';
+				let maxpp2 = move.noPPBoosts ? move2.pp : move2.pp * 8 / 5;
+				let curPP2 = pokemon.pp ? pokemon.pp[m] : maxpp2;
+				output += '<button name="send" value="/sggame learn ' + move2.id + '" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + curPP2 + '/' + maxpp2 + '</small>&nbsp;</button><br/><br/><br/>';
 			}
 			move2 = Dex.getMove(details);
 			output += '<button name="send" value="/sggame learn cancel" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + move2.pp + '/' + move2.pp + '</small>&nbsp;</button><br/><br/><br/>';
@@ -571,7 +575,9 @@ class SGgame extends GameConsole {
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center><b>Restore PP to which move?</b><br/>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
 				move3 = Dex.getMove(pokemon.moves[m]);
-				output += '<button name="send" value="/sggame bag ' + details + ', ' + m + '" class="type-' + move3.type + '">' + move3.name + '<br/><small class="type">' + move3.type + '</small> <small class="pp">?/' + move3.pp + '</small>&nbsp;</button><br/><br/><br/>';
+				let maxpp3 = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
+				let curPP3 = pokemon.pp ? pokemon.pp[m] : maxpp3;
+				output += '<button name="send" value="/sggame bag ' + details + ', ' + m + '" class="type-' + move3.type + '">' + move3.name + '<br/><small class="type">' + move3.type + '</small> <small class="pp">' + curPP3 + '/' + maxpp3 + '</small>&nbsp;</button><br/><br/><br/>';
 			}
 			output += '</center></div></div></div>';
 			break;
@@ -1121,6 +1127,29 @@ exports.commands = {
 							}
 							if (hadEffect) user.console.queue.push(`text|${player.party[target[3]].name || player.party[target[3]].species}'s status was restored.<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ${target[0]}, ${target[1]}">Return to bag</button>`);
 						}
+						if (item.use.healPP) {
+							if (!target[4]) {
+								// We need more information!
+								return user.console.update(user.console.buildCSS(), user.console.summary('pp', player.party[target[3]], `${target[0]}, ${target[1]}, ${target[2]}, ${target[3]}`), user.console.buildBase('bag', data));
+							}
+							if (player.party[target[3]].pp && player.party[target[3]].pp[target[4]]) {
+								let move = Dex.getMove(player.party[target[3]].moves[target[4]]);
+								let maxpp = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
+								let points = maxpp - player.party[target[3]].pp[target[4]];
+								if (item.use.healPP === true) {
+									player.party[target[3]].pp[target[4]] = maxpp;
+								} else {
+									player.party[target[3]].pp[target[4]] += item.use.healPP;
+									if (player.party[target[3]].pp[target[4]] > maxpp) {
+										player.party[target[3]].pp[target[4]] = maxpp;
+									} else {
+										points = item.use.healPP;
+									}
+								}
+								hadEffect = true;
+								user.console.queue.push(`text|${player.party[target[3]].name || player.party[target[3]].species}'s PP for the move ${move.name} was restored by ${points} points.<br/><button style="border: none; background: none; color: purple; cursor: pointer;" name="send" value="/sggame bag ${target[0]}, ${target[1]}">Return to bag</button>`);
+							}
+						}
 						if (item.use.level) {
 							let pokemon = Dex.getTemplate(player.party[target[3]].species);
 							if (player.party[target[3]] && player.party[target[3]].level < 100) {
@@ -1239,7 +1268,7 @@ exports.commands = {
 			}
 			if (target[0] === 'close') {
 				user.console.curPane = null;
-				return user.console.update(user.console.buildCSS(), user.console.buildMap(), user.console.buildBase());
+				return user.console.update(...user.console.next());
 			}
 			if (user.console.curPane && user.console.curPane !== 'pokemon') return;
 			user.console.curPane = 'pokemon';
