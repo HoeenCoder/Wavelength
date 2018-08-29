@@ -113,11 +113,8 @@ class SGgame extends GameConsole {
 		player.location = location[0];
 		player.zone = location[1];
 		Db.players.set(this.userid, player);
-		if (this.queue.length) {
-			this.update(...this.next());
-		} else {
-			return this.update(this.buildCSS(), this.buildMap(), this.buildBase());
-		}
+		this.highlighted = WL.locationData[this.location].zones[this.zone].exits;
+		this.update(...this.next());
 	}
 
 	up() {

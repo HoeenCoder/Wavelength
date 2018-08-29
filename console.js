@@ -8,6 +8,7 @@ class GameConsole {
 		this.sound = sound || null;
 		this.curScreen = [null, null, null];
 		this.prevScreen = [null, null, null];
+		this.highlighted = {up: false, down: false, left: false, right: false};
 		this.screenCSS = css || 'background-color: #000; font-size: 12px';
 		let defaultInfo = '<div style="display: inline-block; color: white; font-family: monospace;">#####################<br/>## PS Game Console ##<br/>#####################<br/><br/>This is the default screen. You probably meant to launch a game.<br/>General Options:<br/><br/>';
 		for (let game in WL.gameList) {
@@ -27,7 +28,7 @@ class GameConsole {
 		this.curScreen = [(css || null), (html || null), (bottom || null)];
 	}
 	buildConsole(css, html, bottom) {
-		return '<div class="infobox" style="height: 500px; font-size: 0"><audio autoplay loop ' + (this.muted ? 'muted' : '') + ' src="' + (this.sound || '') + '"></audio><button style="border: none; color:black; background-color: #999; width:100%; height: 7%; display: block" name="send" value="/console up">&#8593;</button><button style="border: none; color:black; background-color: #999; width: 7%; height: 65%; display: inline-block; float: left" name="send" value="/console left">&#8592;</button><div style="width:86%; height: 65%; display: inline-block; position: relative; font-size: 9pt; ' + (css ? css : this.screenCSS) + '">' + (html ? html : this.defaultHTML) + '</div><button style="border: none; color:black; background-color: #999; width:7%; height: 65%; display: inline-block; float: right" name="send" value="/console right">&#8594;</button><button style="border: none; color:black; background-color: #999; width:100%; height: 7%; display: block" name="send" value="/console down">&#8595;</button><div style="border: 0.45em solid #6688AA; width: 97.7%; height: 18%; font-size: 14px">' + (bottom ? bottom : this.defaultBottomHTML) + '</div></div>';
+		return `<div class="infobox" style="height: 500px; font-size: 0"><audio autoplay loop ${(this.muted ? 'muted' : '')} src="${(this.sound || '')}"></audio><button style="border: none; color:black; background: ${this.highlighted.up ? 'radial-gradient(#1eea5f, #999)' : '#999'}; width:100%; height: 7%; display: block" name="send" value="/console up">&#8593;</button><button style="border: none; color:black; background: ${this.highlighted.left ? 'radial-gradient(#1eea5f, #999)' : '#999'}; width: 7%; height: 65%; display: inline-block; float: left" name="send" value="/console left">&#8592;</button><div style="width:86%; height: 65%; display: inline-block; position: relative; font-size: 9pt; ${(css ? css : this.screenCSS)}">${(html ? html : this.defaultHTML)}</div><button style="border: none; color:black; background: ${this.highlighted.right ? 'radial-gradient(#1eea5f, #999)' : '#999'}; width:7%; height: 65%; display: inline-block; float: right" name="send" value="/console right">&#8594;</button><button style="border: none; color:black; background: ${this.highlighted.down ? 'radial-gradient(#1eea5f, #999)' : '#999'}; width:100%; height: 7%; display: block" name="send" value="/console down">&#8595;</button><div style="border: 0.45em solid #6688AA; width: 97.7%; height: 18%; font-size: 14px">${(bottom ? bottom : this.defaultBottomHTML)}</div></div>`;
 	}
 	toggleSound() {
 		this.muted = !this.muted;
