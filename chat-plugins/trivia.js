@@ -385,35 +385,15 @@ class Trivia extends Rooms.RoomGame {
 	 * a title and an optional message.
 	 * @param {string} title
 	 * @param {string?} message
-	 * @return {ChatRoom}
+	 * @return {?ChatRoom}
 	 */
 	broadcast(title, message) {
 		let buffer = `<div class="broadcast-blue"><strong>${title}</strong>`;
 		if (message) buffer += `<br />${message}`;
 		buffer += '</div>';
 
-		// This shouldn't happen, but sometimes this will fire after
-		// Trivia#destroy has already set the instance's room to null.
-		let tarRoom = this.room;
-		if (!tarRoom) {
-			for (const room of Rooms.rooms.values()) {
-				if (room.game === this)	{
-					return room.addRaw(buffer).update();
-				}
-			}
-
-			Monitor.debug(
-				`${this.title} is FUBAR! Game instance tried to broadcast after having destroyed itself\n
-				Mode: ${this.mode}\n
-				Category: ${this.category}\n
-				Length: ${SCORE_CAPS[this.cap]}\n
-				UGM: ${triviaData.ugm ? 'enabled' : 'disabled'}`
-			);
-
-			return tarRoom;
-		}
-
-		return tarRoom.addRaw(buffer).update();
+		if (!this.room) return null;
+		return this.room.addRaw(buffer).update();
 	}
 
 	/**
@@ -522,7 +502,8 @@ class Trivia extends Rooms.RoomGame {
 				'No questions are left!',
 				'The game has reached a stalemate'
 			);
-			return this.destroy();
+			if (this.room) this.destroy();
+			return;
 		}
 
 		this.phase = QUESTION_PHASE;
@@ -562,10 +543,26 @@ class Trivia extends Rooms.RoomGame {
 	 */
 	verifyAnswer(tarAnswer) {
 		return this.curAnswers.some(answer => (
-			(answer === tarAnswer) || (answer.length > 5 && Dex.levenshtein(tarAnswer, answer) < 3)
+			(answer === tarAnswer) || (Dex.levenshtein(tarAnswer, answer) <= this.maxLevenshteinAllowed(answer.length))
 		));
 	}
 
+	/**
+	 * Return the maximum Levenshtein distance that is allowable for answers of the given length.
+	 * @param {number} answerLength
+	 * @return {number}
+	 */
+	maxLevenshteinAllowed(answerLength) {
+		if (answerLength > 5) {
+			return 2;
+		}
+
+		if (answerLength > 4) {
+			return 1;
+		}
+
+		return 0;
+	}
 	/**
 	 * This is a noop here since it'd defined properly by mode subclasses later
 	 * on. This calculates the points a correct responder earns, which is
@@ -1670,7 +1667,7 @@ const commands = {
 
 	search: function (target, room, user) {
 		if (room.id !== 'questionworkshop') return this.errorReply("This command can only be used in Question Workshop.");
-		if (!this.can('broadcast', null, room)) return false;
+		if (!this.can('mute', null, room)) return false;
 		if (!target.includes(',')) return this.errorReply("No valid search arguments entered.");
 
 		let [type, ...query] = target.split(',');

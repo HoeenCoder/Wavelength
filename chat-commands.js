@@ -167,7 +167,7 @@ const commands = {
 
 	'!avatar': true,
 	avatar: function (target, room, user) {
-		if (!target) return this.parse('/avatars');
+		if (!target) return this.parse(`${this.cmdToken}avatars`);
 		let parts = target.split(',');
 		let avatarid = toId(parts[0]);
 		let avatar = 0;
@@ -433,20 +433,23 @@ const commands = {
 		if (!target) return this.parse('/help msg');
 		target = this.splitTarget(target);
 		let targetUser = this.targetUser;
-		if (!target) {
+		if (this.targetUsername === '~') {
+			this.room = Rooms.global;
+			this.pmTarget = null;
+		} else if (!target) {
 			this.errorReply("You forgot the comma.");
 			return this.parse('/help msg');
-		}
-		if (!targetUser) {
+		} else if (!targetUser) {
 			let error = `User ${this.targetUsername} not found. Did you misspell their name?`;
 			error = `|pm|${this.user.getIdentity()}| ${this.targetUsername}|/error ${error}`;
 			connection.send(error);
 			return;
+		} else {
+			this.pmTarget = targetUser;
+			this.room = undefined;
 		}
-		this.pmTarget = targetUser;
-		this.room = undefined;
 
-		if (!targetUser.connected) {
+		if (targetUser && !targetUser.connected) {
 			return this.errorReply(`User ${this.targetUsername} is offline.`);
 		}
 
@@ -1513,6 +1516,7 @@ const commands = {
 		}
 		if (!this.can('ban', targetUser, room)) return false;
 		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to ban upper staff members.");
+		if (Punishments.getRoomPunishType(room, this.targetUsername) === 'BLACKLIST') return this.errorReply(`This user is already blacklisted from ${room.id}.`);
 		let name = targetUser.getLastName();
 		let userid = targetUser.getLastId();
 
@@ -3630,7 +3634,7 @@ const commands = {
 			format: format.id,
 			rating: rating,
 			hidden: room.isPrivate ? '1' : '',
-			inputLog: room.battle.inputLog,
+			inputlog: room.battle.inputLog ? room.battle.inputLog.join('\n') : null,
 		});
 		if (success && success.errorip) {
 			connection.popup(`This server's request IP ${success.errorip} is not a registered server.`);

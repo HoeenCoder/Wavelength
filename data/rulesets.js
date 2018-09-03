@@ -54,7 +54,7 @@ let BattleFormats = {
 		effectType: 'ValidatorRule',
 		name: 'Minimal GBU',
 		desc: "The standard ruleset for official tournaments, but without Restricted Legendary bans",
-		ruleset: ['Species Clause', 'Nickname Clause', 'Item Clause', 'Cancel Mod'],
+		ruleset: ['Species Clause', 'Nickname Clause', 'Item Clause', 'Team Preview', 'Cancel Mod'],
 		banlist: ['Unreleased', 'Illegal', 'Battle Bond',
 			'Mew',
 			'Celebi',
@@ -186,10 +186,6 @@ let BattleFormats = {
 				}
 			}
 
-			if (this.gen <= 1) {
-				if (set.evs) set.evs['spd'] = set.evs['spa'];
-				if (set.ivs) set.ivs['spd'] = set.ivs['spa'];
-			}
 			// In gen 6, it is impossible to battle other players with pokemon that break the EV limit
 			if (totalEV > 510 && this.gen === 6) {
 				problems.push((set.name || set.species) + " has more than 510 total EVs.");
@@ -215,7 +211,7 @@ let BattleFormats = {
 				}
 			} else {
 				if (set.gender !== 'M' && set.gender !== 'F') {
-					set.gender = undefined;
+					set.gender = '';
 				}
 			}
 
@@ -312,6 +308,10 @@ let BattleFormats = {
 
 			return problems;
 		},
+		banlist: [
+			'Chansey + Charm + Seismic Toss', 'Chansey + Charm + Psywave',
+			'Shiftry + Leaf Blade + Sucker Punch',
+		],
 	},
 	hoennpokedex: {
 		effectType: 'ValidatorRule',
@@ -542,6 +542,15 @@ let BattleFormats = {
 		banlist: ['Minimize', 'Double Team'],
 		onStart: function () {
 			this.add('rule', 'Evasion Moves Clause: Evasion moves are banned');
+		},
+	},
+	accuracymovesclause: {
+		effectType: 'ValidatorRule',
+		name: 'Accuracy Moves Clause',
+		desc: "Bans moves that have a chance to lower the target's accuracy when used",
+		banlist: ['Flash', 'Kinesis', 'Leaf Tornado', 'Mirror Shot', 'Mud Bomb', 'Mud-Slap', 'Muddy Water', 'Night Daze', 'Octazooka', 'Sand Attack', 'Smokescreen'],
+		onStart: function () {
+			this.add('rule', 'Accuracy Moves Clause: Accuracy-lowering moves are banned');
 		},
 	},
 	endlessbattleclause: {
@@ -783,6 +792,20 @@ let BattleFormats = {
 			}
 		},
 	},
+	arceusevclause: {
+		effectType: 'ValidatorRule',
+		name: 'Arceus EV Clause',
+		desc: "Restricts Arceus to a maximum of 100 EVs in any one stat",
+		onValidateSet(set, format) {
+			let template = this.getTemplate(set.species);
+			if (template.num === 493 && set.evs) {
+				for (let stat in set.evs) {
+					// @ts-ignore
+					if (set.evs[stat] > 100) return ["Arceus may not have more than 100 of any EVs."];
+				}
+			}
+		},
+	},
 	inversemod: {
 		effectType: 'Rule',
 		name: 'Inverse Mod',
@@ -826,12 +849,6 @@ let BattleFormats = {
 			}
 			return this.checkLearnset(move, template, lsetData, set);
 		},
-	},
-	allowonesketch: {
-		effectType: 'ValidatorRule',
-		name: 'Allow One Sketch',
-		desc: "Allows each Pok&eacute;mon to use one move they don't normally have access to via Sketch",
-		// Implemented in team-validator.js
 	},
 	allowcap: {
 		effectType: 'ValidatorRule',
