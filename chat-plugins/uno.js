@@ -1046,6 +1046,8 @@ const commands = {
 		},
 		showcase: function (target, room, user) {
 			if (!this.runBroadcast()) return;
+			const colors = ['Red', 'Blue', 'Green', 'Yellow'];
+			const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Reverse', 'Skip', '+2'];
 			let output = `<div class = "infobox infobox-limited">`;
 			for (let i = 0; i < colors.length; i++) {
 				output += `<div class="infobox" style="overflow-x: auto; white-space: nowrap; width: 100%">`;
