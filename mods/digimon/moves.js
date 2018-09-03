@@ -2616,9 +2616,9 @@ let BattleMovedex = {
 			if (this.random(100) < 50) this.boost({def: 2}, pokemon, pokemon, move);
 		},
 	},
-	"heartattack": {
-		name: "Heart Attack",
-		id: "heartattack",
+	"heartsattack": {
+		name: "Hearts Attack",
+		id: "heartsattack",
 		priority: 0,
 		basePower: 100,
 		category: "Special",

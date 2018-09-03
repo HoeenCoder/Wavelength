@@ -147,7 +147,7 @@ class Side {
 		return this.id + ': ' + this.name;
 	}
 
-	getData() {
+	getRequestData() {
 		let data = {
 			name: this.name,
 			id: this.id,
@@ -305,7 +305,6 @@ class Side {
 		}
 		const autoChoose = !moveText;
 		/**@type {Pokemon} */
-		// @ts-ignore
 		const pokemon = this.active[index];
 
 		if (megaOrZ === true) megaOrZ = 'mega';
@@ -388,7 +387,7 @@ class Side {
 
 		const lockedMove = pokemon.getLockedMove();
 		if (lockedMove) {
-			const lockedMoveTarget = this.battle.runEvent('LockMoveTarget', pokemon);
+			const lockedMoveTarget = pokemon.lastMoveTargetLoc;
 			this.choice.actions.push({
 				choice: 'move',
 				pokemon: pokemon,
@@ -610,7 +609,6 @@ class Side {
 			return this.emitChoiceError(`Can't shift: You can only shift from the edge to the center`);
 		}
 		/**@type {Pokemon} */
-		// @ts-ignore
 		const pokemon = this.active[index];
 
 		this.choice.actions.push({
@@ -737,14 +735,12 @@ class Side {
 			switch (this.currentRequest) {
 			case 'move':
 				// auto-pass
-				// @ts-ignore
 				while (index < this.active.length && this.active[index].fainted) {
 					this.choosePass();
 					index++;
 				}
 				break;
 			case 'switch':
-				// @ts-ignore
 				while (index < this.active.length && !this.active[index].switchFlag) {
 					this.choosePass();
 					index++;
@@ -760,7 +756,6 @@ class Side {
 		const index = this.getChoiceIndex(true);
 		if (index >= this.active.length) return false;
 		/**@type {Pokemon} */
-		// @ts-ignore
 		const pokemon = this.active[index];
 
 		switch (this.currentRequest) {

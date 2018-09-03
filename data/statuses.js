@@ -297,9 +297,6 @@ let BattleStatuses = {
 		duration: 2,
 		onStart: function (target, source, effect) {
 			this.effectData.move = effect.id;
-			// source and target are reversed since the event target is the
-			// pokemon using the two-turn move
-			this.effectData.targetLoc = this.getTargetLoc(source, target);
 			target.addVolatile(effect.id, source);
 		},
 		onEnd: function (target) {
@@ -307,9 +304,6 @@ let BattleStatuses = {
 		},
 		onLockMove: function () {
 			return this.effectData.move;
-		},
-		onLockMoveTarget: function () {
-			return this.effectData.targetLoc;
 		},
 		onMoveAborted: function (pokemon) {
 			pokemon.removeVolatile('twoturnmove');
@@ -377,7 +371,6 @@ let BattleStatuses = {
 		num: 0,
 		onStart: function (side) {
 			this.effectData.positions = [];
-			// @ts-ignore
 			for (let i = 0; i < side.active.length; i++) {
 				this.effectData.positions[i] = null;
 			}
@@ -385,7 +378,6 @@ let BattleStatuses = {
 		onResidualOrder: 3,
 		onResidual: function (side) {
 			let finished = true;
-			// @ts-ignore
 			for (const [i, target] of side.active.entries()) {
 				let posData = this.effectData.positions[i];
 				if (!posData) continue;
@@ -419,7 +411,6 @@ let BattleStatuses = {
 				this.effectData.positions[i] = null;
 			}
 			if (finished) {
-				// @ts-ignore
 				side.removeSideCondition('futuremove');
 			}
 		},
@@ -732,19 +723,19 @@ let BattleStatuses = {
 	// Multitype and RKS System, respectively, that changes their type,
 	// but their formes are specified to be their corresponding type
 	// in the Pokedex, so that needs to be overridden.
-	// This is mainly relevant for Hackmons and Balanced Hackmons.
+	// This is mainly relevant for Hackmons Cup and Balanced Hackmons.
 	arceus: {
 		name: 'Arceus',
 		id: 'arceus',
 		num: 493,
 		onTypePriority: 1,
 		onType: function (types, pokemon) {
+			if (pokemon.transformed) return types;
+			/** @type {string | undefined} */
 			let type = 'Normal';
 			if (pokemon.ability === 'multitype') {
-				// @ts-ignore
 				type = pokemon.getItem().onPlate;
-				// @ts-ignore
-				if (!type || type === true) {
+				if (!type) {
 					type = 'Normal';
 				}
 			}
@@ -757,12 +748,12 @@ let BattleStatuses = {
 		num: 773,
 		onTypePriority: 1,
 		onType: function (types, pokemon) {
+			if (pokemon.transformed) return types;
+			/** @type {string | undefined} */
 			let type = 'Normal';
 			if (pokemon.ability === 'rkssystem') {
-				// @ts-ignore
 				type = pokemon.getItem().onMemory;
-				// @ts-ignore
-				if (!type || type === true) {
+				if (!type) {
 					type = 'Normal';
 				}
 			}

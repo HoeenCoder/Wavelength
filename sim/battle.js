@@ -75,8 +75,7 @@ class Battle extends Dex.ModdedDex {
 		this.formatData = {id: format.id};
 
 		/** @type {Effect} */
-		// @ts-ignore
-		this.effect = {id: ''};
+		this.effect = /** @type {Effect} */ ({id: ''});
 		/** @type {AnyObject} */
 		this.effectData = {id: ''};
 		/** @type {AnyObject} */
@@ -883,6 +882,7 @@ class Battle extends Dex.ModdedDex {
 	 * @param {Effect} [effect]
 	 * @param {any} [relayVar]
 	 * @param {boolean} [onEffect]
+	 * @return {any}
 	 */
 	priorityEvent(eventid, target, source, effect, relayVar, onEffect) {
 		return this.runEvent(eventid, target, source, effect, relayVar, onEffect, true);
@@ -1194,7 +1194,7 @@ class Battle extends Dex.ModdedDex {
 			}
 			if (switchTable.some(flag => flag === true)) {
 				this.p1.currentRequest = 'switch';
-				p1request = {forceSwitch: switchTable, side: this.p1.getData()};
+				p1request = {forceSwitch: switchTable, side: this.p1.getRequestData()};
 			}
 			switchTable = [];
 			for (const active of this.p2.active) {
@@ -1202,7 +1202,7 @@ class Battle extends Dex.ModdedDex {
 			}
 			if (switchTable.some(flag => flag === true)) {
 				this.p2.currentRequest = 'switch';
-				p2request = {forceSwitch: switchTable, side: this.p2.getData()};
+				p2request = {forceSwitch: switchTable, side: this.p2.getRequestData()};
 			}
 			break;
 		}
@@ -1215,19 +1215,19 @@ class Battle extends Dex.ModdedDex {
 			this.p1.maxTeamSize = maxTeamSize;
 			this.p2.maxTeamSize = maxTeamSize;
 			this.p1.currentRequest = 'teampreview';
-			p1request = {teamPreview: true, maxTeamSize: maxTeamSize, side: this.p1.getData()};
+			p1request = {teamPreview: true, maxTeamSize: maxTeamSize, side: this.p1.getRequestData()};
 			this.p2.currentRequest = 'teampreview';
-			p2request = {teamPreview: true, maxTeamSize: maxTeamSize, side: this.p2.getData()};
+			p2request = {teamPreview: true, maxTeamSize: maxTeamSize, side: this.p2.getRequestData()};
 			break;
 
 		default: {
 			this.p1.currentRequest = 'move';
 			let activeData = this.p1.active.map(pokemon => pokemon && pokemon.getRequestData());
-			p1request = {active: activeData, side: this.p1.getData()};
+			p1request = {active: activeData, side: this.p1.getRequestData()};
 
 			this.p2.currentRequest = 'move';
 			activeData = this.p2.active.map(pokemon => pokemon && pokemon.getRequestData());
-			p2request = {active: activeData, side: this.p2.getData()};
+			p2request = {active: activeData, side: this.p2.getRequestData()};
 			break;
 		}
 		}
@@ -1236,14 +1236,14 @@ class Battle extends Dex.ModdedDex {
 			if (!this.supportCancel || !p2request) p1request.noCancel = true;
 			this.p1.emitRequest(p1request);
 		} else {
-			this.p1.emitRequest({wait: true, side: this.p1.getData()});
+			this.p1.emitRequest({wait: true, side: this.p1.getRequestData()});
 		}
 
 		if (p2request) {
 			if (!this.supportCancel || !p1request) p2request.noCancel = true;
 			this.p2.emitRequest(p2request);
 		} else {
-			this.p2.emitRequest({wait: true, side: this.p2.getData()});
+			this.p2.emitRequest({wait: true, side: this.p2.getRequestData()});
 		}
 
 		if (this.p1.isChoiceDone() && this.p2.isChoiceDone()) {
@@ -1844,12 +1844,13 @@ class Battle extends Dex.ModdedDex {
 		}
 		if (!target || !target.hp) return 0;
 		if (!target.isActive) return false;
-		if (this.gen > 5 && !target.side.foe.pokemonLeft) return false;
+		if (this.gen > 5 && target === source && this.faintQueue.length === target.side.foe.pokemonLeft) return false;
 		effect = this.getEffect(effect);
 		boost = this.runEvent('Boost', target, source, effect, Object.assign({}, boost));
 		let success = null;
 		let boosted = false;
 		for (let i in boost) {
+			/** @type {SparseBoostsTable} */
 			let currentBoost = {};
 			// @ts-ignore
 			currentBoost[i] = boost[i];
@@ -2212,7 +2213,9 @@ class Battle extends Dex.ModdedDex {
 		let attack;
 		let defense;
 
+		// @ts-ignore
 		let atkBoosts = move.useTargetOffensive ? defender.boosts[attackStat] : attacker.boosts[attackStat];
+		// @ts-ignore
 		let defBoosts = move.useSourceDefensive ? attacker.boosts[defenseStat] : defender.boosts[defenseStat];
 
 		let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
@@ -2501,8 +2504,7 @@ class Battle extends Dex.ModdedDex {
 		while (this.faintQueue.length) {
 			faintData = this.faintQueue[0];
 			this.faintQueue.shift();
-			if (!faintData.target.fainted) {
-				this.runEvent('BeforeFaint', faintData.target, faintData.source, faintData.effect);
+			if (!faintData.target.fainted && this.runEvent('BeforeFaint', faintData.target, faintData.source, faintData.effect)) {
 				this.add('faint', faintData.target);
 				faintData.target.side.pokemonLeft--;
 				this.runEvent('Faint', faintData.target, faintData.source, faintData.effect);
@@ -2627,7 +2629,7 @@ class Battle extends Dex.ModdedDex {
 				if (action.zmove) {
 					let zMoveName = this.getZMove(action.move, action.pokemon, true);
 					let zMove = this.getMove(zMoveName);
-					if (zMove.exists) {
+					if (zMove.exists && zMove.isZ) {
 						move = zMove;
 					}
 				}
@@ -2826,7 +2828,6 @@ class Battle extends Dex.ModdedDex {
 			this.runMove(action.move, action.pokemon, action.targetLoc, action.sourceEffect, action.zmove);
 			break;
 		case 'megaEvo':
-			// @ts-ignore
 			this.runMegaEvo(action.pokemon);
 			break;
 		case 'beforeTurnMove': {
@@ -3487,7 +3488,7 @@ class Battle extends Dex.ModdedDex {
 	 * @param {?Pokemon} target
 	 * @param {Pokemon} pokemon
 	 * @param {string | Move} move
-	 * @param {Move} [moveData]
+	 * @param {Move | SelfEffect | SecondaryEffect} [moveData]
 	 * @param {boolean} [isSecondary]
 	 * @param {boolean} [isSelf]
 	 * @return {number | false}
@@ -3557,6 +3558,14 @@ class Battle extends Dex.ModdedDex {
 	 */
 	getZMoveCopy(move, pokemon) {
 		throw new Error(`The getZMoveCopy function needs to be implemented in scripts.js or the battle format.`);
+	}
+
+	/**
+	 * @param {Move} move
+	 * @param {Pokemon} pokemon
+	 */
+	runZPower(move, pokemon) {
+		throw new Error(`The runZPower function needs to be implemented in scripts.js or the battle format.`);
 	}
 
 	/**
