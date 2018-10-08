@@ -3683,8 +3683,8 @@ let BattleMovedex = {
 		pp: 10,
 		secondary: false,
 		stallingMove: true,
-		sideCondition: 'firewall',
-		onHitSide: function (side, source) {
+		volatileStatus: 'firewall',
+		onHit: function (side, source) {
 			side.addSideCondition('sidestall');
 			this.add('-message', source.name + ' is hidden behind a firewall!');
 		},
