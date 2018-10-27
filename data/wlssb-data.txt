@@ -51,8 +51,7 @@ Rank: N/A.
 
 C733937 123
 (Skuntank)
-@ Epic Berry
-    - Power of a white herb, shuca berry, focus sash and pinch berry.
+@ Shuca Berry
 EVs: 252 Atk / 4 SpD / 252 HP
 Adamant Nature
 Ability: Unaware
