@@ -3669,9 +3669,9 @@ let BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		type: "Flame",
-		target: "allySide",
-		desc: "Priority +4. Protects user and allies from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
-		shortDesc: "Protects user and allies from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
+		target: "self",
+		desc: "Priority +4. Protects user from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
+		shortDesc: "Protects user from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
 		onPrepareHit: function (pokemon, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "firespin", source);
@@ -3683,10 +3683,10 @@ let BattleMovedex = {
 		pp: 10,
 		secondary: false,
 		stallingMove: true,
-		sideCondition: 'firewall',
-		onHitSide: function (side, source) {
-			side.addSideCondition('sidestall');
-			this.add('-message', source.name + ' is hidden behind a firewall!');
+		volatileStatus: 'firewall',
+		onHit: function (pokemon) {
+			pokemon.addVolatile('stall');
+			this.add('-message', pokemon.name + ' is hidden behind a firewall!');
 		},
 		effect: {
 			duration: 1,
@@ -3709,6 +3709,7 @@ let BattleMovedex = {
 						delete source.volatiles['lockedmove'];
 					}
 				}
+				if (source.types.includes('Fire') || source.types.includes('Flame')) return null;
 				this.damage(source.maxhp / 8, source, target);
 				return null;
 			},
