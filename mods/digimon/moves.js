@@ -4207,7 +4207,6 @@ let BattleMovedex = {
 			this.add('-anim', source, "grassknot", target);
 		},
 		flags: {protect: 1, mirror: 1, contact: 1},
-		secondary: false,
 		accuracy: 95,
 		secondaries: [
 			{
@@ -5143,7 +5142,6 @@ let BattleMovedex = {
 			this.add('-anim', source, "aciddownpour", target);
 		},
 		flags: {protect: 1, mirror: 1},
-		secondary: false,
 		accuracy: 90,
 		secondaries: [
 			{
