@@ -1616,7 +1616,10 @@ const commands = {
 	part: function (target, room, user, connection) {
 		let targetRoom = target ? Rooms.search(target) : room;
 		if (!targetRoom || targetRoom === Rooms.global) {
-			if (target.startsWith('view-')) return;
+			if (target.startsWith('view-')) {
+				if (target === 'view-gameconsole' && user.console) this.parse('/console kill');
+				return;
+			}
 			return this.errorReply(`The room '${target}' does not exist.`);
 		}
 		user.leaveRoom(targetRoom, connection);
@@ -2784,7 +2787,7 @@ const commands = {
 		if (!this.can('hotpatch')) return;
 
 		const lock = Monitor.hotpatchLock;
-		const hotpatches = ['chat', 'formats', 'loginserver', 'punishments', 'dnsbl', 'wavelength'];
+		const hotpatches = ['chat', 'formats', 'loginserver', 'punishments', 'dnsbl'];
 
 		try {
 			if (target === 'all') {
@@ -2807,10 +2810,14 @@ const commands = {
 
 				Chat.uncache('./chat');
 				Chat.uncache('./chat-commands');
+				Chat.uncache('./console');
 				Chat.uncacheDir('./chat-plugins');
 				Chat.uncacheDir('./wavelength-plugins');
+				Chat.uncacheDir('./game-cards');
+				WL.uncache();
 				Chat.uncache('./WL');
 				global.WL = require('./WL').WL;
+				global.GameConsole = require('./console').GameConsole;
 				global.Chat = require('./chat');
 
 				let runningTournaments = Tournaments.tournaments;
@@ -3745,6 +3752,7 @@ const commands = {
 		if (!room.game || !room.game.timer) {
 			return this.errorReply(`You can only set the timer from inside a battle room.`);
 		}
+		if (toId(room.battle.format) === 'gen7wildpokemonalpha') return this.errorReply('You can\'t start the timer during a Wild Pokemon Encounter.');
 		const timer = room.game.timer;
 		if (!timer.timerRequesters) {
 			return this.sendReply(`This game's timer is managed by a different command.`);

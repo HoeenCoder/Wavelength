@@ -977,6 +977,7 @@ class BasicChatRoom extends BasicRoom {
 	constructor(roomid, title, options = {}) {
 		super(roomid, title);
 
+
 		if (options.logTimes === undefined) options.logTimes = true;
 		if (options.autoTruncate === undefined) options.autoTruncate = !options.isHelp;
 		if (options.reportJoins === undefined) {

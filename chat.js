@@ -1276,6 +1276,9 @@ Chat.loadPlugins = function () {
 
 	// Install plug-in commands and chat filters
 
+	Object.assign(commands, require('./console.js').commands);
+	Object.assign(pages, require('./console.js').pages);
+
 	// info always goes first so other plugins can shadow it
 	let files = FS('chat-plugins/').readdirSync();
 	files = files.filter(file => file !== 'info.js');
@@ -1297,6 +1300,17 @@ Chat.loadPlugins = function () {
 		if (file.substr(-3) !== '.js') continue;
 		const wavelengthplugin = require(`./wavelength-plugins/${file}`);
 		Object.assign(commands, wavelengthplugin.commands);
+		Object.assign(pages, wavelengthplugin.pages);
+	}
+	// Load games for GameConsole
+	WL.gameList = {};
+	for (let file of FS('game-cards').readdirSync()) {
+		if (file.substr(-3) !== '.js') continue;
+		const gamecard = require(`./game-cards/${file}`);
+		Object.assign(commands, gamecard.commands);
+		Object.assign(pages, gamecard.pages);
+		if (gamecard.box && gamecard.box.name) gamecard.box.id = toId(gamecard.box.name);
+		WL.gameList[gamecard.box.id] = gamecard.box;
 	}
 };
 

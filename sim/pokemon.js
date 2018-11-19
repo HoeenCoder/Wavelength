@@ -21,12 +21,15 @@
  * @property {boolean} [virtual]
  */
 
+const WL = require('./WL').WL;
+
 class Pokemon {
 	/**
 	 * @param {string | AnyObject} set
 	 * @param {Side} side
+	 * @param {number} slot
 	 */
-	constructor(set, side) {
+	constructor(set, side, slot) {
 		/**@type {Side} */
 		this.side = side;
 		/**@type {Battle} */
@@ -178,6 +181,8 @@ class Pokemon {
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
 		this.pokeball = this.set.pokeball || 'pokeball';
+		if (this.battle.getFormat().useSGgame) this.exp = this.set.exp || WL.calcExp(this.speciesid, this.level);
+		this.slot = (!slot && slot !== 0 ? this.side.pokemon.length - 1 : slot);
 
 		this.fullname = this.side.id + ': ' + this.name;
 		this.details = this.species + (this.level === 100 ? '' : ', L' + this.level) + (this.gender === '' ? '' : ', ' + this.gender) + (this.set.shiny ? ', shiny' : '');
@@ -288,6 +293,13 @@ class Pokemon {
 		this.baseHpPower = this.hpPower;
 
 		this.clearVolatile();
+
+		// PP for SGgame
+		if (this.battle.getFormat().useSGgame && !this.battle.getFormat().noExp && this.set.pp) {
+			for (let i = 0; i < this.moveSlots.length; i++) {
+				this.moveSlots[i].pp = this.set.pp[i];
+			}
+		}
 
 		/**
 		 * Keeps track of what type the client sees for this Pokemon
@@ -1285,6 +1297,7 @@ class Pokemon {
 			this.battle.singleEvent('Eat', item, this.itemData, this, source, sourceEffect);
 			this.battle.runEvent('EatItem', this, null, null, item);
 
+			if (this.battle.getFormat().takeItems && toId(this.side.name) !== 'sgserver') this.battle.send('takeitem', toId(this.side.name) + "|" + toId(this.item) + "|" + this.slot + "|1");
 			this.lastItem = this.item;
 			this.item = '';
 			this.itemData = {id: '', target: this};
@@ -1321,6 +1334,7 @@ class Pokemon {
 
 			this.battle.singleEvent('Use', item, this.itemData, this, source, sourceEffect);
 
+			if (this.battle.getFormat().takeItems) this.battle.send('takeitem', toId(this.side.name) + "|" + toId(this.item) + "|" + this.slot + "|1");
 			this.lastItem = this.item;
 			this.item = '';
 			this.itemData = {id: '', target: this};

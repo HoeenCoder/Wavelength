@@ -30,6 +30,35 @@ const DISCONNECTION_BANK_TICKS = 60;
 // time after a player disabling the timer before they can re-enable it
 const TIMER_COOLDOWN = 20 * 1000;
 
+
+/*global.Config = require('./config/config');
+
+global.Db = require('nef')(require('nef-fs')('config/db'));
+global.WL = require('./WL.js').WL;
+
+class SimulatorManager extends ProcessManager {
+	onMessageUpstream(message) {
+		let lines = message.split('\n');
+		let battle = this.pendingTasks.get(lines[0]);
+		if (battle) battle.receive(lines);
+	}
+
+	eval(code) {
+		for (let process of this.processes) {
+			process.send(`|eval|${code}`);
+		}
+	}
+	//Add event listeners here, call with (process object for the battle ex: room.battle).send('event', 'data');
+	//TODO figure out points where we can call to other process.
+	//TODO figure out the proper point to call to a room-battle process.
+}
+
+const SimulatorProcess = new SimulatorManager({
+	execFile: __filename,
+	maxProcesses: global.Config ? Config.simulatorprocesses : 1,
+	isChatBased: false,
+});*/
+
 class BattlePlayer {
 	/**
 	 * @param {User} user
@@ -411,6 +440,10 @@ class Battle {
 		/** @type {BattlePlayer?} */
 		this.p2 = null;
 
+		// SGgame queue
+		this.gameQueue = [];
+		this.trainerId = options.trainerId || null;
+
 		/**
 		 * p1 and p2 may be null in unrated games, but playerNames retains
 		 * the most recent usernames in those slots, for use by various
@@ -577,6 +610,137 @@ class Battle {
 			this.receive(next.split('\n'));
 		}
 	}
+
+	runGameQueue() {
+		if (!Dex.getFormat(this.format).useSGgame) return;
+		if (!this.gameQueue.length) return;
+		while (this.gameQueue.length) {
+			let lines = this.gameQueue.shift();
+			switch (lines[0]) {
+			case 'caught':
+				lines[1] = lines[1].split('|');
+				let curTeam = Db.players.get(lines[1][0]);
+				let newSet = Users('sgserver').wildTeams[lines[1][0]];
+				newSet = Dex.fastUnpackTeam(newSet)[0];
+				newSet.pokeball = lines[1][1];
+				newSet.ot = toId(lines[1][0]);
+				if (curTeam.party.length < 6) {
+					curTeam.party.push(newSet);
+					Db.players.set(lines[1][0], curTeam);
+				} else {
+					let name = (newSet.name || newSet.species);
+					newSet = Dex.packTeam([newSet]);
+					let response = curTeam.boxPoke(newSet, 1);
+					if (response) {
+						this.room.add(name + ' was sent to box ' + response + '.');
+					} else {
+						this.room.add(name + ' was released because your PC is full...');
+					}
+					this.room.update();
+				}
+				delete Users('sgserver').wildTeams[lines[1][0]];
+				break;
+			case 'takeitem':
+				let raw = lines[1].split('|');
+				raw[0] = toId(raw[0]);
+				let player = Db.players.get(raw[0]);
+				let item = WL.getItem(raw[1]);
+				// ['userid', 'itemid', 'party slot #', from pokemon?];
+				if (raw[3]) {
+					player.party[raw[2]].item = '';
+				} else {
+					player.bag[item.slot][item.id]--;
+				}
+				if (item.use.happiness) {
+					player.party[raw[2]].happiness += item.use.happiness;
+				}
+				Db.players.set(raw[0], player);
+				if (!raw[3] && Users(raw[0]).console.curPane === 'bag') Chat.parse("/sggame bag " + item.slot + ", " + item.id, Rooms(this.id), Users(raw[0]), Users(raw[0]).connections[0]);
+				break;
+			case 'updateExp':
+				let data = lines[1].split(']');
+				let userid = data.shift();
+				let user = Users(userid);
+				let gameObj = Db.players.get(userid);
+				let nMoves = [];
+				let nEvos = [];
+				for (let i = 0; i < data.length; i++) {
+					let cur = data[i].split('|');
+					cur[0] = Number(cur[0]);
+					let pokemon = Dex.getTemplate(gameObj.party[cur[0]].species);
+					let olvl = gameObj.party[cur[0]].level;
+					gameObj.party[cur[0]].exp += (isNaN(Number(cur[1])) ? 0 : Number(cur[1]));
+					gameObj.party[cur[0]].level += (isNaN(Number(cur[2])) ? 0 : Number(cur[2]));
+					let lvl = olvl + (isNaN(Number(cur[1])) ? 0 : Number(cur[2]));
+					if (lvl >= 100) {
+						lvl = 100;
+						gameObj.party[cur[0]].exp = WL.calcExp(pokemon.species, 100);
+						gameObj.party[cur[0]].level = 100;
+					}
+					let evs = cur[3].split(',');
+					if (!gameObj.party[cur[0]].evs) gameObj.party[cur[0]].evs = {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+					let j = 0;
+					for (let ev in gameObj.party[cur[0]].evs) {
+						gameObj.party[cur[0]].evs[ev] += Number(evs[j]);
+						j++;
+					}
+					if (olvl !== lvl) {
+						// New Moves
+						nMoves = nMoves.concat(WL.getNewMoves(pokemon, olvl, lvl, gameObj.party[cur[0]].moves, cur[0]));
+						// Evolution
+						// Add the evo array onto the end of the move array
+						let evos = WL.canEvolve(gameObj.party[cur[0]], "level", userid, {location: null}); // TODO locations
+						if (evos) {
+							evos = evos.split('|');
+							if (evos.length > 1 && evos.indexOf('shedinja') > -1) {
+								user.console.shed = true;
+								evos.splice(evos.indexOf('shedinja'), 1);
+							}
+							evos = evos[0];
+							//evo | pokemon party slot # | pokemon to evolve too | item to take (if any)
+							let take = WL.getEvoItem(evos);
+							nEvos.push("evo|" + cur[0] + "|" + evos + "|" + (take || ''));
+						}
+					}
+				}
+				Db.players.set(userid, gameObj);
+				// FIXME figure out why user#console isnt defined here sometimes
+				if (user.console) {
+					user.console.queue = user.console.queue.concat(nMoves.concat(nEvos));
+					if (nMoves.length || nEvos.length) {
+						user.console.update(...user.console.next());
+					}
+				}
+				break;
+			case 'updateHealth':
+				let d = lines[1].split(']');
+				let uid = d.shift();
+				let playerObj = Db.players.get(uid);
+				for (let i = 0; i < d.length; i++) {
+					let cur = d[i].split('|');
+					cur[0] = Number(cur[0]);
+					if (!isNaN(Number(cur[1]))) playerObj.party[cur[0]].hp = Number(cur[1]);
+					if (cur[2]) {
+						playerObj.party[cur[0]].status = cur[2];
+					} else if (playerObj.party[cur[0]].status) {
+						delete playerObj.party[cur[0]].status;
+					}
+					if (cur[3]) {
+						let pps = cur[3].split(',').map(Number);
+						let hasNaN = pps.filter(m => isNaN(m));
+						if (hasNaN.length > 0) throw new Error(`Received NaN PP for a move when updating health for ${uid} (party slot ${cur[0]}): ${cur[3]}`);
+						playerObj.party[cur[0]].pp = pps;
+					} else if (playerObj.party[cur[0]].pp) {
+						delete playerObj.party[cur[0]].pp;
+					}
+				}
+				Db.players.set(uid, playerObj);
+				break;
+			}
+		}
+		if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[(toId(this.room.p1.name) === 'sgserver' ? toId(this.room.p2.name) : toId(this.room.p1.name))];
+	}
+
 	receive(/** @type {string[]} */ lines) {
 		switch (lines[0]) {
 		case 'update':
@@ -632,8 +796,24 @@ class Battle {
 				this.ended = true;
 				this.onEnd(this.logData.winner);
 				this.removeAllPlayers();
+				if (Dex.getFormat(this.format).isWildEncounter || Dex.getFormat(this.format).isTrainerBattle) {
+					let notCom = toId(this.room.p1.name);
+					if (notCom === 'sgserver') notCom = toId(this.room.p2.name);
+					if (Dex.getFormat(this.format).isWildEncounter) delete Users('sgserver').wildTeams[notCom];
+					if (Dex.getFormat(this.format).isTrainerBattle) delete Users('sgserver').trainerTeams[notCom];
+				}
 			}
 			this.checkActive();
+			break;
+
+		case 'caught':
+		case 'takeitem':
+		case 'updateExp':
+			this.gameQueue.push(lines);
+			break;
+		case 'updateHealth':
+			this.gameQueue.push(lines);
+			this.runGameQueue();
 			break;
 		}
 	}
@@ -680,6 +860,19 @@ class Battle {
 			if (uploader && uploader.connections[0]) {
 				Chat.parse('/savereplay', this.room, uploader, uploader.connections[0]);
 			}
+		}
+		if (Dex.getFormat(this.format).useSGgame) {
+			let notCom = toId(this.p1.name) === 'sgserver' ? Users(this.p2.name) : Users(this.p1.name);
+			if (notCom.console && notCom.console.afterBattle) notCom.console.afterBattle(notCom, (notCom.userid === winnerid));
+			const player = Db.players.get(notCom.userid);
+			if (Dex.getFormat(this.format).isTrainerBattle && notCom.userid === winnerid) {
+				player.poke += 500; // TODO scale winnings to difficulty
+				this.room.add(`|message|${notCom.name} got 500 poké for winning!`);
+			}
+			if (this.trainerId && notCom.userid === winnerid) {
+				if (!player.battled.includes(this.trainerId)) player.battled.push(this.trainerId);
+			}
+			Db.players.set(notCom.userid, player);
 		}
 		const parentGame = this.room.parent && this.room.parent.game;
 		if (parentGame && parentGame.onBattleWin) {
