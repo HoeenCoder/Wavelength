@@ -1151,7 +1151,7 @@ exports.commands = {
 							let pokemon = Dex.getTemplate(player.party[target[3]].species);
 							if (player.party[target[3]] && player.party[target[3]].level < 100) {
 								let olvl = player.party[target[3]].level;
-								let lvl = olvl += item.use.level;
+								let lvl = olvl + item.use.level;
 								if (lvl > 100) lvl = 100;
 								player.party[target[3]].level = lvl;
 								player.party[target[3]].exp = WL.calcExp(player.party[target[3]].species, lvl);
