@@ -10,20 +10,22 @@ let BattleScripts = {
 	// BattlePokemon scripts.
 	pokemon: {
 		// Stadium shares gen 1 code but it fixes some problems with it.
-		getStat: function (statName, unmodified) {
+		getStat(statName, unmodified) {
 			statName = toId(statName);
 			if (statName === 'hp') return this.maxhp;
 			if (unmodified) return this.stats[statName];
+			// @ts-ignore
 			return this.modifiedStats[statName];
 		},
 		// Gen 1 function to apply a stat modification that is only active until the stat is recalculated or mon switched.
 		// Modified stats are declared in the Pokemon object in sim/pokemon.js in about line 681.
-		modifyStat: function (stat, modifier) {
+		modifyStat(stat, modifier) {
 			if (!(stat in this.stats)) return;
+			// @ts-ignore
 			this.modifiedStats[stat] = this.battle.clampIntRange(Math.floor(this.modifiedStats[stat] * modifier), 1);
 		},
 		// This is run on Stadium after boosts and status changes.
-		recalculateStats: function () {
+		recalculateStats() {
 			for (let statName in this.stats) {
 				/**@type {number} */
 				// @ts-ignore
@@ -32,6 +34,7 @@ let BattleScripts = {
 				stat = Math.floor(Math.floor(2 * stat + this.set.ivs[statName] + Math.floor(this.set.evs[statName] / 4)) * this.level / 100 + 5);
 				// @ts-ignore
 				this.baseStats[statName] = this.stats[statName] = Math.floor(stat);
+				// @ts-ignore
 				this.modifiedStats[statName] = Math.floor(stat);
 				// Re-apply drops, if necessary.
 				// @ts-ignore
@@ -52,7 +55,7 @@ let BattleScripts = {
 			}
 		},
 		// Stadium's fixed boosting function.
-		boostBy: function (boost) {
+		boostBy(boost) {
 			let changed = false;
 			for (let i in boost) {
 				// @ts-ignore
@@ -82,9 +85,9 @@ let BattleScripts = {
 		},
 	},
 	// Battle scripts.
-	runMove: function (move, pokemon, targetLoc, sourceEffect) {
-		let target = this.getTarget(pokemon, move, targetLoc);
-		move = this.getMove(move);
+	runMove(moveOrMoveName, pokemon, targetLoc, sourceEffect) {
+		let target = this.getTarget(pokemon, moveOrMoveName, targetLoc);
+		let move = this.getActiveMove(moveOrMoveName);
 		if (!target) target = this.resolveTarget(pokemon, move);
 		if (target.subFainted) delete target.subFainted;
 
@@ -136,7 +139,7 @@ let BattleScripts = {
 			} // If we move to here, the move failed and there's no partial trapping lock
 		}
 	},
-	tryMoveHit: function (target, pokemon, move) {
+	tryMoveHit(target, pokemon, move) {
 		let boostTable = [1, 4 / 3, 5 / 3, 2, 7 / 3, 8 / 3, 3];
 		let doSelfDestruct = true;
 		/**@type {number | false} */
@@ -269,10 +272,10 @@ let BattleScripts = {
 
 		return damage;
 	},
-	moveHit: function (target, pokemon, move, moveData, isSecondary, isSelf) {
+	moveHit(target, pokemon, moveOrMoveName, moveData, isSecondary, isSelf) {
 		/**@type {number | false} */
 		let damage = 0;
-		move = this.getMoveCopy(move);
+		let move = this.getActiveMove(moveOrMoveName);
 
 		if (!isSecondary && !isSelf) this.setActiveMove(move, pokemon, target);
 		/**@type {number | boolean} */
@@ -287,7 +290,7 @@ let BattleScripts = {
 			hitResult = this.singleEvent('TryHit', moveData, {}, target, pokemon, move);
 
 			// Partial trapping moves still apply their volatile to Pokémon behind a Sub
-			let targetHadSub = (target && target.volatiles['substitute']);
+			const targetHadSub = !!target.volatiles['substitute'];
 			if (targetHadSub && moveData.volatileStatus && moveData.volatileStatus === 'partiallytrapped') {
 				target.addVolatile(moveData.volatileStatus, pokemon, move);
 			}
@@ -429,22 +432,19 @@ let BattleScripts = {
 
 		return damage;
 	},
-	getDamage: function (pokemon, target, move, suppressMessages) {
+	getDamage(pokemon, target, move, suppressMessages) {
 		// First of all, we get the move.
 		if (typeof move === 'string') {
-			move = this.getMove(move);
+			move = this.getActiveMove(move);
 		} else if (typeof move === 'number') {
-			// @ts-ignore
-			move = {
+			move = /** @type {ActiveMove} */ ({
 				basePower: move,
 				type: '???',
 				category: 'Physical',
 				willCrit: false,
 				flags: {},
-			};
+			});
 		}
-
-		move = /**@type {Move} */ (move); // eslint-disable-line no-self-assign
 
 		// Let's see if the target is immune to the move.
 		if (!move.ignoreImmunity || (move.ignoreImmunity !== true && !move.ignoreImmunity[move.type])) {
@@ -660,7 +660,8 @@ let BattleScripts = {
 		// We are done, this is the final damage.
 		return Math.floor(damage);
 	},
-	damage: function (damage, target, source, effect) {
+	// @ts-ignore
+	damage(damage, target, source, effect) {
 		if (this.event) {
 			if (!target) target = this.event.target;
 			if (!source) source = this.event.source;
@@ -715,7 +716,7 @@ let BattleScripts = {
 
 		return damage;
 	},
-	directDamage: function (damage, target, source, effect) {
+	directDamage(damage, target, source, effect) {
 		if (this.event) {
 			if (!target) target = this.event.target;
 			if (!source) source = this.event.source;

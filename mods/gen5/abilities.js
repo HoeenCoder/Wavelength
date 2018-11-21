@@ -35,10 +35,11 @@ let BattleAbilities = {
 		},
 		onTryHit: function (pokemon, target, move) {
 			if (move.id === 'captivate') {
-				this.add('-immune', pokemon, '[msg]', '[from] Oblivious');
+				this.add('-immune', pokemon, '[from] Oblivious');
 				return null;
 			}
 		},
+		rating: 0.5,
 	},
 	"overcoat": {
 		inherit: true,

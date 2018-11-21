@@ -48,11 +48,13 @@ class RandomGen5Teams extends RandomGen6Teams {
 			spd: 31,
 			spe: 31,
 		};
+		/**@type {{[k: string]: true}} */
 		let hasType = {};
 		hasType[template.types[0]] = true;
 		if (template.types[1]) {
 			hasType[template.types[1]] = true;
 		}
+		/**@type {{[k: string]: true}} */
 		let hasAbility = {};
 		hasAbility[template.abilities[0]] = true;
 		if (template.abilities[1]) {
@@ -232,8 +234,8 @@ class RandomGen5Teams extends RandomGen6Teams {
 				case 'drainpunch':
 					if (hasMove['closecombat'] || hasMove['crosschop'] || hasMove['highjumpkick']) rejected = true;
 					break;
-				case 'fierydance': case 'flamethrower':
-					if (hasMove['blueflare'] || hasMove['fireblast'] || hasMove['lavaplume'] || hasMove['overheat']) rejected = true;
+				case 'flareblitz': case 'fierydance': case 'flamethrower': case 'lavaplume':
+					if (hasMove['blueflare'] || hasMove['fireblast'] || hasMove['overheat']) rejected = true;
 					break;
 				case 'firepunch':
 					if (hasMove['flareblitz']) rejected = true;
@@ -241,14 +243,11 @@ class RandomGen5Teams extends RandomGen6Teams {
 				case 'overheat':
 					if (counter.setupType === 'Special' || hasMove['fireblast']) rejected = true;
 					break;
-				case 'airslash':
-					if (hasMove['hurricane']) rejected = true;
-					break;
-				case 'bravebird': case 'drillpeck': case 'pluck':
-					if (hasMove['acrobatics']) rejected = true;
+				case 'airslash': case 'bravebird': case 'drillpeck': case 'pluck':
+					if (hasMove['acrobatics'] || hasMove['hurricane']) rejected = true;
 					break;
 				case 'gigadrain':
-					if ((!counter.setupType && hasMove['leafstorm']) || hasMove['petaldance']) rejected = true;
+					if ((!counter.setupType && hasMove['leafstorm']) || hasMove['petaldance'] || hasMove['powerwhip']) rejected = true;
 					break;
 				case 'solarbeam':
 					if ((!hasAbility['Drought'] && !hasMove['sunnyday']) || hasMove['gigadrain'] || hasMove['leafstorm']) rejected = true;
@@ -294,7 +293,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 					break;
 
 				// Status:
-				case 'encore': case 'suckerpunch':
+				case 'encore': case 'iceshard': case 'suckerpunch':
 					if (hasMove['rest'] && hasMove['sleeptalk']) rejected = true;
 					break;
 				case 'moonlight': case 'painsplit': case 'recover': case 'roost': case 'softboiled': case 'synthesis':
@@ -327,9 +326,11 @@ class RandomGen5Teams extends RandomGen6Teams {
 					// Reject STABs last in case the setup type changes later on
 					if (!SetupException.includes(moveid) && (!hasType[move.type] || counter.stab > 1 || counter[move.category] < 2)) rejected = true;
 				}
+				// @ts-ignore
 				if (counter.setupType && !isSetup && counter.setupType !== 'Mixed' && move.category !== counter.setupType && counter[counter.setupType] < 2 && !hasMove['batonpass'] && moveid !== 'rest' && moveid !== 'sleeptalk') {
 					// Mono-attacking with setup and RestTalk is allowed
 					// Reject Status moves only if there is nothing else to reject
+					// @ts-ignore
 					if (move.category !== 'Status' || counter[counter.setupType] + counter.Status > 3 && counter['physicalsetup'] + counter['specialsetup'] < 2) rejected = true;
 				}
 				if (counter.setupType === 'Special' && moveid === 'hiddenpower' && template.types.length > 1 && counter['Special'] <= 2 && !hasType[move.type] && !counter['Physical'] && counter['specialpool']) {
@@ -338,6 +339,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 				}
 
 				// Pokemon should have moves that benefit their Type/Ability/Weather, as well as moves required by its forme
+				// @ts-ignore
 				if (!rejected && (counter['physicalsetup'] + counter['specialsetup'] < 2 && (!counter.setupType || counter.setupType === 'Mixed' || (move.category !== counter.setupType && move.category !== 'Status') || counter[counter.setupType] + counter.Status > 3)) &&
 					((counter.damagingMoves.length === 0 && !hasMove['metalburst']) ||
 					(!counter.stab && (counter.Status < 2 || counter.setupType || template.types.length > 1 || (template.types[0] !== 'Normal' && template.types[0] !== 'Psychic') || !hasMove['icebeam']) && (counter['physicalpool'] || counter['specialpool'])) ||
@@ -351,6 +353,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 					(hasType['Ice'] && !counter['Ice']) ||
 					(hasType['Steel'] && hasAbility['Technician'] && !counter['Steel']) ||
 					(hasType['Water'] && (!counter['Water'] || !counter.stab)) ||
+					// @ts-ignore
 					((hasAbility['Adaptability'] && !counter.setupType && template.types.length > 1 && (!counter[template.types[0]] || !counter[template.types[1]])) ||
 					(hasAbility['Bad Dreams'] && movePool.includes('darkvoid')) ||
 					(hasAbility['Contrary'] && !counter['contrary'] && template.species !== 'Shuckle') ||
@@ -418,6 +421,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 				rejectAbility = false;
 				if (counterAbilities.includes(ability)) {
 					// Adaptability, Contrary, Hustle, Iron Fist, Skill Link
+					// @ts-ignore
 					rejectAbility = !counter[toId(ability)];
 				} else if (ability === 'Blaze') {
 					rejectAbility = !counter['Fire'];
@@ -427,7 +431,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 					rejectAbility = !counter['inaccurate'];
 				} else if (ability === 'Defiant' || ability === 'Moxie') {
 					rejectAbility = !counter['Physical'] && !hasMove['batonpass'];
-				} else if (ability === 'Gluttony' || ability === 'Moody') {
+				} else if (ability === 'Gluttony' || ability === 'Inner Focus' || ability === 'Moody') {
 					rejectAbility = true;
 				} else if (ability === 'Hydration' || ability === 'Rain Dish' || ability === 'Swift Swim') {
 					rejectAbility = !hasMove['raindance'] && !teamDetails['rain'];
@@ -467,6 +471,8 @@ class RandomGen5Teams extends RandomGen6Teams {
 					rejectAbility = counter['damage'] >= counter.damagingMoves.length || (counter.Status > 2 && !counter.setupType);
 				} else if (ability === 'Torrent') {
 					rejectAbility = !counter['Water'];
+				} else if (ability === 'Unburden') {
+					rejectAbility = template.baseStats.spe > 100;
 				} else if (ability === 'Water Absorb') {
 					rejectAbility = abilities.includes('Volt Absorb');
 				}
@@ -559,9 +565,11 @@ class RandomGen5Teams extends RandomGen6Teams {
 
 		// Medium priority
 		} else if (counter.Physical >= 4 && !hasMove['fakeout'] && !hasMove['suckerpunch'] && !hasMove['flamecharge'] && !hasMove['rapidspin']) {
-			item = this.randomChance(2, 3) ? 'Choice Band' : 'Expert Belt';
+			item = !counter['Normal'] && this.randomChance(1, 3) ? 'Expert Belt' : 'Choice Band';
 		} else if (counter.Special >= 4) {
-			item = this.randomChance(2, 3) ? 'Choice Specs' : 'Expert Belt';
+			item = this.randomChance(1, 3) ? 'Expert Belt' : 'Choice Specs';
+		} else if (ability === 'Speed Boost' && !hasMove['substitute'] && counter.Physical + counter.Special > 2) {
+			item = 'Life Orb';
 		} else if ((hasMove['eruption'] || hasMove['waterspout']) && !counter['Status']) {
 			item = 'Choice Scarf';
 		} else if (this.getEffectiveness('Ground', template) >= 2 && ability !== 'Levitate' && !hasMove['magnetrise']) {
@@ -587,8 +595,8 @@ class RandomGen5Teams extends RandomGen6Teams {
 		} else if (counter.Physical + counter.Special >= 3 && counter.setupType) {
 			item = hasMove['outrage'] ? 'Lum Berry' : 'Life Orb';
 		} else if (counter.Physical + counter.Special >= 4) {
-			item = 'Expert Belt';
-		} else if (slot === 0 && ability !== 'Sturdy' && !counter['recoil']) {
+			item = counter['Normal'] ? 'Life Orb' : 'Expert Belt';
+		} else if (slot === 0 && ability !== 'Regenerator' && ability !== 'Sturdy' && !counter['recoil'] && !counter['recovery'] && template.baseStats.hp + template.baseStats.def + template.baseStats.spd < 285) {
 			item = 'Focus Sash';
 
 		// This is the "REALLY can't think of a good item" cutoff
@@ -620,7 +628,9 @@ class RandomGen5Teams extends RandomGen6Teams {
 		let customScale = {
 			Blaziken: 74, 'Deoxys-Defense': 74, Landorus: 74, Manaphy: 74, Thundurus: 74, 'Tornadus-Therian': 74, Unown: 85,
 		};
+		// @ts-ignore
 		let level = levelScale[template.tier] || 75;
+		// @ts-ignore
 		if (customScale[template.name]) level = customScale[template.name];
 
 		// Minimize confusion damage
@@ -651,7 +661,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 	randomTeam() {
 		let pokemon = [];
 
-		let allowedNFE = ['Porygon2', 'Scyther'];
+		const allowedNFE = ['Porygon2', 'Scyther'];
 
 		let pokemonPool = [];
 		for (let id in this.data.FormatsData) {
@@ -660,8 +670,11 @@ class RandomGen5Teams extends RandomGen6Teams {
 			pokemonPool.push(id);
 		}
 
+		/**@type {{[k: string]: number}} */
 		let typeCount = {};
+		/**@type {{[k: string]: number}} */
 		let typeComboCount = {};
+		/**@type {{[k: string]: number}} */
 		let baseFormes = {};
 		let uberCount = 0;
 		let nuCount = 0;
@@ -705,6 +718,8 @@ class RandomGen5Teams extends RandomGen6Teams {
 				break;
 			}
 
+			let types = template.types;
+
 			// Limit 2 of any type
 			let skip = false;
 			for (const type of template.types) {
@@ -716,6 +731,9 @@ class RandomGen5Teams extends RandomGen6Teams {
 			if (skip) continue;
 
 			let set = this.randomSet(template, pokemon.length, teamDetails);
+
+			// Illusion shouldn't be the last Pokemon of the team
+			if (set.ability === 'Illusion' && pokemon.length > 4) continue;
 
 			// Limit 1 of any type combination
 			let typeCombo = template.types.slice().sort().join();
@@ -730,11 +748,18 @@ class RandomGen5Teams extends RandomGen6Teams {
 			// Okay, the set passes, add it to our team
 			pokemon.push(set);
 
+			if (pokemon.length === 6) {
+				// Set Zoroark's level to be the same as the last Pokemon
+				let illusion = teamDetails['illusion'];
+				if (illusion) pokemon[illusion - 1].level = pokemon[5].level;
+				break;
+			}
+
 			// Now that our Pokemon has passed all checks, we can increment our counters
 			baseFormes[template.baseSpecies] = 1;
 
 			// Increment type counters
-			for (const type of template.types) {
+			for (const type of types) {
 				if (type in typeCount) {
 					typeCount[type]++;
 				} else {
@@ -761,6 +786,9 @@ class RandomGen5Teams extends RandomGen6Teams {
 			if (set.moves.includes('stealthrock')) teamDetails['stealthRock'] = 1;
 			if (set.moves.includes('toxicspikes')) teamDetails['toxicSpikes'] = 1;
 			if (set.moves.includes('rapidspin')) teamDetails['rapidSpin'] = 1;
+
+			// For setting Zoroark's level
+			if (set.ability === 'Illusion') teamDetails['illusion'] = pokemon.length;
 		}
 		return pokemon;
 	}

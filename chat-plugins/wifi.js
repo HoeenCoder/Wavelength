@@ -16,6 +16,7 @@ const RECENT_THRESHOLD = 30 * 24 * 60 * 60 * 1000;
 const STATS_FILE = 'config/chat-plugins/wifi.json';
 const BREEDING_FILE = 'config/chat-plugins/breeding.json';
 
+/** @type {{[k: string]: number[]}} */
 let stats = {};
 try {
 	stats = require(`../${STATS_FILE}`);
@@ -28,6 +29,7 @@ function saveStats() {
 	FS(STATS_FILE).write(JSON.stringify(stats));
 }
 
+/** @type {{winners?: {[k: string]: AnyObject}, latest?: string}} */
 let breedingData = {};
 try {
 	breedingData = require(`../${BREEDING_FILE}`);
@@ -51,7 +53,7 @@ class Giveaway {
 	/**
 	 * @param {User} host
 	 * @param {User} giver
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {string} ot
 	 * @param {string} tid
 	 * @param {string} fc
@@ -72,6 +74,7 @@ class Giveaway {
 		this.prize = prize;
 		this.phase = 'pending';
 
+		/** @type {{[k: string]: string}} */
 		this.joined = {};
 
 		/** @type {NodeJS.Timer?} */
@@ -142,7 +145,7 @@ class Giveaway {
 	}
 
 	/**
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {User} user
 	 */
 	static checkBanned(room, user) {
@@ -150,7 +153,7 @@ class Giveaway {
 	}
 
 	/**
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {User} user
 	 * @param {string} reason
 	 */
@@ -159,7 +162,7 @@ class Giveaway {
 	}
 
 	/**
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {User} user
 	 */
 	static unban(room, user) {
@@ -276,6 +279,7 @@ class QuestionGiveaway extends Giveaway {
 
 		this.question = question;
 		this.answers = QuestionGiveaway.sanitizeAnswers(answers);
+		/** @type {{[k: string]: number}} */
 		this.answered = {}; // userid: number of guesses
 
 		this.send(this.generateWindow('The question will be displayed in one minute! Use /ga to answer.'));
@@ -631,6 +635,7 @@ class GtsGiveaway {
 		}
 		// @ts-ignore
 		delete this.room.gtsga;
+		return this.left;
 	}
 
 	// This currently doesn't match some of the edge cases the other pokemon matching function does account for (such as Type: Null). However, this should never be used as a fodder mon anyway, so I don't see a huge need to implement it.
@@ -655,9 +660,6 @@ class GtsGiveaway {
 		return text;
 	}
 }
-
-/** @typedef {(this: CommandContext, target: string, room: ChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
-/** @typedef {{[k: string]: ChatHandler | string | true | string[] | ChatCommands}} ChatCommands */
 
 /** @type {ChatCommands} */
 let commands = {
@@ -803,8 +805,8 @@ let commands = {
 			// @ts-ignore
 			room.gtsga = new GtsGiveaway(room, targetUser, amount, summary, deposit, lookfor);
 
-			this.privateModAction(`(${user.name} started a GTS giveaway for ${targetUser.name})`);
-			this.modlog('GTS GIVEAWAY', null, `for ${targetUser.getLastId()}`);
+			this.privateModAction(`(${user.name} started a GTS giveaway for ${targetUser.name} with ${amount} Pokémon)`);
+			this.modlog('GTS GIVEAWAY', null, `for ${targetUser.getLastId()} with ${amount} Pokémon`);
 		},
 		left: function (target, room, user) {
 			if (room.id !== 'wifi') return false;
@@ -824,6 +826,8 @@ let commands = {
 			if (isNaN(newamount)) return this.errorReply("Please enter a valid amount.");
 			// @ts-ignore
 			if (newamount > room.gtsga.left) return this.errorReply("The new amount must be lower than the old amount.");
+			// @ts-ignore
+			if (newamount < room.gtsga.left - 1) this.modlog(`GTS GIVEAWAY`, null, `set to ${newamount} left by ${user.name}`);
 
 			// @ts-ignore
 			room.gtsga.updateLeft(newamount);
@@ -862,10 +866,10 @@ let commands = {
 				return this.errorReply("The reason is too long. It cannot exceed 300 characters.");
 			}
 			// @ts-ignore
-			room.gtsga.end(true);
-			this.modlog('GTS END', null, target);
+			const amount = room.gtsga.end(true);
 			if (target) target = `: ${target}`;
-			this.privateModAction(`(The giveaway was forcibly ended by ${user.name}${target})`);
+			this.modlog('GTS END', null, `with ${amount} left${target}`);
+			this.privateModAction(`(The giveaway was forcibly ended by ${user.name} with ${amount} left${target})`);
 		},
 	},
 	// general.
@@ -942,7 +946,6 @@ let commands = {
 		if (!target) return this.errorReply("No mon entered - /giveaway count pokemon.");
 		if (!this.runBroadcast()) return;
 
-		/** @type {[number]} */
 		let count = stats[target];
 
 		if (!count) return this.sendReplyBox("This Pokémon has never been given away.");
@@ -1019,6 +1022,7 @@ let breedingcontests = {
 	},
 	view: function (target, room, user) {
 		if (room.id !== 'wifi') return this.errorReply("This command can only be used in the Wi-Fi room.");
+		/** @type {string | undefined} */
 		let contest = toId(target);
 		if (!contest) contest = breedingData.latest;
 		if (!contest) return this.errorReply("There have been no breeding contests.");

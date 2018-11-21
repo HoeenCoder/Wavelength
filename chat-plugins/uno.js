@@ -165,7 +165,7 @@ function createDeck() {
 
 class UnoGame extends Rooms.RoomGame {
 	/**
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {number} cap
 	 * @param {boolean} suppressMessages
 	 */
@@ -203,6 +203,10 @@ class UnoGame extends Rooms.RoomGame {
 		this.discards = [];
 		/** @type {Card?} */
 		this.topCard = null;
+		/** @type {string?} */
+		this.awaitUno = null;
+		/** @type {string?} */
+		this.unoId = null;
 
 		this.direction = 1;
 
@@ -341,6 +345,7 @@ class UnoGame extends Rooms.RoomGame {
 			if (this.timer) clearTimeout(this.timer);
 			this.nextTurn();
 		}
+		if (this.awaitUno === userid) this.awaitUno = null;
 
 		// put that player's cards into the discard pile to prevent cards from being permanently lost
 		this.discards.push(...this.players[userid].hand);
@@ -415,7 +420,7 @@ class UnoGame extends Rooms.RoomGame {
 
 				this.sendToRoom(`|c:|${(Math.floor(Date.now() / 1000))}|~|${player.name}'s turn.`);
 				this.state = 'play';
-				if (player.cardLock) delete player.cardLock;
+				if (player.cardLock) player.cardLock = null;
 				player.sendDisplay();
 
 				this.timer = setTimeout(() => {
@@ -633,8 +638,8 @@ class UnoGame extends Rooms.RoomGame {
 		// uno id makes spamming /uno uno impossible
 		if (this.unoId !== unoId || player.userid !== this.awaitUno) return false;
 		this.sendToRoom(Chat.html`|raw|<strong>UNO!</strong> ${player.name} is down to their last card!`);
-		delete this.awaitUno;
-		delete this.unoId;
+		this.awaitUno = null;
+		this.unoId = null;
 	}
 
 	onCheckUno() {
@@ -644,8 +649,8 @@ class UnoGame extends Rooms.RoomGame {
 				this.sendToRoom(`${this.players[this.awaitUno].name} forgot to say UNO! and is forced to draw 2 cards.`);
 				this.onDrawCard(this.players[this.awaitUno], 2);
 			}
-			delete this.awaitUno;
-			delete this.unoId;
+			this.awaitUno = null;
+			this.unoId = null;
 		}
 	}
 
@@ -710,7 +715,8 @@ class UnoGamePlayer extends Rooms.RoomGamePlayer {
 		super(user, game);
 		this.hand = /** @type {Card[]} */ ([]);
 		this.game = game;
-		this.cardLock = '';
+		/** @type {string?} */
+		this.cardLock = null;
 	}
 
 	/**
@@ -776,9 +782,6 @@ class UnoGamePlayer extends Rooms.RoomGamePlayer {
 		);
 	}
 }
-
-/** @typedef {(this: CommandContext, target: string, room: ChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
-/** @typedef {{[k: string]: { [k: string]: ChatHandler | string | true | string[] | ChatCommands} | string[]}} ChatCommands */
 
 /** @type {ChatCommands} */
 const commands = {

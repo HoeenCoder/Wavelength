@@ -148,6 +148,7 @@ class HelpTicket extends Rooms.RoomGame {
 	forfeit(user) {
 		if (!(user.userid in this.players)) return;
 		this.removePlayer(user);
+		this.modnote(user, `${user.name} is no longer interested in this ticket.`);
 		if (this.playerCount - 1 > 0) return; // There are still users in the ticket room, dont close the ticket
 		this.close(user);
 		return true;
@@ -210,6 +211,7 @@ class HelpTicket extends Rooms.RoomGame {
 }
 
 const NOTIFY_ALL_TIMEOUT = 5 * 60 * 1000;
+/** @type {{[k: string]: NodeJS.Timer?}} */
 let unclaimedTicketTimer = {upperstaff: null, staff: null};
 /**
  * @param {boolean} upper
@@ -221,6 +223,7 @@ function pokeUnclaimedTicketTimer(upper, hasUnclaimed) {
 	if (hasUnclaimed && !unclaimedTicketTimer[room.id]) {
 		unclaimedTicketTimer[room.id] = setTimeout(() => notifyUnclaimedTicket(upper), NOTIFY_ALL_TIMEOUT);
 	} else if (!hasUnclaimed && unclaimedTicketTimer[room.id]) {
+		// @ts-ignore
 		clearTimeout(unclaimedTicketTimer[room.id]);
 		unclaimedTicketTimer[room.id] = null;
 	}
@@ -231,6 +234,7 @@ function pokeUnclaimedTicketTimer(upper, hasUnclaimed) {
 function notifyUnclaimedTicket(upper) {
 	const room = Rooms(upper ? 'upperstaff' : 'staff');
 	if (!room) return;
+	// @ts-ignore
 	clearTimeout(unclaimedTicketTimer[room.id]);
 	unclaimedTicketTimer[room.id] = null;
 	for (let i in room.users) {
@@ -358,9 +362,6 @@ for (const room of Rooms.rooms.values()) {
 	room.game = game;
 }
 
-/** @typedef {(query: string[], user: User, connection: Connection) => (string | null | void)} PageHandler */
-/** @typedef {{[k: string]: PageHandler | PageTable}} PageTable */
-
 /** @type {PageTable} */
 const pages = {
 	help: {
@@ -389,6 +390,7 @@ const pages = {
 
 			const isStaff = user.can('lock');
 			if (!query.length) query = [''];
+			/** @type {{[k: string]: string}} */
 			const pages = {
 				report: `I want to report someone`,
 				harassment: `Someone is harassing me`,
@@ -400,6 +402,7 @@ const pages = {
 				permalock: `I want to appeal my permalock`,
 				lock: `I want to appeal my lock`,
 				ip: `I'm locked because I have the same IP as someone I don't recognize`,
+				battleappeal: `I want to appeal a battle ban`,
 				semilock: `I can't talk in chat because of my ISP`,
 				hostfilter: `I'm locked because of #hostfilter`,
 				hasautoconfirmed: `Yes, I have an autoconfirmed account`,
@@ -409,11 +412,11 @@ const pages = {
 				misc: `Something else`,
 				ticket: `I feel my last Help request shouldn't have been closed`,
 				password: `I lost my password`,
+				roomhelp: `I need global staff to help watch a public room`,
 				other: `Other`,
 
 				confirmpmharassment: `Report harassment in a private message (PM)`,
 				confirmbattleharassment: `Report harassment in a battle`,
-				confirmchatharassment: `Report harassment in a chatroom`,
 				confirminap: `Report inappropriate content`,
 				confirminapname: `Report an inappropriate username`,
 				confirminappokemon: `Report inappropriate Pok&eacute;mon nicknames`,
@@ -422,14 +425,16 @@ const pages = {
 				confirmreportglobal: `Report a Global Staff member`,
 				confirmappeal: `Appeal your lock`,
 				confirmipappeal: `Appeal IP lock`,
+				confirmbattleappeal: `Appeal battle ban`,
 				confirmappealsemi: `Appeal ISP lock`,
 				confirmticket: `Report last ticket`,
+				confirmroomhelp: `Call a Global Staff member to help`,
 				confirmother: `Call a Global Staff member`,
 			};
+			/** @type {{[k: string]: string}} */
 			const ticketTitles = {
 				pmharassment: `PM Harassment`,
 				battleharassment: `Battle Harassment`,
-				chatharassment: `Chatroom Harassment`,
 				inap: `Inappropriate Content`,
 				inapname: `Inappropriate Username`,
 				inappokemon: `Inappropriate Pokemon Nicknames`,
@@ -438,8 +443,10 @@ const pages = {
 				reportglobal: `Global Staff Complaint`,
 				appeal: `Appeal`,
 				ipappeal: `IP-Appeal`,
+				battleappeal: `Battle Ban Appeal`,
 				appealsemi: `ISP-Appeal`,
 				ticket: `Report Last Ticket`,
+				roomhelp: `Public Room Assistance Request`,
 				other: `Other`,
 			};
 			for (const [i, page] of query.entries()) {
@@ -468,12 +475,13 @@ const pages = {
 					buf += `<p><Button>harassment</Button></p>`;
 					buf += `<p><Button>inap</Button></p>`;
 					buf += `<p><Button>timerstalling</Button></p>`;
+					buf += `<p><Button>other</Button></p>`;
 					break;
 				case 'harassment':
-					buf += `<p>If someone is harassing you, click the appropriate button below and a global staff member will take a look. Consider using <code>/ignore [username]</code> if it's minor instead.</p>`;
+					buf += `<p>If someone is harassing you in pms or a battle, click the appropriate button below and a global staff member will take a look. If you are being harassed in a chatroom, please ask a room staff member to handle it. Consider using <code>/ignore [username]</code> if it's minor instead.</p>`;
 					buf += `<p>If you are reporting harassment in a battle, please save a replay of the battle.</p>`;
 					if (!isLast) break;
-					buf += `<p><Button>confirmpmharassment</Button> <Button>confirmbattleharassment</Button> <Button>confirmchatharassment</Button></p>`;
+					buf += `<p><Button>confirmpmharassment</Button> <Button>confirmbattleharassment</Button></p>`;
 					break;
 				case 'inap':
 					buf += `<p>If a user has posted inappropriate content, has an inappropriate name, or has inappropriate Pok&eacute;mon nicknames, click the appropriate button below and a global staff member will take a look.</p>`;
@@ -512,10 +520,14 @@ const pages = {
 							buf += `<p><Button>ip</Button></p>`;
 						}
 					}
+					if (isStaff || Punishments.isBattleBanned(user)) {
+						buf += `<p><Button>battleappeal</Button></p>`;
+					}
 					if (user.semilocked || isStaff) {
 						buf += `<p><Button>semilock</Button></p>`;
 					}
 					buf += `<p><Button>appealother</Button></p>`;
+					buf += `<p><Button>other</Button></p>`;
 					break;
 				case 'permalock':
 					buf += `<p>Please make a post in the <a href="https://www.smogon.com/forums/threads/discipline-appeal-rules.3583479/">Discipline Appeal Forums</a> to appeal a permalock.</p>`;
@@ -532,6 +544,10 @@ const pages = {
 					break;
 				case 'hostfilter':
 					buf += `<p>If you are locked under #hostfilter, it means you are connected to Pok&eacute;mon Showdown with a Proxy or VPN. We automatically lock these to prevent evasion of punishments. To get unlocked, you need to disable your Proxy or VPN, and use the /logout command.</p>`;
+					break;
+				case 'battleappeal':
+					buf += `<p>If you are battle banned and wish to appeal, click the button below and a global staff member will be with you shortly.</p>`;
+					buf += `<p><Button>confirmbattleappeal</Button></p>`;
 					break;
 				case 'semilock':
 					buf += `<p>Do you have an Autoconfirmed account? An account is autoconfirmed when they have won at least one rated battle and have been registered for one week or longer.</p>`;
@@ -559,6 +575,7 @@ const pages = {
 						buf += `<p><Button>ticket</Button></p>`;
 					}
 					buf += `<p><Button>password</Button></p>`;
+					if (user.trusted || isStaff) buf += `<p><Button>roomhelp</Button></p>`;
 					buf += `<p><Button>other</Button></p>`;
 					break;
 				case 'ticket':
@@ -569,6 +586,10 @@ const pages = {
 				case 'password':
 					buf += `<p>If you lost your password, click the button below to make a post in Admin Requests. We will need to clarify a few pieces of information before resetting the account. Please note that password resets are low priority and may take a while; we recommend using a new account while waiting.</p>`;
 					buf += `<p><a class="button" href="https://www.smogon.com/forums/forums/other-admin-requests.346/">Request a password reset</a></p>`;
+					break;
+				case 'roomhelp':
+					buf += `<p>If you are a room driver or up in a public room, and you need help watching the chat, one or more global staff members would be happy to assist you! Click the button below to call a Global Staff member.</p>`;
+					buf += `<p><Button>confirmroomhelp</Button></p>`;
 					break;
 				case 'other':
 					buf += `<p>If your issue is not handled above, click the button below to ask for a global. Please be ready to explain the situation.</p>`;
@@ -668,9 +689,6 @@ const pages = {
 };
 exports.pages = pages;
 
-/** @typedef {(this: CommandContext, target: string, room: BasicChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
-/** @typedef {{[k: string]: ChatHandler | string | true | string[] | ChatCommands}} ChatCommands */
-
 /** @type {ChatCommands} */
 let commands = {
 	'!report': true,
@@ -734,7 +752,7 @@ let commands = {
 				}
 			}
 			if (Monitor.countTickets(user.latestIp)) return this.popupReply(`Due to high load, you are limited to creating ${Punishments.sharedIps.has(user.latestIp) ? `50` : `5`} tickets every hour.`);
-			if (!['PM Harassment', 'Battle Harassment', 'Chatroom Harassment', 'Inappropriate Content', 'Inappropriate Username', 'Inappropriate Pokemon Nicknames', 'Timerstalling', 'Global Staff Complaint', 'Appeal', 'IP-Appeal', 'ISP-Appeal', 'Report Last Ticket', 'Room Owner Complaint', 'Other'].includes(target)) return this.parse('/helpticket');
+			if (!['PM Harassment', 'Battle Harassment', 'Inappropriate Content', 'Inappropriate Username', 'Inappropriate Pokemon Nicknames', 'Timerstalling', 'Room Owner Complaint', 'Global Staff Complaint', 'Appeal', 'IP-Appeal', 'Battle Ban Appeal', 'ISP-Appeal', 'Report Last Ticket', 'Public Room Assistance Request', 'Other'].includes(target)) return this.parse('/helpticket');
 			let upper = false;
 			if (['Room Owner Complaint', 'Global Staff Complaint', 'Report Last Ticket'].includes(target)) upper = true;
 			if (target === 'Report Last Ticket') {
@@ -751,6 +769,7 @@ let commands = {
 				escalated: upper,
 				ip: user.latestIp,
 			};
+			/** @type {{[k: string]: string}} */
 			const contexts = {
 				'Battle Harassment': 'Please save a replay of the battle and put it in chat so global staff can check.',
 				'Inappropriate Pokemon Nicknames': 'Please save a replay of the battle and put it in chat so global staff can check.',

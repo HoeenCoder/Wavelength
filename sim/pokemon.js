@@ -154,9 +154,11 @@ class Pokemon {
 		 */
 		this.moveThisTurnResult = undefined;
 
+		/** used for Assurance check */
+		this.hurtThisTurn = false;
 		this.lastDamage = 0;
-		/**@type {?{pokemon: Pokemon, damage: number, thisTurn: boolean, move?: string}} */
-		this.lastAttackedBy = null;
+		/**@type {{source: Pokemon, damage: number, thisTurn: boolean, move?: string}[]} */
+		this.attackedBy = [];
 		this.usedItemThisTurn = false;
 		this.newlySwitched = false;
 		this.beingCalledBack = false;
@@ -174,6 +176,7 @@ class Pokemon {
 
 		let genders = {M: 'M', F: 'F', N: 'N'};
 		/**@type {GenderName} */
+		// @ts-ignore
 		this.gender = genders[set.gender] || this.template.gender || (this.battle.random() * 2 < 1 ? 'M' : 'F');
 		if (this.gender === 'N') this.gender = '';
 		this.happiness = typeof set.happiness === 'number' ? this.battle.clampIntRange(set.happiness, 0, 255) : 255;
@@ -186,6 +189,7 @@ class Pokemon {
 
 		/**@type {AnyObject} */
 		this.statusData = {};
+		/**@type {AnyObject} */
 		this.volatiles = {};
 
 		this.heightm = this.template.heightm;
@@ -195,7 +199,9 @@ class Pokemon {
 		this.baseAbility = toId(set.ability);
 		this.ability = this.baseAbility;
 		this.item = toId(set.item);
+		/**@type {{[k: string]: string | Pokemon}} */
 		this.abilityData = {id: this.ability};
+		/**@type {{[k: string]: string | Pokemon}} */
 		this.itemData = {id: this.item};
 		this.speciesData = {id: this.speciesid};
 
@@ -269,6 +275,7 @@ class Pokemon {
 
 		/**@type {BoostsTable} */
 		this.boosts = {atk: 0, def: 0, spa: 0, spd: 0, spe: 0, accuracy: 0, evasion: 0};
+		/**@type {{[k: string]: number}} */
 		this.stats = {atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 
 		// This is used in gen 1 only, here to avoid code repetition.
@@ -305,6 +312,8 @@ class Pokemon {
 
 		// OMs
 
+		/**@type {string | undefined} */
+		this.innate = undefined;
 		/**@type {string | undefined} */
 		this.originalSpecies = undefined;
 		/**@type {?boolean} */
@@ -366,8 +375,10 @@ class Pokemon {
 		// stat boosts
 		// boost = this.boosts[statName];
 		let boosts = {};
+		// @ts-ignore
 		boosts[statName] = boost;
 		boosts = this.battle.runEvent('ModifyBoost', this, null, null, boosts);
+		// @ts-ignore
 		boost = boosts[statName];
 		let boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
 		if (boost > 6) boost = 6;
@@ -430,6 +441,7 @@ class Pokemon {
 		// stat modifier effects
 		if (!unmodified) {
 			let statTable = {atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe'};
+			// @ts-ignore
 			stat = this.battle.runEvent('Modify' + statTable[statName], this, null, null, stat);
 		}
 
@@ -449,6 +461,23 @@ class Pokemon {
 		}
 		return speed & 0x1FFF;
 	}
+
+	/**
+	 * Commented out for now until a use for Combat Power is found in Let's Go
+	 *
+	getCombatPower() {
+		let statSum = 0;
+		let awakeningSum = 0;
+		for (let stat in this.stats) {
+			// @ts-ignore
+			statSum += this.calculateStat(stat, this.boosts[stat]);
+			// @ts-ignore
+			awakeningSum += this.calculateStat(stat, this.boosts[stat]) + this.dex.getAwakeningValues(this.set, stat);
+		}
+		let combatPower = Math.floor(Math.floor(statSum * this.level * 6 / 100) + (Math.floor(awakeningSum) * Math.floor((this.level * 4) / 100 + 2)));
+		return this.battle.clampIntRange(combatPower, 0, 10000);
+	}
+	 */
 
 	getWeight() {
 		let weight = this.template.weightkg;
@@ -550,6 +579,7 @@ class Pokemon {
 	}
 
 	ignoringItem() {
+		// @ts-ignore
 		return !!((this.battle.gen >= 5 && !this.isActive) || (this.hasAbility('klutz') && !this.getItem().ignoreKlutz) || this.volatiles['embargo'] || this.battle.pseudoWeather['magicroom']);
 	}
 
@@ -602,12 +632,18 @@ class Pokemon {
 	gotAttacked(move, damage, source) {
 		if (!damage) damage = 0;
 		move = this.battle.getMove(move);
-		this.lastAttackedBy = {
-			pokemon: source,
+		let lastAttackedBy = {
+			source: source,
 			damage: damage,
 			move: move.id,
 			thisTurn: true,
 		};
+		this.attackedBy.push(lastAttackedBy);
+	}
+
+	getLastAttackedBy() {
+		if (this.attackedBy.length === 0) return undefined;
+		return this.attackedBy[this.attackedBy.length - 1];
 	}
 
 	/**
@@ -696,6 +732,7 @@ class Pokemon {
 		let isLastActive = this.isLastActive();
 		let canSwitchIn = this.battle.canSwitch(this.side) > 0;
 		let moves = this.getMoves(lockedMove, isLastActive);
+		/**@type {{moves: {move: string, id: string, target?: string, disabled?: boolean}[], maybeDisabled?: boolean, trapped?: boolean, maybeTrapped?: boolean, canMegaEvo?: boolean, canUltraBurst?: boolean, canZMove?: AnyObject | null}} */
 		let data = {moves: moves.length ? moves : [{move: 'Struggle', id: 'struggle', target: 'randomNormal', disabled: false}]};
 
 		if (isLastActive) {
@@ -921,6 +958,7 @@ class Pokemon {
 		this.apparentType = rawTemplate.types.join('/');
 		this.addedType = template.addedType || '';
 		this.knownType = true;
+		if (this.battle.gen >= 7) this.removeVolatile('autotomize');
 
 		if (source) {
 			let stats = this.battle.spreadModify(this.template.baseStats, this.set);
@@ -955,7 +993,12 @@ class Pokemon {
 						this.battle.add('-burst', this, apparentSpecies, template.requiredItem);
 						this.moveThisTurnResult = true; // Ultra Burst counts as an action for Truant
 					} else if (source.onPrimal) {
-						this.battle.add('-primal', !this.illusion && this);
+						if (this.illusion) {
+							this.ability = '';
+							this.battle.add('-primal', this.illusion);
+						} else {
+							this.battle.add('-primal', this);
+						}
 					} else {
 						this.battle.add('-mega', this, apparentSpecies, template.requiredItem);
 						this.moveThisTurnResult = true; // Mega Evolution counts as an action for Truant
@@ -1022,7 +1065,8 @@ class Pokemon {
 		this.moveThisTurn = '';
 
 		this.lastDamage = 0;
-		this.lastAttackedBy = null;
+		this.attackedBy = [];
+		this.hurtThisTurn = false;
 		this.newlySwitched = true;
 		this.beingCalledBack = false;
 
@@ -1073,11 +1117,9 @@ class Pokemon {
 	 * @param {Effect?} effect
 	 */
 	damage(d, source = null, effect = null) {
-		if (!this.hp) return 0;
+		if (!this.hp || isNaN(d) || d <= 0) return 0;
 		if (d < 1 && d > 0) d = 1;
 		d = Math.floor(d);
-		if (isNaN(d)) return 0;
-		if (d <= 0) return 0;
 		this.hp -= d;
 		if (this.hp <= 0) {
 			d += this.hp;
@@ -1211,7 +1253,8 @@ class Pokemon {
 			if (sourceEffect && sourceEffect.status === this.status) {
 				this.battle.add('-fail', this, this.status);
 			} else if (sourceEffect && sourceEffect.status) {
-				this.battle.add('-fail', this);
+				this.battle.add('-fail', source);
+				this.battle.attrLastMove('[still]');
 			}
 			return false;
 		}
@@ -1220,7 +1263,7 @@ class Pokemon {
 			// the game currently never ignores immunities
 			if (!this.runStatusImmunity(status.id === 'tox' ? 'psn' : status.id)) {
 				this.battle.debug('immune to status');
-				if (sourceEffect && sourceEffect.status) this.battle.add('-immune', this, '[msg]');
+				if (sourceEffect && sourceEffect.status) this.battle.add('-immune', this);
 				return false;
 			}
 		}
@@ -1468,7 +1511,7 @@ class Pokemon {
 		}
 		if (!this.runStatusImmunity(status.id)) {
 			this.battle.debug('immune to volatile status');
-			if (sourceEffect && sourceEffect.status) this.battle.add('-immune', this, '[msg]');
+			if (sourceEffect && sourceEffect.status) this.battle.add('-immune', this);
 			return false;
 		}
 		result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
@@ -1697,7 +1740,7 @@ class Pokemon {
 			isGrounded = this.isGrounded(!negateResult);
 			if (isGrounded === null) {
 				if (message) {
-					this.battle.add('-immune', this, '[msg]', '[from] ability: Levitate');
+					this.battle.add('-immune', this, '[from] ability: Levitate');
 				}
 				return false;
 			}
@@ -1705,7 +1748,7 @@ class Pokemon {
 		if (!negateResult) return true;
 		if ((isGrounded === undefined && !this.battle.getImmunity(type, this)) || isGrounded === false) {
 			if (message) {
-				this.battle.add('-immune', this, '[msg]');
+				this.battle.add('-immune', this);
 			}
 			return false;
 		}
@@ -1726,7 +1769,7 @@ class Pokemon {
 		if (!this.battle.getImmunity(type, this)) {
 			this.battle.debug('natural status immunity');
 			if (message) {
-				this.battle.add('-immune', this, '[msg]');
+				this.battle.add('-immune', this);
 			}
 			return false;
 		}
@@ -1734,7 +1777,7 @@ class Pokemon {
 		if (!immunity) {
 			this.battle.debug('artificial status immunity');
 			if (message && immunity !== null) {
-				this.battle.add('-immune', this, '[msg]');
+				this.battle.add('-immune', this);
 			}
 			return false;
 		}
