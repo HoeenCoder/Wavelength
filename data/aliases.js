@@ -29,10 +29,10 @@ let BattleAliases = {
 	"gen6bf": "[Gen 6] Battle Factory",
 	"ssb": "[Gen 7] Super Staff Bros Brawl",
 
-	//SpacialGaze
+	// Wavelength
 	"digimon": "[Gen 7] Digimon Showdown",
+	"wssb": "[Gen 7] Super Staff Bros",
 	"wlssb": "[Gen 7] Super Staff Bros",
-	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
