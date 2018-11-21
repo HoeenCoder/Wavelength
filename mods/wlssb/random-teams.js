@@ -215,7 +215,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				species: 'Skuntank',
 				ability: 'Unaware',
 				shiny: true,
-				item: 'Epic Berry',
+				item: 'Shuca Berry',
 				gender: 'M',
 				moves: ['Gunk Shot', 'Crunch', 'Sacred Fire',
 				],
