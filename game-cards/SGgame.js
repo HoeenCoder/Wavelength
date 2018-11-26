@@ -118,7 +118,7 @@ class SGgame extends GameConsole {
 	}
 
 	up() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -131,7 +131,7 @@ class SGgame extends GameConsole {
 	}
 
 	left() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -144,7 +144,7 @@ class SGgame extends GameConsole {
 	}
 
 	right() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -157,7 +157,7 @@ class SGgame extends GameConsole {
 	}
 
 	down() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -501,7 +501,7 @@ class SGgame extends GameConsole {
 			output += '<div style="display: inline-block; float: right; width: 50%; height: 100%; text-align: center;"><div class="movemenu"><center>';
 			for (let m = 0; m < pokemon.moves.length; m++) {
 				move2 = Dex.getMove(pokemon.moves[m]);
-				let maxpp2 = move.noPPBoosts ? move2.pp : move2.pp * 8 / 5;
+				let maxpp2 = move2.noPPBoosts ? move2.pp : move2.pp * 8 / 5;
 				let curPP2 = pokemon.pp ? pokemon.pp[m] : maxpp2;
 				output += '<button name="send" value="/sggame learn ' + move2.id + '" class="type-' + move2.type + '">' + move2.name + '<br/><small class="type">' + move2.type + '</small> <small class="pp">' + curPP2 + '/' + maxpp2 + '</small>&nbsp;</button><br/><br/><br/>';
 			}
@@ -1151,7 +1151,7 @@ exports.commands = {
 							let pokemon = Dex.getTemplate(player.party[target[3]].species);
 							if (player.party[target[3]] && player.party[target[3]].level < 100) {
 								let olvl = player.party[target[3]].level;
-								let lvl = olvl += item.use.level;
+								let lvl = olvl + item.use.level;
 								if (lvl > 100) lvl = 100;
 								player.party[target[3]].level = lvl;
 								player.party[target[3]].exp = WL.calcExp(player.party[target[3]].species, lvl);
