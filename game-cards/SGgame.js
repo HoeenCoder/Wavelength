@@ -118,7 +118,7 @@ class SGgame extends GameConsole {
 	}
 
 	up() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -131,7 +131,7 @@ class SGgame extends GameConsole {
 	}
 
 	left() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -144,7 +144,7 @@ class SGgame extends GameConsole {
 	}
 
 	right() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
@@ -157,7 +157,7 @@ class SGgame extends GameConsole {
 	}
 
 	down() {
-		if (this.queue.length || this.queueAction) return;
+		if (this.queue.length || this.queueAction || this.curPane) return;
 		let user = Users(this.userid);
 		for (let key of user.inRooms) {
 			if (key.substr(0, 6) === 'battle' && Dex.getFormat(Rooms(key).format).useSGgame && user.games.has(key)) return false;
