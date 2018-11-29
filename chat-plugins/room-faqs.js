@@ -5,6 +5,7 @@ const path = require('path');
 
 const ROOMFAQ_FILE = path.resolve(__dirname, '../config/chat-plugins/faqs.json');
 
+/** @type {{[k: string]: {[k: string]: string}}} */
 let roomFaqs = {};
 try {
 	roomFaqs = require(ROOMFAQ_FILE);
@@ -31,16 +32,16 @@ function getAlias(roomid, key) {
 	return false;
 }
 
-/** @typedef {(this: CommandContext, target: string, room: ChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
-/** @typedef {{[k: string]: ChatHandler | string | true | string[] | ChatCommands}} ChatCommands */
-
 /** @type {ChatCommands} */
 const commands = {
-	addfaq: function (target, room, user) {
-		if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
+	addfaq: function (target, room, user, connection) {
 		if (!this.can('declare', null, room)) return false;
 		if (!room.chatRoomData) return this.errorReply("This command is unavailable in temporary rooms.");
-		let [topic, ...rest] = target.split(',');
+
+		/** @type {string} */
+		let input = Chat.filter.call(this, target, user, room, connection);
+		if (target !== input) return this.errorReply("You are not allowed to use fitered words in roomfaq entries.");
+		let [topic, ...rest] = input.split(',');
 
 		topic = toId(topic);
 		if (!(topic && rest.length)) return this.parse('/help roomfaq');

@@ -351,7 +351,7 @@ let BattleAbilities = {
 		shortDesc: "Makes user immune to ballistic moves (Shadow Ball, Sludge Bomb, Focus Blast, etc).",
 		onTryHit: function (pokemon, target, move) {
 			if (move.flags['bullet']) {
-				this.add('-immune', pokemon, '[msg]', '[from] ability: Bulletproof');
+				this.add('-immune', pokemon, '[from] ability: Bulletproof');
 				return null;
 			}
 		},
@@ -446,7 +446,7 @@ let BattleAbilities = {
 		},
 		onSetStatus: function (status, target, source, effect) {
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Comatose');
+			this.add('-immune', target, '[from] ability: Comatose');
 			return false;
 		},
 		// Permanent sleep "status" implemented in the relevant sleep-checking effects
@@ -788,7 +788,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Water') {
 				if (!this.heal(target.maxhp / 4)) {
-					this.add('-immune', target, '[msg]', '[from] ability: Dry Skin');
+					this.add('-immune', target, '[from] ability: Dry Skin');
 				}
 				return null;
 			}
@@ -872,7 +872,7 @@ let BattleAbilities = {
 		},
 		id: "emergencyexit",
 		name: "Emergency Exit",
-		rating: 2,
+		rating: 1.5,
 		num: 194,
 	},
 	"fairyaura": {
@@ -941,7 +941,7 @@ let BattleAbilities = {
 			if (target !== source && move.type === 'Fire') {
 				move.accuracy = true;
 				if (!target.addVolatile('flashfire')) {
-					this.add('-immune', target, '[msg]', '[from] ability: Flash Fire');
+					this.add('-immune', target, '[from] ability: Flash Fire');
 				}
 				return null;
 			}
@@ -1031,8 +1031,17 @@ let BattleAbilities = {
 			if (showMsg && !effect.secondaries) this.add('-fail', this.effectData.target, 'unboost', '[from] ability: Flower Veil', '[of] ' + target);
 		},
 		onAllySetStatus: function (status, target, source, effect) {
-			if (target.hasType('Grass')) {
-				if (!effect || !effect.status) return false;
+			if (target.hasType('Grass') && source && target !== source && effect) {
+				this.debug('interrupting setStatus with Flower Veil');
+				if (effect.id === 'synchronize' || (effect.effectType === 'Move' && !effect.secondaries)) {
+					this.add('-activate', this.effectData.target, 'ability: Flower Veil', '[of] ' + target);
+				}
+				return null;
+			}
+		},
+		onAllyTryAddVolatile: function (status, target) {
+			if (target.hasType('Grass') && status.id === 'yawn') {
+				this.debug('Flower Veil blocking yawn');
 				this.add('-activate', this.effectData.target, 'ability: Flower Veil', '[of] ' + target);
 				return null;
 			}
@@ -1472,7 +1481,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'psn' && status.id !== 'tox') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Immunity');
+			this.add('-immune', target, '[from] ability: Immunity');
 			return false;
 		},
 		id: "immunity",
@@ -1539,7 +1548,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'slp') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Insomnia');
+			this.add('-immune', target, '[from] ability: Insomnia');
 			return false;
 		},
 		id: "insomnia",
@@ -1559,7 +1568,7 @@ let BattleAbilities = {
 					activated = true;
 				}
 				if (target.volatiles['substitute']) {
-					this.add('-immune', target, '[msg]');
+					this.add('-immune', target);
 				} else {
 					this.boost({atk: -1}, target, pokemon);
 				}
@@ -1643,13 +1652,13 @@ let BattleAbilities = {
 		shortDesc: "If Sunny Day is active, this Pokemon cannot be statused and Rest will fail for it.",
 		onSetStatus: function (status, target, source, effect) {
 			if (this.isWeather(['sunnyday', 'desolateland'])) {
-				if (effect && effect.status) this.add('-immune', target, '[msg]', '[from] ability: Leaf Guard');
+				if (effect && effect.status) this.add('-immune', target, '[from] ability: Leaf Guard');
 				return false;
 			}
 		},
 		onTryAddVolatile: function (status, target) {
 			if (status.id === 'yawn' && this.isWeather(['sunnyday', 'desolateland'])) {
-				this.add('-immune', target, '[msg]', '[from] ability: Leaf Guard');
+				this.add('-immune', target, '[from] ability: Leaf Guard');
 				return null;
 			}
 		},
@@ -1683,7 +1692,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Electric') {
 				if (!this.boost({spa: 1})) {
-					this.add('-immune', target, '[msg]', '[from] ability: Lightning Rod');
+					this.add('-immune', target, '[from] ability: Lightning Rod');
 				}
 				return null;
 			}
@@ -1713,7 +1722,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'par') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Limber');
+			this.add('-immune', target, '[from] ability: Limber');
 			return false;
 		},
 		id: "limber",
@@ -1726,6 +1735,7 @@ let BattleAbilities = {
 		id: "liquidooze",
 		onSourceTryHeal: function (damage, target, source, effect) {
 			this.debug("Heal is occurring: " + target + " <- " + source + " :: " + effect.id);
+			/**@type {{[k: string]: number}} */
 			let canOoze = {drain: 1, leechseed: 1, strengthsap: 1};
 			if (canOoze[effect.id]) {
 				this.damage(damage);
@@ -1770,7 +1780,7 @@ let BattleAbilities = {
 			if (target === source || move.hasBounced || !move.flags['reflectable']) {
 				return;
 			}
-			let newMove = this.getMoveCopy(move.id);
+			let newMove = this.getActiveMove(move.id);
 			newMove.hasBounced = true;
 			newMove.pranksterBoosted = false;
 			this.useMove(newMove, target, source);
@@ -1780,7 +1790,7 @@ let BattleAbilities = {
 			if (target.side === source.side || move.hasBounced || !move.flags['reflectable']) {
 				return;
 			}
-			let newMove = this.getMoveCopy(move.id);
+			let newMove = this.getActiveMove(move.id);
 			newMove.hasBounced = true;
 			newMove.pranksterBoosted = false;
 			this.useMove(newMove, this.effectData.target, source);
@@ -1956,6 +1966,7 @@ let BattleAbilities = {
 				}
 			}
 			let randomStat = stats.length ? this.sample(stats) : "";
+			// @ts-ignore
 			if (randomStat) boost[randomStat] = 2;
 
 			stats = [];
@@ -1966,6 +1977,7 @@ let BattleAbilities = {
 				}
 			}
 			randomStat = stats.length ? this.sample(stats) : "";
+			// @ts-ignore
 			if (randomStat) boost[randomStat] = -1;
 
 			this.boost(boost);
@@ -1981,7 +1993,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Electric') {
 				if (!this.boost({spe: 1})) {
-					this.add('-immune', target, '[msg]', '[from] ability: Motor Drive');
+					this.add('-immune', target, '[from] ability: Motor Drive');
 				}
 				return null;
 			}
@@ -2037,6 +2049,9 @@ let BattleAbilities = {
 					this.add('-activate', target, 'ability: Mummy', this.getAbility(oldAbility).name, '[of] ' + source);
 				}
 			}
+		},
+		onBasePower: function (basePower, pokemon, target, move) {
+			if (move.multihitType === 'parentalbond' && move.hit > 1) return this.chainModify(0.25);
 		},
 		rating: 2,
 		num: 152,
@@ -2189,7 +2204,7 @@ let BattleAbilities = {
 		},
 		onTryHit: function (pokemon, target, move) {
 			if (move.id === 'attract' || move.id === 'captivate' || move.id === 'taunt') {
-				this.add('-immune', pokemon, '[msg]', '[from] ability: Oblivious');
+				this.add('-immune', pokemon, '[from] ability: Oblivious');
 				return null;
 			}
 		},
@@ -2206,7 +2221,7 @@ let BattleAbilities = {
 		onTryHitPriority: 1,
 		onTryHit: function (target, source, move) {
 			if (move.flags['powder'] && target !== source && this.getImmunity('powder', target)) {
-				this.add('-immune', target, '[msg]', '[from] ability: Overcoat');
+				this.add('-immune', target, '[from] ability: Overcoat');
 				return null;
 			}
 		},
@@ -2265,16 +2280,15 @@ let BattleAbilities = {
 			if (['iceball', 'rollout'].includes(move.id)) return;
 			if (move.category !== 'Status' && !move.selfdestruct && !move.multihit && !move.flags['charge'] && !move.spreadHit && !move.isZ) {
 				move.multihit = 2;
-				move.hasParentalBond = true;
-				move.hit = 0;
+				move.multihitType = 'parentalbond';
 			}
 		},
 		onBasePowerPriority: 8,
 		onBasePower: function (basePower, pokemon, target, move) {
-			if (move.hasParentalBond && typeof move.hit === 'number' && ++move.hit > 1) return this.chainModify(0.25);
+			if (move.multihitType === 'parentalbond' && move.hit > 1) return this.chainModify(0.25);
 		},
 		onSourceModifySecondaries: function (secondaries, target, source, move) {
-			if (move.hasParentalBond && move.id === 'secretpower' && move.hit && move.hit < 2) {
+			if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2) {
 				// hack to prevent accidentally suppressing King's Rock/Razor Fang
 				return secondaries.filter(effect => effect.volatileStatus === 'flinch');
 			}
@@ -2809,7 +2823,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Grass') {
 				if (!this.boost({atk: 1})) {
-					this.add('-immune', target, '[msg]', '[from] ability: Sap Sipper');
+					this.add('-immune', target, '[from] ability: Sap Sipper');
 				}
 				return null;
 			}
@@ -3011,13 +3025,13 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (target.template.speciesid !== 'miniormeteor' || target.transformed) return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Shields Down');
+			this.add('-immune', target, '[from] ability: Shields Down');
 			return false;
 		},
 		onTryAddVolatile: function (status, target) {
 			if (target.template.speciesid !== 'miniormeteor' || target.transformed) return;
 			if (status.id !== 'yawn') return;
-			this.add('-immune', target, '[msg]', '[from] ability: Shields Down');
+			this.add('-immune', target, '[from] ability: Shields Down');
 			return null;
 		},
 		isUnbreakable: true,
@@ -3173,6 +3187,7 @@ let BattleAbilities = {
 	"soulheart": {
 		desc: "This Pokemon's Special Attack is raised by 1 stage when another Pokemon faints.",
 		shortDesc: "This Pokemon's Sp. Atk is raised by 1 stage when another Pokemon faints.",
+		onAnyFaintPriority: 1,
 		onAnyFaint: function () {
 			this.boost({spa: 1}, this.effectData.target);
 		},
@@ -3185,13 +3200,13 @@ let BattleAbilities = {
 		shortDesc: "This Pokemon is immune to sound-based moves, including Heal Bell.",
 		onTryHit: function (target, source, move) {
 			if (move.flags['sound']) {
-				this.add('-immune', target, '[msg]', '[from] ability: Soundproof');
+				this.add('-immune', target, '[from] ability: Soundproof');
 				return null;
 			}
 		},
 		onAllyTryHitSide: function (target, source, move) {
 			if (move.flags['sound']) {
-				this.add('-immune', this.effectData.target, '[msg]', '[from] ability: Soundproof');
+				this.add('-immune', this.effectData.target, '[from] ability: Soundproof');
 			}
 		},
 		id: "soundproof",
@@ -3359,7 +3374,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Water') {
 				if (!this.boost({spa: 1})) {
-					this.add('-immune', target, '[msg]', '[from] ability: Storm Drain');
+					this.add('-immune', target, '[from] ability: Storm Drain');
 				}
 				return null;
 			}
@@ -3397,7 +3412,7 @@ let BattleAbilities = {
 		shortDesc: "If this Pokemon is at full HP, it survives one hit with at least 1 HP. Immune to OHKO.",
 		onTryHit: function (pokemon, target, move) {
 			if (move.ohko) {
-				this.add('-immune', pokemon, '[msg]', '[from] ability: Sturdy');
+				this.add('-immune', pokemon, '[from] ability: Sturdy');
 				return null;
 			}
 		},
@@ -3848,7 +3863,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'slp') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Vital Spirit');
+			this.add('-immune', target, '[from] ability: Vital Spirit');
 			return false;
 		},
 		id: "vitalspirit",
@@ -3862,7 +3877,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Electric') {
 				if (!this.heal(target.maxhp / 4)) {
-					this.add('-immune', target, '[msg]', '[from] ability: Volt Absorb');
+					this.add('-immune', target, '[from] ability: Volt Absorb');
 				}
 				return null;
 			}
@@ -3878,7 +3893,7 @@ let BattleAbilities = {
 		onTryHit: function (target, source, move) {
 			if (target !== source && move.type === 'Water') {
 				if (!this.heal(target.maxhp / 4)) {
-					this.add('-immune', target, '[msg]', '[from] ability: Water Absorb');
+					this.add('-immune', target, '[from] ability: Water Absorb');
 				}
 				return null;
 			}
@@ -3922,7 +3937,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'brn') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Water Bubble');
+			this.add('-immune', target, '[from] ability: Water Bubble');
 			return false;
 		},
 		id: "waterbubble",
@@ -3953,7 +3968,7 @@ let BattleAbilities = {
 		onSetStatus: function (status, target, source, effect) {
 			if (status.id !== 'brn') return;
 			if (!effect || !effect.status) return false;
-			this.add('-immune', target, '[msg]', '[from] ability: Water Veil');
+			this.add('-immune', target, '[from] ability: Water Veil');
 			return false;
 		},
 		id: "waterveil",
@@ -4025,7 +4040,7 @@ let BattleAbilities = {
 			if (target === source || move.category === 'Status' || move.type === '???' || move.id === 'struggle') return;
 			this.debug('Wonder Guard immunity: ' + move.id);
 			if (target.runEffectiveness(move) <= 0) {
-				this.add('-immune', target, '[msg]', '[from] ability: Wonder Guard');
+				this.add('-immune', target, '[from] ability: Wonder Guard');
 				return null;
 			}
 		},
@@ -4094,7 +4109,7 @@ let BattleAbilities = {
 		},
 		onTryHit: function (target, source, move) {
 			if (move.type === 'Rock' && !target.activeTurns) {
-				this.add('-immune', target, '[msg]', '[from] ability: Mountaineer');
+				this.add('-immune', target, '[from] ability: Mountaineer');
 				return null;
 			}
 		},
@@ -4117,7 +4132,7 @@ let BattleAbilities = {
 			if (target === source || move.hasBounced || !move.flags['reflectable']) {
 				return;
 			}
-			let newMove = this.getMoveCopy(move.id);
+			let newMove = this.getActiveMove(move.id);
 			newMove.hasBounced = true;
 			this.useMove(newMove, target, source);
 			return null;
@@ -4128,7 +4143,7 @@ let BattleAbilities = {
 			if (target.side === source.side || move.hasBounced || !move.flags['reflectable']) {
 				return;
 			}
-			let newMove = this.getMoveCopy(move.id);
+			let newMove = this.getActiveMove(move.id);
 			newMove.hasBounced = true;
 			this.useMove(newMove, this.effectData.target, source);
 			return null;

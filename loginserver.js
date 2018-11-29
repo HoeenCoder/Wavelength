@@ -26,6 +26,7 @@ TimeoutError.prototype.name = TimeoutError.name;
 
 function parseJSON(/** @type {string} */ json) {
 	if (json.startsWith(']')) json = json.substr(1);
+	/**@type {{error: Error | null, json?: any}} */
 	let data = {error: null};
 	try {
 		data.json = JSON.parse(json);
@@ -169,6 +170,7 @@ class LoginServerInstance {
 					if (data) {
 						resolve([data[i], res.statusCode, null]);
 					} else {
+						if (buffer.includes('<')) buffer = 'invalid response';
 						resolve([null, res.statusCode, new Error(buffer)]);
 					}
 				}

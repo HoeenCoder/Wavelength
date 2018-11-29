@@ -98,7 +98,7 @@ let BattleMovedex = {
 					}
 				}
 			},
-			onBeforeMove: function (pokemon) {
+			onBeforeMove: function (pokemon, target, move) {
 				if (this.effectData.duration === 1) {
 					if (!this.effectData.totalDamage) {
 						this.add('-fail', pokemon);
@@ -106,7 +106,7 @@ let BattleMovedex = {
 					}
 					this.add('-end', pokemon, 'Bide');
 					let target = this.effectData.sourceSide.active[this.effectData.sourcePosition];
-					this.moveHit(target, pokemon, 'bide', /** @type {Move} */ ({damage: this.effectData.totalDamage * 2}));
+					this.moveHit(target, pokemon, move, /** @type {ActiveMove} */ ({damage: this.effectData.totalDamage * 2}));
 					return false;
 				}
 				this.add('-activate', pokemon, 'Bide');
@@ -772,6 +772,7 @@ let BattleMovedex = {
 	rest: {
 		inherit: true,
 		desc: "The user falls asleep for the next two turns and restores all of its HP, curing itself of any major status condition in the process. This does not remove the user's stat penalty for burn or paralysis. Fails if the user has full HP.",
+		onTryMove: function () {},
 		onHit: function (target) {
 			// Fails if the difference between
 			// max HP and current HP is 0, 255, or 511
@@ -967,11 +968,12 @@ let BattleMovedex = {
 				}
 				this.runEvent('AfterSubDamage', target, source, move, damage);
 				// Add here counter damage
-				if (!target.lastAttackedBy) {
-					target.lastAttackedBy = {pokemon: source, move: move.id, thisTurn: true, damage: damage};
+				let lastAttackedBy = target.getLastAttackedBy();
+				if (!lastAttackedBy) {
+					target.attackedBy.push({source: source, move: move.id, damage: damage, thisTurn: true});
 				} else {
-					target.lastAttackedBy.move = move.id;
-					target.lastAttackedBy.damage = damage;
+					lastAttackedBy.move = move.id;
+					lastAttackedBy.damage = damage;
 				}
 				return 0;
 			},
@@ -1018,7 +1020,7 @@ let BattleMovedex = {
 		accuracy: 100,
 		onTryHit: function (target) {
 			if (target.hasType('Ground')) {
-				this.add('-immune', target, '[msg]');
+				this.add('-immune', target);
 				return null;
 			}
 		},

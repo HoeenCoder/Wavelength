@@ -54,14 +54,24 @@ if (('Config' in global) &&
 	Config.loglevel = 2;
 }
 
+let crashlogger = require('./lib/crashlogger');
+
 const Monitor = module.exports = {
 	/*********************************************************
 	 * Logging
 	 *********************************************************/
 
-	/** @param {Error} error */
-	crashlog(error, source = 'The main process') {
-		require('./lib/crashlogger')(error, source);
+	/**
+	 * @param {Error} error
+	 * @param {string} [source]
+	 * @param {{}?} details
+	 */
+	crashlog(error, source = 'The main process', details = null) {
+		let crashType = crashlogger(error, source, details);
+		Rooms.global.reportCrash(error, source);
+		if (crashType === 'lockdown') {
+			Rooms.global.startLockdown(error);
+		}
 	},
 
 	/**
@@ -135,8 +145,11 @@ const Monitor = module.exports = {
 
 	/** @type {string | null} */
 	activeIp: null,
+	/** @type {{[k: string]: number}} */
 	networkUse: {},
+	/** @type {{[k: string]: number}} */
 	networkCount: {},
+	/** @type {{[k: string]: string}} */
 	hotpatchLock: {},
 
 	/**
