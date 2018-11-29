@@ -8,11 +8,11 @@
 
 const Dex = require('./dex');
 global.toId = Dex.getId;
+const WL = require('./WL.js').WL;
 const Data = require('./dex-data');
 const PRNG = require('./prng');
 const Side = require('./side');
 const Pokemon = require('./pokemon');
-const WL = require('./WL.js').WL;
 
 /**
  * An object representing a Pokemon that has fainted
