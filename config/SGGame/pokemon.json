@@ -15935,6 +15935,44 @@
 		},
 		"totalEvDrops": 3
 	},
+	"meltan": {
+		"expType": "slow",
+		"num": 808,
+		"rate": "3",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		},
+		"baseExp": 270,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 1,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 1
+	},
+	"melmetal": {
+		"expType": "slow",
+		"num": 809,
+		"rate": "3",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		},
+		"baseExp": 270,
+		"evDrops": {
+			"hp": 0,
+			"atk": 0,
+			"def": 2,
+			"spa": 0,
+			"spd": 0,
+			"spe": 0
+		},
+		"totalEvDrops": 2
+	},
 	"venusaurmega": {
 		"id": "venusaurmega",
 		"inherit": "venusaur",
@@ -16082,6 +16120,14 @@
 	},
 	"pikachupartner": {
 		"id": "pikachupartner",
+		"inherit": "pikachu",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
+	},
+	"pikachustarter": {
+		"id": "pikachustarter",
 		"inherit": "pikachu",
 		"evolution": {
 			"trigger": null,
@@ -16263,6 +16309,14 @@
 		"id": "gyaradosmega",
 		"inherit": "gyarados",
 		"baseExp": 224
+	},
+	"eeveestarter": {
+		"id": "eeveestarter",
+		"inherit": "eevee",
+		"evolution": {
+			"trigger": null,
+			"evolvesTo": null
+		}
 	},
 	"aerodactylmega": {
 		"id": "aerodactylmega",

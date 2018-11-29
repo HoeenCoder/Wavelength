@@ -250,6 +250,9 @@ exports.WL = {
 				if (iv === 31 & left > 0) left--;
 				data += iv + (i === 5 ? "|" : ",");
 			}
+		} else if (pokemon.forme === "Starter") {
+			// 6 Perfect Ivs required
+			data += "31,31,31,31,31,31|";
 		} else {
 			for (let i = 0; i < 6; i++) {
 				data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");
@@ -533,7 +536,7 @@ exports.WL = {
 		if (pokemon && pokemon.volatiles && pokemon.volatiles.formechange && !pokemon.volatiles.transform) id = toId(pokemon.volatiles.formechange[2]);
 		if (pokemon && pokemon.num !== undefined) num = pokemon.num;
 		if (num < 0) num = 0;
-		if (num > 807) num = 0;
+		if (num > 809) num = 0;
 		let altNums = {
 			egg: 816 + 1,
 			pikachubelle: 816 + 2,
@@ -614,7 +617,15 @@ exports.WL = {
 			florgesorange: 816 + 103,
 			florgeswhite: 816 + 104,
 			florgesyellow: 816 + 105,
-			// furfrou gap
+			furfroudandy: 816 + 106,
+			furfroudebutante: 816 + 107,
+			furfroudiamond: 816 + 108,
+			furfrouheart: 816 + 109,
+			furfroukabuki: 816 + 110,
+			furfroulareine: 816 + 111,
+			furfroumatron: 816 + 112,
+			furfroupharaoh: 816 + 113,
+			furfroustar: 816 + 114,
 			meowsticf: 816 + 115,
 			aegislashblade: 816 + 116,
 			hoopaunbound: 816 + 118,
@@ -663,6 +674,21 @@ exports.WL = {
 			necrozmaduskmane: 816 + 161,
 			necrozmadawnwings: 816 + 162,
 			necrozmaultra: 816 + 163,
+			pikachustarter: 816 + 164,
+			eeveestarter: 816 + 165,
+
+			gumshoostotem: 735,
+			raticatealolatotem: 816 + 120,
+			marowakalolatotem: 816 + 136,
+			araquanidtotem: 752,
+			lurantistotem: 754,
+			salazzletotem: 758,
+			vikavolttotem: 738,
+			togedemarutotem: 777,
+			mimikyutotem: 778,
+			mimikyubustedtotem: 778,
+			ribombeetotem: 743,
+			kommoototem: 784,
 
 			venusaurmega: 984 + 0,
 			charizardmegax: 984 + 1,
@@ -739,22 +765,35 @@ exports.WL = {
 			crucibellemega: 1152 + 21,
 			kerfluffle: 1152 + 22,
 			pajantom: 1152 + 23,
+			jumbao: 1152 + 24,
+			caribolt: 1152 + 25,
+			smokomodo: 1152 + 26,
+			snaelstrom: 1152 + 27,
 
-			syclar: 1176 + 0,
-			embirch: 1176 + 1,
-			flarelm: 1176 + 2,
-			breezi: 1176 + 3,
-			scratchet: 1176 + 4,
-			necturine: 1176 + 5,
-			cupra: 1176 + 6,
-			argalis: 1176 + 7,
-			brattler: 1176 + 8,
-			cawdet: 1176 + 9,
-			volkritter: 1176 + 10,
-			snugglow: 1176 + 11,
-			floatoy: 1176 + 12,
-			caimanoe: 1176 + 13,
-			pluffle: 1176 + 14,
+			syclar: 1188 + 0,
+			embirch: 1188 + 1,
+			flarelm: 1188 + 2,
+			breezi: 1188 + 3,
+			scratchet: 1188 + 4,
+			necturine: 1188 + 5,
+			cupra: 1188 + 6,
+			argalis: 1188 + 7,
+			brattler: 1188 + 8,
+			cawdet: 1188 + 9,
+			volkritter: 1188 + 10,
+			snugglow: 1188 + 11,
+			floatoy: 1188 + 12,
+			caimanoe: 1188 + 13,
+			pluffle: 1188 + 14,
+			rebble: 1188 + 15,
+			tactite: 1188 + 16,
+			privatyke: 1188 + 17,
+			nohface: 1188 + 18,
+			monohm: 1188 + 19,
+			duohm: 1188 + 20,
+			// protowatt: 1188 + 21,
+			voodoll: 1188 + 22,
+			mumbao: 1188 + 23,
 		};
 
 		if (altNums[id]) {
