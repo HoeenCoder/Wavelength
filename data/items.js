@@ -415,6 +415,7 @@ let BattleItems = {
 		},
 		onTryHealPriority: 1,
 		onTryHeal: function (damage, target, source, effect) {
+			/**@type {{[k: string]: number}} */
 			let heals = {drain: 1, leechseed: 1, ingrain: 1, aquaring: 1, strengthsap: 1};
 			if (heals[effect.id]) {
 				return Math.ceil((damage * 1.3) - 0.5); // Big Root rounds half down
@@ -563,7 +564,7 @@ let BattleItems = {
 	},
 	"brightpowder": {
 		id: "brightpowder",
-		name: "BrightPowder",
+		name: "Bright Powder",
 		spritenum: 51,
 		fling: {
 			basePower: 10,
@@ -2577,9 +2578,7 @@ let BattleItems = {
 			basePower: 130,
 		},
 		onEffectiveness: function (typeMod, target, type, move) {
-			// @ts-ignore
 			if (target.volatiles['ingrain'] || target.volatiles['smackdown'] || this.getPseudoWeather('gravity')) return;
-			// @ts-ignore
 			if (move.type === 'Ground' && target.hasType('Flying')) return 0;
 		},
 		// airborneness negation implemented in sim/pokemon.js:Pokemon#isGrounded
@@ -3187,7 +3186,7 @@ let BattleItems = {
 		},
 		num: 215,
 		gen: 3,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"magmarizer": {
 		id: "magmarizer",
@@ -4209,7 +4208,7 @@ let BattleItems = {
 		},
 		num: 293,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"powerband": {
 		id: "powerband",
@@ -4224,7 +4223,7 @@ let BattleItems = {
 		},
 		num: 292,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"powerbelt": {
 		id: "powerbelt",
@@ -4239,7 +4238,7 @@ let BattleItems = {
 		},
 		num: 290,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"powerbracer": {
 		id: "powerbracer",
@@ -4254,13 +4253,15 @@ let BattleItems = {
 		},
 		num: 289,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"powerherb": {
 		id: "powerherb",
 		onChargeMove: function (pokemon, target, move) {
 			if (pokemon.useItem()) {
 				this.debug('power herb - remove charge turn for ' + move.id);
+				this.attrLastMove('[still]');
+				this.add('-anim', pokemon, move.name, target);
 				return false; // skip charge turn
 			}
 		},
@@ -4286,7 +4287,7 @@ let BattleItems = {
 		},
 		num: 291,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"powerweight": {
 		id: "powerweight",
@@ -4301,7 +4302,7 @@ let BattleItems = {
 		},
 		num: 294,
 		gen: 4,
-		desc: "Holder's Speed is halved. The Ability Klutz does not ignore this effect.",
+		desc: "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
 	},
 	"premierball": {
 		id: "premierball",
@@ -5430,12 +5431,14 @@ let BattleItems = {
 		onEat: function (pokemon) {
 			let stats = [];
 			for (let stat in pokemon.boosts) {
+				// @ts-ignore
 				if (stat !== 'accuracy' && stat !== 'evasion' && pokemon.boosts[stat] < 6) {
 					stats.push(stat);
 				}
 			}
 			if (stats.length) {
 				let randomStat = this.sample(stats);
+				/**@type {{[k: string]: number}} */
 				let boost = {};
 				boost[randomStat] = 2;
 				this.boost(boost);
@@ -5538,7 +5541,7 @@ let BattleItems = {
 		onHit: function (target, source, move) {
 			if (source && source !== target && !source.item && move && move.flags['contact']) {
 				let barb = target.takeItem();
-				// @ts-ignore
+				if (!barb) return; // Gen 4 Multitype
 				source.setItem(barb);
 				// no message for Sticky Barb changing hands
 			}
@@ -5973,8 +5976,10 @@ let BattleItems = {
 			basePower: 10,
 			effect: function (pokemon) {
 				let activate = false;
+				/**@type {{[k: string]: number}} */
 				let boosts = {};
 				for (let i in pokemon.boosts) {
+					// @ts-ignore
 					if (pokemon.boosts[i] < 0) {
 						activate = true;
 						boosts[i] = 0;
@@ -5988,8 +5993,10 @@ let BattleItems = {
 		},
 		onUpdate: function (pokemon) {
 			let activate = false;
+			/**@type {{[k: string]: number}} */
 			let boosts = {};
 			for (let i in pokemon.boosts) {
+				// @ts-ignore
 				if (pokemon.boosts[i] < 0) {
 					activate = true;
 					boosts[i] = 0;
@@ -6152,7 +6159,8 @@ let BattleItems = {
 			basePower: 80,
 			type: "Poison",
 		},
-		onUpdate: function (pokemon) {
+		onResidualOrder: 5,
+		onResidual: function (pokemon) {
 			if (pokemon.hp <= pokemon.maxhp / 2) {
 				pokemon.eatItem();
 			}
@@ -6223,7 +6231,8 @@ let BattleItems = {
 			basePower: 80,
 			type: "Psychic",
 		},
-		onUpdate: function (pokemon) {
+		onResidualOrder: 5,
+		onResidual: function (pokemon) {
 			if (pokemon.hp <= pokemon.maxhp / 2) {
 				pokemon.eatItem();
 			}

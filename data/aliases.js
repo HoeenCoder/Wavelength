@@ -19,6 +19,7 @@ let BattleAliases = {
 	"bh": "[Gen 7] Balanced Hackmons",
 	"mnm": "[Gen 7] Mix and Mega",
 	"aaa": "[Gen 7] Almost Any Ability",
+	"pic": "[Gen 7] Partners in Crime",
 	"2v2": "[Gen 7] 2v2 Doubles",
 	"cc1v1": "[Gen 7] Challenge Cup 1v1",
 	"cc2v2": "[Gen 7] Challenge Cup 2v2",
@@ -26,11 +27,12 @@ let BattleAliases = {
 	"monorandom": "[Gen 7] Monotype Random Battle",
 	"bf": "[Gen 7] Battle Factory",
 	"gen6bf": "[Gen 6] Battle Factory",
+	"ssb": "[Gen 7] Super Staff Bros Brawl",
 
-	//SpacialGaze
+	// Wavelength
 	"digimon": "[Gen 7] Digimon Showdown",
+	"wssb": "[Gen 7] Super Staff Bros",
 	"wlssb": "[Gen 7] Super Staff Bros",
-	"ssb": "[Gen 7] Super Staff Bros",
 	"ssbffa": "[Gen 7] Super Staff Bros Free For All",
 	"pmd": "[Gen 7] Pokemon Mystery Dungeon",
 
@@ -612,6 +614,7 @@ let BattleAliases = {
 	"naga": "Naganadel",
 	"nape": "Infernape",
 	"nebby": "Cosmog",
+	"neckboy": "Exeggutor-Alola",
 	"obama": "Abomasnow",
 	"ogre": "Kyogre",
 	"ohmagod": "Plasmanta",

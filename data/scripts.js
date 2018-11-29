@@ -16,24 +16,22 @@ let BattleScripts = {
 	 * externalMove skips LockMove and PP deduction, mostly for use by
 	 * Dancer.
 	 */
-	runMove: function (move, pokemon, targetLoc, sourceEffect, zMove, externalMove) {
-		let target = this.getTarget(pokemon, zMove || move, targetLoc);
-		let baseMove = this.getMoveCopy(move);
+	runMove(moveOrMoveName, pokemon, targetLoc, sourceEffect, zMove, externalMove) {
+		let target = this.getTarget(pokemon, zMove || moveOrMoveName, targetLoc);
+		let baseMove = this.getActiveMove(moveOrMoveName);
 		const pranksterBoosted = baseMove.pranksterBoosted;
-		if (!sourceEffect && toId(move) !== 'struggle' && !zMove) {
-			let changedMove = this.runEvent('OverrideAction', pokemon, target, move);
+		if (!sourceEffect && baseMove.id !== 'struggle' && !zMove) {
+			let changedMove = this.runEvent('OverrideAction', pokemon, target, baseMove);
 			if (changedMove && changedMove !== true) {
-				baseMove = this.getMoveCopy(changedMove);
+				baseMove = this.getActiveMove(changedMove);
 				if (pranksterBoosted) baseMove.pranksterBoosted = pranksterBoosted;
 				target = null;
 			}
 		}
-		move = zMove ? this.getZMoveCopy(baseMove, pokemon) : baseMove;
+		let move = zMove ? this.getActiveZMove(baseMove, pokemon) : baseMove;
 
 		if (!target && target !== false) target = this.resolveTarget(pokemon, move);
 
-		// copy the priority for Quick Guard
-		if (zMove) move.priority = baseMove.priority;
 		move.isExternal = externalMove;
 
 		this.setActiveMove(move, pokemon, target);
@@ -116,7 +114,7 @@ let BattleScripts = {
 			for (const dancer of dancers) {
 				if (this.faintMessages()) break;
 				this.add('-activate', dancer, 'ability: Dancer');
-				this.runMove(baseMove.id, dancer, 0, this.getAbility('dancer'), undefined, true);
+				this.runMove(move.id, dancer, 0, this.getAbility('dancer'), undefined, true);
 			}
 		}
 		if (noLock && pokemon.volatiles.lockedmove) delete pokemon.volatiles.lockedmove;
@@ -131,26 +129,29 @@ let BattleScripts = {
 	 * The only ones that use runMove are Instruct, Pursuit, and
 	 * Dancer.
 	 */
-	useMove: function (move, pokemon, target, sourceEffect, zMove) {
+	useMove(move, pokemon, target, sourceEffect, zMove) {
 		pokemon.moveThisTurnResult = undefined;
+		/** @type {boolean? | undefined} */ // Typescript bug
 		let oldMoveResult = pokemon.moveThisTurnResult;
 		let moveResult = this.useMoveInner(move, pokemon, target, sourceEffect, zMove);
 		if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
 		return moveResult;
 	},
-	useMoveInner: function (move, pokemon, target, sourceEffect, zMove) {
+	useMoveInner(moveOrMoveName, pokemon, target, sourceEffect, zMove) {
 		if (!sourceEffect && this.effect.id) sourceEffect = this.effect;
-		move = this.getMoveCopy(move);
-		if (zMove && move.id === 'weatherball') {
-			let baseMove = move;
+		if (sourceEffect && sourceEffect.id === 'instruct') sourceEffect = null;
+
+		let move = this.getActiveMove(moveOrMoveName);
+		if (move.id === 'weatherball' && zMove) {
+			// Z-Weather Ball only changes types if it's used directly,
+			// not if it's called by Z-Sleep Talk or something.
 			this.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
-			move = this.getZMoveCopy(move, pokemon);
-			move.zPowered = true;
-			if (move.type !== 'Normal') sourceEffect = baseMove;
-		} else if (zMove || (move.category !== 'Status' && sourceEffect && sourceEffect.isZ && sourceEffect.id !== 'instruct')) {
-			move = this.getZMoveCopy(move, pokemon);
-			move.zPowered = true;
+			if (move.type !== 'Normal') sourceEffect = move;
 		}
+		if (zMove || (move.category !== 'Status' && sourceEffect && sourceEffect.isZ)) {
+			move = this.getActiveZMove(move, pokemon);
+		}
+
 		if (this.activeMove) {
 			move.priority = this.activeMove.priority;
 			if (!move.hasBounced) move.pranksterBoosted = this.activeMove.pranksterBoosted;
@@ -183,10 +184,6 @@ let BattleScripts = {
 
 		let attrs = '';
 
-		if (move.flags['charge'] && !pokemon.volatiles[move.id]) {
-			attrs = '|[still]'; // suppress the default move animation
-		}
-
 		let movename = move.name;
 		if (move.id === 'hiddenpower') movename = 'Hidden Power';
 		if (sourceEffect) attrs += '|[from]' + this.getEffect(sourceEffect);
@@ -196,40 +193,7 @@ let BattleScripts = {
 		}
 		this.addMove('move', pokemon, movename, target + attrs);
 
-		if (zMove && move.category !== 'Status') {
-			this.attrLastMove('[zeffect]');
-		} else if (zMove && move.zMoveBoost) {
-			// @ts-ignore
-			this.boost(move.zMoveBoost, pokemon, pokemon, {id: 'zpower'});
-		} else if (zMove && move.zMoveEffect === 'heal') {
-			// @ts-ignore
-			this.heal(pokemon.maxhp, pokemon, pokemon, {id: 'zpower'});
-		} else if (zMove && move.zMoveEffect === 'healreplacement') {
-			move.self = {sideCondition: 'healreplacement'};
-		} else if (zMove && move.zMoveEffect === 'clearnegativeboost') {
-			let boosts = {};
-			for (let i in pokemon.boosts) {
-				if (pokemon.boosts[i] < 0) {
-					boosts[i] = 0;
-				}
-			}
-			pokemon.setBoost(boosts);
-			this.add('-clearnegativeboost', pokemon, '[zeffect]');
-		} else if (zMove && move.zMoveEffect === 'redirect') {
-			// @ts-ignore
-			pokemon.addVolatile('followme', pokemon, {id: 'zpower'});
-		} else if (zMove && move.zMoveEffect === 'crit2') {
-			// @ts-ignore
-			pokemon.addVolatile('focusenergy', pokemon, {id: 'zpower'});
-		} else if (zMove && move.zMoveEffect === 'curse') {
-			if (pokemon.hasType('Ghost')) {
-				// @ts-ignore
-				this.heal(pokemon.maxhp, pokemon, pokemon, {id: 'zpower'});
-			} else {
-				// @ts-ignore
-				this.boost({atk: 1}, pokemon, pokemon, {id: 'zpower'});
-			}
-		}
+		if (zMove) this.runZPower(move, pokemon);
 
 		if (target === false) {
 			this.attrLastMove('[notarget]');
@@ -303,7 +267,7 @@ let BattleScripts = {
 					lacksTarget = !this.isAdjacent(target, pokemon);
 				}
 			}
-			if (lacksTarget && (!move.flags['charge'] || pokemon.volatiles['twoturnmove'])) {
+			if (lacksTarget && !move.isFutureMove) {
 				this.attrLastMove('[notarget]');
 				this.add('-notarget');
 				if (move.target === 'normal') pokemon.isStaleCon = 0;
@@ -312,7 +276,6 @@ let BattleScripts = {
 			damage = this.tryMoveHit(target, pokemon, move);
 			if (damage || damage === 0 || damage === undefined) moveResult = true;
 		}
-		// @ts-ignore
 		if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
 		if (!pokemon.hp) {
 			this.faint(pokemon, pokemon, move);
@@ -329,14 +292,16 @@ let BattleScripts = {
 		}
 		return true;
 	},
-	tryMoveHit: function (target, pokemon, move) {
+	tryMoveHit(target, pokemon, move) {
 		this.setActiveMove(move, pokemon, target);
 		move.zBrokeProtect = false;
-		let hitResult = true;
 
-		hitResult = this.singleEvent('PrepareHit', move, {}, target, pokemon, move);
+		let hitResult = this.singleEvent('PrepareHit', move, {}, target, pokemon, move);
 		if (!hitResult) {
-			if (hitResult === false) this.add('-fail', target);
+			if (hitResult === false) {
+				this.add('-fail', pokemon);
+				this.attrLastMove('[still]');
+			}
 			return false;
 		}
 		this.runEvent('PrepareHit', pokemon, target, move);
@@ -352,7 +317,10 @@ let BattleScripts = {
 				hitResult = this.runEvent('TryHitSide', target, pokemon, move);
 			}
 			if (!hitResult) {
-				if (hitResult === false) this.add('-fail', target);
+				if (hitResult === false) {
+					this.add('-fail', pokemon);
+					this.attrLastMove('[still]');
+				}
 				return false;
 			}
 			return this.moveHit(target, pokemon, move);
@@ -377,7 +345,10 @@ let BattleScripts = {
 
 		hitResult = this.runEvent('TryHit', target, pokemon, move);
 		if (!hitResult) {
-			if (hitResult === false) this.add('-fail', target);
+			if (hitResult === false) {
+				this.add('-fail', pokemon);
+				this.attrLastMove('[still]');
+			}
 			return false;
 		}
 
@@ -386,19 +357,20 @@ let BattleScripts = {
 		}
 		if (move.flags['powder'] && target !== pokemon && !this.getImmunity('powder', target)) {
 			this.debug('natural powder immunity');
-			this.add('-immune', target, '[msg]');
+			this.add('-immune', target);
 			return false;
 		}
 		if (this.gen >= 7 && move.pranksterBoosted && pokemon.hasAbility('prankster') && target.side !== pokemon.side && !this.getImmunity('prankster', target)) {
 			this.debug('natural prankster immunity');
 			if (!target.illusion) this.add('-hint', "In gen 7, Dark is immune to Prankster moves.");
-			this.add('-immune', target, '[msg]');
+			this.add('-immune', target);
 			return false;
 		}
 
 		let boostTable = [1, 4 / 3, 5 / 3, 2, 7 / 3, 8 / 3, 3];
 
 		// calculate true accuracy
+		/** @type {number | true} */ // TypeScript bug: incorrectly infers {number | true} as {number | boolean}
 		let accuracy = move.accuracy;
 		let boosts, boost;
 		if (accuracy !== true) {
@@ -442,7 +414,6 @@ let BattleScripts = {
 		} else {
 			accuracy = this.runEvent('Accuracy', target, pokemon, move, accuracy);
 		}
-		// @ts-ignore
 		if (accuracy !== true && !this.randomChance(accuracy, 100)) {
 			if (!move.spreadHit) this.attrLastMove('[miss]');
 			this.add('-miss', pokemon, target);
@@ -465,13 +436,16 @@ let BattleScripts = {
 				} else {
 					this.add('-activate', target, 'move: ' + move.name, '[broken]');
 				}
+				if (this.gen >= 6) delete target.volatiles['stall'];
 			}
 		}
 
 		if (move.stealsBoosts) {
+			/** @type {{[k: string]: number}} */
 			let boosts = {};
 			let stolen = false;
 			for (let statName in target.boosts) {
+				// @ts-ignore
 				let stage = target.boosts[statName];
 				if (stage > 0) {
 					boosts[statName] = stage;
@@ -518,6 +492,7 @@ let BattleScripts = {
 			let i;
 			for (i = 0; i < hits && target.hp && pokemon.hp; i++) {
 				if (pokemon.status === 'slp' && !isSleepUsable) break;
+				move.hit = i + 1;
 
 				if (move.multiaccuracy && i > 0) {
 					accuracy = move.accuracy;
@@ -544,7 +519,6 @@ let BattleScripts = {
 					accuracy = this.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
 					if (!move.alwaysHit) {
 						accuracy = this.runEvent('Accuracy', target, pokemon, move, accuracy);
-						// @ts-ignore
 						if (accuracy !== true && !this.randomChance(accuracy, 100)) break;
 					}
 				}
@@ -594,11 +568,10 @@ let BattleScripts = {
 
 		return damage;
 	},
-	moveHit: function (target, pokemon, move, moveData, isSecondary, isSelf) {
+	moveHit(target, pokemon, moveOrMoveName, moveData, isSecondary, isSelf) {
 		let damage;
-		move = this.getMoveCopy(move);
+		let move = this.getActiveMove(moveOrMoveName);
 
-		// @ts-ignore
 		if (!moveData) moveData = move;
 		if (!moveData.flags) moveData.flags = {};
 		/**@type {?boolean | number} */
@@ -642,7 +615,10 @@ let BattleScripts = {
 			hitResult = this.singleEvent('TryHit', moveData, {}, target, pokemon, move);
 		}
 		if (!hitResult) {
-			if (hitResult === false) this.add('-fail', target);
+			if (hitResult === false) {
+				this.add('-fail', pokemon);
+				this.attrLastMove('[still]');
+			}
 			return false;
 		}
 
@@ -687,7 +663,8 @@ let BattleScripts = {
 
 			if (damage === false || damage === null) {
 				if (damage === false && !isSecondary && !isSelf) {
-					this.add('-fail', target);
+					this.add('-fail', pokemon);
+					this.attrLastMove('[still]');
 				}
 				this.debug('damage calculation interrupted');
 				return false;
@@ -714,7 +691,8 @@ let BattleScripts = {
 			if (moveData.heal && !target.fainted) {
 				let d = target.heal((this.gen < 5 ? Math.floor : Math.round)(target.maxhp * moveData.heal[0] / moveData.heal[1]));
 				if (!d && d !== 0) {
-					this.add('-fail', target);
+					this.add('-fail', pokemon);
+					this.attrLastMove('[still]');
 					this.debug('heal interrupted');
 					return false;
 				}
@@ -795,31 +773,31 @@ let BattleScripts = {
 
 			if (!didSomething && !moveData.self && !moveData.selfdestruct) {
 				if (!isSelf && !isSecondary) {
-					if (didSomething === false) this.add('-fail', pokemon);
+					if (didSomething === false) {
+						this.add('-fail', pokemon);
+						this.attrLastMove('[still]');
+					}
 				}
 				this.debug('move failed because it did nothing');
 				return false;
 			}
 		}
 		if (moveData.self && !move.selfDropped) {
-			let selfRoll;
-			// @ts-ignore
+			let selfRoll = 0;
 			if (!isSecondary && moveData.self.boosts) {
 				selfRoll = this.random(100);
 				if (!move.multihit) move.selfDropped = true;
 			}
 			// This is done solely to mimic in-game RNG behaviour. All self drops have a 100% chance of happening but still grab a random number.
-			// @ts-ignore
-			if (typeof moveData.self.chance === 'undefined' || selfRoll < moveData.self.chance) {
-				// @ts-ignore
+			if (moveData.self.chance === undefined || selfRoll < moveData.self.chance) {
 				this.moveHit(pokemon, pokemon, move, moveData.self, isSecondary, true);
 			}
 		}
 		if (moveData.secondaries) {
-			let secondaryRoll;
+			/** @type {SecondaryEffect[]} */
 			let secondaries = this.runEvent('ModifySecondaries', target, pokemon, moveData, moveData.secondaries.slice());
 			for (const secondary of secondaries) {
-				secondaryRoll = this.random(100);
+				let secondaryRoll = this.random(100);
 				if (typeof secondary.chance === 'undefined' || secondaryRoll < secondary.chance) {
 					this.moveHit(target, pokemon, move, secondary, true, isSelf);
 				}
@@ -830,7 +808,8 @@ let BattleScripts = {
 			if (hitResult) {
 				target.forceSwitchFlag = true;
 			} else if (hitResult === false && move.category === 'Status') {
-				this.add('-fail', target);
+				this.add('-fail', pokemon);
+				this.attrLastMove('[still]');
 				return false;
 			}
 		}
@@ -840,7 +819,7 @@ let BattleScripts = {
 		return damage;
 	},
 
-	calcRecoilDamage: function (damageDealt, move) {
+	calcRecoilDamage(damageDealt, move) {
 		// @ts-ignore
 		return this.clampIntRange(Math.round(damageDealt * move.recoil[0] / move.recoil[1]), 1);
 	},
@@ -866,7 +845,7 @@ let BattleScripts = {
 		Fairy: "Twinkle Tackle",
 	},
 
-	getZMove: function (move, pokemon, skipChecks) {
+	getZMove(move, pokemon, skipChecks) {
 		let item = pokemon.getItem();
 		if (!skipChecks) {
 			if (pokemon.side.zMoveUsed) return;
@@ -877,7 +856,7 @@ let BattleScripts = {
 		}
 
 		if (item.zMoveFrom) {
-			if (move.name === item.zMoveFrom) return item.zMove;
+			if (move.name === item.zMoveFrom) return /** @type {string} */ (item.zMove);
 		} else if (item.zMove === true) {
 			if (move.type === item.zMoveType) {
 				if (move.category === "Status") {
@@ -889,29 +868,34 @@ let BattleScripts = {
 		}
 	},
 
-	getZMoveCopy: function (move, pokemon) {
-		let zMove;
+	getActiveZMove(move, pokemon) {
 		if (pokemon) {
 			let item = pokemon.getItem();
 			if (move.name === item.zMoveFrom) {
 				// @ts-ignore
-				return this.getMoveCopy(item.zMove);
+				let zMove = this.getActiveMove(item.zMove);
+				zMove.isZPowered = true;
+				return zMove;
 			}
 		}
 
 		if (move.category === 'Status') {
-			zMove = this.getMoveCopy(move);
+			let zMove = this.getActiveMove(move);
 			zMove.isZ = true;
+			zMove.isZPowered = true;
 			return zMove;
 		}
-		zMove = this.getMoveCopy(this.zMoveTable[move.type]);
+		let zMove = this.getActiveMove(this.zMoveTable[move.type]);
 		// @ts-ignore
 		zMove.basePower = move.zMovePower;
 		zMove.category = move.category;
+		// copy the priority for Quick Guard
+		zMove.priority = move.priority;
+		zMove.isZPowered = true;
 		return zMove;
 	},
 
-	canZMove: function (pokemon) {
+	canZMove(pokemon) {
 		if (pokemon.side.zMoveUsed || (pokemon.transformed && (pokemon.template.isMega || pokemon.template.isPrimal || pokemon.template.forme === "Ultra"))) return;
 		let item = pokemon.getItem();
 		if (!item.zMove) return;
@@ -938,7 +922,7 @@ let BattleScripts = {
 		if (atLeastOne) return zMoves;
 	},
 
-	canMegaEvo: function (pokemon) {
+	canMegaEvo(pokemon) {
 		let altForme = pokemon.baseTemplate.otherFormes && this.getTemplate(pokemon.baseTemplate.otherFormes[0]);
 		let item = pokemon.getItem();
 		if (altForme && altForme.isMega && altForme.requiredMove && pokemon.baseMoves.includes(toId(altForme.requiredMove)) && !item.zMove) return altForme.species;
@@ -948,7 +932,7 @@ let BattleScripts = {
 		return item.megaStone;
 	},
 
-	canUltraBurst: function (pokemon) {
+	canUltraBurst(pokemon) {
 		if (['Necrozma-Dawn-Wings', 'Necrozma-Dusk-Mane'].includes(pokemon.baseTemplate.species) &&
 			pokemon.getItem().id === 'ultranecroziumz') {
 			return "Necrozma-Ultra";
@@ -956,7 +940,7 @@ let BattleScripts = {
 		return null;
 	},
 
-	runMegaEvo: function (pokemon) {
+	runMegaEvo(pokemon) {
 		const templateid = pokemon.canMegaEvo || pokemon.canUltraBurst;
 		if (!templateid) return false;
 		const side = pokemon.side;
@@ -984,13 +968,55 @@ let BattleScripts = {
 		return true;
 	},
 
-	isAdjacent: function (pokemon1, pokemon2) {
+	runZPower(move, pokemon) {
+		const zPower = this.getEffect('zpower');
+		if (move.category !== 'Status') {
+			this.attrLastMove('[zeffect]');
+		} else if (move.zMoveBoost) {
+			this.boost(move.zMoveBoost, pokemon, pokemon, zPower);
+		} else {
+			switch (move.zMoveEffect) {
+			case 'heal':
+				this.heal(pokemon.maxhp, pokemon, pokemon, zPower);
+				break;
+			case 'healreplacement':
+				move.self = {sideCondition: 'healreplacement'};
+				break;
+			case 'clearnegativeboost':
+				/** @type {{[k: string]: number}} */
+				let boosts = {};
+				for (let i in pokemon.boosts) {
+					// @ts-ignore
+					if (pokemon.boosts[i] < 0) {
+						boosts[i] = 0;
+					}
+				}
+				pokemon.setBoost(boosts);
+				this.add('-clearnegativeboost', pokemon, '[zeffect]');
+				break;
+			case 'redirect':
+				pokemon.addVolatile('followme', pokemon, zPower);
+				break;
+			case 'crit2':
+				pokemon.addVolatile('focusenergy', pokemon, zPower);
+				break;
+			case 'curse':
+				if (pokemon.hasType('Ghost')) {
+					this.heal(pokemon.maxhp, pokemon, pokemon, zPower);
+				} else {
+					this.boost({atk: 1}, pokemon, pokemon, zPower);
+				}
+			}
+		}
+	},
+
+	isAdjacent(pokemon1, pokemon2) {
 		if (pokemon1.fainted || pokemon2.fainted) return false;
 		if (pokemon1.side === pokemon2.side) return Math.abs(pokemon1.position - pokemon2.position) === 1;
 		return Math.abs(pokemon1.position + pokemon2.position + 1 - pokemon1.side.active.length) <= 1;
 	},
 
-	targetTypeChoices: function (targetType) {
+	targetTypeChoices(targetType) {
 		return CHOOSABLE_TARGETS.has(targetType);
 	},
 };

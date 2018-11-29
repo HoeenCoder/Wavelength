@@ -452,7 +452,7 @@ class RandomDigimonTeams extends RandomTeams {
 			"IceDevimon": {
 				species: "IceDevimon",
 				ability: "Virus",
-				moves: ['darkspirit', 'blackout', 'evilfantasy', 'chaoscloud', 'shadowfall', 'evilsquall', 'winterblast', 'gigafreeze'],
+				moves: ['waterblitz', 'blackout', 'evilfantasy', 'icestatue', 'shadowfall', 'evilsquall', 'winterblast', 'gigafreeze'],
 				baseSignatureMove: "frozenclaw",
 				signatureMove: "Frozen Claw",
 			},

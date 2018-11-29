@@ -35,10 +35,11 @@ let BattleAbilities = {
 		},
 		onTryHit: function (pokemon, target, move) {
 			if (move.id === 'captivate') {
-				this.add('-immune', pokemon, '[msg]', '[from] Oblivious');
+				this.add('-immune', pokemon, '[from] Oblivious');
 				return null;
 			}
 		},
+		rating: 0.5,
 	},
 	"overcoat": {
 		inherit: true,
@@ -55,8 +56,7 @@ let BattleAbilities = {
 			if (move.secondaries && move.id !== 'secretpower') {
 				this.debug('doubling secondary chance');
 				for (const secondary of move.secondaries) {
-					// @ts-ignore
-					secondary.chance *= 2;
+					if (secondary.chance) secondary.chance *= 2;
 				}
 			}
 		},

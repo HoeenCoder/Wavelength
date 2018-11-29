@@ -159,16 +159,20 @@ let BattleMovedex = {
 				}
 				this.runEvent('AfterSubDamage', target, source, move, damage);
 				// Add here counter damage
-				if (!target.lastAttackedBy) target.lastAttackedBy = {pokemon: source, thisTurn: true};
-				target.lastAttackedBy.move = move.id;
-				target.lastAttackedBy.damage = damage;
+				let lastAttackedBy = target.getLastAttackedBy();
+				if (!lastAttackedBy) {
+					target.attackedBy.push({source: source, move: move.id, damage: damage, thisTurn: true});
+				} else {
+					lastAttackedBy.move = move.id;
+					lastAttackedBy.damage = damage;
+				}
 				return 0;
 			},
 			onEnd: function (target) {
 				this.add('-end', target, 'Substitute');
 			},
 		},
-		secondary: false,
+		secondary: null,
 		target: "self",
 		type: "Normal",
 	},

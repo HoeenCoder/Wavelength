@@ -9,7 +9,7 @@ const maxMistakes = 6;
 
 class Hangman extends Rooms.RoomGame {
 	/**
-	 * @param {ChatRoom} room
+	 * @param {ChatRoom | GameRoom} room
 	 * @param {User} user
 	 * @param {string} word
 	 * @param {string?} [hint]
@@ -218,9 +218,6 @@ class Hangman extends Rooms.RoomGame {
 	}
 }
 
-/** @typedef {(this: CommandContext, target: string, room: ChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
-/** @typedef {{[k: string]: ChatHandler | string | true | string[] | ChatCommands}} ChatCommands */
-
 /** @type {ChatCommands} */
 const commands = {
 	hangman: {
@@ -291,6 +288,7 @@ const commands = {
 			// @ts-ignore
 			room.hangmanDisabled = true;
 			if (room.chatRoomData) {
+				// @ts-ignore
 				room.chatRoomData.hangmanDisabled = true;
 				Rooms.global.writeChatRoomData();
 			}
@@ -306,6 +304,7 @@ const commands = {
 			// @ts-ignore
 			delete room.hangmanDisabled;
 			if (room.chatRoomData) {
+				// @ts-ignore
 				delete room.chatRoomData.hangmanDisabled;
 				Rooms.global.writeChatRoomData();
 			}

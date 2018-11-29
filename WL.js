@@ -291,6 +291,9 @@ exports.WL = {
 				if (iv === 31 & left > 0) left--;
 				data += iv + (i === 5 ? "|" : ",");
 			}
+		} else if (pokemon.forme === "Starter") {
+			// 6 Perfect Ivs required
+			data += "31,31,31,31,31,31|";
 		} else {
 			for (let i = 0; i < 6; i++) {
 				data += Math.round(Math.random() * 31) + (i === 5 ? "|" : ",");

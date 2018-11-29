@@ -744,6 +744,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "nightshade", target);
 		},
 		flags: {protect: 1, mirror: 1, authentic: 1},
+		secondary: false,
 		target: "normal",
 		type: "Evil",
 	},
@@ -810,6 +811,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "dragonpulse", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		target: "any",
 		type: "Mech",
 	},
@@ -877,6 +879,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "mefirst", target);
 		},
 		flags: {protect: 1, mirror: 1, heal: 1, contact: 1},
+		secondary: false,
 		drain: [1, 2],
 		target: "normal",
 		type: "Evil",
@@ -1646,6 +1649,7 @@ let BattleMovedex = {
 		name: "Pummel Whack",
 		id: "pummelwhack",
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "shadowpunch", target);
@@ -1695,6 +1699,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "acid", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		forceSwitch: true,
 		accuracy: 95,
 		pp: 5,
@@ -1738,6 +1743,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "anchorshot", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		volatileStatus: "dot",
 		accuracy: 90,
 		pp: 2,
@@ -1852,6 +1858,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "moonblast", target);
 		},
 		flags: {protect: 1, mirror: 1, authentic: 1},
+		secondary: false,
 		accuracy: true,
 		pp: 3,
 		noPPBoosts: true,
@@ -1871,6 +1878,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "hex", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		ohko: true,
 		accuracy: 30,
 		pp: 3,
@@ -1914,6 +1922,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "dragonpulse", target);
 		},
 		flags: {protect: 1, mirror: 1, recharge: 1},
+		secondary: false,
 		self: {
 			volatileStatus: 'mustrecharge',
 		},
@@ -1959,6 +1968,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "fireblast", target);
 		},
 		flags: {protect: 1, mirror: 1, defrost: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 3,
 		noPPBoosts: true,
@@ -1979,6 +1989,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "moonblast", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 90,
 		pp: 3,
 		noPPBoosts: true,
@@ -2069,6 +2080,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "secretsword", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 90,
 		pp: 3,
 		noPPBoosts: true,
@@ -2090,6 +2102,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "spikecannon", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: true,
 		pp: 3,
 		noPPBoosts: true,
@@ -2215,6 +2228,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "corkscrewcrash", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 90,
 		pp: 3,
 		noPPBoosts: true,
@@ -2306,6 +2320,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "explosion", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 2,
 		noPPBoosts: true,
@@ -2350,6 +2365,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "petalblizzard", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 95,
 		pp: 3,
 		noPPBoosts: true,
@@ -2419,6 +2435,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "dynamicpunch", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: true,
 		pp: 5,
 		noPPBoosts: true,
@@ -2439,6 +2456,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "foulplay", target);
 		},
 		flags: {protect: 1, mirror: 1, contact: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 3,
 		noPPBoosts: true,
@@ -2460,6 +2478,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "voltswitch", target);
 		},
 		flags: {protect: 1, mirror: 1, contact: 1},
+		secondary: false,
 		accuracy: 95,
 		pp: 2,
 		noPPBoosts: true,
@@ -2481,6 +2500,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "thunder", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 3,
 		noPPBoosts: true,
@@ -2523,6 +2543,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "smartstrike", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 90,
 		pp: 3,
 		noPPBoosts: true,
@@ -2543,6 +2564,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "infernooverdrive", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 3,
 		noPPBoosts: true,
@@ -2562,6 +2584,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "moongeistbeam", target);
 		},
 		flags: {protect: 1, mirror: 1, defrost: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 5,
 		noPPBoosts: true,
@@ -2589,6 +2612,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "magnetbomb", target);
 		},
 		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: true,
 		pp: 5,
 		noPPBoosts: true,
@@ -2616,9 +2640,9 @@ let BattleMovedex = {
 			if (this.random(100) < 50) this.boost({def: 2}, pokemon, pokemon, move);
 		},
 	},
-	"heartattack": {
-		name: "Heart Attack",
-		id: "heartattack",
+	"heartsattack": {
+		name: "Hearts Attack",
+		id: "heartsattack",
 		priority: 0,
 		basePower: 100,
 		category: "Special",
@@ -2658,6 +2682,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "drainingkiss", target);
 		},
 		flags: {protect: 1, mirror: 1, heal: 1},
+		secondary: false,
 		accuracy: 100,
 		pp: 3,
 		noPPBoosts: true,
@@ -2677,6 +2702,8 @@ let BattleMovedex = {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "psychoboost", target);
 		},
+		flags: {protect: 1, mirror: 1},
+		secondary: false,
 		accuracy: 95,
 		pp: 3,
 		noPPBoosts: true,
@@ -2696,6 +2723,7 @@ let BattleMovedex = {
 			this.add('-anim', source, "boomburst", target);
 		},
 		flags: {protect: 1, mirror: 1, sound: 1, punch: 1, contact: 1},
+		secondary: false,
 		accuracy: 95,
 		pp: 3,
 		noPPBoosts: true,
@@ -3606,6 +3634,7 @@ let BattleMovedex = {
 	"burningheart": {
 		name: "Burning Heart",
 		id: "burningheart",
+		priority: 0,
 		basePower: 0,
 		category: "Status",
 		type: "Flame",
@@ -3669,9 +3698,9 @@ let BattleMovedex = {
 		basePower: 0,
 		category: "Status",
 		type: "Flame",
-		target: "allySide",
-		desc: "Priority +4. Protects user and allies from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
-		shortDesc: "Protects user and allies from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
+		target: "self",
+		desc: "Priority +4. Protects user from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
+		shortDesc: "Protects user from moves. Contact: loses 1/8 max hp unless Fire/Flame type.",
 		onPrepareHit: function (pokemon, source, move) {
 			this.attrLastMove('[still]');
 			this.add('-anim', source, "firespin", source);
@@ -3683,10 +3712,10 @@ let BattleMovedex = {
 		pp: 10,
 		secondary: false,
 		stallingMove: true,
-		sideCondition: 'firewall',
-		onHitSide: function (side, source) {
-			side.addSideCondition('sidestall');
-			this.add('-message', source.name + ' is hidden behind a firewall!');
+		volatileStatus: 'firewall',
+		onHit: function (pokemon) {
+			pokemon.addVolatile('stall');
+			this.add('-message', pokemon.name + ' is hidden behind a firewall!');
 		},
 		effect: {
 			duration: 1,
@@ -3709,6 +3738,7 @@ let BattleMovedex = {
 						delete source.volatiles['lockedmove'];
 					}
 				}
+				if (source.types.includes('Fire') || source.types.includes('Flame')) return null;
 				this.damage(source.maxhp / 8, source, target);
 				return null;
 			},
@@ -5134,6 +5164,7 @@ let BattleMovedex = {
 		basePower: 40,
 		category: "Physical",
 		desc: "No additional effects.",
+		shortDesc: "No additional effects.",
 		secondary: false,
 		onModifyMove: function (move) {
 			move.type = '???';

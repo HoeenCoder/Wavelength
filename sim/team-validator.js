@@ -67,6 +67,7 @@ class Validator {
 			return problems;
 		}
 
+		/**@type {{[k: string]: number}} */
 		let teamHas = {};
 		for (const set of team) { // Changing this loop to for-of would require another loop/map statement to do removeNicknames
 			if (!set) return [`You sent invalid team data. If you're not using a custom client, please report this as a bug.`];
@@ -162,6 +163,7 @@ class Validator {
 		let isHidden = false;
 		let lsetData = /** @type {PokemonSources} */ ({sources: [], sourcesBefore: dex.gen});
 
+		/**@type {{[k: string]: true}} */
 		let setHas = {};
 		const ruleTable = this.ruleTable;
 
@@ -217,6 +219,9 @@ class Validator {
 		if (set.happiness !== undefined && isNaN(set.happiness)) {
 			problems.push(`${name} has an invalid happiness.`);
 		}
+		if (set.hpType && (!dex.getType(set.hpType).exists || ['normal', 'fairy'].includes(toId(set.hpType)))) {
+			problems.push(`${name}'s Hidden Power type (${set.hpType}) is invalid.`);
+		}
 
 		let banReason = ruleTable.check('pokemon:' + template.id, setHas);
 		let templateOverride = ruleTable.has('+pokemon:' + template.id);
@@ -246,9 +251,10 @@ class Validator {
 			if (ruleTable.has('-unreleased') && postMegaTemplate.isUnreleased) {
 				problems.push(`${name} (${postMegaTemplate.species}) is unreleased.`);
 			} else if (postMegaTemplate.tier) {
-				banReason = ruleTable.check('pokemontag:' + toId(postMegaTemplate.tier), setHas);
+				let tag = postMegaTemplate.tier === '(PU)' ? 'ZU' : postMegaTemplate.tier;
+				banReason = ruleTable.check('pokemontag:' + toId(tag), setHas);
 				if (banReason) {
-					problems.push(`${postMegaTemplate.species} is in ${postMegaTemplate.tier}, which is ${banReason}.`);
+					problems.push(`${postMegaTemplate.species} is in ${tag}, which is ${banReason}.`);
 				} else if (postMegaTemplate.doublesTier) {
 					banReason = ruleTable.check('pokemontag:' + toId(postMegaTemplate.doublesTier), setHas);
 					if (banReason) {
@@ -425,8 +431,7 @@ class Validator {
 				problems.push(`${name} has exactly 510 EVs, but this format does not restrict you to 510 EVs: you can max out every EV (If this was intentional, add exactly 1 to one of your EVs, which won't change its stats but will tell us that it wasn't a mistake).`);
 			}
 		}
-		// @ts-ignore TypeScript index signature bug
-		if (set.evs && !Object.values(set.evs).some(value => value > 0)) {
+		if (set.evs && !Object.values(set.evs).some(value => value > 0) && !format.id.includes('letsgo')) {
 			problems.push(`${name} has exactly 0 EVs - did you forget to EV it? (If this was intentional, add exactly 1 to one of your EVs, which won't change its stats but will tell us that it wasn't a mistake).`);
 		}
 
@@ -448,7 +453,7 @@ class Validator {
 					problems.push(`${name} has an event-exclusive move that it doesn't qualify for (only one of several ways to get the move will be listed):`);
 				}
 				let eventProblems = this.validateSource(set, lsetData.sources[0], template, ` because it has a move only available`);
-				// @ts-ignore TypeScript overload syntax bug
+				// @ts-ignore validateEvent must have returned an array because it was passed a because param
 				if (eventProblems) problems.push(...eventProblems);
 			}
 		} else if (ruleTable.has('-illegal') && template.eventOnly) {
@@ -459,7 +464,6 @@ class Validator {
 			for (const eventData of eventPokemon) {
 				if (this.validateEvent(set, eventData, eventTemplate)) continue;
 				legal = true;
-				if (eventData.gender) set.gender = eventData.gender;
 				break;
 			}
 			if (!legal && template.id === 'celebi' && dex.gen >= 7 && !this.validateSource(set, '7V', template)) {
@@ -483,7 +487,7 @@ class Validator {
 				}
 				let eventName = eventPokemon.length > 1 ? ` #${eventNum}` : ``;
 				let eventProblems = this.validateEvent(set, eventInfo, eventTemplate, ` to be`, `from its event${eventName}`);
-				// @ts-ignore TypeScript overload syntax bug
+				// @ts-ignore validateEvent must have returned an array because it was passed a because param
 				if (eventProblems) problems.push(...eventProblems);
 			}
 		}
@@ -516,16 +520,18 @@ class Validator {
 		for (const [rule, source, limit, bans] of ruleTable.complexBans) {
 			let count = 0;
 			for (const ban of bans) {
-				if (setHas[ban] > 0) {
-					count += limit ? setHas[ban] : 1;
-				}
+				if (setHas[ban]) count++;
 			}
 			if (limit && count > limit) {
 				const clause = source ? ` by ${source}` : ``;
 				problems.push(`${name} is limited to ${limit} of ${rule}${clause}.`);
 			} else if (!limit && count >= bans.length) {
 				const clause = source ? ` by ${source}` : ``;
-				problems.push(`${name} has the combination of ${rule}, which is banned${clause}.`);
+				if (source === 'Pokemon') {
+					if (ruleTable.has('-illegal')) problems.push(`${name} has the combination of ${rule}, which is impossible to obtain legitimately.`);
+				} else {
+					problems.push(`${name} has the combination of ${rule}, which is banned${clause}.`);
+				}
 			}
 		}
 
@@ -641,7 +647,6 @@ class Validator {
 				if (fastReturn) return true;
 				problems.push(`${name}'s gender must be ${eventData.gender}${etc}.`);
 			}
-			if (!fastReturn) set.gender = eventData.gender;
 		}
 		if (eventData.nature && eventData.nature !== set.nature) {
 			if (fastReturn) return true;
@@ -655,12 +660,12 @@ class Validator {
 			if (!set.ivs) set.ivs = {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31};
 			let statTable = {hp: 'HP', atk: 'Attack', def: 'Defense', spa: 'Special Attack', spd: 'Special Defense', spe: 'Speed'};
 			for (let statId in eventData.ivs) {
-				// @ts-ignore TypeScript index signature bug
+				// @ts-ignore
 				if (canBottleCap && set.ivs[statId] === 31) continue;
-				// @ts-ignore TypeScript index signature bug
+				// @ts-ignore
 				if (set.ivs[statId] !== eventData.ivs[statId]) {
 					if (fastReturn) return true;
-					// @ts-ignore TypeScript index signature bug
+					// @ts-ignore
 					problems.push(`${name} must have ${eventData.ivs[statId]} ${statTable[statId]} IVs${etc}.`);
 				}
 			}
@@ -687,7 +692,7 @@ class Validator {
 			// Events can also have a certain amount of guaranteed perfect IVs
 			let perfectIVs = 0;
 			for (let i in set.ivs) {
-				// @ts-ignore TypeScript index signature bug
+				// @ts-ignore
 				if (set.ivs[i] >= 31) perfectIVs++;
 			}
 			if (perfectIVs < requiredIVs) {
@@ -743,8 +748,8 @@ class Validator {
 				}
 			}
 		}
-		if (!problems.length) return;
-		return problems;
+		if (problems.length) return problems;
+		if (eventData.gender) set.gender = eventData.gender;
 	}
 
 	/**
@@ -837,7 +842,7 @@ class Validator {
 						for (const fatherSource of fatherSources) {
 							// Triply nested loop! Fortunately, all the loops are designed
 							// to be as short as possible.
-							if (+source.charAt(0) > eggGen) continue;
+							if (+fatherSource.charAt(0) > eggGen) continue;
 							if (fatherSource.charAt(1) === 'E') {
 								if (restrictedSource && (restrictedSource !== fatherSource || eggsRestricted)) {
 									continue;
@@ -927,6 +932,7 @@ class Validator {
 
 		let format = this.format;
 		let ruleTable = dex.getRuleTable(format);
+		/**@type {{[k: string]: boolean}} */
 		let alreadyChecked = {};
 		let level = set.level || 100;
 
