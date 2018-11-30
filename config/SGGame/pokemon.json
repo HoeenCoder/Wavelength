@@ -16092,7 +16092,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 1
+		"totalEvDrops": 1,
+		"basehappiness": 0
 	},
 	"melmetal": {
 		"expType": "slow",
@@ -16111,7 +16112,8 @@
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 3
+		"totalEvDrops": 3,
+		"basehappiness": 0
 	},
 	"venusaurmega": {
 		"id": "venusaurmega",
