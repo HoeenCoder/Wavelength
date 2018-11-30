@@ -16086,8 +16086,8 @@
 		"baseExp": 270,
 		"evDrops": {
 			"hp": 0,
-			"atk": 0,
-			"def": 1,
+			"atk": 1,
+			"def": 0,
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
@@ -16105,13 +16105,13 @@
 		"baseExp": 270,
 		"evDrops": {
 			"hp": 0,
-			"atk": 0,
-			"def": 2,
+			"atk": 3,
+			"def": 0,
 			"spa": 0,
 			"spd": 0,
 			"spe": 0
 		},
-		"totalEvDrops": 2
+		"totalEvDrops": 3
 	},
 	"venusaurmega": {
 		"id": "venusaurmega",
