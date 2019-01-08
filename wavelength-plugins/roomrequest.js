@@ -28,6 +28,7 @@ exports.commands = {
 		});
 		target = target.split(',');
 		if (target.length < 3) return this.parse('/help requestroom');
+		if (target[0].includes(',') || target[0].includes('[') || target[0].includes(']') || target[0].includes('|') || target[0].includes('-')) return this.errorReply(`The room's name cannot contain any of these symbols: ,|-[]`);
 		if (['public', 'hidden', 'secret'].indexOf(toId(target[1])) === -1) return this.errorReply(`Valid room types are public, hidden, and secret.`);
 		let desc = '';
 		for (let i = 2; i < target.length; i++) {
