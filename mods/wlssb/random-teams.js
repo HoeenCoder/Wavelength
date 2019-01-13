@@ -56,7 +56,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Adamant',
 			},
-			'~Mosmero': {
+			'~Electric Z': {
 				species: 'Gastly',
 				ability: 'Mosmic Power',
 				item: 'Life Orb',
@@ -71,7 +71,7 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Modest',
 			},
-			'~Perison': {
+			'~AC Wired': {
 				species: 'Darkrai',
 				ability: 'Death Boost',
 				item: 'Darkiniumz',
@@ -272,19 +272,19 @@ class RandomSeasonalRegStaffTeams extends RandomTeams {
 				},
 				nature: 'Timid',
 			},
-			'%SSBN-640': {
-				species: "Meowstic",
-				ability: "Twisted Virtues",
-				item: "Leftovers",
+			'%Lycanium Z': {
+				species: "Mienshao",
+				ability: "Normalize",
+				item: "Devimon Digivice",
 				gender: "M",
-				moves: ['Cotton Guard', 'Calm Mind', 'Rest'],
-				signatureMove: "Foolish Destruction",
+				moves: ['Shift Gear', 'Multi Attack', 'Substitute'],
+				signatureMove: "Death Claw",
 				evs: {
-					hp: 252,
-					spd: 252,
-					def: 4,
+					atk: 252,
+					spe: 252,
+					spd: 4,
 				},
-				nature: "Sassy",
+				nature: "Jolly",
 			},
 			'%AlfaStorm': {
 				species: 'Umbreon',

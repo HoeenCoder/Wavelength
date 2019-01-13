@@ -385,55 +385,44 @@ exports.BattleMovedex = {
 		accuracy: true,
 		type: "Water",
 	},
-	// SSBN-640
-	"foolishdestruction": {
-		accuracy: true,
-		basePower: 0,
-		category: "Status",
-		shortDesc: "Attempts to pick a random move 3 times",
-		id: "foolishdestruction",
-		name: "Foolish Destruction",
-		pp: 30,
-		priority: 0,
-		flags: {},
-		sleepUsable: true,
-		noMetronome: ['banefulbunker', 'foolishdestruction', 'afteryou', 'assist', 'belch', 'bestow', 'celebrate', 'copycat', 'counter', 'covet', 'craftyshield', 'destinybond', 'detect', 'endure', 'focuspunch', 'followme', 'happyhour', 'helpinghand', 'holdhands', 'hyperspacefury', 'kingsshield', 'matblock', 'mefirst', 'metronome', 'mimic', 'mirrorcoat', 'mirrormove', 'naturepower', 'protect', 'quash', 'quickguard', 'ragepowder', 'sketch', 'sleeptalk', 'snarl', 'snatch', 'snore', 'spikyshield', 'struggle', 'switcheroo', 'thief', 'trick', 'wideguard'],
+	// Lycanium Z
+	"deathclaw": {
+		category: "Physical",
+		basePower: 80,
+		accuracy: 100,
+		desc: 'Type based on the held Plate. target\'s Ability matches the user\'s.',
+		id: "deathclaw",
+		isViable: true,
+		flags: {protect: 1, contact: 1, mirror: 1},
+		isNonstandard: true,
+		name: "Death Claw",
+		pp: 10,
+		onModifyMove: function (move, pokemon) {
+			const item = pokemon.getItem();
+			if (item.id && item.onPlate && !item.zMove) {
+				move.type = item.onPlate;
+			}
+		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
-			this.add('-anim', source, "Quiver Dance", source);
-			this.add('-anim', source, "Nasty Plot", source);
+			this.add('-anim', source, "Spectral Thief", target);
 		},
-		onHit: function (target, source, effect) {
-			let moves = [];
-			for (let i in exports.BattleMovedex) {
-				let move = exports.BattleMovedex[i];
-				if (i !== move.id) continue;
-				if (move.isZ || move.isNonstandard) continue;
-				// @ts-ignore
-				if (effect.noMetronome.includes(move.id)) continue;
-				if (this.getMove(i).gen > this.gen) continue;
-				moves.push(move);
-			}
-			let r1 = '';
-			let r2 = '';
-			let r3 = '';
-			if (moves.length) {
-				moves.sort((a, b) => a.num - b.num);
-				r1 = this.sample(moves).id;
-				r2 = this.sample(moves).id;
-				r3 = this.sample(moves).id;
-			}
-			if (!r1 || !r2 || !r3) {
+		onHit: function (target, source) {
+			if (target === source) return false;
+			let bannedTargetAbilities = ['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange', 'truant'];
+			let bannedSourceAbilities = ['battlebond', 'comatose', 'disguise', 'flowergift', 'forecast', 'illusion', 'imposter', 'multitype', 'powerconstruct', 'powerofalchemy', 'receiver', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange', 'trace', 'zenmode'];
+			if (bannedTargetAbilities.includes(target.ability) || bannedSourceAbilities.includes(source.ability) || target.ability === source.ability) {
 				return false;
 			}
-			this.useMove(r1, target);
-			this.useMove(r2, target);
-			this.useMove(r3, target);
+			let oldAbility = target.setAbility(source.ability);
+			if (oldAbility) {
+				this.add('-ability', target, this.getAbility(target.ability).name, '[from] move: Death Claw');
+				return;
+			}
+			return false;
 		},
-		secondary: false,
-		target: "self",
-		type: "Normal",
-		contestType: "Cute",
+		target: "normal",
+		type: "Dark",
 	},
 	//Stabby the Krabby
 	"stabstab": {
@@ -486,7 +475,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Ghost",
 	},
-	//Mosmero
+	// Electric Z
 	mosmerobeam: {
 		category: "Special",
 		accuracy: 80,
@@ -514,7 +503,7 @@ exports.BattleMovedex = {
 			volatileStatus: ['flinch', 'confusion'],
 		},
 		onHit: function (target, source, move) {
-			this.add('c|~Mosmero|I protec, but I also attac.');
+			this.add('c|~Electric Z|I protec, but I also attac.');
 		},
 		onPrepareHit: function (target, source, move) {
 			this.attrLastMove('[still]');
@@ -572,6 +561,9 @@ exports.BattleMovedex = {
 			this.heal(target.maxhp); //Aeshetic only as the healing happens after you fall asleep in-game
 			this.add('-status', target, 'slp', '[from] move: Deep Sleep');
 			this.add('c|&MechSteelix|Witness my true power!');
+		},
+		onPrepareHit: function (target, source, move) {
+			this.attrLastMove('[still]');
 			this.add('-anim', target, "Protect", target);
 		},
 		secondary: {
@@ -620,7 +612,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Grass",
 	},
-	//Perison
+	// AC Wired
 	overpower: {
 		category: "Status",
 		accuracy: 100,

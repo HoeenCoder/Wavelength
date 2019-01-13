@@ -158,16 +158,18 @@ exports.BattleStatuses = {
 			}
 		},
 	},
-	ssbn640: {
+	lycaniumz: {
 		exists: true,
-		onStart: function (pokemon) {
-			this.add('c', '%SSBN-640', 'hey, im just here to shitpost or whatever.');
+		onStart: function (source) {
+			this.add('c', '%Lycanium Z', 'Heyyyyyyyyyyyyyyyyyyyyyy');
+			source.types = ["Fighting", "Ghost"];
+			this.add('-start', source, 'typeadd', 'Ghost');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '%SSBN-640', 'brb gotta do stuff for digimon.');
+			this.add('c', '%Lycanium Z', 'sorry gtg');
 		},
 		onFaint: function (pokemon, target) {
-			this.add('c', '%SSBN-640', 'lol how did i die?');
+			this.add('c', '%Lycanium Z', 'rip lyc D:');
 		},
 	},
 	celestialtater: {
@@ -203,16 +205,16 @@ exports.BattleStatuses = {
 			this.add('c', '&Volco', 'Okay then. BACK TO CODING!');
 		},
 	},
-	mosmero: {
+	electricz: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Mosmero', 'Hey, it\'s me, the Mos!');
+			this.add('c', '~Electric Z', 'Hey, it\'s me, the Mos!');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Mosmero', 'And with that, it was me, the Mos.');
+			this.add('c', '~Electric Z', 'And with that, it was me, the Mos.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '~Mosmero', 'Can\'t you come up with something creative for once, Vacuo?');
+			this.add('c', '~Electric Z', 'Can\'t you come up with something creative for once, Vacuo?');
 		},
 	},
 	cubsfan38: {
@@ -248,16 +250,16 @@ exports.BattleStatuses = {
 			this.add('c', '@TheRittz', '__fled from the scene__');
 		},
 	},
-	perison: {
+	acwired: {
 		exists: true,
 		onStart: function () {
-			this.add('c', '~Perison', 'You think I came for the battle, when it\'s really your soul I want.');
+			this.add('c', '~AC Wired', 'You think I came for the battle, when it\'s really your soul I want.');
 		},
 		onSwitchOut: function (pokemon) {
-			this.add('c', '~Perison', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
+			this.add('c', '~AC Wired', 'Don\'t worry, I\'ll be back. I will miss putting you in pain too much to not return.');
 		},
 		onFaint: function (pokemon) {
-			this.add('c', '~Perison', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
+			this.add('c', '~AC Wired', 'Death falls upon us all, however now is my time to die. You\'ll be happy to know that yours isn\'t far from now.');
 		},
 	},
 	xcmr: {

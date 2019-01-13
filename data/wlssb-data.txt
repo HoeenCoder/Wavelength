@@ -11,16 +11,17 @@ Signature Move: Scripting
 Notes: N/A.
 Rank: N/A.
 
-SSBN-640
-(Meowstic)
-@ Leftovers
-EVs: 252 HP / 4 Def / 252 SpD
-Sassy Nature
-Ability: Twisted Virtues
-    - All status moves gain +1 priority and Dark type pokemon and moves become Pure Fairy type. User gains the poison type.
-Moves: Cotton Guard, Rest, Calm Mind
-Signature Move: Foolish Desrtuction
-	- Calls a random move 3 times.
+Lycanium Z
+(Mienshao)
+@ Devimon Digivice
+    - Holder's Multi-Attack is Ghost type. Judgment is Fighting type.
+EVs: 252 Atk / 4 SpD / 252 Spe
+Jolly Nature
+Ability: Normalize
+Innate Ability: Opposite of Normal: Adds Ghost type on user on switch in.
+Moves: Substitute, Shift Gear, Multi Attack
+Signature Move: Death Claw
+	- Dark type, Physical, 10 PP, 80 BP, Type based on the held Plate. target's Ability matches the user's.
 Notes: IDK
 Rank: N/A.
 
@@ -187,7 +188,7 @@ Signature Move: Shell Break
 Notes: Fast Physical Sweeper, extremely threatening if it gets a Shell Break up.
 Rank: N/A
 
-Mosmero
+Electric Z
 (Gastly)
 @ Life Orb
 EVs: 252 Spa / 252 Spe / 4 HP
@@ -200,7 +201,7 @@ Signature Move: Mosmero Beam
 Notes: Hit Quickly & you should be able to take down some enemies.
 Rank: N/A
 
-Perison
+AC Wired
 (Darkrai)
 @ Darkiniumz
 Base Stats: 60/105/60/120/60/105

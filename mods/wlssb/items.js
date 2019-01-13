@@ -26,4 +26,12 @@ exports.BattleItems = {
 			}
 		},
 	},
+	// Lycanium Z
+	devimondigivice: {
+		id: "devimondigivice",
+		name: "Devimon Digivice",
+		onMemory: 'Ghost',
+		onPlate: 'Fighting',
+		desc: "Holder's Multi-Attack is Ghost type. Judgment is Fighting type.",
+	},
 };

@@ -524,8 +524,8 @@ exports.commands = {
 		if (['km', 'callie', 'krakenmeme'].includes(toId(target))) return this.sendReplyBox(getMonData('krakenmare'));
 		if (toId(target) === 'c7') return this.sendReplyBox(getMonData('c733937123'));
 		if (['des', 'deso'].includes(toId(target))) return this.sendReplyBox(getMonData('desokoro'));
-		if (['mos', 'electricz'].includes(toId(target))) return this.sendReplyBox(getMonData('mosmero'));
-		if (['perison', 'prince', 'peri'].includes(toId(target))) return this.sendReplyBox(getMonData('wavelengthprince'));
+		if (['mos', 'mosmero'].includes(toId(target))) return this.sendReplyBox(getMonData('electricz'));
+		if (['perison', 'prince', 'peri'].includes(toId(target))) return this.sendReplyBox(getMonData('acwired'));
 		if (toId(target) === 'hiro') return this.sendReplyBox(getMonData('hiroz'));
 		if (['hh', 'hoeen'].includes(toId(target))) return this.sendReplyBox(getMonData('hoeenhero'));
 		if (toId(target) === 'arrays') return this.sendReplyBox(getMonData('volco'));
@@ -535,7 +535,7 @@ exports.commands = {
 		if (toId(target) === 'rittz') return this.sendReplyBox(getMonData('therittz'));
 		if (['stk', 'stabby'].includes(toId(target))) return this.sendReplyBox(getMonData('stabbythekrabby'));
 		if (['twb', 'tidal'].includes(toId(target))) return this.sendReplyBox(getMonData('tidalwavebot'));
-		if (['ssbn', 'lycaniumz', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('ssbn640'));
+		if (['lycan', 'lyc', 'vxn'].includes(toId(target))) return this.sendReplyBox(getMonData('lycaniumz'));
 		if (!targetData) return this.errorReply("The staffmon '" + toId(target) + "' could not be found.");
 		return this.sendReplyBox(targetData);
 	},
