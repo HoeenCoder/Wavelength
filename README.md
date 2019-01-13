@@ -114,7 +114,7 @@ Owners
 Contributors
 
 - [Insist](https://github.com/DeathlyPlays)
-- [SSBN-640](https://github.com/SSBN-640)
+- [Lycanium Z](https://github.com/ImLycan)
 - [Volco](https://github.com/Volco)
 - [wgc](https://github.com/wgc-coder)
 
