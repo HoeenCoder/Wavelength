@@ -642,43 +642,6 @@ let Formats = [
 		ruleset: ['Cancel Mod', 'HP Percentage Mod'],
 	},
 	{
-		name: "[Gen 7] Doubles Monotype",
-		desc: [
-			"All the Pok&eacute;mon on a team must share a type. The battle is fought in the Doubles Format. Banlist is the same as Doubles OU. Requested by Ashley the Pikachu.",
-		],
-
-		mod: 'gen7',
-		gameType: 'doubles',
-		ruleset: ['[Gen 7] Doubles OU', 'Same Type Clause'],
-	},
-	{
-		name: "[Gen 7] Stacked",
-		desc: [
-			"All hazards can be stackable and stacked infinitely. Original idea by Serperiorater. Coded by SSBN-640.",
-		],
-
-		mod: 'stacked',
-		ruleset: ['[Gen 7] OU'],
-	},
-	{
-		name: "[Gen 7] Weather Wars",
-		desc: [
-			"Terrain and weather activated by an ability stay permenanetly until overwritten. Original idea by c7. Coded by SSBN-640.",
-		],
-
-		mod: 'oldweather',
-		ruleset: ['[Gen 7] OU'],
-	},
-	{
-		name: "[Gen 7] LU",
-		desc: ["The new tiering format that nobody wanted! This format is much more chaotic compared to OU and will be tiered differently. Ran by SSBN-640."],
-		column: 2,
-
-		mod: 'lu',
-		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
-		banlist: ['Arceus', 'Deoxys-Base', 'Deoxys-Attack', 'Dialga', 'Gengar-Mega', 'Giratina', 'Gothitelle', 'Groudon', 'Ho-Oh', 'Kyogre', 'Kyurem-White', 'Lucario-Mega', 'Lunala', 'Mewtwo', 'Necrozma-Dusk-Mane', 'Necrozma-Ultra', 'Palkia', 'Rayquaza', 'Reshiram', 'Salamence-Mega', 'Shaymin-Sky', 'Xerneas', 'Yveltal', 'Zekrom', 'Power Construct'],
-	},
-	{
 		name: "[Gen 7] TsuMeta (BETA)",
 		desc: [
 			"&bullet; <a href=\"http://tsunamips.weebly.com/tsumeta.html\">TsuMeta Information</a>",
