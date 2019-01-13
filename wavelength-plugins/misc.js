@@ -178,13 +178,13 @@ exports.commands = {
 			"- " + WL.nameColor('MechSteelix', true) + " (Policy Leader)<br/>" +
 			"- " + WL.nameColor('Electric Z', true) + " (Policy Admin)<br />" +
 			"- " + WL.nameColor('Opple', true) + " (Community Leader)<br />" +
-			"- " + WL.nameColor('Perison', true) + " (Community Admin)<br/>" +
+			"- " + WL.nameColor('AC Wired', true) + " (Community Admin)<br/>" +
 			"- " + WL.nameColor('Volco', true) + " (Technical Leader, Development)<br />" +
 			"<br />" +
 			"<u><b>Contributors:</b></u><br />" +
 			"- " + WL.nameColor('Ashley the Pikachu', true) + " (Spriting, Digimon Project)<br />" +
 			"- " + WL.nameColor('Insist', true) + " (Development)<br />" +
-			"- " + WL.nameColor('SSBN-640', true) + " (Development)<br />" +
+			"- " + WL.nameColor('Lycanium Z', true) + " (Development)<br />" +
 			"- " + WL.nameColor('wgc', true) + " (Development)<br />" +
 			"<br />" +
 			"<u><b>Retired Staff:</b></u><br />" +
