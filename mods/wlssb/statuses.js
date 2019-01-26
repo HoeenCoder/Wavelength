@@ -162,8 +162,8 @@ exports.BattleStatuses = {
 		exists: true,
 		onStart: function (source) {
 			this.add('c', '%Lycanium Z', 'Heyyyyyyyyyyyyyyyyyyyyyy');
-			source.types = ["Fighting", "Ghost"];
-			this.add('-start', source, 'typeadd', 'Ghost');
+			source.types = ["Fighting", "Steel"];
+			this.add('-start', source, 'typeadd', 'Steel');
 		},
 		onSwitchOut: function (pokemon) {
 			this.add('c', '%Lycanium Z', 'sorry gtg');
