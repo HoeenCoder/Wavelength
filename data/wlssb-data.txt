@@ -18,7 +18,7 @@ Lycanium Z
 EVs: 252 Atk / 4 SpD / 252 Spe
 Jolly Nature
 Ability: Normalize
-Innate Ability: Opposite of Normal: Adds Ghost type on user on switch in.
+Innate Ability: Digitized: Adds Steel type on user on switch in.
 Moves: Substitute, Shift Gear, Multi Attack
 Signature Move: Death Claw
 	- Dark type, Physical, 10 PP, 80 BP, Type based on the held Plate. target's Ability matches the user's.
