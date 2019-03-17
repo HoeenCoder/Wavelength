@@ -66,7 +66,6 @@ class Ambush {
 	nextRound() {
 		clearTimeout(this.timer);
 		this.canShoot = false;
-		if (this.checkWinner()) return this.getWinner();
 		let survivors = this.getSurvivors();
 		if (this.lastRoundSurvivors === survivors.length) {
 			this.room.add(`|html|<div class = "infobox"><center>This game of Ambush has ended due to inactivity, with <strong>${survivors.length}</strong> survivors.</center></div>`);
