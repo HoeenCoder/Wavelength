@@ -66,6 +66,7 @@ class Ambush {
 	nextRound() {
 		clearTimeout(this.timer);
 		this.canShoot = false;
+		if (this.checkWinner()) return this.getWinner();
 		let survivors = this.getSurvivors();
 		if (this.lastRoundSurvivors === survivors.length) {
 			this.room.add(`|html|<div class = "infobox"><center>This game of Ambush has ended due to inactivity, with <strong>${survivors.length}</strong> survivors.</center></div>`);
@@ -79,7 +80,7 @@ class Ambush {
 		this.room.add(`|uhtml|${msg}<br /><br /><i>Wait for it...</i>`).update();
 
 		this.release = setTimeout(() => {
-			this.room.add(`|uhtmlchange|${msg}<br /><br /><strong style = "color: red; font-size: 20pt;">FIRE!</strong><br /><br /></div></div>`).update();
+			this.room.add(`|uhtmlchange|${msg}<br /><br /><strong style = "color: red; font-size: 12pt;">FIRE!</strong><br /><br /></div></div>`).update();
 			this.canShoot = true;
 			this.resetTimer();
 		}, (Math.floor(Math.random() * 12) + 3) * 1000);
@@ -108,7 +109,7 @@ class Ambush {
 			this.room.add(`|html|${WL.nameColor(user.name, true)} fired at ${WL.nameColor(targetUser.name, true)}, but ${WL.nameColor(targetUser.name, true)} has an active shield!`);
 			return;
 		} else {
-			this.room.add(`|html|${Server.nameColor(user.name, true)} fired at ${Server.nameColor(targetUser.name, true)}!`);
+			this.room.add(`|html|${WL.nameColor(user.name, true)} fired at ${WL.nameColor(targetUser.name, true)}!`);
 		}
 		this.players.get(targetUser).status = "dead";
 
@@ -146,6 +147,18 @@ class Ambush {
 		if (this.getSurvivors().length === 1) return true;
 	}
 
+	getWinner() {
+		let winner = this.getSurvivors()[0][0].name;
+		let msg = `|html|<div class = "infobox"><center>The winner of this game of Ambush is ${WL.nameColor(winner, true)}! Congratulations!</center>`;
+		if (this.room.isOfficial) {
+			msg += `<center>${WL.nameColor(winner, true)} has also won <strong>5</strong> EXP, as well as 2 ${moneyPlural} for winning!</center>`;
+			Server.ExpControl.addExp(winner, this.room, 5);
+			Economy.writeMoney(winner, 2);
+			Economy.logTransaction(`${winner} has won a game of Ambush, and earned two ${moneyPlural}.`);
+		}
+		this.room.add(msg);
+		this.end();
+	}
 
 	end(user) {
 		if (user) {
@@ -204,7 +217,7 @@ exports.commands = {
 
 			if (room.ambush.round) return this.errorReply("This game of Ambush has already begun!");
 			if (room.ambush.players.size < 3) return this.errorReply("There aren't enough players yet. Wait for more to join!");
-			room.add(`|html|(${WL.nameColor(user.name, true, true)} forcibly started round 1.)`);
+			room.add(`|html|(${Server.nameColor(user.name, true, true)} forcibly started round 1.)`);
 			room.ambush.nextRound();
 		},
 
@@ -265,7 +278,7 @@ exports.commands = {
 		guide: "rules",
 		rules: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			this.sendReplyBox(`<h3>Ambush:</h3><br />Basically Ambush is a game where everyone must compete to be the first one to shoot another user, thus eliminating them.<br />To shoot a user you use <code>/fire [${user.name}]</code> for instance. So it's just how laggy your wifi is or how fast a typer you are. There are also cool features such as shields.<br />Disclaimer: Keep in mind if you do /fire ${user.name}, it will kill you since you are the target.<br />If you successfully shoot a user before getting shot you get a shield, which protects you from being shot for the remainder of the round.<br />Lastly, if you successfully eliminate all of the other targets you earn 5 EXP as well as 2 ${moneyPlural}!`);
+			this.sendReplyBox(`<h3>Ambush:</h3><br />Basically Ambush is a game where everyone must compete to be the first one to shoot another user, thus eliminating them.<br />To shoot a user you use <code>/ambush fire [${user.name}]</code> for instance. You need to wait until the game says to fire.<br />Disclaimer: Keep in mind if you do /fire ${user.name}, it will kill you since you are the target.<br />If you successfully shoot a user before getting shot you get a shield, which protects you from being shot for the remainder of the round.<br />Lastly, if you successfully eliminate all of the other targets you earn 5 EXP as well as 2 ${moneyPlural}!`);
 		},
 
 		"": "help",
