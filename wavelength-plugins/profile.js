@@ -9,8 +9,6 @@
 
 'use strict';
 
-let geoip = require('geoip-lite-country');
-
 // fill your server's IP in your config.js for exports.serverIp
 const serverIp = Config.serverIp;
 
@@ -583,12 +581,6 @@ exports.commands = {
 			return Chat.toDurationString(Date.now() - seen, {precision: true}) + " ago.";
 		}
 
-		function getFlag(userid) {
-			let ip = (Users(userid) ? geoip.lookup(Users(userid).latestIp) : false);
-			if (!ip || ip === null) return '';
-			return `<img src="http://flags.fmcdn.net/data/flags/normal/${ip.country.toLowerCase()}.png" alt="${ip.country}" title="${ip.country}" width="20" height="10">`;
-		}
-
 		function background(user) {
 			let bg = Db.backgrounds.get(user);
 			if (!Db.backgrounds.has(user)) return `<div style="max-height: 250px; overflow-y: scroll">`;
@@ -613,7 +605,7 @@ exports.commands = {
 				let profile = ``;
 				profile += `${background(toId(username))} ${showBadges(toId(username))}`;
 				profile += `<div style="display: inline-block; width: 6.5em; height: 100%; vertical-align: top"><img src="${avatar}" height="80" width="80" align="left"></div>`;
-				profile += `<div style="display: inline-block">&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp; ${getFlag(toId(username))} ${showTitle(username)}<br />`;
+				profile += `<div style="display: inline-block">&nbsp;${pColor(toId(username))}<b>Name:</b></font> ${WL.nameColor(username, true)}&nbsp;${showTitle(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Group:</b> ${userGroup}</font> ${devCheck(username)} ${vipCheck(username)} ${tsumetaCheck(username)}<br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>Registered:</b> ${regdate}</font><br />`;
 				profile += `&nbsp;${pColor(toId(username))}<b>${currencyPlural}:</b> ${currency}</font><br />`;
