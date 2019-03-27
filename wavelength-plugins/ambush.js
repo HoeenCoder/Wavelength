@@ -217,7 +217,7 @@ exports.commands = {
 
 			if (room.ambush.round) return this.errorReply("This game of Ambush has already begun!");
 			if (room.ambush.players.size < 3) return this.errorReply("There aren't enough players yet. Wait for more to join!");
-			room.add(`|html|(${Server.nameColor(user.name, true, true)} forcibly started round 1.)`);
+			room.add(`|html|(${WL.nameColor(user.name, true, true)} forcibly started round 1.)`);
 			room.ambush.nextRound();
 		},
 
