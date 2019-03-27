@@ -76,7 +76,7 @@ class Ambush {
 
 		this.round++;
 		this.loadGuns();
-		let msg = `ambush${this.room.ambushCount}${this.round}|<div style="background-color: #000; border: 12px double #860000; color: #DF0101"><center><h3><img style="transform: scaleX(-1);" src="http://pldh.net/media/pokemon/gen6/xy-animated/491.gif" height="87" width="121" align="left"><font face="arial" size="4"><u><strong>Round ${this.round}</strong></u></font><img src="http://pldh.net/media/pokemon/gen6/xy-animated/488.gif" height="87" width="121" align="right"></h3><br /><br /><br /><br /><br /><br />Players: ${this.getSurvivors().map(player => Server.nameColor(player[0].name)).join(", ")}<br /><br /><small>Use /fire [player] to shoot another player!</small>`;
+		let msg = `ambush${this.room.ambushCount}${this.round}|<div style="background-color: #000; border: 12px double #860000; color: #DF0101"><center><h3><img style="transform: scaleX(-1);" src="http://pldh.net/media/pokemon/gen6/xy-animated/491.gif" height="87" width="121" align="left"><font face="arial" size="4"><u><strong>Round ${this.round}</strong></u></font><img src="http://pldh.net/media/pokemon/gen6/xy-animated/488.gif" height="87" width="121" align="right"></h3><br /><br /><br /><br /><br /><br />Players: ${this.getSurvivors().map(player => WL.nameColor(player[0].name)).join(", ")}<br /><br /><small>Use /fire [player] to shoot another player!</small>`;
 		this.room.add(`|uhtml|${msg}<br /><br /><i>Wait for it...</i>`).update();
 
 		this.release = setTimeout(() => {
