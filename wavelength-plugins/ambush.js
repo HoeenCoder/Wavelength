@@ -151,7 +151,7 @@ class Ambush {
 		let winner = this.getSurvivors()[0][0].name;
 		let msg = `|html|<div class = "infobox"><center>The winner of this game of Ambush is ${WL.nameColor(winner, true)}! Congratulations!</center>`;
 		if (this.room.isOfficial) {
-			msg += `<center>${WL.nameColor(winner, true)} has also won <strong>5</strong> EXP, as well as 2 ${moneyPlural} for winning!</center>`;
+			msg += `<center>${WL.nameColor(winner, true)} has also won <strong>5</strong> EXP, as well as 2 ${currencyPlural} for winning!</center>`;
 			WL.ExpControl.addExp(winner, this.room, 5);
 			Economy.writeMoney(winner, 2);
 			Economy.logTransaction(`${winner} has won a game of Ambush, and earned two ${moneyPlural}.`);
