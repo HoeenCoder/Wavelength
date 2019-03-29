@@ -154,7 +154,7 @@ class Ambush {
 			msg += `<center>${WL.nameColor(winner, true)} has also won <strong>5</strong> EXP, as well as 2 ${currencyPlural} for winning!</center>`;
 			WL.ExpControl.addExp(winner, this.room, 5);
 			Economy.writeMoney(winner, 2);
-			Economy.logTransaction(`${winner} has won a game of Ambush, and earned two ${moneyPlural}.`);
+			Economy.logTransaction(`${winner} has won a game of Ambush, and earned two ${currencyPlural}.`);
 		}
 		this.room.add(msg);
 		this.end();
@@ -278,7 +278,7 @@ exports.commands = {
 		guide: "rules",
 		rules: function (target, room, user) {
 			if (!this.runBroadcast()) return;
-			this.sendReplyBox(`<h3>Ambush:</h3><br />Basically Ambush is a game where everyone must compete to be the first one to shoot another user, thus eliminating them.<br />To shoot a user you use <code>/ambush fire [${user.name}]</code> for instance. You need to wait until the game says to fire.<br />Disclaimer: Keep in mind if you do /fire ${user.name}, it will kill you since you are the target.<br />If you successfully shoot a user before getting shot you get a shield, which protects you from being shot for the remainder of the round.<br />Lastly, if you successfully eliminate all of the other targets you earn 5 EXP as well as 2 ${moneyPlural}!`);
+			this.sendReplyBox(`<h3>Ambush:</h3><br />Basically Ambush is a game where everyone must compete to be the first one to shoot another user, thus eliminating them.<br />To shoot a user you use <code>/ambush fire [${user.name}]</code> for instance. You need to wait until the game says to fire.<br />Disclaimer: Keep in mind if you do /fire ${user.name}, it will kill you since you are the target.<br />If you successfully shoot a user before getting shot you get a shield, which protects you from being shot for the remainder of the round.<br />Lastly, if you successfully eliminate all of the other targets you earn 5 EXP as well as 2 ${currencyPlural}!`);
 		},
 
 		"": "help",
