@@ -630,16 +630,19 @@ let Formats = [
 		},
 	},
 	{
-		name: "[Gen 7] Digimon Showdown",
-		desc: `The Digimon Metagame!`,
+		name: "[Digimon] Digimon Showdown",
+		desc: `Use Digimon in this battle instead of Pok&eacute;mon!`,
 		threads: [
-			`&bullet; <a href="TBA">Digimon Showdown</a>`,
+			`&bullet; <a href="Smogon post TBD">Digimon Showdown</a>`,
 		],
 
-		mod: 'digimon',
-		gameType: 'triples',
+		mod: "digimon",
+		gameType: 'doubles',
 		team: "randomDigimon",
 		ruleset: ['Cancel Mod', 'HP Percentage Mod'],
+		onBegin() {
+			this.add('raw', '<table style="background-color: #ffffff; margin-left: auto; margin-right: auto; width: 345px;" border="2"> <tbody> <tr> <td style="text-align: center; width: 287px;"> <table style="width: 333px; background-color: #333333; margin-left: auto; margin-right: auto;"> <tbody> <tr> <td style="width: 351px;"><strong><span style="color: white;">Digimon Showdown</span></strong></td> </tr> </tbody> </table> <table style="margin-left: auto; margin-right: auto;"> <tbody> <tr> <td>A Digimon Fan Game</td> </tr> </tbody> </table> </td> </tr> <tr> <td style="text-align: center; width: 287px;"> <table style="width: 333px; background-color: #333333; float: left;"> <tbody> <tr> <td style="width: 348px;"><strong><span style="color: white;"><span style="color: white;">Music</span></span></strong></td> </tr> </tbody> </table> </td> </tr> <tr> <td style="text-align: center; width: 287px;"><span style="color: blue;"><span style="color: blue;"><strong><a title="Digimon Dawn &amp; Dusk: Advanced Battle" href="https://www.youtube.com/watch?v=oRHCjQeLFck" target="_blank" rel="noopener"><img src="https://i.imgur.com/nX6FpmF.png" width="83" height="36"></a><a title="Digimon World Re:Digitized Battle Theme 1" href="https://www.youtube.com/watch?v=M2IHR1F30IA" target="_blank" rel="noopener"><img src="https://i.imgur.com/xZeMAmc.png" width="83" height="36"></a><a title="Digimon Story Cyber Sleuth Hackers Memory: Digital Wars II" href="https://www.youtube.com/watch?v=loUQ8B8yX8U" target="_blank" rel="noopener"><img src="https://i.imgur.com/FAA9nvq.png" width="83" height="36"></a><a title="Digimon World Next Order: Boss Battle" href="https://www.youtube.com/watch?v=PHiz-dJKq4Q" target="_blank" rel="noopener"><img src="https://i.imgur.com/EZjUzVY.png" width="83" height="36"></a></strong></span></span></td> </tr> <tr> <td style="text-align: center; width: 287px;"> <table style="width: 333px; background-color: #333333; float: left;"> <tbody> <tr> <td style="width: 483px;"><strong><span style="color: white;">Players Guides</span></strong></td> </tr> </tbody> </table> </td> </tr> <tr> <td style="width: 287px;"> <table style="height: 29px; margin-left: auto; margin-right: auto; width: 331px;" border="1"> <tbody> <tr> <td style="width: 79px; text-align: center;"><a href="https://i.imgur.com/3ruoOac.png" target="_blank" rel="noopener">Digi-List</a></td> <td style="width: 85px; text-align: center;"><a href="https://i.imgur.com/tj244M3.png" target="_blank" rel="noopener">Type Chart</a></td> <td style="width: 55px; text-align: center;"><a href="https://i.imgur.com/x4NUYpU.png" target="_blank" rel="noopener">Abilities</a></td> <td style="width: 84px; text-align: center;"><a href="https://discord.gg/xGVJe6y" target="_blank" rel="noopener">Discord</a></td> </tr> </tbody> </table> </td> </tr> <tr> <td style="width: 287px;"> <table style="width: 333px; background-color: #333333; float: left;"> <tbody> <tr> <td style="width: 345px; text-align: center;"><strong><span style="color: white;">Offical Digimon Media</span></strong></td> </tr> </tbody> </table> </td> </tr> <tr> <td style="text-align: center; width: 287px;"> <table style="height: 27px; margin-left: auto; margin-right: auto;" border="1" width="331"> <tbody> <tr> <td style="width: 149px;"><a href="https://wikimon.net/List_of_Video_Games" target="_blank" rel="noopener">Game List</a></td> <td style="width: 166px;"><a href="https://wikimon.net/Category:Anime" target="_blank" rel="noopener">Anime List</a></td> </tr> </tbody> </table> </td> </tr> <tr> <td style="text-align: center; width: 287px;"> <table style="width: 332px; background-color: #333333;"> <tbody> <tr> <td style="width: 336px;"><a href="https://1drv.ms/w/s!AvoD6RnUzzMvg3NC7OWJVkWHNZ-t" target="_blank" rel="noopener"><strong><span style="color: white;">Developer Credits</span></strong></a></td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p>&nbsp;</p>');
+		},
 	},
 	{
 		name: "[Gen 7] Doubles Monotype",

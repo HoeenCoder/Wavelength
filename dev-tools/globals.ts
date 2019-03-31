@@ -591,6 +591,7 @@ interface TemplateData {
 	otherForms?: string[]
 	otherFormes?: string[]
 	prevo?: string
+	stage?: string
 }
 
 interface ModdedTemplateData extends Partial<TemplateData> {
