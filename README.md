@@ -33,13 +33,18 @@ Installing
 
     ./pokemon-showdown
 
-(Requires Node.js 8+)
+(Requires Node.js v10+)
+
+If your distro package manager has an old Node.js version, the simplest way to upgrade is `n` – usually no root necessary:
+
+    npm install --global n
+    n latest
 
 
 Detailed installation instructions
 ------------------------------------------------------------------------
 
-Pokémon Showdown requires you to have [Node.js][6] installed, 8.x or later (7.7 or later can work, but you might as well be on the latest stable).
+Pokémon Showdown requires you to have [Node.js][6] installed, v10.x or later.
 
 ```bash
 $ git clone https://github.com/HoeenCoder/Wavelength.git

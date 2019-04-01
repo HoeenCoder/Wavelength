@@ -4,13 +4,16 @@
 /logs/*
 /node_modules
 /eslint-cache
-/chat-plugins/private.js
-/chat-plugins/*-private.js
-/wavelength-plugins/*-private.js
-/wavelength-plugins/filter.js
+/server/chat-plugins/private.js
+/server/chat-plugins/*-private.js
+/server/wavelength-plugins/*-private.js
+/server/wavelength-plugins/filter.js
 npm-debug.log
 .eslintcache
 package-lock.json
+
+# Typescript build artifacts
+.*-dist/
 
 # visual studio live share
 .vs
@@ -34,7 +37,6 @@ tmp/**/*
 .installed.cfg
 
 downloads
-build
 dist
 
 # egg related
