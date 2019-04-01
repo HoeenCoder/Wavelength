@@ -9,7 +9,7 @@ let emoticons = {'feelsbd': 'http://i.imgur.com/TZvJ1lI.png'};
 let emoteRegex = new RegExp('feelsbd', 'g');
 WL.ignoreEmotes = {};
 try {
-	WL.ignoreEmotes = JSON.parse(fs.readFileSync('../../config/ignoreemotes.json', 'utf8'));
+	WL.ignoreEmotes = JSON.parse(fs.readFileSync('config/ignoreemotes.json', 'utf8'));
 } catch (e) {
 	if (e.code !== 'ENOENT') throw e;
 	console.log('Failed to load emoticon ignores.');
@@ -17,7 +17,7 @@ try {
 
 function loadEmoticons() {
 	try {
-		emoticons = JSON.parse(fs.readFileSync('../../config/emoticons.json', 'utf8'));
+		emoticons = JSON.parse(fs.readFileSync('config/emoticons.json', 'utf8'));
 		emoteRegex = [];
 		for (let emote in emoticons) {
 			emoteRegex.push(escapeRegExp(emote));
@@ -31,7 +31,7 @@ function loadEmoticons() {
 loadEmoticons();
 
 function saveEmoticons() {
-	fs.writeFileSync('../../config/emoticons.json', JSON.stringify(emoticons));
+	fs.writeFileSync('config/emoticons.json', JSON.stringify(emoticons));
 	emoteRegex = [];
 	for (let emote in emoticons) {
 		emoteRegex.push(emote);
@@ -80,7 +80,7 @@ exports.commands = {
 			emoticons[parts[0]] = parts[1];
 			saveEmoticons();
 			this.sendReply(`|raw|The emoticon "${Chat.escapeHTML(parts[0])}" has been added: <img src="${parts[1]}" width="40" height="40">`);
-			Rooms('upperstaff').add(`|raw|${WL.nameColor(user.name, true)} has added the emote "${Chat.escapeHTML(parts[0])}": <img width="40" height="40" src="${parts[1]}">`).update();
+			if (Rooms('upperstaff')) Rooms('upperstaff').add(`|raw|${WL.nameColor(user.name, true)} has added the emote "${Chat.escapeHTML(parts[0])}": <img width="40" height="40" src="${parts[1]}">`).update();
 			WL.messageSeniorStaff(`/html ${WL.nameColor(user.name, true)} has added the emote "${Chat.escapeHTML(parts[0])}": <img width="40" height="40" src="${parts[1]}">`);
 		},
 
@@ -123,14 +123,14 @@ exports.commands = {
 		ignore: function (target, room, user) {
 			if (WL.ignoreEmotes[user.userid]) return this.errorReply("You are already ignoring emoticons.");
 			WL.ignoreEmotes[user.userid] = true;
-			fs.writeFileSync('../../config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
+			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
 			this.sendReply(`You are now ignoring emoticons.`);
 		},
 
 		unignore: function (target, room, user) {
 			if (!WL.ignoreEmotes[user.userid]) return this.errorReply("You aren't ignoring emoticons.");
 			delete WL.ignoreEmotes[user.userid];
-			fs.writeFileSync('../../config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
+			fs.writeFileSync('config/ignoreemotes.json', JSON.stringify(WL.ignoreEmotes));
 			this.sendReply(`You are no longer ignoring emoticons.`);
 		},
 

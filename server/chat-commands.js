@@ -3019,8 +3019,8 @@ const commands = {
 				Chat.uncacheDir('./server/chat-plugins');
 				Chat.uncacheDir('./translations');
 				Chat.uncacheDir('./server/wavelength-plugins');
-				Chat.uncache('./WL');
-				global.WL = require('./WL').WL;
+				Chat.uncache('WL');
+				global.WL = require('../WL').WL;
 				global.Chat = require('./chat');
 
 				let runningTournaments = Tournaments.tournaments;
