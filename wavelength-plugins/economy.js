@@ -73,11 +73,6 @@ let Economy = global.Economy = {
 		if (!message) return false;
 		FS("logs/transactions.log").append(`[${new Date().toUTCString()}] ${message}\n`);
 	},
-
-	logDice: function (message) {
-		if (!message) return false;
-		FS("logs/dice.log").append(`[${new Date().toUTCString()}] ${message}\n`);
-	},
 };
 
 global.rankLadder = function (title, type, array, prop, group) {
