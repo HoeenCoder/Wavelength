@@ -1520,6 +1520,16 @@ Chat.loadPlugins = function () {
 		if (plugin.loginfilter) Chat.loginfilters.push(plugin.loginfilter);
 		if (plugin.nicknamefilter) Chat.nicknamefilters.push(plugin.nicknamefilter);
 	}
+
+	let WL_FILES = FS('server/wavelength/chat-plugins/').readdirSync();
+	WL_FILES = WL_FILES.filter(file => file !== 'info.js');
+
+	for (const file of WL_FILES) {
+		if (file.substr(-3) !== '.js') continue;
+		const plugin = require(`./wavelength/chat-plugins/${file}`);
+
+		Object.assign(commands, plugin.commands);
+	}
 };
 
 Chat.destroy = function () {
