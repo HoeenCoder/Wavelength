@@ -1,7 +1,7 @@
 {
 	"root": true,
 	"parserOptions": {
-		"ecmaVersion": 8,
+		"ecmaVersion": 9,
 		"sourceType": "script",
 		"ecmaFeatures": {
 			"globalReturn": true
@@ -14,9 +14,8 @@
 	"globals": {
 		"Config": false, "Monitor": false, "toId": false, "Dex": false, "LoginServer": false,
 		"Users": false, "Punishments": false, "Rooms": false, "Verifier": false, "Chat": false,
-		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false, "Ladders": false,
-        "TeamValidatorAsync": false, "WL": false, "Tells": false, "Db": false, "Economy": false, "currencyName": false,
-        "currencyPlural": false, "writeSSB": false, "Ontime": false, "rankLadder": false,
+		"Tournaments": false, "Dnsbl": false, "Sockets": false, "TeamValidator": false,
+		"TeamValidatorAsync": false, "Ladders": false
 	},
 	"extends": "eslint:recommended",
 	"rules": {
@@ -99,7 +98,7 @@
 		"no-path-concat": "off",
 		"no-process-env": "off",
 		"no-process-exit": "off",
-		"no-restricted-modules": ["error", "moment", "sugar"],
+		"no-restricted-modules": ["error", "moment", "request", "sugar"],
 		"no-sync": "off",
 
 		"array-bracket-spacing": ["error", "never"],
@@ -137,6 +136,7 @@
 		"no-underscore-dangle": "off",
 		"no-unneeded-ternary": "error",
 		"object-curly-spacing": ["error", "never"],
+		"object-shorthand": ["error", "methods"],
 		"one-var": "off",
 		"operator-assignment": "off",
 		"operator-linebreak": ["error", "after"],

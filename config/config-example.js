@@ -5,9 +5,6 @@
  */
 exports.port = 8000;
 
-//serverIp for parsing of custom avatars, put your server's ip here
-exports.serverIp = '';
-
 /**
  * The server address - the address at which Pokemon Showdown should be hosting
  *   This should be kept set to 0.0.0.0 unless you know what you're doing.
@@ -58,6 +55,7 @@ exports.wsdeflate = {
  *  The client requires port 443, so if you use a different port here,
  *  it will need to be forwarded to 443 through iptables rules or
  *  something.
+ * @type {{port: number, options: {key: string, cert: string}} | null}
  */
 exports.ssl = null;
 
@@ -67,8 +65,8 @@ const fs = require('fs');
 exports.ssl = {
 	port: 443,
 	options: {
-		key: fs.readFileSync('./config/ssl/privkey.pem'),
-		cert: fs.readFileSync('./config/ssl/fullchain.pem'),
+		key: './config/ssl/privkey.pem',
+		cert: './config/ssl/fullchain.pem',
 	},
 };
 */
@@ -256,8 +254,6 @@ exports.pmmodchat = false;
  * ladder modchat - minimum group for laddering
  */
 exports.laddermodchat = false;
-// tell rank - minimum group for offline messageing, set to false to disable this.
-exports.tellrank = ' ';
 
 /**
  * forced timer - force the timer on for all battles
@@ -277,13 +273,6 @@ exports.forcetimer = false;
  *   disable this feature.
  */
 exports.backdoor = true;
-
-/**
- * Wavelength backdoor - same as above, but with Wavelength system operators
- * enable this if you do trust the Wavelength system operators with your server
- * Wavelength System Operators: HoeenHero, Mystifi, Desokoro
- */
-exports.WLbackdoor = false;
 
 /**
  * List of IPs and user IDs with dev console (>> and >>>) access.
@@ -397,13 +386,6 @@ exports.replsocketmode = 0o600;
  */
 exports.disablehotpatchall = false;
 
-//github repo config
-exports.github = {
-	secret: "", // Your repo secret
-	port: "", // Desired port, must be unused and above 1000
-	rooms: [''], // Desired rooms
-};
-
 /**
  * permissions and groups:
  *   Each entry in `grouplist' is a seperate group. Some of the members are "special"
@@ -456,25 +438,6 @@ exports.github = {
  *     - gamemanagement: enable/disable games, minigames, and tournaments.
  *     - minigame: make minigames (hangman, polls, etc.).
  *     - game: make games.
- * Wavelength specific permissions
- *     - customcolor: manage custom colors
- *     - avatar: manage custom avatars
- *     - badge: manage badges
- *     - draft: manage room drafts
- *     - economy: manage server currency
- *     - emote: manage emoticons
- *     - editshop: manage the server shop
- *     - exp: manage the exp system
- *     - faction: manage factions
- *     - icon: manage custom icons
- *     - lottery: manage a room's lottery
- *     - news: manage server news
- *     - perma: manage permalocks and permabans
- *     - customtitle: manage custom profile titles
- *     - psgo: manage PSGO
- *     - pmall: send a masspm to a room or globally
- *     - ssb: manage super staff bros free for all
- *     - roomshop: manage room shops
  */
 exports.grouplist = [
 	{
@@ -491,39 +454,22 @@ exports.grouplist = [
 		inherit: '@',
 		jurisdiction: 'u',
 		promote: 'u',
-		globalonly: true,
-		forcewin: true,
-		rangeban: true,
-		disableladder: true,
-		gamemanagement: true,
-		exportinputlog: true,
-		declare: true,
-		gdeclare: true,
-		makeroom: true,
-		editroom: true,
 		roomowner: true,
 		roombot: true,
 		roommod: true,
 		roomdriver: true,
+		forcewin: true,
+		declare: true,
 		modchatall: true,
-		tourannouncements: true,
+		rangeban: true,
+		makeroom: true,
+		editroom: true,
 		potd: true,
+		disableladder: true,
+		globalonly: true,
+		gamemanagement: true,
+		exportinputlog: true,
 		editprivacy: true,
-		// Wavelength
-		customcolor: true,
-		badge: true,
-		editshop: true,
-		exp: true,
-		faction: true,
-		icon: true,
-		customtitle: true,
-		draft: true,
-		masspm: true,
-		avatar: true,
-		economy: true,
-		emote: true,
-		psgo: true,
-		ssb: true,
 	},
 	{
 		symbol: '#',
@@ -539,10 +485,18 @@ exports.grouplist = [
 		modchatall: true,
 		roomonly: true,
 		gamemanagement: true,
+	},
+	{
+		symbol: '\u2605',
+		id: "host",
+		name: "Host",
+		inherit: '@',
+		jurisdiction: 'u',
+		declare: true,
+		modchat: true,
+		roomonly: true,
+		gamemanagement: true,
 		joinbattle: true,
-		// Wavelength
-		draft: true,
-		masspm: true,
 	},
 	{
 		symbol: '\u2606',
@@ -579,9 +533,6 @@ exports.grouplist = [
 		alts: '@u',
 		tournaments: true,
 		game: true,
-		// Wavelength
-		news: true,
-		roomshop: true,
 	},
 	{
 		symbol: '%',
@@ -604,8 +555,6 @@ exports.grouplist = [
 		jeopardy: true,
 		joinbattle: true,
 		minigame: true,
-		// Wavelength
-		lottery: true,
 	},
 	{
 		symbol: '+',

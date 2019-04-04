@@ -20,7 +20,7 @@ describe(`Emergency Exit`, function () {
 		battle.makeChoices('move superfang', 'move superfang');
 		assert.strictEqual(foePokemon.hp, foePokemon.maxhp);
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
-		assert.strictEqual(battle.currentRequest, 'switch');
+		assert.strictEqual(battle.requestState, 'switch');
 	});
 
 	it(`should not request switch-out if first healed by berry`, function () {
@@ -29,7 +29,7 @@ describe(`Emergency Exit`, function () {
 			[{species: "Raticate", ability: 'guts', moves: ['superfang']}],
 		]);
 		battle.makeChoices('move sleeptalk', 'move superfang');
-		assert.strictEqual(battle.currentRequest, 'move');
+		assert.strictEqual(battle.requestState, 'move');
 	});
 
 	it(`should not request switch-out on usage of Substitute`, function () {
@@ -42,7 +42,7 @@ describe(`Emergency Exit`, function () {
 		assert.false.atMost(eePokemon.hp, eePokemon.maxhp / 2);
 		battle.makeChoices('move substitute', 'move thunderbolt');
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
-		assert.strictEqual(battle.currentRequest, 'move');
+		assert.strictEqual(battle.requestState, 'move');
 	});
 
 	it(`should prevent Volt Switch after-switches`, function () {
@@ -55,9 +55,9 @@ describe(`Emergency Exit`, function () {
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
 
 		assert.false.holdsItem(eePokemon);
-		assert.strictEqual(battle.currentRequest, 'switch');
+		assert.strictEqual(battle.requestState, 'switch');
 
-		battle.makeChoices('move sleeptalk', 'move voltswitch');
+		battle.makeChoices('default', '');
 		assert.species(battle.p1.active[0], 'Clefable');
 		assert.species(battle.p2.active[0], 'Zekrom');
 	});
@@ -72,9 +72,9 @@ describe(`Emergency Exit`, function () {
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
 
 		assert.false.holdsItem(eePokemon);
-		assert.strictEqual(battle.currentRequest, 'switch');
+		assert.strictEqual(battle.requestState, 'switch');
 
-		battle.makeChoices('move metronome', 'move metronome');
+		battle.makeChoices('auto', '');
 		assert.species(battle.p1.active[0], 'Clefable');
 		assert.species(battle.p2.active[0], 'Clefable');
 	});
@@ -85,13 +85,13 @@ describe(`Emergency Exit`, function () {
 			[{species: "Raticate", ability: 'guts', moves: ['superfang']}, {species: "Clefable", ability: 'Unaware', moves: ['metronome']}],
 		]);
 		const eePokemon = battle.p1.active[0];
-		battle.makeChoices('move sleeptalk', 'move superfang');
+		battle.makeChoices('auto', 'auto');
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
 
 		assert.false.holdsItem(eePokemon);
-		assert.strictEqual(battle.currentRequest, 'switch');
+		assert.strictEqual(battle.requestState, 'switch');
 
-		battle.makeChoices('move metronome', 'move superfang');
+		battle.makeChoices('auto', '');
 		assert.species(battle.p1.active[0], 'Clefable');
 	});
 
@@ -103,6 +103,6 @@ describe(`Emergency Exit`, function () {
 		const eePokemon = battle.p1.active[0];
 		battle.makeChoices('move sleeptalk', 'move thunder');
 		assert.atMost(eePokemon.hp, eePokemon.maxhp / 2);
-		assert.strictEqual(battle.currentRequest, 'move');
+		assert.strictEqual(battle.requestState, 'move');
 	});
 });
