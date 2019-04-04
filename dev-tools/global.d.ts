@@ -56,7 +56,10 @@ declare global {
 	const Format: DataType.Format
 	const Item: DataType.Item
 	const Move: DataType.Move
+<<<<<<< HEAD
 	const ActiveMove: DataType.ActiveMove
+=======
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 	const TypeInfo: DataType.TypeInfo
 	const PureEffect: DataType.PureEffect
 	const RuleTable: DataType.RuleTable

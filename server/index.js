@@ -88,6 +88,11 @@ if (Config.watchconfig) {
  * Set up most of our globals
  *********************************************************/
 
+<<<<<<< HEAD:server/index.js
+=======
+global.Db = require('nef')(require('nef-fs')('./config/database'));
+
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:server/index.js
 global.Dex = require('../.sim-dist/dex');
 global.toId = Dex.getId;
 

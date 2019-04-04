@@ -12,12 +12,17 @@ describe('Weakness Policy', function () {
 
 	it('should be triggered by super effective hits', function () {
 		battle = common.createBattle();
+<<<<<<< HEAD
 		battle.setPlayer('p1', {team: [
 			{species: "Lucario", ability: 'justified', moves: ['aurasphere']},
 		]});
 		battle.setPlayer('p2', {team: [
 			{species: "Blissey", ability: 'naturalcure', item: 'weaknesspolicy', moves: ['softboiled']},
 		]});
+=======
+		battle.setPlayer('p1', {team: [{species: "Lucario", ability: 'justified', moves: ['aurasphere']}]});
+		battle.setPlayer('p2', {team: [{species: "Blissey", ability: 'naturalcure', item: 'weaknesspolicy', moves: ['softboiled']}]});
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 		const holder = battle.p2.active[0];
 		battle.makeChoices('move aurasphere', 'move softboiled');
 		assert.false.holdsItem(holder);
@@ -81,12 +86,17 @@ describe('Weakness Policy', function () {
 
 	it('should not be triggered by fixed damage moves', function () {
 		battle = common.createBattle();
+<<<<<<< HEAD
 		battle.setPlayer('p1', {team: [
 			{species: "Lucario", ability: 'justified', moves: ['seismictoss']},
 		]});
 		battle.setPlayer('p2', {team: [
 			{species: "Blissey", ability: 'naturalcure', item: 'weaknesspolicy', moves: ['softboiled']},
 		]});
+=======
+		battle.setPlayer('p1', {team: [{species: "Lucario", ability: 'justified', moves: ['seismictoss']}]});
+		battle.setPlayer('p2', {team: [{species: "Blissey", ability: 'naturalcure', item: 'weaknesspolicy', moves: ['softboiled']}]});
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 		const holder = battle.p2.active[0];
 		battle.makeChoices('move seismictoss', 'move softboiled');
 		assert.holdsItem(holder);

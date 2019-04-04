@@ -864,6 +864,7 @@ interface Move extends Readonly<BasicEffect & MoveData> {
 	readonly effectType: 'Move'
 }
 
+<<<<<<< HEAD
 interface MoveHitData {
 	/** Whether or not this move is a crit against each defender */
 	crit: {[slotid: string]: boolean};
@@ -876,6 +877,8 @@ interface MoveHitData {
 	zBrokeProtect: {[slotid: string]: boolean}
 }
 
+=======
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 interface ActiveMove extends BasicEffect, MoveData {
 	readonly effectType: 'Move'
 	hit: number

@@ -324,7 +324,11 @@ let BattleItems = {
 			type: "Steel",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Steel' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Steel' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -738,7 +742,11 @@ let BattleItems = {
 			type: "Rock",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Rock' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Rock' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -928,7 +936,11 @@ let BattleItems = {
 			type: "Fighting",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Fighting' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Fighting' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -962,7 +974,11 @@ let BattleItems = {
 			type: "Flying",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Flying' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Flying' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -985,7 +1001,11 @@ let BattleItems = {
 			type: "Dark",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Dark' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Dark' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -1563,7 +1583,11 @@ let BattleItems = {
 			type: "Bug",
 		},
 		onHit(target, source, move) {
+<<<<<<< HEAD
 			if (move && move.getHitData(target).typeMod > 0) {
+=======
+			if (move && move.typeMod > 0) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.heal(target.maxhp / 4);
 				}
@@ -1608,7 +1632,11 @@ let BattleItems = {
 			basePower: 10,
 		},
 		onModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move && move.getHitData(target).typeMod > 0) {
+=======
+			if (move && move.typeMod > 0) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
@@ -2336,7 +2364,11 @@ let BattleItems = {
 			type: "Dragon",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Dragon' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Dragon' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -2684,7 +2716,11 @@ let BattleItems = {
 			type: "Ghost",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Ghost' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Ghost' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -2707,7 +2743,11 @@ let BattleItems = {
 			type: "Poison",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Poison' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Poison' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -3811,7 +3851,11 @@ let BattleItems = {
 			type: "Fire",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Fire' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Fire' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -3920,7 +3964,11 @@ let BattleItems = {
 			type: "Water",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Water' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Water' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -3943,7 +3991,11 @@ let BattleItems = {
 			type: "Psychic",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Psychic' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Psychic' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -4706,7 +4758,11 @@ let BattleItems = {
 			type: "Grass",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Grass' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Grass' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -4851,7 +4907,11 @@ let BattleItems = {
 			type: "Fairy",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Fairy' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Fairy' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -5144,7 +5204,11 @@ let BattleItems = {
 			type: "Ground",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Ground' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Ground' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -5639,7 +5703,11 @@ let BattleItems = {
 			type: "Bug",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Bug' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Bug' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -5837,7 +5905,11 @@ let BattleItems = {
 			type: "Electric",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Electric' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Electric' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');
@@ -5951,7 +6023,11 @@ let BattleItems = {
 		},
 		onHitPriority: 1,
 		onHit(target, source, move) {
+<<<<<<< HEAD
 			if (target.hp && move.category !== 'Status' && !move.damage && !move.damageCallback && move.getHitData(target).typeMod > 0 && target.useItem()) {
+=======
+			if (target.hp && move.category !== 'Status' && !move.damage && !move.damageCallback && move.typeMod > 0 && target.useItem()) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.boost({atk: 2, spa: 2});
 			}
 		},
@@ -6098,7 +6174,11 @@ let BattleItems = {
 			type: "Ice",
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD
 			if (move.type === 'Ice' && move.getHitData(target).typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+=======
+			if (move.type === 'Ice' && move.typeMod > 0 && (!target.volatiles['substitute'] || move.flags['authentic'] || (move.infiltrates && this.gen >= 6))) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				if (target.eatItem()) {
 					this.debug('-50% reduction');
 					this.add('-enditem', target, this.effect, '[weaken]');

@@ -92,7 +92,11 @@ let BattleStatuses = {
 			this.add(`c|%Akir|too sleepy, c ya`);
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD:data/mods/ssb/statuses.js
 			if (move.getHitData(target).typeMod > 0 && !target.illusion) {
+=======
+			if (move.typeMod > 0 && !target.illusion) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:data/mods/ssb/statuses.js
 				this.debug('Solid Rock neutralize');
 				return this.chainModify(0.75);
 			}
@@ -950,7 +954,11 @@ let BattleStatuses = {
 			this.add(`c|+Osiris|I'm getting too old for this x_x`);
 		},
 		onSourceModifyDamage(damage, source, target, move) {
+<<<<<<< HEAD:data/mods/ssb/statuses.js
 			if (move.getHitData(target).typeMod > 0 && !target.illusion) {
+=======
+			if (move.typeMod > 0 && !target.illusion) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:data/mods/ssb/statuses.js
 				this.debug('Solid Rock neutralize');
 				return this.chainModify(0.75);
 			}

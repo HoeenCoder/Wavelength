@@ -1092,9 +1092,13 @@ if (!PM.isParentProcess) {
 			Monitor.crashlog(err, 'A simulator process');
 		});
 		process.on('unhandledRejection', err => {
+<<<<<<< HEAD:server/room-battle.js
 			if (err instanceof Error) {
 				Monitor.crashlog(err, 'A simulator process Promise');
 			}
+=======
+			Monitor.crashlog(err, 'A simulator process Promise');
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:server/room-battle.js
 		});
 	}
 

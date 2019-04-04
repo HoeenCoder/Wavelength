@@ -457,7 +457,11 @@ class ModdedDex {
 	getActiveMove(move: Move | string): ActiveMove {
 		if (move && typeof (move as ActiveMove).hit === 'number') return move as ActiveMove;
 		move = this.getMove(move);
+<<<<<<< HEAD:sim/dex.ts
 		const moveCopy: ActiveMove = new Data.ActiveMove(this.deepClone(move));
+=======
+		const moveCopy: ActiveMove = this.deepClone(move);
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:sim/dex.ts
 		moveCopy.hit = 0;
 		return moveCopy;
 	}

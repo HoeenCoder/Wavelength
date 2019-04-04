@@ -18,9 +18,17 @@ describe('Z-Moves', function () {
 		]});
 		battle.setPlayer('p2', {team: [
 			{species: 'Tapu Lele', ability: 'psychicsurge', moves: ['protect']},
+<<<<<<< HEAD
 			{species: 'Turtonator', ability: 'shellarmor', moves: ['sleeptalk']},
 		]});
 		battle.makeChoices("move clangingscales zmove, move protect", "move protect, move sleeptalk");
 		assert.fainted(battle.p2.active[1]);
+=======
+			{species: 'Zapdos', ability: 'pressure', moves: ['tailwind']},
+		]});
+		battle.makeChoices("move clangingscales zmove, move protect", "move protect, move tailwind");
+		assert.false.fainted(battle.p2.active[1]);
+		assert.false.fullHP(battle.p2.active[1]);
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 	});
 });

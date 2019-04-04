@@ -3017,6 +3017,10 @@ const commands = {
 				Chat.uncache('./server/chat');
 				Chat.uncache('./server/chat-commands');
 				Chat.uncacheDir('./server/chat-plugins');
+<<<<<<< HEAD:server/chat-commands.js
+=======
+				Chat.uncacheDir('./server/wavelength/chat-plugins');
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2:server/chat-commands.js
 				Chat.uncacheDir('./translations');
 				global.Chat = require('./chat');
 

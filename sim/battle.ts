@@ -1929,12 +1929,20 @@ export class Battle extends Dex.ModdedDex {
 
 		if (typeof move === 'number') {
 			const basePower = move;
+<<<<<<< HEAD
 			move = new Data.ActiveMove({
+=======
+			move = (new Data.Move({
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				basePower,
 				type: '???',
 				category: 'Physical',
 				willCrit: false,
+<<<<<<< HEAD
 			});
+=======
+			})) as ActiveMove;
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 			move.hit = 0;
 		}
 
@@ -1976,6 +1984,7 @@ export class Battle extends Dex.ModdedDex {
 			}
 		}
 
+<<<<<<< HEAD
 		let isCrit = false;
 		if (move.willCrit || move.willCrit === undefined && critRatio && this.randomChance(1, critMult[critRatio])) {
 			if (this.runEvent('CriticalHit', target, null, move)) {
@@ -1984,6 +1993,19 @@ export class Battle extends Dex.ModdedDex {
 			}
 		}
 
+=======
+		move.crit = move.willCrit || false;
+		if (move.willCrit === undefined) {
+			if (critRatio) {
+				move.crit = this.randomChance(1, critMult[critRatio]);
+			}
+		}
+
+		if (move.crit) {
+			move.crit = this.runEvent('CriticalHit', target, null, move);
+		}
+
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 		// happens after crit calculation
 		basePower = this.runEvent('BasePower', pokemon, target, move, basePower, true);
 
@@ -2006,7 +2028,11 @@ export class Battle extends Dex.ModdedDex {
 		let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
 		let ignorePositiveDefensive = !!move.ignorePositiveDefensive;
 
+<<<<<<< HEAD
 		if (isCrit) {
+=======
+		if (move.crit) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 			ignoreNegativeOffensive = true;
 			ignorePositiveDefensive = true;
 		}
@@ -2067,8 +2093,12 @@ export class Battle extends Dex.ModdedDex {
 		baseDamage = this.runEvent('WeatherModifyDamage', pokemon, target, move, baseDamage);
 
 		// crit - not a modifier
+<<<<<<< HEAD
 		const isCrit = move.getHitData(target).crit;
 		if (isCrit) {
+=======
+		if (move.crit) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 			baseDamage = tr(baseDamage * (move.critModifier || (this.gen >= 6 ? 1.5 : 2)));
 		}
 
@@ -2084,6 +2114,7 @@ export class Battle extends Dex.ModdedDex {
 			baseDamage = this.modify(baseDamage, move.stab || 1.5);
 		}
 		// types
+<<<<<<< HEAD
 		let typeMod = target.runEffectiveness(move);
 		typeMod = this.clampIntRange(typeMod, -6, 6);
 		move.setTypeModFor(target, typeMod);
@@ -2098,11 +2129,31 @@ export class Battle extends Dex.ModdedDex {
 			if (!suppressMessages) this.add('-resisted', target);
 
 			for (let i = 0; i > typeMod; i--) {
+=======
+		move.typeMod = target.runEffectiveness(move);
+
+		move.typeMod = this.clampIntRange(move.typeMod, -6, 6);
+		if (move.typeMod > 0) {
+			if (!suppressMessages) this.add('-supereffective', target);
+
+			for (let i = 0; i < move.typeMod; i++) {
+				baseDamage *= 2;
+			}
+		}
+		if (move.typeMod < 0) {
+			if (!suppressMessages) this.add('-resisted', target);
+
+			for (let i = 0; i > move.typeMod; i--) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				baseDamage = tr(baseDamage / 2);
 			}
 		}
 
+<<<<<<< HEAD
 		if (isCrit && !suppressMessages) this.add('-crit', target);
+=======
+		if (move.crit && !suppressMessages) this.add('-crit', target);
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 
 		if (pokemon.status === 'brn' && move.category === 'Physical' && !pokemon.hasAbility('guts')) {
 			if (this.gen < 6 || move.id !== 'facade') {
@@ -2116,7 +2167,11 @@ export class Battle extends Dex.ModdedDex {
 		// Final modifier. Modifiers that modify damage after min damage check, such as Life Orb.
 		baseDamage = this.runEvent('ModifyDamage', pokemon, target, move, baseDamage);
 
+<<<<<<< HEAD
 		if (move.isZPowered && move.getHitData(target).zBrokeProtect) {
+=======
+		if (move.isZPowered && move.zBrokeProtect) {
+>>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 			baseDamage = this.modify(baseDamage, 0.25);
 			this.add('-zbroken', target);
 		}
