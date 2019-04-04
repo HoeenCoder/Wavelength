@@ -271,7 +271,6 @@ let BattleScripts = {
 			return false;
 		}
 		if (targets.length > 1) move.spreadHit = true;
-<<<<<<< HEAD
 
 		/** @type {((targets: Pokemon[], pokemon: Pokemon, move: ActiveMove) => (number | boolean | "" | undefined)[] | undefined)[]} */
 		let moveSteps = [
@@ -313,50 +312,6 @@ let BattleScripts = {
 
 		this.setActiveMove(move, pokemon, targets[0]);
 
-=======
-
-		/** @type {((targets: Pokemon[], pokemon: Pokemon, move: ActiveMove) => (number | boolean | "" | undefined)[] | undefined)[]} */
-		let moveSteps = [
-			// 0. check for semi invulnerability
-			this.hitStepTryImmunityEvent,
-
-			// 1. run the 'TryHit' event (Protect, Magic Bounce, Volt Absorb, etc.) (this is step 2 in gens 5 & 6, and step 5 in gen 4)
-			this.hitStepTryHitEvent,
-
-			// 2. check for type immunity (this is step 1 in gens 4-6)
-			this.hitStepTypeImmunity,
-
-			// 3. check for powder immunity (gen 6+ only)
-			this.hitStepPowderImmunity,
-
-			// 4. check for prankster immunity (gen 6+ only)
-			this.hitStepPranksterImmunity,
-
-			// 5. check accuracy
-			this.hitStepAccuracy,
-
-			// 6. break protection effects
-			this.hitStepBreakProtect,
-
-			// 7. steal positive boosts (Spectral Thief)
-			this.hitStepStealBoosts,
-
-			// 8. loop that processes each hit of the move (has its own steps per iteration)
-			this.hitStepMoveHitLoop,
-		];
-		if (this.gen <= 6) {
-			// Swap step 1 with step 2
-			[moveSteps[1], moveSteps[2]] = [moveSteps[2], moveSteps[1]];
-		}
-		if (this.gen === 4) {
-			// Swap step 5 with new step 2 (old step 1)
-			[moveSteps[2], moveSteps[5]] = [moveSteps[5], moveSteps[2]];
-		}
-
-		this.setActiveMove(move, pokemon, targets[0]);
-		move.zBrokeProtect = false;
-
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 		let hitResult = this.singleEvent('PrepareHit', move, {}, targets[0], pokemon, move);
 		if (!hitResult) {
 			if (hitResult === false) {
@@ -592,10 +547,7 @@ let BattleScripts = {
 	},
 	tryMoveHit(target, pokemon, move) {
 		this.setActiveMove(move, pokemon, target);
-<<<<<<< HEAD
-=======
-		move.zBrokeProtect = false;
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
+
 
 		let hitResult = this.singleEvent('PrepareHit', move, {}, target, pokemon, move);
 		if (!hitResult) {
@@ -695,17 +647,10 @@ let BattleScripts = {
 
 			const moveData = move;
 			if (!moveData.flags) moveData.flags = {};
-<<<<<<< HEAD
 
 			// Modifies targetsCopy (which is why it's a copy)
 			[moveDamage, targetsCopy] = this.spreadMoveHit(targetsCopy, pokemon, move, moveData);
 
-=======
-
-			// Modifies targetsCopy (which is why it's a copy)
-			[moveDamage, targetsCopy] = this.spreadMoveHit(targetsCopy, pokemon, move, moveData);
-
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 			if (!moveDamage.some(val => val !== false)) break;
 			nullDamage = false;
 

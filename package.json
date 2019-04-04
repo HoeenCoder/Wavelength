@@ -8,11 +8,7 @@
     "nef-fs": "^1.0.0",
     "probe-image-size": "^4.0.0",
     "sockjs": "0.3.19",
-<<<<<<< HEAD
     "sucrase": "^3.10.1"
-=======
-    "sucrase": "^3.9.5"
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
   },
   "optionalDependencies": {
     "cloud-env": "^0.2.2",
@@ -63,24 +59,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/cloud-env": "^0.2.0",
-<<<<<<< HEAD
     "@types/node": "^11.13.0",
     "@types/node-static": "^0.7.3",
-=======
-    "@types/node": "^8.10.45",
-    "@types/node-static": "^0.7.2",
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
     "@types/nodemailer": "^4.6.7",
     "@types/sockjs": "^0.3.31",
     "eslint": "^5.15.3",
     "husky": "^1.1.2",
-<<<<<<< HEAD
     "mocha": "^6.0.2",
     "tslint": "^5.15.0",
-=======
-    "mocha": "^5.2.0",
-    "tslint": "^5.13.0",
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
     "typescript": "^3.3.4000"
   }
 }

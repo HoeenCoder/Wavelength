@@ -892,11 +892,7 @@ let BattleAbilities = {
 	"filter": {
 		shortDesc: "This Pokemon receives 3/4 damage from supereffective attacks.",
 		onSourceModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move.getHitData(target).typeMod > 0) {
-=======
-			if (move.typeMod > 0) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.debug('Filter neutralize');
 				return this.chainModify(0.75);
 			}
@@ -2145,11 +2141,7 @@ let BattleAbilities = {
 	"neuroforce": {
 		shortDesc: "This Pokemon's attacks that are super effective against the target do 1.25x damage.",
 		onModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move && move.getHitData(target).typeMod > 0) {
-=======
-			if (move && move.typeMod > 0) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				return this.chainModify([0x1400, 0x1000]);
 			}
 		},
@@ -2531,11 +2523,7 @@ let BattleAbilities = {
 		desc: "This Pokemon receives 3/4 damage from supereffective attacks. Moongeist Beam, Sunsteel Strike, and the Mold Breaker, Teravolt, and Turboblaze Abilities cannot ignore this Ability.",
 		shortDesc: "This Pokemon receives 3/4 damage from supereffective attacks.",
 		onSourceModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move.getHitData(target).typeMod > 0) {
-=======
-			if (move.typeMod > 0) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.debug('Prism Armor neutralize');
 				return this.chainModify(0.75);
 			}
@@ -3123,11 +3111,7 @@ let BattleAbilities = {
 	"sniper": {
 		shortDesc: "If this Pokemon strikes with a critical hit, the damage is multiplied by 1.5.",
 		onModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move.getHitData(target).crit) {
-=======
-			if (move.crit) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.debug('Sniper boost');
 				return this.chainModify(1.5);
 			}
@@ -3187,11 +3171,7 @@ let BattleAbilities = {
 	"solidrock": {
 		shortDesc: "This Pokemon receives 3/4 damage from supereffective attacks.",
 		onSourceModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move.getHitData(target).typeMod > 0) {
-=======
-			if (move.typeMod > 0) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.debug('Solid Rock neutralize');
 				return this.chainModify(0.75);
 			}
@@ -3664,11 +3644,7 @@ let BattleAbilities = {
 	"tintedlens": {
 		shortDesc: "This Pokemon's attacks that are not very effective on a target deal double damage.",
 		onModifyDamage(damage, source, target, move) {
-<<<<<<< HEAD
 			if (move.getHitData(target).typeMod < 0) {
-=======
-			if (move.typeMod < 0) {
->>>>>>> 58128ff734cb376667797636a77dc0db1a305dd2
 				this.debug('Tinted Lens boost');
 				return this.chainModify(2);
 			}
