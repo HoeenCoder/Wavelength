@@ -533,6 +533,7 @@ exports.grouplist = [
 		alts: '@u',
 		tournaments: true,
 		game: true,
+		economy: true,
 	},
 	{
 		symbol: '%',
