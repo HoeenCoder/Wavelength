@@ -17,21 +17,21 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Returns the currency label
-     * @param {number} value
-     * @param {boolean} [includeValue=true]
-     * @return {string}
-     */
+	 * Returns the currency label
+	 * @param {number} value
+	 * @param {boolean} [includeValue=true]
+	 * @return {string}
+	 */
 
 	getCurrencyLabel(value, includeValue = true) {
 		return `${includeValue ? value : ''} ${this.name}${Chat.plural(value)}`;
 	}
 
 	/**
-     * Returns the whether value is a positive integer or not
-     * @param {number} value
-     * @return {boolean}
-     */
+	 * Returns the whether value is a positive integer or not
+	 * @param {number} value
+	 * @return {boolean}
+	 */
 
 	isPInteger(value) {
 		let numValue = Number(value);
@@ -40,21 +40,21 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Returns a user's savings
-     * @param {string} userid
-     * @return {number}
-     */
+	 * Returns a user's savings
+	 * @param {string} userid
+	 * @return {number}
+	 */
 
 	get(userid) {
 		return this.db.get(userid, 0);
 	}
 
 	/**
-     * Awards users with currency
-     * @param {string} target
-     * @param {number} value
-     * @return {string}
-     */
+	 * Awards users with currency
+	 * @param {string} target
+	 * @param {number} value
+	 * @return {string}
+	 */
 
 	award(target, value) {
 		if (!this.isPInteger(value)) return false;
@@ -69,11 +69,11 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Removes a specified portion of user's savings
-     * @param {string} target
-     * @param {number} value
-     * @return {string}
-     */
+	 * Removes a specified portion of user's savings
+	 * @param {string} target
+	 * @param {number} value
+	 * @return {string}
+	 */
 
 	remove(target, value) {
 		if (!this.isPInteger(value)) return false;
@@ -92,9 +92,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Returns the total currency, and the mean
-     * @return {array}
-     */
+	 * Returns the total currency, and the mean
+	 * @return {array}
+	 */
 
 	getStats() {
 		let total = 0;
@@ -111,9 +111,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Sorts the currency database
-     * @return {array}
-     */
+	 * Sorts the currency database
+	 * @return {array}
+	 */
 
 	sort() {
 		let keys = this.db.keys();
@@ -123,9 +123,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Generates a HTML ranking table
-     * @return {string}
-     */
+	 * Generates a HTML ranking table
+	 * @return {string}
+	 */
 
 	genLeaderboard() {
 		// Deprecated attributes, but does anyone care?
@@ -144,9 +144,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Writes text to logs along with timestamps
-     * @param {string} text
-     */
+	 * Writes text to logs along with timestamps
+	 * @param {string} text
+	 */
 
 	log(text) {
 		const date = new Date();
@@ -156,9 +156,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Removes all existing values from currency database
-     * @return {boolean}
-     */
+	 * Removes all existing values from currency database
+	 * @return {boolean}
+	 */
 
 	wipe() {
 		let keys = this.db.keys();
@@ -170,9 +170,9 @@ module.exports = class Economy {
 	}
 
 	/**
-     * Deletes the currency database
-     * @return {Promise}
-     */
+	 * Deletes the currency database
+	 * @return {Promise}
+	 */
 
 	delete() {
 		return FS(`${DB_PATH}/${this.dbName}.json`).unlinkIfExists();
