@@ -15,6 +15,7 @@ exports.commands = {
 			let [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
 			if (!targetUser || !value) return this.parse('/help stardust');
+			if (targetU.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 
 			const amountGiven = econWL.award(targetUser, value);
 			if (!amountGiven) return this.errorReply('Indefinite amount; use whole numbers');
@@ -29,6 +30,7 @@ exports.commands = {
 			let [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
 			if (!targetUser || !value) return this.parse('/help stardust');
+			if (targetU.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 			if (econWL.get(targetU) < value) return this.errorReply(`You can't take more ${econWL.getCurrencyLabel(value, false)} than they have!`);
 
 			const amountLeft = econWL.remove(targetUser, value);
@@ -45,6 +47,7 @@ exports.commands = {
 			const targetUser = toId(targetU);
 			if (!targetUser || !value) return this.parse('/help stardust');
 			if (user.userid === targetUser) return this.errorReply(`You can't transfer ${econWL.getCurrencyLabel(value, false)} to yourself!`);
+			if (targetU.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 			if (econWL.get(user.userid) < value) return this.errorReply(`You can't transfer more ${econWL.getCurrencyLabel(value, false)} than you have!`);
 
 			const amountLeft = econWL.remove(user.userid, value);
@@ -64,6 +67,7 @@ exports.commands = {
 
 			let targetU = toId(target);
 			if (!targetU) targetU = user.userid;
+			if (targetU.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 
 			const savings = econWL.getCurrencyLabel(econWL.get(targetU));
 
