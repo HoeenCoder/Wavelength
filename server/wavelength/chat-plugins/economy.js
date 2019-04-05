@@ -1,11 +1,7 @@
 'use strict';
 
 const ECON = require('../modules/economy/index.js');
-<<<<<<< HEAD
 const econWL = new ECON('stardust', 'currency');
-=======
-const econWL = new ECON('stardust', 'money');
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 
 const DEFAULT_LINES = 50;
 
@@ -14,7 +10,6 @@ exports.commands = {
 	dust: 'stardust',
 	stardust: {
 	    give(target, room, user) {
-<<<<<<< HEAD
 			if (!this.can('economy')) return false;
 
 			let [targetU, value] = target.split(',');
@@ -25,23 +20,10 @@ exports.commands = {
 			if (!amountGiven) return this.errorReply('Indefinite amount; use whole numbers');
 
 			econWL.log(`${user.userid} gave ${targetUser} ${econWL.getCurrencyLabel(value)}`);
-=======
-			if (!this.can('ban')) return false;
-
-			let [targetU, value] = target.split(',');
-			let targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
-
-			let amountGiven = econWL.award(targetUser, value);
-			if (!amountGiven) return this.errorReply('Indefinite amount; use whole numbers');
-
-			econWL.log(`${user.userid} gave ${targetUser} ${value} ${econWL.grammarizeName(0)}`);
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 			return this.sendReply(`${targetU} has been awarded with ${amountGiven}!`);
 		},
 
 	    take(target, room, user) {
-<<<<<<< HEAD
 			if (!this.can('economy')) return false;
 
 			let [targetU, value] = target.split(',');
@@ -56,25 +38,10 @@ exports.commands = {
 
 			econWL.log(`${user.userid} took ${amountTaken} from ${targetUser}`);
 			return this.sendReply(`${amountTaken} has been removed from ${targetU}'s account, they now have ${amountLeft}!`);
-=======
-			if (!this.can('ban')) return false;
-
-			let [targetU, value] = target.split(',');
-			let targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
-			if (econWL.get(targetU) < value) return this.errorReply(`You can't take more ${econWL.grammarizeName(0)} than they have!`);
-
-			let amountLeft = econWL.remove(targetUser, value);
-			if (!amountLeft) return this.errorReply('Indefinite amount.');
-
-			econWL.log(`${user.userid} took ${value} ${econWL.grammarizeName(0)} from ${targetUser}`);
-			return this.sendReply(`${value} ${econWL.grammarizeName(0)} has been removed from ${targetU}'s account, they now have ${amountLeft}!`);
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 		},
 
 		transfer(target, room, user) {
 			let [targetU, value] = target.split(',');
-<<<<<<< HEAD
 			const targetUser = toId(targetU);
 			if (!targetUser || !value) return this.parse('/help stardust');
 			if (user.userid === targetUser) return this.errorReply(`You can't transfer ${econWL.getCurrencyLabel(value, false)} to yourself!`);
@@ -89,20 +56,6 @@ exports.commands = {
 
 			econWL.log(`${user.userid} transferred ${transferred} to ${targetUser}`);
 			return this.sendReply(`You transferred ${transferred} to ${targetUser}. You now have ${amountLeft}!`);
-=======
-			let targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
-			if (user.userid === targetUser) return this.errorReply(`You can't transfer ${econWL.grammarizeName(0)} to yourself!`);
-			if (econWL.get(user.userid) < value) return this.errorReply(`You can't transfer more ${econWL.grammarizeName(0)} than you have!`);
-
-			let amountLeft = econWL.remove(user.userid, value);
-			let amountGiven = econWL.award(targetUser, value);
-
-			if (!amountLeft || !amountGiven) return this.errorReply('Indefinite amount.');
-
-			econWL.log(`${user.userid} transferred ${value} ${econWL.grammarizeName(0)} to ${targetUser}`);
-			return this.sendReply(`You transferred ${value} ${econWL.grammarizeName(0)} to ${targetUser}. You now have ${amountLeft}!`);
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 		},
 
 		atm: 'wallet',
@@ -110,36 +63,20 @@ exports.commands = {
 			if (!this.runBroadcast()) return false;
 
 			let targetU = toId(target);
-<<<<<<< HEAD
 			if (!targetU) targetU = user.userid;
 
 			const savings = econWL.getCurrencyLabel(econWL.get(targetU));
 
 			return this.sendReply(`${targetU} has ${savings} in their wallet.`);
-=======
-			if (!targetU) targetU = user.name;
-
-			let savings = econWL.get(targetU);
-
-			return this.sendReply(`${targetU} has ${savings} ${econWL.grammarizeName(0)} in their wallet.`);
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 		},
 
 		stat: 'stats',
 		stats(target, room, user) {
 			if (!this.runBroadcast()) return false;
 
-<<<<<<< HEAD
 			const [total, mean] = econWL.getStats().map(i => econWL.getCurrencyLabel(i));
 
 			return this.sendReplyBox(`There are currently ${total} circulating in the economy, with ${mean} per user on average.`);
-=======
-			let getStats = econWL.getStats();
-			let total = getStats[0];
-			let mean = getStats[1];
-
-			return this.sendReplyBox(`There are currently ${total} ${econWL.grammarizeName(0)} circulating in the economy, with ${mean} ${econWL.grammarizeName(0)} per user on average.`);
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 		},
 
 		ranking: 'rankings',
@@ -154,11 +91,7 @@ exports.commands = {
 
 		log: 'logs',
 		logs(target, room, user) {
-<<<<<<< HEAD
 			if (!this.can('economy')) return false;
-=======
-			if (!this.can('ban')) return false;
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 
 			const transactionLogs = econWL.transactionLogs.readIfExistsSync();
 			if (!transactionLogs.length) return this.errorReply('Transaction logs are empty!');
@@ -197,7 +130,6 @@ exports.commands = {
 			return this.sendReply(`${user} has cleared the ${econWL.name} database!`);
 		},
 
-<<<<<<< HEAD
 		async deletedb(target, room, user) {
 			if (!this.can('lockdown')) return false;
 
@@ -208,17 +140,6 @@ exports.commands = {
 			}
 
 			return this.sendReply(`${econWL.dbName}.json was deleted`);
-=======
-		deletedb(target, room, user) {
-			if (!this.can('lockdown')) return false;
-
-			econWL.delete().then(() => {
-				return this.sendReply(`${econWL.dbName}.json was deleted`);
-			}).catch(err => {
-				console.log(err.stack);
-				return this.errorReply(`${econWL.dbName}.json couldn't be deleted, check logs for more info.`);
-			});
->>>>>>> 2b016a13b5eb0e87ed9e0bc00cfa1ed93864594b
 		},
 
 		""() {
