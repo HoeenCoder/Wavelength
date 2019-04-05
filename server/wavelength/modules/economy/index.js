@@ -178,3 +178,4 @@ module.exports = class Economy {
 		return FS(`${DB_PATH}/${this.dbName}.json`).unlinkIfExists();
 	}
 };
+
