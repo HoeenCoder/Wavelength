@@ -16,7 +16,7 @@ module.exports = class Economy {
 		this.tLogs = this.transactionLogs.createAppendStream();
 	}
 
-    /**
+	/**
      * Returns the currency label
      * @param {number} value
      * @param {boolean} [includeValue=true]
@@ -37,9 +37,9 @@ module.exports = class Economy {
 		let numValue = Number(value);
 
 		return Number.isInteger(numValue) && numValue > 0;
-    }
+	}
 
-    /**
+	/**
      * Returns a user's savings
      * @param {string} userid
      * @return {number}
@@ -47,9 +47,9 @@ module.exports = class Economy {
 
 	get(userid) {
 		return this.db.get(userid, 0);
-    }
+	}
 
-    /**
+	/**
      * Awards users with currency
      * @param {string} target
      * @param {number} value
@@ -66,9 +66,9 @@ module.exports = class Economy {
 		let amount = this.get(tarId);
 
 		return this.getCurrencyLabel(amount);
-    }
+	}
 
-    /**
+	/**
      * Removes a specified portion of user's savings
      * @param {string} target
      * @param {number} value
@@ -89,9 +89,9 @@ module.exports = class Economy {
 		}
 
 		return this.getCurrencyLabel(amount);
-    }
+	}
 
-    /**
+	/**
      * Returns the total currency, and the mean
      * @return {array}
      */
@@ -108,9 +108,9 @@ module.exports = class Economy {
 		let mean = total / len;
 
 		return [total, ~~mean];
-    }
+	}
 
-    /**
+	/**
      * Sorts the currency database
      * @return {array}
      */
@@ -120,9 +120,9 @@ module.exports = class Economy {
 		if (!keys.length) return [];
 
 		return keys.sort((a, b) => this.get(b) - this.get(a));
-    }
+	}
 
-    /**
+	/**
      * Generates a HTML ranking table
      * @return {string}
      */
@@ -141,9 +141,9 @@ module.exports = class Economy {
 		}
 
 		return `${output}</tbody></table>`;
-    }
+	}
 
-    /**
+	/**
      * Writes text to logs along with timestamps
      * @param {string} text
      */
@@ -153,9 +153,9 @@ module.exports = class Economy {
 		const [dateString, timestamp] = Chat.toTimestamp(date).split(' ');
 
 		this.tLogs.write(`[${dateString} - ${timestamp}] ${text}\n`);
-    }
+	}
 
-    /**
+	/**
      * Removes all existing values from currency database
      * @return {boolean}
      */
@@ -167,9 +167,9 @@ module.exports = class Economy {
 		for (let target of keys) this.db.remove(target);
 
 		return true;
-    }
+	}
 
-    /**
+	/**
      * Deletes the currency database
      * @return {Promise}
      */
@@ -178,4 +178,3 @@ module.exports = class Economy {
 		return FS(`${DB_PATH}/${this.dbName}.json`).unlinkIfExists();
 	}
 };
-
