@@ -23,6 +23,7 @@ exports.commands = {
 			econWL.log(`${user.userid} gave ${targetUser} ${econWL.getCurrencyLabel(value)}`);
 			return this.sendReply(`${targetU} has been awarded with ${amountGiven}!`);
 		},
+		givehelp: ['/stardust give [username], [value] - Awards the user with specified stardust. Requires @ & ~'],
 
 	    take(target, room, user) {
 			if (!this.can('economy')) return false;
@@ -41,25 +42,23 @@ exports.commands = {
 			econWL.log(`${user.userid} took ${amountTaken} from ${targetUser}`);
 			return this.sendReply(`${amountTaken} has been removed from ${targetU}'s account, they now have ${amountLeft}!`);
 		},
+		takehelp: ['/stardust take [username], [value] - Takes the specified stardust from the user. Requires @ & ~'],
 
 		transfer(target, room, user) {
-			let [targetU, value] = target.split(',');
+			const [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
 			if (!targetUser || !value) return this.parse('/help stardust');
 			if (user.userid === targetUser) return this.errorReply(`You can't transfer ${econWL.getCurrencyLabel(value, false)} to yourself!`);
 			if (targetUser.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 			if (econWL.get(user.userid) < value) return this.errorReply(`You can't transfer more ${econWL.getCurrencyLabel(value, false)} than you have!`);
 
-			const amountLeft = econWL.remove(user.userid, value);
-			const amountGiven = econWL.award(targetUser, value);
-
-			if (!amountLeft || !amountGiven) return this.errorReply('Indefinite amount.');
-
-			const transferred = econWL.getCurrencyLabel(value);
+			const [transferred, amountLeft] = econWL.transfer(user.userid, targetUser, value);
+			if (!transferred) return this.errorReply('Indefinite amount.');
 
 			econWL.log(`${user.userid} transferred ${transferred} to ${targetUser}`);
 			return this.sendReply(`You transferred ${transferred} to ${targetUser}. You now have ${amountLeft}!`);
 		},
+		transferhelp: ['/stardust transfer [username], [value], Transfers stardust to the specified username.'],
 
 		atm: 'wallet',
 		wallet(target, room, user) {
@@ -73,6 +72,7 @@ exports.commands = {
 
 			return this.sendReply(`${targetU} has ${savings} in their wallet.`);
 		},
+		wallethelp: ['/stardust wallet (username) - Shows the stardust a user has.'],
 
 		stat: 'stats',
 		stats(target, room, user) {
@@ -82,6 +82,7 @@ exports.commands = {
 
 			return this.sendReplyBox(`There are currently ${total} circulating in the economy, with ${mean} per user on average.`);
 		},
+		statshelp: ['/stardust stats - Shows the total stardust in the economy and the mean amount.'],
 
 		ranking: 'rankings',
 		rankings(target, room, user) {
@@ -92,6 +93,7 @@ exports.commands = {
 
 			this.sendReplyBox(leaderboard);
 		},
+		rankingshelp: ['/stardust rankings - Shows a leaderboard of users with stardust.'],
 
 		log: 'logs',
 		logs(target, room, user) {
@@ -122,12 +124,13 @@ exports.commands = {
 
 			user.popup(`|wide||html|Displaying the last ${lines} line(s)${msg}<br /><div style="max-height: 200px; overflow-y: auto;">${tLogsSplit.join('<br />')}</div>`);
 		},
+		logshelp: ['/stardust logs (search) - Searches transaction logs. Requires @ & ~'],
 
 		reset: 'cleardb',
 		cleardb(target, room, user) {
 			if (!this.can('lockdown')) return false;
 
-			let wipe = econWL.wipe();
+			const wipe = econWL.wipe();
 			if (!wipe) return this.errorReply(`${econWL.name} database is empty!`);
 
 			econWL.log(`${user.userid} cleared the ${econWL.name} database`);

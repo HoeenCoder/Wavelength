@@ -7,6 +7,10 @@ const FS = require('../../../../.lib-dist/fs').FS;
 const DB_PATH = 'config/database'; // path to your database folder
 
 module.exports = class Economy {
+	/**
+	 * @param {string} name
+	 * @param {string} dbName
+	 */
 	constructor(name, dbName) {
 		this.name = name;
 		this.dbName = dbName;
@@ -22,9 +26,13 @@ module.exports = class Economy {
 	 * @param {boolean} [includeValue=true]
 	 * @return {string}
 	 */
-
 	getCurrencyLabel(value, includeValue = true) {
-		return `${includeValue ? value : ''} ${this.name}${Chat.plural(value)}`;
+		let buf = '';
+		if (includeValue) buf = `${value} `;
+
+		buf += `${this.name}${Chat.plural(Number(value))}`;
+
+		return buf;
 	}
 
 	/**
@@ -32,7 +40,6 @@ module.exports = class Economy {
 	 * @param {number} value
 	 * @return {boolean}
 	 */
-
 	isPInteger(value) {
 		let numValue = Number(value);
 
@@ -44,7 +51,6 @@ module.exports = class Economy {
 	 * @param {string} userid
 	 * @return {number}
 	 */
-
 	get(userid) {
 		return this.db.get(userid, 0);
 	}
@@ -53,9 +59,8 @@ module.exports = class Economy {
 	 * Awards users with currency
 	 * @param {string} target
 	 * @param {number} value
-	 * @return {string}
+	 * @return {boolean | string}
 	 */
-
 	award(target, value) {
 		if (!this.isPInteger(value)) return false;
 
@@ -63,18 +68,15 @@ module.exports = class Economy {
 
 		this.db.put(tarId, amount => amount + Number(value), 0);
 
-		let amount = this.get(tarId);
-
-		return this.getCurrencyLabel(amount);
+		return this.getCurrencyLabel(value);
 	}
 
 	/**
 	 * Removes a specified portion of user's savings
 	 * @param {string} target
 	 * @param {number} value
-	 * @return {string}
+	 * @return {boolean | string}
 	 */
-
 	remove(target, value) {
 		if (!this.isPInteger(value)) return false;
 
@@ -92,10 +94,27 @@ module.exports = class Economy {
 	}
 
 	/**
-	 * Returns the total currency, and the mean
-	 * @return {array}
+	 * Transfers specified amount to another user
+	 * @param {string} userid
+	 * @param {string} target
+	 * @param {number} value
+	 * @return {boolean | [string, string]}
 	 */
+	transfer(userid, target, value) {
+		if (!this.isPInteger(value)) return false;
 
+		let tarId = toId(target);
+
+		this.db.put(userid, amount => amount - Number(value), 0);
+		this.db.put(tarId, amount => amount + Number(value), 0);
+
+		return [value, this.get(userid)].map(i => this.getCurrencyLabel(i));
+	}
+
+	/**
+	 * Returns the total currency, and the mean
+	 * @return {[number, number]}
+	 */
 	getStats() {
 		let total = 0;
 		let keys = this.db.keys();
@@ -112,9 +131,8 @@ module.exports = class Economy {
 
 	/**
 	 * Sorts the currency database
-	 * @return {array}
+	 * @return {string[]}
 	 */
-
 	sort() {
 		let keys = this.db.keys();
 		if (!keys.length) return [];
@@ -124,30 +142,25 @@ module.exports = class Economy {
 
 	/**
 	 * Generates a HTML ranking table
-	 * @return {string}
+	 * @return {boolean | string}
 	 */
-
 	genLeaderboard() {
-		// Deprecated attributes, but does anyone care?
-		let output = `<table cellpadding="5" border="1" width="100%"><tbody><tr><th>Rank</th><th>Name</th><th>Amount</th></tr>`;
+		let output = `<h3 style="text-align: center; text-decoration: underline; text-transform: capitalize;">${this.name}s Ladder</h3><div style="max-height: 250px; overflow-y: auto;"><table style="width: 100%; border: 1px solid #000;"><tbody><tr><th style="padding: 5px; border: 1px solid #000;">Rank</th><th style="padding: 5px; border: 1px solid #000;">Name</th><th style="padding: 5px; border: 1px solid #000;">Amount</th></tr>`;
 		let sortedList = this.sort();
 		if (!sortedList.length) return false; // return an error message
 
-		for (let i = 0, len = sortedList.length; i < len; i++) {
-			let target = sortedList[i];
-			let amount = this.get(target);
-
-			output += `<tr><td>${(i + 1)}</td><td>${target}</td><td>${amount}</td></tr>`;
+		for (const [i, userid] of sortedList.entries()) {
+			const amount = this.get(userid);
+			output += `<tr><td style="padding: 5px; border: 1px solid #000;">${i + 1}</td><td style="padding: 5px; border: 1px solid #000;">${userid}</td><td style="padding: 5px; border: 1px solid #000;">${amount}</td></tr>`;
 		}
 
-		return `${output}</tbody></table>`;
+		return `${output}</tbody></table></div>`;
 	}
 
 	/**
 	 * Writes text to logs along with timestamps
 	 * @param {string} text
 	 */
-
 	log(text) {
 		const date = new Date();
 		const [dateString, timestamp] = Chat.toTimestamp(date).split(' ');
@@ -159,7 +172,6 @@ module.exports = class Economy {
 	 * Removes all existing values from currency database
 	 * @return {boolean}
 	 */
-
 	wipe() {
 		let keys = this.db.keys();
 		if (!keys.length) return false;
@@ -173,7 +185,6 @@ module.exports = class Economy {
 	 * Deletes the currency database
 	 * @return {Promise}
 	 */
-
 	delete() {
 		return FS(`${DB_PATH}/${this.dbName}.json`).unlinkIfExists();
 	}

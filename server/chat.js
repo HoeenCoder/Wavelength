@@ -1505,6 +1505,7 @@ Chat.loadPlugins = function () {
 	files = files.filter(file => file !== 'info.js');
 	files.unshift('info.js');
 
+
 	for (const file of files) {
 		if (file.substr(-3) !== '.js') continue;
 		const plugin = require(`./chat-plugins/${file}`);
@@ -1521,14 +1522,24 @@ Chat.loadPlugins = function () {
 		if (plugin.nicknamefilter) Chat.nicknamefilters.push(plugin.nicknamefilter);
 	}
 
-	let WL_FILES = FS('server/wavelength/chat-plugins/').readdirSync();
-	WL_FILES = WL_FILES.filter(file => file !== 'info.js');
+	// Load Wavelength's custom plugins
 
-	for (const file of WL_FILES) {
-		if (file.substr(-3) !== '.js') continue;
+	const wavelengthFiles = FS('server/wavelength/chat-plugins/').readdirSync();
+
+	for (const file of wavelengthFiles) {
+		if (file.substr(-3) !== '.js') return;
 		const plugin = require(`./wavelength/chat-plugins/${file}`);
 
 		Object.assign(commands, plugin.commands);
+		Object.assign(pages, plugin.pages);
+
+		if (plugin.destroy) Chat.destroyHandlers.push(plugin.destroy);
+
+		if (plugin.chatfilter) Chat.filters.push(plugin.chatfilter);
+		if (plugin.namefilter) Chat.namefilters.push(plugin.namefilter);
+		if (plugin.hostfilter) Chat.hostfilters.push(plugin.hostfilter);
+		if (plugin.loginfilter) Chat.loginfilters.push(plugin.loginfilter);
+		if (plugin.nicknamefilter) Chat.nicknamefilters.push(plugin.nicknamefilter);
 	}
 };
 
