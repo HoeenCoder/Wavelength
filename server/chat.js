@@ -1505,7 +1505,6 @@ Chat.loadPlugins = function () {
 	files = files.filter(file => file !== 'info.js');
 	files.unshift('info.js');
 
-
 	for (const file of files) {
 		if (file.substr(-3) !== '.js') continue;
 		const plugin = require(`./chat-plugins/${file}`);
