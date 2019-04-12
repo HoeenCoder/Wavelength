@@ -12,9 +12,9 @@ exports.commands = {
 	    give(target, room, user) {
 			if (!this.can('economy')) return false;
 
-			let [targetU, value] = target.split(',');
+			const [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
+			if (!targetUser || !value) return this.parse('/help stardust give');
 			if (targetUser.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 
 			const amountGiven = econWL.award(targetUser, value);
@@ -28,9 +28,9 @@ exports.commands = {
 	    take(target, room, user) {
 			if (!this.can('economy')) return false;
 
-			let [targetU, value] = target.split(',');
+			const [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
+			if (!targetUser || !value) return this.parse('/help stardust take');
 			if (targetUser.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 			if (econWL.get(targetU) < value) return this.errorReply(`You can't take more ${econWL.getCurrencyLabel(value, false)} than they have!`);
 
@@ -47,7 +47,7 @@ exports.commands = {
 		transfer(target, room, user) {
 			const [targetU, value] = target.split(',');
 			const targetUser = toId(targetU);
-			if (!targetUser || !value) return this.parse('/help stardust');
+			if (!targetUser || !value) return this.parse('/help stardust transfer');
 			if (user.userid === targetUser) return this.errorReply(`You can't transfer ${econWL.getCurrencyLabel(value, false)} to yourself!`);
 			if (targetUser.length > 18) return this.errorReply('Usernames must be 18 characters or shorter');
 			if (econWL.get(user.userid) < value) return this.errorReply(`You can't transfer more ${econWL.getCurrencyLabel(value, false)} than you have!`);
@@ -88,7 +88,7 @@ exports.commands = {
 		rankings(target, room, user) {
 			if (!this.runBroadcast()) return false;
 
-			let leaderboard = econWL.genLeaderboard();
+			const leaderboard = econWL.genLeaderboard();
 			if (!leaderboard) return this.errorReply('No leaderboards found!');
 
 			this.sendReplyBox(leaderboard);
