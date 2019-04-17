@@ -41,7 +41,7 @@ module.exports = class Economy {
 	 * @return {boolean}
 	 */
 	isPInteger(value) {
-		let numValue = Number(value);
+		const numValue = Number(value);
 
 		return Number.isInteger(numValue) && numValue > 0;
 	}
@@ -64,7 +64,7 @@ module.exports = class Economy {
 	award(target, value) {
 		if (!this.isPInteger(value)) return false;
 
-		let tarId = toId(target);
+		const tarId = toId(target);
 
 		this.db.put(tarId, amount => amount + Number(value), 0);
 
@@ -80,11 +80,11 @@ module.exports = class Economy {
 	remove(target, value) {
 		if (!this.isPInteger(value)) return false;
 
-		let tarId = toId(target);
+		const tarId = toId(target);
 
 		this.db.put(tarId, amount => amount - Number(value), 0);
 
-		let amount = this.get(tarId);
+		const amount = this.get(tarId);
 		if (amount <= 0) {
 			this.db.remove(tarId);
 			return `0 ${this.name}s`;
@@ -103,7 +103,7 @@ module.exports = class Economy {
 	transfer(userid, target, value) {
 		if (!this.isPInteger(value)) return false;
 
-		let tarId = toId(target);
+		const tarId = toId(target);
 
 		this.db.put(userid, amount => amount - Number(value), 0);
 		this.db.put(tarId, amount => amount + Number(value), 0);
@@ -116,15 +116,15 @@ module.exports = class Economy {
 	 * @return {[number, number]}
 	 */
 	getStats() {
+		const keys = this.db.keys();
+		const len = keys.length;
 		let total = 0;
-		let keys = this.db.keys();
-		let len = keys.length;
 
 		for (let i = 0; i < len; i++) {
 			total += this.get(keys[i]);
 		}
 
-		let mean = total / len;
+		const mean = total / len;
 
 		return [total, ~~mean];
 	}
@@ -134,7 +134,7 @@ module.exports = class Economy {
 	 * @return {string[]}
 	 */
 	sort() {
-		let keys = this.db.keys();
+		const keys = this.db.keys();
 		if (!keys.length) return [];
 
 		return keys.sort((a, b) => this.get(b) - this.get(a));
@@ -145,8 +145,8 @@ module.exports = class Economy {
 	 * @return {boolean | string}
 	 */
 	genLeaderboard() {
+		const sortedList = this.sort();
 		let output = `<h3 style="text-align: center; text-decoration: underline; text-transform: capitalize;">${this.name}s Ladder</h3><div style="max-height: 250px; overflow-y: auto;"><table style="width: 100%; border: 1px solid #000;"><tbody><tr><th style="padding: 5px; border: 1px solid #000;">Rank</th><th style="padding: 5px; border: 1px solid #000;">Name</th><th style="padding: 5px; border: 1px solid #000;">Amount</th></tr>`;
-		let sortedList = this.sort();
 		if (!sortedList.length) return false; // return an error message
 
 		for (const [i, userid] of sortedList.entries()) {
@@ -173,10 +173,10 @@ module.exports = class Economy {
 	 * @return {boolean}
 	 */
 	wipe() {
-		let keys = this.db.keys();
+		const keys = this.db.keys();
 		if (!keys.length) return false;
 
-		for (let target of keys) this.db.remove(target);
+		for (const target of keys) this.db.remove(target);
 
 		return true;
 	}
