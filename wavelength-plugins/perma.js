@@ -37,7 +37,7 @@ exports.commands = {
 		if (tarUser.trusted && cmd !== 'forcepermalock') return this.errorReply(tarUser.name + ' is a trusted user. If your sure you want to permalock them, please use /forcepermalock');
 		Db.userType.set(tarUser.userid, 5);
 		if (!Punishments.userids.get(tarUser.userid) || Punishments.userids.get(tarUser.userid)[0] !== 'BAN') Punishments.lock(tarUser, Date.now() + (1000 * 60 * 60 * 24 * 30), tarUser.userid, `Permalocked as ${tarUser.userid}`);
-		tarUser.popup('You have been permalocked by ' + user.name + '.\nUnlike permalocks issued by the main server, this permalock only effects this server.');
+		tarUser.popup('You have been permalocked by ' + user.name + '.\nUnlike permalocks issued by the main server, this permalock only eaffcts this server.');
 		if (tarUser.trusted) Monitor.log('[CrisisMonitor] Trusted user ' + tarUser.userid + ' was permalocked by ' + user.name + ' and was automatically demoted from ' + tarUser.distrust() + '.');
 		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has permalocked ' + tarUser.name + '.');
 		this.globalModlog("PERMALOCK", tarUser, " by " + user.name);
@@ -86,7 +86,7 @@ exports.commands = {
 		if (Db.userType.get(tarUser.userid, 0) === 6) return this.errorReply(tarUser.name + ' is already permabanned.');
 		if (tarUser.trusted && cmd !== 'forcepermaban') return this.errorReply(tarUser.name + ' is a trusted user. If your sure you want to permaban them, please use /forcepermaban');
 		Db.userType.set(tarUser.userid, 6);
-		tarUser.popup('You have been permabanned by ' + user.name + '.\nUnlike permabans issued by the main server, this permaban only effects this server.');
+		tarUser.popup('You have been permabanned by ' + user.name + '.\nUnlike permabans issued by the main server, this permaban only affects this server.');
 		Punishments.ban(tarUser, Date.now() + (1000 * 60 * 60 * 24 * 30), tarUser.userid, `Permabanned as ${tarUser.userid}`);
 		if (tarUser.trusted) Monitor.log('[CrisisMonitor] Trusted user ' + tarUser.userid + ' was permabanned by ' + user.name + ' and was automatically demoted from ' + tarUser.distrust() + '.');
 		if (Rooms('upperstaff')) Monitor.adminlog('[PermaMonitor] ' + user.name + ' has permabanned ' + tarUser.name + '.');
