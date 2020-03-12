@@ -13,7 +13,10 @@ Navigation: [Wavelength][1] | [PS Server repository][10] | [PS Client repository
 [![devDependencies Status](https://david-dm.org/HoeenCoder/Wavelength/dev-status.svg)](https://david-dm.org/HoeenCoder/Wavelength?type=dev)
 [![optionalDependencies Status](https://david-dm.org/HoeenCoder/Wavelength/optional-status.svg)](https://david-dm.org/HoeenCoder/Wavelength?type=optional)
 
+Notice
+------------------------------------------------------------------------
 
+This repository is no longer maintained. You are free to clone it and use it for your own purposes but please note its very out-of-date and we will not fix any issues.
 
 Introduction
 ------------------------------------------------------------------------
