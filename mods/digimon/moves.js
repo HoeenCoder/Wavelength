@@ -4440,31 +4440,27 @@ let BattleMovedex = {
 		},
 	},
 	"saintheal": {
-		name: "Saint Heal",
-		id: "saintheal",
-		pp: 10,
-		basePower: 0,
-		priority: 0,
-		category: "Status",
-		type: "Holy",
-		target: "allySide",
-		desc: "Heals 40% of allies max HP.",
-		shortDesc: "Heals 40% of allies max HP.",
-		onPrepareHit(target, source, move) {
-			this.attrLastMove('[still]');
-			this.add('-anim', source, "geomancy", target);
-		},
-		flags: {heal: 1},
-		accuracy: true,
-		secondary: null,
-		onHitSide(side) {
-			let didSomething = false;
-			for (let pokemon of side.active) {
-				if (pokemon && this.heal(pokemon.maxhp * 4 / 10, pokemon)) didSomething = true;
-			}
-			return didSomething;
-		},
-	},
+        name: "Saint Heal",
+        id: "saintheal",
+        pp: 10,
+        basePower: 0,
+        priority: 0,
+        category: "Status",
+        type: "Holy",
+        target: "any",
+        desc: "Heals the target by 40% of its max HP.",
+        shortDesc: "Heals the target by 40% of its max HP.",
+        onPrepareHit(target, source, move) {
+            this.attrLastMove('[still]');
+            this.add('-anim', source, "geomancy", target);
+        },
+        flags: { protect: 1, pulse: 1, reflectable: 1, distance: 1, heal: 1, mystery: 1 },
+        accuracy: true,
+        secondary: null,
+        onHit: function (target, source) {
+            return this.heal(Math.ceil(target.maxhp * 0.4));
+        },
+    },
 	"holybreath": {
 		name: "Holy Breath",
 		id: "holybreath",
